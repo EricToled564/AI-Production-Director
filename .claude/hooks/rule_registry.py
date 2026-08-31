@@ -72,6 +72,14 @@ SKIP = (
 )
 
 FENCE = re.compile(r"^\s*```")
+FRONTMATTER = re.compile(r"^---\s*$")
+# Metadatos del paquete, no enunciados normativos.
+META = re.compile(
+    r"^\s*(license|name|description|version|author|metadata|pipeline|allowed-tools|"
+    r"compatibility)\s*:",
+    re.IGNORECASE,
+)
+ATTRIBUTION = re.compile(r"(CC[ -]BY|attribution required|Serge Shima|t\.me/|©)", re.IGNORECASE)
 
 
 def normalise(text: str) -> str:
@@ -89,14 +97,27 @@ def extract_file(path: Path, root: Path) -> list[dict]:
     rel = str(path.relative_to(root))
     rules: list[dict] = []
     in_fence = False
+    in_frontmatter = False
 
-    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+    lines = path.read_text(encoding="utf-8").splitlines()
+    for lineno, raw in enumerate(lines, 1):
+        # YAML frontmatter: metadata about the skill, not rules inside it.
+        if lineno == 1 and FRONTMATTER.match(raw):
+            in_frontmatter = True
+            continue
+        if in_frontmatter:
+            if FRONTMATTER.match(raw):
+                in_frontmatter = False
+            continue
+
         if FENCE.match(raw):
             in_fence = not in_fence
             continue
         if in_fence:
             continue  # prompt templates are examples, not statements about rules
         if any(p.match(raw) for p in SKIP):
+            continue
+        if META.match(raw) or ATTRIBUTION.search(raw):
             continue
 
         text = normalise(raw)

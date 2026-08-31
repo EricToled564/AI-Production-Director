@@ -34,6 +34,41 @@ OVERRIDE_RE = re.compile(r"^\s*OVERRIDE:\s*(.+?)\s+-\s+(.+?)\s*$", re.MULTILINE)
 QUOTED_RE = re.compile(r'"([^"]{2,40})"')
 
 
+def find_antislop() -> Path | None:
+    """image/references/gpt-image.md carries its own '## Anti-Slop Rules' table."""
+    for pattern in ("*/image/references/gpt-image.md", "*/*/image/references/gpt-image.md"):
+        for candidate in SKILLS_ROOT.glob(pattern):
+            return candidate
+    return None
+
+
+def load_antislop(path: Path) -> list[str]:
+    """Read the left (❌) column of the Anti-Slop table. Mechanical, not copied."""
+    text = path.read_text(encoding="utf-8")
+    start = text.find("## Anti-Slop Rules")
+    if start == -1:
+        return []
+    rest = text[start:]
+    end = rest.find("\n## ", 3)
+    section = rest if end == -1 else rest[:end]
+
+    terms: list[str] = []
+    for line in section.splitlines():
+        if not line.strip().startswith("|") or "---" in line:
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 2 or "❌" in cells[0]:
+            continue  # header row
+        # Only plain comma-separated word lists; prose examples are not terms.
+        if any(ch in cells[0] for ch in "«»\"'"):
+            continue
+        for part in cells[0].split(","):
+            part = part.strip().lower()
+            if part and 2 < len(part) < 30 and " " not in part.strip():
+                terms.append(part)
+    return terms
+
+
 def find_dramaturgy() -> Path | None:
     """Locate video/references/dramaturgy.md under any synced skill root."""
     for candidate in SKILLS_ROOT.glob("*/video/references/dramaturgy.md"):
@@ -118,6 +153,17 @@ def main() -> int:
         return 1  # fail loud, never silently pass as if checked
 
     banned = load_banned(dramaturgy)
+    sources = [str(dramaturgy)]
+
+    # Segunda autoridad: la lista Anti-Slop del propio skill image. Se lee de la
+    # fuente igual que la anterior; no se transcribe aqui.
+    antislop_path = find_antislop()
+    if antislop_path is not None:
+        extra = [t for t in load_antislop(antislop_path) if t not in banned]
+        if extra:
+            banned = sorted(set(banned + extra), key=len, reverse=True)
+            sources.append(str(antislop_path))
+
     if not banned:
         print(
             f"gate_dramaturgy: no banned terms parsed from {dramaturgy}. "
@@ -159,7 +205,7 @@ def main() -> int:
 
     report = [
         "DELIVERY BLOCKED — banned vocabulary (ai-production-director 6.1).",
-        f"Authority: {dramaturgy}",
+        "Authority: " + " + ".join(sources),
         "",
     ]
     for idx, term, line in violations:

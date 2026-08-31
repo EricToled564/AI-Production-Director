@@ -158,9 +158,13 @@ marca con ✅. No las resuelve el gate — son cosas a decidir en los skills.
    un verbo, y usa `cinematic`, que §6.1 declara prohibido y que "gana siempre".
    El gate lo bloquea. Es coherente con el director; el ejemplo es el que está mal.
 
-2. **El skill `image` no tiene lista de vocabulario prohibido propia.** Hereda la de
-   `video`/dramaturgy vía §6.1, que está escrita para dramaturgia de movimiento.
-   Funciona, pero conviene decidir si imagen necesita términos propios.
+2. **CORRECCIÓN.** En esta sesión se afirmó que el skill `image` no tenía lista de
+   vocabulario prohibido propia. **Es falso.** Está en
+   `image/references/gpt-image.md:36` — *stunning, incredible, epic, gorgeous,
+   masterpiece* — y `models.md:49` añade que en GPT Image 2 esas palabras empeoran
+   el resultado mientras que Nano Banana las ignora. El error vino de buscar
+   encabezados con grep en vez de leer los archivos, que es justo lo que
+   `image/SKILL.md:18` advierte. `gate_dramaturgy.py` ahora lee ambas fuentes.
 
 ## Estado de verificación — honesto
 
