@@ -40,6 +40,10 @@ CASOS = {
     "MARCA": "extraccion o uso de brand-lock",
     "QA": "critica de render, revision de asset generado",
     "ENTREGA": "empaquetado, preview, entrega a cliente",
+    "PROD": "still de producto, comida u objeto (sin persona)",
+    "GRAF": "pieza grafica: poster, slide, UI, social, tipografia dominante",
+    "MULTI": "multi-panel o grid dentro de una sola imagen",
+    "REF": "analisis de imagen de referencia, image-to-prompt",
     "NINGUNO": "no aplica a ningun caso de produccion (meta, ejemplos, docs)",
 }
 
