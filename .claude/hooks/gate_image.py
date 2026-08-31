@@ -27,6 +27,9 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from prompt_detect import visual_blocks, IMAGE_MODELS, VIDEO_MODELS  # noqa: E402
+
 SKILLS_ROOT = Path(
     os.environ.get("FUPAI_SKILLS_ROOT", Path.home() / ".claude" / "skills" / "synced")
 )
@@ -117,12 +120,12 @@ def main() -> int:
     message = payload.get("last_assistant_message") or ""
     counter = state_path(payload.get("session_id") or "nosession")
 
-    blocks = FENCE_RE.findall(message)
+    low_msg = message.lower()
+    blocks = visual_blocks(message)
     if not blocks:
         write_count(counter, 0)
-        return 0
+        return 0  # nada que sea entrega de prompt visual
 
-    low_msg = message.lower()
     if any(m in low_msg for m in VIDEO_MODELS) and not any(m in low_msg for m in IMAGE_MODELS):
         write_count(counter, 0)
         return 0  # motion prompt; gate_dramaturgy still applies
@@ -154,7 +157,7 @@ def main() -> int:
     fails: list[str] = []
     warns: list[str] = []
 
-    for idx, block in enumerate(blocks, start=1):
+    for idx, block in blocks:
         lines = [l for l in block.splitlines() if l.strip()]
         if not lines:
             continue

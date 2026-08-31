@@ -27,6 +27,9 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from prompt_detect import visual_blocks  # noqa: E402
+
 SKILLS_ROOT = Path(
     os.environ.get("FUPAI_SKILLS_ROOT", Path.home() / ".claude" / "skills" / "synced")
 )
@@ -100,12 +103,8 @@ def main() -> int:
     message = payload.get("last_assistant_message") or ""
     counter = state_path(payload.get("session_id") or "nosession")
 
-    blocks = FENCE_RE.findall(message)
-    delivers = [
-        b for b in blocks
-        if VISUAL_RE.search(b) or PROMPTISH_RE.search(b) or VISUAL_RE.search(message)
-    ]
-    if not blocks or not delivers:
+    delivers = visual_blocks(message)
+    if not delivers:
         write_count(counter, 0)
         return 0
 
