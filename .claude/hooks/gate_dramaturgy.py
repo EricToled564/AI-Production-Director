@@ -23,6 +23,9 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from prompt_detect import visual_blocks  # noqa: E402
+
 SKILLS_ROOT = Path(
     os.environ.get("FUPAI_SKILLS_ROOT", Path.home() / ".claude" / "skills" / "synced")
 )
@@ -138,7 +141,7 @@ def main() -> int:
     session_id = payload.get("session_id") or "nosession"
     counter = state_path(session_id)
 
-    blocks = FENCE_RE.findall(message)
+    blocks = visual_blocks(message)
     if not blocks:
         write_count(counter, 0)
         return 0
@@ -175,7 +178,7 @@ def main() -> int:
     overridden = {m.group(1).strip().lower() for m in OVERRIDE_RE.finditer(message)}
 
     violations: list[tuple[int, str, str]] = []
-    for idx, block in enumerate(blocks, start=1):
+    for idx, block in blocks:
         low = block.lower()
         for term in banned:
             if term in overridden:

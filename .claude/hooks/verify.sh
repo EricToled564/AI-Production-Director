@@ -83,18 +83,22 @@ check "respeta OVERRIDE explicito" 0 \
 Wet asphalt, sodium lamp. On-screen text reads "cinematic".
 ```')")"
 
-BAD="$(msg brk 'Prompt:
+BAD="$(msg brk 'Prompt para Nano Banana Pro:
 
 ```
-cinematic epic masterpiece
+Create a shot with cinematic epic masterpiece lighting.
+Format: 4:5
 ```')"
 for _ in 1 2 3; do fire gate_dramaturgy.py "$BAD" >/dev/null; done
 check "libera el turno tras 3 bloqueos (anti-deadlock)" 1 \
   "$(fire gate_dramaturgy.py "$BAD")"
 
 check "avisa fuerte si no encuentra el skill video" 1 \
-  "$(FUPAI_SKILLS_ROOT=/no/existe fire gate_dramaturgy.py "$(msg v6 '```
-cinematic
+  "$(FUPAI_SKILLS_ROOT=/no/existe fire gate_dramaturgy.py "$(msg v6 'Prompt para Nano Banana:
+
+```
+Create a cinematic shot.
+Format: 4:5
 ```')")"
 
 echo
@@ -315,7 +319,43 @@ STALE=$(python3 "$HOOKS/rule_ledger.py" --registry "$TMP/reg.json" --disposition
 check "detecta disposiciones huerfanas (STALE)" 1 "$STALE"
 
 echo
-echo "=== payload corrupto (ningun gate debe morir en silencio) ==="
+echo "=== FALSOS POSITIVOS — un gate que bloquea texto tecnico se desactiva ==="
+
+TECNICO='Donde para:
+
+```
+get_health  -> authenticated: false
+```
+
+```bash
+python3 nblm_load.py --corpus notebooklm-corpus
+```'
+for g in gate_image gate_dramaturgy gate_microgate; do
+  check "$g deja pasar salida de terminal y shell" 0 "$(fire $g.py "$(msg fp-$g "$TECNICO")")"
+done
+
+check "no bloquea shell aunque la prosa nombre el modelo" 0 \
+  "$(fire gate_image.py "$(msg fp2 'Para generar con Nano Banana corre:
+
+```bash
+python3 gen.py --model nano-banana
+```')")"
+
+check "no bloquea terminal con palabras prohibidas dentro" 0 \
+  "$(fire gate_dramaturgy.py "$(msg fp3 'Resultado:
+
+```
+  PASS  professional check   exit=0
+  FAIL  high quality assert  exit=1
+```')")"
+
+check "no bloquea un bloque json etiquetado" 0 \
+  "$(fire gate_dramaturgy.py "$(msg fp4 '```json
+{"style": "cinematic", "q": "high quality"}
+```')")"
+
+echo
+echo "=== payload corrupto (ningun gate debe morir en silencio) ===
 check "gate_dramaturgy sobrevive a JSON invalido" 1 "$(fire gate_dramaturgy.py 'no soy json')"
 check "gate_image sobrevive a JSON invalido"      1 "$(fire gate_image.py 'no soy json')"
 check "gate_shots sobrevive a JSON invalido"      1 "$(fire gate_shots.py 'no soy json')"
