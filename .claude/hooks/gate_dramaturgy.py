@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 SKILLS_ROOT = Path(
@@ -70,11 +71,25 @@ def state_path(session_id: str) -> Path:
     return d / f"{re.sub(r'[^A-Za-z0-9_-]', '_', session_id)}.count"
 
 
+STATE_TTL_S = 3600
+
+
 def read_count(p: Path) -> int:
+    """Consecutive blocks, ignoring state left over from an older session."""
     try:
-        return int(p.read_text())
+        count, stamp = p.read_text().split(":")
+        if time.time() - float(stamp) > STATE_TTL_S:
+            return 0
+        return int(count)
     except Exception:
         return 0
+
+
+def write_count(p: Path, n: int) -> None:
+    try:
+        p.write_text(f"{n}:{time.time()}")
+    except OSError:
+        pass
 
 
 def main() -> int:
@@ -90,7 +105,7 @@ def main() -> int:
 
     blocks = FENCE_RE.findall(message)
     if not blocks:
-        counter.write_text("0")
+        write_count(counter, 0)
         return 0
 
     dramaturgy = find_dramaturgy()
@@ -126,12 +141,12 @@ def main() -> int:
                 violations.append((idx, term, line[:110]))
 
     if not violations:
-        counter.write_text("0")
+        write_count(counter, 0)
         return 0
 
     seen = read_count(counter)
     if seen >= MAX_CONSECUTIVE_BLOCKS:
-        counter.write_text("0")
+        write_count(counter, 0)
         print(
             f"gate_dramaturgy: {len(violations)} violation(s) still present after "
             f"{seen} blocked attempts. Releasing the turn so the session does not "
@@ -140,7 +155,7 @@ def main() -> int:
         )
         return 1
 
-    counter.write_text(str(seen + 1))
+    write_count(counter, seen + 1)
 
     report = [
         "DELIVERY BLOCKED — banned vocabulary (ai-production-director 6.1).",
