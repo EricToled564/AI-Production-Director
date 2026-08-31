@@ -72,6 +72,7 @@ SKIP = (
 )
 
 FENCE = re.compile(r"^\s*```")
+LIST_START = re.compile(r"^\s*(?:[-*+]\s|\d{1,2}[.)]\s)")
 FRONTMATTER = re.compile(r"^---\s*$")
 # Metadatos del paquete, no enunciados normativos.
 META = re.compile(
@@ -99,8 +100,29 @@ def extract_file(path: Path, root: Path) -> list[dict]:
     in_fence = False
     in_frontmatter = False
 
-    lines = path.read_text(encoding="utf-8").splitlines()
-    for lineno, raw in enumerate(lines, 1):
+    raw_lines = path.read_text(encoding="utf-8").splitlines()
+
+    # Una regla envuelta en varias lineas es UNA regla. Sin esto, la segunda
+    # mitad ("de colocacion probada; nunca 'a ver si sale'") queda como entrada
+    # propia e inclasificable, e infla el conteo.
+    lines: list[tuple[int, str]] = []
+    for lineno, raw in enumerate(raw_lines, 1):
+        continuacion = (
+            lines
+            and raw.strip()
+            and not FENCE.match(raw)
+            and not raw.lstrip().startswith(("-", "*", "+", "|", "#", ">"))
+            and not re.match(r"^\s*\d{1,2}[.)]\s", raw)
+            and (raw.startswith((" ", "\t")) or LIST_START.match(lines[-1][1]))
+            and lines[-1][1].strip()
+        )
+        if continuacion:
+            prev_no, prev = lines[-1]
+            lines[-1] = (prev_no, prev.rstrip() + " " + raw.strip())
+        else:
+            lines.append((lineno, raw))
+
+    for lineno, raw in lines:
         # YAML frontmatter: metadata about the skill, not rules inside it.
         if lineno == 1 and FRONTMATTER.match(raw):
             in_frontmatter = True
