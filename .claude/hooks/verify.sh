@@ -8,6 +8,9 @@
 # here instead of passing prompts through in silence.
 
 set -uo pipefail
+# El propio verify.sh se valida antes de correr: un error de sintaxis aqui hace
+# que la suite reporte verde sin haber corrido los ultimos casos.
+bash -n "${BASH_SOURCE[0]}" || { echo "verify.sh tiene un error de sintaxis"; exit 2; }
 
 HOOKS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export HOOKS
@@ -355,7 +358,7 @@ check "no bloquea un bloque json etiquetado" 0 \
 ```')")"
 
 echo
-echo "=== payload corrupto (ningun gate debe morir en silencio) ===
+echo "=== payload corrupto (ningun gate debe morir en silencio) ==="
 check "gate_dramaturgy sobrevive a JSON invalido" 1 "$(fire gate_dramaturgy.py 'no soy json')"
 check "gate_image sobrevive a JSON invalido"      1 "$(fire gate_image.py 'no soy json')"
 check "gate_shots sobrevive a JSON invalido"      1 "$(fire gate_shots.py 'no soy json')"
