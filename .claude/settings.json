@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_dramaturgy.py\"",
+            "timeout": 30,
+            "statusMessage": "Gate 6.1: vocabulario prohibido..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_shots.py\"",
+            "timeout": 60,
+            "statusMessage": "Gate Etapa 4: validate_shots.py..."
+          }
+        ]
+      }
+    ]
+  }
+}
