@@ -1,0 +1,117 @@
+# Filtro de alcance por caso — paso 2 del metodo.
+#
+# Paso 1 lo hace rule_registry.py: extrae TODAS las reglas, mecanicamente.
+# Paso 2 es este archivo: decide cuales aplican a cada caso.
+#
+# La unica forma de excluir una regla es escribir aqui por que no aplica.
+# Lo que ninguna linea toque queda SIN DECIDIR, y sin decidir no se entrega.
+#
+# Cada entrada:
+#   match:  file (glob sobre skill/ruta) | text (regex) | marker
+#   status: APLICA | NA
+#   reason: obligatorio en NA. Es lo que Eric audita y discute.
+#
+# El orden importa: gana la primera entrada que haga match.
+
+casos:
+  # ---------------------------------------------------------------- IMAGEN
+  imagen:
+    descripcion: "Cualquier still: maestro, cuadro, ancla, keyframe, edicion."
+    reglas:
+      - match: {file: "video/**"}
+        status: NA
+        reason: "Medio distinto. Son reglas de movimiento, camara en el tiempo y
+                 protocolo de dialogo; un still no tiene ninguno de los tres.
+                 EXCEPCION abajo: el vocabulario prohibido si aplica."
+      - match: {file: "video/references/dramaturgy.md", text: "(?i)banned|prohib"}
+        status: APLICA
+        reason: "ai-production-director 6.1 dice que este vocabulario gana siempre,
+                 sobre imagen tambien."
+      - match: {file: "screenwriter/**"}
+        status: NA
+        reason: "Etapa 2 del pipeline. Un prompt de imagen no escribe guion."
+      - match: {file: "storyboard-html-preview/**"}
+        status: NA
+        reason: "Etapa 7, formato de entrega al cliente. No toca la redaccion del prompt."
+      - match: {file: "ai-video-storyboard/**"}
+        status: NA
+        reason: "Solo track EXPRESS de video, segun la tabla de sub-skills del director."
+      - match: {file: "visual-media/**"}
+        status: NA
+        reason: "El director seccion 7 la limita a animacion y material didactico ES."
+      - match: {file: "brand-lock-extractor/**"}
+        status: NA
+        reason: "Etapa 0. Se corre una vez por marca, no por prompt. Si el brand-lock
+                 no existe todavia, este caso no es imagen: es Etapa 0."
+      - match: {file: "storyboard-architect/**"}
+        status: NA
+        reason: "Etapa 4. Define el shot; el prompt lo ejecuta. El shot ya esta cerrado
+                 cuando se escribe el prompt."
+      - match: {file: "visual-asset-critic/**"}
+        status: NA
+        reason: "Corre DESPUES del render, sobre la imagen. No sobre el texto del prompt."
+      - match: {file: "image/**"}
+        status: APLICA
+        reason: "Autoridad de sintaxis final de imagen, Etapa 5."
+      - match: {file: "produccion-visual-sw30/**"}
+        status: APLICA
+        reason: "Reglas criticas y micro-gate. Su descripcion dice APLICAR ANTES de producir."
+      - match: {file: "ai-production-director/**"}
+        status: APLICA
+        reason: "Orquestador. Gates, resolucion de conflictos y trazabilidad."
+      - match: {file: "visual-prompt-forge/**"}
+        status: APLICA
+        reason: "Dueno del flujo shots.json -> borrador de prompt, Etapa 5."
+
+  # ----------------------------------------------------------------- VIDEO
+  video:
+    descripcion: "Prompt de movimiento para Kling, Veo, Sora, Seedance, Hailuo."
+    reglas:
+      - match: {file: "image/references/patterns/**"}
+        status: NA
+        reason: "Patrones de composicion de still (ecommerce, moda, comida). El anchor
+                 ya fija la composicion; el prompt de video no la re-describe."
+      - match: {file: "screenwriter/**"}
+        status: NA
+        reason: "Etapa 2. El guion ya esta cerrado cuando se escribe el prompt de clip."
+      - match: {file: "storyboard-html-preview/**"}
+        status: NA
+        reason: "Etapa 7, entrega. No toca la redaccion del prompt."
+      - match: {file: "brand-lock-extractor/**"}
+        status: NA
+        reason: "Etapa 0, una vez por marca."
+      - match: {file: "visual-asset-critic/**"}
+        status: NA
+        reason: "Corre sobre el render, no sobre el texto."
+      - match: {file: "visual-media/**"}
+        status: NA
+        reason: "Director seccion 7: solo animacion y material didactico ES."
+      - match: {file: "video/**"}
+        status: APLICA
+        reason: "Autoridad de sintaxis final de video, Etapa 6."
+      - match: {file: "image/**"}
+        status: APLICA
+        reason: "El anchor de partida es una imagen; su sintaxis condiciona el clip."
+      - match: {file: "produccion-visual-sw30/**"}
+        status: APLICA
+        reason: "Reglas criticas y micro-gate, aplican a imagen y video."
+      - match: {file: "ai-production-director/**"}
+        status: APLICA
+        reason: "Orquestador."
+      - match: {file: "storyboard-architect/**"}
+        status: APLICA
+        reason: "shots.json es la fuente de verdad de la Etapa 4 en adelante."
+      - match: {file: "visual-prompt-forge/**"}
+        status: APLICA
+        reason: "Estructura el prompt de movimiento desde shots.json, Etapa 6."
+      - match: {file: "ai-video-storyboard/**"}
+        status: NA
+        reason: "Solo track EXPRESS. Si el proyecto es EXPRESS, usar el caso 'video-express'."
+
+# Tipos de la matriz de produccion-visual-sw30. Estrechan el caso, no lo sustituyen.
+tipos:
+  T1: {caso: imagen, descripcion: "maestro de rostro"}
+  T2: {caso: imagen, descripcion: "maestro de cuerpo"}
+  T3: {caso: imagen, descripcion: "cuadro 1 persona"}
+  T4: {caso: imagen, descripcion: "cuadro 2 personas"}
+  T5: {caso: imagen, descripcion: "edicion quirurgica"}
