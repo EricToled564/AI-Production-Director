@@ -77,7 +77,12 @@ export default async function handler(req, res) {
   res.setHeader("X-Accel-Buffering", "no");
   const enviar = (o) => res.write("data: " + JSON.stringify(o) + "\n\n");
 
-  const client = new Anthropic();
+  // Una API key ligada a una identidad exige decir en que workspace actua.
+  // Sin esto la API responde 400 antes de mirar el resto de la peticion.
+  const ws = process.env.ANTHROPIC_WORKSPACE_ID;
+  const client = new Anthropic(
+    ws ? { defaultHeaders: { "anthropic-workspace-id": ws } } : undefined,
+  );
   const cancelar = new AbortController();
   req.on("close", () => cancelar.abort());
 
@@ -132,6 +137,7 @@ export default async function handler(req, res) {
     }
   } catch (e) {
     const status = e && e.status;
+    const bruto = (e && e.message) || "";
     const code =
       status === 429
         ? "rate_limited"
@@ -140,7 +146,12 @@ export default async function handler(req, res) {
           : status === 400
             ? "invalid_request"
             : "upstream_error";
-    enviar({ t: "error", code, message: (e && e.message) || "Error al llamar a Claude." });
+    const message = /anthropic-workspace-id/.test(bruto)
+      ? "Tu API key está ligada a un workspace. Agrega en Vercel la variable ANTHROPIC_WORKSPACE_ID con el id del workspace (empieza con wrkspc_) y vuelve a desplegar. El id está en console.anthropic.com, Settings, Workspaces: aparece en la URL al abrir el workspace."
+      : /credit balance|insufficient/i.test(bruto)
+        ? "La cuenta de Anthropic no tiene saldo. Carga crédito en console.anthropic.com, Plans & Billing."
+        : bruto || "Error al llamar a Claude.";
+    enviar({ t: "error", code, message });
   }
   res.end();
 }
