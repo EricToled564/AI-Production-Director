@@ -449,10 +449,81 @@ RÚBRICA: fidelidad al brief y a los shots aprobados · continuidad de personaje
 Responde SOLO con JSON: {"veredicto":"CUMPLE"|"PARCIAL"|"NO CUMPLE","puntaje":0-100,"criterios":[{"criterio":"...","cumple":true|false|null,"evidencia":"..."}],"por_escena":[{"escena":1,"nota":"..."}],"correcciones":["..."]}`;
 }
 
+function promptEvalCuadros(p, refTexto, tiempos){
+  return `Eres el evaluador de video de Final Upgrade AI. Se adjuntan ${tiempos.length} cuadros extraídos del mismo video, en orden, en estos segundos: ${tiempos.map(t=>t.toFixed(1)+'s').join(', ')}. Son muestras, no el video completo: no puedes juzgar movimiento continuo ni audio, y lo que no puedas verificar con los cuadros dilo como "no verificable" en vez de suponerlo.
+
+BRIEF:
+<<<
+${corta(p.brief, 10000)}
+>>>
+${refTexto?`\nLO APROBADO (estrategia, shots, prompts):\n<<<\n${refTexto}\n>>>\n`:''}
+RÚBRICA: fidelidad al brief y a los shots aprobados · continuidad de personaje, vestuario y entorno entre cuadros · encuadre y composición · luz y color · texto en pantalla · artefactos de IA (manos, ojos, texto roto, morphing entre cuadros).
+
+Responde SOLO con JSON: {"veredicto":"CUMPLE"|"PARCIAL"|"NO CUMPLE","puntaje":0-100,"descripcion":"qué se ve, 2-3 líneas","criterios":[{"criterio":"...","cumple":true|false|null,"evidencia":"..."}],"por_escena":[{"escena":"0.0s","nota":"..."}],"correcciones":["..."]}`;
+}
+
 function referenciaAprobada(p){
   const partes=[];
   for(const k of p.orden){ const e=p.etapas[k]; if(e&&e.output&&e.estado==='aprobada') partes.push(`## ${e.nombre}\n${e.output}`); }
   return corta(partes.join('\n\n'), 18000);
+}
+
+// ------------------------------------------------------------ servidor propio (Vercel)
+// Dentro de claude.ai la pagina usa las capacidades del visor. Servida desde
+// un dominio propio no hay visor: se habla con /api/sample, que corre en el
+// servidor con la API key del proyecto.
+let SRV=null;
+const claveLS='ejecutor.clave';
+async function detectarServidor(){
+  if(!/^https?:$/.test(location.protocol)) return null;
+  try{ const r=await fetch('/api/config',{cache:'no-store'}); if(!r.ok) return null; const j=await r.json(); return j&&j.servidor?j:null; }catch(e){ return null; }
+}
+function cabeceras(){ const h={'Content-Type':'application/json'}; const k=sessionStorage.getItem(claveLS); if(k) h['x-app-password']=k; return h; }
+function pedirClave(){ const k=prompt('Contraseña de la app:'); if(k) sessionStorage.setItem(claveLS,k); return k; }
+async function aBase64(blob){
+  const buf=await blob.arrayBuffer(); let bin=''; const b=new Uint8Array(buf);
+  for(let i=0;i<b.length;i+=0x8000) bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
+  return {media_type: blob.type||'image/jpeg', data: btoa(bin)};
+}
+function parseJSONsuelto(txt){
+  const t=(txt||'').trim();
+  try{ return JSON.parse(t); }catch(e){}
+  const f=/```(?:json)?\s*([\s\S]*?)```/.exec(t); if(f){ try{ return JSON.parse(f[1]); }catch(e){} }
+  const i=Math.min(...[t.indexOf('{'),t.indexOf('[')].filter(x=>x>=0)), j=Math.max(t.lastIndexOf('}'),t.lastIndexOf(']'));
+  if(isFinite(i)&&j>i){ try{ return JSON.parse(t.slice(i,j+1)); }catch(e){} }
+  throw {code:'invalid_json', message:'La respuesta no traía JSON.', text:txt};
+}
+function sampleDeServidor(){
+  const f = async (input, o={}) => {
+    const cuerpo = {input, modelTier:o.modelTier||'default'};
+    if(o.images && o.images.length) cuerpo.images = await Promise.all([...o.images].map(aBase64));
+    let r;
+    try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:JSON.stringify(cuerpo),signal:o.signal}); }
+    catch(e){ throw (o.signal&&o.signal.aborted) ? {code:'cancelled',message:'Detenido.'} : {code:'upstream_error', message:'No se pudo llegar al servidor.'}; }
+    if(r.status===401){ if(pedirClave()) throw {code:'upstream_error', message:'Contraseña guardada. Vuelve a intentar.'}; throw {code:'not_granted', message:'Se necesita la contraseña de la app.'}; }
+    if(!r.ok){ let j={}; try{ j=await r.json(); }catch(e){} throw {code:j.code||'upstream_error', message:j.message||('El servidor respondió '+r.status)}; }
+    const rd=r.body.getReader(), dec=new TextDecoder(); let buf='', texto='', trunc=false, err=null;
+    for(;;){
+      let chunk; try{ chunk=await rd.read(); }catch(e){ throw {code:'cancelled', message:'Detenido.', text:texto}; }
+      if(chunk.done) break;
+      buf+=dec.decode(chunk.value,{stream:true});
+      let k;
+      while((k=buf.indexOf('\n\n'))>=0){
+        const linea=buf.slice(0,k).replace(/^data:\s?/,''); buf=buf.slice(k+2);
+        if(!linea) continue;
+        let ev; try{ ev=JSON.parse(linea); }catch(e){ continue; }
+        if(ev.t==='text'){ texto+=ev.d; if(o.onText) o.onText({text:texto, delta:ev.d}); }
+        else if(ev.t==='done'){ trunc=!!ev.truncated; }
+        else if(ev.t==='error'){ err={code:ev.code, message:ev.message, text:texto||undefined}; }
+      }
+    }
+    if(err) throw err;
+    if(!texto.trim()) throw {code:'empty_completion', message:'El modelo no escribió nada.'};
+    return {text:texto, truncated:trunc};
+  };
+  f.json = async (input,o) => parseJSONsuelto((await f(input,o)).text);
+  f.limits = async () => ({maxPromptBytes:65536, images:{maxCount:8, maxInputBytes:20000000, mediaTypes:['image/jpeg','image/png','image/webp','image/gif']}});
+  return f;
 }
 
 // ------------------------------------------------------------ llamadas
@@ -542,7 +613,7 @@ async function aprobarAsi(key){ const p=P(); if(!confirm('El auditor no aprobó 
 function detener(){ if(ctl) ctl.abort(); }
 
 // ------------------------------------------------------------ evaluador
-let EV = {modo:'imagen', imgs:[], fuente:'url', url:'', gens:null, genSel:null, estado:'', res:null, escenas:null, analisisId:null, err:''};
+let EV = {modo:'imagen', imgs:[], fuente:'cuadros', url:'', gens:null, genSel:null, file:null, n:6, miniaturas:[], estado:'', res:null, escenas:null, analisisId:null, err:''};
 async function evaluarImagen(){
   const p=P(); if(!p||!sample||!EV.imgs.length) return;
   EV.estado='Evaluando…'; EV.res=null; EV.err=''; render();
@@ -560,6 +631,39 @@ async function cargarGeneraciones(){
   if(!mcp) return; EV.estado='Cargando tus generaciones de video…'; EV.err=''; render();
   try{ const r = await mcp.callTool('Higgsfield','show_generations',{type:'video', size:24}); const pl = r.payload||{}; EV.gens = (pl.items||[]).filter(g=>g.status==='completed' && g.results && g.results.rawUrl); }
   catch(e){ EV.err=mcpErr(e); }
+  EV.estado=''; render();
+}
+async function extraerCuadros(file, n){
+  const v=document.createElement('video'); v.muted=true; v.playsInline=true; v.preload='auto';
+  const url=URL.createObjectURL(file); v.src=url;
+  try{
+    await new Promise((res,rej)=>{ v.onloadedmetadata=()=>res(); v.onerror=()=>rej(new Error('el navegador no pudo leer este video')); });
+    const dur = isFinite(v.duration)&&v.duration>0 ? v.duration : 0;
+    const cuadros=[], tiempos=[];
+    for(let i=0;i<n;i++){
+      const t = dur ? dur*(i+0.5)/n : 0;
+      await new Promise((res,rej)=>{ v.onseeked=()=>res(); v.onerror=()=>rej(new Error('no se pudo avanzar el video')); v.currentTime=Math.min(t, Math.max(0,dur-0.05)); });
+      const w=Math.min(v.videoWidth||640, 1024), h=Math.round((v.videoHeight||360)*(w/(v.videoWidth||640)));
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(v,0,0,w,h);
+      const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
+      if(!blob) throw new Error('no se pudo capturar el cuadro');
+      cuadros.push(blob); tiempos.push(t);
+      if(!dur) break;
+    }
+    return {cuadros, tiempos};
+  } finally { URL.revokeObjectURL(url); }
+}
+async function evaluarCuadros(){
+  const p=P(); if(!p||!sample||!EV.file) return;
+  EV.res=null; EV.escenas=null; EV.err=''; EV.estado='Extrayendo cuadros…'; render();
+  try{
+    const {cuadros, tiempos} = await extraerCuadros(EV.file, Number(EV.n)||6);
+    EV.miniaturas = cuadros.map(b=>URL.createObjectURL(b));
+    EV.estado=`Evaluando ${cuadros.length} cuadros…`; render();
+    const r = await sample.json(promptEvalCuadros(p, referenciaAprobada(p), tiempos), opts(S.ajustes.tierGen, {images:cuadros}));
+    EV.res=r; p.evaluaciones=(p.evaluaciones||[]).slice(-20); p.evaluaciones.push({tipo:'video (cuadros)', fecha:nowIso(), veredicto:r.veredicto, puntaje:r.puntaje}); await guardar(p);
+  }catch(e){ EV.err = (e&&e.code)?errMsg(e):('No se pudo procesar el video: '+((e&&e.message)||e)); }
   EV.estado=''; render();
 }
 const esYouTube = u => /^https:\/\/((www\.|m\.)?youtube\.com\/|youtu\.be\/)/.test(u);
@@ -732,11 +836,11 @@ function vEval(m,p){
       <div class="row"><button class="prim" id="btnEvImg" ${!sample||!EV.imgs.length||EV.estado?'disabled':''}>Evaluar</button>${EV.estado?`<span class="status"><span class="spin"></span>${esc(EV.estado)}</span>`:''}</div>
     </div>`
   :`<div class="card">
-      ${mcp?'':'<div class="warnbox">El conector Higgsfield no está disponible en esta vista.</div>'}
-      <div class="seg"><button data-f="url" class="${EV.fuente==='url'?'act':''}">URL (YouTube o .mp4 de Higgsfield)</button><button data-f="gens" class="${EV.fuente==='gens'?'act':''}">Mis generaciones en Higgsfield</button></div>
-      ${EV.fuente==='url'?`<input type="url" id="evUrl" placeholder="https://youtu.be/… o https://….cloudfront.net/….mp4" value="${esc(EV.url)}">`
+      <div class="seg"><button data-f="cuadros" class="${EV.fuente==='cuadros'?'act':''}">Archivo de video</button>${mcp?`<button data-f="url" class="${EV.fuente==='url'?'act':''}">URL</button><button data-f="gens" class="${EV.fuente==='gens'?'act':''}">Higgsfield</button>`:''}</div>
+      ${EV.fuente==='cuadros'?`<div class="row"><input type="file" id="evVid" hidden accept="video/*"><button id="btnVidPick">Elegir video</button><span class="mute" style="font-size:12.5px">${EV.file?esc(EV.file.name):'mp4, mov o webm del disco'}</span><select id="evN" style="width:auto">${[4,6,8,12].map(n=>`<option ${EV.n==n?'selected':''}>${n}</option>`).join('')}</select><span class="mute" style="font-size:12.5px">cuadros</span></div>${EV.miniaturas.length?`<div class="thumbs">${EV.miniaturas.map(u=>`<img src="${u}" alt="">`).join('')}</div>`:''}<div class="row"><button class="prim" id="btnEvCuadros" ${!sample||!EV.file||EV.estado?'disabled':''}>Evaluar</button><span class="mute" style="font-size:12.5px">Sin audio ni movimiento continuo: se evalúan cuadros.</span></div>`
+      :EV.fuente==='url'?`<input type="url" id="evUrl" placeholder="https://youtu.be/… o https://….cloudfront.net/….mp4" value="${esc(EV.url)}">`
       :`<div class="row"><button class="sm" id="btnGens" ${!mcp||EV.estado?'disabled':''}>${EV.gens?'Recargar':'Cargar mis videos'}</button><span class="mute" style="font-size:12.5px">${EV.gens?`${EV.gens.length} videos completados`:''}</span></div>${EV.gens?`<div class="gens">${EV.gens.map(g=>`<button data-g="${g.id}" class="${EV.genSel&&EV.genSel.id===g.id?'act':''}"><img src="${esc(g.results.thumbnailUrl||'')}" alt=""><small>${esc((g.params&&g.params.prompt||g.model||g.id).slice(0,60))}</small></button>`).join('')}</div>`:''}`}
-      <div class="row"><button class="prim" id="btnEvVid" ${!sample||!mcp||EV.estado?'disabled':''}>Analizar y evaluar</button><span class="mute" style="font-size:12.5px">10 créditos de Higgsfield por análisis.</span></div>
+      ${EV.fuente!=='cuadros'?`<div class="row"><button class="prim" id="btnEvVid" ${!sample||!mcp||EV.estado?'disabled':''}>Analizar y evaluar</button><span class="mute" style="font-size:12.5px">10 créditos de Higgsfield por análisis.</span></div>`:''}
       ${EV.estado?`<div class="status"><span class="spin"></span>${esc(EV.estado)}</div>`:''}
     </div>`}
   ${EV.err?`<div class="badbox">${esc(EV.err)}</div>`:''}
@@ -748,6 +852,7 @@ function vEval(m,p){
   m.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ EV.fuente=b.dataset.f; render(); });
   m.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{ EV.genSel=EV.gens.find(g=>g.id===b.dataset.g); render(); });
   if($('#evImgs')){ const th=$('#evThumbs'); const pintar=()=>{ th.innerHTML=''; EV.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); }; pintar(); $('#btnEvPick').onclick=()=>$('#evImgs').click(); $('#evImgs').onchange=ev=>{ EV.imgs=[...ev.target.files]; render(); }; $('#btnEvImg').onclick=evaluarImagen; }
+  if($('#btnVidPick')){ $('#btnVidPick').onclick=()=>$('#evVid').click(); $('#evVid').onchange=ev=>{ EV.file=ev.target.files[0]||null; EV.miniaturas=[]; EV.res=null; render(); }; $('#evN').onchange=ev=>{ EV.n=Number(ev.target.value); }; $('#btnEvCuadros').onclick=evaluarCuadros; }
   if($('#evUrl')) $('#evUrl').oninput=ev=>{ EV.url=ev.target.value; };
   if($('#btnGens')) $('#btnGens').onclick=cargarGeneraciones;
   if($('#btnEvVid')) $('#btnEvVid').onclick=evaluarVideo;
@@ -764,14 +869,15 @@ function resultadoHTML(r){
   </div>`;
 }
 
+const ESF=[['complex','alto'],['default','medio'],['quick','bajo']];
 function vAjustes(m,p){
   const a=S.ajustes;
   m.innerHTML=`<div class="hd"><div><h2>Ajustes</h2></div></div>
   <div class="card"><div class="grid2">
     <div><div class="lbl">Rondas máximas de auditoría por etapa</div><select id="aR">${[1,2,3,4,5].map(n=>`<option ${a.rondas==n?'selected':''}>${n}</option>`).join('')}</select></div>
     <div></div>
-    <div><div class="lbl">Modelo para generar</div><select id="aG">${['complex','default','quick'].map(t=>`<option ${a.tierGen===t?'selected':''}>${t}</option>`).join('')}</select></div>
-    <div><div class="lbl">Modelo para auditar</div><select id="aA">${['complex','default','quick'].map(t=>`<option ${a.tierAud===t?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div><div class="lbl">Esfuerzo al generar</div><select id="aG">${ESF.map(([v,n])=>`<option value="${v}" ${a.tierGen===v?'selected':''}>${n}</option>`).join('')}</select></div>
+    <div><div class="lbl">Esfuerzo al auditar</div><select id="aA">${ESF.map(([v,n])=>`<option value="${v}" ${a.tierAud===v?'selected':''}>${n}</option>`).join('')}</select></div>
   </div>
     <div><div class="lbl">Base de reglas</div><div class="mute" style="font-size:13px">${D.meta.reglas} reglas de ${D.meta.skills} skills · ${D.meta.auditorias} correcciones de auditoría externa · casos: ${Object.keys(D.porCaso).map(c=>`${c} ${D.porCaso[c].length}`).join(' · ')}</div></div>
   </div>`;
@@ -785,11 +891,15 @@ function vAjustes(m,p){
   const cl=$('#capline');
   const use = n => (window.claude&&window.claude.use) ? window.claude.use(n).catch(()=>null) : Promise.resolve(null);
   [sample, db, mcp] = await Promise.all([use('sample'), use('db'), use('mcp')]);
+  if(!sample){
+    SRV = await detectarServidor();
+    if(SRV && SRV.claude){ if(SRV.clave && !sessionStorage.getItem(claveLS)) pedirClave(); sample = sampleDeServidor(); }
+  }
   if(sample){ try{ const l=await sample.limits(); caps.images=l.images||false; }catch(e){} }
   await cargarLista();
   if(S.proyectos.length && !S.pid){ S.pid=S.proyectos[0].id; S.view = P().orden.length?'run':'brief'; }
   if(!S.proyectos.length){ const p={id:uid(), nombre:'Sin título', brief:'', creado:nowIso(), plan:null, etapas:{}, orden:[], evaluaciones:[]}; S.proyectos.push(p); S.pid=p.id; S.view='brief'; }
-  const parts=[ sample?(caps.images?'Claude listo (texto e imágenes)':'Claude listo (solo texto)'):'Claude no disponible', db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'sin Higgsfield' ];
+  const parts=[ sample?(SRV?'Claude vía servidor propio':'Claude listo'):(SRV&&!SRV.claude?'Falta ANTHROPIC_API_KEY en el servidor':'Claude no disponible'), db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'video por cuadros' ];
   cl.textContent = parts.join(' · ');
   render();
 })();
@@ -797,10 +907,32 @@ function vAjustes(m,p){
 """
 
 
+ENVOLTURA = """<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{color-scheme:light dark}
+html,body{margin:0}
+body{font:14px/1.5 system-ui,sans-serif;background:#F2F4F7}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+__CUERPO__
+</body>
+</html>
+"""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default="rules.sqlite")
     ap.add_argument("--out", default="app/ejecutor.html")
+    ap.add_argument("--public", default="public/index.html",
+                    help="copia servible desde Vercel; '' para no generarla")
     a = ap.parse_args()
 
     con = sqlite3.connect(a.db)
@@ -824,10 +956,19 @@ def main() -> int:
                  "auditorias": con.execute("SELECT COUNT(*) FROM auditorias").fetchone()[0]},
     }
     blob = json.dumps(datos, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    cuerpo = PLANTILLA.replace("__DATOS__", blob)
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(PLANTILLA.replace("__DATOS__", blob), encoding="utf-8")
+    out.write_text(cuerpo, encoding="utf-8")
     print(f"{out}: {out.stat().st_size / 1024:.0f} KB · {len(idx)} reglas en {len(por_caso)} casos")
+
+    # La misma pagina, servida desde un dominio propio. El visor de artifacts
+    # envuelve el HTML y aplica un reset minimo; aqui hay que escribirlo.
+    if a.public:
+        pub = Path(a.public)
+        pub.parent.mkdir(parents=True, exist_ok=True)
+        pub.write_text(ENVOLTURA.replace("__CUERPO__", cuerpo), encoding="utf-8")
+        print(f"{pub}: {pub.stat().st_size / 1024:.0f} KB")
     for c, ids in sorted(por_caso.items(), key=lambda kv: -len(kv[1])):
         print(f"  {c:8} {len(ids):>4}")
     return 0
