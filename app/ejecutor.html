@@ -342,7 +342,7 @@ function errMsg(e){
   const m = {not_granted:'No autorizaste el uso de Claude en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista no puede enviar imágenes.', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'Claude no está disponible en esta cuenta.'};
   return m[e&&e.code] || ((e&&e.message)||'Error inesperado.');
 }
-let ctl=null;
+let ctl=null; const VOZ={rec:null};
 function opts(tier, extra){ ctl = new AbortController(); return Object.assign({modelTier:tier, cache:false, signal:ctl.signal}, extra||{}); }
 
 async function planificar(){
@@ -350,7 +350,7 @@ async function planificar(){
   S.busy='Planificando etapas…'; render();
   try{
     const o = opts(S.ajustes.tierGen);
-    if(S.imgs.length && caps.images) o.images = S.imgs.slice(0, caps.images.maxCount||S.imgs.length);
+    if(S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
     const plan = await sample.json(promptPlan(p), o);
     if(!plan||!Array.isArray(plan.etapas)||!plan.etapas.length) throw {code:'invalid_json', message:'sin etapas'};
     p.plan = plan; if(plan.nombre) p.nombre = plan.nombre;
@@ -378,7 +378,7 @@ async function ejecutarEtapa(key){
     let out;
     try{
       const o = opts(S.ajustes.tierGen, {onText:({text})=>{ e.parcial=text; const el=$(`#parcial-${key}`); if(el) el.textContent=text; }});
-      if(e.usaImagenes && S.imgs.length && caps.images) o.images = S.imgs.slice(0, caps.images.maxCount||S.imgs.length);
+      if(e.usaImagenes && S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
       const r = await sample(pr.texto, o); out = r.text; if(r.truncated) out += '\n\n[SALIDA TRUNCADA por el límite del modelo]';
     }catch(err){ e.estado = e.output?'rechazada':'pendiente'; e.error=errMsg(err); e.parcial=''; render(); await guardar(p); return; }
     e.parcial='';
@@ -429,7 +429,7 @@ async function evaluarImagen(){
   const p=P(); if(!p||!sample||!EV.imgs.length) return;
   EV.estado='Evaluando…'; EV.res=null; EV.err=''; render();
   try{
-    const r = await sample.json(promptEvalImagen(p, referenciaAprobada(p), EV.imgs.length), opts(S.ajustes.tierGen, {images:EV.imgs.slice(0, caps.images?caps.images.maxCount:1)}));
+    const r = await sample.json(promptEvalImagen(p, referenciaAprobada(p), EV.imgs.length), opts(S.ajustes.tierGen, {images:EV.imgs.slice(0, (caps.images&&caps.images.maxCount)||EV.imgs.length)}));
     EV.res=r; p.evaluaciones=(p.evaluaciones||[]).slice(-20); p.evaluaciones.push({tipo:'imagen', fecha:nowIso(), n:EV.imgs.length, veredicto:r.veredicto, puntaje:r.puntaje}); await guardar(p);
   }catch(e){ EV.err=errMsg(e); }
   EV.estado=''; render();
@@ -510,16 +510,19 @@ function render(){
   $('#nRun').textContent = p&&p.orden.length ? `${p.orden.filter(k=>p.etapas[k].estado==='aprobada').length}/${p.orden.length}` : '';
   $('#btnNuevo').onclick = nuevoProyecto;
   const m=$('#main');
-  if(!p){ m.innerHTML = `<div class="hd"><div><h2>Sube un brief</h2><p class="sub">De una línea o de cinco páginas. La app decide las etapas, dirige al modelo, audita lo que entrega y lo rechaza hasta que cumpla.</p></div></div><div class="empty">Empieza con <b>Nuevo brief</b>.</div>`; return; }
+  if(!p){ m.innerHTML = `<div class="hd"><div><h2>Brief</h2></div></div><div class="empty">Sin proyectos. Usa <b>Nuevo brief</b>.</div>`; return; }
   ({brief:vBrief, plan:vPlan, run:vRun, eval:vEval, ajustes:vAjustes})[S.view](m,p);
 }
 
 function vBrief(m,p){
-  m.innerHTML = `<div class="hd"><div><h2>Brief</h2><p class="sub">Texto libre: un spot de 60s con 5 páginas de contexto, una estrategia, una referencia para recrear o una sola línea.</p></div></div>
+  m.innerHTML = `<div class="hd"><div><h2>Brief</h2></div></div>
   <div class="card">
-    <div><div class="lbl">Nombre del proyecto</div><input type="text" id="nombre" value="${esc(p.nombre)}" placeholder="Se completa solo al planificar"></div>
-    <div><div class="lbl">Brief</div><textarea id="brief" style="min-height:260px" placeholder="Ej.: una imagen de un hombre haciendo wakeboarding en Los Cabos al mediodía">${esc(p.brief)}</textarea><div class="mute" style="font-size:12px;margin-top:4px" id="briefN"></div></div>
-    <div><div class="lbl">Referencias (imágenes)</div><div class="row"><input type="file" id="imgs" accept="${caps.images?caps.images.mediaTypes.join(','):'image/*'}" multiple ${caps.images?'':'disabled'}><span class="mute" style="font-size:12px">${caps.images?`Hasta ${caps.images.maxCount} por llamada. Se quedan en esta pestaña; al recargar hay que volver a adjuntarlas.`:'Esta vista no puede enviar imágenes al modelo.'}</span></div><div class="thumbs" id="thumbs"></div></div>
+    <div><div class="lbl">Nombre del proyecto</div><input type="text" id="nombre" value="${esc(p.nombre)}"></div>
+    <div><div class="row" style="justify-content:space-between"><div class="lbl">Brief</div><div class="row"><button class="sm" id="btnVoz">Dictar</button><span class="mute" style="font-size:12px" id="vozN"></span></div></div><textarea id="brief" style="min-height:260px">${esc(p.brief)}</textarea><div class="mute" style="font-size:12px;margin-top:4px" id="briefN"></div></div>
+    <div class="grid2">
+      <div><div class="lbl">Documentos</div><div class="row"><input type="file" id="docs" hidden accept=".txt,.md,.pdf,.docx,text/plain,text/markdown,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple><button id="btnDocs">Subir txt, md, pdf o docx</button><span class="mute" style="font-size:12px" id="docsN">El texto se agrega al brief.</span></div></div>
+      <div><div class="lbl">Imágenes de referencia</div><div class="row"><input type="file" id="imgs" hidden accept="image/*" multiple><button id="btnImgs">Subir imágenes</button><span class="mute" style="font-size:12px" id="imgsN">${S.imgs.length?`${S.imgs.length} adjunta(s). Se pierden al recargar.`:''}</span></div><div class="thumbs" id="thumbs"></div></div>
+    </div>
     <div class="row"><button class="prim" id="btnPlan" ${!sample||S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span>${S.busy}</span>`:''}</div>
   </div>`;
   const ta=$('#brief'), nm=$('#nombre'), cnt=$('#briefN');
@@ -529,8 +532,28 @@ function vBrief(m,p){
   nm.onchange=()=>{ p.nombre=nm.value||'Sin título'; guardar(p); render(); };
   const th=$('#thumbs'); const pintar=()=>{ th.innerHTML=''; S.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); };
   pintar();
-  $('#imgs').onchange=ev=>{ S.imgs=[...ev.target.files]; pintar(); };
+  $('#btnImgs').onclick=()=>$('#imgs').click(); $('#btnDocs').onclick=()=>$('#docs').click();
+  const bv=$('#btnVoz'), vn=$('#vozN'); const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ bv.disabled=true; vn.textContent='Este navegador no tiene reconocimiento de voz.'; }
+  else bv.onclick=()=>{ if(VOZ.rec){ VOZ.rec.stop(); return; } const r=new SR(); VOZ.rec=r; r.lang='es-MX'; r.continuous=true; r.interimResults=true; let base=ta.value, fin='';
+    r.onstart=()=>{ bv.textContent='Detener'; bv.classList.add('prim'); vn.textContent='Escuchando…'; };
+    r.onresult=ev=>{ let inter=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ const t=ev.results[i][0].transcript; if(ev.results[i].isFinal) fin+=t+' '; else inter+=t; } ta.value=(base.trim()?base.replace(/\s+$/,'')+' ':'')+fin+inter; p.brief=ta.value; upd(); };
+    r.onerror=ev=>{ vn.textContent = ev.error==='not-allowed'||ev.error==='service-not-allowed' ? 'Micrófono bloqueado: permite el micrófono en el navegador o dicta con el teclado del sistema.' : 'Error de voz: '+ev.error; };
+    r.onend=()=>{ VOZ.rec=null; bv.textContent='Dictar'; bv.classList.remove('prim'); if(vn.textContent==='Escuchando…') vn.textContent=''; guardar(p); };
+    try{ r.start(); }catch(e){ vn.textContent='No se pudo iniciar el dictado.'; VOZ.rec=null; } };
+  $('#imgs').onchange=ev=>{ S.imgs=[...S.imgs, ...ev.target.files]; ev.target.value=''; pintar(); $('#imgsN').textContent=`${S.imgs.length} adjunta(s). Se pierden al recargar.`; };
+  $('#docs').onchange=async ev=>{ const files=[...ev.target.files]; const dn=$('#docsN'); for(const f of files){ dn.textContent=`Leyendo ${f.name}…`; try{ const t=(await textoDe(f)).trim(); if(!t) throw new Error('sin texto legible'); ta.value = (ta.value.trim()? ta.value.replace(/\s+$/,'')+'\n\n':'') + `--- ${f.name} ---\n${t}`; p.brief=ta.value; upd(); dn.textContent=`${f.name}: ${t.length.toLocaleString('es-MX')} caracteres agregados.`; }catch(e){ dn.textContent=`${f.name}: no se pudo leer (${e.message||e}).`; } } ev.target.value=''; await guardar(p); };
   $('#btnPlan').onclick=()=>{ p.brief=ta.value; planificar(); };
+}
+
+// ------------------------------------------------------------ documentos
+const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', PDFW='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js', MAMMOTH='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js';
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('no se pudo cargar la librería')); document.head.appendChild(s); }); }
+async function textoDe(f){
+  const n=f.name.toLowerCase();
+  if(n.endsWith('.pdf')){ await loadScript(PDFJS); pdfjsLib.GlobalWorkerOptions.workerSrc=PDFW; const doc=await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise; const out=[]; for(let i=1;i<=doc.numPages;i++){ const tc=await (await doc.getPage(i)).getTextContent(); out.push(tc.items.map(it=>it.str+(it.hasEOL?'\n':' ')).join('').replace(/[ \t]+\n/g,'\n')); } return out.join('\n\n'); }
+  if(n.endsWith('.docx')){ await loadScript(MAMMOTH); return (await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value; }
+  return await f.text();
 }
 
 function vPlan(m,p){
@@ -540,7 +563,7 @@ function vPlan(m,p){
     <div class="row"><button class="prim" id="btnRun" ${corriendo?'disabled':''}>${p.orden.some(k=>p.etapas[k].estado!=='pendiente')?'Ir a la ejecución':'Aprobar plan y ejecutar'}</button></div></div>
   <div class="stack">
     <div class="card"><p>${esc(pl.resumen||'')}</p>${(pl.supuestos||[]).length?`<div><div class="lbl">Supuestos que tomó el planificador</div><ul class="crit">${pl.supuestos.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}</div>
-    <div class="card"><div class="row" style="justify-content:space-between"><h3>Etapas (${p.orden.length})</h3><span class="mute" style="font-size:12.5px">Quita las que no quieras. Los criterios son lo que el auditor va a exigir.</span></div>
+    <div class="card"><h3>Etapas (${p.orden.length})</h3>
     <div>${p.orden.map((k,i)=>{ const e=p.etapas[k]; const n=reglasDe(e.casos).length; return `<div class="plan-et"><div class="k">${i+1} · ${esc(e.clave)}</div><div><b>${esc(e.nombre)}</b>${e.ok?' <span class="pill warn">pide tu OK</span>':''}<div class="mute" style="margin:2px 0 4px">${esc(e.objetivo)}</div><div style="font-size:13px"><span class="lbl">Entrega</span> ${esc(e.entregable)}</div><ol class="crit" style="margin-top:4px">${(e.criterios||[]).map(c=>`<li>${esc(c)}</li>`).join('')}</ol><div class="meta" style="margin-top:6px"><span class="pill">${n} reglas</span>${(e.casos||[]).map(c=>`<span class="pill">${c}</span>`).join('')}${e.usaImagenes?'<span class="pill info">ve las imágenes</span>':''}</div></div><div><button class="sm" data-quitar="${k}" ${corriendo?'disabled':''}>Quitar</button></div></div>`; }).join('')}</div>
     <div class="row"><select id="addEt" style="width:auto"><option value="">Agregar etapa…</option>${ETAPAS.map(e=>`<option value="${e.clave}">${e.clave} · ${esc(e.nombre)}</option>`).join('')}</select></div></div>
   </div>`;
@@ -583,19 +606,19 @@ function etapaHTML(e,i){
 
 function vEval(m,p){
   const ref = p.orden.filter(k=>p.etapas[k].estado==='aprobada').length;
-  m.innerHTML = `<div class="hd"><div><h2>Evaluador</h2><p class="sub">Compara una imagen o un video generado contra el brief${ref?` y las ${ref} etapas aprobadas`:''} de <b>${esc(p.nombre)}</b>.</p></div>
+  m.innerHTML = `<div class="hd"><div><h2>Evaluador</h2><p class="sub">Referencia: brief${ref?` + ${ref} etapas aprobadas`:''} de <b>${esc(p.nombre)}</b></p></div>
     <div class="seg"><button data-m="imagen" class="${EV.modo==='imagen'?'act':''}">Imagen</button><button data-m="video" class="${EV.modo==='video'?'act':''}">Video</button></div></div>
   <div class="stack">
   ${EV.modo==='imagen'?`<div class="card">
-      <div><div class="lbl">Imágenes generadas</div><input type="file" id="evImgs" accept="${caps.images?caps.images.mediaTypes.join(','):'image/*'}" multiple ${caps.images?'':'disabled'}>${caps.images?'':'<div class="warnbox" style="margin-top:6px">Esta vista no puede enviar imágenes al modelo.</div>'}<div class="thumbs" id="evThumbs"></div></div>
-      <div class="row"><button class="prim" id="btnEvImg" ${!sample||!caps.images||EV.estado?'disabled':''}>Evaluar</button>${EV.estado?`<span class="status"><span class="spin"></span>${esc(EV.estado)}</span>`:''}</div>
+      <div><div class="lbl">Imágenes generadas</div><div class="row"><input type="file" id="evImgs" hidden accept="image/*" multiple><button id="btnEvPick">Subir imágenes</button><span class="mute" style="font-size:12px">${EV.imgs.length?`${EV.imgs.length} adjunta(s)`:''}</span></div><div class="thumbs" id="evThumbs"></div></div>
+      <div class="row"><button class="prim" id="btnEvImg" ${!sample||!EV.imgs.length||EV.estado?'disabled':''}>Evaluar</button>${EV.estado?`<span class="status"><span class="spin"></span>${esc(EV.estado)}</span>`:''}</div>
     </div>`
   :`<div class="card">
-      ${mcp?'':'<div class="warnbox">El conector Higgsfield no está disponible en esta vista. El evaluador de video usa su análisis escena por escena.</div>'}
+      ${mcp?'':'<div class="warnbox">El conector Higgsfield no está disponible en esta vista.</div>'}
       <div class="seg"><button data-f="url" class="${EV.fuente==='url'?'act':''}">URL (YouTube o .mp4 de Higgsfield)</button><button data-f="gens" class="${EV.fuente==='gens'?'act':''}">Mis generaciones en Higgsfield</button></div>
       ${EV.fuente==='url'?`<input type="url" id="evUrl" placeholder="https://youtu.be/… o https://….cloudfront.net/….mp4" value="${esc(EV.url)}">`
       :`<div class="row"><button class="sm" id="btnGens" ${!mcp||EV.estado?'disabled':''}>${EV.gens?'Recargar':'Cargar mis videos'}</button><span class="mute" style="font-size:12.5px">${EV.gens?`${EV.gens.length} videos completados`:''}</span></div>${EV.gens?`<div class="gens">${EV.gens.map(g=>`<button data-g="${g.id}" class="${EV.genSel&&EV.genSel.id===g.id?'act':''}"><img src="${esc(g.results.thumbnailUrl||'')}" alt=""><small>${esc((g.params&&g.params.prompt||g.model||g.id).slice(0,60))}</small></button>`).join('')}</div>`:''}`}
-      <div class="row"><button class="prim" id="btnEvVid" ${!sample||!mcp||EV.estado?'disabled':''}>Analizar y evaluar</button><span class="mute" style="font-size:12.5px">Un análisis cuesta 10 créditos de Higgsfield y tarda de 20 segundos a 5 minutos. Los clips cortos dan el resultado más fiable.</span></div>
+      <div class="row"><button class="prim" id="btnEvVid" ${!sample||!mcp||EV.estado?'disabled':''}>Analizar y evaluar</button><span class="mute" style="font-size:12.5px">10 créditos de Higgsfield por análisis.</span></div>
       ${EV.estado?`<div class="status"><span class="spin"></span>${esc(EV.estado)}</div>`:''}
     </div>`}
   ${EV.err?`<div class="badbox">${esc(EV.err)}</div>`:''}
@@ -606,7 +629,7 @@ function vEval(m,p){
   m.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{ EV.modo=b.dataset.m; EV.res=null; EV.escenas=null; EV.err=''; render(); });
   m.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ EV.fuente=b.dataset.f; render(); });
   m.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{ EV.genSel=EV.gens.find(g=>g.id===b.dataset.g); render(); });
-  if($('#evImgs')){ const th=$('#evThumbs'); const pintar=()=>{ th.innerHTML=''; EV.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); }; pintar(); $('#evImgs').onchange=ev=>{ EV.imgs=[...ev.target.files]; pintar(); }; $('#btnEvImg').onclick=evaluarImagen; }
+  if($('#evImgs')){ const th=$('#evThumbs'); const pintar=()=>{ th.innerHTML=''; EV.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); }; pintar(); $('#btnEvPick').onclick=()=>$('#evImgs').click(); $('#evImgs').onchange=ev=>{ EV.imgs=[...ev.target.files]; render(); }; $('#btnEvImg').onclick=evaluarImagen; }
   if($('#evUrl')) $('#evUrl').oninput=ev=>{ EV.url=ev.target.value; };
   if($('#btnGens')) $('#btnGens').onclick=cargarGeneraciones;
   if($('#btnEvVid')) $('#btnEvVid').onclick=evaluarVideo;
@@ -625,15 +648,14 @@ function resultadoHTML(r){
 
 function vAjustes(m,p){
   const a=S.ajustes;
-  m.innerHTML=`<div class="hd"><div><h2>Ajustes</h2><p class="sub">Se guardan en este navegador.</p></div></div>
+  m.innerHTML=`<div class="hd"><div><h2>Ajustes</h2></div></div>
   <div class="card"><div class="grid2">
-    <div><div class="lbl">Rondas máximas de auditoría por etapa</div><select id="aR">${[1,2,3,4,5].map(n=>`<option ${a.rondas==n?'selected':''}>${n}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">El skill fija 2 rondas para anchors y "a la tercera se replantea el shot".</div></div>
+    <div><div class="lbl">Rondas máximas de auditoría por etapa</div><select id="aR">${[1,2,3,4,5].map(n=>`<option ${a.rondas==n?'selected':''}>${n}</option>`).join('')}</select></div>
     <div></div>
-    <div><div class="lbl">Modelo para generar</div><select id="aG">${['complex','default','quick'].map(t=>`<option ${a.tierGen===t?'selected':''}>${t}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">complex piensa más y tarda más. Es el que maximiza calidad.</div></div>
-    <div><div class="lbl">Modelo para auditar</div><select id="aA">${['complex','default','quick'].map(t=>`<option ${a.tierAud===t?'selected':''}>${t}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">Cada ronda audita todas las reglas del caso en tandas; una etapa CLIP son 3 llamadas de auditoría.</div></div>
+    <div><div class="lbl">Modelo para generar</div><select id="aG">${['complex','default','quick'].map(t=>`<option ${a.tierGen===t?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div><div class="lbl">Modelo para auditar</div><select id="aA">${['complex','default','quick'].map(t=>`<option ${a.tierAud===t?'selected':''}>${t}</option>`).join('')}</select></div>
   </div>
-  <div class="infobox">Cada llamada se cobra a la cuenta de Claude de quien usa la página. Una etapa típica: 1 llamada de generación + 1 a 3 de auditoría por ronda.</div>
-  <div><div class="lbl">Base de reglas</div><div class="mute" style="font-size:13px">${D.meta.reglas} reglas de ${D.meta.skills} skills · ${D.meta.auditorias} correcciones de auditoría externa · casos: ${Object.keys(D.porCaso).map(c=>`${c} ${D.porCaso[c].length}`).join(' · ')}</div></div>
+    <div><div class="lbl">Base de reglas</div><div class="mute" style="font-size:13px">${D.meta.reglas} reglas de ${D.meta.skills} skills · ${D.meta.auditorias} correcciones de auditoría externa · casos: ${Object.keys(D.porCaso).map(c=>`${c} ${D.porCaso[c].length}`).join(' · ')}</div></div>
   </div>`;
   const save=()=>{ a.rondas=Number($('#aR').value); a.tierGen=$('#aG').value; a.tierAud=$('#aA').value; try{ localStorage.setItem(ajustesLS, JSON.stringify(a)); }catch(e){} };
   ['#aR','#aG','#aA'].forEach(s=>$(s).onchange=save);
@@ -648,7 +670,8 @@ function vAjustes(m,p){
   if(sample){ try{ const l=await sample.limits(); caps.images=l.images||false; }catch(e){} }
   await cargarLista();
   if(S.proyectos.length && !S.pid){ S.pid=S.proyectos[0].id; S.view = P().orden.length?'run':'brief'; }
-  const parts=[ sample?'Claude listo':'Claude no disponible', db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'sin Higgsfield' ];
+  if(!S.proyectos.length){ const p={id:uid(), nombre:'Sin título', brief:'', creado:nowIso(), plan:null, etapas:{}, orden:[], evaluaciones:[]}; S.proyectos.push(p); S.pid=p.id; S.view='brief'; }
+  const parts=[ sample?(caps.images?'Claude listo (texto e imágenes)':'Claude listo (solo texto)'):'Claude no disponible', db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'sin Higgsfield' ];
   cl.textContent = parts.join(' · ');
   render();
 })();
