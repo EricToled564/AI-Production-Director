@@ -247,6 +247,7 @@ REGLAS DE PLANIFICACIÓN:
 - Un brief de video completo (spot, campaña, reel con narrativa, brand film) → etapas E0–E7 según el track. E0 solo si hay marca o cliente. E5 lleva solo los casos de imagen que el proyecto necesita.
 - Un brief que pide estrategia o plan de algo que no es una pieza visual → ESTRATEGIA, y DOC por cada entregable adicional que pida.
 - Cada etapa lleva: objetivo específico para ESTE brief (no genérico), el entregable exacto, y de 3 a 6 criterios de aceptación verificables, escritos para que un auditor pueda marcarlos cumplido / no cumplido con evidencia textual.
+- "formato" es el formato de entrega de la pieza y manda sobre todos los prompts. Dedúcelo del brief: 9:16 para TikTok, Reels y Shorts; 16:9 para YouTube y spot apaisado; 1:1 para post de feed; 4:5 para feed vertical de Instagram. Si el brief no lo dice, elige el que corresponde al medio que menciona y anótalo en "supuestos". "duracion" solo para video.
 - "usaImagenes": true solo en etapas que necesitan ver las imágenes adjuntas.
 - Si el brief es ambiguo, no preguntes: decide y anota el supuesto en "supuestos".
 - Responde en español.
@@ -257,7 +258,29 @@ ${corta(p.brief, 30000)}
 >>>
 
 Responde SOLO con JSON con esta forma exacta:
-{"nombre":"título corto del proyecto","tipo":"qué se va a producir","track":"EXPRESS|STANDARD|FILM|null","resumen":"2 líneas","supuestos":["..."],"etapas":[{"clave":"E5","nombre":"nombre para este proyecto","objetivo":"...","entregable":"...","casos":["T3"],"criterios":["..."],"usaImagenes":false}]}`;
+{"nombre":"título corto del proyecto","tipo":"qué se va a producir","track":"EXPRESS|STANDARD|FILM|null","resumen":"2 líneas","formato":{"aspect":"9:16","resolucion":"1080x1920","duracion":"30s o null"},"supuestos":["..."],"etapas":[{"clave":"E5","nombre":"nombre para este proyecto","objetivo":"...","entregable":"...","casos":["T3"],"criterios":["..."],"usaImagenes":false}]}`;
+}
+
+const PARAMS = `
+PARÁMETROS DE GENERACIÓN — obligatorios junto a CADA prompt de imagen o video.
+Un prompt sin aspect ratio está incompleto y se rechaza. Debajo de cada bloque
+de código va una línea rotulada "Parámetros de generación:" con modelo, aspect
+ratio, resolución o tamaño en píxeles, y duración si es video.
+Dónde se escribe cada parámetro depende del modelo, y equivocarse es un error:
+- Midjourney los lee DENTRO del prompt, como \`--ar 9:16\`.
+- Nano Banana ignora \`--ar\` dentro del prompt: espera el parámetro \`aspectRatio\`.
+- Seedream ignora \`--ar\`: aspect_ratio va como parámetro.
+- GPT Image ignora \`--ar\` y las banderas de peso: el tamaño va como parámetro
+  (1024x1024, 1536x1024 apaisado, 1024x1536 vertical).
+- Seedance 2.5: duración, aspect ratio y resolución se fijan en la página de
+  generación o por API y NO van en el texto del prompt.
+Cuando el parámetro no va dentro del prompt, se entrega igual en esa línea
+aparte, diciendo que se fija en la página de generación.`;
+
+function fmtTexto(p){
+  const f = (p.plan&&p.plan.formato)||null;
+  if(!f || !f.aspect) return 'sin definir — dedúcelo del brief y dilo explícitamente';
+  return [f.aspect, f.resolucion, f.duracion].filter(Boolean).join(' · ');
 }
 
 function contextoAprobado(p, hastaKey, limite){
@@ -280,12 +303,14 @@ ${corta(p.brief, 20000)}
 
 OBJETIVO DE ESTA ETAPA: ${e.objetivo}
 ENTREGABLE EXACTO: ${e.entregable}
+FORMATO DE ENTREGA DEL PROYECTO: ${fmtTexto(p)}
 QUÉ SALE SEGÚN EL SKILL: ${cat.sale||''}
 GATE DE LA ETAPA: ${cat.gate||''}
 CRITERIOS DE ACEPTACIÓN:
 ${(e.criterios||[]).map((c,i)=>`${i+1}. ${c}`).join('\n')}
 ${feedback?`\nINSTRUCCIONES DEL DIRECTOR PARA ESTA ITERACIÓN (obligatorias):\n${feedback}\n`:''}${correcciones&&correcciones.length?`\nCORRECCIONES OBLIGATORIAS — el auditor rechazó la versión anterior por esto; cada punto debe quedar resuelto:\n${correcciones.map(f=>`- [${f.ref}] ${f.correccion}${f.evidencia?' (evidencia: '+f.evidencia+')':''}`).join('\n')}\n`:''}
 FORMATO DE SALIDA: Markdown en español. Los prompts finales para modelos de imagen o video van en inglés, cada uno dentro de un bloque de código, precedido de su cabecera de 3 líneas SKILL: / RIESGOS: / TÉCNICA: y del modelo recomendado. Sin disculpas, sin preámbulos, sin resumen final: solo el entregable completo.
+${PARAMS}
 `;
   const ctx = contextoAprobado(p, e.key, 14000);
   const ctxTxt = ctx ? `\nCONTEXTO APROBADO DE ETAPAS ANTERIORES (es la fuente de verdad; no lo contradigas):\n${ctx}\n` : '';
@@ -306,6 +331,15 @@ ENTREGABLE ESPERADO: ${e.entregable}
 GATE: ${(CAT[e.clave]||{}).gate||''}
 CRITERIOS:
 ${(e.criterios||[]).map((c,k)=>`${k+1}. ${c}`).join('\n')}
+
+CHEQUEO OBLIGATORIO, ADEMÁS DE LOS CRITERIOS: si el entregable contiene uno o más
+prompts de imagen o video, cada uno debe traer su línea de "Parámetros de
+generación" con modelo, aspect ratio, resolución o tamaño, y duración si es
+video, coherentes con el formato de entrega del proyecto (${fmtTexto(p)}).
+Un prompt sin aspect ratio es una falla con ref "FORMATO". Además es falla usar
+\`--ar\` con Nano Banana, Seedream o GPT Image, que lo ignoran, o meter duración,
+aspect ratio o resolución dentro del texto del prompt en Seedance 2.5, donde se
+fijan en la página de generación.
 
 REGLAS (tanda ${i} de ${n}):
 ${tanda||'(esta etapa no tiene reglas de skill; audita solo los criterios)'}
@@ -759,12 +793,19 @@ function vPlan(m,p){
   m.innerHTML = `<div class="hd"><div><h2>${esc(p.nombre)}</h2><p class="sub">${esc(pl.tipo||'')}${pl.track?` · track ${esc(pl.track)}`:''}</p></div>
     <div class="row"><button class="prim" id="btnRun" ${corriendo?'disabled':''}>${p.orden.some(k=>p.etapas[k].estado!=='pendiente')?'Ir a la ejecución':'Aprobar plan y ejecutar'}</button></div></div>
   <div class="stack">
-    <div class="card"><p>${esc(pl.resumen||'')}</p>${(pl.supuestos||[]).length?`<div><div class="lbl">Supuestos que tomó el planificador</div><ul class="crit">${pl.supuestos.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}</div>
+    <div class="card"><p>${esc(pl.resumen||'')}</p>
+      <div class="row"><div><div class="lbl">Aspect ratio</div><input type="text" id="fAspect" style="width:110px" value="${esc((pl.formato||{}).aspect||'')}"></div>
+        <div><div class="lbl">Resolución</div><input type="text" id="fRes" style="width:150px" value="${esc((pl.formato||{}).resolucion||'')}"></div>
+        <div><div class="lbl">Duración</div><input type="text" id="fDur" style="width:110px" value="${esc((pl.formato||{}).duracion||'')}"></div>
+        <span class="mute" style="font-size:12.5px;align-self:flex-end">Manda sobre todos los prompts. Corrígelo aquí antes de ejecutar.</span></div>
+      ${(pl.supuestos||[]).length?`<div><div class="lbl">Supuestos que tomó el planificador</div><ul class="crit">${pl.supuestos.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}</div>
     <div class="card"><h3>Etapas (${p.orden.length})</h3>
     <div>${p.orden.map((k,i)=>{ const e=p.etapas[k]; const n=reglasDe(e.casos).length; return `<div class="plan-et"><div class="k">${i+1} · ${esc(e.clave)}</div><div><b>${esc(e.nombre)}</b>${e.ok?' <span class="pill warn">pide tu OK</span>':''}<div class="mute" style="margin:2px 0 4px">${esc(e.objetivo)}</div><div style="font-size:13px"><span class="lbl">Entrega</span> ${esc(e.entregable)}</div><ol class="crit" style="margin-top:4px">${(e.criterios||[]).map(c=>`<li>${esc(c)}</li>`).join('')}</ol><div class="meta" style="margin-top:6px"><span class="pill">${n} reglas</span>${(e.casos||[]).map(c=>`<span class="pill">${c}</span>`).join('')}${e.usaImagenes?'<span class="pill info">ve las imágenes</span>':''}</div></div><div><button class="sm" data-quitar="${k}" ${corriendo?'disabled':''}>Quitar</button></div></div>`; }).join('')}</div>
     <div class="row"><select id="addEt" style="width:auto"><option value="">Agregar etapa…</option>${ETAPAS.map(e=>`<option value="${e.clave}">${e.clave} · ${esc(e.nombre)}</option>`).join('')}</select></div></div>
   </div>`;
   $('#btnRun').onclick=iniciar;
+  const guardaFmt=()=>{ pl.formato={aspect:$('#fAspect').value.trim(), resolucion:$('#fRes').value.trim(), duracion:$('#fDur').value.trim()}; guardar(p); };
+  ['#fAspect','#fRes','#fDur'].forEach(sel=>$(sel).onchange=guardaFmt);
   m.querySelectorAll('[data-quitar]').forEach(b=>b.onclick=async()=>{ const k=b.dataset.quitar; p.orden=p.orden.filter(x=>x!==k); delete p.etapas[k]; await guardar(p); render(); });
   $('#addEt').onchange=async ev=>{ const c=ev.target.value; if(!c) return; const cat=CAT[c]; const key=`${c}_${uid()}`; p.orden.push(key); p.etapas[key]={key, clave:c, nombre:cat.nombre, objetivo:cat.sale, entregable:cat.sale, casos:cat.casos.slice(0, c==='E5'||c==='PROMPT_IMAGEN'?1:99), criterios:[cat.gate], usaImagenes:c==='REF', ok:cat.ok, estado:'pendiente', output:'', rondas:[], feedback:''}; await guardar(p); render(); };
 }
