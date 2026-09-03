@@ -20,6 +20,15 @@ from pathlib import Path
 
 # Etapas 0-7, verbatim de ai-production-director/SKILL.md §3.
 # 'ok' marca las que exigen OK explicito del usuario en STANDARD/FILM (§4).
+CHECKS = {0: ['brand-lock.md tiene las 9 secciones', 'cada valor trae su fuente y su nivel de confianza', 'el usuario confirmó los valores marcados como estimados'],
+    1: ['hay entre 3 y 5 concept cards con su matriz de selección', 'el usuario seleccionó UN concepto', 'no se escribió ninguna línea de guion antes de esa selección'],
+    2: ['cada escena tiene deseo, obstáculo, geometría, mirada y ritmo', 'cada escena cambia emoción, avanza acción o sube presión', 'las escenas que no hacían ninguna de las tres se cortaron aquí'],
+    3: ['cero palabras del vocabulario prohibido (§6.1)', 'cada decisión de cámara tiene su razón dramática escrita', 'están los 5 anclas: emoción, motivo, objeto, quiebre e imagen final'],
+    4: ['validate_shots.py corre limpio', 'el six-point dramaturgy check pasa', 'cada shot tiene sus 3 detalles: presión ambiental, micro-acción física y ancla de sonido', 'ningún shot quedó con cero detalles'],
+    5: ['cada anchor crítico tiene critique ACCEPT', 'ninguno pasó de 2 rondas de revisión', 'los que fallaron 3 veces se replantearon como shot, no como prompt'],
+    6: ['el dramaturgy check de 6 puntos pasa', 'la auditoría de 3 detalles pasa', 'el linter pasa limpio, o se declara que no está instalado'],
+    7: ['el checklist maestro está completo', '3 prompts al azar trazan hasta su concepto', 'ningún eslabón de la cadena prompt → shot → escena → concepto falta']}
+
 ETAPAS = [
     {"n": 0, "nombre": "Brand Lock", "cond": "solo si hay marca o cliente",
      "skills": ["brand-lock-extractor"], "casos": ["MARCA"],
@@ -104,149 +113,116 @@ TRACKS = {
 PLANTILLA = r"""<title>Sala de Producción</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
 <style>
-:root{
-  --ground:#F5F4F1; --surface:#FFFFFF; --sunk:#EDEBE6; --line:#DAD6CE;
-  --ink:#1B2026; --muted:#68707C; --faint:#98A0AB;
-  --amber:#A9661F; --teal:#2A7168; --rust:#A6412F; --slate:#47535F;
-  --amber-bg:#FAEFE0; --teal-bg:#E2EEEC; --rust-bg:#FAE7E3;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ground:#12161C; --surface:#1A1F27; --sunk:#0D1116; --line:#2A313B;
-  --ink:#E4E8ED; --muted:#8A94A3; --faint:#5C6673;
-  --amber:#E0A44C; --teal:#4FA69B; --rust:#C4614D; --slate:#939FAD;
-  --amber-bg:#2A2119; --teal-bg:#16292A; --rust-bg:#2A1B18;
-}}
-:root[data-theme="dark"]{
-  --ground:#12161C; --surface:#1A1F27; --sunk:#0D1116; --line:#2A313B;
-  --ink:#E4E8ED; --muted:#8A94A3; --faint:#5C6673;
-  --amber:#E0A44C; --teal:#4FA69B; --rust:#C4614D; --slate:#939FAD;
-  --amber-bg:#2A2119; --teal-bg:#16292A; --rust-bg:#2A1B18;
-}
+:root{--ground:#F5F4F1;--surface:#FFF;--sunk:#EBE9E4;--line:#DCD8D0;
+ --ink:#1B2026;--muted:#6B7280;--faint:#9BA2AC;
+ --amber:#A9661F;--teal:#2A7168;--rust:#A6412F;--slate:#47535F;--amber-bg:#FAEFE0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --ground:#12161C;--surface:#1A1F27;--sunk:#0E1218;--line:#2A313B;
+ --ink:#E4E8ED;--muted:#8A94A3;--faint:#5C6673;
+ --amber:#E0A44C;--teal:#4FA69B;--rust:#C4614D;--slate:#939FAD;--amber-bg:#2A2119}}
+:root[data-theme="dark"]{--ground:#12161C;--surface:#1A1F27;--sunk:#0E1218;--line:#2A313B;
+ --ink:#E4E8ED;--muted:#8A94A3;--faint:#5C6673;
+ --amber:#E0A44C;--teal:#4FA69B;--rust:#C4614D;--slate:#939FAD;--amber-bg:#2A2119}
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);
-  font:400 15px/1.55 Barlow,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:600;
-  letter-spacing:.01em;text-wrap:balance;margin:0}
-.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+ font:400 16px/1.6 Barlow,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:600;margin:0;text-wrap:balance}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.mono{font-family:"JetBrains Mono",monospace}
 
-.wrap{display:grid;grid-template-columns:312px minmax(0,1fr);min-height:100vh}
-@media(max-width:880px){.wrap{grid-template-columns:1fr}}
-
-.rail{background:var(--sunk);border-right:1px solid var(--line);
-  padding:20px 0 24px;display:flex;flex-direction:column}
-.brand{padding:0 18px 14px;border-bottom:1px solid var(--line)}
-.brand h1{font-size:20px;letter-spacing:.03em;text-transform:uppercase}
-.brand p{margin:3px 0 0;font-size:11.5px;color:var(--faint);
-  font-family:"JetBrains Mono",monospace;letter-spacing:.03em}
-.tracks{display:flex;gap:4px;padding:13px 18px;border-bottom:1px solid var(--line)}
-.tracks button{flex:1;font-family:"JetBrains Mono",monospace;font-size:10.5px;
-  letter-spacing:.06em;padding:6px 4px;border:1px solid var(--line);border-radius:3px;
-  color:var(--muted);background:var(--surface)}
-.tracks button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
-.trackinfo{padding:10px 18px 13px;border-bottom:1px solid var(--line);font-size:12.5px;
-  color:var(--muted);line-height:1.45}
-.etapas{padding:8px 0;flex:1}
-.stage{display:grid;grid-template-columns:34px minmax(0,1fr);gap:1px 2px;
-  padding:8px 16px 8px 12px;text-align:left;width:100%;position:relative;transition:background .12s}
+.wrap{display:grid;grid-template-columns:246px minmax(0,1fr);min-height:100vh}
+@media(max-width:820px){.wrap{grid-template-columns:1fr}}
+.rail{background:var(--sunk);border-right:1px solid var(--line);padding:22px 0;
+ display:flex;flex-direction:column}
+.brand{padding:0 20px 16px}
+.brand h1{font-size:19px;letter-spacing:.04em;text-transform:uppercase}
+.tracks{display:flex;gap:3px;padding:0 20px 16px;border-bottom:1px solid var(--line)}
+.tracks button{flex:1;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;
+ padding:5px 2px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+.tracks button[aria-pressed=true]{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
+.etapas{padding:10px 0;flex:1}
+.stage{display:flex;align-items:center;gap:11px;padding:9px 20px;width:100%;text-align:left}
 .stage:hover{background:color-mix(in srgb,var(--line) 45%,transparent)}
-.stage[aria-current="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--amber)}
-.stage[data-fuera="1"]{opacity:.38}
-.dot{grid-row:1/3;justify-self:center;margin-top:2px;width:22px;height:22px;border-radius:50%;
-  display:grid;place-items:center;font-size:11px;border:1.5px solid var(--line);
-  background:var(--surface);color:var(--faint);position:relative;z-index:1;
-  font-family:"JetBrains Mono",monospace}
-.stage:not(:last-child) .dot::after{content:"";position:absolute;top:100%;left:50%;width:1.5px;
-  height:24px;background:var(--line);transform:translateX(-50%)}
-.stage[data-estado="curso"] .dot{border-color:var(--amber);color:var(--amber)}
-.stage[data-estado="cerrado"] .dot{border-color:var(--teal);background:var(--teal);color:var(--ground)}
-.stage b{font-family:"Barlow Condensed",sans-serif;font-size:16px;line-height:1.2}
-.stage[data-estado="cerrado"] b{color:var(--muted)}
-.stage em{font-style:normal;font-size:10.5px;letter-spacing:.05em;color:var(--faint);
-  font-family:"JetBrains Mono",monospace}
-.stage .ok{color:var(--amber)}
-.railfoot{padding:14px 18px 0;border-top:1px solid var(--line);display:flex;
-  justify-content:space-between;align-items:flex-end;gap:10px}
-.railfoot small{font-size:11px;color:var(--faint);line-height:1.45}
+.stage[aria-current=true]{background:var(--surface);box-shadow:inset 3px 0 0 var(--amber)}
+.stage[data-fuera="1"]{opacity:.35}
+.dot{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;
+ font-family:"JetBrains Mono",monospace;font-size:10px;border:1.5px solid var(--line);
+ background:var(--surface);color:var(--faint)}
+.stage[data-listo="1"] .dot{border-color:var(--teal);background:var(--teal);color:var(--ground)}
+.stage[data-listo="parcial"] .dot{border-color:var(--amber);color:var(--amber)}
+.stage span{font-size:15px;line-height:1.25}
+.stage[data-listo="1"] span{color:var(--muted)}
+.railfoot{padding:14px 20px 0;border-top:1px solid var(--line);display:flex;
+ justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:var(--faint)}
+.railfoot button{font-family:"JetBrains Mono",monospace;font-size:10px;padding:4px 8px;
+ border:1px solid var(--line);border-radius:3px;color:var(--muted)}
 
-.pane{padding:28px 34px 60px;max-width:1150px}
-@media(max-width:880px){.pane{padding:22px 18px 48px}}
-.head{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-start;
-  padding-bottom:16px;border-bottom:1px solid var(--line)}
-.head h2{font-size:32px;line-height:1.08}
-.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--amber);margin-bottom:4px}
-.cond{font-size:13px;color:var(--muted);font-style:italic;margin-top:5px}
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-.tag{font-family:"JetBrains Mono",monospace;font-size:11px;padding:3px 8px;
-  border:1px solid var(--line);border-radius:3px;color:var(--slate);background:var(--surface)}
-.estados{display:flex;gap:4px;margin-left:auto}
-.estados button{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.05em;
-  text-transform:uppercase;padding:6px 10px;border-radius:3px;border:1px solid var(--line);
-  color:var(--muted);background:var(--surface)}
-.estados button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
+.pane{padding:44px 44px 70px;max-width:730px}
+@media(max-width:820px){.pane{padding:26px 20px 50px}}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;
+ text-transform:uppercase;color:var(--amber)}
+.pane h2{font-size:38px;line-height:1.05;margin:6px 0 0}
+.cond{color:var(--muted);font-size:15px;margin:7px 0 0}
+.fuera{margin:20px 0 0;padding:12px 16px;border:1px dashed var(--line);border-radius:4px;
+ color:var(--muted);font-size:14.5px}
+.io{margin:26px 0 0;font-size:15px;color:var(--muted);line-height:1.7}
+.io b{color:var(--ink);font-weight:500}
+.io i{font-style:normal;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:11px;
+ letter-spacing:.09em;text-transform:uppercase;display:block}
 
-.fuera{margin-top:18px;padding:11px 15px;border:1px dashed var(--line);border-radius:4px;
-  font-size:13.5px;color:var(--muted)}
-.flow{display:grid;grid-template-columns:1fr 1fr;margin-top:18px;border:1px solid var(--line);
-  border-radius:4px;overflow:hidden;background:var(--surface)}
-@media(max-width:700px){.flow{grid-template-columns:1fr}}
-.flow div{padding:12px 16px}
-.flow div+div{border-left:1px solid var(--line)}
-@media(max-width:700px){.flow div+div{border-left:none;border-top:1px solid var(--line)}}
-.flow h3,.gate h3{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-  font-family:"JetBrains Mono",monospace;font-weight:500;margin-bottom:5px}
-.flow h3{color:var(--faint)}
-.flow p,.gate p{margin:0;font-size:14.5px}
-.gate{margin-top:12px;border-left:3px solid var(--rust);background:var(--rust-bg);
-  padding:12px 16px;border-radius:0 4px 4px 0}
-.gate h3{color:var(--rust)}
-.nota-etapa{margin-top:10px;font-size:13.5px;color:var(--muted);padding-left:16px;
-  border-left:2px solid var(--line)}
+.gate{margin:32px 0 0}
+.gate>h3{font-family:"Barlow Condensed",sans-serif;font-size:23px;font-weight:600;margin:0 0 3px}
+.gate>p{margin:0 0 16px;color:var(--muted);font-size:14.5px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 0;
+ border-bottom:1px solid var(--line);width:100%;text-align:left;line-height:1.5}
+.check:first-of-type{border-top:1px solid var(--line)}
+.box{flex:none;margin-top:2px;width:19px;height:19px;border-radius:4px;border:1.5px solid var(--line);
+ background:var(--surface);display:grid;place-items:center;font-size:12px;color:transparent;
+ transition:background .12s,border-color .12s}
+.check[aria-pressed=true] .box{background:var(--teal);border-color:var(--teal);color:var(--ground)}
+.check[aria-pressed=true] span{color:var(--muted);text-decoration:line-through;
+ text-decoration-color:var(--faint)}
+.veredicto{margin:20px 0 0;padding:13px 17px;border-radius:4px;font-size:15px;
+ border-left:3px solid var(--rust);background:color-mix(in srgb,var(--rust) 9%,var(--surface))}
+.veredicto[data-ok="1"]{border-left-color:var(--teal);
+ background:color-mix(in srgb,var(--teal) 9%,var(--surface))}
+.veredicto b{font-weight:600}
 
-.bar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:28px 0 10px}
-.bar h3{font-size:19px}
-.count{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted)}
-.filtros{display:flex;gap:5px;flex-wrap:wrap;margin-left:auto}
+details{margin:34px 0 0;border-top:1px solid var(--line)}
+summary{padding:15px 0 0;cursor:pointer;font-size:14.5px;color:var(--muted);list-style:none;
+ display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"▾";color:var(--faint);font-size:11px}
+details[open] summary::after{content:"▴"}
+summary:hover{color:var(--ink)}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;align-items:center}
 .chip{font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:4px 9px;
-  border:1px solid var(--line);border-radius:3px;color:var(--muted);background:var(--surface)}
-.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--slate);background:var(--sunk)}
-.k{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
+ border:1px solid var(--line);border-radius:3px;color:var(--muted);background:var(--surface)}
+.chip[aria-pressed=true]{color:var(--ink);border-color:var(--slate);background:var(--sunk)}
+.k{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
 .k-regla{background:var(--slate)}.k-auditoria{background:var(--teal)}.k-archivo{background:var(--amber)}
-input[type=search]{font:inherit;font-size:13px;padding:6px 10px;min-width:180px;
-  border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--ink)}
-.tipos{display:flex;gap:5px;flex-wrap:wrap;margin:16px 0 0;padding:11px 14px;
-  background:var(--sunk);border:1px solid var(--line);border-radius:4px;align-items:center}
-.tipos > span{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--faint);margin-right:4px}
-
-.grupo{margin-top:18px}
-.grupo>h4{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:500;
-  letter-spacing:.04em;color:var(--faint);padding-bottom:5px;border-bottom:1px solid var(--line);
-  display:flex;justify-content:space-between;gap:12px}
-.regla{display:grid;grid-template-columns:5px minmax(0,1fr) auto;gap:0 12px;align-items:start;
-  padding:9px 0;border-bottom:1px solid var(--line)}
-.regla .k{border-radius:2px;align-self:stretch;min-height:16px;width:5px;height:auto;margin:0}
-.regla p{margin:0;font-size:14.5px;line-height:1.5}
-.regla b,.gate b,.flow b{font-weight:600}
-code{font-family:"JetBrains Mono",monospace;font-size:.88em;background:var(--sunk);padding:1px 4px;border-radius:2px;color:var(--slate)}
-.regla .src{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);
-  white-space:nowrap;padding-top:2px}
-.vacio{padding:26px 0;color:var(--muted)}
-.nota{margin-top:32px;padding-top:15px;border-top:1px solid var(--line);font-size:13px;
-  color:var(--muted);max-width:68ch}
-.nota strong{color:var(--ink);font-weight:600}
+input[type=search]{font:inherit;font-size:13px;padding:5px 9px;flex:1;min-width:150px;
+ border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--ink)}
+.lista{margin:14px 0 0;max-height:440px;overflow-y:auto}
+.arch{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--faint);
+ padding:12px 0 4px;position:sticky;top:0;background:var(--ground)}
+.regla{display:grid;grid-template-columns:4px 1fr;gap:11px;padding:8px 0;
+ border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.5}
+.regla i.k{border-radius:2px;width:4px;height:auto;margin:0}
+.regla b{font-weight:600}
+code{font-family:"JetBrains Mono",monospace;font-size:.87em;background:var(--sunk);
+ padding:1px 4px;border-radius:2px}
+.vacio{padding:20px 0;color:var(--muted)}
 </style>
 
 <div class="wrap">
-  <nav class="rail" aria-label="Etapas de producción">
-    <div class="brand"><h1>Sala de Producción</h1><p id="sub"></p></div>
-    <div class="tracks" id="tracks" role="group" aria-label="Track del proyecto"></div>
-    <div class="trackinfo" id="trackinfo"></div>
+  <nav class="rail" aria-label="Etapas">
+    <div class="brand"><h1>Sala de Producción</h1></div>
+    <div class="tracks" id="tracks" role="group" aria-label="Track"></div>
     <div class="etapas" id="etapas"></div>
     <div class="railfoot" id="railfoot"></div>
   </nav>
@@ -255,139 +231,101 @@ code{font-family:"JetBrains Mono",monospace;font-size:.88em;background:var(--sun
 
 <script id="datos" type="application/json">__DATOS__</script>
 <script>
-const D = JSON.parse(document.getElementById("datos").textContent);
-const ET = D.etapas, TR = D.tracks, IDX = D.idx, PORCASO = D.porCaso, CASOS = D.casos;
-const LS = "salaprod.v2";
-const esc = s => s.replace(/[<>&]/g, c => ({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
-// Las reglas vienen en markdown de los skills: **negrita** y `codigo` se rinden.
-const md = s => esc(s).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
-                      .replace(/`([^`]+)`/g, "<code>$1</code>");
-let S = {track:"STANDARD", etapa:4, estado:{0:"cerrado",1:"cerrado",2:"cerrado",3:"curso"},
-         tipo:null, origen:null, q:""};
-try { Object.assign(S, JSON.parse(localStorage.getItem(LS)) || {}); } catch (e) {}
-const guardar = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
-const ETQ = {pendiente:"Pendiente", curso:"En curso", cerrado:"Cerrado"};
-
-const reglasDe = (e, tipo) => {
-  const cs = tipo ? [tipo] : e.casos;
-  return [...new Set(cs.flatMap(c => PORCASO[c] || []))].map(i => IDX[i]).filter(Boolean);
-};
-const enTrack = e => e.tracks.includes(S.track);
+const D=JSON.parse(document.getElementById("datos").textContent);
+const ET=D.etapas,TR=D.tracks,IDX=D.idx,PC=D.porCaso,CASOS=D.casos;
+const LS="salaprod.v3";
+const esc=s=>s.replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
+const md=s=>esc(s).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>");
+let S={track:"STANDARD",etapa:4,hechos:{},tipo:null,origen:null,q:"",abierto:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem(LS))||{})}catch(e){}
+const guardar=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
+const hechos=n=>S.hechos[n]||[];
+const listo=e=>{const h=hechos(e.n).length;return h===0?"0":h===e.checks.length?"1":"parcial"};
+const enTrack=e=>e.tracks.includes(S.track);
+const reglasDe=(e,t)=>[...new Set((t?[t]:e.casos).flatMap(c=>PC[c]||[]))].map(i=>IDX[i]).filter(Boolean);
 
 function riel(){
-  document.getElementById("sub").textContent =
-    `${D.meta.total} reglas · ${D.meta.auditorias} auditadas`;
-
-  const t = document.getElementById("tracks"); t.innerHTML = "";
-  Object.keys(TR).forEach(k => {
-    const b = document.createElement("button");
-    b.textContent = k; b.setAttribute("aria-pressed", S.track === k);
-    b.onclick = () => { S.track = k;
-      if (!enTrack(ET.find(x => x.n === S.etapa))) S.etapa = ET.find(enTrack).n;
-      guardar(); pintar(); };
-    t.appendChild(b);
-  });
-  const i = TR[S.track];
-  document.getElementById("trackinfo").innerHTML =
-    `<b class="mono">${esc(i.dur)}</b> · ${esc(i.narr)} · ${esc(i.rev)} rev.<br>
-     <span style="color:var(--faint)">Etapas ${esc(i.etapas)}</span>`;
-
-  const c = document.getElementById("etapas"); c.innerHTML = "";
-  ET.forEach(e => {
-    const es = S.estado[e.n] || "pendiente", fuera = !enTrack(e);
-    const b = document.createElement("button");
-    b.className = "stage"; b.dataset.estado = es; b.dataset.fuera = fuera ? "1" : "0";
-    b.setAttribute("aria-current", e.n === S.etapa ? "true" : "false");
-    b.innerHTML = `<span class="dot">${es === "cerrado" && !fuera ? "✓" : e.n}</span>
-      <b>${esc(e.nombre)}</b>
-      <em>${reglasDe(e).length} reglas${e.ok ? ' · <span class="ok">OK usuario</span>' : ""}</em>`;
-    b.onclick = () => { S.etapa = e.n; S.tipo = null; guardar(); pintar(); };
-    c.appendChild(b);
-  });
-
-  document.getElementById("railfoot").innerHTML = "";
-  const s = document.createElement("small");
-  s.innerHTML = `Etapas y gates transcritos de<br><span class="mono">ai-production-director §3</span>`;
-  const th = document.createElement("button");
-  th.className = "chip"; th.textContent = "Tema";
-  th.onclick = () => { const r = document.documentElement;
-    const osc = r.dataset.theme ? r.dataset.theme === "dark"
-      : matchMedia("(prefers-color-scheme: dark)").matches;
-    r.dataset.theme = osc ? "light" : "dark"; };
-  document.getElementById("railfoot").append(s, th);
+ const t=document.getElementById("tracks");t.innerHTML="";
+ Object.keys(TR).forEach(k=>{const b=document.createElement("button");
+  b.textContent=k;b.setAttribute("aria-pressed",S.track===k);
+  b.onclick=()=>{S.track=k;if(!enTrack(ET.find(x=>x.n===S.etapa)))S.etapa=ET.find(enTrack).n;
+   guardar();pintar()};t.appendChild(b)});
+ const c=document.getElementById("etapas");c.innerHTML="";
+ ET.forEach(e=>{const b=document.createElement("button");
+  b.className="stage";b.dataset.listo=listo(e);b.dataset.fuera=enTrack(e)?"0":"1";
+  b.setAttribute("aria-current",e.n===S.etapa);
+  b.innerHTML=`<span class="dot">${listo(e)==="1"&&enTrack(e)?"✓":e.n}</span><span>${esc(e.nombre)}</span>`;
+  b.onclick=()=>{S.etapa=e.n;S.tipo=null;guardar();pintar()};c.appendChild(b)});
+ const f=document.getElementById("railfoot");f.innerHTML="";
+ const s=document.createElement("small");
+ s.innerHTML=`Etapas y gates de<br><span class="mono">ai-production-director §3</span>`;
+ const th=document.createElement("button");th.textContent="Tema";
+ th.onclick=()=>{const r=document.documentElement;
+  const o=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  r.dataset.theme=o?"light":"dark"};
+ f.append(s,th);
 }
 
 function pintar(){
-  riel();
-  const e = ET.find(x => x.n === S.etapa), es = S.estado[e.n] || "pendiente";
-  const fuera = !enTrack(e);
-  const todas = reglasDe(e, S.tipo);
-  const q = S.q.toLowerCase();
-  const vis = todas.filter(r => (!S.origen || r.o === S.origen) &&
-    (!q || r.t.toLowerCase().includes(q) || r.s.toLowerCase().includes(q)));
-  const porArch = {};
-  vis.forEach(r => (porArch[r.s + "/" + r.a] ||= []).push(r));
-  const orden = Object.keys(porArch).sort((a, b) => porArch[b].length - porArch[a].length);
-  const cnt = o => todas.filter(r => r.o === o).length;
+ riel();
+ const e=ET.find(x=>x.n===S.etapa),h=hechos(e.n),fuera=!enTrack(e);
+ const faltan=e.checks.length-h.length;
+ const todas=reglasDe(e,S.tipo),q=S.q.toLowerCase();
+ const vis=todas.filter(r=>(!S.origen||r.o===S.origen)&&
+  (!q||r.t.toLowerCase().includes(q)||r.s.toLowerCase().includes(q)));
+ const grupos={};vis.forEach(r=>(grupos[r.s+"/"+r.a]||=[]).push(r));
+ const orden=Object.keys(grupos).sort((a,b)=>grupos[b].length-grupos[a].length);
+ const cnt=o=>todas.filter(r=>r.o===o).length;
 
-  document.getElementById("pane").innerHTML = `
-  <header class="head">
-    <div>
-      <div class="eyebrow">Etapa ${e.n} · track ${S.track}</div>
-      <h2>${esc(e.nombre)}</h2>
-      ${e.cond ? `<p class="cond">${esc(e.cond)}</p>` : ""}
-      <div class="tags">${e.skills.map(s => `<span class="tag">${esc(s)}</span>`).join("")}
-        ${e.ok ? '<span class="tag" style="border-color:var(--amber);color:var(--amber)">OK explícito del usuario</span>' : ""}</div>
-    </div>
-    <div class="estados">${["pendiente","curso","cerrado"].map(k =>
-      `<button data-e="${k}" aria-pressed="${es === k}">${ETQ[k]}</button>`).join("")}</div>
-  </header>
+ document.getElementById("pane").innerHTML=`
+ <div class="eyebrow">Etapa ${e.n} · ${S.track}</div>
+ <h2>${esc(e.nombre)}</h2>
+ ${e.cond?`<p class="cond">${esc(e.cond)}</p>`:""}
+ ${fuera?`<p class="fuera">No corre en el track <b>${S.track}</b>. ${esc(TR[S.track].nota)}</p>`:`
+ <p class="io"><i>Entra</i><b>${md(e.entra)}</b></p>
+ <p class="io"><i>Sale</i><b>${md(e.sale)}</b></p>
 
-  ${fuera ? `<p class="fuera">Esta etapa no corre en el track <b>${S.track}</b>.
-     ${esc(TR[S.track].nota)}</p>` : ""}
+ <section class="gate">
+   <h3>Gate</h3>
+   <p>Se verifica ANTES de avanzar. Si falla, se corrige aquí — nunca "se arregla después".</p>
+   ${e.checks.map((c,i)=>`<button class="check" data-i="${i}" aria-pressed="${h.includes(i)}">
+     <span class="box">✓</span><span>${md(c)}</span></button>`).join("")}
+   <p class="veredicto" data-ok="${faltan===0?1:0}">${faltan===0
+     ? "<b>Gate cerrado.</b> Puedes avanzar a la siguiente etapa."
+     : `<b>Faltan ${faltan} de ${e.checks.length}.</b> No se avanza hasta cerrarlas.`}</p>
+ </section>`}
 
-  <div class="flow">
-    <div><h3>Entra</h3><p>${md(e.entra)}</p></div>
-    <div><h3>Sale</h3><p>${md(e.sale)}</p></div>
+ <details ${S.abierto?"open":""} id="det">
+  <summary><span>Reglas que gobiernan esta etapa</span>
+   <span class="mono">${todas.length}</span></summary>
+  <div class="tools">
+   <input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}">
+   ${["regla","auditoria","archivo"].map(o=>`<button class="chip" data-o="${o}"
+     aria-pressed="${S.origen===o}"><i class="k k-${o}"></i>${cnt(o)}</button>`).join("")}
   </div>
-  <div class="gate"><h3>Gate — se verifica ANTES de avanzar</h3><p>${md(e.gate)}</p></div>
-  ${e.nota ? `<p class="nota-etapa">${esc(e.nota)}</p>` : ""}
+  ${e.tipos?`<div class="tools">
+   <button class="chip" data-t="" aria-pressed="${!S.tipo}">Todos</button>
+   ${e.tipos.map(t=>`<button class="chip" data-t="${t}" aria-pressed="${S.tipo===t}"
+     title="${esc(CASOS[t]||t)}">${t}</button>`).join("")}</div>`:""}
+  <div class="lista">${orden.length?orden.map(k=>`
+   <div class="arch">${esc(k)} · ${grupos[k].length}</div>
+   ${grupos[k].map(r=>`<div class="regla"><i class="k k-${r.o}"></i><div>${md(r.t)}</div></div>`).join("")}
+   `).join(""):`<p class="vacio">Nada coincide con el filtro.</p>`}</div>
+ </details>`;
 
-  ${e.tipos ? `<div class="tipos"><span>Tipo de pieza</span>
-    <button class="chip" data-t="" aria-pressed="${!S.tipo}">Todos ${reglasDe(e).length}</button>
-    ${e.tipos.map(t => `<button class="chip" data-t="${t}" aria-pressed="${S.tipo === t}"
-      title="${esc(CASOS[t] || t)}">${t} ${(PORCASO[t] || []).length}</button>`).join("")}</div>` : ""}
-
-  <div class="bar">
-    <h3>Reglas aplicables</h3><span class="count">${vis.length} de ${todas.length}</span>
-    <div class="filtros">
-      <input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}">
-      ${["regla","auditoria","archivo"].map(o => `<button class="chip" data-o="${o}"
-        aria-pressed="${S.origen === o}"><i class="k k-${o}"></i>${o} ${cnt(o)}</button>`).join("")}
-    </div>
-  </div>
-
-  ${orden.length ? orden.map(k => `<section class="grupo">
-    <h4><span>${esc(k)}</span><span>${porArch[k].length}</span></h4>
-    ${porArch[k].map(r => `<article class="regla"><i class="k k-${r.o}"></i>
-      <p>${md(r.t)}</p><span class="src">:${r.l}</span></article>`).join("")}
-    </section>`).join("") : `<p class="vacio">Ninguna regla coincide con el filtro.</p>`}
-
-  <p class="nota"><strong>El color de cada regla dice de dónde salió su clasificación.</strong>
-  Pizarra es clasificada una por una · verde fue corregida por auditoría externa y manda sobre
-  las otras dos · ámbar es clasificación gruesa por archivo, revísala antes de confiar en ella.</p>`;
-
-  const p = document.getElementById("pane");
-  p.querySelectorAll(".estados button").forEach(b => b.onclick = () => {
-    S.estado[e.n] = b.dataset.e; guardar(); pintar(); });
-  p.querySelectorAll(".chip[data-t]").forEach(b => b.onclick = () => {
-    S.tipo = b.dataset.t || null; guardar(); pintar(); });
-  p.querySelectorAll(".chip[data-o]").forEach(b => b.onclick = () => {
-    S.origen = S.origen === b.dataset.o ? null : b.dataset.o; guardar(); pintar(); });
-  const qi = document.getElementById("q");
-  qi.oninput = () => { S.q = qi.value; pintar();
-    const n = document.getElementById("q"); n.focus();
-    n.setSelectionRange(n.value.length, n.value.length); };
+ const p=document.getElementById("pane");
+ p.querySelectorAll(".check").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.i,l=hechos(e.n);
+  S.hechos[e.n]=l.includes(i)?l.filter(x=>x!==i):[...l,i];guardar();pintar()});
+ const det=document.getElementById("det");
+ if(det)det.ontoggle=()=>{S.abierto=det.open;guardar()};
+ p.querySelectorAll(".chip[data-o]").forEach(b=>b.onclick=()=>{
+  S.origen=S.origen===b.dataset.o?null:b.dataset.o;guardar();pintar()});
+ p.querySelectorAll(".chip[data-t]").forEach(b=>b.onclick=()=>{
+  S.tipo=b.dataset.t||null;guardar();pintar()});
+ const qi=document.getElementById("q");
+ if(qi)qi.oninput=()=>{S.q=qi.value;pintar();
+  const n=document.getElementById("q");n.focus();n.setSelectionRange(n.value.length,n.value.length)};
 }
 pintar();
 </script>
@@ -414,6 +352,9 @@ def main() -> int:
 
     usados = {r for e in ETAPAS for c in e["casos"] for r in por_caso.get(c, [])}
     idx = {k: v for k, v in idx.items() if k in usados}
+
+    for e in ETAPAS:
+        e["checks"] = CHECKS[e["n"]]
 
     datos = {
         "etapas": ETAPAS, "tracks": TRACKS, "casos": casos,
