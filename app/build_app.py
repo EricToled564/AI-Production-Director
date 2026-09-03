@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Construye la Sala de Produccion como un solo .html con las reglas embebidas.
+"""Genera app/ejecutor.html: el ejecutor de produccion.
 
-Los modulos NO se inventan: son las Etapas 0-7 de ai-production-director/SKILL.md
-seccion 3, con su skill, entrada, salida y gate transcritos de ahi. Los tracks
-salen de la seccion 2 y los tipos T1-T5 de produccion-visual-sw30.
+Flujo: brief -> plan de etapas (lo decide el modelo a partir del catalogo del
+skill) -> por cada etapa, instruccion especifica + reglas del caso -> el modelo
+entrega -> un auditor verifica contra criterios y reglas -> si falla, se
+rechaza y se vuelve a pedir con correcciones -> el director aprueba o itera.
+Modulo aparte: evaluar imagenes y videos contra el brief o la estrategia.
 
-Las reglas de cada etapa salen de rules.sqlite. Si la base cambia, se regenera:
+Las reglas salen de rules.sqlite. Si la base cambia, se regenera:
 
-    python3 app/build_app.py --db rules.sqlite --out app/produccion.html
+    python3 app/build_app.py --db rules.sqlite --out app/ejecutor.html
 """
 
 from __future__ import annotations
@@ -15,319 +17,759 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
-import sys
 from pathlib import Path
 
 # Etapas 0-7, verbatim de ai-production-director/SKILL.md §3.
-# 'ok' marca las que exigen OK explicito del usuario en STANDARD/FILM (§4).
-CHECKS = {0: ['brand-lock.md tiene las 9 secciones', 'cada valor trae su fuente y su nivel de confianza', 'el usuario confirmó los valores marcados como estimados'],
-    1: ['hay entre 3 y 5 concept cards con su matriz de selección', 'el usuario seleccionó UN concepto', 'no se escribió ninguna línea de guion antes de esa selección'],
-    2: ['cada escena tiene deseo, obstáculo, geometría, mirada y ritmo', 'cada escena cambia emoción, avanza acción o sube presión', 'las escenas que no hacían ninguna de las tres se cortaron aquí'],
-    3: ['cero palabras del vocabulario prohibido (§6.1)', 'cada decisión de cámara tiene su razón dramática escrita', 'están los 5 anclas: emoción, motivo, objeto, quiebre e imagen final'],
-    4: ['validate_shots.py corre limpio', 'el six-point dramaturgy check pasa', 'cada shot tiene sus 3 detalles: presión ambiental, micro-acción física y ancla de sonido', 'ningún shot quedó con cero detalles'],
-    5: ['cada anchor crítico tiene critique ACCEPT', 'ninguno pasó de 2 rondas de revisión', 'los que fallaron 3 veces se replantearon como shot, no como prompt'],
-    6: ['el dramaturgy check de 6 puntos pasa', 'la auditoría de 3 detalles pasa', 'el linter pasa limpio, o se declara que no está instalado'],
-    7: ['el checklist maestro está completo', '3 prompts al azar trazan hasta su concepto', 'ningún eslabón de la cadena prompt → shot → escena → concepto falta']}
-
+# 'ok' marca las que exigen OK explicito del usuario (§4).
 ETAPAS = [
-    {"n": 0, "nombre": "Brand Lock", "cond": "solo si hay marca o cliente",
-     "skills": ["brand-lock-extractor"], "casos": ["MARCA"],
-     "tracks": ["STANDARD", "FILM"], "ok": True,
+    {"clave": "E0", "nombre": "Brand Lock", "cond": "solo si hay marca o cliente",
+     "casos": ["MARCA"], "tracks": ["STANDARD", "FILM"], "ok": True,
      "entra": "Sitio web, brand book, screenshots o descripción",
      "sale": "brand-lock.md — 9 secciones, cada valor con fuente y confianza",
      "gate": "El usuario confirma los valores flagged como estimados. Sin marca formal, "
              "usa el Visual Theme de la Etapa 3 como sustituto ligero."},
-    {"n": 1, "nombre": "Creative Strategy", "cond": "",
-     "skills": ["ai-production-director"], "casos": ["GUION"],
-     "tracks": ["STANDARD", "FILM"], "ok": True,
-     "entra": "Brand lock + brief. La autoridad es references/creative-strategy.md",
+    {"clave": "E1", "nombre": "Creative Strategy", "cond": "",
+     "casos": ["GUION"], "tracks": ["STANDARD", "FILM"], "ok": True,
+     "entra": "Brand lock + brief",
      "sale": "Territorios explorados, 3–5 concept cards, matriz de selección y dirección "
              "narrativa del concepto ganador",
      "gate": "El usuario selecciona UN concepto. No se escribe una línea de guion con "
              "concepto abierto."},
-    {"n": 2, "nombre": "Screenwriting", "cond": "",
-     "skills": ["screenwriter"], "casos": ["GUION"],
-     "tracks": ["STANDARD", "FILM"], "ok": True,
+    {"clave": "E2", "nombre": "Screenwriting", "cond": "",
+     "casos": ["GUION"], "tracks": ["STANDARD", "FILM"], "ok": True,
      "entra": "Concept card ganadora + dirección narrativa",
      "sale": "Treatment (solo FILM) → script con escenas XML-tagged, sluglines, acción y diálogo",
      "gate": "Cada escena pasa la fórmula de escena (deseo + obstáculo + geometría + mirada + "
              "ritmo) y la three-jobs rule: cambia emoción, avanza acción o sube presión. "
              "La que no hace ninguna se corta aquí, no en el shot list."},
-    {"n": 3, "nombre": "Cinematic Direction", "cond": "",
-     "skills": ["video"], "casos": ["CLIP", "SHOT"],
-     "tracks": ["STANDARD", "FILM"], "ok": False,
-     "entra": "Script + dramaturgy.md y universal-rules.md",
+    {"clave": "E3", "nombre": "Cinematic Direction", "cond": "",
+     "casos": ["CLIP", "SHOT"], "tracks": ["STANDARD", "FILM"], "ok": False,
+     "entra": "Script",
      "sale": "Documento de dirección por escena: blocking, composición, cámara motivada, lente, "
              "luz, evolución de color, lenguaje de edición y los 5 anclas de la pieza",
-     "gate": "Cero palabras del vocabulario prohibido (§6.1). Cada decisión de cámara tiene "
+     "gate": "Cero palabras del vocabulario prohibido. Cada decisión de cámara tiene "
              "razón dramática escrita."},
-    {"n": 4, "nombre": "Shot Planning", "cond": "punto de entrada del track EXPRESS",
-     "skills": ["storyboard-architect", "ai-video-storyboard"], "casos": ["SHOT"],
-     "tracks": ["EXPRESS", "STANDARD", "FILM"], "ok": True,
-     "entra": "Script + documento de dirección",
-     "sale": "storyboard.md · shots.json · text-overlays.json · run.json · brand-lock.snapshot.md",
-     "gate": "validate_shots.py limpio + six-point dramaturgy check + auditoría de 3 detalles por "
-             "shot. Un shot con cero detalles es filler y se elimina.",
-     "nota": "Desde aquí shots.json es la fuente de verdad. Ningún prompt, imagen o revisión "
-             "existe sin shot ID."},
-    {"n": 5, "nombre": "Anchor Images", "cond": "",
-     "skills": ["visual-prompt-forge", "image", "visual-asset-critic"],
+    {"clave": "E4", "nombre": "Shot Planning", "cond": "punto de entrada del track EXPRESS",
+     "casos": ["SHOT"], "tracks": ["EXPRESS", "STANDARD", "FILM"], "ok": True,
+     "entra": "Script + documento de dirección (EXPRESS: solo el brief)",
+     "sale": "storyboard.md · shots.json · text-overlays.json — shots.json es la fuente de "
+             "verdad; ningún prompt existe sin shot ID",
+     "gate": "Six-point dramaturgy check + auditoría de 3 detalles por shot (presión "
+             "ambiental, micro-acción física, ancla de sonido). Un shot con cero detalles "
+             "es filler y se elimina."},
+    {"clave": "E5", "nombre": "Anchor Images", "cond": "",
      "casos": ["T1", "T2", "T3", "T4", "T5", "PROD", "GRAF", "MULTI", "REF", "QA"],
      "tracks": ["EXPRESS", "STANDARD", "FILM"], "ok": False,
-     "tipos": ["T1", "T2", "T3", "T4", "T5", "PROD", "GRAF", "MULTI", "REF", "QA"],
      "entra": "shots.json + brand-lock",
-     "sale": "Plan de anchors (character refs, environment refs, keyframes por shot clave), "
-             "prompts finales y critiques por ronda",
-     "gate": "Cada anchor crítico tiene critique ACCEPT, con máximo 2 rondas vía forge en modo "
-             "revisión. A la tercera falla se replantea el shot, no el prompt."},
-    {"n": 6, "nombre": "Video Prompts", "cond": "",
-     "skills": ["visual-prompt-forge", "video"], "casos": ["CLIP"],
-     "tracks": ["EXPRESS", "STANDARD", "FILM"], "ok": False,
+     "sale": "Plan de anchors (character refs, environment refs, keyframes por shot clave) "
+             "y prompts finales de imagen por anchor",
+     "gate": "Cada anchor crítico pasa la crítica. Máximo 2 rondas de revisión; a la tercera "
+             "falla se replantea el shot, no el prompt."},
+    {"clave": "E6", "nombre": "Video Prompts", "cond": "",
+     "casos": ["CLIP"], "tracks": ["EXPRESS", "STANDARD", "FILM"], "ok": False,
      "entra": "shots.json + anchor aprobado",
      "sale": "Prompts de video finales por shot, con continuity blocks entre clips",
-     "gate": "Los dos checks de video (dramaturgy de 6 puntos + auditoría de 3 detalles) Y el "
-             "linter limpio si está instalado. Un prompt que falla cualquiera NO se entrega."},
-    {"n": 7, "nombre": "Package & Delivery", "cond": "",
-     "skills": ["storyboard-html-preview"], "casos": ["ENTREGA"],
-     "tracks": ["STANDARD", "FILM"], "ok": False,
+     "gate": "Dramaturgy check de 6 puntos + auditoría de 3 detalles. Un prompt que falla "
+             "cualquiera NO se entrega."},
+    {"clave": "E7", "nombre": "Package & Delivery", "cond": "",
+     "casos": ["ENTREGA"], "tracks": ["STANDARD", "FILM"], "ok": False,
      "entra": "Todos los artefactos de las etapas anteriores",
      "sale": "Final AI Video Production Package + checklist de postproducción",
      "gate": "Checklist maestro completo y trazabilidad verificada: 3 prompts al azar trazan "
              "hasta su concepto. Si un eslabón falta, no se entrega."},
+    # Etapas sueltas: briefs que no son un video completo.
+    {"clave": "PROMPT_IMAGEN", "nombre": "Prompt de imagen", "cond": "brief de una sola imagen",
+     "casos": ["T1", "T2", "T3", "T4", "T5", "PROD", "GRAF", "MULTI"], "tracks": [], "ok": False,
+     "entra": "El brief (y referencias, si hay)",
+     "sale": "Cabecera de 3 líneas SKILL:/RIESGOS:/TÉCNICA:, modelo recomendado y el prompt "
+             "final en inglés en un bloque de código",
+     "gate": "Cumple todas las reglas del caso elegido. Sin vocabulario prohibido."},
+    {"clave": "PROMPT_VIDEO", "nombre": "Prompt de video", "cond": "brief de un solo clip",
+     "casos": ["CLIP"], "tracks": [], "ok": False,
+     "entra": "El brief (y referencias, si hay)",
+     "sale": "Cabecera de 3 líneas, modelo recomendado y el prompt final en inglés en un "
+             "bloque de código",
+     "gate": "Dramaturgy check de 6 puntos + 3 detalles. Sin vocabulario prohibido."},
+    {"clave": "REF", "nombre": "Referencia a prompt", "cond": "hay imagen de referencia y se "
+     "pide recrearla", "casos": ["REF"], "tracks": [], "ok": False,
+     "entra": "Imagen de referencia adjunta",
+     "sale": "Descomposición de la referencia (sujeto, luz, lente, color, composición) y el "
+             "prompt para recrearla en inglés en un bloque de código",
+     "gate": "Cada elemento visible de la referencia está en el prompt; nada inventado."},
+    {"clave": "ESTRATEGIA", "nombre": "Estrategia", "cond": "el brief pide una estrategia o "
+     "plan, no una pieza visual", "casos": [], "tracks": [], "ok": True,
+     "entra": "El brief",
+     "sale": "Documento estratégico: diagnóstico, opciones, recomendación y plan de acción "
+             "con siguientes pasos",
+     "gate": "Responde exactamente lo que pide el brief. Cada recomendación tiene razón y "
+             "siguiente paso concreto."},
+    {"clave": "DOC", "nombre": "Documento", "cond": "cualquier otro entregable de texto",
+     "casos": [], "tracks": [], "ok": False,
+     "entra": "El brief y lo aprobado antes",
+     "sale": "El documento que pide el brief",
+     "gate": "Cumple cada criterio del plan."},
 ]
 
 TRACKS = {
-    "EXPRESS": {"dur": "≤30s", "narr": "Un beat (hook→payoff)", "rev": "0–1",
-                "etapas": "4 → 5/6 comprimidas",
-                "nota": "Salta estrategia formal y guion. Shot list con ai-video-storyboard, "
-                        "luego directo a prompts. Sin shots.json ni loop de crítica salvo que se pida."},
-    "STANDARD": {"dur": "30–90s", "narr": "Arco simple", "rev": "1–2 rondas",
-                 "etapas": "0–7 con estrategia ligera",
-                 "nota": "Pipeline completo con Etapa 1 comprimida (2–3 conceptos, sin documento "
-                         "de territorios) y Etapa 2 comprimida (script directo, sin treatment)."},
-    "FILM": {"dur": "90s–10min", "narr": "Multi-escena, personajes", "rev": "Rondas formales",
-             "etapas": "0–7 completas",
-             "nota": "Todas las etapas, todos los artefactos, todos los gates."},
+    "EXPRESS": "≤30s, un beat (hook→payoff). Entra en E4 y salta E0–E3 y E7.",
+    "STANDARD": "30–90s, arco simple. E0–E7 con E1 comprimida (2–3 conceptos) y E2 sin treatment.",
+    "FILM": "90s–10min, multi-escena. E0–E7 completas, todos los gates.",
 }
 
-PLANTILLA = r"""<title>Sala de Producción</title>
+PLANTILLA = r"""<title>Ejecutor de Producción</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-:root{--ground:#F5F4F1;--surface:#FFF;--sunk:#EBE9E4;--line:#DCD8D0;
- --ink:#1B2026;--muted:#6B7280;--faint:#9BA2AC;
- --amber:#A9661F;--teal:#2A7168;--rust:#A6412F;--slate:#47535F;--amber-bg:#FAEFE0}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
- --ground:#12161C;--surface:#1A1F27;--sunk:#0E1218;--line:#2A313B;
- --ink:#E4E8ED;--muted:#8A94A3;--faint:#5C6673;
- --amber:#E0A44C;--teal:#4FA69B;--rust:#C4614D;--slate:#939FAD;--amber-bg:#2A2119}}
-:root[data-theme="dark"]{--ground:#12161C;--surface:#1A1F27;--sunk:#0E1218;--line:#2A313B;
- --ink:#E4E8ED;--muted:#8A94A3;--faint:#5C6673;
- --amber:#E0A44C;--teal:#4FA69B;--rust:#C4614D;--slate:#939FAD;--amber-bg:#2A2119}
+:root{
+  --bg:#F2F4F7;--surf:#FFFFFF;--ink:#161A20;--mute:#5C6674;--line:#D6DBE3;--soft:#E9EDF2;
+  --acc:#D9541E;--acc-ink:#FFFFFF;--ok:#1F8A4C;--warn:#B7791F;--bad:#C0392B;--info:#2F6FBF;
+  --ok-bg:#E4F3EA;--warn-bg:#FBF1DC;--bad-bg:#F9E3E0;--info-bg:#E3ECF9;
+  --disp:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121519;--surf:#1A1E24;--ink:#E8EAED;--mute:#9AA3AF;--line:#2B313A;--soft:#232930;
+  --acc:#F0703A;--acc-ink:#15100D;--ok:#4CC37A;--warn:#E0A83C;--bad:#EF6B5E;--info:#6FA3F0;
+  --ok-bg:#16301F;--warn-bg:#352A12;--bad-bg:#3A1C19;--info-bg:#16263D;}}
+:root[data-theme="dark"]{
+  --bg:#121519;--surf:#1A1E24;--ink:#E8EAED;--mute:#9AA3AF;--line:#2B313A;--soft:#232930;
+  --acc:#F0703A;--acc-ink:#15100D;--ok:#4CC37A;--warn:#E0A83C;--bad:#EF6B5E;--info:#6FA3F0;
+  --ok-bg:#16301F;--warn-bg:#352A12;--bad-bg:#3A1C19;--info-bg:#16263D;}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--ink);
- font:400 16px/1.6 Barlow,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-h1,h2{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:600;margin:0;text-wrap:balance}
-button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-.mono{font-family:"JetBrains Mono",monospace}
-
-.wrap{display:grid;grid-template-columns:246px minmax(0,1fr);min-height:100vh}
-@media(max-width:820px){.wrap{grid-template-columns:1fr}}
-.rail{background:var(--sunk);border-right:1px solid var(--line);padding:22px 0;
- display:flex;flex-direction:column}
-.brand{padding:0 20px 16px}
-.brand h1{font-size:19px;letter-spacing:.04em;text-transform:uppercase}
-.tracks{display:flex;gap:3px;padding:0 20px 16px;border-bottom:1px solid var(--line)}
-.tracks button{flex:1;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;
- padding:5px 2px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
-.tracks button[aria-pressed=true]{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
-.etapas{padding:10px 0;flex:1}
-.stage{display:flex;align-items:center;gap:11px;padding:9px 20px;width:100%;text-align:left}
-.stage:hover{background:color-mix(in srgb,var(--line) 45%,transparent)}
-.stage[aria-current=true]{background:var(--surface);box-shadow:inset 3px 0 0 var(--amber)}
-.stage[data-fuera="1"]{opacity:.35}
-.dot{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;
- font-family:"JetBrains Mono",monospace;font-size:10px;border:1.5px solid var(--line);
- background:var(--surface);color:var(--faint)}
-.stage[data-listo="1"] .dot{border-color:var(--teal);background:var(--teal);color:var(--ground)}
-.stage[data-listo="parcial"] .dot{border-color:var(--amber);color:var(--amber)}
-.stage span{font-size:15px;line-height:1.25}
-.stage[data-listo="1"] span{color:var(--muted)}
-.railfoot{padding:14px 20px 0;border-top:1px solid var(--line);display:flex;
- justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:var(--faint)}
-.railfoot button{font-family:"JetBrains Mono",monospace;font-size:10px;padding:4px 8px;
- border:1px solid var(--line);border-radius:3px;color:var(--muted)}
-
-.pane{padding:44px 44px 70px;max-width:730px}
-@media(max-width:820px){.pane{padding:26px 20px 50px}}
-.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;
- text-transform:uppercase;color:var(--amber)}
-.pane h2{font-size:38px;line-height:1.05;margin:6px 0 0}
-.cond{color:var(--muted);font-size:15px;margin:7px 0 0}
-.fuera{margin:20px 0 0;padding:12px 16px;border:1px dashed var(--line);border-radius:4px;
- color:var(--muted);font-size:14.5px}
-.io{margin:26px 0 0;font-size:15px;color:var(--muted);line-height:1.7}
-.io b{color:var(--ink);font-weight:500}
-.io i{font-style:normal;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:11px;
- letter-spacing:.09em;text-transform:uppercase;display:block}
-
-.gate{margin:32px 0 0}
-.gate>h3{font-family:"Barlow Condensed",sans-serif;font-size:23px;font-weight:600;margin:0 0 3px}
-.gate>p{margin:0 0 16px;color:var(--muted);font-size:14.5px}
-.check{display:flex;gap:12px;align-items:flex-start;padding:12px 0;
- border-bottom:1px solid var(--line);width:100%;text-align:left;line-height:1.5}
-.check:first-of-type{border-top:1px solid var(--line)}
-.box{flex:none;margin-top:2px;width:19px;height:19px;border-radius:4px;border:1.5px solid var(--line);
- background:var(--surface);display:grid;place-items:center;font-size:12px;color:transparent;
- transition:background .12s,border-color .12s}
-.check[aria-pressed=true] .box{background:var(--teal);border-color:var(--teal);color:var(--ground)}
-.check[aria-pressed=true] span{color:var(--muted);text-decoration:line-through;
- text-decoration-color:var(--faint)}
-.veredicto{margin:20px 0 0;padding:13px 17px;border-radius:4px;font-size:15px;
- border-left:3px solid var(--rust);background:color-mix(in srgb,var(--rust) 9%,var(--surface))}
-.veredicto[data-ok="1"]{border-left-color:var(--teal);
- background:color-mix(in srgb,var(--teal) 9%,var(--surface))}
-.veredicto b{font-weight:600}
-
-details{margin:34px 0 0;border-top:1px solid var(--line)}
-summary{padding:15px 0 0;cursor:pointer;font-size:14.5px;color:var(--muted);list-style:none;
- display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"▾";color:var(--faint);font-size:11px}
-details[open] summary::after{content:"▴"}
-summary:hover{color:var(--ink)}
-.tools{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;align-items:center}
-.chip{font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:4px 9px;
- border:1px solid var(--line);border-radius:3px;color:var(--muted);background:var(--surface)}
-.chip[aria-pressed=true]{color:var(--ink);border-color:var(--slate);background:var(--sunk)}
-.k{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
-.k-regla{background:var(--slate)}.k-auditoria{background:var(--teal)}.k-archivo{background:var(--amber)}
-input[type=search]{font:inherit;font-size:13px;padding:5px 9px;flex:1;min-width:150px;
- border:1px solid var(--line);border-radius:3px;background:var(--surface);color:var(--ink)}
-.lista{margin:14px 0 0;max-height:440px;overflow-y:auto}
-.arch{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--faint);
- padding:12px 0 4px;position:sticky;top:0;background:var(--ground)}
-.regla{display:grid;grid-template-columns:4px 1fr;gap:11px;padding:8px 0;
- border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.5}
-.regla i.k{border-radius:2px;width:4px;height:auto;margin:0}
-.regla b{font-weight:600}
-code{font-family:"JetBrains Mono",monospace;font-size:.87em;background:var(--sunk);
- padding:1px 4px;border-radius:2px}
-.vacio{padding:20px 0;color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--body)}
+h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:.01em;margin:0;text-wrap:balance}
+h1{font-size:20px}h2{font-size:17px}h3{font-size:15px}
+p{margin:0}
+a{color:var(--info)}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:6px;padding:7px 12px}
+button:hover{border-color:var(--mute)}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+button.prim{background:var(--acc);color:var(--acc-ink);border-color:var(--acc);font-weight:600}
+button.sm{padding:4px 9px;font-size:12.5px}
+button.link{border:0;background:none;color:var(--info);padding:0}
+textarea,input[type=text],input[type=url],select{font:inherit;color:var(--ink);background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+input[type=file]{font:inherit;color:var(--mute)}
+.lbl{font-family:var(--disp);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.mono{font-family:var(--mono);font-size:12.5px}
+.mute{color:var(--mute)}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.rail{border-right:1px solid var(--line);background:var(--surf);padding:16px 14px;display:flex;flex-direction:column;gap:14px}
+.rail .brand{display:flex;align-items:baseline;gap:8px}
+.rail .brand small{color:var(--mute);font-family:var(--mono);font-size:11px}
+.plist{display:flex;flex-direction:column;gap:2px;overflow:auto;max-height:50vh}
+.plist button{text-align:left;border:0;padding:7px 9px;border-radius:5px;display:flex;flex-direction:column;gap:2px}
+.plist button.act{background:var(--soft)}
+.plist button small{color:var(--mute);font-size:11.5px;font-family:var(--mono)}
+.plist button b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:210px}
+.tabs{display:flex;flex-direction:column;gap:2px}
+.tabs button{text-align:left;border:0;padding:7px 9px;border-radius:5px;display:flex;justify-content:space-between;align-items:center}
+.tabs button.act{background:var(--ink);color:var(--bg)}
+.tabs button span.n{font-family:var(--mono);font-size:11px;opacity:.75}
+.main{padding:22px 28px 60px;max-width:980px;width:100%}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.hd .sub{color:var(--mute);margin-top:2px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid var(--line);background:var(--soft)}
+.pill.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.pill.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.pill.bad{background:var(--bad-bg);color:var(--bad);border-color:transparent}
+.pill.info{background:var(--info-bg);color:var(--info);border-color:transparent}
+.pill.acc{background:var(--acc);color:var(--acc-ink);border-color:transparent}
+.etapa{display:grid;grid-template-columns:6px 1fr;border:1px solid var(--line);border-radius:8px;background:var(--surf);overflow:hidden}
+.etapa .stripe{background:var(--line)}
+.etapa.gen .stripe,.etapa.aud .stripe{background:var(--info)}
+.etapa.rech .stripe,.etapa.agot .stripe{background:var(--bad)}
+.etapa.espera .stripe{background:var(--warn)}
+.etapa.aprob .stripe{background:var(--ok)}
+.etapa .body{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.etapa .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.etapa .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.crit{margin:0;padding-left:18px;color:var(--mute)}
+.crit li{margin:2px 0}
+.out{border-top:1px solid var(--line);padding-top:10px}
+.md{line-height:1.55;max-width:72ch}
+.md h1,.md h2,.md h3{margin:12px 0 6px}
+.md h1{font-size:17px}.md h2{font-size:15.5px}.md h3{font-size:14px}
+.md p{margin:6px 0}
+.md ul,.md ol{margin:6px 0;padding-left:22px}
+.md pre{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:10px 12px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.5;white-space:pre-wrap;margin:8px 0}
+.md code{font-family:var(--mono);font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:3px}
+.md pre code{background:none;padding:0}
+.md table{border-collapse:collapse;margin:6px 0;font-size:13px}
+.md th,.md td{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.log{border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:13px}
+.log .r{display:grid;grid-template-columns:82px 1fr;border-top:1px solid var(--line)}
+.log .r:first-child{border-top:0}
+.log .r>div{padding:6px 10px}
+.log .r>div:first-child{background:var(--soft);font-family:var(--mono);font-size:12px;color:var(--mute)}
+.falla{padding:6px 0;border-top:1px dashed var(--line)}
+.falla:first-child{border-top:0}
+.falla b{font-family:var(--mono);font-weight:500;font-size:12px}
+.falla .ev{color:var(--mute);font-style:italic}
+.status{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:13px}
+.spin{width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumbs img{height:72px;border-radius:4px;border:1px solid var(--line)}
+.gens{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.gens button{padding:0;overflow:hidden;text-align:left;display:flex;flex-direction:column}
+.gens img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.gens small{padding:4px 7px;color:var(--mute);font-family:var(--mono);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.gens button.act{outline:2px solid var(--acc)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-family:var(--disp);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:6px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.score{font-family:var(--disp);font-size:34px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.empty{color:var(--mute);padding:30px 0;text-align:center}
+.warnbox{background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:8px 12px;font-size:13px}
+.badbox{background:var(--bad-bg);color:var(--bad);border-radius:6px;padding:8px 12px;font-size:13px}
+.infobox{background:var(--info-bg);color:var(--info);border-radius:6px;padding:8px 12px;font-size:13px}
+details>summary{cursor:pointer;color:var(--mute);font-size:13px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.act{background:var(--ink);color:var(--bg)}
+.chk{display:flex;gap:8px;align-items:center}
+.plan-et{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.plan-et:first-child{border-top:0}
+.plan-et .k{font-family:var(--mono);font-size:12px;color:var(--mute);padding-top:2px;min-width:110px}
+@media (max-width:820px){.app{grid-template-columns:1fr}.rail{border-right:0;border-bottom:1px solid var(--line)}.grid2{grid-template-columns:1fr}.main{padding:16px}}
 </style>
 
-<div class="wrap">
-  <nav class="rail" aria-label="Etapas">
-    <div class="brand"><h1>Sala de Producción</h1></div>
-    <div class="tracks" id="tracks" role="group" aria-label="Track"></div>
-    <div class="etapas" id="etapas"></div>
-    <div class="railfoot" id="railfoot"></div>
-  </nav>
-  <main class="pane" id="pane"></main>
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><h1>Ejecutor</h1><small id="ver"></small></div>
+    <button class="prim" id="btnNuevo">Nuevo brief</button>
+    <div class="lbl">Proyectos</div>
+    <div class="plist" id="plist"></div>
+    <div class="lbl">Módulos</div>
+    <nav class="tabs" id="tabs">
+      <button data-v="brief">Brief</button>
+      <button data-v="plan">Plan <span class="n" id="nPlan"></span></button>
+      <button data-v="run">Ejecución <span class="n" id="nRun"></span></button>
+      <button data-v="eval">Evaluador</button>
+      <button data-v="ajustes">Ajustes</button>
+    </nav>
+    <div class="mute" style="font-size:12px;margin-top:auto" id="capline">Conectando…</div>
+  </aside>
+  <main class="main" id="main"></main>
 </div>
 
-<script id="datos" type="application/json">__DATOS__</script>
 <script>
-const D=JSON.parse(document.getElementById("datos").textContent);
-const ET=D.etapas,TR=D.tracks,IDX=D.idx,PC=D.porCaso,CASOS=D.casos;
-const LS="salaprod.v3";
-const esc=s=>s.replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
-const md=s=>esc(s).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>");
-let S={track:"STANDARD",etapa:4,hechos:{},tipo:null,origen:null,q:"",abierto:false};
-try{Object.assign(S,JSON.parse(localStorage.getItem(LS))||{})}catch(e){}
-const guardar=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
-const hechos=n=>S.hechos[n]||[];
-const listo=e=>{const h=hechos(e.n).length;return h===0?"0":h===e.checks.length?"1":"parcial"};
-const enTrack=e=>e.tracks.includes(S.track);
-const reglasDe=(e,t)=>[...new Set((t?[t]:e.casos).flatMap(c=>PC[c]||[]))].map(i=>IDX[i]).filter(Boolean);
+const D = __DATOS__;
+const ETAPAS = D.etapas, CAT = Object.fromEntries(ETAPAS.map(e=>[e.clave,e]));
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const bytes = s => new TextEncoder().encode(s).length;
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const nowIso = () => new Date().toISOString();
+const MAX_BYTES = 62000;
 
-function riel(){
- const t=document.getElementById("tracks");t.innerHTML="";
- Object.keys(TR).forEach(k=>{const b=document.createElement("button");
-  b.textContent=k;b.setAttribute("aria-pressed",S.track===k);
-  b.onclick=()=>{S.track=k;if(!enTrack(ET.find(x=>x.n===S.etapa)))S.etapa=ET.find(enTrack).n;
-   guardar();pintar()};t.appendChild(b)});
- const c=document.getElementById("etapas");c.innerHTML="";
- ET.forEach(e=>{const b=document.createElement("button");
-  b.className="stage";b.dataset.listo=listo(e);b.dataset.fuera=enTrack(e)?"0":"1";
-  b.setAttribute("aria-current",e.n===S.etapa);
-  b.innerHTML=`<span class="dot">${listo(e)==="1"&&enTrack(e)?"✓":e.n}</span><span>${esc(e.nombre)}</span>`;
-  b.onclick=()=>{S.etapa=e.n;S.tipo=null;guardar();pintar()};c.appendChild(b)});
- const f=document.getElementById("railfoot");f.innerHTML="";
- const s=document.createElement("small");
- s.innerHTML=`Etapas y gates de<br><span class="mono">ai-production-director §3</span>`;
- const th=document.createElement("button");th.textContent="Tema";
- th.onclick=()=>{const r=document.documentElement;
-  const o=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
-  r.dataset.theme=o?"light":"dark"};
- f.append(s,th);
+// ------------------------------------------------------------ estado
+let sample=null, db=null, mcp=null, caps={images:false};
+let S = {proyectos:[], pid:null, view:'brief', imgs:[], busy:false, ajustes:{rondas:3, tierGen:'complex', tierAud:'default', rondasEval:1}};
+const P = () => S.proyectos.find(p=>p.id===S.pid);
+const ajustesLS = 'ejecutor.ajustes';
+try{ Object.assign(S.ajustes, JSON.parse(localStorage.getItem(ajustesLS)||'{}')); }catch(e){}
+
+// ------------------------------------------------------------ persistencia
+async function guardar(p){
+  p.actualizado = nowIso();
+  if(db){ try{ await db.doc('proyectos/'+p.id).set(p); return; }catch(e){ console.warn('db set',e); } }
+  try{ localStorage.setItem('ejecutor.p.'+p.id, JSON.stringify(p)); }catch(e){}
+}
+async function cargarLista(){
+  let lista=[];
+  if(db){
+    try{ const q = await db.collection('proyectos').orderBy('creado','desc').limit(100).get(); lista = q.docs.map(d=>d.data()); }
+    catch(e){ console.warn('db list',e); }
+  }
+  if(!lista.length){
+    for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith('ejecutor.p.')){ try{ lista.push(JSON.parse(localStorage.getItem(k))); }catch(e){} } }
+    lista.sort((a,b)=>(b.creado||'').localeCompare(a.creado||''));
+  }
+  S.proyectos = lista;
+}
+function nuevoProyecto(){
+  const p = {id:uid(), nombre:'Sin título', brief:'', creado:nowIso(), plan:null, etapas:{}, orden:[], evaluaciones:[]};
+  S.proyectos.unshift(p); S.pid=p.id; S.imgs=[]; S.view='brief'; render();
 }
 
-function pintar(){
- riel();
- const e=ET.find(x=>x.n===S.etapa),h=hechos(e.n),fuera=!enTrack(e);
- const faltan=e.checks.length-h.length;
- const todas=reglasDe(e,S.tipo),q=S.q.toLowerCase();
- const vis=todas.filter(r=>(!S.origen||r.o===S.origen)&&
-  (!q||r.t.toLowerCase().includes(q)||r.s.toLowerCase().includes(q)));
- const grupos={};vis.forEach(r=>(grupos[r.s+"/"+r.a]||=[]).push(r));
- const orden=Object.keys(grupos).sort((a,b)=>grupos[b].length-grupos[a].length);
- const cnt=o=>todas.filter(r=>r.o===o).length;
+// ------------------------------------------------------------ reglas
+function reglasDe(casos){
+  const ids = new Set();
+  for(const c of casos||[]) for(const id of (D.porCaso[c]||[])) ids.add(id);
+  const pri = {auditoria:0, regla:1, archivo:2};
+  return [...ids].map(id=>({id, ...D.idx[id]})).sort((a,b)=>(pri[a.o]-pri[b.o])||a.s.localeCompare(b.s)||a.a.localeCompare(b.a)||a.l-b.l);
+}
+const lineaRegla = r => `- [${r.id}] (${r.s}) ${r.t}`;
+function empacarReglas(reglas, presupuesto){
+  const out=[]; let usado=0, n=0;
+  for(const r of reglas){ const l=lineaRegla(r)+'\n'; const b=bytes(l); if(usado+b>presupuesto) break; out.push(l); usado+=b; n++; }
+  return {texto:out.join(''), incluidas:n, total:reglas.length};
+}
+function tandasReglas(reglas, presupuesto){
+  const tandas=[]; let cur=[], usado=0;
+  for(const r of reglas){ const l=lineaRegla(r)+'\n'; const b=bytes(l); if(usado+b>presupuesto && cur.length){ tandas.push(cur.join('')); cur=[]; usado=0; } cur.push(l); usado+=b; }
+  if(cur.length) tandas.push(cur.join(''));
+  return tandas;
+}
+const corta = (s,n) => (s||'').length>n ? s.slice(0,n)+`\n[… recortado a ${n} caracteres]` : (s||'');
 
- document.getElementById("pane").innerHTML=`
- <div class="eyebrow">Etapa ${e.n} · ${S.track}</div>
- <h2>${esc(e.nombre)}</h2>
- ${e.cond?`<p class="cond">${esc(e.cond)}</p>`:""}
- ${fuera?`<p class="fuera">No corre en el track <b>${S.track}</b>. ${esc(TR[S.track].nota)}</p>`:`
- <p class="io"><i>Entra</i><b>${md(e.entra)}</b></p>
- <p class="io"><i>Sale</i><b>${md(e.sale)}</b></p>
+// ------------------------------------------------------------ prompts
+function catalogoTexto(){
+  return ETAPAS.map(e=>`- ${e.clave} · ${e.nombre}${e.cond?' — cuándo: '+e.cond:''}\n    entra: ${e.entra}\n    sale: ${e.sale}\n    gate: ${e.gate}\n    casos de reglas permitidos: ${e.casos.length?e.casos.join(', '):'ninguno (sin reglas de skill)'}${e.tracks.length?'\n    tracks: '+e.tracks.join(', '):''}${e.ok?'\n    requiere OK explícito del director antes de continuar':''}`).join('\n');
+}
+function casosTexto(){ return Object.entries(D.casos).filter(([k])=>k!=='NINGUNO').map(([k,v])=>`  ${k}: ${v} (${(D.porCaso[k]||[]).length} reglas)`).join('\n'); }
 
- <section class="gate">
-   <h3>Gate</h3>
-   <p>Se verifica ANTES de avanzar. Si falla, se corrige aquí — nunca "se arregla después".</p>
-   ${e.checks.map((c,i)=>`<button class="check" data-i="${i}" aria-pressed="${h.includes(i)}">
-     <span class="box">✓</span><span>${md(c)}</span></button>`).join("")}
-   <p class="veredicto" data-ok="${faltan===0?1:0}">${faltan===0
-     ? "<b>Gate cerrado.</b> Puedes avanzar a la siguiente etapa."
-     : `<b>Faltan ${faltan} de ${e.checks.length}.</b> No se avanza hasta cerrarlas.`}</p>
- </section>`}
+function promptPlan(p){
+  return `Eres el director de producción de Final Upgrade AI. Recibes un BRIEF y decides qué etapas de trabajo hacen falta para entregarlo. No ejecutes ninguna etapa: solo planifica.
 
- <details ${S.abierto?"open":""} id="det">
-  <summary><span>Reglas que gobiernan esta etapa</span>
-   <span class="mono">${todas.length}</span></summary>
-  <div class="tools">
-   <input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}">
-   ${["regla","auditoria","archivo"].map(o=>`<button class="chip" data-o="${o}"
-     aria-pressed="${S.origen===o}"><i class="k k-${o}"></i>${cnt(o)}</button>`).join("")}
+CATÁLOGO DE ETAPAS (usa solo estas claves, en el orden en que deben ejecutarse):
+${catalogoTexto()}
+
+TRACKS DE VIDEO:
+${Object.entries(D.tracks).map(([k,v])=>`  ${k}: ${v}`).join('\n')}
+
+CASOS DE PRODUCCIÓN (cada etapa toma las reglas de sus casos):
+${casosTexto()}
+
+REGLAS DE PLANIFICACIÓN:
+- Un brief de una sola imagen → una sola etapa PROMPT_IMAGEN con el caso exacto (T1 rostro, T2 cuerpo, T3 escena con 1 persona, T4 con 2 personas, T5 edición, PROD producto sin persona, GRAF pieza gráfica, MULTI grid).
+- Un brief que pide el prompt para recrear una imagen adjunta → REF (hay ${S.imgs.length} imagen(es) adjunta(s)).
+- Un brief de un solo clip de video → PROMPT_VIDEO.
+- Un brief de video completo (spot, campaña, reel con narrativa, brand film) → etapas E0–E7 según el track. E0 solo si hay marca o cliente. E5 lleva solo los casos de imagen que el proyecto necesita.
+- Un brief que pide estrategia o plan de algo que no es una pieza visual → ESTRATEGIA, y DOC por cada entregable adicional que pida.
+- Cada etapa lleva: objetivo específico para ESTE brief (no genérico), el entregable exacto, y de 3 a 6 criterios de aceptación verificables, escritos para que un auditor pueda marcarlos cumplido / no cumplido con evidencia textual.
+- "usaImagenes": true solo en etapas que necesitan ver las imágenes adjuntas.
+- Si el brief es ambiguo, no preguntes: decide y anota el supuesto en "supuestos".
+- Responde en español.
+
+BRIEF:
+<<<
+${corta(p.brief, 30000)}
+>>>
+
+Responde SOLO con JSON con esta forma exacta:
+{"nombre":"título corto del proyecto","tipo":"qué se va a producir","track":"EXPRESS|STANDARD|FILM|null","resumen":"2 líneas","supuestos":["..."],"etapas":[{"clave":"E5","nombre":"nombre para este proyecto","objetivo":"...","entregable":"...","casos":["T3"],"criterios":["..."],"usaImagenes":false}]}`;
+}
+
+function contextoAprobado(p, hastaKey, limite){
+  const partes=[]; let usado=0;
+  for(const k of p.orden){ if(k===hastaKey) break; const e=p.etapas[k]; if(!e||!e.output||!['aprobada','espera_ok'].includes(e.estado)) continue;
+    const t = `## ${e.nombre} (${e.clave})\n${e.output}\n`; partes.push(t); usado+=t.length; }
+  let s = partes.join('\n');
+  if(s.length>limite){ s = s.slice(s.length-limite); s = '[… contexto anterior recortado]\n'+s; }
+  return s;
+}
+
+function promptEtapa(p, e, correcciones, feedback){
+  const cat = CAT[e.clave]||{};
+  const fijo = `Eres el ejecutor de la etapa "${e.nombre}" (${e.clave}: ${cat.nombre||''}) de un pipeline de producción visual con IA. Tu objetivo es maximizar la calidad del entregable, nunca ahorrar esfuerzo. Este entregable será auditado contra cada criterio y cada regla listada abajo; lo que no cumpla se rechaza y se vuelve a pedir.
+
+BRIEF DEL PROYECTO:
+<<<
+${corta(p.brief, 20000)}
+>>>
+
+OBJETIVO DE ESTA ETAPA: ${e.objetivo}
+ENTREGABLE EXACTO: ${e.entregable}
+QUÉ SALE SEGÚN EL SKILL: ${cat.sale||''}
+GATE DE LA ETAPA: ${cat.gate||''}
+CRITERIOS DE ACEPTACIÓN:
+${(e.criterios||[]).map((c,i)=>`${i+1}. ${c}`).join('\n')}
+${feedback?`\nINSTRUCCIONES DEL DIRECTOR PARA ESTA ITERACIÓN (obligatorias):\n${feedback}\n`:''}${correcciones&&correcciones.length?`\nCORRECCIONES OBLIGATORIAS — el auditor rechazó la versión anterior por esto; cada punto debe quedar resuelto:\n${correcciones.map(f=>`- [${f.ref}] ${f.correccion}${f.evidencia?' (evidencia: '+f.evidencia+')':''}`).join('\n')}\n`:''}
+FORMATO DE SALIDA: Markdown en español. Los prompts finales para modelos de imagen o video van en inglés, cada uno dentro de un bloque de código, precedido de su cabecera de 3 líneas SKILL: / RIESGOS: / TÉCNICA: y del modelo recomendado. Sin disculpas, sin preámbulos, sin resumen final: solo el entregable completo.
+`;
+  const ctx = contextoAprobado(p, e.key, 14000);
+  const ctxTxt = ctx ? `\nCONTEXTO APROBADO DE ETAPAS ANTERIORES (es la fuente de verdad; no lo contradigas):\n${ctx}\n` : '';
+  const reglas = reglasDe(e.casos);
+  const cabecera = `\nREGLAS OBLIGATORIAS DE LOS SKILLS (casos ${(e.casos||[]).join(', ')||'ninguno'}):\n`;
+  const presupuesto = MAX_BYTES - bytes(fijo) - bytes(ctxTxt) - bytes(cabecera) - 800;
+  const pack = empacarReglas(reglas, Math.max(presupuesto, 0));
+  const nota = pack.incluidas<pack.total ? `(caben ${pack.incluidas} de ${pack.total}; el resto se verifica en la auditoría)\n` : '';
+  return {texto: fijo + ctxTxt + (reglas.length? cabecera+nota+pack.texto : ''), incluidas:pack.incluidas, total:pack.total};
+}
+
+function promptAuditoria(p, e, output, tanda, i, n){
+  return `Eres el auditor de calidad de la etapa "${e.nombre}" (${e.clave}). Tu única tarea es verificar si el ENTREGABLE cumple los CRITERIOS y las REGLAS. No lo reescribas ni lo mejores. Está prohibido aprobar para complacer: si una regla aplicable a este entregable no se cumple, es una falla. Una regla que no aplica a este tipo de entregable no es falla. Cada falla lleva la referencia (id de regla o número de criterio), evidencia textual (cita del entregable, o "ausente" si falta algo obligatorio) y una corrección concreta que el ejecutor pueda aplicar sin adivinar.
+
+BRIEF (resumen): ${corta(p.brief, 3000)}
+OBJETIVO DE LA ETAPA: ${e.objetivo}
+ENTREGABLE ESPERADO: ${e.entregable}
+GATE: ${(CAT[e.clave]||{}).gate||''}
+CRITERIOS:
+${(e.criterios||[]).map((c,k)=>`${k+1}. ${c}`).join('\n')}
+
+REGLAS (tanda ${i} de ${n}):
+${tanda||'(esta etapa no tiene reglas de skill; audita solo los criterios)'}
+
+ENTREGABLE A AUDITAR:
+<<<
+${corta(output, 24000)}
+>>>
+
+Responde SOLO con JSON: {"veredicto":"APRUEBA"|"RECHAZA","fallas":[{"ref":"id de regla o C1..C6","evidencia":"...","correccion":"..."}],"nota":"una línea"}`;
+}
+
+function promptEvalImagen(p, refTexto, nImgs){
+  return `Eres el evaluador de assets de Final Upgrade AI. Se adjuntan ${nImgs} imagen(es) generadas con IA. Evalúa si cumplen con el BRIEF y con lo APROBADO. Sé específico y visual: describe lo que ves antes de juzgar. Prohibido aprobar para complacer.
+
+BRIEF:
+<<<
+${corta(p.brief, 12000)}
+>>>
+${refTexto?`\nLO APROBADO (estrategia, shots, prompts):\n<<<\n${refTexto}\n>>>\n`:''}
+RÚBRICA: fidelidad al brief · identidad y consistencia de personajes/marca · composición y lente · luz y color · legibilidad de texto si lo hay · artefactos de IA (manos, ojos, texto roto, geometría imposible, superficies plásticas) · lo que un cliente notaría primero.
+
+Responde SOLO con JSON: {"veredicto":"CUMPLE"|"PARCIAL"|"NO CUMPLE","puntaje":0-100,"descripcion":"qué se ve, 2-3 líneas","criterios":[{"criterio":"...","cumple":true|false,"evidencia":"..."}],"correcciones":["instrucción concreta para el siguiente intento"],"prompt_ajustado":"si aplica, el cambio de prompt sugerido en inglés"}`;
+}
+
+function promptEvalVideo(p, refTexto, escenas){
+  const esc = escenas.map(s=>`Escena ${s.scene_number} [${s.timestamp_start}–${s.timestamp_end}] ${s.label||''} · ${s.shot_type||''}\n  visual: ${s.visual}\n  audio: ${s.audio||'—'}`).join('\n');
+  return `Eres el evaluador de video de Final Upgrade AI. Un analizador externo describió el video escena por escena (abajo). Con esa descripción, evalúa si el video cumple con el BRIEF y con lo APROBADO. Prohibido aprobar para complacer. Si la descripción no permite verificar un criterio, dilo como "no verificable" en vez de suponer.
+
+BRIEF:
+<<<
+${corta(p.brief, 10000)}
+>>>
+${refTexto?`\nLO APROBADO (estrategia, shots, prompts):\n<<<\n${refTexto}\n>>>\n`:''}
+ANÁLISIS ESCENA POR ESCENA:
+${corta(esc, 20000)}
+
+RÚBRICA: fidelidad al brief y a los shots aprobados · continuidad de personajes, vestuario y entorno entre escenas · cámara y ritmo · dramaturgia (¿hay cambio de emoción, avance o presión?) · texto en pantalla y audio · artefactos de IA (morphing, manos, física imposible).
+
+Responde SOLO con JSON: {"veredicto":"CUMPLE"|"PARCIAL"|"NO CUMPLE","puntaje":0-100,"criterios":[{"criterio":"...","cumple":true|false|null,"evidencia":"..."}],"por_escena":[{"escena":1,"nota":"..."}],"correcciones":["..."]}`;
+}
+
+function referenciaAprobada(p){
+  const partes=[];
+  for(const k of p.orden){ const e=p.etapas[k]; if(e&&e.output&&e.estado==='aprobada') partes.push(`## ${e.nombre}\n${e.output}`); }
+  return corta(partes.join('\n\n'), 18000);
+}
+
+// ------------------------------------------------------------ llamadas
+function errMsg(e){
+  const m = {not_granted:'No autorizaste el uso de Claude en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista no puede enviar imágenes.', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'Claude no está disponible en esta cuenta.'};
+  return m[e&&e.code] || ((e&&e.message)||'Error inesperado.');
+}
+let ctl=null;
+function opts(tier, extra){ ctl = new AbortController(); return Object.assign({modelTier:tier, cache:false, signal:ctl.signal}, extra||{}); }
+
+async function planificar(){
+  const p=P(); if(!p||!p.brief.trim()||!sample) return;
+  S.busy='Planificando etapas…'; render();
+  try{
+    const o = opts(S.ajustes.tierGen);
+    if(S.imgs.length && caps.images) o.images = S.imgs.slice(0, caps.images.maxCount||S.imgs.length);
+    const plan = await sample.json(promptPlan(p), o);
+    if(!plan||!Array.isArray(plan.etapas)||!plan.etapas.length) throw {code:'invalid_json', message:'sin etapas'};
+    p.plan = plan; if(plan.nombre) p.nombre = plan.nombre;
+    p.orden=[]; p.etapas={};
+    plan.etapas.forEach((e,i)=>{ const key=`${e.clave}_${i}`; const cat=CAT[e.clave]||{}; const casos=(e.casos||[]).filter(c=>(cat.casos||[]).includes(c)); p.orden.push(key);
+      p.etapas[key]={key, clave:e.clave, nombre:e.nombre||cat.nombre||e.clave, objetivo:e.objetivo||'', entregable:e.entregable||cat.sale||'', casos: casos.length?casos:(cat.casos||[]).slice(0, cat.clave==='E5'?0:99), criterios:e.criterios||[], usaImagenes:!!e.usaImagenes, ok:!!cat.ok, estado:'pendiente', output:'', rondas:[], feedback:''}; });
+    S.view='plan'; await guardar(p);
+  }catch(e){ alert(errMsg(e)); }
+  S.busy=false; render();
+}
+
+async function ejecutarEtapa(key){
+  const p=P(); const e=p.etapas[key]; if(!e||!sample) return;
+  const max = Number(S.ajustes.rondas)||3;
+  let correcciones = e.rondas.length && e.estado==='agotada' ? (e.rondas[e.rondas.length-1].fallas||[]) : [];
+  let ronda = e.estado==='agotada' ? e.rondas.length : 0;
+  if(e.estado!=='agotada'){ e.rondas=[]; }
+  const feedback = e.feedback||'';
+  const limite = ronda+max;
+  while(ronda<limite){
+    ronda++;
+    e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; render(); await guardar(p);
+    const pr = promptEtapa(p, e, correcciones, feedback);
+    e.reglasIncluidas=pr.incluidas; e.reglasTotal=pr.total;
+    let out;
+    try{
+      const o = opts(S.ajustes.tierGen, {onText:({text})=>{ e.parcial=text; const el=$(`#parcial-${key}`); if(el) el.textContent=text; }});
+      if(e.usaImagenes && S.imgs.length && caps.images) o.images = S.imgs.slice(0, caps.images.maxCount||S.imgs.length);
+      const r = await sample(pr.texto, o); out = r.text; if(r.truncated) out += '\n\n[SALIDA TRUNCADA por el límite del modelo]';
+    }catch(err){ e.estado = e.output?'rechazada':'pendiente'; e.error=errMsg(err); e.parcial=''; render(); await guardar(p); return; }
+    e.parcial='';
+    // auditoría en tandas: cubre el 100% de las reglas del caso
+    e.estado='auditando'; render();
+    const reglas = reglasDe(e.casos);
+    const tandas = reglas.length ? tandasReglas(reglas, 22000) : [''];
+    let fallas=[], veredicto='APRUEBA', notas=[];
+    for(let i=0;i<tandas.length;i++){
+      e.progreso=`ronda ${ronda} · auditando ${i+1}/${tandas.length}`; render();
+      try{
+        const a = await sample.json(promptAuditoria(p, e, out, tandas[i], i+1, tandas.length), opts(S.ajustes.tierAud));
+        if(a && a.veredicto==='RECHAZA'){ veredicto='RECHAZA'; }
+        if(a && Array.isArray(a.fallas)) fallas.push(...a.fallas.filter(f=>f&&(f.correccion||f.ref)));
+        if(a && a.nota) notas.push(a.nota);
+      }catch(err){ notas.push('auditoría '+(i+1)+' falló: '+errMsg(err)); }
+    }
+    if(veredicto==='APRUEBA' && fallas.length) veredicto='RECHAZA';
+    e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length});
+    e.output = out;
+    if(veredicto==='APRUEBA'){ e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
+    correcciones = fallas; e.estado='rechazada'; render(); await guardar(p);
+  }
+  e.estado='agotada'; e.progreso=''; render(); await guardar(p);
+}
+
+function siguientePendiente(p){
+  for(const k of p.orden){ const e=p.etapas[k]; if(e.estado==='pendiente') return k; if(!['aprobada'].includes(e.estado)) return null; }
+  return null;
+}
+async function continuar(){ const p=P(); if(!p) return; const k=siguientePendiente(p); if(k) await ejecutarEtapa(k); else render(); }
+async function iniciar(){ const p=P(); if(!p||!p.orden.length) return; S.view='run'; render(); await continuar(); }
+async function aprobar(key){ const p=P(); p.etapas[key].estado='aprobada'; render(); await guardar(p); await continuar(); }
+async function iterar(key){
+  const p=P(); const e=p.etapas[key]; const fb=($(`#fb-${key}`)||{}).value||''; if(!fb.trim()){ alert('Escribe qué quieres cambiar.'); return; }
+  const idx=p.orden.indexOf(key); const abajo=p.orden.slice(idx+1).filter(k=>p.etapas[k].estado!=='pendiente');
+  if(abajo.length && !confirm(`Iterar esta etapa reinicia ${abajo.length} etapa(s) posteriores. ¿Continuar?`)) return;
+  for(const k of abajo){ Object.assign(p.etapas[k], {estado:'pendiente', output:'', rondas:[], feedback:''}); }
+  e.feedback=fb; e.estado='pendiente'; e.rondas=[]; await guardar(p); await ejecutarEtapa(key);
+}
+async function otraRonda(key){ await ejecutarEtapa(key); }
+async function aprobarAsi(key){ const p=P(); if(!confirm('El auditor no aprobó esta versión. ¿Aprobar de todos modos?')) return; p.etapas[key].estado='aprobada'; await guardar(p); render(); await continuar(); }
+function detener(){ if(ctl) ctl.abort(); }
+
+// ------------------------------------------------------------ evaluador
+let EV = {modo:'imagen', imgs:[], fuente:'url', url:'', gens:null, genSel:null, estado:'', res:null, escenas:null, analisisId:null, err:''};
+async function evaluarImagen(){
+  const p=P(); if(!p||!sample||!EV.imgs.length) return;
+  EV.estado='Evaluando…'; EV.res=null; EV.err=''; render();
+  try{
+    const r = await sample.json(promptEvalImagen(p, referenciaAprobada(p), EV.imgs.length), opts(S.ajustes.tierGen, {images:EV.imgs.slice(0, caps.images?caps.images.maxCount:1)}));
+    EV.res=r; p.evaluaciones=(p.evaluaciones||[]).slice(-20); p.evaluaciones.push({tipo:'imagen', fecha:nowIso(), n:EV.imgs.length, veredicto:r.veredicto, puntaje:r.puntaje}); await guardar(p);
+  }catch(e){ EV.err=errMsg(e); }
+  EV.estado=''; render();
+}
+function mcpErr(e){
+  const m={server_not_connected:'Higgsfield no está conectado en esta cuenta. Agrégalo en claude.ai → Settings → Connectors.', needs_reauth:'Higgsfield pide volver a autorizar. Reconéctalo en claude.ai → Settings → Connectors.', not_in_manifest:'Esta herramienta no está en el manifiesto de la página.', tool_error:'Higgsfield reportó un error: '+((e&&e.message)||''), not_granted:'No autorizaste el conector para esta página.', selection_required:'Tienes más de un conector Higgsfield: elige uno cuando la página lo pida.'};
+  return m[e&&e.code] || ((e&&e.message)||'Error del conector.');
+}
+async function cargarGeneraciones(){
+  if(!mcp) return; EV.estado='Cargando tus generaciones de video…'; EV.err=''; render();
+  try{ const r = await mcp.callTool('Higgsfield','show_generations',{type:'video', size:24}); const pl = r.payload||{}; EV.gens = (pl.items||[]).filter(g=>g.status==='completed' && g.results && g.results.rawUrl); }
+  catch(e){ EV.err=mcpErr(e); }
+  EV.estado=''; render();
+}
+const esYouTube = u => /^https:\/\/((www\.|m\.)?youtube\.com\/|youtu\.be\/)/.test(u);
+async function evaluarVideo(){
+  const p=P(); if(!p||!sample||!mcp) return;
+  let url = EV.fuente==='gens' ? (EV.genSel&&EV.genSel.results.rawUrl) : EV.url.trim();
+  if(!url){ EV.err='Falta el video.'; render(); return; }
+  EV.res=null; EV.escenas=null; EV.err='';
+  try{
+    let input;
+    if(esYouTube(url)) input={youtube_url:url};
+    else { EV.estado='Importando el video a Higgsfield…'; render(); const im = await mcp.callTool('Higgsfield','media_import_url',{url, type:'video'}); const id=(im.payload||{}).media_id; if(!id) throw {code:'tool_error', message:'la importación no devolvió media_id'}; input={video_input_id:id}; }
+    EV.estado='Pidiendo el análisis escena por escena (10 créditos de Higgsfield)…'; render();
+    const cr = await mcp.callTool('Higgsfield','video_analysis_create', input);
+    const aid = ((cr.payload||{}).result||{}).id; if(!aid) throw {code:'tool_error', message:'no llegó el id del análisis'};
+    EV.analisisId=aid;
+    const t0=Date.now(); let res=null;
+    while(Date.now()-t0 < 12*60*1000){
+      await new Promise(r=>setTimeout(r,6000));
+      EV.estado=`Analizando el video… ${Math.round((Date.now()-t0)/1000)}s`; render();
+      const st = await mcp.callTool('Higgsfield','video_analysis_status',{video_analyze_id:aid},{cache:false});
+      res = (st.payload||{}).result||{};
+      if(res.status==='completed') break;
+      if(res.status==='failed') throw {code:'tool_error', message:res.fail_reason||'el análisis falló'};
+    }
+    if(!res||res.status!=='completed') throw {code:'tool_error', message:'el análisis no terminó en 12 minutos'};
+    EV.escenas = res.scenes||[];
+    EV.estado='Evaluando contra el brief…'; render();
+    const r = await sample.json(promptEvalVideo(p, referenciaAprobada(p), EV.escenas), opts(S.ajustes.tierGen));
+    EV.res=r; p.evaluaciones=(p.evaluaciones||[]).slice(-20); p.evaluaciones.push({tipo:'video', fecha:nowIso(), url, veredicto:r.veredicto, puntaje:r.puntaje}); await guardar(p);
+  }catch(e){ EV.err = e&&e.code&&['not_granted','rate_limited','invalid_json','refused','cancelled','prompt_too_large'].includes(e.code) ? errMsg(e) : mcpErr(e); }
+  EV.estado=''; render();
+}
+
+// ------------------------------------------------------------ markdown mínimo
+function md(src){
+  const lines=(src||'').split('\n'); let out=[], i=0, inCode=false, buf=[], list=null;
+  const flush=()=>{ if(list){ out.push(`</${list}>`); list=null; } };
+  const inline = s => esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|\W)\*([^*\n]+)\*(?=\W|$)/g,'$1<i>$2</i>');
+  for(;i<lines.length;i++){ const l=lines[i];
+    if(/^```/.test(l)){ if(inCode){ out.push('<pre><code>'+esc(buf.join('\n'))+'</code></pre>'); buf=[]; inCode=false; } else { flush(); inCode=true; } continue; }
+    if(inCode){ buf.push(l); continue; }
+    let m;
+    if((m=/^(#{1,3})\s+(.*)/.exec(l))){ flush(); out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`); continue; }
+    if((m=/^\s*[-*•]\s+(.*)/.exec(l))){ if(list!=='ul'){ flush(); out.push('<ul>'); list='ul'; } out.push('<li>'+inline(m[1])+'</li>'); continue; }
+    if((m=/^\s*\d+[.)]\s+(.*)/.exec(l))){ if(list!=='ol'){ flush(); out.push('<ol>'); list='ol'; } out.push('<li>'+inline(m[1])+'</li>'); continue; }
+    if(/^\s*\|.*\|\s*$/.test(l)){ flush(); const rows=[]; while(i<lines.length && /^\s*\|.*\|\s*$/.test(lines[i])){ rows.push(lines[i]); i++; } i--; const cells=r=>r.trim().slice(1,-1).split('|').map(c=>inline(c.trim())); const body=rows.filter(r=>!/^\s*\|[\s:|-]+\|\s*$/.test(r)); out.push('<table>'+body.map((r,k)=>'<tr>'+cells(r).map(c=>k===0?`<th>${c}</th>`:`<td>${c}</td>`).join('')+'</tr>').join('')+'</table>'); continue; }
+    if(!l.trim()){ flush(); continue; }
+    flush(); out.push('<p>'+inline(l)+'</p>');
+  }
+  if(inCode) out.push('<pre><code>'+esc(buf.join('\n'))+'</code></pre>');
+  flush(); return out.join('');
+}
+
+// ------------------------------------------------------------ render
+const ESTADO = {pendiente:['','Pendiente'], generando:['gen','Generando'], auditando:['aud','Auditando'], rechazada:['rech','Rechazada por el auditor'], agotada:['agot','No pasó la auditoría'], espera_ok:['espera','Espera tu OK'], aprobada:['aprob','Aprobada']};
+const pillEstado = e => { const [cls,txt]=ESTADO[e.estado]||['',e.estado]; const c = {gen:'info',aud:'info',rech:'bad',agot:'bad',espera:'warn',aprob:'ok'}[cls]||''; return `<span class="pill ${c}">${txt}</span>`; };
+
+function render(){
+  const p=P();
+  $('#ver').textContent = `${D.meta.reglas} reglas · ${D.meta.auditorias} auditorías`;
+  $('#plist').innerHTML = S.proyectos.map(x=>`<button class="${x.id===S.pid?'act':''}" data-p="${x.id}"><b>${esc(x.nombre)}</b><small>${(x.creado||'').slice(0,10)} · ${x.orden?x.orden.length:0} etapas</small></button>`).join('') || '<div class="mute" style="padding:6px 9px">Ningún proyecto todavía.</div>';
+  $('#plist').querySelectorAll('button').forEach(b=>b.onclick=()=>{ S.pid=b.dataset.p; S.imgs=[]; EV.res=null; EV.escenas=null; S.view = P().orden.length?'run':'brief'; render(); });
+  $('#tabs').querySelectorAll('button').forEach(b=>{ b.classList.toggle('act', b.dataset.v===S.view); b.onclick=()=>{ S.view=b.dataset.v; render(); }; });
+  $('#nPlan').textContent = p&&p.orden.length ? p.orden.length : '';
+  $('#nRun').textContent = p&&p.orden.length ? `${p.orden.filter(k=>p.etapas[k].estado==='aprobada').length}/${p.orden.length}` : '';
+  $('#btnNuevo').onclick = nuevoProyecto;
+  const m=$('#main');
+  if(!p){ m.innerHTML = `<div class="hd"><div><h2>Sube un brief</h2><p class="sub">De una línea o de cinco páginas. La app decide las etapas, dirige al modelo, audita lo que entrega y lo rechaza hasta que cumpla.</p></div></div><div class="empty">Empieza con <b>Nuevo brief</b>.</div>`; return; }
+  ({brief:vBrief, plan:vPlan, run:vRun, eval:vEval, ajustes:vAjustes})[S.view](m,p);
+}
+
+function vBrief(m,p){
+  m.innerHTML = `<div class="hd"><div><h2>Brief</h2><p class="sub">Texto libre: un spot de 60s con 5 páginas de contexto, una estrategia, una referencia para recrear o una sola línea.</p></div></div>
+  <div class="card">
+    <div><div class="lbl">Nombre del proyecto</div><input type="text" id="nombre" value="${esc(p.nombre)}" placeholder="Se completa solo al planificar"></div>
+    <div><div class="lbl">Brief</div><textarea id="brief" style="min-height:260px" placeholder="Ej.: una imagen de un hombre haciendo wakeboarding en Los Cabos al mediodía">${esc(p.brief)}</textarea><div class="mute" style="font-size:12px;margin-top:4px" id="briefN"></div></div>
+    <div><div class="lbl">Referencias (imágenes)</div><div class="row"><input type="file" id="imgs" accept="${caps.images?caps.images.mediaTypes.join(','):'image/*'}" multiple ${caps.images?'':'disabled'}><span class="mute" style="font-size:12px">${caps.images?`Hasta ${caps.images.maxCount} por llamada. Se quedan en esta pestaña; al recargar hay que volver a adjuntarlas.`:'Esta vista no puede enviar imágenes al modelo.'}</span></div><div class="thumbs" id="thumbs"></div></div>
+    <div class="row"><button class="prim" id="btnPlan" ${!sample||S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span>${S.busy}</span>`:''}</div>
+  </div>`;
+  const ta=$('#brief'), nm=$('#nombre'), cnt=$('#briefN');
+  const upd=()=>{ cnt.textContent = `${ta.value.length.toLocaleString('es-MX')} caracteres`; };
+  upd();
+  ta.oninput=()=>{ p.brief=ta.value; upd(); }; ta.onchange=()=>guardar(p);
+  nm.onchange=()=>{ p.nombre=nm.value||'Sin título'; guardar(p); render(); };
+  const th=$('#thumbs'); const pintar=()=>{ th.innerHTML=''; S.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); };
+  pintar();
+  $('#imgs').onchange=ev=>{ S.imgs=[...ev.target.files]; pintar(); };
+  $('#btnPlan').onclick=()=>{ p.brief=ta.value; planificar(); };
+}
+
+function vPlan(m,p){
+  if(!p.plan){ m.innerHTML=`<div class="hd"><div><h2>Plan</h2></div></div><div class="empty">Todavía no hay plan. Analiza el brief primero.</div>`; return; }
+  const pl=p.plan; const corriendo = p.orden.some(k=>['generando','auditando'].includes(p.etapas[k].estado));
+  m.innerHTML = `<div class="hd"><div><h2>${esc(p.nombre)}</h2><p class="sub">${esc(pl.tipo||'')}${pl.track?` · track ${esc(pl.track)}`:''}</p></div>
+    <div class="row"><button class="prim" id="btnRun" ${corriendo?'disabled':''}>${p.orden.some(k=>p.etapas[k].estado!=='pendiente')?'Ir a la ejecución':'Aprobar plan y ejecutar'}</button></div></div>
+  <div class="stack">
+    <div class="card"><p>${esc(pl.resumen||'')}</p>${(pl.supuestos||[]).length?`<div><div class="lbl">Supuestos que tomó el planificador</div><ul class="crit">${pl.supuestos.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}</div>
+    <div class="card"><div class="row" style="justify-content:space-between"><h3>Etapas (${p.orden.length})</h3><span class="mute" style="font-size:12.5px">Quita las que no quieras. Los criterios son lo que el auditor va a exigir.</span></div>
+    <div>${p.orden.map((k,i)=>{ const e=p.etapas[k]; const n=reglasDe(e.casos).length; return `<div class="plan-et"><div class="k">${i+1} · ${esc(e.clave)}</div><div><b>${esc(e.nombre)}</b>${e.ok?' <span class="pill warn">pide tu OK</span>':''}<div class="mute" style="margin:2px 0 4px">${esc(e.objetivo)}</div><div style="font-size:13px"><span class="lbl">Entrega</span> ${esc(e.entregable)}</div><ol class="crit" style="margin-top:4px">${(e.criterios||[]).map(c=>`<li>${esc(c)}</li>`).join('')}</ol><div class="meta" style="margin-top:6px"><span class="pill">${n} reglas</span>${(e.casos||[]).map(c=>`<span class="pill">${c}</span>`).join('')}${e.usaImagenes?'<span class="pill info">ve las imágenes</span>':''}</div></div><div><button class="sm" data-quitar="${k}" ${corriendo?'disabled':''}>Quitar</button></div></div>`; }).join('')}</div>
+    <div class="row"><select id="addEt" style="width:auto"><option value="">Agregar etapa…</option>${ETAPAS.map(e=>`<option value="${e.clave}">${e.clave} · ${esc(e.nombre)}</option>`).join('')}</select></div></div>
+  </div>`;
+  $('#btnRun').onclick=iniciar;
+  m.querySelectorAll('[data-quitar]').forEach(b=>b.onclick=async()=>{ const k=b.dataset.quitar; p.orden=p.orden.filter(x=>x!==k); delete p.etapas[k]; await guardar(p); render(); });
+  $('#addEt').onchange=async ev=>{ const c=ev.target.value; if(!c) return; const cat=CAT[c]; const key=`${c}_${uid()}`; p.orden.push(key); p.etapas[key]={key, clave:c, nombre:cat.nombre, objetivo:cat.sale, entregable:cat.sale, casos:cat.casos.slice(0, c==='E5'||c==='PROMPT_IMAGEN'?1:99), criterios:[cat.gate], usaImagenes:c==='REF', ok:cat.ok, estado:'pendiente', output:'', rondas:[], feedback:''}; await guardar(p); render(); };
+}
+
+function vRun(m,p){
+  if(!p.orden.length){ m.innerHTML=`<div class="hd"><div><h2>Ejecución</h2></div></div><div class="empty">Sin plan. Analiza el brief y aprueba el plan.</div>`; return; }
+  const corriendo = p.orden.some(k=>['generando','auditando'].includes(p.etapas[k].estado));
+  const listas = p.orden.filter(k=>p.etapas[k].estado==='aprobada').length;
+  m.innerHTML = `<div class="hd"><div><h2>${esc(p.nombre)}</h2><p class="sub">${listas} de ${p.orden.length} etapas aprobadas${p.plan&&p.plan.track?` · track ${esc(p.plan.track)}`:''}</p></div>
+    <div class="row">${corriendo?`<button id="btnStop">Detener</button>`:`<button class="prim" id="btnCont" ${siguientePendiente(p)?'':'disabled'}>Continuar</button>`}</div></div>
+  <div class="stack">${p.orden.map((k,i)=>etapaHTML(p.etapas[k],i)).join('')}</div>`;
+  if($('#btnStop')) $('#btnStop').onclick=detener;
+  if($('#btnCont')) $('#btnCont').onclick=continuar;
+  m.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>({aprobar, iterar, otraRonda, aprobarAsi, ejecutar:ejecutarEtapa, copiar:k=>{ navigator.clipboard.writeText(p.etapas[k].output||''); b.textContent='Copiado'; }})[b.dataset.act](b.dataset.k));
+}
+
+function etapaHTML(e,i){
+  const cls=(ESTADO[e.estado]||[''])[0]; const activa=['generando','auditando'].includes(e.estado);
+  const ult = e.rondas[e.rondas.length-1];
+  return `<section class="etapa ${cls}"><div class="stripe"></div><div class="body">
+    <div class="top"><div><div class="lbl">${i+1} · ${esc(e.clave)}</div><h3>${esc(e.nombre)}</h3></div><div class="meta">${pillEstado(e)}${e.rondas.length?`<span class="pill">${e.rondas.length} ronda${e.rondas.length>1?'s':''}</span>`:''}${e.reglasTotal?`<span class="pill" title="reglas que cupieron en la instrucción / reglas auditadas">${e.reglasIncluidas}/${e.reglasTotal} reglas</span>`:''}</div></div>
+    <p class="mute">${esc(e.objetivo)}</p>
+    ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')}</div>${e.estado==='generando'?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
+    ${e.error?`<div class="badbox">${esc(e.error)}</div>`:''}
+    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
+    ${e.output&&!activa?`<div class="out"><div class="row" style="justify-content:space-between"><span class="lbl">Entregable${e.estado==='agotada'?' (última versión, no aprobada)':''}</span><button class="sm" data-act="copiar" data-k="${e.key}">Copiar</button></div><div class="md">${md(e.output)}</div></div>`:''}
+    ${!activa?`<div class="row" style="border-top:1px solid var(--line);padding-top:10px">
+      ${e.estado==='espera_ok'?`<button class="prim" data-act="aprobar" data-k="${e.key}">Aprobar y continuar</button>`:''}
+      ${e.estado==='agotada'?`<button class="prim" data-act="otraRonda" data-k="${e.key}">Otras ${S.ajustes.rondas} rondas</button><button data-act="aprobarAsi" data-k="${e.key}">Aprobar así</button>`:''}
+      ${e.estado==='rechazada'?`<button class="prim" data-act="otraRonda" data-k="${e.key}">Reintentar</button>`:''}
+      ${e.estado==='pendiente'&&!e.output?`<button class="sm" data-act="ejecutar" data-k="${e.key}">Ejecutar solo esta</button>`:''}
+      ${e.output||e.estado==='rechazada'?`<div style="flex:1;min-width:260px"><textarea id="fb-${e.key}" style="min-height:56px" placeholder="Qué cambiar en esta etapa (iteración)">${esc(e.feedback||'')}</textarea></div><button data-act="iterar" data-k="${e.key}">Iterar</button>`:''}
+    </div>`:''}
+  </div></section>`;
+}
+
+function vEval(m,p){
+  const ref = p.orden.filter(k=>p.etapas[k].estado==='aprobada').length;
+  m.innerHTML = `<div class="hd"><div><h2>Evaluador</h2><p class="sub">Compara una imagen o un video generado contra el brief${ref?` y las ${ref} etapas aprobadas`:''} de <b>${esc(p.nombre)}</b>.</p></div>
+    <div class="seg"><button data-m="imagen" class="${EV.modo==='imagen'?'act':''}">Imagen</button><button data-m="video" class="${EV.modo==='video'?'act':''}">Video</button></div></div>
+  <div class="stack">
+  ${EV.modo==='imagen'?`<div class="card">
+      <div><div class="lbl">Imágenes generadas</div><input type="file" id="evImgs" accept="${caps.images?caps.images.mediaTypes.join(','):'image/*'}" multiple ${caps.images?'':'disabled'}>${caps.images?'':'<div class="warnbox" style="margin-top:6px">Esta vista no puede enviar imágenes al modelo.</div>'}<div class="thumbs" id="evThumbs"></div></div>
+      <div class="row"><button class="prim" id="btnEvImg" ${!sample||!caps.images||EV.estado?'disabled':''}>Evaluar</button>${EV.estado?`<span class="status"><span class="spin"></span>${esc(EV.estado)}</span>`:''}</div>
+    </div>`
+  :`<div class="card">
+      ${mcp?'':'<div class="warnbox">El conector Higgsfield no está disponible en esta vista. El evaluador de video usa su análisis escena por escena.</div>'}
+      <div class="seg"><button data-f="url" class="${EV.fuente==='url'?'act':''}">URL (YouTube o .mp4 de Higgsfield)</button><button data-f="gens" class="${EV.fuente==='gens'?'act':''}">Mis generaciones en Higgsfield</button></div>
+      ${EV.fuente==='url'?`<input type="url" id="evUrl" placeholder="https://youtu.be/… o https://….cloudfront.net/….mp4" value="${esc(EV.url)}">`
+      :`<div class="row"><button class="sm" id="btnGens" ${!mcp||EV.estado?'disabled':''}>${EV.gens?'Recargar':'Cargar mis videos'}</button><span class="mute" style="font-size:12.5px">${EV.gens?`${EV.gens.length} videos completados`:''}</span></div>${EV.gens?`<div class="gens">${EV.gens.map(g=>`<button data-g="${g.id}" class="${EV.genSel&&EV.genSel.id===g.id?'act':''}"><img src="${esc(g.results.thumbnailUrl||'')}" alt=""><small>${esc((g.params&&g.params.prompt||g.model||g.id).slice(0,60))}</small></button>`).join('')}</div>`:''}`}
+      <div class="row"><button class="prim" id="btnEvVid" ${!sample||!mcp||EV.estado?'disabled':''}>Analizar y evaluar</button><span class="mute" style="font-size:12.5px">Un análisis cuesta 10 créditos de Higgsfield y tarda de 20 segundos a 5 minutos. Los clips cortos dan el resultado más fiable.</span></div>
+      ${EV.estado?`<div class="status"><span class="spin"></span>${esc(EV.estado)}</div>`:''}
+    </div>`}
+  ${EV.err?`<div class="badbox">${esc(EV.err)}</div>`:''}
+  ${EV.res?resultadoHTML(EV.res):''}
+  ${EV.escenas?`<div class="card"><h3>Escenas detectadas (${EV.escenas.length})</h3><table class="tbl"><tr><th>#</th><th>Tiempo</th><th>Plano</th><th>Visual</th><th>Audio</th></tr>${EV.escenas.map(s=>`<tr><td>${s.scene_number}</td><td class="mono">${esc(s.timestamp_start)}–${esc(s.timestamp_end)}</td><td>${esc(s.shot_type||'')}</td><td>${esc(s.visual||'')}</td><td class="mute">${esc(s.audio||'')}</td></tr>`).join('')}</table></div>`:''}
+  ${(p.evaluaciones||[]).length?`<details><summary>Historial · ${p.evaluaciones.length} evaluaciones</summary><table class="tbl" style="margin-top:8px"><tr><th>Fecha</th><th>Tipo</th><th>Veredicto</th><th>Puntaje</th></tr>${p.evaluaciones.slice().reverse().map(x=>`<tr><td class="mono">${esc(x.fecha.slice(0,16).replace('T',' '))}</td><td>${esc(x.tipo)}</td><td>${esc(x.veredicto||'')}</td><td class="mono">${x.puntaje??''}</td></tr>`).join('')}</table></details>`:''}
+  </div>`;
+  m.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{ EV.modo=b.dataset.m; EV.res=null; EV.escenas=null; EV.err=''; render(); });
+  m.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{ EV.fuente=b.dataset.f; render(); });
+  m.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{ EV.genSel=EV.gens.find(g=>g.id===b.dataset.g); render(); });
+  if($('#evImgs')){ const th=$('#evThumbs'); const pintar=()=>{ th.innerHTML=''; EV.imgs.forEach(f=>{ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.alt=f.name; th.appendChild(im); }); }; pintar(); $('#evImgs').onchange=ev=>{ EV.imgs=[...ev.target.files]; pintar(); }; $('#btnEvImg').onclick=evaluarImagen; }
+  if($('#evUrl')) $('#evUrl').oninput=ev=>{ EV.url=ev.target.value; };
+  if($('#btnGens')) $('#btnGens').onclick=cargarGeneraciones;
+  if($('#btnEvVid')) $('#btnEvVid').onclick=evaluarVideo;
+}
+
+function resultadoHTML(r){
+  const v=r.veredicto||''; const c = v==='CUMPLE'?'ok':v==='PARCIAL'?'warn':'bad';
+  return `<div class="card"><div class="row" style="justify-content:space-between"><div class="row"><span class="score">${r.puntaje??'–'}</span><span class="pill ${c}">${esc(v)}</span></div></div>
+    ${r.descripcion?`<p>${esc(r.descripcion)}</p>`:''}
+    ${Array.isArray(r.criterios)?`<table class="tbl"><tr><th>Criterio</th><th>Cumple</th><th>Evidencia</th></tr>${r.criterios.map(x=>`<tr><td>${esc(x.criterio)}</td><td>${x.cumple===true?'<span class="pill ok">sí</span>':x.cumple===false?'<span class="pill bad">no</span>':'<span class="pill">n/v</span>'}</td><td class="mute">${esc(x.evidencia||'')}</td></tr>`).join('')}</table>`:''}
+    ${Array.isArray(r.por_escena)&&r.por_escena.length?`<div><div class="lbl">Por escena</div><ul class="crit">${r.por_escena.map(x=>`<li><b>${esc(x.escena)}</b> ${esc(x.nota)}</li>`).join('')}</ul></div>`:''}
+    ${Array.isArray(r.correcciones)&&r.correcciones.length?`<div><div class="lbl">Correcciones para el siguiente intento</div><ol class="crit" style="color:var(--ink)">${r.correcciones.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>`:''}
+    ${r.prompt_ajustado?`<div><div class="lbl">Ajuste de prompt sugerido</div><div class="md"><pre><code>${esc(r.prompt_ajustado)}</code></pre></div></div>`:''}
+  </div>`;
+}
+
+function vAjustes(m,p){
+  const a=S.ajustes;
+  m.innerHTML=`<div class="hd"><div><h2>Ajustes</h2><p class="sub">Se guardan en este navegador.</p></div></div>
+  <div class="card"><div class="grid2">
+    <div><div class="lbl">Rondas máximas de auditoría por etapa</div><select id="aR">${[1,2,3,4,5].map(n=>`<option ${a.rondas==n?'selected':''}>${n}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">El skill fija 2 rondas para anchors y "a la tercera se replantea el shot".</div></div>
+    <div></div>
+    <div><div class="lbl">Modelo para generar</div><select id="aG">${['complex','default','quick'].map(t=>`<option ${a.tierGen===t?'selected':''}>${t}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">complex piensa más y tarda más. Es el que maximiza calidad.</div></div>
+    <div><div class="lbl">Modelo para auditar</div><select id="aA">${['complex','default','quick'].map(t=>`<option ${a.tierAud===t?'selected':''}>${t}</option>`).join('')}</select><div class="mute" style="font-size:12px;margin-top:4px">Cada ronda audita todas las reglas del caso en tandas; una etapa CLIP son 3 llamadas de auditoría.</div></div>
   </div>
-  ${e.tipos?`<div class="tools">
-   <button class="chip" data-t="" aria-pressed="${!S.tipo}">Todos</button>
-   ${e.tipos.map(t=>`<button class="chip" data-t="${t}" aria-pressed="${S.tipo===t}"
-     title="${esc(CASOS[t]||t)}">${t}</button>`).join("")}</div>`:""}
-  <div class="lista">${orden.length?orden.map(k=>`
-   <div class="arch">${esc(k)} · ${grupos[k].length}</div>
-   ${grupos[k].map(r=>`<div class="regla"><i class="k k-${r.o}"></i><div>${md(r.t)}</div></div>`).join("")}
-   `).join(""):`<p class="vacio">Nada coincide con el filtro.</p>`}</div>
- </details>`;
-
- const p=document.getElementById("pane");
- p.querySelectorAll(".check").forEach(b=>b.onclick=()=>{
-  const i=+b.dataset.i,l=hechos(e.n);
-  S.hechos[e.n]=l.includes(i)?l.filter(x=>x!==i):[...l,i];guardar();pintar()});
- const det=document.getElementById("det");
- if(det)det.ontoggle=()=>{S.abierto=det.open;guardar()};
- p.querySelectorAll(".chip[data-o]").forEach(b=>b.onclick=()=>{
-  S.origen=S.origen===b.dataset.o?null:b.dataset.o;guardar();pintar()});
- p.querySelectorAll(".chip[data-t]").forEach(b=>b.onclick=()=>{
-  S.tipo=b.dataset.t||null;guardar();pintar()});
- const qi=document.getElementById("q");
- if(qi)qi.oninput=()=>{S.q=qi.value;pintar();
-  const n=document.getElementById("q");n.focus();n.setSelectionRange(n.value.length,n.value.length)};
+  <div class="infobox">Cada llamada se cobra a la cuenta de Claude de quien usa la página. Una etapa típica: 1 llamada de generación + 1 a 3 de auditoría por ronda.</div>
+  <div><div class="lbl">Base de reglas</div><div class="mute" style="font-size:13px">${D.meta.reglas} reglas de ${D.meta.skills} skills · ${D.meta.auditorias} correcciones de auditoría externa · casos: ${Object.keys(D.porCaso).map(c=>`${c} ${D.porCaso[c].length}`).join(' · ')}</div></div>
+  </div>`;
+  const save=()=>{ a.rondas=Number($('#aR').value); a.tierGen=$('#aG').value; a.tierAud=$('#aA').value; try{ localStorage.setItem(ajustesLS, JSON.stringify(a)); }catch(e){} };
+  ['#aR','#aG','#aA'].forEach(s=>$(s).onchange=save);
 }
-pintar();
+
+// ------------------------------------------------------------ arranque
+(async()=>{
+  render();
+  const cl=$('#capline');
+  const use = n => (window.claude&&window.claude.use) ? window.claude.use(n).catch(()=>null) : Promise.resolve(null);
+  [sample, db, mcp] = await Promise.all([use('sample'), use('db'), use('mcp')]);
+  if(sample){ try{ const l=await sample.limits(); caps.images=l.images||false; }catch(e){} }
+  await cargarLista();
+  if(S.proyectos.length && !S.pid){ S.pid=S.proyectos[0].id; S.view = P().orden.length?'run':'brief'; }
+  const parts=[ sample?'Claude listo':'Claude no disponible', db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'sin Higgsfield' ];
+  cl.textContent = parts.join(' · ');
+  render();
+})();
 </script>
 """
 
@@ -335,7 +777,7 @@ pintar();
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default="rules.sqlite")
-    ap.add_argument("--out", default="app/produccion.html")
+    ap.add_argument("--out", default="app/ejecutor.html")
     a = ap.parse_args()
 
     con = sqlite3.connect(a.db)
@@ -349,31 +791,24 @@ def main() -> int:
             continue
         idx[rid]["o"] = origen
         por_caso.setdefault(caso, []).append(rid)
-
-    usados = {r for e in ETAPAS for c in e["casos"] for r in por_caso.get(c, [])}
+    usados = {r for ids in por_caso.values() for r in ids}
     idx = {k: v for k, v in idx.items() if k in usados}
 
-    for e in ETAPAS:
-        e["checks"] = CHECKS[e["n"]]
-
     datos = {
-        "etapas": ETAPAS, "tracks": TRACKS, "casos": casos,
-        "porCaso": por_caso, "idx": idx,
-        "meta": {"total": con.execute("SELECT COUNT(*) FROM reglas").fetchone()[0],
+        "etapas": ETAPAS, "tracks": TRACKS, "casos": casos, "porCaso": por_caso, "idx": idx,
+        "meta": {"reglas": len(idx),
+                 "skills": con.execute("SELECT COUNT(DISTINCT skill) FROM reglas").fetchone()[0],
                  "auditorias": con.execute("SELECT COUNT(*) FROM auditorias").fetchone()[0]},
     }
     blob = json.dumps(datos, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(PLANTILLA.replace("__DATOS__", blob), encoding="utf-8")
-
-    print(f"{out}: {out.stat().st_size / 1024:.0f} KB · {len(idx)} reglas\n")
-    for e in ETAPAS:
-        n = len({r for c in e["casos"] for r in por_caso.get(c, [])})
-        tr = "".join(t[0] for t in ("EXPRESS", "STANDARD", "FILM") if t in e["tracks"])
-        print(f"  {e['n']}  {e['nombre']:20} [{tr:3}] {'·'.join(e['casos'])[:34]:36} {n:>4}")
+    print(f"{out}: {out.stat().st_size / 1024:.0f} KB · {len(idx)} reglas en {len(por_caso)} casos")
+    for c, ids in sorted(por_caso.items(), key=lambda kv: -len(kv[1])):
+        print(f"  {c:8} {len(ids):>4}")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
