@@ -274,7 +274,10 @@ const MAX_BYTES = 62000;
 
 // ------------------------------------------------------------ estado
 let sample=null, db=null, mcp=null, caps={images:false};
-let S = {proyectos:[], pid:null, view:'brief', imgs:[], busy:false, ajustes:{rondas:3, tierGen:'complex', tierAud:'default', rondasEval:1}};
+let S = {proyectos:[], pid:null, view:'brief', imgs:[], busy:false, error:'', bloqueo:false, ajustes:{rondas:3, tierGen:'complex', tierAud:'default', rondasEval:1}};
+// Nada de alert/confirm/prompt: dentro del visor de artifacts esos dialogos
+// pueden estar bloqueados, y entonces el error no se ve por ningun lado.
+function fallo(msg){ S.error=msg; render(); }
 const P = () => S.proyectos.find(p=>p.id===S.pid);
 const ajustesLS = 'ejecutor.ajustes';
 try{ Object.assign(S.ajustes, JSON.parse(localStorage.getItem(ajustesLS)||'{}')); }catch(e){}
@@ -476,10 +479,13 @@ let SRV=null;
 const claveLS='ejecutor.clave';
 async function detectarServidor(){
   if(!/^https?:$/.test(location.protocol)) return null;
-  try{ const r=await fetch('/api/config',{cache:'no-store'}); if(!r.ok) return null; const j=await r.json(); return j&&j.servidor?j:null; }catch(e){ return null; }
+  try{ const r=await fetch('/api/config',{cache:'no-store',headers:cabeceras()}); if(!r.ok) return null; const j=await r.json(); return j&&j.servidor?j:null; }catch(e){ return null; }
 }
-function cabeceras(){ const h={'Content-Type':'application/json'}; const k=sessionStorage.getItem(claveLS); if(k) h['x-app-password']=k; return h; }
-function pedirClave(){ const k=prompt('Contraseña de la app:'); if(k) sessionStorage.setItem(claveLS,k); return k; }
+function claveGuardada(){ try{ return localStorage.getItem(claveLS)||''; }catch(e){ return ''; } }
+function cabeceras(){ const h={'Content-Type':'application/json'}; const k=claveGuardada(); if(k) h['x-app-password']=k; return h; }
+async function probarClave(k){
+  try{ const r=await fetch('/api/config',{cache:'no-store',headers:{'x-app-password':k}}); if(!r.ok) return null; return await r.json(); }catch(e){ return null; }
+}
 async function aBase64(blob){
   const buf=await blob.arrayBuffer(); let bin=''; const b=new Uint8Array(buf);
   for(let i=0;i<b.length;i+=0x8000) bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
@@ -500,7 +506,7 @@ function sampleDeServidor(){
     let r;
     try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:JSON.stringify(cuerpo),signal:o.signal}); }
     catch(e){ throw (o.signal&&o.signal.aborted) ? {code:'cancelled',message:'Detenido.'} : {code:'upstream_error', message:'No se pudo llegar al servidor.'}; }
-    if(r.status===401){ if(pedirClave()) throw {code:'upstream_error', message:'Contraseña guardada. Vuelve a intentar.'}; throw {code:'not_granted', message:'Se necesita la contraseña de la app.'}; }
+    if(r.status===401){ S.bloqueo=true; render(); throw {code:'not_granted', message:'La contraseña de la app cambió. Vuelve a escribirla.'}; }
     if(!r.ok){ let j={}; try{ j=await r.json(); }catch(e){} throw {code:j.code||'upstream_error', message:j.message||('El servidor respondió '+r.status)}; }
     const rd=r.body.getReader(), dec=new TextDecoder(); let buf='', texto='', trunc=false, err=null;
     for(;;){
@@ -543,11 +549,11 @@ function opts(tier, extra){ ctl = new AbortController(); return Object.assign({m
 
 async function planificar(){
   const p=P(); if(!p) return;
-  if(!p.brief.trim()){ alert('Escribe el brief primero.'); return; }
-  if(!sample){ alert(motivoSinClaude()); return; }
-  S.busy='Planificando etapas…'; render();
+  if(!p.brief.trim()) return fallo('Escribe el brief primero.');
+  if(!sample) return fallo(motivoSinClaude());
+  S.error=''; S.busy='Leyendo el brief…'; render();
   try{
-    const o = opts(S.ajustes.tierGen);
+    const o = opts(S.ajustes.tierGen, {onText:({text})=>{ S.busy='Armando el plan… '+text.length+' caracteres'; const el=$('#busyN'); if(el) el.textContent=S.busy; }});
     if(S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
     const plan = await sample.json(promptPlan(p), o);
     if(!plan||!Array.isArray(plan.etapas)||!plan.etapas.length) throw {code:'invalid_json', message:'sin etapas'};
@@ -556,7 +562,7 @@ async function planificar(){
     plan.etapas.forEach((e,i)=>{ const key=`${e.clave}_${i}`; const cat=CAT[e.clave]||{}; const casos=(e.casos||[]).filter(c=>(cat.casos||[]).includes(c)); p.orden.push(key);
       p.etapas[key]={key, clave:e.clave, nombre:e.nombre||cat.nombre||e.clave, objetivo:e.objetivo||'', entregable:e.entregable||cat.sale||'', casos: casos.length?casos:(cat.casos||[]).slice(0, cat.clave==='E5'?0:99), criterios:e.criterios||[], usaImagenes:!!e.usaImagenes, ok:!!cat.ok, estado:'pendiente', output:'', rondas:[], feedback:''}; });
     S.view='plan'; await guardar(p);
-  }catch(e){ alert(errMsg(e)); }
+  }catch(e){ S.error=errMsg(e); }
   S.busy=false; render();
 }
 
@@ -611,14 +617,18 @@ async function continuar(){ const p=P(); if(!p) return; const k=siguientePendien
 async function iniciar(){ const p=P(); if(!p||!p.orden.length) return; S.view='run'; render(); await continuar(); }
 async function aprobar(key){ const p=P(); p.etapas[key].estado='aprobada'; render(); await guardar(p); await continuar(); }
 async function iterar(key){
-  const p=P(); const e=p.etapas[key]; const fb=($(`#fb-${key}`)||{}).value||''; if(!fb.trim()){ alert('Escribe qué quieres cambiar.'); return; }
+  const p=P(); const e=p.etapas[key]; const fb=($(`#fb-${key}`)||{}).value||'';
+  if(!fb.trim()) return fallo('Escribe qué quieres cambiar en esa etapa.');
   const idx=p.orden.indexOf(key); const abajo=p.orden.slice(idx+1).filter(k=>p.etapas[k].estado!=='pendiente');
-  if(abajo.length && !confirm(`Iterar esta etapa reinicia ${abajo.length} etapa(s) posteriores. ¿Continuar?`)) return;
+  if(abajo.length && !e.confirmado){ e.confirmado=true; return fallo(`Iterar "${e.nombre}" reinicia ${abajo.length} etapa(s) posteriores. Vuelve a darle a Iterar para confirmar.`); }
+  e.confirmado=false; S.error='';
   for(const k of abajo){ Object.assign(p.etapas[k], {estado:'pendiente', output:'', rondas:[], feedback:''}); }
   e.feedback=fb; e.estado='pendiente'; e.rondas=[]; await guardar(p); await ejecutarEtapa(key);
 }
 async function otraRonda(key){ await ejecutarEtapa(key); }
-async function aprobarAsi(key){ const p=P(); if(!confirm('El auditor no aprobó esta versión. ¿Aprobar de todos modos?')) return; p.etapas[key].estado='aprobada'; await guardar(p); render(); await continuar(); }
+async function aprobarAsi(key){ const p=P(); const e=p.etapas[key];
+  if(!e.confirmado){ e.confirmado=true; return fallo('El auditor no aprobó esta versión. Vuelve a darle a "Aprobar así" para confirmar.'); }
+  e.confirmado=false; S.error=''; e.estado='aprobada'; await guardar(p); render(); await continuar(); }
 function detener(){ if(ctl) ctl.abort(); }
 
 // ------------------------------------------------------------ evaluador
@@ -741,8 +751,43 @@ function render(){
   $('#nRun').textContent = p&&p.orden.length ? `${p.orden.filter(k=>p.etapas[k].estado==='aprobada').length}/${p.orden.length}` : '';
   $('#btnNuevo').onclick = nuevoProyecto;
   const m=$('#main');
+  if(S.bloqueo){ vBloqueo(m); return; }
   if(!p){ m.innerHTML = `<div class="hd"><div><h2>Brief</h2></div></div><div class="empty">Sin proyectos. Usa <b>Nuevo brief</b>.</div>`; return; }
   ({brief:vBrief, plan:vPlan, run:vRun, eval:vEval, ajustes:vAjustes})[S.view](m,p);
+  banner(m);
+}
+
+function banner(m){
+  if(!S.error) return;
+  const d=document.createElement('div');
+  d.className='badbox'; d.style.marginBottom='12px'; d.style.cursor='pointer';
+  d.title='Clic para cerrar';
+  d.textContent=S.error;
+  d.onclick=()=>{ S.error=''; render(); };
+  m.insertBefore(d, m.firstChild);
+}
+
+function vBloqueo(m){
+  m.innerHTML = `<div class="hd"><div><h2>Contraseña</h2><p class="sub">Esta app usa la cuenta de Claude del servidor. La contraseña evita que la gaste alguien más.</p></div></div>
+  <div class="card" style="max-width:440px">
+    <div><div class="lbl">Contraseña</div><input type="password" id="pw" autocomplete="current-password"></div>
+    <div class="row"><button class="prim" id="btnPw">Entrar</button><span class="mute" id="pwMsg"></span></div>
+  </div>`;
+  const inp=$('#pw'), msg=$('#pwMsg'), btn=$('#btnPw');
+  const entrar=async()=>{
+    const k=inp.value.trim();
+    if(!k){ msg.textContent='Escribe la contraseña.'; return; }
+    btn.disabled=true; msg.textContent='Verificando…';
+    const j=await probarClave(k);
+    btn.disabled=false;
+    if(!j){ msg.textContent='No se pudo hablar con el servidor.'; return; }
+    if(!j.claveOk){ msg.textContent='Contraseña incorrecta.'; inp.select(); return; }
+    try{ localStorage.setItem(claveLS,k); }catch(e){}
+    SRV=j; S.bloqueo=false; S.error=''; render();
+  };
+  btn.onclick=entrar;
+  inp.onkeydown=e=>{ if(e.key==='Enter') entrar(); };
+  inp.focus();
 }
 
 function vBrief(m,p){
@@ -755,7 +800,7 @@ function vBrief(m,p){
       <div><div class="lbl">Imágenes de referencia</div><div class="row"><input type="file" id="imgs" hidden accept="image/*" multiple><button id="btnImgs">Subir imágenes</button><span class="mute" style="font-size:12px" id="imgsN">${S.imgs.length?`${S.imgs.length} adjunta(s). Se pierden al recargar.`:''}</span></div><div class="thumbs" id="thumbs"></div></div>
     </div>
     ${sample?'':`<div class="badbox">${esc(motivoSinClaude())}</div>`}
-    <div class="row"><button class="prim" id="btnPlan" ${S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span>${S.busy}</span>`:''}</div>
+    <div class="row"><button class="prim" id="btnPlan" ${S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span><span id="busyN">${esc(S.busy)}</span></span>`:''}</div>
   </div>`;
   const ta=$('#brief'), nm=$('#nombre'), cnt=$('#briefN');
   const upd=()=>{ cnt.textContent = `${ta.value.length.toLocaleString('es-MX')} caracteres`; };
@@ -903,7 +948,7 @@ function vAjustes(m,p){
   [sample, db, mcp] = await Promise.all([use('sample'), use('db'), use('mcp')]);
   if(!sample){
     SRV = await detectarServidor();
-    if(SRV && SRV.claude){ if(SRV.clave && !sessionStorage.getItem(claveLS)) pedirClave(); sample = sampleDeServidor(); }
+    if(SRV && SRV.claude){ sample = sampleDeServidor(); if(SRV.clave && !SRV.claveOk) S.bloqueo=true; }
   }
   if(sample){ try{ const l=await sample.limits(); caps.images=l.images||false; }catch(e){} }
   await cargarLista();
