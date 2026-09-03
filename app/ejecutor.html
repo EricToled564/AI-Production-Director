@@ -301,15 +301,17 @@ ${PARAMS}
   const ctx = contextoAprobado(p, e.key, 14000);
   const ctxTxt = ctx ? `\nCONTEXTO APROBADO DE ETAPAS ANTERIORES (es la fuente de verdad; no lo contradigas):\n${ctx}\n` : '';
   const reglas = reglasDe(e.casos);
-  const cabecera = `\nREGLAS OBLIGATORIAS DE LOS SKILLS (casos ${(e.casos||[]).join(', ')||'ninguno'}):\n`;
+  const cabecera = `REGLAS OBLIGATORIAS DE LOS SKILLS (casos ${(e.casos||[]).join(', ')||'ninguno'}):\n`;
   const presupuesto = MAX_BYTES - bytes(fijo) - bytes(ctxTxt) - bytes(cabecera) - 800;
   const pack = empacarReglas(reglas, Math.max(presupuesto, 0));
   const nota = pack.incluidas<pack.total ? `(caben ${pack.incluidas} de ${pack.total}; el resto se verifica en la auditoría)\n` : '';
-  return {texto: fijo + ctxTxt + (reglas.length? cabecera+nota+pack.texto : ''), incluidas:pack.incluidas, total:pack.total};
+  return {prefijo: reglas.length ? cabecera+nota+pack.texto : '', texto: fijo + ctxTxt,
+          incluidas:pack.incluidas, total:pack.total};
 }
 
 function promptAuditoria(p, e, output, tanda, i, n){
-  return `Eres el auditor de calidad de la etapa "${e.nombre}" (${e.clave}). Tu única tarea es verificar si el ENTREGABLE cumple los CRITERIOS y las REGLAS. No lo reescribas ni lo mejores. Está prohibido aprobar para complacer: si una regla aplicable a este entregable no se cumple, es una falla. Una regla que no aplica a este tipo de entregable no es falla. Cada falla lleva la referencia (id de regla o número de criterio), evidencia textual (cita del entregable, o "ausente" si falta algo obligatorio) y una corrección concreta que el ejecutor pueda aplicar sin adivinar.
+  const prefijo = tanda ? `REGLAS A VERIFICAR (tanda ${i} de ${n}):\n${tanda}` : '';
+  const texto = `Eres el auditor de calidad de la etapa "${e.nombre}" (${e.clave}). Tu única tarea es verificar si el ENTREGABLE cumple los CRITERIOS y las REGLAS. No lo reescribas ni lo mejores. Está prohibido aprobar para complacer: si una regla aplicable a este entregable no se cumple, es una falla. Una regla que no aplica a este tipo de entregable no es falla. Cada falla lleva la referencia (id de regla o número de criterio), evidencia textual (cita del entregable, o "ausente" si falta algo obligatorio) y una corrección concreta que el ejecutor pueda aplicar sin adivinar.
 
 BRIEF (resumen): ${corta(p.brief, 3000)}
 OBJETIVO DE LA ETAPA: ${e.objetivo}
@@ -327,8 +329,7 @@ Un prompt sin aspect ratio es una falla con ref "FORMATO". Además es falla usar
 aspect ratio o resolución dentro del texto del prompt en Seedance 2.5, donde se
 fijan en la página de generación.
 
-REGLAS (tanda ${i} de ${n}):
-${tanda||'(esta etapa no tiene reglas de skill; audita solo los criterios)'}
+${tanda?'Las reglas a verificar están listadas arriba.':'(esta etapa no tiene reglas de skill; audita solo los criterios)'}
 
 ENTREGABLE A AUDITAR:
 <<<
@@ -336,6 +337,15 @@ ${corta(output, 24000)}
 >>>
 
 Responde SOLO con JSON: {"veredicto":"APRUEBA"|"RECHAZA","fallas":[{"ref":"id de regla o C1..C6","evidencia":"...","correccion":"..."}],"nota":"una línea"}`;
+  return {prefijo, texto};
+}
+
+// Dentro del visor de artifacts no hay cache de prefijo: ahi el bloque de
+// reglas se concatena, que es lo que ya se hacia. Con servidor propio va
+// aparte y marcado, y la API lo lee de cache.
+function conPrefijo(pr, o){
+  return SRV ? [pr.texto, Object.assign({}, o||{}, {cachePrefix:pr.prefijo})]
+             : [(pr.prefijo? pr.prefijo+'\n\n':'') + pr.texto, o];
 }
 
 function promptEvalImagen(p, refTexto, nImgs){
@@ -418,6 +428,7 @@ function parseJSONsuelto(txt){
 function sampleDeServidor(){
   const f = async (input, o={}) => {
     const cuerpo = {input, modelTier:o.modelTier||'default'};
+    if(o.cachePrefix) cuerpo.cachePrefix=o.cachePrefix;
     if(o.images && o.images.length) cuerpo.images = await Promise.all([...o.images].map(aBase64));
     let r;
     try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:JSON.stringify(cuerpo),signal:o.signal}); }
@@ -436,7 +447,7 @@ function sampleDeServidor(){
         let ev; try{ ev=JSON.parse(linea); }catch(e){ continue; }
         if(ev.t==='text'){ texto+=ev.d; if(o.onText) o.onText({text:texto, delta:ev.d}); }
         else if(ev.t==='think'){ pensando+=ev.d; if(o.onThink) o.onThink({text:pensando}); }
-        else if(ev.t==='done'){ trunc=!!ev.truncated; }
+        else if(ev.t==='done'){ trunc=!!ev.truncated; if(ev.usage&&o.onUso) o.onUso(ev.usage); }
         else if(ev.t==='error'){ err={code:ev.code, message:ev.message, text:texto||undefined}; }
       }
     }
@@ -510,15 +521,16 @@ async function ejecutarEtapa(key){
     e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; relojOn(); render(); await guardar(p);
     const pr = promptEtapa(p, e, correcciones, feedback);
     e.reglasIncluidas=pr.incluidas; e.reglasTotal=pr.total;
-    let out;
+    let out, uso=null;
     try{
       const pinta = t => { e.parcial=t; const el=$(`#parcial-${key}`); if(el) el.textContent=t; };
       const o = opts(S.ajustes.tierGen, {
         onThink:({text})=>{ e.progreso=`ronda ${ronda} · pensando`; pinta(text); },
         onText:({text})=>{ e.progreso=`ronda ${ronda} · escribiendo`; pinta(text); },
+        onUso:u=>{ uso=u; },
       });
       if(e.usaImagenes && S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
-      const r = await sample(pr.texto, o); out = r.text; if(r.truncated) out += '\n\n[SALIDA TRUNCADA por el límite del modelo]';
+      const r = await sample(...conPrefijo(pr, o)); out = r.text; if(r.truncated) out += '\n\n[SALIDA TRUNCADA por el límite del modelo]';
     }catch(err){ relojOff(); e.estado = e.output?'rechazada':'pendiente'; e.error=errMsg(err); e.parcial=''; render(); await guardar(p); return; }
     e.parcial='';
     // auditoría en tandas: cubre el 100% de las reglas del caso
@@ -530,8 +542,8 @@ async function ejecutarEtapa(key){
     e.progreso=`ronda ${ronda} · auditando ${tandas.length} tanda(s) de reglas`; render();
     const ctlAud=new AbortController(); ctl=ctlAud;
     const res = await Promise.all(tandas.map((t,i)=>
-      sample.json(promptAuditoria(p, e, out, t, i+1, tandas.length),
-                  {modelTier:S.ajustes.tierAud, cache:false, signal:ctlAud.signal})
+      sample.json(...conPrefijo(promptAuditoria(p, e, out, t, i+1, tandas.length),
+                  {modelTier:S.ajustes.tierAud, cache:false, signal:ctlAud.signal}))
         .then(a=>({a})).catch(err=>({err, i}))));
     for(const r of res){
       if(r.err){ notas.push('auditoría '+(r.i+1)+' falló: '+errMsg(r.err)); continue; }
@@ -541,7 +553,8 @@ async function ejecutarEtapa(key){
       if(a && a.nota) notas.push(a.nota);
     }
     if(veredicto==='APRUEBA' && fallas.length) veredicto='RECHAZA';
-    e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length});
+    e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length,
+                   cache: (uso&&uso.cache_read_input_tokens)||0});
     e.output = out;
     if(veredicto==='APRUEBA'){ relojOff(); e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
     correcciones = fallas; e.estado='rechazada'; render(); await guardar(p);
@@ -816,7 +829,7 @@ function etapaHTML(e,i){
     <p class="mute">${esc(e.objetivo)}</p>
     ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')} · <span class="reloj">0s</span></div>${activa?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
     ${e.error?`<div class="badbox">${esc(e.error)}</div>`:''}
-    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
+    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.${r.cache?`<br>${Math.round(r.cache/1000)}K de caché`:''}</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
     ${e.output&&!activa?`<div class="out"><div class="row" style="justify-content:space-between"><span class="lbl">Entregable${e.estado==='agotada'?' (última versión, no aprobada)':''}</span><button class="sm" data-act="copiar" data-k="${e.key}">Copiar</button></div><div class="md">${md(e.output)}</div></div>`:''}
     ${!activa?`<div class="row" style="border-top:1px solid var(--line);padding-top:10px">
       ${e.estado==='espera_ok'?`<button class="prim" data-act="aprobar" data-k="${e.key}">Aprobar y continuar</button>`:''}
