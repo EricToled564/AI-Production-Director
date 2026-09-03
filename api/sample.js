@@ -16,7 +16,9 @@ export const config = { maxDuration: 300 };
 // pagina. Bajar de modelo para ahorrar es decision del dueno del proyecto, no
 // de este codigo.
 const MODELO = "claude-opus-5";
-const ESFUERZO = { quick: "low", default: "high", complex: "max" };
+// xhigh es el punto donde la calidad deja de subir de forma util para este
+// trabajo; max cuesta el doble de tiempo por muy poco mas.
+const ESFUERZO = { quick: "low", default: "high", complex: "xhigh" };
 const MAX_TOKENS = 64000;
 
 function mensajes(input, images) {
@@ -90,6 +92,9 @@ export default async function handler(req, res) {
     model: MODELO,
     max_tokens: MAX_TOKENS,
     output_config: { effort: ESFUERZO[cuerpo.modelTier] || "high" },
+    // Sin esto el modelo piensa en silencio y la pagina parece colgada
+    // durante el minuto largo que tarda antes de escribir la primera letra.
+    thinking: { type: "adaptive", display: "summarized" },
     messages: msgs,
   };
   let escrito = false;
@@ -105,10 +110,15 @@ export default async function handler(req, res) {
           { signal: cancelar.signal },
         )
       : client.messages.stream(base, { signal: cancelar.signal });
-    stream.on("text", (delta) => {
-      escrito = true;
-      enviar({ t: "text", d: delta });
-    });
+    for await (const ev of stream) {
+      if (ev.type !== "content_block_delta") continue;
+      if (ev.delta.type === "text_delta") {
+        escrito = true;
+        enviar({ t: "text", d: ev.delta.text });
+      } else if (ev.delta.type === "thinking_delta") {
+        enviar({ t: "think", d: ev.delta.thinking });
+      }
+    }
     return await stream.finalMessage();
   }
 

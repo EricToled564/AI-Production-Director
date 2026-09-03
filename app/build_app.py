@@ -508,7 +508,7 @@ function sampleDeServidor(){
     catch(e){ throw (o.signal&&o.signal.aborted) ? {code:'cancelled',message:'Detenido.'} : {code:'upstream_error', message:'No se pudo llegar al servidor.'}; }
     if(r.status===401){ S.bloqueo=true; render(); throw {code:'not_granted', message:'La contraseña de la app cambió. Vuelve a escribirla.'}; }
     if(!r.ok){ let j={}; try{ j=await r.json(); }catch(e){} throw {code:j.code||'upstream_error', message:j.message||('El servidor respondió '+r.status)}; }
-    const rd=r.body.getReader(), dec=new TextDecoder(); let buf='', texto='', trunc=false, err=null;
+    const rd=r.body.getReader(), dec=new TextDecoder(); let buf='', texto='', pensando='', trunc=false, err=null;
     for(;;){
       let chunk; try{ chunk=await rd.read(); }catch(e){ throw {code:'cancelled', message:'Detenido.', text:texto}; }
       if(chunk.done) break;
@@ -519,6 +519,7 @@ function sampleDeServidor(){
         if(!linea) continue;
         let ev; try{ ev=JSON.parse(linea); }catch(e){ continue; }
         if(ev.t==='text'){ texto+=ev.d; if(o.onText) o.onText({text:texto, delta:ev.d}); }
+        else if(ev.t==='think'){ pensando+=ev.d; if(o.onThink) o.onThink({text:pensando}); }
         else if(ev.t==='done'){ trunc=!!ev.truncated; }
         else if(ev.t==='error'){ err={code:ev.code, message:ev.message, text:texto||undefined}; }
       }
@@ -545,6 +546,15 @@ function errMsg(e){
   return m[e&&e.code] || ((e&&e.message)||'Error inesperado.');
 }
 let ctl=null; const VOZ={rec:null};
+// Una llamada con esfuerzo alto tarda minutos y pasa el primer tramo pensando
+// en silencio. Sin un contador corriendo, eso se lee como una app trabada.
+let RELOJ=null, T0=0;
+function relojOn(){ T0=Date.now(); clearInterval(RELOJ); RELOJ=setInterval(()=>{
+  const t=Math.round((Date.now()-T0)/1000);
+  const txt = t<60 ? t+'s' : Math.floor(t/60)+'m '+String(t%60).padStart(2,'0')+'s';
+  document.querySelectorAll('.reloj').forEach(el=>el.textContent=txt);
+},1000); }
+function relojOff(){ clearInterval(RELOJ); RELOJ=null; }
 function opts(tier, extra){ ctl = new AbortController(); return Object.assign({modelTier:tier, cache:false, signal:ctl.signal}, extra||{}); }
 
 async function planificar(){
@@ -553,7 +563,12 @@ async function planificar(){
   if(!sample) return fallo(motivoSinClaude());
   S.error=''; S.busy='Leyendo el brief…'; render();
   try{
-    const o = opts(S.ajustes.tierGen, {onText:({text})=>{ S.busy='Armando el plan… '+text.length+' caracteres'; const el=$('#busyN'); if(el) el.textContent=S.busy; }});
+    relojOn();
+    const paso = m => { S.busy=m; const el=$('#busyN'); if(el) el.textContent=m; };
+    const o = opts(S.ajustes.tierGen, {
+      onThink:({text})=>paso('Pensando el plan… '+text.length+' caracteres'),
+      onText:({text})=>paso('Escribiendo el plan… '+text.length+' caracteres'),
+    });
     if(S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
     const plan = await sample.json(promptPlan(p), o);
     if(!plan||!Array.isArray(plan.etapas)||!plan.etapas.length) throw {code:'invalid_json', message:'sin etapas'};
@@ -563,7 +578,7 @@ async function planificar(){
       p.etapas[key]={key, clave:e.clave, nombre:e.nombre||cat.nombre||e.clave, objetivo:e.objetivo||'', entregable:e.entregable||cat.sale||'', casos: casos.length?casos:(cat.casos||[]).slice(0, cat.clave==='E5'?0:99), criterios:e.criterios||[], usaImagenes:!!e.usaImagenes, ok:!!cat.ok, estado:'pendiente', output:'', rondas:[], feedback:''}; });
     S.view='plan'; await guardar(p);
   }catch(e){ S.error=errMsg(e); }
-  S.busy=false; render();
+  relojOff(); S.busy=false; render();
 }
 
 async function ejecutarEtapa(key){
@@ -576,37 +591,46 @@ async function ejecutarEtapa(key){
   const limite = ronda+max;
   while(ronda<limite){
     ronda++;
-    e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; render(); await guardar(p);
+    e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; relojOn(); render(); await guardar(p);
     const pr = promptEtapa(p, e, correcciones, feedback);
     e.reglasIncluidas=pr.incluidas; e.reglasTotal=pr.total;
     let out;
     try{
-      const o = opts(S.ajustes.tierGen, {onText:({text})=>{ e.parcial=text; const el=$(`#parcial-${key}`); if(el) el.textContent=text; }});
+      const pinta = t => { e.parcial=t; const el=$(`#parcial-${key}`); if(el) el.textContent=t; };
+      const o = opts(S.ajustes.tierGen, {
+        onThink:({text})=>{ e.progreso=`ronda ${ronda} · pensando`; pinta(text); },
+        onText:({text})=>{ e.progreso=`ronda ${ronda} · escribiendo`; pinta(text); },
+      });
       if(e.usaImagenes && S.imgs.length) o.images = S.imgs.slice(0, (caps.images&&caps.images.maxCount)||S.imgs.length);
       const r = await sample(pr.texto, o); out = r.text; if(r.truncated) out += '\n\n[SALIDA TRUNCADA por el límite del modelo]';
-    }catch(err){ e.estado = e.output?'rechazada':'pendiente'; e.error=errMsg(err); e.parcial=''; render(); await guardar(p); return; }
+    }catch(err){ relojOff(); e.estado = e.output?'rechazada':'pendiente'; e.error=errMsg(err); e.parcial=''; render(); await guardar(p); return; }
     e.parcial='';
     // auditoría en tandas: cubre el 100% de las reglas del caso
     e.estado='auditando'; render();
     const reglas = reglasDe(e.casos);
     const tandas = reglas.length ? tandasReglas(reglas, 22000) : [''];
     let fallas=[], veredicto='APRUEBA', notas=[];
-    for(let i=0;i<tandas.length;i++){
-      e.progreso=`ronda ${ronda} · auditando ${i+1}/${tandas.length}`; render();
-      try{
-        const a = await sample.json(promptAuditoria(p, e, out, tandas[i], i+1, tandas.length), opts(S.ajustes.tierAud));
-        if(a && a.veredicto==='RECHAZA'){ veredicto='RECHAZA'; }
-        if(a && Array.isArray(a.fallas)) fallas.push(...a.fallas.filter(f=>f&&(f.correccion||f.ref)));
-        if(a && a.nota) notas.push(a.nota);
-      }catch(err){ notas.push('auditoría '+(i+1)+' falló: '+errMsg(err)); }
+    // Las tandas son independientes: en serie multiplican la espera por nada.
+    e.progreso=`ronda ${ronda} · auditando ${tandas.length} tanda(s) de reglas`; render();
+    const ctlAud=new AbortController(); ctl=ctlAud;
+    const res = await Promise.all(tandas.map((t,i)=>
+      sample.json(promptAuditoria(p, e, out, t, i+1, tandas.length),
+                  {modelTier:S.ajustes.tierAud, cache:false, signal:ctlAud.signal})
+        .then(a=>({a})).catch(err=>({err, i}))));
+    for(const r of res){
+      if(r.err){ notas.push('auditoría '+(r.i+1)+' falló: '+errMsg(r.err)); continue; }
+      const a=r.a;
+      if(a && a.veredicto==='RECHAZA') veredicto='RECHAZA';
+      if(a && Array.isArray(a.fallas)) fallas.push(...a.fallas.filter(f=>f&&(f.correccion||f.ref)));
+      if(a && a.nota) notas.push(a.nota);
     }
     if(veredicto==='APRUEBA' && fallas.length) veredicto='RECHAZA';
     e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length});
     e.output = out;
-    if(veredicto==='APRUEBA'){ e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
+    if(veredicto==='APRUEBA'){ relojOff(); e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
     correcciones = fallas; e.estado='rechazada'; render(); await guardar(p);
   }
-  e.estado='agotada'; e.progreso=''; render(); await guardar(p);
+  relojOff(); e.estado='agotada'; e.progreso=''; render(); await guardar(p);
 }
 
 function siguientePendiente(p){
@@ -800,7 +824,7 @@ function vBrief(m,p){
       <div><div class="lbl">Imágenes de referencia</div><div class="row"><input type="file" id="imgs" hidden accept="image/*" multiple><button id="btnImgs" ${caps.images?'':'disabled'}>Subir imágenes</button><span class="mute" style="font-size:12px" id="imgsN">${caps.images?(S.imgs.length?`${S.imgs.length} adjunta(s). Se pierden al recargar.`:''):'No disponible aquí.'}</span></div><div class="thumbs" id="thumbs"></div>${caps.images?'':`<div class="warnbox">Esta vista del visor no puede enviar imágenes al modelo. Para trabajar con referencias visuales abre la app en <a href="https://ai-production-director.vercel.app">ai-production-director.vercel.app</a>.</div>`}</div>
     </div>
     ${sample?'':`<div class="badbox">${esc(motivoSinClaude())}</div>`}
-    <div class="row"><button class="prim" id="btnPlan" ${S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span><span id="busyN">${esc(S.busy)}</span></span>`:''}</div>
+    <div class="row"><button class="prim" id="btnPlan" ${S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span><span id="busyN">${esc(S.busy)}</span> · <span class="reloj">0s</span></span>`:''}</div>
   </div>`;
   const ta=$('#brief'), nm=$('#nombre'), cnt=$('#briefN');
   const upd=()=>{ cnt.textContent = `${ta.value.length.toLocaleString('es-MX')} caracteres`; };
@@ -867,7 +891,7 @@ function etapaHTML(e,i){
   return `<section class="etapa ${cls}"><div class="stripe"></div><div class="body">
     <div class="top"><div><div class="lbl">${i+1} · ${esc(e.clave)}</div><h3>${esc(e.nombre)}</h3></div><div class="meta">${pillEstado(e)}${e.rondas.length?`<span class="pill">${e.rondas.length} ronda${e.rondas.length>1?'s':''}</span>`:''}${e.reglasTotal?`<span class="pill" title="reglas que cupieron en la instrucción / reglas auditadas">${e.reglasIncluidas}/${e.reglasTotal} reglas</span>`:''}</div></div>
     <p class="mute">${esc(e.objetivo)}</p>
-    ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')}</div>${e.estado==='generando'?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
+    ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')} · <span class="reloj">0s</span></div>${activa?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
     ${e.error?`<div class="badbox">${esc(e.error)}</div>`:''}
     ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
     ${e.output&&!activa?`<div class="out"><div class="row" style="justify-content:space-between"><span class="lbl">Entregable${e.estado==='agotada'?' (última versión, no aprobada)':''}</span><button class="sm" data-act="copiar" data-k="${e.key}">Copiar</button></div><div class="md">${md(e.output)}</div></div>`:''}
