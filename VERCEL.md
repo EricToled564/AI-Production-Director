@@ -17,7 +17,8 @@ La detección es automática: si no hay `window.claude`, la página consulta
 | Variable | Obligatoria | Para qué |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | sí | Sin ella la app carga pero no puede generar ni auditar nada. |
-| `APP_PASSWORD` | recomendada | Sin ella, cualquiera con la URL gasta la cuenta del API key. La página la pide una vez y la guarda en la pestaña. |
+| `APP_PASSWORD` | recomendada | Sin ella, cualquiera con la URL gasta la cuenta del API key. La página la pide una vez y la guarda en el navegador. |
+| `ANTHROPIC_WORKSPACE_ID` | solo si la key lo pide | Las API keys ligadas a una identidad exigen decir en qué workspace actúan. Si falta, la API responde 400 con `anthropic-workspace-id is required`. El id empieza con `wrkspc_` y sale en la URL al abrir el workspace en console.anthropic.com → Settings → Workspaces. |
 
 Se ponen en Vercel → Project → Settings → Environment Variables, y después
 hay que volver a desplegar para que las tome.
