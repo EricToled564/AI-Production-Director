@@ -21,10 +21,14 @@ const MODELO = "claude-opus-5";
 const ESFUERZO = { quick: "low", default: "high", complex: "xhigh" };
 const MAX_TOKENS = 64000;
 
-function mensajes(input, images) {
+// El bloque de reglas es identico entre rondas y entre etapas del mismo caso, y
+// pesa entre 9K y 15K tokens. Va primero y marcado, para que la API lo lea de
+// cache en vez de reprocesarlo en cada llamada. Todo lo que cambia va despues:
+// un solo byte distinto delante tiraria el cache entero.
+function mensajes(input, images, cachePrefix) {
   let msgs;
   if (typeof input === "string") {
-    msgs = [{ role: "user", content: [{ type: "text", text: input }] }];
+    msgs = [{ role: "user", content: [] }];
   } else if (Array.isArray(input) && input.length) {
     msgs = input.map((m) => ({
       role: m.role === "assistant" ? "assistant" : "user",
@@ -35,12 +39,26 @@ function mensajes(input, images) {
   }
   const ultimo = msgs[msgs.length - 1];
   if (ultimo.role !== "user") return null;
+
+  const cabeza = [];
+  if (typeof cachePrefix === "string" && cachePrefix.trim()) {
+    cabeza.push({
+      type: "text",
+      text: cachePrefix,
+      cache_control: { type: "ephemeral" },
+    });
+  }
   for (const im of images || []) {
     if (!im || !im.data || !im.media_type) continue;
-    ultimo.content.unshift({
+    cabeza.push({
       type: "image",
       source: { type: "base64", media_type: im.media_type, data: im.data },
     });
+  }
+  if (typeof input === "string") {
+    ultimo.content = [...cabeza, { type: "text", text: input }];
+  } else {
+    ultimo.content = [...cabeza, ...ultimo.content];
   }
   return msgs;
 }
@@ -64,7 +82,7 @@ export default async function handler(req, res) {
   }
 
   const cuerpo = req.body || {};
-  const msgs = mensajes(cuerpo.input, cuerpo.images);
+  const msgs = mensajes(cuerpo.input, cuerpo.images, cuerpo.cachePrefix);
   if (!msgs) {
     res.status(400).json({
       code: "invalid_request",
