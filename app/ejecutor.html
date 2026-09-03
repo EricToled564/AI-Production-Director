@@ -408,6 +408,13 @@ function sampleDeServidor(){
   return f;
 }
 
+function motivoSinClaude(){
+  if(SRV && !SRV.claude) return 'El servidor no tiene ANTHROPIC_API_KEY configurada. Ponla en las variables de entorno del proyecto y vuelve a desplegar.';
+  if(SRV) return 'El servidor no respondió. Recarga la página.';
+  if(window.claude && window.claude.use) return 'Esta página no tiene permiso para usar Claude. Vuelve a abrir el artifact desde el enlace original; si sigue igual, hay que volver a publicarlo declarando la capacidad sample.';
+  return 'Esta copia de la página no está conectada a Claude. Ábrela desde el artifact en claude.ai o desde el dominio donde está desplegada.';
+}
+
 // ------------------------------------------------------------ llamadas
 function errMsg(e){
   const m = {not_granted:'No autorizaste el uso de Claude en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista no puede enviar imágenes.', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'Claude no está disponible en esta cuenta.'};
@@ -417,7 +424,9 @@ let ctl=null; const VOZ={rec:null};
 function opts(tier, extra){ ctl = new AbortController(); return Object.assign({modelTier:tier, cache:false, signal:ctl.signal}, extra||{}); }
 
 async function planificar(){
-  const p=P(); if(!p||!p.brief.trim()||!sample) return;
+  const p=P(); if(!p) return;
+  if(!p.brief.trim()){ alert('Escribe el brief primero.'); return; }
+  if(!sample){ alert(motivoSinClaude()); return; }
   S.busy='Planificando etapas…'; render();
   try{
     const o = opts(S.ajustes.tierGen);
@@ -627,7 +636,8 @@ function vBrief(m,p){
       <div><div class="lbl">Documentos</div><div class="row"><input type="file" id="docs" hidden accept=".txt,.md,.pdf,.docx,text/plain,text/markdown,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple><button id="btnDocs">Subir txt, md, pdf o docx</button><span class="mute" style="font-size:12px" id="docsN">El texto se agrega al brief.</span></div></div>
       <div><div class="lbl">Imágenes de referencia</div><div class="row"><input type="file" id="imgs" hidden accept="image/*" multiple><button id="btnImgs">Subir imágenes</button><span class="mute" style="font-size:12px" id="imgsN">${S.imgs.length?`${S.imgs.length} adjunta(s). Se pierden al recargar.`:''}</span></div><div class="thumbs" id="thumbs"></div></div>
     </div>
-    <div class="row"><button class="prim" id="btnPlan" ${!sample||S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span>${S.busy}</span>`:''}</div>
+    ${sample?'':`<div class="badbox">${esc(motivoSinClaude())}</div>`}
+    <div class="row"><button class="prim" id="btnPlan" ${S.busy?'disabled':''}>Analizar brief y proponer etapas</button>${p.orden.length?`<span class="mute">Ya hay un plan de ${p.orden.length} etapas. Volver a analizar lo reemplaza.</span>`:''}${S.busy?`<span class="status"><span class="spin"></span>${S.busy}</span>`:''}</div>
   </div>`;
   const ta=$('#brief'), nm=$('#nombre'), cnt=$('#briefN');
   const upd=()=>{ cnt.textContent = `${ta.value.length.toLocaleString('es-MX')} caracteres`; };
