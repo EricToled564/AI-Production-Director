@@ -412,32 +412,60 @@ function cabeceras(){ const h={'Content-Type':'application/json'}; const k=clave
 async function probarClave(k){
   try{ const r=await fetch('/api/config',{cache:'no-store',headers:{'x-app-password':k}}); if(!r.ok) return null; return await r.json(); }catch(e){ return null; }
 }
-// El cuerpo de una peticion a Vercel no puede pasar de 4.5 MB, y base64 infla
-// un tercio: una foto de camara sale rebotada con 413. Se reduce a ~1.2
-// megapixeles, que es a lo que la API la baja de todos modos, asi que no se
-// pierde nada util.
-const MAX_PX = 1200000, MAX_LADO = 1568, YA_CHICA = 900000;
-async function reducir(blob){
-  if(!/^image\//.test(blob.type||'')) return blob;
-  let bmp;
-  try{ bmp = await createImageBitmap(blob, {imageOrientation:'from-image'}); }
-  catch(e){ try{ bmp = await createImageBitmap(blob); }catch(e2){ return blob; } }
-  let w=bmp.width, h=bmp.height;
-  const escala = Math.min(1, Math.sqrt(MAX_PX/(w*h)), MAX_LADO/Math.max(w,h));
-  if(escala>=1 && blob.size<YA_CHICA){ if(bmp.close) bmp.close(); return blob; }
-  w=Math.max(1,Math.round(w*escala)); h=Math.max(1,Math.round(h*escala));
+// El cuerpo de una peticion a Vercel no puede pasar de 4.5 MB — medido: hasta
+// 4.0 MB pasa, 4.4 MB devuelve FUNCTION_PAYLOAD_TOO_LARGE. Base64 infla un
+// tercio. Asi que las imagenes se reducen aqui hasta que el total quepa, y si
+// no cabe no se manda: rebotar con 413 no le sirve a nadie.
+const PRESUPUESTO = 3200000;                                   // base64, total
+const PASOS = [[1568, 0.85], [1100, 0.8], [800, 0.72], [560, 0.6]];
+
+async function aBitmap(blob){
+  try{ return await createImageBitmap(blob, {imageOrientation:'from-image'}); }
+  catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
+}
+function b64de(buf){
+  let bin=''; const b=new Uint8Array(buf);
+  for(let i=0;i<b.length;i+=0x8000) bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
+  return btoa(bin);
+}
+async function codificar(bmp, lado, calidad){
+  const k=Math.min(1, lado/Math.max(bmp.width,bmp.height));
+  const w=Math.max(1,Math.round(bmp.width*k)), h=Math.max(1,Math.round(bmp.height*k));
   const c=document.createElement('canvas'); c.width=w; c.height=h;
   c.getContext('2d').drawImage(bmp,0,0,w,h);
-  if(bmp.close) bmp.close();
-  const chica = await new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
-  return (chica && chica.size<blob.size) ? chica : blob;
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',calidad));
 }
-async function aBase64(blob){
-  const b2 = await reducir(blob);
-  const buf=await b2.arrayBuffer(); let bin=''; const b=new Uint8Array(buf);
-  for(let i=0;i<b.length;i+=0x8000) bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
-  return {media_type: b2.type||'image/jpeg', data: btoa(bin)};
+// Devuelve { imagenes, avisos }. Nunca devuelve algo que no quepa.
+async function prepararImagenes(archivos){
+  const avisos=[], bmps=[];
+  for(const f of archivos||[]){
+    const bm = await aBitmap(f);
+    if(!bm){ avisos.push(`"${f.name}": el navegador no puede leer este formato. Si es HEIC (el de iPhone y Mac por defecto), ábrela y expórtala como JPG.`); continue; }
+    bmps.push({bm, nombre:f.name});
+  }
+  if(!bmps.length) return {imagenes:[], avisos};
+  let blobs=null;
+  for(const [lado,cal] of PASOS){
+    blobs = [];
+    for(const x of bmps) blobs.push(await codificar(x.bm, lado, cal));
+    if(blobs.reduce((t,b)=>t+b.size,0)*4/3 <= PRESUPUESTO) break;
+  }
+  // Ni en el paso mas chico caben todas: se mandan las que quepan y se avisa.
+  const usados=[]; let total=0;
+  for(let i=0;i<blobs.length;i++){
+    const peso = blobs[i].size*4/3;
+    if(total+peso > PRESUPUESTO){
+      avisos.push(`"${bmps[i].nombre}" no se envió: entre todas superan el límite de 4.5 MB del servidor. Manda menos imágenes por vez.`);
+      continue;
+    }
+    total+=peso; usados.push(blobs[i]);
+  }
+  const imagenes=[];
+  for(const b of usados) imagenes.push({media_type:'image/jpeg', data:b64de(await b.arrayBuffer())});
+  for(const x of bmps) if(x.bm.close) x.bm.close();
+  return {imagenes, avisos};
 }
+
 function parseJSONsuelto(txt){
   const t=(txt||'').trim();
   try{ return JSON.parse(t); }catch(e){}
@@ -450,9 +478,16 @@ function sampleDeServidor(){
   const f = async (input, o={}) => {
     const cuerpo = {input, modelTier:o.modelTier||'default'};
     if(o.cachePrefix) cuerpo.cachePrefix=o.cachePrefix;
-    if(o.images && o.images.length) cuerpo.images = await Promise.all([...o.images].map(aBase64));
+    if(o.images && o.images.length){
+      const prep = await prepararImagenes([...o.images]);
+      if(prep.imagenes.length) cuerpo.images = prep.imagenes;
+      if(prep.avisos.length){
+        if(!prep.imagenes.length) throw {code:'image_rejected', message:prep.avisos.join(' ')};
+        S.error = prep.avisos.join(' ');
+      }
+    }
     const crudo = JSON.stringify(cuerpo);
-    if(crudo.length > 4200000) throw {code:'prompt_too_large', message:'La petición pesa '+Math.round(crudo.length/1048576)+' MB y el servidor acepta 4.5 MB. Quita alguna imagen o acorta el brief.'};
+    if(crudo.length > 4000000) throw {code:'prompt_too_large', message:'La petición pesa '+(crudo.length/1048576).toFixed(1)+' MB y el servidor acepta 4.5 MB. Quita alguna imagen o acorta el brief.'};
     let r;
     try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:crudo,signal:o.signal}); }
     catch(e){ throw (o.signal&&o.signal.aborted) ? {code:'cancelled',message:'Detenido.'} : {code:'upstream_error', message:'No se pudo llegar al servidor.'}; }
@@ -494,6 +529,9 @@ function motivoSinClaude(){
 // ------------------------------------------------------------ llamadas
 function errMsg(e){
   const m = {not_granted:'No autorizaste el uso de Claude en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista del visor no puede enviar imágenes al modelo. Para trabajar con referencias visuales abre la app en https://ai-production-director.vercel.app', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'Claude no está disponible en esta cuenta.'};
+  // Cuando el mensaje lo escribio esta pagina (nombra el archivo, el peso, el
+  // formato), gana sobre el texto generico del codigo.
+  if(e && e.message && ['image_rejected','prompt_too_large','upstream_error','not_granted'].includes(e.code) && e.message.length>40) return e.message;
   return m[e&&e.code] || ((e&&e.message)||'Error inesperado.');
 }
 let ctl=null; const VOZ={rec:null};
@@ -543,6 +581,7 @@ async function ejecutarEtapa(key){
   while(ronda<limite){
     ronda++;
     e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; relojOn(); render(); await guardar(p);
+    const tRonda = Date.now();
     const pr = promptEtapa(p, e, correcciones, feedback);
     e.reglasIncluidas=pr.incluidas; e.reglasTotal=pr.total;
     let out, uso=null;
@@ -578,7 +617,8 @@ async function ejecutarEtapa(key){
     }
     if(veredicto==='APRUEBA' && fallas.length) veredicto='RECHAZA';
     e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length,
-                   cache: (uso&&uso.cache_read_input_tokens)||0});
+                   cache: (uso&&uso.cache_read_input_tokens)||0,
+                   seg: Math.round((Date.now()-tRonda)/1000)});
     e.output = out;
     if(veredicto==='APRUEBA'){ relojOff(); e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
     correcciones = fallas; e.estado='rechazada'; render(); await guardar(p);
@@ -853,7 +893,7 @@ function etapaHTML(e,i){
     <p class="mute">${esc(e.objetivo)}</p>
     ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')} · <span class="reloj">0s</span></div>${activa?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
     ${e.error?`<div class="badbox">${esc(e.error)}</div>`:''}
-    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.${r.cache?`<br>${Math.round(r.cache/1000)}K de caché`:''}</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
+    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}${r.seg?`<br>${r.seg<60?r.seg+'s':Math.floor(r.seg/60)+'m '+String(r.seg%60).padStart(2,'0')+'s'}`:''}<br>${r.palabras} pal.${r.cache?`<br>${Math.round(r.cache/1000)}K de caché`:''}</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
     ${e.output&&!activa?`<div class="out"><div class="row" style="justify-content:space-between"><span class="lbl">Entregable${e.estado==='agotada'?' (última versión, no aprobada)':''}</span><button class="sm" data-act="copiar" data-k="${e.key}">Copiar</button></div><div class="md">${md(e.output)}</div></div>`:''}
     ${!activa?`<div class="row" style="border-top:1px solid var(--line);padding-top:10px">
       ${e.estado==='espera_ok'?`<button class="prim" data-act="aprobar" data-k="${e.key}">Aprobar y continuar</button>`:''}
