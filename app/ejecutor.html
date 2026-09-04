@@ -520,7 +520,7 @@ function sampleDeServidor(){
 }
 
 function motivoSinClaude(){
-  if(SRV && !SRV.claude) return 'El servidor no tiene ANTHROPIC_API_KEY configurada. Ponla en las variables de entorno del proyecto y vuelve a desplegar.';
+  if(SRV && !SRV.ia) return 'El servidor no tiene OPENAI_API_KEY configurada. Ponla en las variables de entorno del proyecto de Vercel y vuelve a desplegar.';
   if(SRV) return 'El servidor no respondió. Recarga la página.';
   if(window.claude && window.claude.use) return 'Esta página no tiene permiso para usar Claude. Vuelve a abrir el artifact desde el enlace original; si sigue igual, hay que volver a publicarlo declarando la capacidad sample.';
   return 'Esta copia de la página no está conectada a Claude. Ábrela desde el artifact en claude.ai o desde el dominio donde está desplegada.';
@@ -528,7 +528,7 @@ function motivoSinClaude(){
 
 // ------------------------------------------------------------ llamadas
 function errMsg(e){
-  const m = {not_granted:'No autorizaste el uso de Claude en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista del visor no puede enviar imágenes al modelo. Para trabajar con referencias visuales abre la app en https://ai-production-director.vercel.app', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'Claude no está disponible en esta cuenta.'};
+  const m = {not_granted:'No autorizaste el uso del modelo en esta página.', rate_limited:'Límite de uso alcanzado. Espera un momento y vuelve a intentar.', prompt_too_large:'El brief o el contexto es demasiado grande para una llamada.', invalid_json:'La respuesta no vino en el formato esperado. Vuelve a intentar.', refused:'El modelo rechazó esta entrada. Cambia el brief.', cancelled:'Detenido.', images_unavailable:'Esta vista del visor no puede enviar imágenes al modelo. Para trabajar con referencias visuales abre la app en https://ai-production-director.vercel.app', image_rejected:'Imagen rechazada: tipo o tamaño no válido.', sampling_disabled:'El modelo no está disponible en esta cuenta.'};
   // Cuando el mensaje lo escribio esta pagina (nombra el archivo, el peso, el
   // formato), gana sobre el texto generico del codigo.
   if(e && e.message && ['image_rejected','prompt_too_large','upstream_error','not_granted'].includes(e.code) && e.message.length>40) return e.message;
@@ -785,7 +785,7 @@ function banner(m){
 }
 
 function vBloqueo(m){
-  m.innerHTML = `<div class="hd"><div><h2>Contraseña</h2><p class="sub">Esta app usa la cuenta de Claude del servidor. La contraseña evita que la gaste alguien más.</p></div></div>
+  m.innerHTML = `<div class="hd"><div><h2>Contraseña</h2><p class="sub">Esta app usa la cuenta de OpenAI del servidor. La contraseña evita que la gaste alguien más.</p></div></div>
   <div class="card" style="max-width:440px">
     <div><div class="lbl">Contraseña</div><input type="password" id="pw" autocomplete="current-password"></div>
     <div class="row"><button class="prim" id="btnPw">Entrar</button><span class="mute" id="pwMsg"></span></div>
@@ -973,13 +973,13 @@ function vAjustes(m,p){
   [sample, db, mcp] = await Promise.all([use('sample'), use('db'), use('mcp')]);
   if(!sample){
     SRV = await detectarServidor();
-    if(SRV && SRV.claude){ sample = sampleDeServidor(); if(SRV.clave && !SRV.claveOk) S.bloqueo=true; }
+    if(SRV && SRV.ia){ sample = sampleDeServidor(); if(SRV.clave && !SRV.claveOk) S.bloqueo=true; }
   }
   if(sample){ try{ const l=await sample.limits(); caps.images=l.images||false; }catch(e){} }
   await cargarLista();
   if(S.proyectos.length && !S.pid){ S.pid=S.proyectos[0].id; S.view = P().orden.length?'run':'brief'; }
   if(!S.proyectos.length){ const p={id:uid(), nombre:'Sin título', brief:'', creado:nowIso(), plan:null, etapas:{}, orden:[], evaluaciones:[]}; S.proyectos.push(p); S.pid=p.id; S.view='brief'; }
-  const parts=[ sample?(SRV?'Claude vía servidor propio':'Claude listo'):(SRV&&!SRV.claude?'Falta ANTHROPIC_API_KEY en el servidor':'Claude no disponible'), db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'video por cuadros' ];
+  const parts=[ sample?(SRV?('ChatGPT '+(SRV.modelo||'')+' vía servidor propio'):'Claude listo'):(SRV&&!SRV.ia?'Falta OPENAI_API_KEY en el servidor':'Modelo no disponible'), db?'guardado en la nube':'guardado local', mcp?'Higgsfield listo':'video por cuadros' ];
   cl.textContent = parts.join(' · ');
   render();
 })();
