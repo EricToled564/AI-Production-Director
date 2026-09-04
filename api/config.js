@@ -8,7 +8,8 @@ export default function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   res.status(200).json({
     servidor: true,
-    claude: Boolean(process.env.ANTHROPIC_API_KEY),
+    ia: Boolean(process.env.OPENAI_API_KEY),
+    modelo: process.env.OPENAI_MODEL || "gpt-6-astra",
     clave: Boolean(clave),
     claveOk: clave ? dada === clave : true,
   });
