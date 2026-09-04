@@ -426,10 +426,31 @@ function cabeceras(){ const h={'Content-Type':'application/json'}; const k=clave
 async function probarClave(k){
   try{ const r=await fetch('/api/config',{cache:'no-store',headers:{'x-app-password':k}}); if(!r.ok) return null; return await r.json(); }catch(e){ return null; }
 }
+// El cuerpo de una peticion a Vercel no puede pasar de 4.5 MB, y base64 infla
+// un tercio: una foto de camara sale rebotada con 413. Se reduce a ~1.2
+// megapixeles, que es a lo que la API la baja de todos modos, asi que no se
+// pierde nada util.
+const MAX_PX = 1200000, MAX_LADO = 1568, YA_CHICA = 900000;
+async function reducir(blob){
+  if(!/^image\//.test(blob.type||'')) return blob;
+  let bmp;
+  try{ bmp = await createImageBitmap(blob, {imageOrientation:'from-image'}); }
+  catch(e){ try{ bmp = await createImageBitmap(blob); }catch(e2){ return blob; } }
+  let w=bmp.width, h=bmp.height;
+  const escala = Math.min(1, Math.sqrt(MAX_PX/(w*h)), MAX_LADO/Math.max(w,h));
+  if(escala>=1 && blob.size<YA_CHICA){ if(bmp.close) bmp.close(); return blob; }
+  w=Math.max(1,Math.round(w*escala)); h=Math.max(1,Math.round(h*escala));
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  c.getContext('2d').drawImage(bmp,0,0,w,h);
+  if(bmp.close) bmp.close();
+  const chica = await new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
+  return (chica && chica.size<blob.size) ? chica : blob;
+}
 async function aBase64(blob){
-  const buf=await blob.arrayBuffer(); let bin=''; const b=new Uint8Array(buf);
+  const b2 = await reducir(blob);
+  const buf=await b2.arrayBuffer(); let bin=''; const b=new Uint8Array(buf);
   for(let i=0;i<b.length;i+=0x8000) bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
-  return {media_type: blob.type||'image/jpeg', data: btoa(bin)};
+  return {media_type: b2.type||'image/jpeg', data: btoa(bin)};
 }
 function parseJSONsuelto(txt){
   const t=(txt||'').trim();
@@ -444,10 +465,13 @@ function sampleDeServidor(){
     const cuerpo = {input, modelTier:o.modelTier||'default'};
     if(o.cachePrefix) cuerpo.cachePrefix=o.cachePrefix;
     if(o.images && o.images.length) cuerpo.images = await Promise.all([...o.images].map(aBase64));
+    const crudo = JSON.stringify(cuerpo);
+    if(crudo.length > 4200000) throw {code:'prompt_too_large', message:'La petición pesa '+Math.round(crudo.length/1048576)+' MB y el servidor acepta 4.5 MB. Quita alguna imagen o acorta el brief.'};
     let r;
-    try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:JSON.stringify(cuerpo),signal:o.signal}); }
+    try{ r = await fetch('/api/sample',{method:'POST',headers:cabeceras(),body:crudo,signal:o.signal}); }
     catch(e){ throw (o.signal&&o.signal.aborted) ? {code:'cancelled',message:'Detenido.'} : {code:'upstream_error', message:'No se pudo llegar al servidor.'}; }
     if(r.status===401){ S.bloqueo=true; render(); throw {code:'not_granted', message:'La contraseña de la app cambió. Vuelve a escribirla.'}; }
+    if(r.status===413) throw {code:'prompt_too_large', message:'Las imágenes pesan demasiado para el servidor. Recarga la página y vuelve a adjuntarlas: la versión nueva las reduce automáticamente.'};
     if(!r.ok){ let j={}; try{ j=await r.json(); }catch(e){} throw {code:j.code||'upstream_error', message:j.message||('El servidor respondió '+r.status)}; }
     const rd=r.body.getReader(), dec=new TextDecoder(); let buf='', texto='', pensando='', trunc=false, err=null;
     for(;;){
