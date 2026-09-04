@@ -699,6 +699,7 @@ async function ejecutarEtapa(key){
   while(ronda<limite){
     ronda++;
     e.estado='generando'; e.progreso=`ronda ${ronda} · generando`; e.parcial=''; relojOn(); render(); await guardar(p);
+    const tRonda = Date.now();
     const pr = promptEtapa(p, e, correcciones, feedback);
     e.reglasIncluidas=pr.incluidas; e.reglasTotal=pr.total;
     let out, uso=null;
@@ -734,7 +735,8 @@ async function ejecutarEtapa(key){
     }
     if(veredicto==='APRUEBA' && fallas.length) veredicto='RECHAZA';
     e.rondas.push({n:ronda, veredicto, fallas, notas, fecha:nowIso(), palabras:out.split(/\s+/).length,
-                   cache: (uso&&uso.cache_read_input_tokens)||0});
+                   cache: (uso&&uso.cache_read_input_tokens)||0,
+                   seg: Math.round((Date.now()-tRonda)/1000)});
     e.output = out;
     if(veredicto==='APRUEBA'){ relojOff(); e.estado = e.ok?'espera_ok':'aprobada'; e.progreso=''; e.feedback=''; render(); await guardar(p); if(!e.ok) continuar(); return; }
     correcciones = fallas; e.estado='rechazada'; render(); await guardar(p);
@@ -1009,7 +1011,7 @@ function etapaHTML(e,i){
     <p class="mute">${esc(e.objetivo)}</p>
     ${activa?`<div class="status"><span class="spin"></span>${esc(e.progreso||'')} · <span class="reloj">0s</span></div>${activa?`<pre class="mono" id="parcial-${e.key}" style="white-space:pre-wrap;max-height:220px;overflow:auto;margin:0;color:var(--mute)">${esc(e.parcial||'')}</pre>`:''}`:''}
     ${e.error?`<div class="badbox">${esc(e.error)}</div>`:''}
-    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}<br>${r.palabras} pal.${r.cache?`<br>${Math.round(r.cache/1000)}K de caché`:''}</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
+    ${e.rondas.length?`<details ${['rechazada','agotada'].includes(e.estado)?'open':''}><summary>Auditoría · ${e.rondas.map(r=>`R${r.n} ${r.veredicto==='APRUEBA'?'✓':'✗'+r.fallas.length}`).join(' · ')}</summary><div class="log" style="margin-top:8px">${e.rondas.map(r=>`<div class="r"><div>ronda ${r.n}<br>${r.veredicto==='APRUEBA'?'aprueba':'rechaza'}${r.seg?`<br>${r.seg<60?r.seg+'s':Math.floor(r.seg/60)+'m '+String(r.seg%60).padStart(2,'0')+'s'}`:''}<br>${r.palabras} pal.${r.cache?`<br>${Math.round(r.cache/1000)}K de caché`:''}</div><div>${r.fallas.length?r.fallas.map(f=>`<div class="falla"><b>${esc(f.ref)}</b> ${esc(f.correccion)}${f.evidencia?`<div class="ev">${esc(f.evidencia)}</div>`:''}</div>`).join(''):'<span class="mute">Sin fallas.</span>'}${r.notas&&r.notas.length?`<div class="mute" style="margin-top:4px;font-size:12px">${r.notas.map(esc).join(' · ')}</div>`:''}</div></div>`).join('')}</div></details>`:''}
     ${e.output&&!activa?`<div class="out"><div class="row" style="justify-content:space-between"><span class="lbl">Entregable${e.estado==='agotada'?' (última versión, no aprobada)':''}</span><button class="sm" data-act="copiar" data-k="${e.key}">Copiar</button></div><div class="md">${md(e.output)}</div></div>`:''}
     ${!activa?`<div class="row" style="border-top:1px solid var(--line);padding-top:10px">
       ${e.estado==='espera_ok'?`<button class="prim" data-act="aprobar" data-k="${e.key}">Aprobar y continuar</button>`:''}
