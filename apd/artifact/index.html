@@ -32,7 +32,8 @@
   button:disabled { opacity: .5; cursor: progress; }
   .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
-  .thumbs figure { margin: 0; width: 96px; display: grid; gap: 4px; }
+  .thumbs figure { margin: 0; width: 200px; display: grid; gap: 4px; }
+  .thumbs input { font: 13px/1.4 var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); padding: 6px 8px; width: 100%; border-radius: 0; }
   .thumbs img { width: 96px; height: 96px; object-fit: cover; border: 1px solid var(--line); display: block; }
   .thumbs figcaption { font: 12px/1.2 var(--mono); color: var(--muted); }
   .thumbs button { padding: 4px 8px; font-size: 11px; }
@@ -120,10 +121,11 @@
     if (!s) { $("sampleNote").textContent = "Claude no está disponible en esta vista: sólo se pueden correr los ejemplos."; return; }
     limits = await s.limits().catch(() => null);
     $("sampleNote").textContent = "Cada llamada a Claude se cobra a tu cuenta.";
-    $("imgNote").textContent = limits && limits.images ? `hasta ${limits.images.maxCount} imágenes` : "esta vista no admite imágenes";
+    $("imgNote").textContent = limits && limits.images ? `Claude verá hasta ${limits.images.maxCount} imágenes; escribe el rol de cada una` : "En esta vista Claude no ve las imágenes: el rol que escribas para cada una es lo que entra al prompt";
   });
   claude.use("downloads").then((d) => { downloads = d; $("download").hidden = !d; });
 
+  const errText = (e) => e && e.code === "not_granted" ? "Claude no tiene permiso en esta vista" : e && e.code === "rate_limited" ? "Claude está saturado; reintenta en un momento" : `${(e && e.code) || "error"}: ${(e && e.message) || (e && e.code) || e}`;
   const toast = (msg) => { const t = $("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1800); };
   function progress(state, text) { const p = $("progress"); p.hidden = false; p.className = "progress " + state; $("pState").textContent = state === "RUNNING" ? "Trabajando" : state === "DELIVERED" ? "Listo" : state === "BLOCKED" ? "Sin entregar" : state; $("pText").textContent = text || ""; }
   function addStage(st) {
@@ -136,32 +138,46 @@
 
   // ---- imágenes de referencia
   $("addImages").addEventListener("click", () => $("files").click());
-  $("files").addEventListener("change", () => { for (const f of $("files").files) images.push({ file: f, url: URL.createObjectURL(f) }); $("files").value = ""; drawThumbs(); });
+  $("files").addEventListener("change", () => { for (const f of $("files").files) images.push({ file: f, url: URL.createObjectURL(f), role: "" }); $("files").value = ""; drawThumbs(); });
   function drawThumbs() {
     const box = $("thumbs"); box.innerHTML = "";
     images.forEach((im, i) => {
       const fig = document.createElement("figure");
-      fig.innerHTML = `<img alt=""><figcaption>Image ${i + 1}</figcaption><button type="button">quitar</button>`;
-      fig.querySelector("img").src = im.url; fig.querySelector("button").addEventListener("click", () => { images.splice(i, 1); drawThumbs(); });
+      fig.innerHTML = `<img alt=""><figcaption>Image ${i + 1}</figcaption><input type="text" placeholder="qué se toma de esta imagen y qué se ignora"><button type="button">quitar</button>`;
+      fig.querySelector("img").src = im.url;
+      const inp = fig.querySelector("input"); inp.id = `role${i + 1}`; inp.value = im.role; inp.addEventListener("input", () => { im.role = inp.value; });
+      fig.querySelector("button").addEventListener("click", () => { images.splice(i, 1); drawThumbs(); });
       box.appendChild(fig);
     });
   }
-  const imageOpts = () => images.length ? { images: images.map((i) => i.file) } : {};
+  // Las imágenes sólo viajan a Claude donde la vista lo permite; el rol escrito por Eric es la dirección (sw30 regla 7).
+  const imageOpts = () => images.length && limits && limits.images ? { images: images.slice(0, limits.images.maxCount).map((i) => i.file) } : {};
+  const roleLines = () => images.map((im, i) => `REF${i + 1}: ${im.role.trim()}`);
 
   // ---- llamadas a Claude (extractor de hechos; nunca redacta el prompt)
-  function skillPack(budget) {
-    let out = "";
-    for (const [path, text] of Object.entries(D.skill_sources)) { const chunk = `\n\n===== ${path} (cita como ${path}:<línea>) =====\n${text}`; if (out.length + chunk.length > budget) break; out += chunk; }
+  const bytes = (t) => new TextEncoder().encode(t).length;
+  const maxPrompt = () => (limits && limits.maxPromptBytes) || 65536;
+  // Archivos de skill que caben en el presupuesto, en el orden que importa para el modelo.
+  function skillPack(budgetBytes, model) {
+    const nb = model && APD.MODELS[model] && APD.MODELS[model].template === "nb";
+    const order = [nb ? "image/references/nano-banana.md" : "image/references/gpt-image.md", "image/references/prompt-framework.md", "image/references/creative-direction.md",
+      "image/SKILL.md", "image/references/golden-rules.md", "produccion-visual-sw30/SKILL.md", "image/references/models.md", nb ? "image/references/gpt-image.md" : "image/references/nano-banana.md"];
+    let out = "", used = 0;
+    for (const path of order) {
+      const text = D.skill_sources[path]; if (!text) continue;
+      const chunk = `\n\n===== ${path} (cita como ${path}:<línea>) =====\n${text}`; const b = bytes(chunk);
+      if (used + b > budgetBytes) continue; out += chunk; used += b;
+    }
     return out;
   }
-  const inputBudget = () => (limits && limits.inputBytes ? limits.inputBytes : 400000) - 70000;
+  const fit = (head, model) => head + skillPack(maxPrompt() - bytes(head) - 1024, model);
   async function extractCase(brief) {
     const prompt = `Eres el compilador de Case Fingerprint del AI Production Director v3.4 (schema v1.1 adjunto). Devuelves ÚNICAMENTE un JSON {"case": {...}}. Reglas:
 1. Responde cada campo desde el brief y las imágenes adjuntas; lo que no esté, "UNKNOWN" (o null donde el schema lo permite) y documentado en unknowns[] con blocking:false. No inventes.
 2. generator: si el brief NOMBRA un modelo (GPT Image 2 / Nano Banana Pro / Nano Banana 2), ponlo (family gpt_image o nano_banana, model gpt-image-2 / nano-banana-pro / nano-banana-2). Si no lo nombra: {"family":"UNKNOWN","model":null,"adapter_version":null}. La ruta la decide después model_router con las reglas de models.md, no tú.
 3. deliverable.aspect_ratio: del brief (horizontal → "3:2", vertical → "2:3", cuadrado → "1:1", o la proporción dicha). Si el brief no fija formato, null y unknowns[] con blocking:true y reason "el brief no fija el formato".
 4. media "image", stage "prompt", operation "image_edit" sólo si el brief pide editar una imagen adjunta; si no, "text_to_image". base_type según sw30 SKILL.md:37-38: T5 edición; T4 dos o más personas; una persona: T1 si es maestro de rostro (deliverable.purpose reference_master, body_visibility face), T2 maestro de cuerpo (reference_master, full_body/upper_body), T3 cuadro con una persona.
-5. references: hay ${images.length} imágenes adjuntas (Image 1..${images.length}). mode "none" si no hay; si hay, "partial" o "full" con exactamente ${images.length} roles "REF<n>: <qué se toma de esa imagen y qué se ignora>"; identity_reference true si alguna fija identidad; prompt_case "1" sin referencias, "2" con referencias.
+5. references: hay ${images.length} imágenes de referencia (Image 1..${images.length}). mode "none" si no hay; si hay, "partial" o "full" con exactamente ${images.length} roles, copiando literalmente los roles escritos por Eric: ${JSON.stringify(roleLines())}; identity_reference true si algún rol fija identidad (rostro, persona); prompt_case "1" sin referencias, "2" con referencias.
 6. spatial_invariants: sólo lo que el brief fija. risk_flags y task.tags en MAYÚSCULAS. provenance[]: una entrada por campo principal con source_type "user" (brief) o "default".
 
 BRIEF DE ERIC:
@@ -197,8 +213,8 @@ ${JSON.stringify(D.facts_schema)}
 EJEMPLO VÁLIDO para este modelo/operación:
 ${JSON.stringify(pickExample(model, op, tipo).facts)}
 
-ARCHIVOS DE SKILL (fuente de las procedencias "skill"):${skillPack(inputBudget())}`;
-    return sample.json(prompt, { modelTier: "complex", cache: false, ...imageOpts() });
+ARCHIVOS DE SKILL (fuente de las procedencias "skill"):`;
+    return sample.json(fit(prompt, model), { modelTier: "complex", cache: false, ...imageOpts() });
   }
   function pickExample(model, op, tipo) {
     const name = op === "edit" ? "tennis-edit-t5" : tipo === "T1" ? "cellar-master-t1" : APD.MODELS[model].template === "nb" ? "tennis-nano-banana-pro" : "tennis-gpt-image-2";
@@ -258,7 +274,7 @@ ARCHIVOS DE SKILL (fuente de las procedencias "skill"):${skillPack(inputBudget()
     const brief = $("brief").value.trim();
     if (!brief) { toast("Escribe qué imagen quieres"); return; }
     if (!sample) { toast("Claude no está disponible en esta vista"); return; }
-    if (images.length && !(limits && limits.images)) { toast("Esta vista no admite imágenes; quítalas o abre la página en la app de Claude"); return; }
+    if (images.some((im) => !im.role.trim())) { toast("Escribe el rol de cada imagen de referencia"); return; }
     resetView(); $("go").disabled = true; run = { routeReason: "" };
     try {
       // 1. caso
@@ -300,20 +316,21 @@ ARCHIVOS DE SKILL (fuente de las procedencias "skill"):${skillPack(inputBudget()
       run = await APD.run(D, { facts, case: c }, { onStage: addStage });
       if (run.status === "AWAITING_AUDIT") await auditAndLedger();
       showRun();
-    } catch (e) { progress("BLOCKED", `${e.code ? e.code + ": " : ""}${e.message || e}`); }
+    } catch (e) { progress("BLOCKED", errText(e)); }
     $("go").disabled = false;
   }
   $("go").addEventListener("click", produce);
 
   // ---- revisión: tu instrucción = autorización; Claude sólo la transcribe a deltas sobre slots.*
   async function proposeDelta(instruction, fails) {
-    const out = await sample.json(`Eres el editor de deltas del AI Production Director v3.4. No redactas prompts: transcribes la instrucción a un delta autorizado sobre los hechos congelados. Sólo rutas "slots.*" con op "replace" (nunca model, size, references, notes, operation). Cada cambio con procedencia "user" (la instrucción literal) o "skill" (ruta:<línea> de los archivos adjuntos). Mantén el prompt final bajo ${D.ceilings[APD.MODELS[run.facts.model].capabilities_id]} palabras. Salida: ÚNICAMENTE {"changes":[{"path":"slots….","op":"replace","value":"…"}],"provenance":{"slots….":{"source":"user","ref":"…"}}}.
+    const head = `Eres el editor de deltas del AI Production Director v3.4. No redactas prompts: transcribes la instrucción a un delta autorizado sobre los hechos congelados. Sólo rutas "slots.*" con op "replace" (nunca model, size, references, notes, operation). Cada cambio con procedencia "user" (la instrucción literal) o "skill" (ruta:<línea> de los archivos adjuntos). Mantén el prompt final bajo ${D.ceilings[APD.MODELS[run.facts.model].capabilities_id]} palabras. Salida: ÚNICAMENTE {"changes":[{"path":"slots….","op":"replace","value":"…"}],"provenance":{"slots….":{"source":"user","ref":"…"}}}.
 
 INSTRUCCIÓN DE ERIC: ${instruction}
 FALLAS A CORREGIR: ${fails.join(" | ") || "ninguna"}
 HECHOS ACTUALES (slots): ${JSON.stringify(run.facts.slots)}
 PROMPT ACTUAL: ${run.prompt}
-ARCHIVOS DE SKILL:${skillPack(200000)}`, { modelTier: "default", cache: false });
+ARCHIVOS DE SKILL:`;
+    const out = await sample.json(fit(head, run.facts.model), { modelTier: "default", cache: false });
     return { delta: { schema_version: "1.1", base_brief_hash: run.briefs[run.brief_version - 1].brief_hash, authorized_by: "user", reason: instruction, changes: out.changes || [] }, provenance: out.provenance || {} };
   }
   async function applyDelta(pd) {
@@ -326,7 +343,7 @@ ARCHIVOS DE SKILL:${skillPack(200000)}`, { modelTier: "default", cache: false })
   $("applyChange").addEventListener("click", async () => {
     const text = $("deltaText").value.trim(); if (!text || !run || !sample) { toast(text ? "Claude no disponible" : "Escribe qué cambias"); return; }
     $("applyChange").disabled = true;
-    try { await applyDelta(await proposeDelta(text, [])); $("deltaText").value = ""; } catch (e) { progress("BLOCKED", `${e.code || "error"}: ${e.message || e}`); }
+    try { await applyDelta(await proposeDelta(text, [])); $("deltaText").value = ""; } catch (e) { progress("BLOCKED", errText(e)); }
     $("applyChange").disabled = false;
   });
   $("fixFails").addEventListener("click", async () => {
@@ -339,9 +356,9 @@ ARCHIVOS DE SKILL:${skillPack(200000)}`, { modelTier: "default", cache: false })
       const ul = document.createElement("ul"); ul.className = "plain";
       for (const ch of pd.delta.changes) { const li = document.createElement("li"); li.textContent = `${ch.path.replace(/^slots\./, "")}: ${ch.value}`; ul.appendChild(li); }
       const b = document.createElement("button"); b.type = "button"; b.textContent = "Autorizar y aplicar";
-      b.addEventListener("click", async () => { try { await applyDelta(pd); } catch (e) { progress("BLOCKED", `${e.code || "error"}: ${e.message || e}`); } });
+      b.addEventListener("click", async () => { try { await applyDelta(pd); } catch (e) { progress("BLOCKED", errText(e)); } });
       box.append(ul, b); box.hidden = false;
-    } catch (e) { toast(`No se pudo proponer: ${e.code || e.message || e}`); }
+    } catch (e) { toast("No se pudo proponer: " + errText(e)); }
     $("fixFails").disabled = false;
   });
 
@@ -355,7 +372,7 @@ ARCHIVOS DE SKILL:${skillPack(200000)}`, { modelTier: "default", cache: false })
     b.addEventListener("click", async () => {
       resetView(); $("go").disabled = true; progress("RUNNING", `ejemplo ${name}…`);
       try { run = await APD.run(D, JSON.parse(JSON.stringify(D.examples[name])), { onStage: addStage }); if (run.status === "AWAITING_AUDIT" && sample) await auditAndLedger(); if (run.status === "AWAITING_AUDIT") progress("AWAITING_AUDIT", "pendiente de auditoría (sin Claude en esta vista)"); else showRun(); }
-      catch (e) { progress("BLOCKED", `${e.code || "error"}: ${e.message || e}`); }
+      catch (e) { progress("BLOCKED", errText(e)); }
       $("go").disabled = false;
     });
     $("examples").appendChild(b);
