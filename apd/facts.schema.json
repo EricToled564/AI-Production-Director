@@ -69,27 +69,20 @@
     },
     "provenance": {
       "type": "object",
-      "description": "Una entrada por hoja (ruta con puntos, p. ej. slots.scene.location). source=user: instrucción literal de Eric; source=skill: archivo:línea del skill instalado; source=research: URL verificada en este turno.",
+      "description": "Una entrada (o lista) por hoja. source=user: cita literal del brief de Eric (debe existir en el brief); source=skill: archivo:línea[-línea] del skill instalado — todo fragmento de la hoja sin cita 'user' debe ser literal de esas líneas; source=research: URL.",
       "additionalProperties": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "source",
-          "ref"
-        ],
-        "properties": {
-          "source": {
-            "enum": [
-              "user",
-              "skill",
-              "research"
-            ]
+        "anyOf": [
+          {
+            "$ref": "#/$defs/prov_entry"
           },
-          "ref": {
-            "type": "string",
-            "minLength": 1
+          {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/prov_entry"
+            }
           }
-        }
+        ]
       }
     },
     "operation": {
@@ -300,6 +293,27 @@
           "type": "string",
           "minLength": 1,
           "description": "gpt-image.md:83"
+        }
+      }
+    },
+    "prov_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "ref"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "user",
+            "skill",
+            "research"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }

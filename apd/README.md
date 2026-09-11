@@ -31,20 +31,18 @@ python3 apd/apd_run.py audit-pack --run apd/runs/<id>            # tandas para e
 python3 apd/apd_run.py ledger     --run apd/runs/<id> --evidence evidence.json
 python3 apd/apd_run.py revise     --run apd/runs/<id> --delta delta.json --provenance prov.json
 python3 apd/apd_run.py status     --run apd/runs/<id>
-python3 tests/apd/test_apd_run.py; python3 tests/apd/test_apd_variants.py   # 16 pruebas
+python3 tests/apd/test_apd_run.py; python3 tests/apd/test_apd_variants.py; node tests/apd/test_artifact_core.mjs
 ```
 
-Ejemplo completo: `examples/apd/tennis-gpt-image-2/` (facts + case; llega a
-`AWAITING_AUDIT` con 365 reglas activas: 18 certificadas mecánicamente, 347 al auditor).
 
 ## Variantes del AST (todas fijas; el asistente sólo llena hojas)
 
 | `facts.model` / `operation` | Estructura (fuente) | Ejemplo |
 |---|---|---|
-| `gpt-image-2` / `create` | `Create …` + Scene / Subject / Important Details / Use Case / Constraints (`gpt-image.md:126-135`) | `examples/apd/tennis-gpt-image-2` |
-| `gpt-image-2` / `edit` (T5) | Change / Preserve / Constraints (`gpt-image.md:80-83`; mismo formato que `template_engine._render_edit`) | `examples/apd/tennis-edit-t5` |
-| `nano-banana-pro`, `nano-banana-2` | `Create …` + Subject + Action + Location + Composition + Style + `Format: W:H` (`nano-banana.md:13-20`); gate mecánico contra `50mm / f/2.8 / ISO` (`nano-banana.md:24`, regla `c58caa804ddc`) | `examples/apd/tennis-nano-banana-pro` |
-| `case.base_type = T1` (cualquiera de los anteriores) | Se añaden como `rule_text` los cuatro bloques canónicos `light_hard`, `skin_doc`, `usecase_doc`, `clean_doc` de `template_engine.BLOCKS` (sw30 `SKILL.md:66-74`) | `examples/apd/cellar-master-t1` |
+| `gpt-image-2` / `create` | `Create …` + Scene / Subject / Important Details / Use Case / Constraints (`gpt-image.md:126-135`) | — |
+| `gpt-image-2` / `edit` (T5) | Change / Preserve / Constraints (`gpt-image.md:80-83`; mismo formato que `template_engine._render_edit`) | — |
+| `nano-banana-pro`, `nano-banana-2` | `Create …` + Subject + Action + Location + Composition + Style + `Format: W:H` (`nano-banana.md:13-20`); gate mecánico contra `50mm / f/2.8 / ISO` (`nano-banana.md:24`, regla `c58caa804ddc`) | — |
+| `case.base_type = T1` (cualquiera de los anteriores) | Se añaden como `rule_text` los cuatro bloques canónicos `light_hard`, `skin_doc`, `usecase_doc`, `clean_doc` de `template_engine.BLOCKS` (sw30 `SKILL.md:66-74`) | — |
 | `case.base_type = T4` | Exige el slot `contact` (gpt: `slots.subject.contact`; nb: `slots.contact`) | — |
 
 ## Límites declarados (no decisiones silenciosas)

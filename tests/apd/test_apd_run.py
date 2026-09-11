@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 APD = ROOT / "apd" / "apd_run.py"
 GATE = ROOT / ".claude" / "hooks" / "gate_apd_delivery.py"
-EX = ROOT / "examples" / "apd" / "tennis-gpt-image-2"
+FX = ROOT / "tests" / "apd" / "fixtures"
 
 
 def run(*args, ok=None):
@@ -41,11 +41,12 @@ class ApdRun(unittest.TestCase):
     def tearDown(self):
         self.td.cleanup()
 
-    def new(self, facts=None, case=None):
-        f = self.runs / "facts.json"; c = self.runs / "case.json"
-        f.write_text(json.dumps(facts or json.loads((EX / "facts.json").read_text())))
-        c.write_text(json.dumps(case or json.loads((EX / "case.json").read_text())))
-        return run("new", "--run", self.run, "--facts", f, "--case", c)
+    def new(self, facts=None, case=None, brief=None, strict=False):
+        f = self.runs / "facts.json"; c = self.runs / "case.json"; b = self.runs / "brief.txt"
+        f.write_text(json.dumps(facts or json.loads((FX / "gpt_facts.json").read_text())))
+        c.write_text(json.dumps(case or json.loads((FX / "gpt_case.json").read_text())))
+        b.write_text(brief if brief is not None else (FX / "gpt_brief.txt").read_text())
+        return run("new", "--run", self.run, "--facts", f, "--case", c, "--brief", b, *(["--strict"] if strict else []))
 
     def deliver(self):
         self.new()
@@ -61,18 +62,18 @@ class ApdRun(unittest.TestCase):
         self.assertFalse((self.run / "DELIVERABLE.txt").exists())
 
     def test_02_leaf_without_provenance_blocks(self):
-        facts = json.loads((EX / "facts.json").read_text()); del facts["provenance"]["slots.subject.action"]
+        facts = json.loads((FX / "gpt_facts.json").read_text()); del facts["provenance"]["slots.subject.action"]
         p = self.new(facts)
         self.assertNotEqual(p.returncode, 0); self.assertIn("slots.subject.action: sin procedencia", p.stdout)
 
     def test_03_skill_ref_must_exist(self):
-        facts = json.loads((EX / "facts.json").read_text())
+        facts = json.loads((FX / "gpt_facts.json").read_text())
         facts["provenance"]["slots.opening"] = {"source": "skill", "ref": "image/SKILL.md:9999"}
         p = self.new(facts)
         self.assertNotEqual(p.returncode, 0); self.assertIn("fuera de rango", p.stdout)
 
     def test_04_case_facts_mismatch_blocks(self):
-        case = json.loads((EX / "case.json").read_text()); case["deliverable"]["aspect_ratio"] = "16:9"
+        case = json.loads((FX / "gpt_case.json").read_text()); case["deliverable"]["aspect_ratio"] = "16:9"
         p = self.new(case=case)
         self.assertNotEqual(p.returncode, 0); self.assertIn("aspect_ratio", p.stdout)
 
@@ -109,7 +110,7 @@ class ApdRun(unittest.TestCase):
         prompt = full.split("Prompt:\n", 1)[1].split("\nNotes:\n", 1)[0]
         self.assertEqual(hook(f"SKILL: a.md\nRIESGOS: b\nTÉCNICA: c\n\n```\n{full}```\n", self.runs), 0)
         self.assertEqual(hook(f"gpt-image-2\n\n```\n{prompt}\n```\n", self.runs), 0)
-        edited = prompt.replace("midday", "noon")
+        edited = prompt.replace("morning", "noon")
         self.assertEqual(hook(f"gpt-image-2\n\n```\n{edited}\n```\n", self.runs), 2)
         self.assertEqual(hook("```\nCreate a photo of a cat.\n```\nnano banana", self.runs), 2)
         self.assertEqual(hook("kling\n```\nCreate a slow push-in on the cat.\n```", self.runs), 0)
@@ -118,11 +119,11 @@ class ApdRun(unittest.TestCase):
         self.deliver()
         h = json.loads((self.run / "brief_v1.lock.json").read_text())["brief_hash"]
         (self.runs / "d.json").write_text(json.dumps({"schema_version": "1.1", "base_brief_hash": h, "authorized_by": "user",
-                                                     "reason": "Eric: tarde", "changes": [{"path": "slots.scene.time", "op": "replace", "value": "late afternoon"}]}))
-        (self.runs / "p.json").write_text(json.dumps({"slots.scene.time": {"source": "user", "ref": "Eric: tarde"}}))
+                                                     "reason": "Eric: late afternoon", "changes": [{"path": "slots.scene.time", "op": "replace", "value": "late afternoon"}]}))
+        (self.runs / "p.json").write_text(json.dumps({"slots.scene.time": {"source": "user", "ref": "late afternoon"}}))
         run("revise", "--run", self.run, "--delta", self.runs / "d.json", "--provenance", self.runs / "p.json", ok=True)
         a = (self.run / "prompt_v1.txt").read_text(); b = (self.run / "prompt_v2.txt").read_text()
-        self.assertEqual(a.replace("midday", "late afternoon"), b)
+        self.assertEqual(a.replace("morning", "late afternoon"), b)
         self.assertFalse((self.run / "DELIVERABLE.txt").exists())
         self.assertEqual(json.loads((self.run / "run.json").read_text())["status"], "AWAITING_AUDIT")
 
@@ -138,9 +139,33 @@ class ApdRun(unittest.TestCase):
             self.assertEqual(json.loads((self.run / "run.json").read_text())["status"], "DELIVERED")
             self.assertTrue((self.run / "DELIVERABLE.txt").exists())
 
+    def test_11_skill_fragment_must_be_literal(self):
+        facts = json.loads((FX / "gpt_facts.json").read_text())
+        facts["slots"]["details"]["lens_feel"] = "hands hidden in the foam"
+        facts["provenance"]["slots.details.lens_feel"] = {"source": "skill", "ref": "image/references/creative-direction.md:50"}
+        p = self.new(facts)
+        self.assertNotEqual(p.returncode, 0); self.assertIn("no es literal de las líneas citadas", p.stdout); self.assertIn("hands hidden in the foam", p.stdout)
+
+    def test_12_user_quote_must_exist_in_brief(self):
+        facts = json.loads((FX / "gpt_facts.json").read_text())
+        facts["provenance"]["slots.scene.time"] = {"source": "user", "ref": "Eric pidió que fuera de noche"}
+        p = self.new(facts)
+        self.assertNotEqual(p.returncode, 0); self.assertIn("no está en el brief", p.stdout)
+
+    def test_13_strict_mode_blocks_invented_fragment_and_omitted_sentence(self):
+        p = self.new(strict=True); self.assertEqual(p.returncode, 0, p.stdout); self.assertIn("facts_strict             PASS", p.stdout)
+        import shutil; shutil.rmtree(self.run)
+        facts = json.loads((FX / "gpt_facts.json").read_text())
+        facts["slots"]["scene"]["weather"] = "overcast, soft even light, hands hidden in the foam"
+        p = self.new(facts, strict=True)
+        self.assertNotEqual(p.returncode, 0); self.assertIn("no es literal del brief ni del skill", p.stdout)
+        brief = (FX / "gpt_brief.txt").read_text() + "The player wears a red cap.\n"
+        p = self.new(brief=brief, strict=True)
+        self.assertNotEqual(p.returncode, 0); self.assertIn("frase del brief omitida", p.stdout)
+
     def test_10_word_ceiling_comes_from_capabilities(self):
-        facts = json.loads((EX / "facts.json").read_text())
-        facts["slots"]["constraints"] += "; " + "no extra element" * 30
+        facts = json.loads((FX / "gpt_facts.json").read_text())
+        facts["slots"]["constraints"] += "; " + "no extra element " * 90
         p = self.new(facts)
         self.assertNotEqual(p.returncode, 0); self.assertIn("word_ceiling", p.stdout)
 

@@ -220,6 +220,88 @@ def resolve_skill_ref(ref: str) -> tuple[bool, str]:
     return False, f"archivo no instalado bajo {SKILLS_ROOT}"
 
 
+def norm_text(t: str) -> str:
+    t = t.lower().replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"').replace("—", "-").replace("–", "-")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def cited_text(ref: str) -> str:
+    """Texto de las líneas citadas de un skill instalado (rango inclusivo)."""
+    m = re.match(r"^(?P<skill>[\w-]+)/(?P<rel>[\w./-]+):(?P<line>\d+)(?:-(?P<end>\d+))?$", ref)
+    if not m:
+        return ""
+    for pattern in (f"*/{m['skill']}/{m['rel']}", f"*/*/{m['skill']}/{m['rel']}"):
+        for cand in SKILLS_ROOT.glob(pattern):
+            lines = cand.read_text(encoding="utf-8", errors="replace").splitlines()
+            a, b = int(m["line"]), int(m["end"] or m["line"])
+            return "\n".join(lines[a - 1:b])
+    return ""
+
+
+FRAGMENT_SPLIT = re.compile(r"[,;.]\s+|\s+-\s+|\s+\u2014\s+")
+
+
+def fragments(value: str) -> list[str]:
+    return [f.strip(" .,;") for f in FRAGMENT_SPLIT.split(str(value)) if f.strip(" .,;")]
+
+
+SENTENCE_SPLIT = re.compile(r"(?<=[.;!?])\s+|\n+")
+
+
+def check_strict(facts: dict, brief: str) -> list[str]:
+    """Modo estricto (brief en el idioma del prompt): cada fragmento de cada slot es
+    literal del brief o de las líneas del skill citadas, y cada frase del brief aparece
+    en algún slot. Nada se añade, nada se omite."""
+    errs: list[str] = []
+    nb = norm_text(brief or "")
+    prov = facts.get("provenance", {})
+    slot_text = " || ".join(norm_text(str(v)) for _, v in leaves(facts.get("slots", {})))
+    for path, val in leaves({"slots": facts.get("slots", {})}):
+        entries = prov.get(path)
+        entries = entries if isinstance(entries, list) else ([entries] if entries else [])
+        cited = norm_text("\n".join(cited_text(e.get("ref", "")) for e in entries if e.get("source") == "skill"))
+        for frag in fragments(val):
+            nf = norm_text(frag)
+            if nf not in nb and nf not in cited:
+                errs.append(f"{path}: fragmento que no es literal del brief ni del skill: \"{frag[:60]}\"")
+    for sent in SENTENCE_SPLIT.split(brief or ""):
+        ns = norm_text(sent).strip(" .;")
+        if len(ns) < 12:
+            continue
+        if not any(norm_text(f) in slot_text for f in fragments(ns)):
+            errs.append(f"frase del brief omitida en los slots: \"{ns[:60]}\"")
+    return errs
+
+
+def check_literal_provenance(facts: dict, brief: str) -> list[str]:
+    """Regla mecánica: lo atribuido al skill es literal de las líneas citadas; toda cita
+    atribuida a Eric existe literalmente en el brief. Sin brief no hay run."""
+    errs: list[str] = []
+    nb = norm_text(brief or "")
+    if not nb:
+        return ["brief vacío: cada procedencia 'user' debe citar una instrucción que esté en el brief"]
+    prov = facts.get("provenance", {})
+    body = {k: v for k, v in facts.items() if k not in ("provenance", "brief_id")}
+    for path, val in leaves(body):
+        if path == "references" or path.startswith("references."):
+            continue
+        entries = prov.get(path)
+        entries = entries if isinstance(entries, list) else ([entries] if entries else [])
+        users = [e for e in entries if e.get("source") == "user"]
+        skills = [e for e in entries if e.get("source") == "skill"]
+        for e in users:
+            if norm_text(e.get("ref", "")) not in nb:
+                errs.append(f"{path}: la cita atribuida a Eric no está en el brief: \"{e.get('ref','')[:60]}\"")
+        if not path.startswith("slots.") and path != "format":
+            continue
+        cited = norm_text("\n".join(cited_text(e.get("ref", "")) for e in skills))
+        if not users:
+            for frag in fragments(val):
+                if norm_text(frag) not in cited:
+                    errs.append(f"{path}: fragmento atribuido al skill que no es literal de las líneas citadas: \"{frag[:60]}\"")
+    return errs
+
+
 def check_provenance(facts: dict) -> list[str]:
     prov = facts.get("provenance", {})
     errs = []
@@ -227,21 +309,23 @@ def check_provenance(facts: dict) -> list[str]:
     for path, _ in leaves(body):
         if path.startswith("references.") or path == "references":
             continue
-        e = prov.get(path)
-        if not e:
+        entries = prov.get(path)
+        entries = entries if isinstance(entries, list) else ([entries] if entries else [])
+        if not entries:
             errs.append(f"{path}: sin procedencia")
             continue
-        src, ref = e["source"], e["ref"].strip()
-        if src == "skill":
-            ok, why = resolve_skill_ref(ref)
-            if not ok:
-                errs.append(f"{path}: skill ref inválida ({ref}): {why}")
-        elif src == "research":
-            if not re.match(r"^https?://", ref):
-                errs.append(f"{path}: research ref debe ser URL ({ref})")
-        elif src == "user":
-            if len(ref) < 3:
-                errs.append(f"{path}: user ref debe citar la instrucción")
+        for e in entries:
+            src, ref = e["source"], e["ref"].strip()
+            if src == "skill":
+                ok, why = resolve_skill_ref(ref)
+                if not ok:
+                    errs.append(f"{path}: skill ref inválida ({ref}): {why}")
+            elif src == "research":
+                if not re.match(r"^https?://", ref):
+                    errs.append(f"{path}: research ref debe ser URL ({ref})")
+            elif src == "user":
+                if len(ref) < 3:
+                    errs.append(f"{path}: user ref debe citar la instrucción")
     for i, r in enumerate(facts.get("references", [])):
         e = prov.get(f"references.{i}.role") or prov.get("references")
         if not e:
@@ -538,6 +622,13 @@ def cmd_new(a) -> int:
         run.stage("facts_schema", "FAIL" if errs else "PASS", "; ".join(errs) or FACTS_SCHEMA.name)
         perrs = check_provenance(facts)
         run.stage("facts_provenance", "FAIL" if perrs else "PASS", "; ".join(perrs[:6]) or f"{len(facts['provenance'])} hojas trazadas")
+        brief_text = Path(a.brief).read_text(encoding="utf-8") if a.brief else ""
+        (run.dir / "brief.txt").write_text(brief_text, encoding="utf-8")
+        lerrs = check_literal_provenance(facts, brief_text)
+        run.stage("facts_literal", "FAIL" if lerrs else "PASS", "; ".join(lerrs[:6]) or "todo lo atribuido al skill es literal; todas las citas de Eric están en el brief")
+        if a.strict:
+            serrs = check_strict(facts, brief_text)
+            run.stage("facts_strict", "FAIL" if serrs else "PASS", "; ".join(serrs[:6]) or "cada fragmento es literal del brief o del skill; ninguna frase del brief omitida")
         jdump(run.dir / "facts.json", facts)
         jdump(run.dir / "case.json", case)
 
@@ -773,15 +864,28 @@ def cmd_revise(a) -> int:
             if c["op"] == "remove":
                 perrs.append(f"{path}: remove deja un campo requerido abierto; usa replace")
                 continue
-            e = prov.get(path)
-            if not e or e.get("source") not in {"user", "skill", "research"}:
+            ents = prov.get(path)
+            ents = ents if isinstance(ents, list) else ([ents] if ents else [])
+            if not ents or any(e.get("source") not in {"user", "skill", "research"} for e in ents):
                 perrs.append(f"{path}: sin procedencia en --provenance")
-            elif e["source"] == "skill":
-                ok, why = resolve_skill_ref(e["ref"])
-                if not ok:
-                    perrs.append(f"{path}: skill ref inválida: {why}")
-            elif e["source"] == "research" and not re.match(r"^https?://", e["ref"]):
-                perrs.append(f"{path}: research ref debe ser URL")
+            for e in ents:
+                if e.get("source") == "skill":
+                    ok, why = resolve_skill_ref(e["ref"])
+                    if not ok:
+                        perrs.append(f"{path}: skill ref inválida: {why}")
+                elif e.get("source") == "research" and not re.match(r"^https?://", e["ref"]):
+                    perrs.append(f"{path}: research ref debe ser URL")
+        if not perrs:
+            brief_text = (run.dir / "brief.txt").read_text(encoding="utf-8") if (run.dir / "brief.txt").exists() else ""
+            brief_text += "\n" + str(delta.get("reason", ""))  # la instrucción del delta es dirección de Eric
+            tmp = {"slots": {}, "provenance": {}}
+            for c in delta["changes"]:
+                cur = tmp; parts = c["path"].split(".")
+                for k in parts[:-1]:
+                    cur = cur.setdefault(k, {})
+                cur[parts[-1]] = c.get("value")
+                tmp["provenance"][c["path"]] = prov.get(c["path"])
+            perrs += check_literal_provenance(tmp, brief_text)
         run.stage("delta_provenance", "FAIL" if perrs else "PASS", "; ".join(perrs[:6]) or f"{len(delta['changes'])} cambios trazados")
 
         old_v = run.state["brief_version"]
@@ -831,7 +935,7 @@ def cmd_status(a) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("new"); p.add_argument("--run", required=True); p.add_argument("--facts", required=True); p.add_argument("--case", required=True); p.set_defaults(fn=cmd_new)
+    p = sub.add_parser("new"); p.add_argument("--run", required=True); p.add_argument("--facts", required=True); p.add_argument("--case", required=True); p.add_argument("--brief", required=True, help="texto literal del brief de Eric"); p.add_argument("--strict", action="store_true", help="brief en el idioma del prompt: cada fragmento literal del brief o del skill, ninguna frase del brief omitida"); p.set_defaults(fn=cmd_new)
     p = sub.add_parser("audit-pack"); p.add_argument("--run", required=True); p.set_defaults(fn=cmd_audit_pack)
     p = sub.add_parser("ledger"); p.add_argument("--run", required=True); p.add_argument("--evidence", required=True); p.set_defaults(fn=cmd_ledger)
     p = sub.add_parser("revise"); p.add_argument("--run", required=True); p.add_argument("--delta", required=True); p.add_argument("--provenance"); p.set_defaults(fn=cmd_revise)

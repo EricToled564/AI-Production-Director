@@ -102,7 +102,6 @@
   </section>
 
   <details><summary>Detalle del proceso</summary><ol class="stages" id="stages"></ol></details>
-  <details><summary>Probar con un ejemplo</summary><div class="row" id="examples" style="margin-top:8px"></div></details>
   <p class="meta" id="meta"></p>
 </div>
 <div class="toast" id="toast" role="status"></div>
@@ -118,7 +117,7 @@
   let sample = null, downloads = null, limits = null, run = null, images = [];
   claude.use("sample").then(async (s) => {
     sample = s;
-    if (!s) { $("sampleNote").textContent = "Claude no está disponible en esta vista: sólo se pueden correr los ejemplos."; return; }
+    if (!s) { $("sampleNote").textContent = "Claude no está disponible en esta vista."; return; }
     limits = await s.limits().catch(() => null);
     $("sampleNote").textContent = "Cada llamada a Claude se cobra a tu cuenta.";
     $("imgNote").textContent = limits && limits.images ? `Claude verá hasta ${limits.images.maxCount} imágenes; escribe el rol de cada una`
@@ -190,10 +189,7 @@ BRIEF DE ERIC:
 ${brief}
 
 SCHEMA case fingerprint:
-${JSON.stringify(D.case_schema)}
-
-EJEMPLO VÁLIDO:
-${JSON.stringify(D.examples["tennis-gpt-image-2"].case)}`;
+${JSON.stringify(D.case_schema)}`;
     return askJson(prompt, { modelTier: "complex", cache: false, ...imageOpts() });
   }
   async function extractFacts(brief, c, model) {
@@ -216,15 +212,8 @@ ${JSON.stringify(c)}
 SCHEMA facts:
 ${JSON.stringify(D.facts_schema)}
 
-EJEMPLO VÁLIDO para este modelo/operación:
-${JSON.stringify(pickExample(model, op, tipo).facts)}
-
 ARCHIVOS DE SKILL (fuente de las procedencias "skill"):`;
     return askJson(fit(prompt, model), { modelTier: "complex", cache: false, ...imageOpts() });
-  }
-  function pickExample(model, op, tipo) {
-    const name = op === "edit" ? "tennis-edit-t5" : tipo === "T1" ? "cellar-master-t1" : APD.MODELS[model].template === "nb" ? "tennis-nano-banana-pro" : "tennis-gpt-image-2";
-    return D.examples[name] || Object.values(D.examples)[0];
   }
   function chooseModel(candidates, sourceText) {
     return new Promise((resolve) => {
@@ -372,16 +361,5 @@ ARCHIVOS DE SKILL:`;
   $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(run.prompt.trimEnd()); toast("Prompt copiado"); } catch (e) { toast("No se pudo copiar"); } });
   $("download").addEventListener("click", async () => { if (!downloads || !run || !run.deliverable) return; try { await downloads.save({ filename: `DELIVERABLE-${run.facts.brief_id}-r${run.prompt_revision}.txt`, data: run.deliverable }); toast("Guardado"); } catch (e) { if (e.code !== "declined") toast(`No se pudo guardar: ${e.code || e}`); } });
 
-  // ---- ejemplos (corren el pipeline sin llamadas a Claude hasta la auditoría; con Claude, hasta el prompt)
-  for (const name of Object.keys(D.examples)) {
-    const b = document.createElement("button"); b.type = "button"; b.textContent = name;
-    b.addEventListener("click", async () => {
-      resetView(); $("go").disabled = true; progress("RUNNING", `ejemplo ${name}…`);
-      try { run = await APD.run(D, JSON.parse(JSON.stringify(D.examples[name])), { onStage: addStage }); if (run.status === "AWAITING_AUDIT" && sample) await auditAndLedger(); if (run.status === "AWAITING_AUDIT") progress("AWAITING_AUDIT", "pendiente de auditoría (sin Claude en esta vista)"); else showRun(); }
-      catch (e) { progress("BLOCKED", errText(e)); }
-      $("go").disabled = false;
-    });
-    $("examples").appendChild(b);
-  }
 })();
 </script>

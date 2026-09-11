@@ -11,7 +11,7 @@ Contenido:
   prohibido (dramaturgy.md + Anti-Slop de gpt-image.md), bloques canónicos T1 y
   contratos T1..T5 (template_engine), manifiesto de archivos de skill (líneas) para
   verificar procedencias, fuentes de skill que la página entrega al extractor de
-  hechos, AUDITOR.md y los ejemplos.
+  hechos y AUDITOR.md.
 """
 from __future__ import annotations
 
@@ -78,11 +78,6 @@ def main() -> int:
     banned = sorted(set((gate_dramaturgy.load_banned(dram) if dram else []) + (gate_dramaturgy.load_antislop(anti) if anti else [])))
     golden = gate_image.find_golden_rules()
     verbs = gate_image.load_verbs(golden) if golden else []
-    examples = {}
-    for d in sorted((REPO / "examples" / "apd").iterdir()):
-        if (d / "facts.json").exists():
-            examples[d.name] = {"facts": json.loads((d / "facts.json").read_text(encoding="utf-8")),
-                                "case": json.loads((d / "case.json").read_text(encoding="utf-8"))}
     try:
         commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=str(REPO)).stdout.strip()
     except Exception:
@@ -106,7 +101,6 @@ def main() -> int:
         "skill_manifest": manifest,
         "skill_sources": sources,
         "auditor_md": (REPO / "apd" / "AUDITOR.md").read_text(encoding="utf-8"),
-        "examples": examples,
         "sources_of_truth": {
             "verbs": str(golden.relative_to(root)) if golden else None,
             "banned": [str(p.relative_to(root)) for p in (dram, anti) if p],
@@ -114,7 +108,7 @@ def main() -> int:
         },
     }
     OUT.write_text("window.APD_DATA = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
-    print(f"data.js: {OUT.stat().st_size/1e6:.1f} MB · {len(rules)} reglas · {len(manifest)} archivos de skill · {len(verbs)} verbos · {len(banned)} términos prohibidos · ejemplos {sorted(examples)}")
+    print(f"data.js: {OUT.stat().st_size/1e6:.1f} MB · {len(rules)} reglas · {len(manifest)} archivos de skill · {len(verbs)} verbos · {len(banned)} términos prohibidos")
     return 0
 
 

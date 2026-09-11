@@ -102,6 +102,7 @@
       }
     }
     for (const sub of schema.allOf || []) rec(obj, sub, path);
+    if (schema.anyOf && !schema.anyOf.some((sub) => validateSchema(obj, sub, rootSchema, path).length === 0)) errs.push(`${path}: no cumple ninguna de las formas permitidas`);
     if (schema.if) {
       const ok = validateSchema(obj, schema.if, rootSchema, path).length === 0;
       if (ok && schema.then) rec(obj, schema.then, path);
@@ -122,6 +123,7 @@
     if (line < 1 || end > n || end < line) return [false, `${key} tiene ${n} líneas; ${line}-${end} fuera de rango`];
     return [true, key];
   }
+  const entriesOf = (prov, path) => { const e = prov[path]; return Array.isArray(e) ? e : e ? [e] : []; };
   function checkProvenance(D, facts) {
     const prov = facts.provenance || {}, errs = [];
     const body = {}; for (const [k, v] of Object.entries(facts)) if (k !== "provenance" && k !== "brief_id") body[k] = v;
@@ -129,16 +131,60 @@
     for (const [path] of leaves(body)) {
       if (path === "references" || path.startsWith("references.")) continue;
       paths.add(path);
-      const e = prov[path];
-      if (!e) { errs.push(`${path}: sin procedencia`); continue; }
-      const ref = String(e.ref || "").trim();
-      if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, ref); if (!ok) errs.push(`${path}: skill ref inválida (${ref}): ${why}`); }
-      else if (e.source === "research") { if (!/^https?:\/\//.test(ref)) errs.push(`${path}: research ref debe ser URL (${ref})`); }
-      else if (e.source === "user") { if (ref.length < 3) errs.push(`${path}: user ref debe citar la instrucción`); }
+      const ents = entriesOf(prov, path);
+      if (!ents.length) { errs.push(`${path}: sin procedencia`); continue; }
+      for (const e of ents) {
+        const ref = String(e.ref || "").trim();
+        if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, ref); if (!ok) errs.push(`${path}: skill ref inválida (${ref}): ${why}`); }
+        else if (e.source === "research") { if (!/^https?:\/\//.test(ref)) errs.push(`${path}: research ref debe ser URL (${ref})`); }
+        else if (e.source === "user") { if (ref.length < 3) errs.push(`${path}: user ref debe citar la instrucción`); }
+      }
     }
     (facts.references || []).forEach((r, i) => { if (!prov[`references.${i}.role`] && !prov.references) errs.push(`references.${i}.role: sin procedencia`); });
     const stale = Object.keys(prov).filter((p) => !paths.has(p) && !p.startsWith("references"));
     if (stale.length) errs.push("procedencia de rutas inexistentes: " + stale.join(", "));
+    return errs;
+  }
+
+  const normText = (t) => String(t).toLowerCase().replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/[—–]/g, "-").replace(/\s+/g, " ").trim();
+  function citedText(D, ref) {
+    const m = /^([\w-]+)\/([\w./-]+):(\d+)(?:-(\d+))?$/.exec(ref); if (!m) return "";
+    const text = D.skill_sources[`${m[1]}/${m[2]}`]; if (!text) return "";
+    const lines = text.split("\n"), a = +m[3], b = +(m[4] || m[3]);
+    return lines.slice(a - 1, b).join("\n");
+  }
+  const fragmentsOf = (v) => String(v).split(/[,;.]\s+|\s+-\s+|\s+\u2014\s+/).map((f) => f.replace(/^[ .,;]+|[ .,;]+$/g, "")).filter(Boolean);
+  // Regla mecánica: lo atribuido al skill es literal de las líneas citadas; toda cita atribuida
+  // a Eric existe literalmente en el brief.
+  function checkLiteralProvenance(D, facts, brief) {
+    const errs = [], nb = normText(brief || "");
+    if (!nb) return ["brief vacío: cada procedencia 'user' debe citar una instrucción que esté en el brief"];
+    const prov = facts.provenance || {};
+    const body = {}; for (const [k, v] of Object.entries(facts)) if (k !== "provenance" && k !== "brief_id") body[k] = v;
+    for (const [path, val] of leaves(body)) {
+      if (path === "references" || path.startsWith("references.")) continue;
+      const ents = entriesOf(prov, path), users = ents.filter((e) => e.source === "user"), skills = ents.filter((e) => e.source === "skill");
+      for (const e of users) if (!nb.includes(normText(e.ref || ""))) errs.push(`${path}: la cita atribuida a Eric no está en el brief: "${String(e.ref || "").slice(0, 60)}"`);
+      if (!path.startsWith("slots.") && path !== "format") continue;
+      if (users.length) continue;
+      const cited = normText(skills.map((e) => citedText(D, e.ref || "")).join("\n"));
+      for (const frag of fragmentsOf(val)) if (!cited.includes(normText(frag))) errs.push(`${path}: fragmento atribuido al skill que no es literal de las líneas citadas: "${frag.slice(0, 60)}"`);
+    }
+    return errs;
+  }
+
+  function checkStrict(D, facts, brief) {
+    const errs = [], nb = normText(brief || ""), prov = facts.provenance || {};
+    const slotLeaves = [...leaves({ slots: facts.slots || {} })];
+    const slotText = slotLeaves.map(([, v]) => normText(String(v))).join(" || ");
+    for (const [path, val] of slotLeaves) {
+      const cited = normText(entriesOf(prov, path).filter((e) => e.source === "skill").map((e) => citedText(D, e.ref || "")).join("\n"));
+      for (const frag of fragmentsOf(val)) { const nf = normText(frag); if (!nb.includes(nf) && !cited.includes(nf)) errs.push(`${path}: fragmento que no es literal del brief ni del skill: "${frag.slice(0, 60)}"`); }
+    }
+    for (const sent of String(brief || "").split(/(?<=[.;!?])\s+|\n+/)) {
+      const ns = normText(sent).replace(/^[ .;]+|[ .;]+$/g, ""); if (ns.length < 12) continue;
+      if (!fragmentsOf(ns).some((f) => slotText.includes(normText(f)))) errs.push(`frase del brief omitida en los slots: "${ns.slice(0, 60)}"`);
+    }
     return errs;
   }
 
@@ -704,6 +750,10 @@
       stage(run, "facts_schema", errs.length ? "FAIL" : "PASS", short(errs) || "facts.schema.json", onStage);
       const perrs = checkProvenance(D, facts);
       stage(run, "facts_provenance", perrs.length ? "FAIL" : "PASS", short(perrs) || `${Object.keys(facts.provenance).length} hojas trazadas`, onStage);
+      run.brief = String(inputs.brief || "");
+      const lerrs = checkLiteralProvenance(D, facts, run.brief);
+      stage(run, "facts_literal", lerrs.length ? "FAIL" : "PASS", short(lerrs) || "todo lo atribuido al skill es literal; todas las citas de Eric están en el brief", onStage);
+      if (inputs.strict) { const serrs = checkStrict(D, facts, run.brief); run.strict = true; stage(run, "facts_strict", serrs.length ? "FAIL" : "PASS", short(serrs) || "cada fragmento es literal del brief o del skill; ninguna frase del brief omitida", onStage); }
       const cerrs = [], fam = MODELS[facts.model].family, cop = OPERATIONS[op];
       if (c.media !== "image" || c.stage !== "prompt" || c.operation !== cop) cerrs.push(`case debe ser media=image, stage=prompt, operation=${cop}`);
       if (op === "edit") { if (c.base_type !== "T5") cerrs.push("operation=edit exige case.base_type=T5"); if (!(facts.references || []).length) cerrs.push("operation=edit exige references (la imagen a editar)"); }
@@ -821,10 +871,17 @@
         const path = ch.path;
         if (!path.startsWith("slots.")) { perrs.push(`${path}: un delta sólo puede tocar slots.* (modelo, tamaño y referencias exigen run nuevo)`); continue; }
         if (ch.op === "remove") { perrs.push(`${path}: remove deja un campo requerido abierto; usa replace`); continue; }
-        const e = (prov || {})[path];
-        if (!e || !["user", "skill", "research"].includes(e.source)) perrs.push(`${path}: sin procedencia`);
-        else if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, e.ref); if (!ok) perrs.push(`${path}: skill ref inválida: ${why}`); }
-        else if (e.source === "research" && !/^https?:\/\//.test(e.ref)) perrs.push(`${path}: research ref debe ser URL`);
+        const ents = entriesOf(prov || {}, path);
+        if (!ents.length || ents.some((e) => !["user", "skill", "research"].includes(e.source))) perrs.push(`${path}: sin procedencia`);
+        for (const e of ents) {
+          if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, e.ref); if (!ok) perrs.push(`${path}: skill ref inválida: ${why}`); }
+          else if (e.source === "research" && !/^https?:\/\//.test(e.ref)) perrs.push(`${path}: research ref debe ser URL`);
+        }
+      }
+      if (!perrs.length) {
+        const tmp = { slots: {}, provenance: {} };
+        for (const ch of delta.changes || []) { const parts = ch.path.split("."); let cur = tmp; for (const k of parts.slice(0, -1)) cur = cur[k] = cur[k] || {}; cur[parts[parts.length - 1]] = ch.value; tmp.provenance[ch.path] = (prov || {})[ch.path]; }
+        perrs.push(...checkLiteralProvenance(D, tmp, (run.brief || "") + "\n" + String(delta.reason || "")));
       }
       stage(run, "delta_provenance", perrs.length ? "FAIL" : "PASS", short(perrs) || `${(delta.changes || []).length} cambios trazados`, onStage);
       const oldB = run.briefs[run.brief_version - 1];
@@ -854,5 +911,5 @@
       `\n\nResponde ÚNICAMENTE con el JSON de salida descrito arriba, con una entrada por cada uno de los ${tanda.rules.length} rule_id de esta tanda.`;
   }
 
-  root.APD = { MODELS, deriveBaseType, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA };
+  root.APD = { MODELS, deriveBaseType, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, checkLiteralProvenance, checkStrict, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA };
 })(typeof window !== "undefined" ? window : globalThis);

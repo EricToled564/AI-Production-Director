@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 APD = ROOT / "apd" / "apd_run.py"
 GATE_IMAGE = ROOT / ".claude" / "hooks" / "gate_image.py"
-EX = ROOT / "examples" / "apd"
+FX = ROOT / "tests" / "apd" / "fixtures"
 
 
 def run(*args):
@@ -23,13 +23,13 @@ class Variants(unittest.TestCase):
 
     def new(self, example, facts=None, case=None):
         f = self.runs / "facts.json"; c = self.runs / "case.json"
-        f.write_text(json.dumps(facts or json.loads((EX / example / "facts.json").read_text())))
-        c.write_text(json.dumps(case or json.loads((EX / example / "case.json").read_text())))
+        f.write_text(json.dumps(facts or json.loads((FX / f"{example}_facts.json").read_text())))
+        c.write_text(json.dumps(case or json.loads((FX / f"{example}_case.json").read_text())))
         r = self.runs / example
-        return run("new", "--run", r, "--facts", f, "--case", c), r
+        return run("new", "--run", r, "--facts", f, "--case", c, "--brief", FX / f"{example}_brief.txt"), r
 
     def test_01_nano_banana_renders_skill_order_and_format(self):
-        p, r = self.new("tennis-nano-banana-pro")
+        p, r = self.new("nb")
         self.assertEqual(p.returncode, 0, p.stdout)
         t = (r / "prompt_v1.txt").read_text()
         self.assertTrue(t.startswith("Create "))
@@ -40,18 +40,18 @@ class Variants(unittest.TestCase):
         self.assertIn("nb_no_numeric_lens", json.loads((r / "gates.json").read_text())["lexical"])
 
     def test_02_nano_numeric_lens_blocks(self):
-        facts = json.loads((EX / "tennis-nano-banana-pro" / "facts.json").read_text())
+        facts = json.loads((FX / "nb_facts.json").read_text())
         facts["slots"]["composition"] = "85mm f/2.8 ISO 400 " + facts["slots"]["composition"]
-        p, _ = self.new("tennis-nano-banana-pro", facts=facts)
+        p, _ = self.new("nb", facts=facts)
         self.assertNotEqual(p.returncode, 0); self.assertIn("nb_no_numeric_lens", p.stdout)
 
     def test_03_nano_format_must_match_size(self):
-        facts = json.loads((EX / "tennis-nano-banana-pro" / "facts.json").read_text()); facts["format"] = "4:3"
-        p, _ = self.new("tennis-nano-banana-pro", facts=facts)
+        facts = json.loads((FX / "nb_facts.json").read_text()); facts["format"] = "4:3"
+        p, _ = self.new("nb", facts=facts)
         self.assertNotEqual(p.returncode, 0); self.assertIn("facts.format", p.stdout)
 
     def test_04_t1_appends_the_four_canonical_blocks(self):
-        p, r = self.new("cellar-master-t1")
+        p, r = self.new("t1")
         self.assertEqual(p.returncode, 0, p.stdout)
         t = (r / "prompt_v1.txt").read_text()
         for needle in ("Hard grazing light with no fill", "Concrete documentary skin detail", "Kodak Tri-X", "No beauty retouching"):
@@ -64,7 +64,7 @@ class Variants(unittest.TestCase):
         self.assertTrue(all(s["source_rules"] for s in fixed))
 
     def test_05_edit_uses_change_preserve_constraints_and_passes_gate_image(self):
-        p, r = self.new("tennis-edit-t5")
+        p, r = self.new("edit")
         self.assertEqual(p.returncode, 0, p.stdout)
         t = (r / "prompt_v1.txt").read_text()
         self.assertEqual([l.split(":")[0] for l in t.split("\n\n")], ["Change", "Preserve", "Constraints"])
@@ -74,9 +74,9 @@ class Variants(unittest.TestCase):
         self.assertEqual(g.returncode, 0, g.stderr)
 
     def test_06_edit_requires_t5_case_and_reference(self):
-        facts = json.loads((EX / "tennis-edit-t5" / "facts.json").read_text())
-        case = json.loads((EX / "tennis-edit-t5" / "case.json").read_text()); case["base_type"] = "T3"; case["operation"] = "text_to_image"
-        p, _ = self.new("tennis-edit-t5", facts=facts, case=case)
+        facts = json.loads((FX / "edit_facts.json").read_text())
+        case = json.loads((FX / "edit_case.json").read_text()); case["base_type"] = "T3"; case["operation"] = "text_to_image"
+        p, _ = self.new("edit", facts=facts, case=case)
         self.assertNotEqual(p.returncode, 0); self.assertIn("operation=image_edit", p.stdout)
 
 
