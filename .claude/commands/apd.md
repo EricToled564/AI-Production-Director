@@ -4,6 +4,7 @@ description: Producir un prompt de imagen con el proceso APD v3.4 (sin criterio 
 
 Sigue `.claude/rules/APD_RUNTIME.md` al pie de la letra para el brief: $ARGUMENTS
 
+0. Si Eric adjuntó imágenes de referencia, léelas con Read (las ves tú, no un tercero) y registra cada una en `case.references.roles` y `facts.references` con el rol que Eric indicó (sw30 regla 7: "usa sólo X de la imagen N, ignora Y"); si no indicó rol, pregúntaselo antes de seguir. El modelo lo decide `model_router_v33` (o el lock si Eric nombró uno) y el tipo T1..T5 lo deriva `apd_run.py` del caso; no los eliges tú.
 1. Escribe `apd/runs/<id>/in/facts.json` (schema `apd/facts.schema.json`) con procedencia
    en cada hoja (user | skill | research) y `apd/runs/<id>/in/case.json`
    (`.claude/rules/v3/case-fingerprint.schema.json`). Sin inventar: lo que Eric no dijo y
