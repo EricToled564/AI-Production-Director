@@ -121,7 +121,9 @@
     if (!s) { $("sampleNote").textContent = "Claude no está disponible en esta vista: sólo se pueden correr los ejemplos."; return; }
     limits = await s.limits().catch(() => null);
     $("sampleNote").textContent = "Cada llamada a Claude se cobra a tu cuenta.";
-    $("imgNote").textContent = limits && limits.images ? `Claude verá hasta ${limits.images.maxCount} imágenes; escribe el rol de cada una` : "En esta vista Claude no ve las imágenes: el rol que escribas para cada una es lo que entra al prompt";
+    $("imgNote").textContent = limits && limits.images ? `Claude verá hasta ${limits.images.maxCount} imágenes; escribe el rol de cada una`
+      : limits ? "Esta vista de Claude no deja enviarle imágenes a la página (límite de la plataforma, no del proceso): Claude lee el rol que escribas; la imagen la adjuntas tú al generador junto con el prompt"
+      : "Se intentará enviar las imágenes a Claude; si la vista no lo permite, lee el rol que escribas";
   });
   claude.use("downloads").then((d) => { downloads = d; $("download").hidden = !d; });
 
@@ -151,7 +153,11 @@
     });
   }
   // Las imágenes sólo viajan a Claude donde la vista lo permite; el rol escrito por Eric es la dirección (sw30 regla 7).
-  const imageOpts = () => images.length && limits && limits.images ? { images: images.slice(0, limits.images.maxCount).map((i) => i.file) } : {};
+  const imageOpts = () => images.length && (!limits || limits.images) ? { images: images.slice(0, limits && limits.images ? limits.images.maxCount : 4).map((i) => i.file) } : {};
+  async function askJson(prompt, opts) {
+    try { return await sample.json(prompt, opts); }
+    catch (e) { if (e && e.code === "images_unavailable" && opts.images) { const o = { ...opts }; delete o.images; $("imgNote").textContent = "Esta vista no deja enviarle imágenes a Claude: lee el rol que escribiste"; return sample.json(prompt, o); } throw e; }
+  }
   const roleLines = () => images.map((im, i) => `REF${i + 1}: ${im.role.trim()}`);
 
   // ---- llamadas a Claude (extractor de hechos; nunca redacta el prompt)
@@ -188,7 +194,7 @@ ${JSON.stringify(D.case_schema)}
 
 EJEMPLO VÁLIDO:
 ${JSON.stringify(D.examples["tennis-gpt-image-2"].case)}`;
-    return sample.json(prompt, { modelTier: "complex", cache: false, ...imageOpts() });
+    return askJson(prompt, { modelTier: "complex", cache: false, ...imageOpts() });
   }
   async function extractFacts(brief, c, model) {
     const spec = APD.MODELS[model], tipo = c.base_type, op = c.operation === "image_edit" ? "edit" : "create";
@@ -214,7 +220,7 @@ EJEMPLO VÁLIDO para este modelo/operación:
 ${JSON.stringify(pickExample(model, op, tipo).facts)}
 
 ARCHIVOS DE SKILL (fuente de las procedencias "skill"):`;
-    return sample.json(fit(prompt, model), { modelTier: "complex", cache: false, ...imageOpts() });
+    return askJson(fit(prompt, model), { modelTier: "complex", cache: false, ...imageOpts() });
   }
   function pickExample(model, op, tipo) {
     const name = op === "edit" ? "tennis-edit-t5" : tipo === "T1" ? "cellar-master-t1" : APD.MODELS[model].template === "nb" ? "tennis-nano-banana-pro" : "tennis-gpt-image-2";
