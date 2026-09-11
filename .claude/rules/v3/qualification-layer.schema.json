@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/qualification-layer-v1.json",
+  "title": "APD Qualification Inheritance Layer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "layer_id", "entity_type", "parent_id", "assignments"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "layer_id": {"type": "string", "minLength": 1},
+    "entity_type": {"enum": ["project", "brief", "script", "scene", "storyboard", "shot", "asset", "prompt", "human_override"]},
+    "parent_id": {"type": ["string", "null"]},
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "value", "state", "source_type", "source_id", "confidence", "reason"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "value": {},
+          "state": {"enum": ["LOCKED", "DERIVED", "OPEN", "OVERRIDE"]},
+          "source_type": {"enum": ["user", "brand_lock", "script", "scene", "shot", "asset", "derived", "default", "human_override"]},
+          "source_id": {"type": "string", "minLength": 1},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "reason": {"type": "string"},
+          "authorized_by": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

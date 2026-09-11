@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/rule-metadata-v1.json",
+  "title": "AI Production Director Rule Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rule_id",
+    "classification_status",
+    "authority",
+    "effect",
+    "priority",
+    "when",
+    "validator",
+    "conflict_key",
+    "supersedes",
+    "classification_provenance"
+  ],
+  "properties": {
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{12}$"
+    },
+    "classification_status": {
+      "enum": [
+        "CLASSIFIED",
+        "NEEDS_REVIEW",
+        "NON_NORMATIVE",
+        "LEGACY"
+      ]
+    },
+    "authority": {
+      "enum": [
+        "GLOBAL_HARD",
+        "PROJECT_LOCK",
+        "PIPELINE",
+        "SKILL",
+        "MODEL_ADAPTER",
+        "GUIDELINE",
+        "EXAMPLE",
+        "LEGACY"
+      ]
+    },
+    "effect": {
+      "enum": [
+        "REQUIRE",
+        "FORBID",
+        "RECOMMEND",
+        "WARN",
+        "PROCESS",
+        "GATE",
+        "NONE"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "when": {
+      "$ref": "#/$defs/condition"
+    },
+    "validator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "lexical",
+            "schema",
+            "deterministic",
+            "semantic",
+            "visual",
+            "human",
+            "process",
+            "none"
+          ]
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "conflict_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{12}$"
+      },
+      "uniqueItems": true
+    },
+    "classification_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "reviewer",
+        "reviewed_at",
+        "notes"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "manual",
+            "source_file_policy",
+            "rule_by_rule",
+            "external_audit",
+            "migration_seed"
+          ]
+        },
+        "reviewer": {
+          "type": "string"
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "all"
+          ],
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "any"
+          ],
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "not"
+          ],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/condition"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "op"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "op": {
+              "enum": [
+                "eq",
+                "neq",
+                "in",
+                "not_in",
+                "contains",
+                "intersects",
+                "exists",
+                "truthy",
+                "falsy",
+                "regex",
+                "gt",
+                "gte",
+                "lt",
+                "lte"
+              ]
+            },
+            "value": {}
+          }
+        },
+        {
+          "type": "object",
+          "maxProperties": 0
+        }
+      ]
+    }
+  }
+}

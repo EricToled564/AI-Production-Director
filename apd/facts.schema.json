@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/apd-facts-v1.json",
+  "title": "APD facts — entrada única del asistente a apd_run.py",
+  "description": "Valores de los slots del template del modelo (image/references/gpt-image.md, Photoreal Editorial). El asistente no redacta el prompt: llena estos campos y cada hoja lleva procedencia (user | skill | research). apd_run.py bloquea cualquier hoja sin procedencia.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["brief_id", "model", "quality", "size", "references", "slots", "notes", "provenance"],
+  "properties": {
+    "brief_id": {"type": "string", "pattern": "^[A-Za-z0-9._-]{1,64}$"},
+    "model": {"enum": ["gpt-image-2"]},
+    "quality": {"enum": ["low", "medium", "high"]},
+    "size": {"type": "string", "pattern": "^[0-9]{3,4}x[0-9]{3,4}$"},
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["index", "role"],
+        "properties": {
+          "index": {"type": "integer", "minimum": 1},
+          "role": {"type": "string", "minLength": 1},
+          "file": {"type": "string"}
+        }
+      }
+    },
+    "slots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["opening", "scene", "subject", "details", "use_case", "constraints"],
+      "properties": {
+        "opening": {"type": "string", "minLength": 1, "description": "Complemento del verbo inicial: 'Create {opening}.' (image/SKILL.md:50 start with a verb)"},
+        "references_line": {"type": "string", "minLength": 1, "description": "Obligatoria si references no está vacío (gpt-image.md Multi-image references: índice + rol)"},
+        "scene": {
+          "type": "object", "additionalProperties": false,
+          "required": ["location", "time", "weather"],
+          "properties": {
+            "location": {"type": "string", "minLength": 1},
+            "time": {"type": "string", "minLength": 1},
+            "weather": {"type": "string", "minLength": 1}
+          }
+        },
+        "subject": {
+          "type": "object", "additionalProperties": false,
+          "required": ["who", "action", "framing"],
+          "properties": {
+            "who": {"type": "string", "minLength": 1},
+            "action": {"type": "string", "minLength": 1},
+            "framing": {"type": "string", "minLength": 1},
+            "contact": {"type": "string", "minLength": 1, "description": "Solo T4 (dos personas / contacto): anatomía del contacto fijada"}
+          }
+        },
+        "details": {
+          "type": "object", "additionalProperties": false,
+          "required": ["lens_feel", "light_source", "surface_wear", "imperfections", "real_texture"],
+          "properties": {
+            "lens_feel": {"type": "string", "minLength": 1},
+            "light_source": {"type": "string", "minLength": 1},
+            "surface_wear": {"type": "string", "minLength": 1},
+            "imperfections": {"type": "string", "minLength": 1},
+            "real_texture": {"type": "string", "minLength": 1}
+          }
+        },
+        "use_case": {"type": "string", "minLength": 1},
+        "constraints": {"type": "string", "minLength": 1}
+      }
+    },
+    "notes": {"type": "string", "minLength": 1},
+    "provenance": {
+      "type": "object",
+      "description": "Una entrada por hoja (ruta con puntos, p. ej. slots.scene.location). source=user: instrucción literal de Eric; source=skill: archivo:línea del skill instalado; source=research: URL verificada en este turno.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "ref"],
+        "properties": {
+          "source": {"enum": ["user", "skill", "research"]},
+          "ref": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

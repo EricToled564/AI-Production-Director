@@ -1,0 +1,1130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/case-fingerprint-v1.json",
+  "title": "AI Production Director Case Fingerprint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "stage",
+    "media",
+    "operation",
+    "base_type",
+    "pipeline_track",
+    "prompt_case",
+    "generator",
+    "deliverable",
+    "task",
+    "audio",
+    "sequence",
+    "subject",
+    "environment",
+    "composition",
+    "realism",
+    "motion",
+    "physics",
+    "continuity",
+    "brand",
+    "text",
+    "references",
+    "risk_flags",
+    "unknowns",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scene_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "shot_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "asset_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "brief",
+        "strategy",
+        "script",
+        "scene",
+        "storyboard",
+        "shot",
+        "asset",
+        "prompt",
+        "generation",
+        "qa",
+        "delivery"
+      ]
+    },
+    "media": {
+      "enum": [
+        "image",
+        "video",
+        "text",
+        "audio",
+        "mixed"
+      ]
+    },
+    "operation": {
+      "enum": [
+        "text_to_image",
+        "image_edit",
+        "image_to_image",
+        "reference_analysis",
+        "text_to_video",
+        "image_to_video",
+        "video_edit",
+        "script_write",
+        "scene_design",
+        "storyboard_design",
+        "shot_plan",
+        "brand_extract",
+        "asset_qa",
+        "package_delivery",
+        "other"
+      ]
+    },
+    "base_type": {
+      "enum": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "PROD",
+        "GRAF",
+        "MULTI",
+        "REF",
+        "CLIP",
+        "SHOT",
+        "GUION",
+        "MARCA",
+        "QA",
+        "ENTREGA",
+        "OTHER"
+      ]
+    },
+    "track": {
+      "enum": [
+        "QUICK",
+        "CONTROLLED",
+        "CONSISTENT",
+        "FULL",
+        "UNKNOWN"
+      ]
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "model"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "gpt_image",
+            "nano_banana",
+            "flux",
+            "midjourney",
+            "ideogram",
+            "seedream",
+            "kling",
+            "veo",
+            "seedance",
+            "hailuo",
+            "sora",
+            "runway",
+            "luma",
+            "pika",
+            "other",
+            "UNKNOWN"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "deliverable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "aspect_ratio",
+        "channel",
+        "approval_level"
+      ],
+      "properties": {
+        "purpose": {
+          "enum": [
+            "editorial",
+            "campaign_key_visual",
+            "brochure",
+            "social",
+            "storyboard",
+            "reference_master",
+            "product",
+            "poster",
+            "presentation",
+            "film",
+            "internal_draft",
+            "other",
+            "UNKNOWN"
+          ]
+        },
+        "aspect_ratio": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "channel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_level": {
+          "enum": [
+            "draft",
+            "internal",
+            "client",
+            "paid_media",
+            "hero",
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "kinds",
+        "human",
+        "identity_fidelity",
+        "recurring_character",
+        "product_present",
+        "product_fidelity",
+        "body_visibility",
+        "hands_visible",
+        "feet_visible",
+        "human_contact"
+      ],
+      "properties": {
+        "count": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0
+        },
+        "kinds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "human": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "identity_fidelity": {
+          "enum": [
+            "none",
+            "generic",
+            "consistent",
+            "exact",
+            "UNKNOWN"
+          ]
+        },
+        "recurring_character": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "product_present": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "product_fidelity": {
+          "enum": [
+            "none",
+            "generic",
+            "recognizable",
+            "exact",
+            "UNKNOWN"
+          ]
+        },
+        "body_visibility": {
+          "enum": [
+            "none",
+            "face",
+            "upper_body",
+            "full_body",
+            "partial_occlusion",
+            "split_boundary",
+            "UNKNOWN"
+          ]
+        },
+        "hands_visible": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "feet_visible": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "human_contact": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "continuity",
+        "crowd",
+        "indoor_outdoor",
+        "time_of_day"
+      ],
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "continuity": {
+          "enum": [
+            "none",
+            "local",
+            "scene",
+            "project",
+            "UNKNOWN"
+          ]
+        },
+        "crowd": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "indoor_outdoor": {
+          "enum": [
+            "indoor",
+            "outdoor",
+            "mixed",
+            "UNKNOWN"
+          ]
+        },
+        "time_of_day": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "load_bearing",
+        "viewpoint",
+        "split_level",
+        "waterline_visible",
+        "background_dof",
+        "spatial_invariants"
+      ],
+      "properties": {
+        "load_bearing": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "viewpoint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "split_level": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "waterline_visible": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "background_dof": {
+          "enum": [
+            "sharp",
+            "soft",
+            "blurred",
+            "mixed",
+            "UNKNOWN"
+          ]
+        },
+        "spatial_invariants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "statement",
+              "critical"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "critical": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "realism": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "skin_texture",
+        "materiality",
+        "optical_physics"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "stylized",
+            "semi_real",
+            "photographic",
+            "strict_photographic",
+            "UNKNOWN"
+          ]
+        },
+        "skin_texture": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "materiality": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "optical_physics": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "static_frame",
+        "frozen_action",
+        "camera_motion",
+        "subject_motion",
+        "final_state_required"
+      ],
+      "properties": {
+        "static_frame": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "frozen_action": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "camera_motion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subject_motion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "final_state_required": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "physics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "water",
+        "splash",
+        "bubbles",
+        "turbulence",
+        "refraction",
+        "reflection",
+        "gravity",
+        "collision",
+        "deformation"
+      ],
+      "properties": {
+        "water": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "splash": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "bubbles": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "turbulence": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "refraction": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "reflection": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "gravity": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "collision": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "deformation": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "continuity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "dimensions"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "none",
+            "local",
+            "scene",
+            "project",
+            "UNKNOWN"
+          ]
+        },
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "brand_lock_ref"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "guided",
+            "locked",
+            "strict",
+            "UNKNOWN"
+          ]
+        },
+        "brand_lock_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "readable_text_required"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "composite",
+            "in_image",
+            "UNKNOWN"
+          ]
+        },
+        "readable_text_required": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "roles",
+        "style_reference",
+        "identity_reference",
+        "environment_reference"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "partial",
+            "full",
+            "UNKNOWN"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "style_reference": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "identity_reference": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "environment_reference": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "blocking",
+          "reason"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "source_type",
+          "source_id",
+          "confidence"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "user",
+              "brand_lock",
+              "script",
+              "scene",
+              "shot",
+              "asset",
+              "derived",
+              "default",
+              "human_override"
+            ]
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "tags",
+        "genre"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "generic",
+            "portrait",
+            "ecommerce",
+            "fashion_editorial",
+            "food_beverage",
+            "poster_illustration",
+            "character_design",
+            "ui_social",
+            "presentation_slide",
+            "storyboard",
+            "multi_panel",
+            "dimensional",
+            "text_rendering",
+            "reference_analysis",
+            "sports",
+            "race_speed",
+            "dialogue",
+            "animation",
+            "brand_asset",
+            "other",
+            "UNKNOWN"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "genre": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "dialogue_required",
+        "lipsync",
+        "speaker_count",
+        "language"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "ambient",
+            "music",
+            "dialogue",
+            "mixed",
+            "UNKNOWN"
+          ]
+        },
+        "dialogue_required": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "lipsync": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "speaker_count": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 0
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "sequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "multi_shot",
+        "shot_count",
+        "start_frame_ref",
+        "end_frame_ref",
+        "motion_reference"
+      ],
+      "properties": {
+        "multi_shot": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "shot_count": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minimum": 1
+        },
+        "start_frame_ref": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "end_frame_ref": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        },
+        "motion_reference": {
+          "type": [
+            "boolean",
+            "string"
+          ],
+          "enum": [
+            true,
+            false,
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "pipeline_track": {
+      "enum": [
+        "EXPRESS",
+        "STANDARD",
+        "FILM",
+        "NONE",
+        "UNKNOWN"
+      ]
+    },
+    "prompt_case": {
+      "enum": [
+        "1",
+        "2",
+        "3a",
+        "3b",
+        "3c",
+        "4",
+        "NONE",
+        "UNKNOWN"
+      ]
+    }
+  }
+}

@@ -92,3 +92,22 @@ archivos. Es exactamente lo que el propio `image/SKILL.md:18` advierte:
 > reading it alone. The actual rules live only in the reference files."*
 
 El paso 1 existe para que ese error sea imposible: la extracción no busca, lee todo.
+
+---
+
+# v3 — separación definitiva entre exhaustividad del KB y exhaustividad runtime
+
+La metodología anterior queda conservada como historia. La implementación nueva
+está en `.claude/rules/v3/README.md`.
+
+Cambio central:
+
+- **offline:** clasificar exhaustivamente el KB una vez por versión y publicar un
+  ruleset con hash;
+- **runtime:** validar un Case Fingerprint y aplicar exhaustivamente sólo el
+  effective ruleset derivado de ese caso.
+
+`rule_scope.py` y su taxonomía gruesa se consideran mecanismo legacy/fallback. No
+pueden certificar por sí solos la aplicabilidad fina porque T1..T5 se reducen al
+mismo caso general `imagen`. El runtime v3 usa condiciones por dimensión y lógica
+ternaria para impedir que `UNKNOWN` se convierta silenciosamente en N/A.
