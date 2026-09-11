@@ -664,6 +664,25 @@
     return { status, active_rules: Object.keys(active).length, pass: passed.length, override: overridden.length, fail: failed.length, pending: pending.length, malformed: malformed.length, stale_evidence: stale.length, pending_ids: pending, failed_ids: failed, malformed_items: malformed, stale_ids: stale };
   }
 
+  // ------------------------------------------- tipo sw30 derivado del caso
+  // sw30 SKILL.md:37-38: T1 maestro rostro · T2 maestro cuerpo · T3 cuadro 1 persona ·
+  // T4 cuadro 2 personas · T5 edición quirúrgica. Las precondiciones T3/T4/T5 son las
+  // invariantes de case_validate.py; "maestro" = deliverable.purpose reference_master
+  // (enum del Case Fingerprint), rostro/cuerpo = subject.body_visibility.
+  function deriveBaseType(c) {
+    const subj = c.subject || {}, op = c.operation, purpose = (c.deliverable || {}).purpose, bv = subj.body_visibility;
+    if (["image_edit", "image_to_image"].includes(op)) return { base_type: "T5", reason: "operation=image_edit → T5 edición quirúrgica (sw30 SKILL.md:38; case_validate T5)" };
+    if (subj.human !== true) return { base_type: null, reason: "sin persona: fuera de la matriz sw30 T1..T5 (SKILL.md:37-38); esta versión sólo renderiza T1..T5" };
+    if (isUnknown(subj.count) || typeof subj.count !== "number") return { base_type: null, reason: "subject.count desconocido: no se puede catalogar el tipo" };
+    if (subj.count >= 2) return { base_type: "T4", reason: `${subj.count} personas → T4 cuadro 2 personas (sw30 SKILL.md:37; case_validate T4)` };
+    if (purpose === "reference_master") {
+      if (bv === "face") return { base_type: "T1", reason: "reference_master + body_visibility=face → T1 maestro de rostro (sw30 SKILL.md:37, :65)" };
+      if (["full_body", "upper_body"].includes(bv)) return { base_type: "T2", reason: `reference_master + body_visibility=${bv} → T2 maestro de cuerpo (sw30 SKILL.md:37)` };
+      return { base_type: null, reason: `reference_master con body_visibility=${bv}: no es rostro ni cuerpo` };
+    }
+    return { base_type: "T3", reason: "1 persona, cuadro → T3 (sw30 SKILL.md:37; case_validate T3)" };
+  }
+
   // ---------------------------------------------------------------- run
   function makeRun() { return { status: "NEW", created: now(), stages: [], brief_version: 0, prompt_revision: 0, prompt_sha256: null, blocked_by: null, briefs: [], asts: [], prompts: [] }; }
   function stage(run, name, status, detail, onStage) {
@@ -699,7 +718,10 @@
       const holder = variantOf(facts) === "gpt" ? (facts.slots || {}).subject : facts.slots, hasContact = isObj(holder) && "contact" in holder;
       if (c.base_type === "T4" && !hasContact) cerrs.push("T4 exige el slot contact");
       if (c.base_type !== "T4" && hasContact) cerrs.push("el slot contact sólo existe en T4");
+      const bt = deriveBaseType(c);
+      if (bt.base_type !== c.base_type) cerrs.push(`case.base_type=${c.base_type} pero las reglas dan ${bt.base_type || "ninguno"}: ${bt.reason}`);
       stage(run, "facts_case_consistency", cerrs.length ? "FAIL" : "PASS", short(cerrs), onStage);
+      stage(run, "tipo_sw30", "PASS", `${bt.base_type}: ${bt.reason}`, onStage);
 
       const briefInput = {}; for (const [k, v] of Object.entries(facts)) if (k !== "provenance" && k !== "brief_id") briefInput[k] = v;
       const brief = await briefFreeze(briefInput, facts.brief_id, `facts.json sha256:${await sha256(canonical(facts))}`, ["model", "operation", "quality", "size", "references", "notes"]);
@@ -832,5 +854,5 @@
       `\n\nResponde ÚNICAMENTE con el JSON de salida descrito arriba, con una entrada por cada uno de los ${tanda.rules.length} rule_id de esta tanda.`;
   }
 
-  root.APD = { MODELS, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA };
+  root.APD = { MODELS, deriveBaseType, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA };
 })(typeof window !== "undefined" ? window : globalThis);

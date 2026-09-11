@@ -501,6 +501,27 @@ def mechanical_evidence(run: Run, match: dict, gates: dict, mode: str) -> tuple[
 
 
 # ------------------------------------------------------------------ comandos
+def derive_base_type(case: dict) -> tuple[str | None, str]:
+    """sw30 SKILL.md:37-38 (T1 rostro · T2 cuerpo · T3 1 persona · T4 2 personas · T5 edición);
+    precondiciones T3/T4/T5 = invariantes de case_validate; 'maestro' = purpose reference_master."""
+    subj = case.get("subject", {}); op = case.get("operation"); purpose = case.get("deliverable", {}).get("purpose"); bv = subj.get("body_visibility")
+    if op in ("image_edit", "image_to_image"):
+        return "T5", "operation=image_edit → T5 edición quirúrgica (sw30 SKILL.md:38)"
+    if subj.get("human") is not True:
+        return None, "sin persona: fuera de la matriz sw30 T1..T5 (SKILL.md:37-38)"
+    if not isinstance(subj.get("count"), int):
+        return None, "subject.count desconocido"
+    if subj["count"] >= 2:
+        return "T4", f"{subj['count']} personas → T4 (sw30 SKILL.md:37)"
+    if purpose == "reference_master":
+        if bv == "face":
+            return "T1", "reference_master + face → T1 maestro de rostro (sw30 SKILL.md:37, :65)"
+        if bv in ("full_body", "upper_body"):
+            return "T2", f"reference_master + {bv} → T2 maestro de cuerpo (sw30 SKILL.md:37)"
+        return None, f"reference_master con body_visibility={bv}"
+    return "T3", "1 persona, cuadro → T3 (sw30 SKILL.md:37)"
+
+
 def cmd_new(a) -> int:
     run = Run(a.run)
     if run.state["status"] != "NEW":
@@ -552,7 +573,11 @@ def cmd_new(a) -> int:
             cerrs.append("T4 exige el slot contact")
         if case.get("base_type") != "T4" and has_contact:
             cerrs.append("el slot contact sólo existe en T4")
+        bt, why = derive_base_type(case)
+        if bt != case.get("base_type"):
+            cerrs.append(f"case.base_type={case.get('base_type')} pero las reglas dan {bt or 'ninguno'}: {why}")
         run.stage("facts_case_consistency", "FAIL" if cerrs else "PASS", "; ".join(cerrs))
+        run.stage("tipo_sw30", "PASS", f"{bt}: {why}")
 
         # brief freeze
         brief_input = {k: v for k, v in facts.items() if k not in ("provenance", "brief_id")}
