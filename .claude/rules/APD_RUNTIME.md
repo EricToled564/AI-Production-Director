@@ -12,7 +12,8 @@ terminó en `DELIVERED`.
 ## Lo único que el asistente escribe
 
 1. `facts.json` — valores de los slots del template del modelo
-   (`apd/facts.schema.json`). **Cada hoja lleva procedencia**:
+   (`apd/facts.schema.json`: gpt-image-2 creación / edición T5, Nano Banana; T1 añade
+   los bloques canónicos por código). **Cada hoja lleva procedencia**:
    - `user` — instrucción literal de Eric (se cita);
    - `skill` — `<skill>/<archivo>:<línea>` de un skill instalado (se verifica que
      el archivo y la línea existen);

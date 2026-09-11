@@ -31,22 +31,32 @@ python3 apd/apd_run.py audit-pack --run apd/runs/<id>            # tandas para e
 python3 apd/apd_run.py ledger     --run apd/runs/<id> --evidence evidence.json
 python3 apd/apd_run.py revise     --run apd/runs/<id> --delta delta.json --provenance prov.json
 python3 apd/apd_run.py status     --run apd/runs/<id>
-python3 tests/apd/test_apd_run.py                                # 10 pruebas
+python3 tests/apd/test_apd_run.py; python3 tests/apd/test_apd_variants.py   # 16 pruebas
 ```
 
 Ejemplo completo: `examples/apd/tennis-gpt-image-2/` (facts + case; llega a
 `AWAITING_AUDIT` con 365 reglas activas: 18 certificadas mecánicamente, 347 al auditor).
 
+## Variantes del AST (todas fijas; el asistente sólo llena hojas)
+
+| `facts.model` / `operation` | Estructura (fuente) | Ejemplo |
+|---|---|---|
+| `gpt-image-2` / `create` | `Create …` + Scene / Subject / Important Details / Use Case / Constraints (`gpt-image.md:126-135`) | `examples/apd/tennis-gpt-image-2` |
+| `gpt-image-2` / `edit` (T5) | Change / Preserve / Constraints (`gpt-image.md:80-83`; mismo formato que `template_engine._render_edit`) | `examples/apd/tennis-edit-t5` |
+| `nano-banana-pro`, `nano-banana-2` | `Create …` + Subject + Action + Location + Composition + Style + `Format: W:H` (`nano-banana.md:13-20`); gate mecánico contra `50mm / f/2.8 / ISO` (`nano-banana.md:24`, regla `c58caa804ddc`) | `examples/apd/tennis-nano-banana-pro` |
+| `case.base_type = T1` (cualquiera de los anteriores) | Se añaden como `rule_text` los cuatro bloques canónicos `light_hard`, `skin_doc`, `usecase_doc`, `clean_doc` de `template_engine.BLOCKS` (sw30 `SKILL.md:66-74`) | `examples/apd/cellar-master-t1` |
+| `case.base_type = T4` | Exige el slot `contact` (gpt: `slots.subject.contact`; nb: `slots.contact`) | — |
+
 ## Límites declarados (no decisiones silenciosas)
 
-- Modelos soportados: `gpt-image-2`. Otro modelo bloquea en `facts_schema` hasta que
-  exista su template fijo (el de Nano Banana no se ha transcrito desde `nano-banana.md`).
-- Tipos: T2/T3 (una persona) y T4 (dos personas, exige `slots.subject.contact`). T1 y
-  T5 tienen contratos con bloques fijos en `template_engine` que este AST no cubre.
-- Tope de palabras: el que fija `_capabilities.json` del skill (300 para GPT Image).
-  Los prompts de ~400 palabras de la sesión anterior no pasan este tope.
+- Tope de palabras: el que fija `_capabilities.json` del skill (300 GPT Image, 120
+  Nano Banana). Se mantiene por decisión de Eric.
 - 1,248 de las 1,704 reglas tienen validador `semantic`; el paquete no trae código
   para ellas. Su evidencia sale del auditor (agente separado), nunca del asistente que
-  llenó los hechos. Sin evidencia → `PENDING` → sin entrega.
-- Requiere `pip install jsonschema pyyaml`; `output_geometry_check_v32` (imagen
-  generada) requiere además Pillow y no forma parte del run de prompt.
+  llenó los hechos. Sin evidencia → `PENDING` → sin entrega. Convertir una regla
+  semántica en mecánica exige un validador escrito y aprobado por Eric, no por el
+  asistente.
+- Dependencias: `requirements.txt` (jsonschema, PyYAML, Pillow, openpyxl). Pillow sólo
+  lo usa `output_geometry_check_v32` (QA de la imagen generada) y `tests/v3.2`.
+- Pruebas del paquete importadas completas: `tests/v3.2`, `tests/v3.3`, `tests/v3.3.2`,
+  `tests/v3.4` (con los rulesets 3.2.1 / 3.3.0 / 3.3.1 que necesitan).

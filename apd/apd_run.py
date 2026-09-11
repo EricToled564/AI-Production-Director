@@ -67,8 +67,11 @@ import gate_image  # noqa: E402
 
 # facts.model → (case generator family, id en visual-prompt-forge/adapters/_capabilities.json)
 MODELS = {
-    "gpt-image-2": {"family": "gpt_image", "capabilities_id": "gpt-image"},
+    "gpt-image-2": {"family": "gpt_image", "capabilities_id": "gpt-image", "template": "gpt"},
+    "nano-banana-pro": {"family": "nano_banana", "capabilities_id": "nano-banana", "template": "nb"},
+    "nano-banana-2": {"family": "nano_banana", "capabilities_id": "nano-banana", "template": "nb"},
 }
+OPERATIONS = {"create": "text_to_image", "edit": "image_edit"}
 # Secciones del template del modelo que el asistente NO puede alterar: vienen de
 # image/references/gpt-image.md, "Photoreal Editorial" (líneas 126-135).
 # Las etiquetas de slot son las del skill; el verbo inicial es la regla universal
@@ -77,6 +80,18 @@ MODELS = {
 TEMPLATE_RULES = ["6d9997eabed1"]
 VERB_RULES = ["a24fed9220cf"]
 REF_RULES = ["6d9997eabed1"]
+# Nano Banana: image/SKILL.md:40 (f120241be185) manda a nano-banana.md, cuyo orden es
+# Subject + Action + Location/context + Composition + Style, cerrado con "Format: W:H"
+# (nano-banana.md:13-20). c58caa804ddc (:24) prohíbe parámetros numéricos de objetivo.
+NB_RULES = ["f120241be185"]
+NB_LENS_RULE = "c58caa804ddc"
+# Edición (T5): gpt-image.md:80-83 — Change / Preserve / Constraints; un cambio por
+# iteración (:87). template_engine._render_edit produce el mismo formato.
+EDIT_RULES = ["6d9997eabed1"]
+# T1 maestro de rostro: produccion-visual-sw30/SKILL.md:66-74 (6ea31ee7e2b2, 3821c52f13ac)
+# — cuatro bloques canónicos cuyo texto vive en production-package/template_engine.BLOCKS.
+T1_RULES = ["6ea31ee7e2b2", "3821c52f13ac"]
+T1_BLOCKS = ("light_hard", "skin_doc", "usecase_doc", "clean_doc")
 
 # Validadores del ruleset que este orquestador puede certificar mecánicamente.
 MECHANICAL = {
@@ -121,9 +136,23 @@ def leaves(v, prefix=""):
 
 
 def ratio_of(size: str) -> str:
-    w, h = (int(x) for x in size.lower().split("x"))
+    """'1536x1024' → '3:2'; '16:9' → '16:9'. Ambas formas son válidas en facts.size."""
+    sep = "x" if "x" in size.lower() else ":"
+    w, h = (int(x) for x in size.lower().split(sep))
     g = math.gcd(w, h)
     return f"{w // g}:{h // g}"
+
+
+def variant_of(facts: dict) -> str:
+    """gpt | gpt-edit | nb — la forma del AST depende sólo de modelo y operación."""
+    t = MODELS[facts["model"]]["template"]
+    return "gpt-edit" if facts.get("operation", "create") == "edit" else t
+
+
+def canonical_blocks() -> dict:
+    sys.path.insert(0, str(PKG))
+    import template_engine  # noqa: E402
+    return {k: v.text for k, v in template_engine.BLOCKS.items()}
 
 
 def word_count(text: str) -> int:
@@ -231,41 +260,70 @@ def validate_schema(obj, schema_path: Path) -> list[str]:
 
 
 # ------------------------------------------------------------------- AST fijo
-def build_ast(facts: dict, brief: dict) -> dict:
-    """AST v2 determinista: la estructura depende sólo de qué hojas existen en facts.
-
-    Texto fijo = etiquetas del template Photoreal Editorial + verbo 'Create'.
-    Todo lo demás son bindings a hojas LOCKED del brief.
-    """
+def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
+    """AST v2 determinista: la estructura depende sólo de modelo, operación, tipo T y
+    de qué hojas existen en facts. Texto fijo = etiquetas del template del skill +
+    verbo 'Create' + bloques canónicos T1. Todo lo demás son bindings a hojas LOCKED."""
     s = facts["slots"]
+    v = variant_of(facts)
 
     def seg(sid, template, bindings, rules):
         return {"id": sid, "kind": "brief_template", "template": template, "bindings": bindings, "source_rules": rules}
 
-    blocks = [{"id": "opening", "segments": [seg("verb", "Create {opening}.", {"opening": "slots.opening"}, VERB_RULES)]}]
-    if "references_line" in s:
-        blocks.append({"id": "references", "segments": [seg("roles", "{references_line}", {"references_line": "slots.references_line"}, REF_RULES)]})
-    blocks.append({"id": "scene", "segments": [seg("scene", "Scene: {location}, {time}, {weather}.",
-                   {"location": "slots.scene.location", "time": "slots.scene.time", "weather": "slots.scene.weather"}, TEMPLATE_RULES)]})
-    subject = [seg("subject", "Subject: {who}, {action}, {framing}.",
-                   {"who": "slots.subject.who", "action": "slots.subject.action", "framing": "slots.subject.framing"}, TEMPLATE_RULES)]
-    if "contact" in s["subject"]:
-        subject.append(seg("contact", "{contact}.", {"contact": "slots.subject.contact"}, TEMPLATE_RULES))
-    blocks.append({"id": "subject", "segments": subject})
-    blocks.append({"id": "details", "segments": [seg("details",
-                   "Important Details: {lens_feel}, {light_source}, {surface_wear}, {imperfections}, {real_texture}.",
-                   {"lens_feel": "slots.details.lens_feel", "light_source": "slots.details.light_source",
-                    "surface_wear": "slots.details.surface_wear", "imperfections": "slots.details.imperfections",
-                    "real_texture": "slots.details.real_texture"}, TEMPLATE_RULES)]})
-    blocks.append({"id": "use_case", "segments": [seg("use_case", "Use Case: {use_case}.", {"use_case": "slots.use_case"}, TEMPLATE_RULES)]})
-    blocks.append({"id": "constraints", "segments": [seg("constraints", "Constraints: {constraints}.", {"constraints": "slots.constraints"}, TEMPLATE_RULES)]})
+    def fixed(sid, text, rules):
+        return {"id": sid, "kind": "rule_text", "text": text, "source_rules": rules}
+
+    canon = canonical_blocks()
+    blocks = []
+    if v == "gpt":
+        blocks.append({"id": "opening", "segments": [seg("verb", "Create {opening}.", {"opening": "slots.opening"}, VERB_RULES)]})
+        if "references_line" in s:
+            blocks.append({"id": "references", "segments": [seg("roles", "{references_line}", {"references_line": "slots.references_line"}, REF_RULES)]})
+        blocks.append({"id": "scene", "segments": [seg("scene", "Scene: {location}, {time}, {weather}.",
+                       {"location": "slots.scene.location", "time": "slots.scene.time", "weather": "slots.scene.weather"}, TEMPLATE_RULES)]})
+        subject = [seg("subject", "Subject: {who}, {action}, {framing}.",
+                       {"who": "slots.subject.who", "action": "slots.subject.action", "framing": "slots.subject.framing"}, TEMPLATE_RULES)]
+        if "contact" in s["subject"]:
+            subject.append(seg("contact", "{contact}.", {"contact": "slots.subject.contact"}, TEMPLATE_RULES))
+        blocks.append({"id": "subject", "segments": subject})
+        details = [seg("details", "Important Details: {lens_feel}, {light_source}, {surface_wear}, {imperfections}, {real_texture}.",
+                       {"lens_feel": "slots.details.lens_feel", "light_source": "slots.details.light_source",
+                        "surface_wear": "slots.details.surface_wear", "imperfections": "slots.details.imperfections",
+                        "real_texture": "slots.details.real_texture"}, TEMPLATE_RULES)]
+        use_case = [seg("use_case", "Use Case: {use_case}.", {"use_case": "slots.use_case"}, TEMPLATE_RULES)]
+        constraints = [seg("constraints", "Constraints: {constraints}.", {"constraints": "slots.constraints"}, TEMPLATE_RULES)]
+        if base_type == "T1":
+            details += [fixed("light_hard", canon["light_hard"], T1_RULES), fixed("skin_doc", canon["skin_doc"], T1_RULES)]
+            use_case.append(fixed("usecase_doc", canon["usecase_doc"], T1_RULES))
+            constraints.append(fixed("clean_doc", canon["clean_doc"], T1_RULES))
+        blocks += [{"id": "details", "segments": details}, {"id": "use_case", "segments": use_case}, {"id": "constraints", "segments": constraints}]
+    elif v == "nb":
+        blocks.append({"id": "opening", "segments": [seg("verb", "Create {opening}.", {"opening": "slots.opening"}, VERB_RULES)]})
+        if "references_line" in s:
+            blocks.append({"id": "references", "segments": [seg("roles", "{references_line}", {"references_line": "slots.references_line"}, REF_RULES)]})
+        body = [seg("subject", "{subject} {action} {location}.", {"subject": "slots.subject", "action": "slots.action", "location": "slots.location"}, NB_RULES),
+                seg("composition", "{composition}.", {"composition": "slots.composition"}, NB_RULES),
+                seg("style", "{style}.", {"style": "slots.style"}, NB_RULES)]
+        if "contact" in s:
+            body.insert(1, seg("contact", "{contact}.", {"contact": "slots.contact"}, NB_RULES))
+        blocks.append({"id": "body", "segments": body})
+        if base_type == "T1":
+            blocks.append({"id": "t1", "segments": [fixed(b, canon[b], T1_RULES) for b in T1_BLOCKS]})
+        blocks.append({"id": "format", "segments": [seg("format", "Format: {format}.", {"format": "format"}, NB_RULES)]})
+    else:  # gpt-edit
+        blocks.append({"id": "change", "segments": [seg("change", "Change: {change}.", {"change": "slots.change"}, EDIT_RULES)]})
+        blocks.append({"id": "preserve", "segments": [seg("preserve", "Preserve: {preserve}.", {"preserve": "slots.preserve"}, EDIT_RULES)]})
+        blocks.append({"id": "constraints", "segments": [seg("constraints", "Constraints: {constraints}.", {"constraints": "slots.constraints"}, EDIT_RULES)]})
+    params = {"quality": facts["quality"], "aspectRatio": ratio_of(facts["size"])}
+    if "x" in facts["size"].lower():
+        params["size"] = facts["size"]
     return {
         "schema_version": "2.0",
         "prompt_id": facts["brief_id"],
         "prompt_revision": 1,
         "brief_hash": brief["brief_hash"],
         "model": facts["model"],
-        "parameters": {"size": facts["size"], "quality": facts["quality"], "aspectRatio": ratio_of(facts["size"])},
+        "parameters": params,
         "blocks": blocks,
     }
 
@@ -281,16 +339,30 @@ def capabilities_ceiling(model: str) -> tuple[int | None, str]:
     return None, "visual-prompt-forge/adapters/_capabilities.json no instalado"
 
 
-def lexical_gates(prompt: str) -> dict:
+NB_LENS_RE = re.compile(r"\b\d{2,3}\s?mm\b|\bf/\d|\bISO\s?\d", re.IGNORECASE)
+
+
+def lexical_gates(prompt: str, facts: dict) -> dict:
     out = {}
+    v = variant_of(facts)
     rules = gate_image.find_golden_rules()
     verbs = gate_image.load_verbs(rules) if rules else []
     first = next((l.strip() for l in prompt.splitlines() if l.strip()), "")
-    out["start_with_verb"] = {
-        "status": "PASS" if verbs and any(first.lower().startswith(v) for v in verbs) else "FAIL",
-        "detail": f'primera línea: "{first[:60]}"; verbos: {", ".join(verbs) or "golden-rules.md no encontrado"}',
-        "source": str(rules) if rules else None,
-    }
+    if v == "gpt-edit":
+        # El template de edición del modelo abre con "Change:" (gpt-image.md:80-83); la
+        # sintaxis del modelo destino manda sobre la regla genérica (APD §6.2, política
+        # final_prompt.syntax_authority del ruleset).
+        out["start_with_verb"] = {"status": "PASS" if first.lower().startswith("change:") else "FAIL",
+                                  "detail": f'edición: primera línea "{first[:60]}" debe ser "Change:"', "source": "image/references/gpt-image.md:80-83"}
+    else:
+        out["start_with_verb"] = {
+            "status": "PASS" if verbs and any(first.lower().startswith(v) for v in verbs) else "FAIL",
+            "detail": f'primera línea: "{first[:60]}"; verbos: {", ".join(verbs) or "golden-rules.md no encontrado"}',
+            "source": str(rules) if rules else None,
+        }
+    if v == "nb":
+        hits = NB_LENS_RE.findall(prompt)
+        out["nb_no_numeric_lens"] = {"status": "FAIL" if hits else "PASS", "detail": hits or "sin 50mm / f/2.8 / ISO", "source": "image/references/nano-banana.md:24"}
     soup = [l.strip() for l in prompt.splitlines() if gate_image.is_keyword_soup(l)]
     out["natural_language"] = {"status": "FAIL" if soup else "PASS", "detail": soup[:3] or "sin keyword soup", "source": str(rules) if rules else None}
     banned = []
@@ -325,24 +397,37 @@ def audit_context(case: dict, ceiling: int | None) -> dict:
     }
 
 
-def sections_from(facts: dict, prompt: str) -> dict:
+def sections_from(facts: dict, prompt: str, base_type: str) -> tuple[dict, dict]:
     """Secciones sw30 (T1..T5) derivadas de los bloques renderizados.
-    anatomy ⇐ Subject.action (gpt-image.md:128, 'who, action, framing')."""
-    blocks = {}
-    for para in prompt.split("\n\n"):
-        head, _, body = para.partition(":")
-        blocks[head.strip().lower()] = para.strip()
+    gpt: anatomy ⇐ Subject.action (gpt-image.md:128 'who, action, framing').
+    nb:  scene ⇐ location, subject ⇐ subject+action, anatomy ⇐ action, usecase ⇐ style
+         (nano-banana.md:13-14, la posición Style cumple el rol del use case).
+    T1:  light/skin/usecase/clean = bloques canónicos (sw30 SKILL.md:66-74)."""
     s = facts["slots"]
-    sec = {
-        "scene": blocks.get("scene", ""),
-        "subject": blocks.get("subject", ""),
-        "optics": blocks.get("important details", ""),
-        "usecase": blocks.get("use case", ""),
-        "constraints": blocks.get("constraints", ""),
-    }
-    blk = {"anatomy": {"name": "anatomy", "text": s["subject"]["action"]}}
-    if "contact" in s["subject"]:
-        blk["contact"] = {"name": "contact", "text": s["subject"]["contact"]}
+    v = variant_of(facts)
+    labelled = {}
+    for para in prompt.split("\n\n"):
+        head, _, _ = para.partition(":")
+        labelled[head.strip().lower()] = para.strip()
+    blk = {}
+    if v == "gpt":
+        sec = {"scene": labelled.get("scene", ""), "subject": labelled.get("subject", ""), "optics": labelled.get("important details", ""),
+               "usecase": labelled.get("use case", ""), "constraints": labelled.get("constraints", "")}
+        blk["anatomy"] = {"name": "anatomy", "text": s["subject"]["action"]}
+        if "contact" in s["subject"]:
+            blk["contact"] = {"name": "contact", "text": s["subject"]["contact"]}
+    elif v == "nb":
+        sec = {"scene": s["location"], "subject": f'{s["subject"]} {s["action"]}', "optics": s["composition"], "usecase": s["style"]}
+        blk["anatomy"] = {"name": "anatomy", "text": s["action"]}
+        if "contact" in s:
+            blk["contact"] = {"name": "contact", "text": s["contact"]}
+    else:
+        sec = {"change": s["change"], "preserve": s["preserve"], "constraints": s["constraints"]}
+    if base_type == "T1":
+        for b in T1_BLOCKS:
+            section = {"light_hard": "light", "skin_doc": "skin", "usecase_doc": "usecase", "clean_doc": "clean"}[b]
+            sec.pop(section, None)
+            blk[section] = {"name": b, "text": None}
     return sec, blk
 
 
@@ -351,17 +436,18 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     ceiling, src = capabilities_ceiling(facts["model"])
     out["word_ceiling_source"] = src
     tipo = case["base_type"]
-    sec, blk = sections_from(facts, prompt)
+    sec, blk = sections_from(facts, prompt, tipo)
     refs = [f"Image {r['index']}: {r['role']}" for r in facts["references"]]
     meta = {"model": facts["model"], "quality": facts["quality"], "size_or_ratio": f"{facts['size']} ({ratio_of(facts['size'])})"}
-
-    spec = {"type": tipo, "metadata": meta, "references": refs, "sections": {**sec, "notes": facts["notes"]}, "blocks": blk}
+    canon = canonical_blocks()
+    spec_blocks = {k: (v["name"] if v["text"] is None else v) for k, v in blk.items()}
+    spec = {"type": tipo, "metadata": meta, "references": refs, "sections": {**sec, "notes": facts["notes"]}, "blocks": spec_blocks}
     spec_path = run.dir / "template_spec.json"
     jdump(spec_path, spec)
     p = run.tool(PKG / "template_engine.py", "--build", spec_path, "--json")
     out["template_engine"] = {"status": "PASS" if p.returncode == 0 else "FAIL", "detail": (p.stdout + p.stderr).strip()[-600:]}
 
-    artifact = {"type": tipo, "prompt": prompt, "sections": {**sec, **{k: v["text"] for k, v in blk.items()}},
+    artifact = {"type": tipo, "prompt": prompt, "sections": {**sec, **{k: (canon[v["name"]] if v["text"] is None else v["text"]) for k, v in blk.items()}},
                 "block_ids": {k: v["name"] for k, v in blk.items()},
                 "metadata": {**meta, "aspect_ratio": ratio_of(facts["size"])}, "notes": facts["notes"],
                 "audit_context": audit_context(case, ceiling)}
@@ -397,9 +483,12 @@ def mechanical_evidence(run: Run, match: dict, gates: dict, mode: str) -> tuple[
             elif key == "generation_params":
                 ev[rid] = {"status": "PASS", "by": "apd_run:ast.parameters", "reason": json.dumps(gates["parameters"])}
             elif key == "aspect_ratio":
-                ev[rid] = {"status": "PASS", "by": "apd_run:ast.parameters", "reason": f"aspectRatio={gates['parameters']['aspectRatio']} derivado de size={gates['parameters']['size']}"}
+                ev[rid] = {"status": "PASS", "by": "apd_run:ast.parameters", "reason": f"aspectRatio={gates['parameters']['aspectRatio']} derivado de size={gates['parameters'].get('size', gates['parameters']['aspectRatio'])}"}
             else:
                 ev[rid] = {"status": "PASS", "by": f"apd_run:{key}", "reason": f"{key}_v34 PASS"}
+        elif rid == NB_LENS_RULE and "nb_no_numeric_lens" in gates["lexical"]:
+            g = gates["lexical"]["nb_no_numeric_lens"]
+            ev[rid] = {"status": g["status"], "by": "apd_run:nb-lens-gate", "reason": str(g["detail"])} if g["status"] == "PASS" else {"status": "FAIL", "reason": f"parámetros numéricos de objetivo: {g['detail']}"}
         elif kind == "lexical":
             if lex["status"] == "PASS":
                 ev[rid] = {"status": "PASS", "by": "apd_run:lexical-gate", "reason": "0 términos prohibidos (dramaturgy.md + gpt-image.md Anti-Slop)"}
@@ -421,7 +510,7 @@ def cmd_new(a) -> int:
         facts = jload(a.facts)
         case = jload(a.case)
         errs = validate_schema(facts, FACTS_SCHEMA)
-        if facts.get("references") and "references_line" not in facts.get("slots", {}):
+        if facts.get("references") and facts.get("operation", "create") != "edit" and "references_line" not in facts.get("slots", {}):
             errs.append("slots.references_line es obligatoria cuando hay references")
         if not facts.get("references") and "references_line" in facts.get("slots", {}):
             errs.append("slots.references_line sin references")
@@ -434,8 +523,18 @@ def cmd_new(a) -> int:
         # consistencia mecánica facts ↔ case
         cerrs = []
         fam = MODELS[facts["model"]]["family"]
-        if case.get("media") != "image" or case.get("stage") != "prompt" or case.get("operation") != "text_to_image":
-            cerrs.append("case debe ser media=image, stage=prompt, operation=text_to_image")
+        op = OPERATIONS[facts.get("operation", "create")]
+        if case.get("media") != "image" or case.get("stage") != "prompt" or case.get("operation") != op:
+            cerrs.append(f"case debe ser media=image, stage=prompt, operation={op}")
+        if facts.get("operation", "create") == "edit":
+            if case.get("base_type") != "T5":
+                cerrs.append("operation=edit exige case.base_type=T5")
+            if not facts["references"]:
+                cerrs.append("operation=edit exige references (la imagen a editar)")
+        elif case.get("base_type") == "T5":
+            cerrs.append("case.base_type=T5 exige operation=edit")
+        if variant_of(facts) == "nb" and facts.get("format") != ratio_of(facts["size"]):
+            cerrs.append(f"facts.format debe ser {ratio_of(facts['size'])} (nano-banana.md:20 'Format: W:H')")
         if case.get("generator", {}).get("model") != facts["model"] or case.get("generator", {}).get("family") != fam:
             cerrs.append(f"case.generator debe ser {fam}/{facts['model']}")
         if case.get("deliverable", {}).get("aspect_ratio") != ratio_of(facts["size"]):
@@ -447,10 +546,12 @@ def cmd_new(a) -> int:
             cerrs.append("facts sin references pero case.references.mode≠none")
         if facts["references"] and len(case.get("references", {}).get("roles", [])) != len(facts["references"]):
             cerrs.append("case.references.roles debe tener una entrada por referencia")
-        if case.get("base_type") == "T4" and "contact" not in facts["slots"]["subject"]:
-            cerrs.append("T4 exige slots.subject.contact")
-        if case.get("base_type") != "T4" and "contact" in facts["slots"]["subject"]:
-            cerrs.append("slots.subject.contact sólo en T4")
+        contact_holder = facts["slots"].get("subject") if variant_of(facts) == "gpt" else facts["slots"]
+        has_contact = isinstance(contact_holder, dict) and "contact" in contact_holder
+        if case.get("base_type") == "T4" and not has_contact:
+            cerrs.append("T4 exige el slot contact")
+        if case.get("base_type") != "T4" and has_contact:
+            cerrs.append("el slot contact sólo existe en T4")
         run.stage("facts_case_consistency", "FAIL" if cerrs else "PASS", "; ".join(cerrs))
 
         # brief freeze
@@ -459,7 +560,7 @@ def cmd_new(a) -> int:
         run.state["brief_version"] = 1
         p = run.tool(HOOKS / "brief_freeze_v34.py", "--input", run.dir / "brief_input.json", "--brief-id", facts["brief_id"],
                      "--source-id", f"facts.json sha256:{sha256_file(run.dir / 'facts.json')}",
-                     *sum([["--prompt-optional-prefix", x] for x in ("model", "quality", "size", "references", "notes")], []),
+                     *sum([["--prompt-optional-prefix", x] for x in ("model", "operation", "quality", "size", "references", "notes")], []),
                      "--out", run.brief_path(1))
         run.stage("brief_freeze", "PASS" if p.returncode == 0 else "FAIL", (p.stdout + p.stderr).strip().splitlines()[-2:][0] if p.stdout else p.stderr[-300:])
         p = run.tool(HOOKS / "brief_preflight_v34.py", "--brief", run.brief_path(1))
@@ -483,7 +584,7 @@ def cmd_new(a) -> int:
 
         # AST + render
         run.state["prompt_revision"] = 1
-        ast = build_ast(facts, jload(run.brief_path(1)))
+        ast = build_ast(facts, jload(run.brief_path(1)), case["base_type"])
         aerrs = validate_schema(ast, AST_SCHEMA)
         jdump(run.ast_path(1), ast)
         run.stage("ast_schema", "FAIL" if aerrs else "PASS", "; ".join(aerrs) or AST_SCHEMA.name)
@@ -506,7 +607,7 @@ def _render(run: Run, facts: dict, case: dict, match: dict, mode: str) -> None:
     prompt = run.prompt_path().read_text(encoding="utf-8")
     run.state["prompt_sha256"] = sha256_text(prompt)
 
-    gates = {"lexical": lexical_gates(prompt), "parameters": jload(ast)["parameters"]}
+    gates = {"lexical": lexical_gates(prompt, facts), "parameters": jload(ast)["parameters"]}
     gates["structural"] = structural_gates(run, facts, case, prompt)
     jdump(run.dir / "gates.json", gates)
     fails = [f"{k}: {v['detail']}" for k, v in {**gates["lexical"], **{x: y for x, y in gates["structural"].items() if isinstance(y, dict)}}.items() if v.get("status") == "FAIL"]

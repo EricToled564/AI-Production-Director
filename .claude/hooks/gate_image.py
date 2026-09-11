@@ -163,7 +163,12 @@ def main() -> int:
             continue
 
         first = lines[0].strip()
-        if not waived("R1") and not any(
+        # Edit template del modelo (image/references/gpt-image.md, "Editing"): abre con
+        # "Change:" y lleva "Preserve:". La sintaxis del modelo destino manda (APD 6.2).
+        is_edit = first.lower().startswith("change:") and any(
+            l.strip().lower().startswith("preserve:") for l in lines
+        )
+        if not waived("R1") and not is_edit and not any(
             first.lower().startswith(v) for v in verbs
         ):
             fails.append(
