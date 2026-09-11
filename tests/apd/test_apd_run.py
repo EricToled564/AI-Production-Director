@@ -159,7 +159,8 @@ class ApdRun(unittest.TestCase):
         facts["slots"]["scene"]["weather"] = "overcast, soft even light, hands hidden in the foam"
         p = self.new(facts, strict=True)
         self.assertNotEqual(p.returncode, 0); self.assertIn("no es literal del brief ni del skill", p.stdout)
-        brief = (FX / "gpt_brief.txt").read_text() + "The player wears a red cap.\n"
+        shutil.rmtree(self.run)
+        brief = (FX / "gpt_brief.txt").read_text() + "The woman wears a red cap.\n"
         p = self.new(brief=brief, strict=True)
         self.assertNotEqual(p.returncode, 0); self.assertIn("frase del brief omitida", p.stdout)
 
