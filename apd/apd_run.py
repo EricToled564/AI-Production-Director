@@ -53,7 +53,7 @@ PKG = REPO / "production-package"
 APD = REPO / "apd"
 SKILLS_ROOT = Path(os.environ.get("FUPAI_SKILLS_ROOT", Path.home() / ".claude" / "skills" / "synced"))
 
-RULESET = RULES / "v3" / "build" / "ruleset-3.4.0.json"
+RULESET = RULES / "v3" / "build" / "ruleset-3.5.0.json"
 ROUTING_CANONICAL = RULES / "v3" / "build" / "model-routing.canonical-v3.3.json"
 ROUTING_LEARNED = RULES / "v3" / "learned" / "model-routing.v3.2.json"
 CASE_SCHEMA = RULES / "v3" / "case-fingerprint.schema.json"
@@ -255,8 +255,11 @@ def check_strict(facts: dict, brief: str) -> list[str]:
     errs: list[str] = []
     nb = norm_text(brief or "")
     prov = facts.get("provenance", {})
+    assets = asset_leaves(facts)
     slot_text = " || ".join(norm_text(str(v)) for _, v in leaves(facts.get("slots", {})))
     for path, val in leaves({"slots": facts.get("slots", {})}):
+        if path in assets:
+            continue
         entries = prov.get(path)
         entries = entries if isinstance(entries, list) else ([entries] if entries else [])
         cited = norm_text("\n".join(cited_text(e.get("ref", "")) for e in entries if e.get("source") == "skill"))
@@ -281,9 +284,10 @@ def check_literal_provenance(facts: dict, brief: str) -> list[str]:
     if not nb:
         return ["brief vacío: cada procedencia 'user' debe citar una instrucción que esté en el brief"]
     prov = facts.get("provenance", {})
+    assets = asset_leaves(facts)
     body = {k: v for k, v in facts.items() if k not in ("provenance", "brief_id")}
     for path, val in leaves(body):
-        if path == "references" or path.startswith("references."):
+        if path == "references" or path.startswith("references.") or path in assets:
             continue
         entries = prov.get(path)
         entries = entries if isinstance(entries, list) else ([entries] if entries else [])
@@ -302,7 +306,18 @@ def check_literal_provenance(facts: dict, brief: str) -> list[str]:
     return errs
 
 
-def check_provenance(facts: dict) -> list[str]:
+def asset_leaves(facts: dict) -> set[str]:
+    """Hojas descritas desde una imagen que Eric adjuntó (source=asset)."""
+    prov = facts.get("provenance", {})
+    out = set()
+    for path, entries in prov.items():
+        entries = entries if isinstance(entries, list) else [entries]
+        if any(isinstance(e, dict) and e.get("source") == "asset" for e in entries):
+            out.add(path)
+    return out
+
+
+def check_provenance(facts: dict, assets_dir: Path | None = None) -> list[str]:
     prov = facts.get("provenance", {})
     errs = []
     body = {k: v for k, v in facts.items() if k not in ("provenance", "brief_id")}
@@ -326,6 +341,12 @@ def check_provenance(facts: dict) -> list[str]:
             elif src == "user":
                 if len(ref) < 3:
                     errs.append(f"{path}: user ref debe citar la instrucción")
+            elif src == "asset":
+                # La hoja describe lo que se ve en una imagen que Eric adjuntó. No hay
+                # cita literal posible: la fuente es la imagen, y queda en el run para
+                # que el auditor la mire.
+                if assets_dir is None or not (assets_dir / ref).is_file():
+                    errs.append(f"{path}: asset ref sin archivo en el run ({ref})")
     for i, r in enumerate(facts.get("references", [])):
         e = prov.get(f"references.{i}.role") or prov.get("references")
         if not e:
@@ -381,6 +402,8 @@ def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
             use_case.append(fixed("usecase_doc", canon["usecase_doc"], T1_RULES))
             constraints.append(fixed("clean_doc", canon["clean_doc"], T1_RULES))
         blocks += [{"id": "details", "segments": details}, {"id": "use_case", "segments": use_case}, {"id": "constraints", "segments": constraints}]
+        if "negative" in s:
+            blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, TEMPLATE_RULES)]})
     elif v == "nb":
         blocks.append({"id": "opening", "segments": [seg("verb", "Create {opening}.", {"opening": "slots.opening"}, VERB_RULES)]})
         if "references_line" in s:
@@ -394,10 +417,17 @@ def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
         if base_type == "T1":
             blocks.append({"id": "t1", "segments": [fixed(b, canon[b], T1_RULES) for b in T1_BLOCKS]})
         blocks.append({"id": "format", "segments": [seg("format", "Format: {format}.", {"format": "format"}, NB_RULES)]})
+        if "negative" in s:
+            # Bloque separado que exige el gate aurora-prompt-linter
+            # (references/README.md:95). El cuerpo de arriba sigue siendo positivo,
+            # que es lo que pide golden-rules.md:12; el negativo va aparte.
+            blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, NB_RULES)]})
     else:  # gpt-edit
         blocks.append({"id": "change", "segments": [seg("change", "Change: {change}.", {"change": "slots.change"}, EDIT_RULES)]})
         blocks.append({"id": "preserve", "segments": [seg("preserve", "Preserve: {preserve}.", {"preserve": "slots.preserve"}, EDIT_RULES)]})
         blocks.append({"id": "constraints", "segments": [seg("constraints", "Constraints: {constraints}.", {"constraints": "slots.constraints"}, EDIT_RULES)]})
+        if "negative" in s:
+            blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, EDIT_RULES)]})
     params = {"quality": facts["quality"], "aspectRatio": ratio_of(facts["size"])}
     if "x" in facts["size"].lower():
         params["size"] = facts["size"]
@@ -546,7 +576,62 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     failing = [c for c in audit.get("checks", []) if c.get("status") == "FAIL"]
     out["audit_gi2"] = {"status": audit.get("status", "FAIL"), "detail": [f"{c['name']}: {c['detail']}" for c in failing] or "15 columnas sin falla"}
     out["word_count"] = {"status": "PASS" if ceiling and word_count(prompt) <= ceiling else "FAIL", "detail": f"{word_count(prompt)}/{ceiling}"}
+    out["aurora_linter"] = aurora_linter(run, facts, case, prompt)
     return out
+
+
+AURORA_PLATFORM = {"gpt-image-2": "gpt_image_2", "nano-banana-pro": "nano_banana_pro", "nano-banana-2": "nano_banana_pro"}
+
+
+def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
+    """Gate del skill aurora-prompt-linter (SKILL.md:8, :44-56): secciones exigidas por
+    plataforma+caso, bloque negativo, redundancia con las referencias y vocabulario.
+    Exit 1 = no hay entrega. El caso sale del Case Fingerprint, no del criterio."""
+    script = None
+    for pattern in ("*/aurora-prompt-linter/scripts/prompt_linter.py", "*/*/aurora-prompt-linter/scripts/prompt_linter.py"):
+        for cand in SKILLS_ROOT.glob(pattern):
+            script = cand
+            break
+        if script:
+            break
+    if script is None:
+        return {"status": "FAIL", "detail": "aurora-prompt-linter no instalado"}
+    if facts.get("operation", "create") == "edit":
+        # Sus casos son 1 génesis, 2 anchor con referencias, 3a-3c I2V y 4 diálogo
+        # (prompt_linter.py CASE_CONFIGS). Ninguno describe la edición quirúrgica T5,
+        # cuyo template lo fija el modelo (gpt-image.md:80-83, APD §6.2).
+        return {"status": "NA", "detail": "aurora-prompt-linter no declara caso para edición T5"}
+    # Las categorías de cada referencia salen del Case Fingerprint, no de un supuesto:
+    # P sujeto, O outfit, L locación, S estilo (aurora-prompt-linter/SKILL.md:30).
+    cr = case.get("references", {})
+    tags = ([f"P{1}"] if cr.get("identity_reference") is True else []) + \
+           (["L1"] if cr.get("environment_reference") is True else []) + \
+           (["S1"] if cr.get("style_reference") is True else [])
+    refs = [{"file": f"Image {r['index']}", "role": str(r["role"])[:40], "tags": list(tags)}
+            for r in facts.get("references", [])]
+    refs_path = run.dir / "aurora_refs.yaml"
+    refs_path.write_text(json.dumps(refs, ensure_ascii=False), encoding="utf-8")
+    prompt_path = run.dir / "aurora_prompt.txt"
+    prompt_path.write_text(prompt, encoding="utf-8")
+    p = run.tool(script, "--prompt", prompt_path, "--refs", refs_path, "--case", str(case.get("prompt_case", "1")),
+                 "--platform", AURORA_PLATFORM.get(facts["model"], ""), "--json")
+    try:
+        rep = json.loads(p.stdout)
+    except json.JSONDecodeError:
+        return {"status": "FAIL", "detail": (p.stdout + p.stderr)[-400:]}
+    jdump(run.dir / "aurora_linter.json", rep)
+    missing = rep.get("sections_missing") or rep.get("missing_sections") or []
+    viol = [v.get("term") if isinstance(v, dict) else str(v) for v in (rep.get("violations") or [])]
+    # El presupuesto de palabras del linter (75-130) no bloquea: el tope vigente es el de
+    # `_capabilities.json` del skill (300 GPT Image / 120 Nano Banana), que ya verifica
+    # `word_count`, y Eric lo dejó fijo por escrito. Todo lo demás del linter sí bloquea.
+    blocking = [v for v in viol if not str(v).startswith("word_count")]
+    status = "FAIL" if (blocking or missing) else "PASS"
+    return {"status": status,
+            "detail": {"case": rep.get("case_type"), "platform": rep.get("platform"),
+                       "missing_sections": missing, "violations": blocking[:6],
+                       "word_count_informativo": [v for v in viol if str(v).startswith("word_count")]},
+            "source": f"{script}"}
 
 
 # ------------------------------------------------------------- evidencia mecánica
@@ -620,7 +705,7 @@ def cmd_new(a) -> int:
         if not facts.get("references") and "references_line" in facts.get("slots", {}):
             errs.append("slots.references_line sin references")
         run.stage("facts_schema", "FAIL" if errs else "PASS", "; ".join(errs) or FACTS_SCHEMA.name)
-        perrs = check_provenance(facts)
+        perrs = check_provenance(facts, run.dir / "in")
         run.stage("facts_provenance", "FAIL" if perrs else "PASS", "; ".join(perrs[:6]) or f"{len(facts['provenance'])} hojas trazadas")
         brief_text = Path(a.brief).read_text(encoding="utf-8") if a.brief else ""
         (run.dir / "brief.txt").write_text(brief_text, encoding="utf-8")

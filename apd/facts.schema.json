@@ -69,7 +69,7 @@
     },
     "provenance": {
       "type": "object",
-      "description": "Una entrada (o lista) por hoja. source=user: cita literal del brief de Eric (debe existir en el brief); source=skill: archivo:línea[-línea] del skill instalado — todo fragmento de la hoja sin cita 'user' debe ser literal de esas líneas; source=research: URL.",
+      "description": "Una entrada (o lista) por hoja. source=user: cita literal del brief de Eric (debe existir en el brief); source=skill: archivo:línea[-línea] del skill instalado — todo fragmento de la hoja sin cita 'user' debe ser literal de esas líneas; source=research: URL; source=asset: nombre del archivo de imagen que Eric adjuntó, guardado en <run>/in/ — la hoja describe lo que se ve en esa imagen y el archivo debe existir.",
       "additionalProperties": {
         "anyOf": [
           {
@@ -217,6 +217,11 @@
         "constraints": {
           "type": "string",
           "minLength": 1
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12)."
         }
       }
     },
@@ -267,6 +272,11 @@
           "type": "string",
           "minLength": 1,
           "description": "Sólo T4"
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12); aquí sólo van los fallos documentados del modelo (nano-banana.md:138)."
         }
       }
     },
@@ -293,6 +303,11 @@
           "type": "string",
           "minLength": 1,
           "description": "gpt-image.md:83"
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12)."
         }
       }
     },
@@ -308,7 +323,8 @@
           "enum": [
             "user",
             "skill",
-            "research"
+            "research",
+            "asset"
           ]
         },
         "ref": {

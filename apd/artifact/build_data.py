@@ -59,7 +59,7 @@ def skill_root() -> Path:
 
 def main() -> int:
     root = skill_root()
-    rs = json.loads((RULES / "v3" / "build" / "ruleset-3.4.0.json").read_text(encoding="utf-8"))
+    rs = json.loads((RULES / "v3" / "build" / "ruleset-3.5.0.json").read_text(encoding="utf-8"))
     rules = []
     for item in rs["rules"]:
         r, m = item["rule"], item["metadata"]

@@ -138,6 +138,7 @@
         if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, ref); if (!ok) errs.push(`${path}: skill ref inválida (${ref}): ${why}`); }
         else if (e.source === "research") { if (!/^https?:\/\//.test(ref)) errs.push(`${path}: research ref debe ser URL (${ref})`); }
         else if (e.source === "user") { if (ref.length < 3) errs.push(`${path}: user ref debe citar la instrucción`); }
+        else if (e.source === "asset") { if (ref.length < 3) errs.push(`${path}: asset ref debe nombrar el archivo adjunto`); }
       }
     }
     (facts.references || []).forEach((r, i) => { if (!prov[`references.${i}.role`] && !prov.references) errs.push(`references.${i}.role: sin procedencia`); });
@@ -156,13 +157,25 @@
   const fragmentsOf = (v) => String(v).split(/[,;.]\s+|\s+-\s+|\s+\u2014\s+/).map((f) => f.replace(/^[ .,;]+|[ .,;]+$/g, "")).filter(Boolean);
   // Regla mecánica: lo atribuido al skill es literal de las líneas citadas; toda cita atribuida
   // a Eric existe literalmente en el brief.
+  // Hojas descritas desde una imagen que Eric adjuntó (source=asset): la fuente es la
+  // imagen, no una cita literal, así que quedan fuera de los gates de literalidad.
+  function assetLeaves(facts) {
+    const out = new Set();
+    for (const [path, v] of Object.entries(facts.provenance || {})) {
+      const ents = Array.isArray(v) ? v : [v];
+      if (ents.some((e) => e && e.source === "asset")) out.add(path);
+    }
+    return out;
+  }
+
   function checkLiteralProvenance(D, facts, brief) {
     const errs = [], nb = normText(brief || "");
     if (!nb) return ["brief vacío: cada procedencia 'user' debe citar una instrucción que esté en el brief"];
     const prov = facts.provenance || {};
     const body = {}; for (const [k, v] of Object.entries(facts)) if (k !== "provenance" && k !== "brief_id") body[k] = v;
+    const assets = assetLeaves(facts);
     for (const [path, val] of leaves(body)) {
-      if (path === "references" || path.startsWith("references.")) continue;
+      if (path === "references" || path.startsWith("references.") || assets.has(path)) continue;
       const ents = entriesOf(prov, path), users = ents.filter((e) => e.source === "user"), skills = ents.filter((e) => e.source === "skill");
       for (const e of users) if (!nb.includes(normText(e.ref || ""))) errs.push(`${path}: la cita atribuida a Eric no está en el brief: "${String(e.ref || "").slice(0, 60)}"`);
       if (!path.startsWith("slots.") && path !== "format") continue;
@@ -177,7 +190,9 @@
     const errs = [], nb = normText(brief || ""), prov = facts.provenance || {};
     const slotLeaves = [...leaves({ slots: facts.slots || {} })];
     const slotText = slotLeaves.map(([, v]) => normText(String(v))).join(" || ");
+    const assets = assetLeaves(facts);
     for (const [path, val] of slotLeaves) {
+      if (assets.has(path)) continue;
       const cited = normText(entriesOf(prov, path).filter((e) => e.source === "skill").map((e) => citedText(D, e.ref || "")).join("\n"));
       for (const frag of fragmentsOf(val)) { const nf = normText(frag); if (!nb.includes(nf) && !cited.includes(nf)) errs.push(`${path}: fragmento que no es literal del brief ni del skill: "${frag.slice(0, 60)}"`); }
     }
@@ -446,6 +461,7 @@
         constraints.push(fixed("clean_doc", canon.clean_doc, T1_RULES));
       }
       blocks.push({ id: "details", segments: details }, { id: "use_case", segments: useCase }, { id: "constraints", segments: constraints });
+      if ("negative" in s) blocks.push({ id: "negative", segments: [seg("negative", "Negative: {negative}.", { negative: "slots.negative" }, TEMPLATE_RULES)] });
     } else if (v === "nb") {
       blocks.push({ id: "opening", segments: [seg("verb", "Create {opening}.", { opening: "slots.opening" }, VERB_RULES)] });
       if ("references_line" in s) blocks.push({ id: "references", segments: [seg("roles", "{references_line}", { references_line: "slots.references_line" }, REF_RULES)] });
@@ -456,10 +472,12 @@
       blocks.push({ id: "body", segments: body });
       if (baseType === "T1") blocks.push({ id: "t1", segments: T1_BLOCKS.map((b) => fixed(b, canon[b], T1_RULES)) });
       blocks.push({ id: "format", segments: [seg("format", "Format: {format}.", { format: "format" }, NB_RULES)] });
+      if ("negative" in s) blocks.push({ id: "negative", segments: [seg("negative", "Negative: {negative}.", { negative: "slots.negative" }, NB_RULES)] });
     } else {
       blocks.push({ id: "change", segments: [seg("change", "Change: {change}.", { change: "slots.change" }, EDIT_RULES)] });
       blocks.push({ id: "preserve", segments: [seg("preserve", "Preserve: {preserve}.", { preserve: "slots.preserve" }, EDIT_RULES)] });
       blocks.push({ id: "constraints", segments: [seg("constraints", "Constraints: {constraints}.", { constraints: "slots.constraints" }, EDIT_RULES)] });
+      if ("negative" in s) blocks.push({ id: "negative", segments: [seg("negative", "Negative: {negative}.", { negative: "slots.negative" }, EDIT_RULES)] });
     }
     const parameters = { quality: facts.quality, aspectRatio: ratioOf(facts.size) };
     if (facts.size.toLowerCase().includes("x")) parameters.size = facts.size;
@@ -872,7 +890,7 @@
         if (!path.startsWith("slots.")) { perrs.push(`${path}: un delta sólo puede tocar slots.* (modelo, tamaño y referencias exigen run nuevo)`); continue; }
         if (ch.op === "remove") { perrs.push(`${path}: remove deja un campo requerido abierto; usa replace`); continue; }
         const ents = entriesOf(prov || {}, path);
-        if (!ents.length || ents.some((e) => !["user", "skill", "research"].includes(e.source))) perrs.push(`${path}: sin procedencia`);
+        if (!ents.length || ents.some((e) => !["user", "skill", "research", "asset"].includes(e.source))) perrs.push(`${path}: sin procedencia`);
         for (const e of ents) {
           if (e.source === "skill") { const [ok, why] = resolveSkillRef(D, e.ref); if (!ok) perrs.push(`${path}: skill ref inválida: ${why}`); }
           else if (e.source === "research" && !/^https?:\/\//.test(e.ref)) perrs.push(`${path}: research ref debe ser URL`);

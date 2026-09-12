@@ -33,7 +33,12 @@ class Variants(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stdout)
         t = (r / "prompt_v1.txt").read_text()
         self.assertTrue(t.startswith("Create "))
-        self.assertTrue(t.rstrip().endswith("Format: 16:9."))
+        # El cuerpo descriptivo cierra con Format (nano-banana.md:20); el bloque
+        # Negative que exige aurora-prompt-linter (references/README.md:95) va detrás,
+        # porque el linter parte main/negative en la etiqueta "Negative:".
+        main, _, negative = t.rstrip().partition("\nNegative: ")
+        self.assertTrue(main.rstrip().endswith("Format: 16:9."))
+        self.assertTrue(negative.strip())
         self.assertNotIn("Scene:", t)
         params = json.loads((r / "prompt_v1.ast.json").read_text())["parameters"]
         self.assertEqual(params["aspectRatio"], "16:9"); self.assertNotIn("size", params)
@@ -67,7 +72,7 @@ class Variants(unittest.TestCase):
         p, r = self.new("edit")
         self.assertEqual(p.returncode, 0, p.stdout)
         t = (r / "prompt_v1.txt").read_text()
-        self.assertEqual([l.split(":")[0] for l in t.split("\n\n")], ["Change", "Preserve", "Constraints"])
+        self.assertEqual([l.split(":")[0] for l in t.split("\n\n")], ["Change", "Preserve", "Constraints", "Negative"])
         env = {**os.environ, "CLAUDE_PROJECT_DIR": str(ROOT)}
         g = subprocess.run([sys.executable, str(GATE_IMAGE)], input=json.dumps({"last_assistant_message": f"gpt-image-2\n\n```\n{t}```\n", "session_id": "t"}),
                            capture_output=True, text=True, env=env)

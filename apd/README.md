@@ -14,7 +14,9 @@ demás lo deciden scripts deterministas del paquete y un ledger que exige el 100
 | Hechos congelados, hash, campos abiertos | `brief_freeze_v34`, `brief_preflight_v34` | `.claude/hooks/` |
 | Validez del caso | `case_validate` (schema + invariantes) | `.claude/rules/v3/case-fingerprint.schema.json` |
 | Modelo | `model_router_v33` (config canónica + overlay aprendido; el lock explícito de Eric se preserva) | `.claude/rules/v3/build/model-routing.canonical-v3.3.json` |
-| Qué reglas aplican (1,704) | `rule_matcher_v3` — lógica ternaria; `UNRESOLVED` bloquea | `.claude/rules/v3/build/ruleset-3.4.0.json` |
+| Qué reglas aplican (1,704) | `rule_matcher_v3` — lógica ternaria; `UNRESOLVED` bloquea | `.claude/rules/v3/build/ruleset-3.5.0.json` |
+| Que las reglas del pipeline de storyboard no se apliquen a una sola imagen | `scope_narrow_v35` — estrecha por sección declarada (`pipeline_track`, `sequence.multi_shot`, `brand.mode`, `text.mode`, `generator.family`) | `.claude/hooks/scope_narrow_v35.py` |
+| Secciones exigidas por plataforma+caso y bloque `Negative:` | gate `aurora_linter` del skill `aurora-prompt-linter` (SKILL.md:8, :44-56) | run/`aurora_linter.json` |
 | Texto del prompt | `prompt_ast_gate_v34` + `prompt_render_v34` (render determinista del AST contra el brief) | run/`prompt_vN.txt` |
 | Verbo inicial, lenguaje natural, vocabulario prohibido | gates léxicos del repo leyendo `golden-rules.md`, `dramaturgy.md`, Anti-Slop de `gpt-image.md` | `gate_image.py`, `gate_dramaturgy.py` |
 | Contrato T1..T5, 15 columnas, tope de palabras | `template_engine.py`, `audit_gi2.py`; tope desde `visual-prompt-forge/adapters/_capabilities.json` (gpt-image: **300**) | `production-package/` |
@@ -54,6 +56,15 @@ python3 tests/apd/test_apd_run.py; python3 tests/apd/test_apd_variants.py; node 
   llenó los hechos. Sin evidencia → `PENDING` → sin entrega. Convertir una regla
   semántica en mecánica exige un validador escrito y aprobado por Eric, no por el
   asistente.
+- Reclasificación 3.5.0: 111 reglas quedaron condicionadas a que el caso tenga el
+  artefacto que presuponen (storyboard, brand-lock, serie de shots, texto en imagen)
+  o el modelo correspondiente. Ninguna regla se borró: las 1,704 siguen publicadas y
+  `tests/apd/test_scope_v35.py` comprueba que vuelven a aplicar cuando el caso sí es
+  un pipeline, y que `UNKNOWN` sigue dando `UNRESOLVED` en vez de `NA`.
+- El presupuesto de palabras del linter (75-130) no bloquea: el tope vigente es el de
+  `_capabilities.json` (300 / 120), fijado por Eric. El resto del linter sí bloquea.
+- El artefacto (`apd_core.js`) no puede correr el linter de aurora, que es un script
+  Python: esa etapa existe sólo en la línea de comandos.
 - Dependencias: `requirements.txt` (jsonschema, PyYAML, Pillow, openpyxl). Pillow sólo
   lo usa `output_geometry_check_v32` (QA de la imagen generada) y `tests/v3.2`.
 - Pruebas del paquete importadas completas: `tests/v3.2`, `tests/v3.3`, `tests/v3.3.2`,
