@@ -19,7 +19,7 @@ def run(*args, ok=None):
 def stub_evidence(run_dir: Path) -> Path:
     """Evidencia con la forma exigida al auditor. Prueba la mecánica del ledger, no audita."""
     req = json.loads((run_dir / "audit_request.json").read_text())
-    entries = {r["rule_id"]: {"status": "PASS", "by": "auditor", "reason": "stub de prueba"} for t in req["tandas"] for r in t["rules"]}
+    entries = {r["rule_id"]: {"status": "PASS", "by": "auditor", "reason": "stub de prueba", "depends_on": ["prompt.text"]} for t in req["tandas"] for r in t["rules"]}
     p = run_dir / "evidence.json"
     p.write_text(json.dumps({"nonce": req["nonce"], "prompt_sha256": req["prompt_sha256"], "entries": entries}))
     return p
@@ -98,7 +98,7 @@ class ApdRun(unittest.TestCase):
     def test_06_one_fail_means_no_delivery(self):
         self.new(); run("audit-pack", "--run", self.run, ok=True)
         ev = json.loads(stub_evidence(self.run).read_text())
-        rid = next(iter(ev["entries"])); ev["entries"][rid] = {"status": "FAIL", "by": "auditor", "reason": "ausente"}
+        rid = next(iter(ev["entries"])); ev["entries"][rid] = {"status": "FAIL", "by": "auditor", "reason": "ausente", "depends_on": ["prompt.text"]}
         (self.run / "ev.json").write_text(json.dumps(ev))
         p = run("ledger", "--run", self.run, "--evidence", self.run / "ev.json", ok=False)
         self.assertIn("fail 1", p.stdout); self.assertFalse((self.run / "DELIVERABLE.txt").exists())

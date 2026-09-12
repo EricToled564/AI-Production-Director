@@ -859,6 +859,7 @@
         else if (e.by !== "auditor") errs.push(`${rid}: by debe ser 'auditor'`);
         else if (!["PASS", "FAIL"].includes(e.status)) errs.push(`${rid}: status debe ser PASS o FAIL (OVERRIDE sólo con autorización escrita de Eric)`);
         else if (!String(e.reason || "").trim()) errs.push(`${rid}: reason vacío`);
+        else if (!Array.isArray(e.depends_on) || !e.depends_on.length) errs.push(`${rid}: depends_on ausente`);
       }
       stage(run, "auditor_evidence", errs.length ? "FAIL" : "PASS", short(errs) || `${pendingIds.length} entradas válidas`, onStage);
       const merged = deepcopy(run.evidence_mechanical);

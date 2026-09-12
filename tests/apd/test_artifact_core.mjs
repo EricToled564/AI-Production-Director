@@ -32,7 +32,7 @@ function pythonRun(example) {
 
 function stubEvidence(req) {
   const entries = {};
-  for (const t of req.tandas) for (const r of t.rules) entries[r.rule_id] = { status: "PASS", by: "auditor", reason: "stub de prueba" };
+  for (const t of req.tandas) for (const r of t.rules) entries[r.rule_id] = { status: "PASS", by: "auditor", reason: "stub de prueba", depends_on: ["prompt.text"] };
   return { nonce: req.nonce, prompt_sha256: req.prompt_sha256, entries };
 }
 

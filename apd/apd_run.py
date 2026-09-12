@@ -40,6 +40,7 @@ import json
 import math
 import os
 import re
+import random
 import secrets
 import subprocess
 import sys
@@ -838,6 +839,27 @@ def cmd_audit_pack(a) -> int:
     pending = jload(run.dir / "audit_pending.json")
     facts = jload(run.dir / "facts.json")
     prompt = run.prompt_path().read_text(encoding="utf-8")
+    case = jload(run.dir / "case.json")
+    ast = jload(run.dir / f"prompt_v{run.state['prompt_revision']}.ast.json")
+    cache = cache_load()
+    reusable, muestra = {}, []
+    for r in pending:
+        fp = rule_fingerprint(r)
+        hit = next((e for (rid, rfp, _), e in cache.items()
+                    if rid == r["rule_id"] and rfp == fp
+                    and inputs_hash(e["depends_on"], facts, case, prompt, ast, run.state) == e["inputs_hash"]), None)
+        if hit and hit["status"] == "PASS":   # un FAIL nunca se hereda: se vuelve a juzgar
+            reusable[r["rule_id"]] = hit
+    # Muestra de control: parte de lo reutilizable se audita igual y se compara contra
+    # el veredicto guardado. Sin esta comprobación la caché sería un acto de fe.
+    if reusable:
+        rng = random.Random(sha256_text(prompt + str(sorted(reusable))))
+        k = max(1, round(len(reusable) * SAMPLE_RATE))
+        muestra = rng.sample(sorted(reusable), k)
+    al_auditor = [r for r in pending if r["rule_id"] not in reusable or r["rule_id"] in muestra]
+    jdump(run.dir / "audit_cache_hits.json", {"reusados": {k: v for k, v in reusable.items() if k not in muestra},
+                                              "muestra_de_control": {k: reusable[k] for k in muestra}})
+    pending = al_auditor
     req = {
         "nonce": secrets.token_hex(8),
         "created": now(),
@@ -869,6 +891,104 @@ def cmd_audit_pack(a) -> int:
     if sin_fuente:
         print(f"  sin extracto de origen ({len(sin_fuente)}): {', '.join(sin_fuente[:6])} — el auditor debe abrir el archivo")
     return 0
+
+
+# ------------------------------------------------- veredictos aprendidos
+# Un caso nuevo no arranca de cero: si una regla ya fue juzgada por un auditor y
+# todo aquello de lo que ese juicio dependía sigue idéntico, el veredicto se
+# reutiliza. La dependencia la declara el auditor, no el asistente; el asistente
+# sólo la resuelve contra este run y compara hashes.
+CACHE = Path(os.environ.get("APD_CACHE") or (APD / "audit_cache" / "verdicts.jsonl"))
+SAMPLE_RATE = 0.10          # se reaudita esta fracción de lo reutilizable
+DEP_PREFIXES = ("slots.", "facts.", "case.", "prompt.", "run.")
+
+
+def dep_value(dep: str, facts: dict, case: dict, prompt: str, ast: dict, state: dict):
+    """Valor actual de una dependencia declarada. None = no resoluble → no cacheable."""
+    if dep == "prompt.text":
+        return prompt
+    if dep == "prompt.structure":
+        return [[b["id"], [s["id"] for s in b["segments"]]] for b in ast.get("blocks", [])]
+    if dep == "run.stages":
+        return [[s["name"], s["status"]] for s in state.get("stages", [])]
+    root, _, path = dep.partition(".")
+    src = {"slots": facts.get("slots", {}), "facts": facts, "case": case}.get(root)
+    if src is None or not path:
+        return None
+    cur = src
+    for part in path.split("."):
+        if not isinstance(cur, dict) or part not in cur:
+            return None
+        cur = cur[part]
+    return cur
+
+
+def inputs_hash(deps: list, facts: dict, case: dict, prompt: str, ast: dict, state: dict) -> str | None:
+    vals = {}
+    for d in sorted(set(deps)):
+        v = dep_value(d, facts, case, prompt, ast, state)
+        if v is None:
+            return None
+        vals[d] = v
+    return sha256_text(json.dumps(vals, ensure_ascii=False, sort_keys=True))
+
+
+def rule_fingerprint(rule: dict) -> str:
+    """Identidad del enunciado: si cambia la redacción o su origen, el veredicto caduca."""
+    return sha256_text(f"{rule.get('source_path')}:{rule.get('line')}:{rule.get('text', '')}")[:16]
+
+
+def cache_load() -> dict:
+    out = {}
+    if CACHE.exists():
+        for line in CACHE.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                e = json.loads(line)
+                out[(e["rule_id"], e["rule_fp"], e["inputs_hash"])] = e
+    return out
+
+
+def cache_append(entries: list[dict]) -> None:
+    CACHE.parent.mkdir(parents=True, exist_ok=True)
+    with CACHE.open("a", encoding="utf-8") as fh:
+        for e in entries:
+            fh.write(json.dumps(e, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def cache_purge(rule_ids: list[str]) -> int:
+    """Borra del aprendizaje toda entrada de esas reglas: su dependencia estaba mal
+    declarada y ya no se puede confiar en ninguno de sus veredictos guardados."""
+    if not CACHE.exists():
+        return 0
+    keep, out = [], 0
+    for line in CACHE.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        if json.loads(line)["rule_id"] in set(rule_ids):
+            out += 1
+        else:
+            keep.append(line)
+    CACHE.write_text("\n".join(keep) + ("\n" if keep else ""), encoding="utf-8")
+    return out
+
+
+def cacheable_new(run: "Run", req: dict, entries: dict) -> list[tuple[str, str, str]]:
+    """(rule_id, huella de la regla, huella de sus dependencias) de los PASS nuevos que
+    se pueden heredar. Un FAIL nunca entra: hay que volver a juzgarlo siempre."""
+    facts = jload(run.dir / "facts.json")
+    case = jload(run.dir / "case.json")
+    prompt = run.prompt_path().read_text(encoding="utf-8")
+    ast = jload(run.dir / f"prompt_v{run.state['prompt_revision']}.ast.json")
+    out = []
+    for t in req["tandas"]:
+        for r in t["rules"]:
+            e = entries.get(r["rule_id"])
+            if not e or e.get("status") != "PASS" or not isinstance(e.get("depends_on"), list):
+                continue
+            ih = inputs_hash(e["depends_on"], facts, case, prompt, ast, run.state)
+            if ih:
+                out.append((r["rule_id"], rule_fingerprint(r), ih))
+    return out
 
 
 EXCERPT_CONTEXT = 4
@@ -970,11 +1090,38 @@ def cmd_ledger(a) -> int:
                 errs.append(f"{rid}: status debe ser PASS o FAIL (OVERRIDE sólo con autorización escrita de Eric)")
             elif not str(e.get("reason", "")).strip():
                 errs.append(f"{rid}: reason vacío")
+            elif not isinstance(e.get("depends_on"), list) or not e["depends_on"]:
+                errs.append(f"{rid}: depends_on ausente (declara de qué dependió el juicio)")
+            elif any(not str(d).startswith(DEP_PREFIXES) for d in e["depends_on"]):
+                errs.append(f"{rid}: depends_on con claves fuera del vocabulario {DEP_PREFIXES}")
         run.stage("auditor_evidence", "FAIL" if errs else "PASS", "; ".join(errs[:6]) or f"{len(pending_ids)} entradas válidas")
+
+        # Muestra de control: lo que la caché daba por PASS y se volvió a auditar tiene
+        # que coincidir. Una discrepancia significa que una dependencia estaba mal
+        # declarada, así que se purga la entrada y el run se detiene.
+        hits = jload(run.dir / "audit_cache_hits.json") if (run.dir / "audit_cache_hits.json").exists() else {"reusados": {}, "muestra_de_control": {}}
+        discrepancias = [f"{rid}: la caché decía PASS y el auditor dice {entries[rid]['status']} — {entries[rid]['reason'][:120]}"
+                         for rid in hits.get("muestra_de_control", {}) if rid in entries and entries[rid]["status"] != "PASS"]
+        if discrepancias:
+            cache_purge([rid for rid in hits["muestra_de_control"] if rid in entries and entries[rid]["status"] != "PASS"])
+            run.stage("cache_control", "FAIL", "; ".join(discrepancias[:4]))
+        elif hits.get("muestra_de_control"):
+            run.stage("cache_control", "PASS", f"{len(hits['muestra_de_control'])} de {len(hits['reusados']) + len(hits['muestra_de_control'])} reutilizables reauditadas, todas coinciden")
+
         merged = jload(run.dir / "evidence.mechanical.json")
+        for rid, e in hits.get("reusados", {}).items():
+            merged[rid] = {"status": "PASS", "by": "cache",
+                           "reason": f"veredicto heredado del run {e['run']} (auditor, nonce {e['nonce']}): {e['reason']}"}
         for rid in pending_ids:
             merged[rid] = {"status": entries[rid]["status"], "by": "auditor", "reason": entries[rid]["reason"]}
         jdump(run.dir / "evidence.json", merged)
+        nuevos = [{"rule_id": rid, "rule_fp": fp, "inputs_hash": ih, "depends_on": sorted(set(entries[rid]["depends_on"])),
+                   "status": "PASS", "reason": entries[rid]["reason"], "run": run.dir.name,
+                   "nonce": req["nonce"], "ruleset_version": run.state.get("ruleset_version", ""), "at": now()}
+                  for rid, fp, ih in cacheable_new(run, req, entries)]
+        if nuevos:
+            cache_append(nuevos)
+            run.stage("cache_append", "PASS", f"{len(nuevos)} veredictos nuevos guardados para futuros casos")
         p = run.tool(HOOKS / "runtime_ledger_v3.py", "--matched", run.dir / "match.json", "--evidence", run.dir / "evidence.json", "--json")
         led = json.loads(p.stdout) if p.stdout.strip().startswith("{") else {"status": "FAIL", "raw": (p.stdout + p.stderr)[-400:]}
         jdump(run.dir / "ledger.json", led)

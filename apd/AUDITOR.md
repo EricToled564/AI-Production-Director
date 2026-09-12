@@ -36,8 +36,10 @@ marcar `PASS` por falta de información, lee.
   "nonce": "<el mismo nonce>",
   "prompt_sha256": "<el mismo hash>",
   "entries": {
-    "<rule_id>": {"status": "PASS", "by": "auditor", "reason": "cita textual del prompt que lo cumple"},
-    "<rule_id>": {"status": "FAIL", "by": "auditor", "reason": "qué falta o qué línea lo viola + corrección concreta"}
+    "<rule_id>": {"status": "PASS", "by": "auditor", "reason": "cita textual del prompt que lo cumple",
+                  "depends_on": ["slots.style", "prompt.structure"]},
+    "<rule_id>": {"status": "FAIL", "by": "auditor", "reason": "qué falta o qué línea lo viola + corrección concreta",
+                  "depends_on": ["slots.subject"]}
   }
 }
 ```
@@ -48,5 +50,13 @@ marcar `PASS` por falta de información, lee.
 - Una regla que describe un proceso (leer un archivo, correr un validador, guardar
   un hash) se evalúa contra `facts.provenance` y contra las etapas registradas en
   `run.json`, no contra el texto del prompt; si no hay evidencia, es `FAIL`.
+- `depends_on` es obligatorio: enumera de qué dependió tu juicio, para que un caso futuro
+  que no haya cambiado nada de eso pueda heredarlo en vez de volver a pagarlo. Claves
+  válidas: `slots.<ruta>` (el texto de ese slot), `facts.<ruta>`, `case.<ruta>`,
+  `prompt.text` (el prompt entero), `prompt.structure` (la forma del template) y
+  `run.stages` (las etapas registradas). Declara de menos y aprobarás algo que cambió sin
+  darte cuenta; declara de más y sólo pierdes reutilización. Ante la duda, declara de más.
+  Una parte de lo heredado se vuelve a auditar en cada run y se compara: si tu declaración
+  estaba incompleta, se detecta ahí y se borra el aprendizaje de esa regla.
 - No existe `OVERRIDE` para el auditor. Sólo Eric autoriza overrides, por escrito,
   con `reason` y `authorized_by`.
