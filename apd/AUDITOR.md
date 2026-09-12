@@ -19,8 +19,15 @@ solo recibe este archivo, el `audit_request.json` de la tanda y responde JSON.
 - `nonce` — identificador de esta solicitud; debe repetirse en la respuesta.
 - `prompt_sha256` y `prompt` — el entregable exacto que se audita.
 - `facts` — los hechos congelados de los que se renderizó el prompt.
-- `tandas[i].rules[]` — reglas activas para este caso: `rule_id`, `source_path`,
-  `line`, `text`. Todas son APLICABLES según el matcher; no se re-clasifican.
+- `rules[]` — reglas activas para este caso: `rule_id`, `source_path`, `line`, `text` y
+  `excerpt_id`. Todas son APLICABLES según el matcher; no se re-clasifican.
+- `excerpts` — el texto del archivo instalado alrededor de cada regla, numerado por
+  línea y con el encabezado de su sección. Varias reglas vecinas comparten un extracto.
+
+El extracto está para que no tengas que abrir el repo: la regla ya viene con su
+contexto. Puedes abrir el archivo si el extracto no alcanza para decidir, y debes
+hacerlo cuando venga vacío. Lo que se quita es la necesidad, no el permiso: antes de
+marcar `PASS` por falta de información, lee.
 
 ## Salida (obligatoria, sólo JSON)
 

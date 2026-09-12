@@ -613,8 +613,12 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     refs_path.write_text(json.dumps(refs, ensure_ascii=False), encoding="utf-8")
     prompt_path = run.dir / "aurora_prompt.txt"
     prompt_path.write_text(prompt, encoding="utf-8")
+    # --overrides recibe el brief congelado (aurora-prompt-linter/SKILL.md:42): un
+    # OVERRIDE sólo vale si Eric lo escribió, y ahí es donde está su texto literal.
+    brief_path = run.dir / "brief.txt"
+    extra = ["--overrides", str(brief_path)] if brief_path.exists() else []
     p = run.tool(script, "--prompt", prompt_path, "--refs", refs_path, "--case", str(case.get("prompt_case", "1")),
-                 "--platform", AURORA_PLATFORM.get(facts["model"], ""), "--json")
+                 "--platform", AURORA_PLATFORM.get(facts["model"], ""), *extra, "--json")
     try:
         rep = json.loads(p.stdout)
     except json.JSONDecodeError:
@@ -846,10 +850,95 @@ def cmd_audit_pack(a) -> int:
         "tandas": [{"i": i + 1, "rules": pending[j:j + TANDA]} for i, j in enumerate(range(0, len(pending), TANDA))],
     }
     jdump(run.dir / "audit_request.json", req)
+    # Un archivo por tanda, con las líneas citadas de cada regla ya incrustadas: el
+    # auditor no tiene que abrir el repo para leer lo que la regla dice en su contexto.
+    # Puede abrirlo si algo le falta; lo que se elimina es la necesidad, no el permiso.
+    out = run.dir / "audit"
+    out.mkdir(exist_ok=True)
+    sin_fuente = []
+    for t in req["tandas"]:
+        excerpts, assign, faltan = merged_excerpts(t["rules"])
+        sin_fuente += faltan
+        rules = [{**r, **({"excerpt_id": assign[r["rule_id"]]} if r["rule_id"] in assign else {})} for r in t["rules"]]
+        one = {k: v for k, v in req.items() if k != "tandas"}
+        one.update({"tanda": t["i"], "of": len(req["tandas"]), "excerpts": excerpts, "rules": rules})
+        jdump(out / f"request_{t['i']}.json", one)
     run.state["audit_nonce"] = req["nonce"]
     run.save()
-    print(f"AUDIT_PACK: {len(pending)} reglas en {len(req['tandas'])} tandas → {run.dir / 'audit_request.json'} (nonce {req['nonce']})")
+    print(f"AUDIT_PACK: {len(pending)} reglas en {len(req['tandas'])} tandas → {out}/request_N.json (nonce {req['nonce']})")
+    if sin_fuente:
+        print(f"  sin extracto de origen ({len(sin_fuente)}): {', '.join(sin_fuente[:6])} — el auditor debe abrir el archivo")
     return 0
+
+
+EXCERPT_CONTEXT = 4
+
+
+def merged_excerpts(rules: list[dict]) -> tuple[dict, dict, list[str]]:
+    """Un extracto por tramo de archivo, no por regla: las ventanas de reglas vecinas se
+    solapan y se funden en un solo bloque. Devuelve (extractos, regla→extracto, sin fuente)."""
+    por_archivo: dict[str, list[dict]] = {}
+    faltan: list[str] = []
+    for r in rules:
+        sp, ln = r.get("source_path"), r.get("line")
+        if not sp or not ln:
+            faltan.append(r["rule_id"])
+            continue
+        por_archivo.setdefault(sp, []).append(r)
+    excerpts, assign = {}, {}
+    for sp, rs in por_archivo.items():
+        lines = file_lines(sp)
+        if lines is None:
+            faltan += [r["rule_id"] for r in rs]
+            continue
+        tramos: list[list[int]] = []
+        for r in sorted(rs, key=lambda x: int(x["line"])):
+            a, b = max(1, int(r["line"]) - EXCERPT_CONTEXT), min(len(lines), int(r["line"]) + EXCERPT_CONTEXT)
+            if tramos and a <= tramos[-1][1] + 1:
+                tramos[-1][1] = max(tramos[-1][1], b)
+            else:
+                tramos.append([a, b])
+        for k, (a, b) in enumerate(tramos, 1):
+            key = f"{sp}:{a}-{b}"
+            heading = next((lines[j].strip() for j in range(a - 1, -1, -1) if lines[j].startswith("#")), "")
+            excerpts[key] = {"source_path": sp, "heading": heading,
+                             "lines": "\n".join(f"{n:>5}  {lines[n - 1]}" for n in range(a, b + 1))}
+        for r in rs:
+            ln = int(r["line"])
+            for a, b in tramos:
+                if a <= ln <= b:
+                    assign[r["rule_id"]] = f"{sp}:{a}-{b}"
+                    break
+    return excerpts, assign, faltan
+
+
+def file_lines(source_path: str) -> list[str] | None:
+    for pattern in (f"*/{source_path}", f"*/*/{source_path}"):
+        for cand in SKILLS_ROOT.glob(pattern):
+            return cand.read_text(encoding="utf-8", errors="replace").splitlines()
+    return None
+
+
+def source_excerpt(source_path: str | None, line: int | None) -> tuple[str, str]:
+    """Líneas citadas del skill instalado, con contexto y el encabezado de su sección.
+
+    Devuelve ("", "") si el archivo no está instalado: entonces el auditor tiene que
+    abrirlo, y `audit-pack` lo dice en voz alta en vez de dejarlo pasar en silencio.
+    """
+    if not source_path or not line:
+        return "", ""
+    for pattern in (f"*/{source_path}", f"*/*/{source_path}"):
+        for cand in SKILLS_ROOT.glob(pattern):
+            lines = cand.read_text(encoding="utf-8", errors="replace").splitlines()
+            i = int(line) - 1
+            if not (0 <= i < len(lines)):
+                return "", ""
+            heading = next((lines[j].strip() for j in range(i, -1, -1) if lines[j].startswith("#")), "")
+            a = max(0, i - EXCERPT_CONTEXT)
+            b = min(len(lines), i + EXCERPT_CONTEXT + 1)
+            body = "\n".join(f"{n + 1:>5}{'>' if n == i else ' '} {lines[n]}" for n in range(a, b))
+            return body, heading
+    return "", ""
 
 
 def cmd_ledger(a) -> int:
