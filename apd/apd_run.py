@@ -63,7 +63,8 @@ DELTA_SCHEMA = RULES / "v3.4" / "authorized-delta.schema.json"
 FACTS_SCHEMA = APD / "facts.schema.json"
 
 sys.path.insert(0, str(HOOKS))
-import gate_dramaturgy  # noqa: E402
+import gate_dramaturgy
+import rule_validators  # noqa: E402
 import gate_image  # noqa: E402
 
 # facts.model → (case generator family, id en visual-prompt-forge/adapters/_capabilities.json)
@@ -687,10 +688,21 @@ def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, 
 
 
 # ------------------------------------------------------------- evidencia mecánica
-def mechanical_evidence(run: Run, match: dict, gates: dict, mode: str) -> tuple[dict, list[dict]]:
+def validator_artifact(run: Run, facts: dict, case: dict, prompt: str) -> dict:
+    """Lo que un validador puede mirar: el prompt, los hechos, el caso y lo que el run
+    dejó escrito. Nada más — un validador no interpreta, comprueba."""
+    return {"prompt": prompt, "notes": facts.get("notes", ""), "slots": facts.get("slots", {}),
+            "provenance": facts.get("provenance", {}), "case": case,
+            "stages": [{"name": st["name"], "status": st["status"]} for st in run.state.get("stages", [])],
+            "files": sorted(f.name for f in run.dir.iterdir() if f.is_file())}
+
+
+def mechanical_evidence(run: Run, match: dict, gates: dict, mode: str,
+                        artifact: dict | None = None) -> tuple[dict, list[dict]]:
     """Evidencia que este orquestador puede firmar; el resto va al auditor."""
     ev, pending = {}, []
     lex = gates["lexical"]["banned_vocabulary"]
+    validadores = rule_validators.load(approved_only=True) if artifact else {}
     for r in match["active_rules"]:
         rid = r["rule_id"]
         vid = r["metadata"]["validator"]["id"]
@@ -715,6 +727,18 @@ def mechanical_evidence(run: Run, match: dict, gates: dict, mode: str) -> tuple[
                 ev[rid] = {"status": "PASS", "by": "apd_run:lexical-gate", "reason": "0 términos prohibidos (dramaturgy.md + gpt-image.md Anti-Slop)"}
             else:
                 ev[rid] = {"status": "FAIL", "reason": f"términos prohibidos: {lex['detail']}"}
+        elif rid in validadores:
+            # Regla comprobada por código, con su autoprueba en verde. UNRESOLVED
+            # devuelve la regla al auditor: un validador que no puede decidir no decide.
+            estado, razon = rule_validators.evaluate(validadores[rid]["check"], artifact)
+            if estado in ("PASS", "NA"):
+                ev[rid] = {"status": "PASS", "by": f"validador:{validadores[rid]['source']}", "reason": razon}
+            elif estado == "FAIL":
+                ev[rid] = {"status": "FAIL", "reason": razon}
+            else:
+                pending.append({"rule_id": rid, "kind": kind, "source_path": r["rule"].get("source_path"),
+                                "line": r["rule"].get("line"), "effect": r["metadata"].get("effect"),
+                                "text": r["rule"]["text"], "validador_indeciso": razon})
         else:
             pending.append({"rule_id": rid, "kind": kind, "source_path": r["rule"].get("source_path"),
                             "line": r["rule"].get("line"), "effect": r["metadata"].get("effect"), "text": r["rule"]["text"]})
@@ -881,7 +905,7 @@ def _render(run: Run, facts: dict, case: dict, match: dict, mode: str) -> None:
     else:
         run.stage("estructura_vs_base", "NA", f"aún no hay prompt probado para esta firma de caso ({sig})")
 
-    ev, pending = mechanical_evidence(run, match, gates, mode)
+    ev, pending = mechanical_evidence(run, match, gates, mode, validator_artifact(run, facts, case, prompt))
     jdump(run.dir / "evidence.mechanical.json", ev)
     jdump(run.dir / "audit_pending.json", pending)
     mech_fail = [k for k, v in ev.items() if v["status"] == "FAIL"]
