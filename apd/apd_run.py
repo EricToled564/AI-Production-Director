@@ -562,10 +562,15 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     p = run.tool(PKG / "template_engine.py", "--build", spec_path, "--json")
     out["template_engine"] = {"status": "PASS" if p.returncode == 0 else "FAIL", "detail": (p.stdout + p.stderr).strip()[-600:]}
 
+    # Política de largo de Eric: el tope cede ante contenido que una regla exige, pero
+    # el exceso queda escrito en gates.json con las reglas que lo forzaron. audit_gi2
+    # recibe ese tope efectivo para no bloquear por lo mismo dos veces.
+    wc, minimal = length_policy(facts, prompt, ceiling)
+    efectivo = ceiling if wc["status"] != "PASS" or word_count(prompt) <= (ceiling or 0) else word_count(prompt)
     artifact = {"type": tipo, "prompt": prompt, "sections": {**sec, **{k: (canon[v["name"]] if v["text"] is None else v["text"]) for k, v in blk.items()}},
                 "block_ids": {k: v["name"] for k, v in blk.items()},
                 "metadata": {**meta, "aspect_ratio": ratio_of(facts["size"])}, "notes": facts["notes"],
-                "audit_context": audit_context(case, ceiling)}
+                "audit_context": audit_context(case, efectivo)}
     art_path = run.dir / "artifact.json"
     jdump(art_path, artifact)
     p = run.tool(PKG / "audit_gi2.py", art_path, "--json")
@@ -576,7 +581,7 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     jdump(run.dir / "audit_gi2.json", audit)
     failing = [c for c in audit.get("checks", []) if c.get("status") == "FAIL"]
     out["audit_gi2"] = {"status": audit.get("status", "FAIL"), "detail": [f"{c['name']}: {c['detail']}" for c in failing] or "15 columnas sin falla"}
-    out["word_count"] = {"status": "PASS" if ceiling and word_count(prompt) <= ceiling else "FAIL", "detail": f"{word_count(prompt)}/{ceiling}"}
+    out["word_count"], out["minimalidad"] = wc, minimal
     out["aurora_linter"] = aurora_linter(run, facts, case, prompt)
     return out
 
@@ -637,6 +642,48 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
                        "missing_sections": missing, "violations": blocking[:6],
                        "word_count_informativo": [v for v in viol if str(v).startswith("word_count")]},
             "source": f"{script}"}
+
+
+def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, dict]:
+    """Decisión de Eric: el largo no manda si está dejando fuera conceptos que las reglas
+    exigen, pero el prompt tiene que estar en su mínimo posible.
+
+    De ahí dos comprobaciones distintas. `minimalidad` es la dura: ningún fragmento
+    repetido entre slots, porque una palabra que ya dijo lo suyo en otro lado no añade
+    nada. `word_count` avisa cuando se pasa del tope de `_capabilities.json`, y sólo
+    deja pasar el exceso si el prompt es mínimo y cada slot está atado a una regla o al
+    brief, cosa que ya verificó `facts_literal`.
+    """
+    n = word_count(prompt)
+    # Relleno: una secuencia de cinco palabras no se repite en prosa escrita de verdad,
+    # pero se repite siempre cuando alguien estira el texto.
+    pal = norm_text(prompt).split()
+    ngrams: dict[str, int] = {}
+    for i in range(len(pal) - 4):
+        g = " ".join(pal[i:i + 5])
+        ngrams[g] = ngrams.get(g, 0) + 1
+    vistos, repetidos = {}, [f'secuencia repetida {c} veces: "{g}"' for g, c in ngrams.items() if c > 1]
+    for path, val in leaves({"slots": facts.get("slots", {})}):
+        for frag in fragments(val):
+            k = norm_text(frag)
+            if len(k) < 8:
+                continue
+            if k in vistos:
+                donde = f"en {vistos[k]}" + ("" if vistos[k] == path else f" y {path}")
+                repetidos.append(f'"{frag[:40]}" repetido {donde}')
+            vistos.setdefault(k, path)
+    minimal = {"status": "FAIL" if repetidos else "PASS",
+               "detail": repetidos[:4] or "sin fragmentos repetidos entre slots"}
+    if not ceiling:
+        return {"status": "FAIL", "detail": "sin tope en _capabilities.json"}, minimal
+    if n <= ceiling:
+        return {"status": "PASS", "detail": f"{n}/{ceiling}"}, minimal
+    forzado = sorted({e["ref"] for ents in facts.get("provenance", {}).values()
+                      for e in (ents if isinstance(ents, list) else [ents])
+                      if isinstance(e, dict) and e.get("source") == "skill"})
+    return ({"status": "PASS" if not repetidos else "FAIL",
+             "detail": f"{n}/{ceiling} — excedido por contenido que exigen las reglas: " + ", ".join(forzado[:6])},
+            minimal)
 
 
 # ------------------------------------------------------------- evidencia mecánica
@@ -819,6 +866,21 @@ def _render(run: Run, facts: dict, case: dict, match: dict, mode: str) -> None:
     fails = [f"{k}: {v['detail']}" for k, v in {**gates["lexical"], **{x: y for x, y in gates["structural"].items() if isinstance(y, dict)}}.items() if v.get("status") == "FAIL"]
     run.stage("prompt_gates", "FAIL" if fails else "PASS", "; ".join(map(str, fails))[:500] or "verbo inicial, lenguaje natural, vocabulario, template_engine, audit_gi2, word ceiling")
 
+    # Si este caso ya tuvo un prompt que Eric dio por bueno, el nuevo respeta su
+    # estructura: mismos bloques, mismos segmentos, mismo orden. El contenido cambia;
+    # la forma probada no.
+    sig, _ = case_signature(case)
+    run.state["case_signature"] = sig
+    base = library_base(sig)
+    if base:
+        jdump(run.dir / "base_prompt.json", base)
+        actual, esperada = ast_shape(ast), base["ast_shape"]
+        run.stage("estructura_vs_base", "PASS" if actual == esperada else "FAIL",
+                  f"misma forma que el prompt probado del run {base['run']} ({len(actual)} bloques)" if actual == esperada
+                  else f"se apartó de la forma probada del run {base['run']}: {json.dumps(esperada)} → {json.dumps(actual)}")
+    else:
+        run.stage("estructura_vs_base", "NA", f"aún no hay prompt probado para esta firma de caso ({sig})")
+
     ev, pending = mechanical_evidence(run, match, gates, mode)
     jdump(run.dir / "evidence.mechanical.json", ev)
     jdump(run.dir / "audit_pending.json", pending)
@@ -955,6 +1017,69 @@ def cache_append(entries: list[dict]) -> None:
             fh.write(json.dumps(e, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+# --------------------------------------------- librería de prompts probados
+# Un prompt entra aquí sólo cuando Eric declara que la imagen salió bien. Pasar el
+# ledger no es prueba de efectividad: prueba adherencia. La efectividad la declara
+# quien miró el resultado.
+LIBRARY = Path(os.environ.get("APD_LIBRARY") or (APD / "prompt_library" / "index.jsonl"))
+
+
+def signature_paths() -> list[str]:
+    """Los campos del caso que alguna regla del ruleset mira. Dos casos que coincidan
+    en todos ellos seleccionan exactamente el mismo conjunto de reglas; eso es lo que
+    hace que la firma sea una equivalencia demostrable y no un parecido."""
+    rs = jload(RULESET)
+    paths: set[str] = set()
+
+    def walk(w):
+        if isinstance(w, dict):
+            if "path" in w:
+                paths.add(w["path"])
+            for k in ("all", "any", "not"):
+                v = w.get(k)
+                for x in (v if isinstance(v, list) else [v] if isinstance(v, dict) else []):
+                    walk(x)
+
+    for e in rs["rules"]:
+        walk(e["metadata"].get("when"))
+    return sorted(paths)
+
+
+def case_fields(case: dict) -> dict:
+    out = {}
+    for p in signature_paths():
+        cur = case
+        for part in p.split("."):
+            cur = cur.get(part) if isinstance(cur, dict) else None
+            if cur is None:
+                break
+        out[p] = sorted(cur) if isinstance(cur, list) else cur
+    return out
+
+
+def case_signature(case: dict) -> tuple[str, dict]:
+    fields = case_fields(case)
+    rs_version = jload(RULESET).get("ruleset_version", "")
+    return sha256_text(json.dumps({"ruleset": rs_version, "fields": fields}, ensure_ascii=False, sort_keys=True))[:16], fields
+
+
+def ast_shape(ast: dict) -> list:
+    """La forma del prompt: qué bloques y qué segmentos, en qué orden. Sin el texto."""
+    return [[b["id"], [s["id"] for s in b["segments"]]] for b in ast.get("blocks", [])]
+
+
+def library_load() -> list[dict]:
+    if not LIBRARY.exists():
+        return []
+    return [json.loads(l) for l in LIBRARY.read_text(encoding="utf-8").splitlines() if l.strip()]
+
+
+def library_base(signature: str) -> dict | None:
+    """El prompt probado más reciente para esta firma de caso."""
+    hits = [e for e in library_load() if e["signature"] == signature]
+    return hits[-1] if hits else None
+
+
 def cache_purge(rule_ids: list[str]) -> int:
     """Borra del aprendizaje toda entrada de esas reglas: su dependencia estaba mal
     declarada y ya no se puede confiar en ninguno de sus veredictos guardados."""
@@ -1059,6 +1184,47 @@ def source_excerpt(source_path: str | None, line: int | None) -> tuple[str, str]
             body = "\n".join(f"{n + 1:>5}{'>' if n == i else ' '} {lines[n]}" for n in range(a, b))
             return body, heading
     return "", ""
+
+
+def cmd_accept(a) -> int:
+    """Guarda un prompt en la librería de probados. Sólo Eric puede firmarlo: el ledger
+    demuestra adherencia a las reglas, no que la imagen haya salido bien."""
+    run = Run(a.run)
+    if run.state["status"] != "DELIVERED":
+        print(f"APD_RUN: estado {run.state['status']}; sólo se acepta un run DELIVERED")
+        return 1
+    if a.by != "user":
+        print("APD_RUN: --by debe ser 'user'; la efectividad la declara quien miró la imagen")
+        return 1
+    if len(str(a.note or "").strip()) < 10:
+        print("APD_RUN: --note debe citar lo que Eric dijo al aceptar la imagen")
+        return 1
+    case = jload(run.dir / "case.json")
+    facts = jload(run.dir / "facts.json")
+    ast = jload(run.dir / f"prompt_v{run.state['prompt_revision']}.ast.json")
+    match = jload(run.dir / "match.json")
+    sig, fields = case_signature(case)
+    entry = {
+        "signature": sig,
+        "signature_fields": fields,
+        "run": run.dir.name,
+        "prompt": run.prompt_path().read_text(encoding="utf-8"),
+        "prompt_sha256": run.state["prompt_sha256"],
+        "ast_shape": ast_shape(ast),
+        "slots": facts["slots"],
+        "model": facts["model"],
+        "active_rule_ids": sorted(r if isinstance(r, str) else r["rule_id"] for r in match["active_rules"]),
+        "ruleset_version": match.get("ruleset_version", ""),
+        "accepted_by": "user",
+        "accepted_note": a.note.strip(),
+        "at": now(),
+    }
+    LIBRARY.parent.mkdir(parents=True, exist_ok=True)
+    with LIBRARY.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry, ensure_ascii=False, sort_keys=True) + "\n")
+    print(f"APD_LIBRARY: guardado como prompt probado de la firma {sig} "
+          f"({len(entry['active_rule_ids'])} reglas del caso, {len(entry['ast_shape'])} bloques)")
+    return 0
 
 
 def cmd_ledger(a) -> int:
@@ -1260,6 +1426,9 @@ def main() -> int:
     p = sub.add_parser("audit-pack"); p.add_argument("--run", required=True); p.set_defaults(fn=cmd_audit_pack)
     p = sub.add_parser("ledger"); p.add_argument("--run", required=True); p.add_argument("--evidence", required=True); p.set_defaults(fn=cmd_ledger)
     p = sub.add_parser("revise"); p.add_argument("--run", required=True); p.add_argument("--delta", required=True); p.add_argument("--provenance"); p.set_defaults(fn=cmd_revise)
+    p = sub.add_parser("accept", help="guardar en la librería un prompt cuya imagen Eric dio por buena")
+    p.add_argument("--run", required=True); p.add_argument("--by", required=True, help="debe ser 'user'")
+    p.add_argument("--note", required=True, help="lo que Eric dijo al aceptar la imagen"); p.set_defaults(fn=cmd_accept)
     p = sub.add_parser("status"); p.add_argument("--run", required=True); p.set_defaults(fn=cmd_status)
     a = ap.parse_args()
     return a.fn(a)

@@ -7,10 +7,13 @@ ROOT = Path(__file__).resolve().parents[2]
 APD = ROOT / "apd" / "apd_run.py"
 GATE_IMAGE = ROOT / ".claude" / "hooks" / "gate_image.py"
 FX = ROOT / "tests" / "apd" / "fixtures"
+# Ninguna prueba toca el aprendizaje real ni la librería de prompts probados.
+_SANDBOX = tempfile.mkdtemp(prefix="apd-test-")
+AISLADO = {**os.environ, "APD_CACHE": _SANDBOX + "/verdicts.jsonl", "APD_LIBRARY": _SANDBOX + "/library.jsonl"}
 
 
 def run(*args):
-    return subprocess.run([sys.executable, str(APD), *map(str, args)], capture_output=True, text=True, cwd=str(ROOT))
+    return subprocess.run([sys.executable, str(APD), *map(str, args)], capture_output=True, text=True, cwd=str(ROOT), env=AISLADO)
 
 
 class Variants(unittest.TestCase):

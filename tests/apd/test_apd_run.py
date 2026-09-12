@@ -7,10 +7,13 @@ ROOT = Path(__file__).resolve().parents[2]
 APD = ROOT / "apd" / "apd_run.py"
 GATE = ROOT / ".claude" / "hooks" / "gate_apd_delivery.py"
 FX = ROOT / "tests" / "apd" / "fixtures"
+# Ninguna prueba toca el aprendizaje real ni la librería de prompts probados.
+_SANDBOX = tempfile.mkdtemp(prefix="apd-test-")
+AISLADO = {**os.environ, "APD_CACHE": _SANDBOX + "/verdicts.jsonl", "APD_LIBRARY": _SANDBOX + "/library.jsonl"}
 
 
 def run(*args, ok=None):
-    p = subprocess.run([sys.executable, str(APD), *map(str, args)], capture_output=True, text=True, cwd=str(ROOT))
+    p = subprocess.run([sys.executable, str(APD), *map(str, args)], capture_output=True, text=True, cwd=str(ROOT), env=AISLADO)
     if ok is not None and (p.returncode == 0) != ok:
         raise AssertionError(f"exit={p.returncode}\n{p.stdout}\n{p.stderr}")
     return p
@@ -164,11 +167,22 @@ class ApdRun(unittest.TestCase):
         p = self.new(brief=brief, strict=True)
         self.assertNotEqual(p.returncode, 0); self.assertIn("frase del brief omitida", p.stdout)
 
-    def test_10_word_ceiling_comes_from_capabilities(self):
+    def test_10_padding_is_blocked_and_required_content_may_exceed_the_ceiling(self):
+        """Política de Eric: el tope cede ante contenido que una regla exige, pero el
+        prompt va en su mínimo posible. Relleno repetido = bloqueo, aunque quepa."""
         facts = json.loads((FX / "gpt_facts.json").read_text())
         facts["slots"]["constraints"] += "; " + "no extra element " * 90
         p = self.new(facts)
-        self.assertNotEqual(p.returncode, 0); self.assertIn("word_ceiling", p.stdout)
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("minimalidad", p.stdout)
+        self.assertIn("no extra element", p.stdout)
+        import shutil; shutil.rmtree(self.run)
+        facts = json.loads((FX / "gpt_facts.json").read_text())
+        facts["slots"]["constraints"] += "; " + ", ".join(f"constraint number {i} is distinct" for i in range(40))
+        p = self.new(facts)
+        self.assertEqual(p.returncode, 0, p.stdout)
+        gates = json.loads((self.run / "gates.json").read_text())["structural"]
+        self.assertIn("excedido por contenido que exigen las reglas", gates["word_count"]["detail"])
 
 
 if __name__ == "__main__":
