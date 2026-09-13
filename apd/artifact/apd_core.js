@@ -707,6 +707,24 @@
             + `sobre el tope (decisión de Eric); recortar es decisión suya. Reglas que fuerzan contenido: ${forzado.slice(0, 6).join(", ")}` },
       minimalidad };
   }
+  // Misma atribución que credits_block en apd_run.py: exigida por ai-production-director
+  // SKILL.md:135 para todo entregable que use la capa smixs, en los créditos y no en el
+  // prompt. Qué archivos son de esa capa lo calculó el build leyendo su licencia.
+  function creditsBlock(D, facts) {
+    const capa = new Set(D.smixs_files || []);
+    const usados = new Set();
+    for (const ents of Object.values(facts.provenance || {})) {
+      for (const e of (Array.isArray(ents) ? ents : [ents])) {
+        if (!e || e.source !== "skill") continue;
+        const archivo = String(e.ref || "").replace(/:\d+(-\d+)?$/, "");
+        if (capa.has(archivo)) usados.add(archivo);
+      }
+    }
+    if (!usados.size) return { status: "NA", detail: "el run no cita ningún archivo de la capa smixs" };
+    return { status: "PASS", line: D.credits_line,
+             detail: `${D.credits_line} — exigido por ${usados.size} archivos citados: ${[...usados].sort().slice(0, 4).join(", ")}`,
+             source: D.credits_source };
+  }
   function structuralGates(D, facts, c, prompt) {
     const out = {}, ceiling = D.ceilings[MODELS[facts.model].capabilities_id] ?? null;
     out.word_ceiling_source = `${D.sources_of_truth.ceilings}#${MODELS[facts.model].capabilities_id}`;
@@ -720,6 +738,7 @@
     if (!out.audit_gi2.detail.length) out.audit_gi2.detail = "15 columnas sin falla";
     out.audit_checks = audit.checks;
     Object.assign(out, lengthPolicy(facts, prompt, ceiling));
+    out.credits = creditsBlock(D, facts);
     return out;
   }
 
@@ -745,6 +764,11 @@
   function vWhen(cond, art) {
     if (!cond) return true;
     if (Array.isArray(cond)) { const r = cond.map((c) => vWhen(c, art)); return r.includes(null) ? null : r.every(Boolean); }
+    if ("file" in cond) {
+      if (art.files_complete === false) return null;   // lista parcial: la ausencia no es prueba
+      const hay = (art.files || []).includes(cond.file);
+      return (cond.op || "in") === "in" ? hay : !hay;
+    }
     let cur = art.case || {};
     for (const p of cond.path.split(".")) { cur = cur && typeof cur === "object" ? cur[p] : undefined; if (cur === undefined || cur === null) return null; }
     if (cur === "UNKNOWN") return null;
@@ -756,7 +780,15 @@
   const vRe = (pat) => new RegExp(String(pat).replace(/^\(\?[a-z]+\)/, ""), "im");
   function vEval(spec, art) {
     const ok = vWhen(spec.when, art);
-    if (ok === null) return ["UNRESOLVED", "el caso no declara la precondición"];
+    if (ok === null) {
+      // Una precondición sobre un archivo del run no se puede decidir en la página: no hay
+      // sistema de archivos, y la ausencia no es prueba. Se dice cuál, igual que file_exists.
+      const w = spec.when, cs = Array.isArray(w) ? w : [w];
+      const arch = cs.filter((c) => c && c.file).map((c) => c.file);
+      return ["UNRESOLVED", arch.length
+        ? `el artefacto no puede comprobar ${arch.join(", ")}: esa etapa corre sólo en la línea de comandos`
+        : "el caso no declara la precondición"];
+    }
     if (ok === false) return ["NA", "no aplica a este caso por su precondición"];
     const op = spec.op;
     if (op === "all" || op === "any") {
@@ -775,9 +807,12 @@
     if (op === "stages_ok") {
       const st = vTarget(art, "stages") || [];
       if (!st.length) return ["UNRESOLVED", "el artefacto no trae etapas"];
-      const mal = st.filter((s) => s.status !== "PASS" && s.status !== "NA").map((s) => s.name);
+      // El estado ACTUAL, no el historial: la última aparición de cada etapa es la que cuenta.
+      const actual = {};
+      for (const s of st) actual[s.name] = s.status;
+      const mal = Object.entries(actual).filter(([, v]) => v !== "PASS" && v !== "NA").map(([n]) => n);
       return mal.length ? ["FAIL", `etapas sin pasar: ${mal.join(", ")}`]
-                        : ["PASS", `las ${st.length} etapas del run pasaron o quedaron NA`];
+                        : ["PASS", `las ${Object.keys(actual).length} etapas del run pasaron o quedaron NA`];
     }
     if (op === "file_exists") {
       // La página no tiene sistema de archivos: puede confirmar lo que produjo, no puede

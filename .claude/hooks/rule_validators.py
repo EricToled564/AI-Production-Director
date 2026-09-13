@@ -65,6 +65,12 @@ def _when(cond, art: dict) -> bool | None:
         if None in res:
             return None
         return all(res)
+    if "file" in cond:
+        archivos = art.get("files")
+        if art.get("files_complete") is False:
+            return None                      # lista parcial: no se puede probar una ausencia
+        hay = cond["file"] in (archivos or [])
+        return hay if cond.get("op", "in") == "in" else not hay
     cur = art.get("case", {})
     for p in cond["path"].split("."):
         cur = cur.get(p) if isinstance(cur, dict) else None
@@ -82,7 +88,8 @@ def evaluate(spec: dict, art: dict) -> tuple[str, str]:
     ok = _when(spec.get("when"), art)
     if ok is None:
         w = spec["when"]
-        rutas = ", ".join(c["path"] for c in w) if isinstance(w, list) else w["path"]
+        rutas = ", ".join(c.get("path") or f"archivo {c['file']}" for c in w) if isinstance(w, list) \
+            else (w.get("path") or f"archivo {w['file']}")
         return UNRESOLVED, f"el caso no declara {rutas}"
     if ok is False:
         return "NA", "no aplica a este caso por su precondición"
@@ -105,11 +112,18 @@ def evaluate(spec: dict, art: dict) -> tuple[str, str]:
         return ("PASS", f"etapa {spec['stage']} PASS") if st[spec["stage"]] == "PASS" else \
                ("FAIL", f"etapa {spec['stage']} en {st[spec['stage']]}")
     if op == "stages_ok":
-        mal = [s["name"] for s in _target(art, "stages") if s["status"] not in ("PASS", "NA")]
-        if not _target(art, "stages"):
+        etapas = _target(art, "stages")
+        if not etapas:
             return UNRESOLVED, "el artefacto no trae etapas"
+        # El estado ACTUAL, no el historial: una etapa que falló y se corrigió aparece dos
+        # veces, y lo que cuenta es la última. Sin esto, un run revisado arrastra para
+        # siempre el rojo de antes de la corrección.
+        actual = {}
+        for st in etapas:
+            actual[st["name"]] = st["status"]
+        mal = [n for n, v in actual.items() if v not in ("PASS", "NA")]
         return ("FAIL", f"etapas sin pasar: {', '.join(mal)}") if mal else \
-               ("PASS", f"las {len(_target(art, 'stages'))} etapas del run pasaron o quedaron NA")
+               ("PASS", f"las {len(actual)} etapas del run pasaron o quedaron NA")
     if op == "file_exists":
         return ("PASS", f"{spec['file']} presente en el run") if spec["file"] in _target(art, "files") else \
                ("FAIL", f"falta {spec['file']} en el run")

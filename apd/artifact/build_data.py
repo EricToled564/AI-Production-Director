@@ -106,6 +106,14 @@ def main() -> int:
         "validators": [json.loads(l) for f in sorted((RULES / "v3" / "validators").glob("*.jsonl"))
                        for l in f.read_text(encoding="utf-8").splitlines() if l.strip()
                        and json.loads(l).get("approved_by") == "user"],
+        # Qué archivos son "la capa smixs" no se escribe a mano: se lee la licencia de cada
+        # archivo instalado. El artefacto no tiene sistema de archivos, así que el conjunto se
+        # calcula aquí, en el build, con los mismos archivos que lee la línea de comandos.
+        "smixs_files": sorted(str(f.relative_to(root)) for f in root.rglob("*")
+                              if f.is_file() and f.suffix in {".md", ".json", ".yaml", ".yml"}
+                              and "smixs/visual-skills" in f.read_text(encoding="utf-8", errors="replace")),
+        "credits_line": "Serge Shima — github.com/smixs/visual-skills (CC BY 4.0)",
+        "credits_source": "ai-production-director/SKILL.md:135",
         "sources_of_truth": {
             "verbs": str(golden.relative_to(root)) if golden else None,
             "banned": [str(p.relative_to(root)) for p in (dram, anti) if p],
