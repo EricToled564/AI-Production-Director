@@ -53,10 +53,16 @@ def _target(art: dict, name: str):
     return None
 
 
-def _when(cond: dict | None, art: dict) -> bool | None:
-    """Precondición del caso. None = no se puede decidir → UNRESOLVED."""
+def _when(cond, art: dict) -> bool | None:
+    """Precondición del caso; una lista son varias que deben cumplirse todas.
+    None = no se puede decidir → UNRESOLVED."""
     if not cond:
         return True
+    if isinstance(cond, list):
+        res = [_when(c, art) for c in cond]
+        if None in res:
+            return None
+        return all(res)
     cur = art.get("case", {})
     for p in cond["path"].split("."):
         cur = cur.get(p) if isinstance(cur, dict) else None
@@ -73,9 +79,11 @@ def evaluate(spec: dict, art: dict) -> tuple[str, str]:
     """(estado, razón). Estado UNRESOLVED cuando falta información: nunca PASS a ciegas."""
     ok = _when(spec.get("when"), art)
     if ok is None:
-        return UNRESOLVED, f"el caso no declara {spec['when']['path']}"
+        w = spec["when"]
+        rutas = ", ".join(c["path"] for c in w) if isinstance(w, list) else w["path"]
+        return UNRESOLVED, f"el caso no declara {rutas}"
     if ok is False:
-        return "NA", f"no aplica: {spec['when']['path']} fuera de {spec['when']['value']}"
+        return "NA", "no aplica a este caso por su precondición"
 
     op = spec["op"]
     if op in ("all", "any"):

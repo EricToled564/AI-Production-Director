@@ -44,8 +44,16 @@ for (const [name, ex] of Object.entries(EXAMPLES)) {
   if (name === "gpt") assert.ok(run.stages.some((s) => s.name === "facts_strict" && s.status === "PASS"));
   assert.equal(run.prompt, py.prompt, `${name}: el prompt JS difiere del de Python`);
   assert.equal(run.match.counts.active, py.active, `${name}: reglas activas`);
-  assert.equal(run.audit_pending.length, py.pending, `${name}: pendientes para el auditor`);
-  console.log(`ok  ${name}: prompt idéntico, ${py.active} activas, ${py.pending} al auditor`); n++;
+  // El artefacto no corre el linter de aurora, que es un script Python, así que no puede
+  // comprobar las reglas que se verifican contra sus archivos: las manda al auditor en vez
+  // de fallarlas o aprobarlas. Es la única diferencia admitida, y se verifica que sea
+  // exactamente esa: mismas reglas, mismo prompt, distinta capacidad de la página.
+  const soloCLI = run.audit_pending.filter((p) => p.validador_indeciso).map((p) => p.rule_id).sort();
+  assert.equal(run.audit_pending.length - soloCLI.length, py.pending,
+    `${name}: el artefacto manda ${run.audit_pending.length} al auditor y la CLI ${py.pending}; sólo ${soloCLI.length} pueden diferir`);
+  assert.ok(soloCLI.every((_, i) => run.audit_pending.find((p) => p.rule_id === soloCLI[i]).validador_indeciso.includes("línea de comandos")),
+    `${name}: hay pendientes que no se explican por el límite declarado del artefacto`);
+  console.log(`ok  ${name}: prompt idéntico, ${py.active} activas, ${py.pending} al auditor (+${soloCLI.length} que sólo la CLI puede comprobar)`); n++;
 }
 
 // ledger → DELIVERED → revise sólo cambia el delta → deltas ilegítimos rechazados sin tocar el run

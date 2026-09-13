@@ -101,6 +101,11 @@ def main() -> int:
         "skill_manifest": manifest,
         "skill_sources": sources,
         "auditor_md": (REPO / "apd" / "AUDITOR.md").read_text(encoding="utf-8"),
+        # Validadores aprobados por Eric: el artefacto comprueba las mismas reglas
+        # por código que la línea de comandos, o la paridad sería una mentira.
+        "validators": [json.loads(l) for f in sorted((RULES / "v3" / "validators").glob("*.jsonl"))
+                       for l in f.read_text(encoding="utf-8").splitlines() if l.strip()
+                       and json.loads(l).get("approved_by") == "user"],
         "sources_of_truth": {
             "verbs": str(golden.relative_to(root)) if golden else None,
             "banned": [str(p.relative_to(root)) for p in (dram, anti) if p],

@@ -64,7 +64,15 @@ python3 tests/apd/test_apd_run.py; python3 tests/apd/test_apd_variants.py; node 
 - El presupuesto de palabras del linter (75-130) no bloquea: el tope vigente es el de
   `_capabilities.json` (300 / 120), fijado por Eric. El resto del linter sí bloquea.
 - El artefacto (`apd_core.js`) no puede correr el linter de aurora, que es un script
-  Python: esa etapa existe sólo en la línea de comandos.
+  Python. Las nueve reglas que se verifican contra sus archivos pasan al auditor en
+  vez de darse por cumplidas o falladas: sin sistema de archivos, la página puede
+  confirmar lo que produjo pero no demostrar una ausencia. `test_artifact_core.mjs`
+  comprueba que la diferencia con la línea de comandos sea exactamente esas nueve.
+- Validadores mecánicos (`.claude/hooks/rule_validators.py`, registro en
+  `.claude/rules/v3/validators/`): 55 reglas del KB comprobadas por código en vez de
+  por el auditor, aprobadas por Eric una por una. Cada una trae un caso que debe pasar
+  y uno que debe fallar; si su autoprueba no sale bien, la regla vuelve al auditor.
+  `UNRESOLVED` también: un validador que no puede decidir no decide.
 - Dependencias: `requirements.txt` (jsonschema, PyYAML, Pillow, openpyxl). Pillow sólo
   lo usa `output_geometry_check_v32` (QA de la imagen generada) y `tests/v3.2`.
 - Pruebas del paquete importadas completas: `tests/v3.2`, `tests/v3.3`, `tests/v3.3.2`,

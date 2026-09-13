@@ -689,8 +689,100 @@
     out.word_count = { status: ceiling && wordCount(prompt) <= ceiling ? "PASS" : "FAIL", detail: `${wordCount(prompt)}/${ceiling}` };
     return out;
   }
-  function mechanicalEvidence(match, gates, mode) {
+
+  // ---------------------------------------------- validadores mecánicos
+  // Mismo motor declarativo que .claude/hooks/rule_validators.py: el artefacto tiene
+  // que comprobar las mismas reglas por código, o la paridad sería una mentira.
+  function vTarget(art, name) {
+    if (name === "prompt") return art.prompt || "";
+    if (name === "prompt.main") return String(art.prompt || "").split(/^\s*negative\s*:/im)[0];
+    if (name === "prompt.negative") { const p = String(art.prompt || "").split(/^\s*negative\s*:/im); return p.length > 1 ? p[1] : ""; }
+    if (name === "notes") return art.notes || "";
+    if (name === "provenance") return JSON.stringify(art.provenance || {});
+    if (name === "stages") return art.stages || [];
+    if (name === "files") return art.files || [];
+    if (name.startsWith("slots.")) {
+      let cur = art.slots || {};
+      for (const p of name.split(".").slice(1)) { cur = cur && typeof cur === "object" ? cur[p] : undefined; if (cur === undefined) return null; }
+      return cur;
+    }
+    return null;
+  }
+  function vWhen(cond, art) {
+    if (!cond) return true;
+    if (Array.isArray(cond)) { const r = cond.map((c) => vWhen(c, art)); return r.includes(null) ? null : r.every(Boolean); }
+    let cur = art.case || {};
+    for (const p of cond.path.split(".")) { cur = cur && typeof cur === "object" ? cur[p] : undefined; if (cur === undefined || cur === null) return null; }
+    if (cur === "UNKNOWN") return null;
+    const val = Array.isArray(cond.value) ? cond.value : [cond.value];
+    return (cond.op || "in") === "in" ? val.includes(cur) : !val.includes(cur);
+  }
+  // Los patrones vienen de Python, que admite banderas en línea como (?im); JS no.
+  // Se quitan y se aplican como banderas del RegExp, que es lo mismo.
+  const vRe = (pat) => new RegExp(String(pat).replace(/^\(\?[a-z]+\)/, ""), "im");
+  function vEval(spec, art) {
+    const ok = vWhen(spec.when, art);
+    if (ok === null) return ["UNRESOLVED", "el caso no declara la precondición"];
+    if (ok === false) return ["NA", "no aplica a este caso por su precondición"];
+    const op = spec.op;
+    if (op === "all" || op === "any") {
+      const res = spec.checks.map((s) => vEval(s, art));
+      if (res.some((r) => r[0] === "UNRESOLVED")) return ["UNRESOLVED", res.filter((r) => r[0] === "UNRESOLVED").map((r) => r[1]).join("; ")];
+      const bien = res.map((r) => r[0] === "PASS" || r[0] === "NA");
+      const pasa = op === "all" ? bien.every(Boolean) : bien.some(Boolean);
+      return pasa ? ["PASS", res.map((r) => r[1]).join("; ").slice(0, 300)]
+                  : ["FAIL", res.filter((r) => r[0] === "FAIL").map((r) => r[1]).join("; ").slice(0, 300)];
+    }
+    if (op === "stage_pass") {
+      const st = Object.fromEntries((vTarget(art, "stages") || []).map((s) => [s.name, s.status]));
+      if (!(spec.stage in st)) return ["FAIL", `la etapa ${spec.stage} no se ejecutó`];
+      return st[spec.stage] === "PASS" ? ["PASS", `etapa ${spec.stage} PASS`] : ["FAIL", `etapa ${spec.stage} en ${st[spec.stage]}`];
+    }
+    if (op === "file_exists") {
+      // La página no tiene sistema de archivos: puede confirmar lo que produjo, no puede
+      // demostrar una ausencia. Sin prueba no hay veredicto, así que la regla pasa al
+      // auditor en vez de darse por fallada o, peor, por cumplida.
+      if ((vTarget(art, "files") || []).includes(spec.file)) return ["PASS", `${spec.file} presente en el run`];
+      // Con lista de archivos completa la ausencia es prueba; en el run real de la página
+      // la lista es parcial —no hay sistema de archivos— y entonces no hay veredicto: la
+      // regla pasa al auditor en vez de darse por fallada o, peor, por cumplida.
+      return art.files_complete === false
+        ? ["UNRESOLVED", `el artefacto no puede comprobar ${spec.file}: esa etapa corre sólo en la línea de comandos`]
+        : ["FAIL", `falta ${spec.file} en el run`];
+    }
+    const t = vTarget(art, spec.in);
+    if (t === null || t === undefined) return ["UNRESOLVED", `sin ${spec.in} en el artefacto`];
+    const txt = String(t).toLowerCase();
+    if (op === "any_term") { const hit = spec.terms.find((w) => txt.includes(w.toLowerCase())); return hit ? ["PASS", `${spec.in} contiene ${JSON.stringify(hit)}`] : ["FAIL", `${spec.in} no contiene ninguno de: ${spec.terms.slice(0, 6).join(", ")}`]; }
+    if (op === "no_term") { const hit = spec.terms.find((w) => txt.includes(w.toLowerCase())); return hit ? ["FAIL", `${spec.in} contiene ${JSON.stringify(hit)}, prohibido`] : ["PASS", `${spec.in} sin términos prohibidos`]; }
+    if (op === "regex") return vRe(spec.pattern).test(String(t)) ? ["PASS", `${spec.in} cumple el patrón`] : ["FAIL", spec.fail_reason || `${spec.in} no cumple /${spec.pattern}/`];
+    if (op === "no_regex") { const m = String(t).match(vRe(spec.pattern)); return m ? ["FAIL", `${spec.fail_reason || spec.in + " coincide con el patrón"}: ${JSON.stringify(m[0])}`] : ["PASS", `${spec.in} no coincide con /${spec.pattern}/`]; }
+    return ["UNRESOLVED", `operación desconocida: ${op}`];
+  }
+  function vSelftest(e) {
+    const t = e.tests || {};
+    if (!(t.pass || []).length || !(t.fail || []).length) return [false, "faltan casos de prueba"];
+    for (const a of t.pass) { const [s] = vEval(e.check, a); if (s !== "PASS" && s !== "NA") return [false, `el caso que debía pasar dio ${s}`]; }
+    for (const a of t.fail) { const [s] = vEval(e.check, a); if (s !== "FAIL") return [false, `el caso que debía fallar dio ${s}`]; }
+    return [true, "distingue"];
+  }
+  function vLoad(D) {
+    const out = {};
+    for (const e of D.validators || []) {
+      if (e.approved_by !== "user") continue;
+      if (vSelftest(e)[0]) out[e.rule_id] = e;
+    }
+    return out;
+  }
+  function validatorArtifact(facts, caso, prompt, stages, files) {
+    return { prompt, notes: facts.notes || "", slots: facts.slots || {}, provenance: facts.provenance || {},
+             case: caso, stages: (stages || []).map((s) => ({ name: s.name, status: s.status })),
+             files: files || [], files_complete: false };
+  }
+
+  function mechanicalEvidence(match, gates, mode, D, art) {
     const ev = {}, pending = [], lex = gates.lexical.banned_vocabulary;
+    const validadores = art ? vLoad(D) : {};
     for (const r of match.active_rules) {
       const rid = r.rule_id, vid = (r.metadata.validator || {}).id, kind = (r.metadata.validator || {}).kind;
       if (vid in MECHANICAL) {
@@ -705,6 +797,11 @@
         ev[rid] = g.status === "PASS" ? { status: "PASS", by: "apd_run:nb-lens-gate", reason: String(g.detail) } : { status: "FAIL", reason: `parámetros numéricos de objetivo: ${g.detail}` };
       } else if (kind === "lexical") {
         ev[rid] = lex.status === "PASS" ? { status: "PASS", by: "apd_run:lexical-gate", reason: "0 términos prohibidos (dramaturgy.md + gpt-image.md Anti-Slop)" } : { status: "FAIL", reason: `términos prohibidos: ${lex.detail}` };
+      } else if (rid in validadores) {
+        const [estado, razon] = vEval(validadores[rid].check, art);
+        if (estado === "PASS" || estado === "NA") ev[rid] = { status: "PASS", by: `validador:${validadores[rid].source}`, reason: razon };
+        else if (estado === "FAIL") ev[rid] = { status: "FAIL", reason: razon };
+        else pending.push({ rule_id: rid, kind, source_path: r.rule.source_path, line: r.rule.line, effect: r.metadata.effect, text: r.rule.text, validador_indeciso: razon });
       } else pending.push({ rule_id: rid, kind, source_path: r.rule.source_path, line: r.rule.line, effect: r.metadata.effect, text: r.rule.text });
     }
     return [ev, pending];
@@ -828,7 +925,12 @@
     for (const [k, v] of Object.entries(gates.lexical)) if (v.status === "FAIL") fails.push(`${k}: ${Array.isArray(v.detail) ? v.detail.join(", ") : v.detail}`);
     for (const [k, v] of Object.entries(gates.structural)) if (isObj(v) && v.status === "FAIL") fails.push(`${k}: ${Array.isArray(v.detail) ? v.detail.join("; ") : v.detail}`);
     stage(run, "prompt_gates", fails.length ? "FAIL" : "PASS", fails.length ? fails.join("; ").slice(0, 500) : "verbo inicial, lenguaje natural, vocabulario, template_engine, audit_gi2, word ceiling", onStage);
-    const [ev, pending] = mechanicalEvidence(run.match, gates, mode);
+    // Los archivos que este run produjo de verdad. El linter de aurora es un script
+    // Python: en el artefacto no corre, así que sus reglas no se dan por comprobadas y
+    // pasan al auditor. Es un límite declarado, no una aprobación silenciosa.
+    const archivos = ["prompt_v1.ast.json", "template_spec.json", "match.json"];
+    const art = validatorArtifact(facts, c, prompt, run.stages, archivos);
+    const [ev, pending] = mechanicalEvidence(run.match, gates, mode, D, art);
     run.evidence_mechanical = ev; run.audit_pending = pending;
     const mechFail = Object.entries(ev).filter(([, v]) => v.status === "FAIL").map(([k]) => k);
     stage(run, "mechanical_evidence", mechFail.length ? "FAIL" : "PASS", `${Object.keys(ev).length} mecánicas, ${pending.length} para el auditor` + (mechFail.length ? `; FAIL ${mechFail.join(",")}` : ""), onStage);
