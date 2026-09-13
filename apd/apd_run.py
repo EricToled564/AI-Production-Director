@@ -596,6 +596,7 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     failing = [c for c in audit.get("checks", []) if c.get("status") == "FAIL"]
     out["audit_gi2"] = {"status": audit.get("status", "FAIL"), "detail": [f"{c['name']}: {c['detail']}" for c in failing] or "15 columnas sin falla"}
     out["word_count"], out["minimalidad"] = wc, minimal
+    out["credits"] = credits_block(facts)
     out["aurora_linter"] = aurora_linter(run, facts, case, prompt)
     return out
 
@@ -656,6 +657,35 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
                        "missing_sections": missing, "violations": blocking[:6],
                        "word_count_informativo": [v for v in viol if str(v).startswith("word_count")]},
             "source": f"{script}"}
+
+
+# Forma canónica del crédito, literal de ai-production-director/SKILL.md:135: "Todo
+# entregable que use la capa smixs conserva la línea: *Serge Shima —
+# github.com/smixs/visual-skills* (CC BY 4.0, obligatorio, incluye derivados generados
+# por agentes). Colócala en los créditos del production package, no en cada prompt."
+CREDITO_SMIXS = "Serge Shima — github.com/smixs/visual-skills (CC BY 4.0)"
+
+
+def credits_block(facts: dict) -> dict:
+    """Atribución obligatoria por licencia. Autorizada por Eric, 2026-09-13: "HAZ LO DE
+    LOS CREDITOS".
+
+    Qué archivos son "la capa smixs" no se codifica a mano: se lee del propio archivo
+    citado en la procedencia. Si lleva la línea de licencia, es de esa capa.
+    """
+    usados = set()
+    for ents in (facts.get("provenance") or {}).values():
+        for e in (ents if isinstance(ents, list) else [ents]):
+            if not isinstance(e, dict) or e.get("source") != "skill":
+                continue
+            ok, ruta = resolve_skill_ref(str(e.get("ref", "")))
+            if ok and "smixs/visual-skills" in Path(ruta).read_text(encoding="utf-8", errors="replace"):
+                usados.add(str(e["ref"]).rsplit(":", 1)[0])
+    if not usados:
+        return {"status": "NA", "detail": "el run no cita ningún archivo de la capa smixs"}
+    return {"status": "PASS", "line": CREDITO_SMIXS,
+            "detail": f"{CREDITO_SMIXS} — exigido por {len(usados)} archivos citados: " + ", ".join(sorted(usados)[:4]),
+            "source": "ai-production-director/SKILL.md:135"}
 
 
 def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, dict]:
@@ -1376,7 +1406,7 @@ def _deliver(run: Run) -> None:
         prompt.rstrip(),
         "Notes:",
         facts["notes"].strip(),
-    ]) + "\n"
+    ] + ([f"Credits: {cred['line']}"] if (cred := credits_block(facts)).get("line") else [])) + "\n"
     (run.dir / "DELIVERABLE.txt").write_text(text, encoding="utf-8")
     (run.dir / "deliverable.sha256").write_text(f"{sha256_text(text)}  DELIVERABLE.txt\n{sha256_text(prompt)}  {run.prompt_path().name}\n", encoding="utf-8")
     run.state["status"] = "DELIVERED"
