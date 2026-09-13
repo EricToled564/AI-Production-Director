@@ -597,6 +597,8 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     out["audit_gi2"] = {"status": audit.get("status", "FAIL"), "detail": [f"{c['name']}: {c['detail']}" for c in failing] or "15 columnas sin falla"}
     out["word_count"], out["minimalidad"] = wc, minimal
     out["credits"] = credits_block(facts)
+    out["politicas_de_direccion"] = eric_policies()
+    out["micro_gate"] = micro_gate(facts, case, prompt)
     out["aurora_linter"] = aurora_linter(run, facts, case, prompt)
     return out
 
@@ -664,6 +666,46 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
 # github.com/smixs/visual-skills* (CC BY 4.0, obligatorio, incluye derivados generados
 # por agentes). Colócala en los créditos del production package, no en cada prompt."
 CREDITO_SMIXS = "Serge Shima — github.com/smixs/visual-skills (CC BY 4.0)"
+
+
+ERIC_POLICIES = RULES / "v3" / "conflict-policies.eric.json"
+
+
+def eric_policies() -> dict:
+    """Decisiones de dirección de Eric sobre contradicciones entre autoridades instaladas.
+
+    Van al run para que el auditor las lea. Sin esto, una decisión autorizada por escrito en
+    la conversación es invisible para quien audita, y la marca correctamente como no
+    autorizada — que es justo lo que pasó en la auditoría del run nfl-tackle-009.
+    """
+    if not ERIC_POLICIES.exists():
+        return {"status": "NA", "detail": "no hay políticas de dirección publicadas"}
+    pol = json.loads(ERIC_POLICIES.read_text(encoding="utf-8"))["policies"]
+    return {"status": "PASS", "policies": pol,
+            "detail": [f"{x['id']}: gana {x['winner']} — autorizado por Eric {x['authorized_on']}" for x in pol],
+            "source": str(ERIC_POLICIES.relative_to(REPO))}
+
+
+def micro_gate(facts: dict, case: dict, prompt: str) -> dict:
+    """sw30 SKILL.md:107 — la entrega abre con SKILL / RIESGOS / TÉCNICA.
+
+    La cabecera la escribe el asistente en su respuesta, así que el run no la contenía y el
+    auditor no podía verificarla (FAIL b58aca16 en nfl-tackle-009). Ahora el run deja escrito
+    de qué se compone: los archivos leídos salen de la procedencia, el riesgo de la línea que
+    lo mitiga sale de los gates, y el Stop hook gate_microgate.py comprueba la respuesta.
+    """
+    leidos = sorted({str(e["ref"]).rsplit(":", 1)[0]
+                     for ents in (facts.get("provenance") or {}).values()
+                     for e in (ents if isinstance(ents, list) else [ents])
+                     if isinstance(e, dict) and e.get("source") == "skill"})
+    riesgos = [f for f in case.get("risk_flags", [])]
+    return {"status": "PASS" if leidos else "FAIL",
+            "skill": leidos,
+            "riesgos": riesgos or ["sin flags de riesgo declarados en el caso"],
+            "detail": f"{len(leidos)} archivos de skill citados por la procedencia; "
+                      f"riesgos del caso: {', '.join(riesgos) or 'ninguno'}; "
+                      f"la cabecera de la respuesta la comprueba .claude/hooks/gate_microgate.py",
+            "source": "produccion-visual-sw30/SKILL.md:107"}
 
 
 def credits_block(facts: dict) -> dict:
