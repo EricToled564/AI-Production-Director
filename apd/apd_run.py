@@ -228,6 +228,9 @@ def resolve_skill_ref(ref: str) -> tuple[bool, str]:
             end = int(m["end"] or line)
             if line < 1 or end > n or end < line:
                 return False, f"{cand.name} tiene {n} líneas; {line}-{end} fuera de rango"
+            citadas = cand.read_text(encoding="utf-8", errors="replace").splitlines()[line - 1:end]
+            if not any(x.strip() for x in citadas):
+                return False, f"{cand.name}:{line}-{end} está en blanco: una cita vacía no prueba nada"
             return True, str(cand)
     return False, f"archivo no instalado bajo {SKILLS_ROOT}"
 
@@ -382,6 +385,9 @@ def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
     de qué hojas existen en facts. Texto fijo = etiquetas del template del skill +
     verbo 'Create' + bloques canónicos T1. Todo lo demás son bindings a hojas LOCKED."""
     s = facts["slots"]
+    # El bloque Negative sólo existe si el generador lo admite: _capabilities.json declara
+    # supports_negative_prompt=false para nano-banana y gpt-image.
+    neg_ok, _neg_src = supports_negative(facts["model"])
     v = variant_of(facts)
 
     def seg(sid, template, bindings, rules):
@@ -414,7 +420,7 @@ def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
             use_case.append(fixed("usecase_doc", canon["usecase_doc"], T1_RULES))
             constraints.append(fixed("clean_doc", canon["clean_doc"], T1_RULES))
         blocks += [{"id": "details", "segments": details}, {"id": "use_case", "segments": use_case}, {"id": "constraints", "segments": constraints}]
-        if "negative" in s:
+        if "negative" in s and neg_ok:
             blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, TEMPLATE_RULES)]})
     elif v == "nb":
         blocks.append({"id": "opening", "segments": [seg("verb", "Create {opening}.", {"opening": "slots.opening"}, VERB_RULES)]})
@@ -429,16 +435,13 @@ def build_ast(facts: dict, brief: dict, base_type: str) -> dict:
         if base_type == "T1":
             blocks.append({"id": "t1", "segments": [fixed(b, canon[b], T1_RULES) for b in T1_BLOCKS]})
         blocks.append({"id": "format", "segments": [seg("format", "Format: {format}.", {"format": "format"}, NB_RULES)]})
-        if "negative" in s:
-            # Bloque separado que exige el gate aurora-prompt-linter
-            # (references/README.md:95). El cuerpo de arriba sigue siendo positivo,
-            # que es lo que pide golden-rules.md:12; el negativo va aparte.
+        if "negative" in s and neg_ok:
             blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, NB_RULES)]})
     else:  # gpt-edit
         blocks.append({"id": "change", "segments": [seg("change", "Change: {change}.", {"change": "slots.change"}, EDIT_RULES)]})
         blocks.append({"id": "preserve", "segments": [seg("preserve", "Preserve: {preserve}.", {"preserve": "slots.preserve"}, EDIT_RULES)]})
         blocks.append({"id": "constraints", "segments": [seg("constraints", "Constraints: {constraints}.", {"constraints": "slots.constraints"}, EDIT_RULES)]})
-        if "negative" in s:
+        if "negative" in s and neg_ok:
             blocks.append({"id": "negative", "segments": [seg("negative", "Negative: {negative}.", {"negative": "slots.negative"}, EDIT_RULES)]})
     params = {"quality": facts["quality"], "aspectRatio": ratio_of(facts["size"])}
     if "x" in facts["size"].lower():
@@ -462,6 +465,28 @@ def capabilities_ceiling(model: str) -> tuple[int | None, str]:
             for g in jload(cand).get("generators", []):
                 if g.get("id") == cid:
                     return int(g["max_prompt_words"]), f"{cand}#{cid}"
+    return None, "visual-prompt-forge/adapters/_capabilities.json no instalado"
+
+
+def supports_negative(model: str) -> tuple[bool | None, str]:
+    """¿El generador admite prompt negativo? Lo dice _capabilities.json y nadie más.
+
+    Hallazgo de la auditoría del run nfl-tackle-010: nano-banana y gpt-image declaran los dos
+    `supports_negative_prompt: false`, y este orquestador les añadía un bloque `Negative:` a
+    todos los prompts, citando gpt-image.md:166 (el slot Constraints del template de GPT) en
+    un run de Nano Banana. Afectaba a todos los prompts producidos hasta hoy.
+
+    La contradicción con aurora-prompt-linter/references/README.md:95, que exige bloque
+    Negative, se resuelve con POLICY_ERIC_WORD_CEILING_001: _capabilities.json es la única
+    fuente de verdad de las capacidades por generador. El linter viene del mundo de video,
+    donde el negativo sí existe.
+    """
+    cid = MODELS[model]["capabilities_id"]
+    for pattern in ("*/visual-prompt-forge/adapters/_capabilities.json", "*/*/visual-prompt-forge/adapters/_capabilities.json"):
+        for cand in SKILLS_ROOT.glob(pattern):
+            for g in jload(cand).get("generators", []):
+                if g.get("id") == cid:
+                    return bool(g.get("supports_negative_prompt")), f"{cand}#{cid}"
     return None, "visual-prompt-forge/adapters/_capabilities.json no instalado"
 
 
@@ -653,11 +678,20 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     # una autoridad distinta del techo de `_capabilities.json`, y la política de Eric sobre
     # ese techo no lo cubre: sólo él puede levantarlo, por escrito. Antes este envoltorio
     # convertía su FAIL en un aviso — lo encontró el auditor del run nfl-tackle-008.
+    # POLICY_ERIC_NEGATIVE_PROMPT_001: donde el generador declara supports_negative_prompt
+    # false, la exigencia de bloque NEGATIVE del linter no aplica. No es reetiquetar un FAIL
+    # por criterio propio: la política está publicada, cita su apoyo en el KB
+    # (visual-prompt-forge/SKILL.md:102) y queda escrita en el gate para que el auditor la vea.
+    neg_ok, neg_src = supports_negative(facts["model"])
+    por_politica = [v for v in viol if "negative_prompt" in str(v) and neg_ok is False]
+    viol = [v for v in viol if v not in por_politica]
     status = "FAIL" if (viol or missing) else "PASS"
     return {"status": status,
             "detail": {"case": rep.get("case_type"), "platform": rep.get("platform"),
                        "missing_sections": missing, "violations": viol[:6],
-                       "word_budget": rep.get("word_budget"), "word_count": rep.get("word_count")},
+                       "word_budget": rep.get("word_budget"), "word_count": rep.get("word_count"),
+                       "no_aplican_por_politica": [{"violacion": v, "politica": "POLICY_ERIC_NEGATIVE_PROMPT_001",
+                                                    "fuente": neg_src} for v in por_politica]},
             "source": f"{script}"}
 
 
@@ -1394,6 +1428,14 @@ def cmd_ledger(a) -> int:
             e = entries.get(rid)
             if not e:
                 errs.append(f"{rid}: sin entrada del auditor")
+            elif str(e.get("status", "")).upper() == "OVERRIDE":
+                # runtime_ledger_v3 admite OVERRIDE con reason + authorized_by, pero este
+                # pre-chequeo lo hacía inalcanzable al exigir by='auditor'. Se abre la vía
+                # documentada y sólo ésa: la autorización tiene que ser de Eric y su
+                # instrucción literal tiene que estar en el reason, para que quede en el
+                # ledger quién lo autorizó y con qué palabras.
+                if e.get("authorized_by") != "user" or not str(e.get("reason", "")).strip():
+                    errs.append(f"{rid}: OVERRIDE exige authorized_by='user' y la instrucción literal de Eric en reason")
             elif e.get("by") != "auditor":
                 errs.append(f"{rid}: by debe ser 'auditor'")
             elif e.get("status") not in {"PASS", "FAIL"}:
