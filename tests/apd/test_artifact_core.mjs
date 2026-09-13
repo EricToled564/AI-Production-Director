@@ -99,9 +99,20 @@ for (const [name, ex] of Object.entries(EXAMPLES)) {
   ex.facts.provenance["slots.subject.action"] = { source: "skill", ref: "image/SKILL.md:9999" };
   run = await APD.run(D, ex); assert.match(run.stages.at(-1).detail, /fuera de rango/);
   ex.facts.provenance["slots.subject.action"] = EXAMPLES.gpt.facts.provenance["slots.subject.action"];
+  // Política de Eric (2026-09-13): el tope informa y no bloquea — las reglas del caso van
+  // completas y recortar lo decide él. Lo que bloquea es el relleno, y el conteo es sólo
+  // sobre MAIN. El artefacto aplica la misma política que la CLI.
   ex.facts.slots.constraints += "; " + "no extra element ".repeat(90);
-  run = await APD.run(D, ex); assert.equal(run.blocked_by, "prompt_gates"); assert.match(run.stages.at(-1).detail, /word/);
-  console.log("ok  procedencia / tope de palabras"); n++;
+  run = await APD.run(D, ex); assert.equal(run.blocked_by, "prompt_gates"); assert.match(run.stages.at(-1).detail, /minimalidad/);
+  const largo = { ...EXAMPLES.gpt, facts: JSON.parse(JSON.stringify(EXAMPLES.gpt.facts)) };
+  largo.facts.slots.constraints += "; " + Array.from({ length: 40 }, (_, i) => `constraint number ${i} is distinct`).join(", ");
+  run = await APD.run(D, largo);
+  assert.equal(run.status, "AWAITING_AUDIT", JSON.stringify(run.stages.at(-1)));
+  assert.equal(run.gates.structural.word_count.status, "PASS");
+  assert.equal(run.gates.structural.word_count.decide, "user");
+  assert.match(run.gates.structural.word_count.detail, /sobre el tope/);
+  assert.equal(APD.wordCount("Create a scene with six words here.\n\nNegative: " + "no unrelated thing, ".repeat(30)), 7);
+  console.log("ok  procedencia / política de largo: el tope informa, el relleno bloquea, el conteo es sobre MAIN"); n++;
 }
 // El motor de validadores de la página da el mismo veredicto que el de Python sobre
 // TODAS las entradas del registro —aprobadas y pendientes—, en sus dos casos de prueba.

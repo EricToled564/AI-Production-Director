@@ -157,8 +157,18 @@ def canonical_blocks() -> dict:
     return {k: v.text for k, v in template_engine.BLOCKS.items()}
 
 
+def main_block(text: str) -> str:
+    """El cuerpo del prompt, sin el bloque Negative.
+
+    Decisión de Eric, 2026-09-13: *"EL CONTEO DEBE DE SER SOLO MAIN SIN NEGATIVO"*. Es
+    también lo que dice `aurora-prompt-linter/SKILL.md:114` — el conteo se hace sólo sobre
+    MAIN — así que el contador y la regla ahora coinciden en vez de contradecirse.
+    """
+    return re.split(r"(?im)^\s*negative\s*:", text)[0]
+
+
 def word_count(text: str) -> int:
-    return len(re.findall(r"\b\w+[\w'-]*\b", text))
+    return len(re.findall(r"\b\w+[\w'-]*\b", main_block(text)))
 
 
 class Blocked(Exception):
@@ -563,11 +573,14 @@ def structural_gates(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     p = run.tool(PKG / "template_engine.py", "--build", spec_path, "--json")
     out["template_engine"] = {"status": "PASS" if p.returncode == 0 else "FAIL", "detail": (p.stdout + p.stderr).strip()[-600:]}
 
-    # Política de largo de Eric: el tope cede ante contenido que una regla exige, pero
-    # el exceso queda escrito en gates.json con las reglas que lo forzaron. audit_gi2
-    # recibe ese tope efectivo para no bloquear por lo mismo dos veces.
+    # Política de largo de Eric: las reglas del caso tienen prioridad sobre el tope y la
+    # decisión de recortar es suya, así que el largo no bloquea en ningún control — queda
+    # escrito en gates.json con el número y las reglas que forzaron el contenido. A
+    # audit_gi2 se le pasa un tope efectivo que no vuelve a bloquear por lo mismo; su
+    # conteo incluye el bloque Negative, de ahí el crudo.
     wc, minimal = length_policy(facts, prompt, ceiling)
-    efectivo = ceiling if wc["status"] != "PASS" or word_count(prompt) <= (ceiling or 0) else word_count(prompt)
+    crudo = len(re.findall(r"\b\w+[\w'-]*\b", prompt))
+    efectivo = max(ceiling or 0, crudo)
     artifact = {"type": tipo, "prompt": prompt, "sections": {**sec, **{k: (canon[v["name"]] if v["text"] is None else v["text"]) for k, v in blk.items()}},
                 "block_ids": {k: v["name"] for k, v in blk.items()},
                 "metadata": {**meta, "aspect_ratio": ratio_of(facts["size"])}, "notes": facts["notes"],
@@ -646,14 +659,19 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
 
 
 def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, dict]:
-    """Decisión de Eric: el largo no manda si está dejando fuera conceptos que las reglas
-    exigen, pero el prompt tiene que estar en su mínimo posible.
+    """Decisión de Eric, 2026-09-13: *"QUIERO QUE SE PRIORICE QUE TODAS LAS REGLAS SE
+    INCLUYEN EN EL PROMPT SOBRE EL CONTEO DE PALABRAS Y QUE EL USUARIO DECIDA"*.
 
-    De ahí dos comprobaciones distintas. `minimalidad` es la dura: ningún fragmento
-    repetido entre slots, porque una palabra que ya dijo lo suyo en otro lado no añade
-    nada. `word_count` avisa cuando se pasa del tope de `_capabilities.json`, y sólo
-    deja pasar el exceso si el prompt es mínimo y cada slot está atado a una regla o al
-    brief, cosa que ya verificó `facts_literal`.
+    Así que el orden de prioridad es explícito: primero que estén todas las reglas que el
+    caso exige, después el tope. El tope nunca bloquea — informa, y la decisión de recortar
+    es de Eric, que para eso ve el número en la entrega.
+
+    Lo que sí bloquea es la redundancia. `minimalidad` es la comprobación dura: ningún
+    fragmento repetido entre slots ni secuencia de cinco palabras repetida, porque una
+    palabra que ya dijo lo suyo en otro lado no añade nada y sí resta. El prompt queda en
+    su mínimo posible sin que eso obligue a dejar fuera un concepto exigido.
+
+    El conteo va sólo sobre MAIN: el bloque Negative no cuenta (`main_block`).
     """
     n = word_count(prompt)
     # Relleno: una secuencia de cinco palabras no se repite en prosa escrita de verdad,
@@ -678,12 +696,16 @@ def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, 
     if not ceiling:
         return {"status": "FAIL", "detail": "sin tope en _capabilities.json"}, minimal
     if n <= ceiling:
-        return {"status": "PASS", "detail": f"{n}/{ceiling}"}, minimal
+        return {"status": "PASS", "detail": f"{n}/{ceiling} palabras en MAIN"}, minimal
     forzado = sorted({e["ref"] for ents in facts.get("provenance", {}).values()
                       for e in (ents if isinstance(ents, list) else [ents])
                       if isinstance(e, dict) and e.get("source") == "skill"})
-    return ({"status": "PASS" if not repetidos else "FAIL",
-             "detail": f"{n}/{ceiling} — excedido por contenido que exigen las reglas: " + ", ".join(forzado[:6])},
+    # El exceso se declara y se entrega; no bloquea. Recortar es decisión de Eric, y para
+    # tomarla necesita ver el número y qué reglas están forzando el contenido.
+    return ({"status": "PASS", "decide": "user",
+             "detail": f"{n}/{ceiling} palabras en MAIN — {n - ceiling} sobre el tope. Las reglas del caso "
+                       f"tienen prioridad sobre el tope (decisión de Eric); recortar es decisión suya. "
+                       f"Reglas que fuerzan contenido: " + ", ".join(forzado[:6])},
             minimal)
 
 

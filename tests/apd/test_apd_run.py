@@ -10,6 +10,7 @@ FX = ROOT / "tests" / "apd" / "fixtures"
 # Ninguna prueba toca el aprendizaje real ni la librería de prompts probados.
 _SANDBOX = tempfile.mkdtemp(prefix="apd-test-")
 AISLADO = {**os.environ, "APD_CACHE": _SANDBOX + "/verdicts.jsonl", "APD_LIBRARY": _SANDBOX + "/library.jsonl"}
+sys.path.insert(0, str(ROOT / "apd"))
 
 
 def run(*args, ok=None):
@@ -168,8 +169,9 @@ class ApdRun(unittest.TestCase):
         self.assertNotEqual(p.returncode, 0); self.assertIn("frase del brief omitida", p.stdout)
 
     def test_10_padding_is_blocked_and_required_content_may_exceed_the_ceiling(self):
-        """Política de Eric: el tope cede ante contenido que una regla exige, pero el
-        prompt va en su mínimo posible. Relleno repetido = bloqueo, aunque quepa."""
+        """Política de Eric (2026-09-13): todas las reglas del caso van en el prompt, por
+        encima del tope, y recortar lo decide él. El tope informa y no bloquea; lo que
+        bloquea es el relleno. Y el conteo va sólo sobre MAIN, sin el bloque Negative."""
         facts = json.loads((FX / "gpt_facts.json").read_text())
         facts["slots"]["constraints"] += "; " + "no extra element " * 90
         p = self.new(facts)
@@ -182,7 +184,18 @@ class ApdRun(unittest.TestCase):
         p = self.new(facts)
         self.assertEqual(p.returncode, 0, p.stdout)
         gates = json.loads((self.run / "gates.json").read_text())["structural"]
-        self.assertIn("excedido por contenido que exigen las reglas", gates["word_count"]["detail"])
+        wc = gates["word_count"]
+        # Se pasa del tope y NO bloquea: el número queda escrito y la decisión es de Eric.
+        self.assertEqual(wc["status"], "PASS"); self.assertEqual(wc["decide"], "user")
+        self.assertIn("sobre el tope", wc["detail"]); self.assertIn("decisión suya", wc["detail"])
+
+    def test_11_the_count_covers_main_only(self):
+        """El bloque Negative no cuenta (aurora-prompt-linter/SKILL.md:114 y la decisión de
+        Eric). Un negativo largo no puede empujar el conteo."""
+        import apd_run
+        prompt = "Create a scene with six words here.\n\nNegative: " + "no unrelated thing, " * 30
+        self.assertEqual(apd_run.word_count(prompt), 7)
+        self.assertEqual(apd_run.main_block(prompt).strip(), "Create a scene with six words here.")
 
 
 if __name__ == "__main__":

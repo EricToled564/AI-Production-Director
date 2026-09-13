@@ -62,7 +62,11 @@
     const g = gcd(w, h);
     return `${w / g}:${h / g}`;
   }
-  const wordCount = (t) => (t.match(/\b\w+[\w'-]*\b/g) || []).length;
+  // El cuerpo del prompt, sin el bloque Negative. Decisión de Eric, 2026-09-13: el conteo
+  // es sólo sobre MAIN, que es además lo que dice aurora-prompt-linter/SKILL.md:114.
+  const mainBlock = (t) => String(t).split(/^\s*negative\s*:/im)[0];
+  const wordCount = (t) => (mainBlock(t).match(/\b\w+[\w'-]*\b/g) || []).length;
+  const rawWordCount = (t) => (String(t).match(/\b\w+[\w'-]*\b/g) || []).length;
   const variantOf = (facts) => (facts.operation || "create") === "edit" ? "gpt-edit" : MODELS[facts.model].template;
 
   // ------------------------------------------------ validador JSON Schema mínimo
@@ -674,6 +678,35 @@
     if (ctx.jobs == null) C("single_job", "NA", "jobs not supplied"); else C("single_job", ctx.jobs === 1 ? "PASS" : "FAIL", `jobs=${ctx.jobs}`);
     return { status: checks.some((c) => c.status === "FAIL") ? "FAIL" : "PASS", checks };
   }
+  // Misma política que length_policy en apd_run.py. Decisión de Eric, 2026-09-13: las
+  // reglas del caso tienen prioridad sobre el tope y recortar es decisión suya, así que el
+  // largo informa y no bloquea. Lo que bloquea es la redundancia.
+  function lengthPolicy(facts, prompt, ceiling) {
+    const n = wordCount(prompt);
+    const pal = normText(prompt).split(" ");
+    const ngrams = {};
+    for (let i = 0; i + 5 <= pal.length; i++) { const g = pal.slice(i, i + 5).join(" "); ngrams[g] = (ngrams[g] || 0) + 1; }
+    const repetidos = Object.entries(ngrams).filter(([, c]) => c > 1).map(([g, c]) => `secuencia repetida ${c} veces: "${g}"`);
+    const vistos = {};
+    for (const [path, val] of leaves({ slots: facts.slots || {} })) {
+      for (const frag of fragmentsOf(val)) {
+        const k = normText(frag);
+        if (k.length < 8) continue;
+        if (k in vistos) repetidos.push(`"${frag.slice(0, 40)}" repetido en ${vistos[k]}${vistos[k] === path ? "" : ` y ${path}`}`);
+        else vistos[k] = path;
+      }
+    }
+    const minimalidad = { status: repetidos.length ? "FAIL" : "PASS",
+                          detail: repetidos.length ? repetidos.slice(0, 4) : "sin fragmentos repetidos entre slots" };
+    if (!ceiling) return { word_count: { status: "FAIL", detail: "sin tope en _capabilities.json" }, minimalidad };
+    if (n <= ceiling) return { word_count: { status: "PASS", detail: `${n}/${ceiling} palabras en MAIN` }, minimalidad };
+    const forzado = [...new Set([].concat(...Object.values(facts.provenance || {}).map((e) => (Array.isArray(e) ? e : [e])))
+      .filter((e) => e && e.source === "skill").map((e) => e.ref))].sort();
+    return { word_count: { status: "PASS", decide: "user",
+      detail: `${n}/${ceiling} palabras en MAIN — ${n - ceiling} sobre el tope. Las reglas del caso tienen prioridad `
+            + `sobre el tope (decisión de Eric); recortar es decisión suya. Reglas que fuerzan contenido: ${forzado.slice(0, 6).join(", ")}` },
+      minimalidad };
+  }
   function structuralGates(D, facts, c, prompt) {
     const out = {}, ceiling = D.ceilings[MODELS[facts.model].capabilities_id] ?? null;
     out.word_ceiling_source = `${D.sources_of_truth.ceilings}#${MODELS[facts.model].capabilities_id}`;
@@ -681,12 +714,12 @@
     const meta = { model: facts.model, quality: facts.quality, size_or_ratio: `${facts.size} (${ratioOf(facts.size)})` };
     out.template_engine = templateEngine(D, tipo, sec, blk, facts.notes);
     const artifact = { type: tipo, prompt, sections: { ...sec, ...Object.fromEntries(Object.entries(blk).map(([k, v]) => [k, v.text == null ? D.blocks[v.name] : v.text])) },
-      block_ids: Object.fromEntries(Object.entries(blk).map(([k, v]) => [k, v.name])), metadata: { ...meta, aspect_ratio: ratioOf(facts.size) }, notes: facts.notes, audit_context: auditContext(c, ceiling) };
+      block_ids: Object.fromEntries(Object.entries(blk).map(([k, v]) => [k, v.name])), metadata: { ...meta, aspect_ratio: ratioOf(facts.size) }, notes: facts.notes, audit_context: auditContext(c, Math.max(ceiling || 0, rawWordCount(prompt))) };
     const audit = auditGi2(D, artifact);
     out.audit_gi2 = { status: audit.status, detail: audit.checks.filter((x) => x.status === "FAIL").map((x) => `${x.name}: ${x.detail}`) };
     if (!out.audit_gi2.detail.length) out.audit_gi2.detail = "15 columnas sin falla";
     out.audit_checks = audit.checks;
-    out.word_count = { status: ceiling && wordCount(prompt) <= ceiling ? "PASS" : "FAIL", detail: `${wordCount(prompt)}/${ceiling}` };
+    Object.assign(out, lengthPolicy(facts, prompt, ceiling));
     return out;
   }
 
