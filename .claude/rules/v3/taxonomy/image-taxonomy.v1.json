@@ -1,0 +1,807 @@
+{
+  "taxonomy_version": "image-1.0.0",
+  "construida_por": "instrucción literal de Eric — dividir imagen por referencias, personas, cantidad, estilo, iluminación, toma, tema, complejidad de acción; y el lado sin personas por exterior/interior/animales/arquitectónica/paisaje y estilo",
+  "regla_de_oro": "Una regla pertenece a TODAS las ramas salvo que su propio texto nombre la condición que la restringe, y esa restricción va acompañada del fragmento literal que la justifica. Sin fragmento no hay restricción. Mencionar un término no restringe: 'tema' describe de qué habla la regla, 'alcance' dice dónde aplica.",
+  "dimensiones": [
+    {
+      "id": "media",
+      "nivel": 1,
+      "padre": null,
+      "pregunta": "¿Imagen o video?",
+      "case_path": "media",
+      "estado": "existe",
+      "valores": [
+        {
+          "id": "image",
+          "etiqueta": "imagen",
+          "lexico": []
+        },
+        {
+          "id": "video",
+          "etiqueta": "video",
+          "lexico": []
+        }
+      ]
+    },
+    {
+      "id": "references.count",
+      "nivel": 2,
+      "padre": {
+        "dimension": "media",
+        "valor": "image"
+      },
+      "pregunta": "¿Cuántas imágenes de referencia entregas? 0, 1, o 2 o más.",
+      "case_path": "references.count",
+      "estado": "NUEVO — hoy sólo existe references.mode (none/partial/full), sin conteo",
+      "valores": [
+        {
+          "id": "0",
+          "etiqueta": "sin referencia (texto a imagen)",
+          "lexico": [
+            "text-to-image",
+            "text to image",
+            "from scratch",
+            "без референса",
+            "sin referencia"
+          ]
+        },
+        {
+          "id": "1",
+          "etiqueta": "una referencia",
+          "lexico": [
+            "reference image",
+            "single reference",
+            "image 1",
+            "референс",
+            "one reference",
+            "source image"
+          ]
+        },
+        {
+          "id": "2+",
+          "etiqueta": "ancla con 2 o más referencias",
+          "lexico": [
+            "multi-reference",
+            "multiple references",
+            "image 2:",
+            "image 3:",
+            "second reference",
+            "third reference",
+            "identity + style",
+            "two references",
+            "character anchor",
+            "style anchor",
+            "ancla",
+            "якор*"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subject.human",
+      "nivel": 3,
+      "padre": {
+        "dimension": "references.count",
+        "valor": "*"
+      },
+      "pregunta": "¿Aparecen personas en la imagen?",
+      "case_path": "subject.human",
+      "estado": "existe",
+      "valores": [
+        {
+          "id": "true",
+          "etiqueta": "con personas",
+          "lexico": [
+            "person",
+            "people",
+            "human",
+            "human*",
+            "face",
+            "portrait",
+            "skin",
+            "hands",
+            "hand pose",
+            "fingers",
+            "hair",
+            "anatomy",
+            "челове*",
+            "лиц*",
+            "persona*",
+            "figure"
+          ]
+        },
+        {
+          "id": "false",
+          "etiqueta": "sin personas",
+          "lexico": [
+            "product only",
+            "no people",
+            "still life",
+            "unpopulated",
+            "object",
+            "inanimate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subject.count_class",
+      "nivel": 4,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "true"
+      },
+      "pregunta": "¿Una sola persona o un grupo?",
+      "case_path": "subject.count_class",
+      "estado": "NUEVO — hoy existe subject.count (entero) pero ninguna regla puede condicionar sobre 'grupo'",
+      "valores": [
+        {
+          "id": "1",
+          "etiqueta": "una persona",
+          "lexico": [
+            "single subject",
+            "one person",
+            "single figure",
+            "individual subject",
+            "un sujeto",
+            "una persona",
+            "lone figure"
+          ]
+        },
+        {
+          "id": "grupo",
+          "etiqueta": "grupo de personas",
+          "lexico": [
+            "group",
+            "crowd",
+            "two characters",
+            "multiple people",
+            "ensemble",
+            "several people",
+            "team",
+            "varios sujetos",
+            "grupo"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "style.photography",
+      "nivel": 5,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "*"
+      },
+      "pregunta": "¿Qué estilo de fotografía? (editorial, documental, moda, producto, cinematográfico, vintage/analógico, calle, móvil, bellas artes)",
+      "case_path": "style.photography",
+      "estado": "NUEVO — hoy sólo hay deliverable.purpose y task.family, que mezclan destino con estilo",
+      "valores": [
+        {
+          "id": "editorial",
+          "etiqueta": "editorial",
+          "lexico": [
+            "editorial"
+          ]
+        },
+        {
+          "id": "documental",
+          "etiqueta": "documental / fotoperiodismo",
+          "lexico": [
+            "documentary",
+            "photojournal",
+            "reportage",
+            "candid",
+            "documental"
+          ]
+        },
+        {
+          "id": "natgeo",
+          "etiqueta": "documental de naturaleza (National Geographic)",
+          "lexico": [
+            "national geographic",
+            "nature documentary",
+            "wildlife photograph"
+          ]
+        },
+        {
+          "id": "moda",
+          "etiqueta": "moda",
+          "lexico": [
+            "fashion",
+            "runway",
+            "lookbook",
+            "couture"
+          ]
+        },
+        {
+          "id": "producto",
+          "etiqueta": "producto / e-commerce",
+          "lexico": [
+            "product photo",
+            "ecommerce",
+            "e-commerce",
+            "packshot",
+            "catalog"
+          ]
+        },
+        {
+          "id": "cinematografico",
+          "etiqueta": "cinematográfico",
+          "lexico": [
+            "cinematic",
+            "film still",
+            "anamorphic",
+            "movie"
+          ]
+        },
+        {
+          "id": "vintage",
+          "etiqueta": "vintage / analógico",
+          "lexico": [
+            "vintage",
+            "analog",
+            "film stock",
+            "polaroid",
+            "kodachrome",
+            "film grain",
+            "35mm film",
+            "retro"
+          ]
+        },
+        {
+          "id": "calle",
+          "etiqueta": "fotografía de calle",
+          "lexico": [
+            "street photo",
+            "street photography"
+          ]
+        },
+        {
+          "id": "movil",
+          "etiqueta": "móvil / snapshot",
+          "lexico": [
+            "mobile",
+            "phone camera",
+            "smartphone",
+            "snapshot aesthetic",
+            "phone snapshot",
+            "iphone",
+            "amateur"
+          ]
+        },
+        {
+          "id": "bellas_artes",
+          "etiqueta": "bellas artes / conceptual",
+          "lexico": [
+            "fine art",
+            "conceptual",
+            "gallery"
+          ]
+        },
+        {
+          "id": "estudio",
+          "etiqueta": "retrato de estudio",
+          "lexico": [
+            "studio portrait",
+            "headshot",
+            "seamless backdrop"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lighting.setup",
+      "nivel": 5,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "*"
+      },
+      "pregunta": "¿Cómo está iluminada? (estudio, natural exterior, luz de ventana, golden hour, artificial nocturna, mixta)",
+      "case_path": "lighting.setup",
+      "estado": "NUEVO — el schema no tiene NINGÚN campo de iluminación",
+      "valores": [
+        {
+          "id": "estudio",
+          "etiqueta": "estudio (softbox, strobe, controlada)",
+          "lexico": [
+            "studio light",
+            "softbox",
+            "strobe",
+            "beauty dish",
+            "rembrandt",
+            "butterfly light",
+            "three-point"
+          ]
+        },
+        {
+          "id": "natural_exterior",
+          "etiqueta": "natural exterior",
+          "lexico": [
+            "natural light",
+            "daylight",
+            "overcast",
+            "open shade",
+            "sunlight",
+            "noon sun"
+          ]
+        },
+        {
+          "id": "ventana",
+          "etiqueta": "luz entrando por ventana",
+          "lexico": [
+            "window light",
+            "window-lit",
+            "north light"
+          ]
+        },
+        {
+          "id": "golden_hour",
+          "etiqueta": "golden hour / atardecer",
+          "lexico": [
+            "golden hour",
+            "sunset",
+            "sunrise",
+            "magic hour",
+            "blue hour"
+          ]
+        },
+        {
+          "id": "artificial_nocturna",
+          "etiqueta": "artificial nocturna",
+          "lexico": [
+            "neon",
+            "streetlight",
+            "stadium light",
+            "practical light",
+            "night",
+            "tungsten",
+            "fluorescent"
+          ]
+        },
+        {
+          "id": "mixta",
+          "etiqueta": "mixta",
+          "lexico": [
+            "mixed lighting",
+            "mixed light"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "composition.shot_size",
+      "nivel": 5,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "*"
+      },
+      "pregunta": "¿Qué tamaño de toma? (macro, close-up, plano medio, cuerpo completo, plano general)",
+      "case_path": "composition.shot_size",
+      "estado": "NUEVO — hoy subject.body_visibility cubre sólo cuerpo humano (face/upper_body/full_body) y no sirve para objetos ni paisaje",
+      "valores": [
+        {
+          "id": "macro",
+          "etiqueta": "macro / detalle",
+          "lexico": [
+            "macro",
+            "extreme close",
+            "detail shot"
+          ]
+        },
+        {
+          "id": "close_up",
+          "etiqueta": "close-up",
+          "lexico": [
+            "close-up",
+            "closeup",
+            "close up",
+            "крупный план",
+            "headshot",
+            "tight crop"
+          ]
+        },
+        {
+          "id": "plano_medio",
+          "etiqueta": "plano medio",
+          "lexico": [
+            "medium shot",
+            "waist up",
+            "upper body",
+            "half body"
+          ]
+        },
+        {
+          "id": "cuerpo_completo",
+          "etiqueta": "cuerpo completo",
+          "lexico": [
+            "full body",
+            "full-body",
+            "head to toe",
+            "whole figure"
+          ]
+        },
+        {
+          "id": "plano_general",
+          "etiqueta": "plano general / amplio",
+          "lexico": [
+            "wide shot",
+            "wide angle view",
+            "establishing",
+            "long shot",
+            "environmental portrait"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "task.theme",
+      "nivel": 5,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "*"
+      },
+      "pregunta": "¿Cuál es el tema? (deportiva, musical, moda, gastronómica, corporativa, médica, viaje, automotriz, otra)",
+      "case_path": "task.theme",
+      "estado": "NUEVO — hoy task.genre es texto libre y ninguna regla puede condicionar sobre él",
+      "valores": [
+        {
+          "id": "deportiva",
+          "etiqueta": "deportiva",
+          "lexico": [
+            "sport",
+            "sports",
+            "athlet*",
+            "stadium",
+            "diving",
+            "football",
+            "nfl",
+            "olympic*"
+          ]
+        },
+        {
+          "id": "musical",
+          "etiqueta": "musical / concierto",
+          "lexico": [
+            "music",
+            "concert",
+            "stage performance",
+            "band",
+            "dj"
+          ]
+        },
+        {
+          "id": "moda",
+          "etiqueta": "moda",
+          "lexico": [
+            "fashion week",
+            "runway",
+            "model wearing"
+          ]
+        },
+        {
+          "id": "gastronomica",
+          "etiqueta": "gastronómica",
+          "lexico": [
+            "food",
+            "beverage",
+            "drink",
+            "culinary",
+            "restaurant",
+            "espresso"
+          ]
+        },
+        {
+          "id": "corporativa",
+          "etiqueta": "corporativa",
+          "lexico": [
+            "corporate",
+            "office",
+            "business portrait",
+            "headshot for"
+          ]
+        },
+        {
+          "id": "medica",
+          "etiqueta": "médica / científica",
+          "lexico": [
+            "medical",
+            "clinical",
+            "surgical",
+            "scientific"
+          ]
+        },
+        {
+          "id": "viaje",
+          "etiqueta": "viaje / turismo",
+          "lexico": [
+            "travel",
+            "tourism",
+            "destination"
+          ]
+        },
+        {
+          "id": "automotriz",
+          "etiqueta": "automotriz",
+          "lexico": [
+            "automotive",
+            "vehicle",
+            "car photography",
+            "sports car",
+            "supercar"
+          ]
+        },
+        {
+          "id": "otra",
+          "etiqueta": "otra",
+          "lexico": []
+        }
+      ]
+    },
+    {
+      "id": "motion.action_complexity",
+      "nivel": 5,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "*"
+      },
+      "pregunta": "¿Qué tan compleja es la acción? (estática, pose dirigida, acción simple, acción compleja / varios cuerpos en contacto)",
+      "case_path": "motion.action_complexity",
+      "estado": "NUEVO — hoy hay motion.static_frame y motion.frozen_action (booleanos) pero no un grado de complejidad",
+      "valores": [
+        {
+          "id": "estatica",
+          "etiqueta": "estática",
+          "lexico": [
+            "static",
+            "still",
+            "motionless",
+            "stillness"
+          ]
+        },
+        {
+          "id": "pose_dirigida",
+          "etiqueta": "pose dirigida",
+          "lexico": [
+            "pose",
+            "posed",
+            "standing",
+            "seated",
+            "gesture"
+          ]
+        },
+        {
+          "id": "accion_simple",
+          "etiqueta": "acción simple (un cuerpo)",
+          "lexico": [
+            "walking",
+            "running",
+            "jumping",
+            "motion blur",
+            "in motion",
+            "dynamic"
+          ]
+        },
+        {
+          "id": "accion_compleja",
+          "etiqueta": "acción compleja (varios cuerpos, contacto, física)",
+          "lexico": [
+            "collision",
+            "tackle",
+            "contact",
+            "mid-air",
+            "split-level",
+            "entangled",
+            "impact",
+            "grappl*",
+            "multi-body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scene.category",
+      "nivel": 4,
+      "padre": {
+        "dimension": "subject.human",
+        "valor": "false"
+      },
+      "pregunta": "Sin personas: ¿qué es? (exterior, interior, animales, arquitectónica, paisaje natural, producto/objeto, urbana)",
+      "case_path": "scene.category",
+      "estado": "NUEVO — hoy environment.indoor_outdoor cubre exterior/interior y environment.type es texto libre; animales/arquitectura/paisaje no existen",
+      "valores": [
+        {
+          "id": "exterior",
+          "etiqueta": "exterior",
+          "lexico": [
+            "outdoor",
+            "exterior",
+            "on location",
+            "outside"
+          ]
+        },
+        {
+          "id": "interior",
+          "etiqueta": "interior",
+          "lexico": [
+            "indoor",
+            "interior",
+            "inside",
+            "room"
+          ]
+        },
+        {
+          "id": "animales",
+          "etiqueta": "animales / fauna",
+          "lexico": [
+            "animal*",
+            "wildlife",
+            "dog",
+            "cat",
+            "horse",
+            "bird",
+            "pet",
+            "fauna",
+            "creature"
+          ]
+        },
+        {
+          "id": "arquitectonica",
+          "etiqueta": "arquitectónica / inmobiliaria",
+          "lexico": [
+            "architectural",
+            "architecture",
+            "building",
+            "facade",
+            "real estate",
+            "interior design"
+          ]
+        },
+        {
+          "id": "paisaje_natural",
+          "etiqueta": "paisaje natural",
+          "lexico": [
+            "landscape",
+            "mountain",
+            "forest",
+            "ocean",
+            "seascape",
+            "desert",
+            "пейзаж*"
+          ]
+        },
+        {
+          "id": "producto_objeto",
+          "etiqueta": "producto u objeto",
+          "lexico": [
+            "product",
+            "object",
+            "still life",
+            "packshot"
+          ]
+        },
+        {
+          "id": "urbana",
+          "etiqueta": "urbana / cityscape",
+          "lexico": [
+            "cityscape",
+            "urban",
+            "skyline",
+            "street scene"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "text.mode",
+      "nivel": 5,
+      "padre": {
+        "dimension": "media",
+        "valor": "image"
+      },
+      "pregunta": "¿Lleva texto dentro de la imagen? (no / texto legible corto / tipografía compleja)",
+      "case_path": "text.mode",
+      "estado": "existe (none/composite/in_image) — descubierto en el catálogo: 138 reglas hablan de texto",
+      "valores": [
+        {
+          "id": "none",
+          "etiqueta": "sin texto",
+          "lexico": []
+        },
+        {
+          "id": "in_image",
+          "etiqueta": "texto dentro de la imagen",
+          "lexico": [
+            "text in image",
+            "readable text",
+            "typography",
+            "letterform",
+            "signage",
+            "logo",
+            "надпис",
+            "шрифт",
+            "caption"
+          ]
+        },
+        {
+          "id": "composite",
+          "etiqueta": "texto compuesto después",
+          "lexico": [
+            "composite",
+            "overlay text",
+            "add text after"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "generator.family",
+      "nivel": 5,
+      "padre": {
+        "dimension": "media",
+        "valor": "image"
+      },
+      "pregunta": "¿Con qué modelo se genera?",
+      "case_path": "generator.family",
+      "estado": "existe — descubierto en el catálogo: 113 reglas son específicas de modelo",
+      "valores": [
+        {
+          "id": "nano_banana",
+          "etiqueta": "Nano Banana / Pro",
+          "lexico": [
+            "nano banana",
+            "nbp",
+            "nb2",
+            "nano-banana"
+          ]
+        },
+        {
+          "id": "gpt_image",
+          "etiqueta": "GPT Image 2",
+          "lexico": [
+            "gpt image",
+            "gpt-image",
+            "gpt image 2"
+          ]
+        },
+        {
+          "id": "midjourney",
+          "etiqueta": "Midjourney",
+          "lexico": [
+            "midjourney"
+          ]
+        },
+        {
+          "id": "flux",
+          "etiqueta": "Flux",
+          "lexico": [
+            "flux"
+          ]
+        },
+        {
+          "id": "ideogram",
+          "etiqueta": "Ideogram",
+          "lexico": [
+            "ideogram"
+          ]
+        },
+        {
+          "id": "seedream",
+          "etiqueta": "Seedream",
+          "lexico": [
+            "seedream"
+          ]
+        }
+      ]
+    }
+  ],
+  "nota_lexico": "Un término que termina en '*' es prefijo (español y ruso flexionan). El resto exige frontera de palabra completa: 'car' NO matchea 'carga'. Se excluyeron a propósito 'model' (en estas fuentes significa el modelo generador, no una persona), 'solo', 'empty' y 'car' por matchear con otro sentido.",
+  "falsos_positivos_corregidos": [
+    "'image 2' → 'image 2:' — chocaba con «GPT Image 2»",
+    "'hand' → 'hands'/'hand pose' — chocaba con «on hand», «hand-author»",
+    "'snapshot' → 'snapshot aesthetic' — chocaba con el archivo brand-lock.snapshot.md",
+    "'architect*' → 'architectural'/'architecture' — chocaba con el skill storyboard-architect",
+    "'car' → 'automotive'/'vehicle' — chocaba con «carga»",
+    "'model' eliminado de personas — en estas fuentes significa el modelo generador",
+    "'solo' eliminado de «una persona» — chocaba con «solo muestra el torso»"
+  ]
+}
