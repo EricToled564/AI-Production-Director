@@ -46,6 +46,10 @@ def main() -> int:
              if Path(a.classification).exists() else [])
 
     vistos, dup, citas_ok, citas_mal, sin_dim, universales = set(), [], 0, [], [], 0
+    # Una fila con sólo `media` puesto no acota nada DENTRO de imagen: cuenta aparte,
+    # porque llamarla "acotada" infla la cifra de reglas con rama y esconde cuántas
+    # aplican a todo caso de imagen.
+    universales_en_imagen = 0
     for f in filas:
         rid = f.get("rule_id")
         if rid in vistos:
@@ -56,6 +60,8 @@ def main() -> int:
             continue
         texto = norm(rs[rid]["rule"]["text"])
         ramas = {d: f.get(d, "cualquiera") for d in DIMS}
+        if all(v == "cualquiera" for d, v in ramas.items() if d != "media"):
+            universales_en_imagen += 1
         if all(v == "cualquiera" for v in ramas.values()):
             universales += 1
             if not str(f.get("motivo_universal", "")).strip():
@@ -100,6 +106,7 @@ def main() -> int:
         "duplicadas": len(dup),
         "fuera_del_universo": len(sobran),
         "universales": universales,
+        "universales_en_imagen": universales_en_imagen,
         "acotadas": len(filas) - universales,
         "citas_verificadas_ok": citas_ok,
         "citas_invalidas": len(citas_mal),
@@ -110,7 +117,7 @@ def main() -> int:
     if a.report:
         Path(a.report).write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for k in ("unidades_en_la_fuente", "unidades_clasificadas", "cobertura_pct", "sin_clasificar",
-              "duplicadas", "universales", "acotadas", "citas_verificadas_ok",
+              "duplicadas", "universales", "universales_en_imagen", "acotadas", "citas_verificadas_ok",
               "citas_invalidas", "universal_sin_motivo"):
         print(f"  {k:24} {rep[k]}")
     for x in citas_mal[:10]:
