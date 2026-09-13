@@ -104,7 +104,7 @@ MECHANICAL = {
     "v32:generation-params": "generation_params",
     "v32:aspect-ratio-output": "aspect_ratio",
 }
-TANDA = 40
+TANDA = int(os.environ.get('APD_TANDA') or 11)
 
 
 # ---------------------------------------------------------------- utilidades
@@ -647,15 +647,15 @@ def aurora_linter(run: Run, facts: dict, case: dict, prompt: str) -> dict:
     jdump(run.dir / "aurora_linter.json", rep)
     missing = rep.get("sections_missing") or rep.get("missing_sections") or []
     viol = [v.get("term") if isinstance(v, dict) else str(v) for v in (rep.get("violations") or [])]
-    # El presupuesto de palabras del linter (75-130) no bloquea: el tope vigente es el de
-    # `_capabilities.json` del skill (300 GPT Image / 120 Nano Banana), que ya verifica
-    # `word_count`, y Eric lo dejó fijo por escrito. Todo lo demás del linter sí bloquea.
-    blocking = [v for v in viol if not str(v).startswith("word_count")]
-    status = "FAIL" if (blocking or missing) else "PASS"
+    # Se reporta lo que dice el linter, sin reetiquetar nada. Su HARD MAX (Regla 10 v6.1) es
+    # una autoridad distinta del techo de `_capabilities.json`, y la política de Eric sobre
+    # ese techo no lo cubre: sólo él puede levantarlo, por escrito. Antes este envoltorio
+    # convertía su FAIL en un aviso — lo encontró el auditor del run nfl-tackle-008.
+    status = "FAIL" if (viol or missing) else "PASS"
     return {"status": status,
             "detail": {"case": rep.get("case_type"), "platform": rep.get("platform"),
-                       "missing_sections": missing, "violations": blocking[:6],
-                       "word_count_informativo": [v for v in viol if str(v).startswith("word_count")]},
+                       "missing_sections": missing, "violations": viol[:6],
+                       "word_budget": rep.get("word_budget"), "word_count": rep.get("word_count")},
             "source": f"{script}"}
 
 
@@ -720,6 +720,18 @@ def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, 
             if k in vistos:
                 donde = f"en {vistos[k]}" + ("" if vistos[k] == path else f" y {path}")
                 repetidos.append(f'"{frag[:40]}" repetido {donde}')
+                continue
+            # Solapamiento, no sólo igualdad: dos fragmentos que comparten tres o más
+            # palabras de contenido y donde el más corto queda casi contenido en el otro
+            # dicen lo mismo dos veces, aunque el texto no coincida carácter por carácter.
+            mias = {w for w in k.split() if len(w) > 3}
+            for otro, donde_otro in list(vistos.items()):
+                suyas = {w for w in otro.split() if len(w) > 3}
+                comun = mias & suyas
+                if len(comun) >= 3 and len(comun) / min(len(mias), len(suyas)) >= 0.75:
+                    repetidos.append(f'"{frag[:40]}" solapa con lo ya dicho en {donde_otro}'
+                                     f' ({", ".join(sorted(comun)[:5])})')
+                    break
             vistos.setdefault(k, path)
     minimal = {"status": "FAIL" if repetidos else "PASS",
                "detail": repetidos[:4] or "sin fragmentos repetidos entre slots"}
