@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/apd-facts-v1.json",
+  "title": "APD facts — entrada única del asistente a apd_run.py",
+  "description": "Valores de los slots del template del modelo. gpt-image-2 creación: Photoreal Editorial (gpt-image.md:126-135); gpt-image-2 edición: Change/Preserve/Constraints (gpt-image.md:80-83); Nano Banana: Subject+Action+Location+Composition+Style+Format (nano-banana.md:13-20). El asistente no redacta el prompt: llena estos campos y cada hoja lleva procedencia (user | skill | research).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "brief_id",
+    "model",
+    "quality",
+    "size",
+    "references",
+    "slots",
+    "notes",
+    "provenance"
+  ],
+  "properties": {
+    "brief_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,64}$"
+    },
+    "model": {
+      "enum": [
+        "gpt-image-2",
+        "nano-banana-pro",
+        "nano-banana-2"
+      ]
+    },
+    "quality": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "size": {
+      "type": "string",
+      "pattern": "^([0-9]{3,4}x[0-9]{3,4}|[0-9]{1,2}:[0-9]{1,2})$",
+      "description": "WxH (GPT Image) o W:H (Nano Banana aspectRatio)"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "role"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "file": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Una entrada (o lista) por hoja. source=user: cita literal del brief de Eric (debe existir en el brief); source=skill: archivo:línea[-línea] del skill instalado — todo fragmento de la hoja sin cita 'user' debe ser literal de esas líneas; source=research: URL; source=asset: nombre del archivo de imagen que Eric adjuntó, guardado en <run>/in/ — la hoja describe lo que se ve en esa imagen y el archivo debe existir.",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/prov_entry"
+          },
+          {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/prov_entry"
+            }
+          }
+        ]
+      }
+    },
+    "operation": {
+      "enum": [
+        "create",
+        "edit"
+      ],
+      "default": "create",
+      "description": "create = text_to_image; edit = image_edit (T5, gpt-image.md:76-90)"
+    },
+    "format": {
+      "type": "string",
+      "pattern": "^[0-9]{1,2}:[0-9]{1,2}$",
+      "description": "Sólo Nano Banana: cierre 'Format: W:H' (nano-banana.md:20); debe coincidir con size"
+    },
+    "slots": {
+      "type": "object",
+      "description": "Forma según modelo y operación: ver allOf"
+    }
+  },
+  "$defs": {
+    "slots_gpt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "opening",
+        "scene",
+        "subject",
+        "details",
+        "use_case",
+        "constraints"
+      ],
+      "properties": {
+        "opening": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Complemento del verbo inicial: 'Create {opening}.' (image/SKILL.md:50 start with a verb)"
+        },
+        "references_line": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Obligatoria si references no está vacío (gpt-image.md Multi-image references: índice + rol)"
+        },
+        "scene": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "location",
+            "time",
+            "weather"
+          ],
+          "properties": {
+            "location": {
+              "type": "string",
+              "minLength": 1
+            },
+            "time": {
+              "type": "string",
+              "minLength": 1
+            },
+            "weather": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "who",
+            "action",
+            "framing"
+          ],
+          "properties": {
+            "who": {
+              "type": "string",
+              "minLength": 1
+            },
+            "action": {
+              "type": "string",
+              "minLength": 1
+            },
+            "framing": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contact": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Solo T4 (dos personas / contacto): anatomía del contacto fijada"
+            }
+          }
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "lens_feel",
+            "light_source",
+            "surface_wear",
+            "imperfections",
+            "real_texture"
+          ],
+          "properties": {
+            "lens_feel": {
+              "type": "string",
+              "minLength": 1
+            },
+            "light_source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "surface_wear": {
+              "type": "string",
+              "minLength": 1
+            },
+            "imperfections": {
+              "type": "string",
+              "minLength": 1
+            },
+            "real_texture": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "use_case": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraints": {
+          "type": "string",
+          "minLength": 1
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12)."
+        }
+      }
+    },
+    "slots_nb": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "opening",
+        "subject",
+        "action",
+        "location",
+        "composition",
+        "style"
+      ],
+      "properties": {
+        "opening": {
+          "type": "string",
+          "minLength": 1,
+          "description": "'Create {opening}.' (image/SKILL.md:50)"
+        },
+        "references_line": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Location/context (nano-banana.md:14)"
+        },
+        "composition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Composición descriptiva; sin 50mm / f/2.8 / ISO (nano-banana.md:24)"
+        },
+        "style": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contact": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Sólo T4"
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12); aquí sólo van los fallos documentados del modelo (nano-banana.md:138)."
+        }
+      }
+    },
+    "slots_edit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "change",
+        "preserve",
+        "constraints"
+      ],
+      "properties": {
+        "change": {
+          "type": "string",
+          "minLength": 1,
+          "description": "un solo cambio concreto (gpt-image.md:81, :87)"
+        },
+        "preserve": {
+          "type": "string",
+          "minLength": 1,
+          "description": "lista de preservación, repetida en cada iteración (gpt-image.md:82, :88)"
+        },
+        "constraints": {
+          "type": "string",
+          "minLength": 1,
+          "description": "gpt-image.md:83"
+        },
+        "negative": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Bloque 'Negative:' que exige aurora-prompt-linter (references/README.md:95). El cuerpo sigue siendo positivo (golden-rules.md:12)."
+        }
+      }
+    },
+    "prov_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "ref"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "user",
+            "skill",
+            "research",
+            "asset"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "edit"
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "slots": {
+            "$ref": "#/$defs/slots_edit"
+          },
+          "references": {
+            "minItems": 1
+          },
+          "model": {
+            "const": "gpt-image-2"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "model": {
+            "const": "gpt-image-2"
+          },
+          "operation": {
+            "const": "create"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "slots": {
+            "$ref": "#/$defs/slots_gpt"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "model": {
+            "enum": [
+              "nano-banana-pro",
+              "nano-banana-2"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "slots": {
+            "$ref": "#/$defs/slots_nb"
+          }
+        },
+        "required": [
+          "format"
+        ]
+      }
+    }
+  ]
+}

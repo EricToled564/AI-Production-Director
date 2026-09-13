@@ -1,0 +1,365 @@
+<title>APD Ejecutor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F4F3EE; --panel: #FFFFFF; --ink: #1C1A17; --muted: #6A655C; --line: #DAD5CB; --line-strong: #B9B2A5;
+    --accent: #B8532E; --accent-ink: #FFFFFF; --ok: #2E7A4D; --ok-bg: #E4F1E8; --fail: #B03A2A; --fail-bg: #F7E3DF;
+    --wait: #4B5B8C; --wait-bg: #E3E8F4; --mono-bg: #F8F6F1;
+    --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #17161A; --panel: #201F24; --ink: #ECE8E0; --muted: #A39D91; --line: #35333A; --line-strong: #514E56;
+    --accent: #D8734B; --accent-ink: #17161A; --ok: #6FC08C; --ok-bg: #1D3226; --fail: #E07A69; --fail-bg: #3A2320;
+    --wait: #9FB0E0; --wait-bg: #23293A; --mono-bg: #1A191D;
+  } }
+  :root[data-theme="dark"] {
+    --bg: #17161A; --panel: #201F24; --ink: #ECE8E0; --muted: #A39D91; --line: #35333A; --line-strong: #514E56;
+    --accent: #D8734B; --accent-ink: #17161A; --ok: #6FC08C; --ok-bg: #1D3226; --fail: #E07A69; --fail-bg: #3A2320;
+    --wait: #9FB0E0; --wait-bg: #23293A; --mono-bg: #1A191D;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding-inline: 20px; padding-block: 24px 56px; }
+  .wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 18px; }
+  h1 { font: 600 28px/1.05 var(--display); margin: 0; }
+  .panel { background: var(--panel); border: 1px solid var(--line); padding: 18px; display: grid; gap: 12px; }
+  label { font: 500 12px/1.2 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  textarea { font: 15px/1.5 var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); padding: 10px 12px; width: 100%; min-height: 150px; resize: vertical; border-radius: 0; }
+  textarea:focus, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hint { font-size: 13px; color: var(--muted); margin: 0; }
+  button { font: 600 14px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; padding: 12px 18px; border: 1px solid var(--ink); background: var(--panel); color: var(--ink); cursor: pointer; border-radius: 0; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); padding: 16px; font-size: 17px; width: 100%; }
+  button:disabled { opacity: .5; cursor: progress; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .thumbs figure { margin: 0; width: 200px; display: grid; gap: 4px; }
+  .thumbs input { font: 13px/1.4 var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); padding: 6px 8px; width: 100%; border-radius: 0; }
+  .thumbs img { width: 96px; height: 96px; object-fit: cover; border: 1px solid var(--line); display: block; }
+  .thumbs figcaption { font: 12px/1.2 var(--mono); color: var(--muted); }
+  .thumbs button { padding: 4px 8px; font-size: 11px; }
+  .progress { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); }
+  .progress.RUNNING { border-color: var(--wait); background: var(--wait-bg); } .progress.DELIVERED { border-color: var(--ok); background: var(--ok-bg); } .progress.BLOCKED { border-color: var(--fail); background: var(--fail-bg); }
+  .progress b { font: 600 13px/1 var(--display); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+  pre { font: 14px/1.6 var(--mono); background: var(--mono-bg); border: 1px solid var(--line); padding: 14px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .meta { font: 13px/1.5 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+  details summary { cursor: pointer; font: 500 12px/1.2 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .stages { list-style: none; margin: 8px 0 0; padding: 0; font: 12px/1.5 var(--mono); color: var(--muted); }
+  .stages li { display: grid; grid-template-columns: 52px 1fr; gap: 8px; padding: 3px 0; border-top: 1px solid var(--line); }
+  .stages .PASS { color: var(--ok); } .stages .FAIL { color: var(--fail); } .stages .RUN, .stages .WARN { color: var(--wait); }
+  ul.plain { margin: 0; padding-left: 18px; } ul.plain li { margin-bottom: 4px; }
+  .choice { display: grid; gap: 8px; }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+</style>
+
+<div class="wrap">
+  <h1>APD Ejecutor</h1>
+
+  <section class="panel">
+    <label for="brief">Qué imagen quieres</label>
+    <textarea id="brief" placeholder="Describe la imagen: quién, qué hace, dónde, luz, formato (horizontal / vertical / cuadrado). Si quieres un modelo concreto, nómbralo; si no, lo decide el skill."></textarea>
+    <div class="row">
+      <input id="files" type="file" accept="image/*" multiple class="sr" style="position:absolute;left:-9999px">
+      <button id="addImages" type="button">Añadir imágenes de referencia</button>
+      <p class="hint" id="imgNote" style="margin:0"></p>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+    <button class="primary" id="go">Producir prompt</button>
+    <p class="hint" id="sampleNote"></p>
+  </section>
+
+  <div class="progress" id="progress" hidden><b id="pState"></b><span id="pText"></span></div>
+
+  <section class="panel" id="choicePanel" hidden>
+    <p style="margin:0" id="choiceText"></p>
+    <div class="choice" id="choiceButtons"></div>
+  </section>
+
+  <section class="panel" id="result" hidden>
+    <label>Prompt</label>
+    <pre id="prompt"></pre>
+    <p class="meta" id="params"></p>
+    <div class="row">
+      <button id="copy" type="button">Copiar prompt</button>
+      <button id="download" type="button" hidden>Guardar .txt</button>
+    </div>
+  </section>
+
+  <section class="panel" id="blocked" hidden>
+    <p style="margin:0" id="blockedText"></p>
+    <ul class="plain" id="blockedList"></ul>
+  </section>
+
+  <section class="panel" id="revise" hidden>
+    <label for="deltaText">¿Qué cambias?</label>
+    <textarea id="deltaText" style="min-height:80px" placeholder="Ej.: los brazos rectos pegados al cuerpo y las manos visibles; la hora, última de la tarde"></textarea>
+    <div class="row">
+      <button id="applyChange" type="button">Aplicar cambio</button>
+      <button id="fixFails" type="button" hidden>Proponer corrección de las fallas</button>
+    </div>
+    <div id="proposal" hidden class="choice"></div>
+  </section>
+
+  <details><summary>Detalle del proceso</summary><ol class="stages" id="stages"></ol></details>
+  <p class="meta" id="meta"></p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="data.js"></script>
+<script src="apd_core.js"></script>
+<script>
+(async function () {
+  const D = window.APD_DATA, $ = (id) => document.getElementById(id);
+  const MODEL_NAMES = { "gpt-image-2": "GPT Image 2", "nano-banana-pro": "Nano Banana Pro", "nano-banana-2": "Nano Banana 2" };
+  $("meta").textContent = `ruleset ${D.ruleset.ruleset_version} · ${D.ruleset.rules.length} reglas · ${D.repo_commit}`;
+
+  let sample = null, downloads = null, limits = null, run = null, images = [];
+  claude.use("sample").then(async (s) => {
+    sample = s;
+    if (!s) { $("sampleNote").textContent = "Claude no está disponible en esta vista."; return; }
+    limits = await s.limits().catch(() => null);
+    $("sampleNote").textContent = "Cada llamada a Claude se cobra a tu cuenta.";
+    $("imgNote").textContent = limits && limits.images ? `Claude verá hasta ${limits.images.maxCount} imágenes; escribe el rol de cada una`
+      : limits ? "Esta vista de Claude no deja enviarle imágenes a la página (límite de la plataforma, no del proceso): Claude lee el rol que escribas; la imagen la adjuntas tú al generador junto con el prompt"
+      : "Se intentará enviar las imágenes a Claude; si la vista no lo permite, lee el rol que escribas";
+  });
+  claude.use("downloads").then((d) => { downloads = d; $("download").hidden = !d; });
+
+  const errText = (e) => e && e.code === "not_granted" ? "Claude no tiene permiso en esta vista" : e && e.code === "rate_limited" ? "Claude está saturado; reintenta en un momento" : `${(e && e.code) || "error"}: ${(e && e.message) || (e && e.code) || e}`;
+  const toast = (msg) => { const t = $("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1800); };
+  function progress(state, text) { const p = $("progress"); p.hidden = false; p.className = "progress " + state; $("pState").textContent = state === "RUNNING" ? "Trabajando" : state === "DELIVERED" ? "Listo" : state === "BLOCKED" ? "Sin entregar" : state; $("pText").textContent = text || ""; }
+  function addStage(st) {
+    const li = document.createElement("li"); li.innerHTML = `<span class="${st.status}">${st.status}</span><span></span>`;
+    li.lastChild.textContent = `${st.name} — ${typeof st.detail === "string" ? st.detail : JSON.stringify(st.detail)}`;
+    $("stages").appendChild(li); return li;
+  }
+  function updStage(li, status, detail) { li.firstChild.className = status; li.firstChild.textContent = status; li.lastChild.textContent = li.lastChild.textContent.split(" — ")[0] + " — " + detail; }
+  function resetView() { $("stages").innerHTML = ""; for (const id of ["result", "blocked", "revise", "choicePanel", "proposal"]) $(id).hidden = true; $("fixFails").hidden = true; $("proposal").innerHTML = ""; }
+
+  // ---- imágenes de referencia
+  $("addImages").addEventListener("click", () => $("files").click());
+  $("files").addEventListener("change", () => { for (const f of $("files").files) images.push({ file: f, url: URL.createObjectURL(f), role: "" }); $("files").value = ""; drawThumbs(); });
+  function drawThumbs() {
+    const box = $("thumbs"); box.innerHTML = "";
+    images.forEach((im, i) => {
+      const fig = document.createElement("figure");
+      fig.innerHTML = `<img alt=""><figcaption>Image ${i + 1}</figcaption><input type="text" placeholder="qué se toma de esta imagen y qué se ignora"><button type="button">quitar</button>`;
+      fig.querySelector("img").src = im.url;
+      const inp = fig.querySelector("input"); inp.id = `role${i + 1}`; inp.value = im.role; inp.addEventListener("input", () => { im.role = inp.value; });
+      fig.querySelector("button").addEventListener("click", () => { images.splice(i, 1); drawThumbs(); });
+      box.appendChild(fig);
+    });
+  }
+  // Las imágenes sólo viajan a Claude donde la vista lo permite; el rol escrito por Eric es la dirección (sw30 regla 7).
+  const imageOpts = () => images.length && (!limits || limits.images) ? { images: images.slice(0, limits && limits.images ? limits.images.maxCount : 4).map((i) => i.file) } : {};
+  async function askJson(prompt, opts) {
+    try { return await sample.json(prompt, opts); }
+    catch (e) { if (e && e.code === "images_unavailable" && opts.images) { const o = { ...opts }; delete o.images; $("imgNote").textContent = "Esta vista no deja enviarle imágenes a Claude: lee el rol que escribiste"; return sample.json(prompt, o); } throw e; }
+  }
+  const roleLines = () => images.map((im, i) => `REF${i + 1}: ${im.role.trim()}`);
+
+  // ---- llamadas a Claude (extractor de hechos; nunca redacta el prompt)
+  const bytes = (t) => new TextEncoder().encode(t).length;
+  const maxPrompt = () => (limits && limits.maxPromptBytes) || 65536;
+  // Archivos de skill que caben en el presupuesto, en el orden que importa para el modelo.
+  function skillPack(budgetBytes, model) {
+    const nb = model && APD.MODELS[model] && APD.MODELS[model].template === "nb";
+    const order = [nb ? "image/references/nano-banana.md" : "image/references/gpt-image.md", "image/references/prompt-framework.md", "image/references/creative-direction.md",
+      "image/SKILL.md", "image/references/golden-rules.md", "produccion-visual-sw30/SKILL.md", "image/references/models.md", nb ? "image/references/gpt-image.md" : "image/references/nano-banana.md"];
+    let out = "", used = 0;
+    for (const path of order) {
+      const text = D.skill_sources[path]; if (!text) continue;
+      const chunk = `\n\n===== ${path} (cita como ${path}:<línea>) =====\n${text}`; const b = bytes(chunk);
+      if (used + b > budgetBytes) continue; out += chunk; used += b;
+    }
+    return out;
+  }
+  const fit = (head, model) => head + skillPack(maxPrompt() - bytes(head) - 1024, model);
+  async function extractCase(brief) {
+    const prompt = `Eres el compilador de Case Fingerprint del AI Production Director v3.4 (schema v1.1 adjunto). Devuelves ÚNICAMENTE un JSON {"case": {...}}. Reglas:
+1. Responde cada campo desde el brief y las imágenes adjuntas; lo que no esté, "UNKNOWN" (o null donde el schema lo permite) y documentado en unknowns[] con blocking:false. No inventes.
+2. generator: si el brief NOMBRA un modelo (GPT Image 2 / Nano Banana Pro / Nano Banana 2), ponlo (family gpt_image o nano_banana, model gpt-image-2 / nano-banana-pro / nano-banana-2). Si no lo nombra: {"family":"UNKNOWN","model":null,"adapter_version":null}. La ruta la decide después model_router con las reglas de models.md, no tú.
+3. deliverable.aspect_ratio: del brief (horizontal → "3:2", vertical → "2:3", cuadrado → "1:1", o la proporción dicha). Si el brief no fija formato, null y unknowns[] con blocking:true y reason "el brief no fija el formato".
+4. media "image", stage "prompt", operation "image_edit" sólo si el brief pide editar una imagen adjunta; si no, "text_to_image". base_type según sw30 SKILL.md:37-38: T5 edición; T4 dos o más personas; una persona: T1 si es maestro de rostro (deliverable.purpose reference_master, body_visibility face), T2 maestro de cuerpo (reference_master, full_body/upper_body), T3 cuadro con una persona.
+5. references: hay ${images.length} imágenes de referencia (Image 1..${images.length}). mode "none" si no hay; si hay, "partial" o "full" con exactamente ${images.length} roles, copiando literalmente los roles escritos por Eric: ${JSON.stringify(roleLines())}; identity_reference true si algún rol fija identidad (rostro, persona); prompt_case "1" sin referencias, "2" con referencias.
+6. spatial_invariants: sólo lo que el brief fija. risk_flags y task.tags en MAYÚSCULAS. provenance[]: una entrada por campo principal con source_type "user" (brief) o "default".
+
+BRIEF DE ERIC:
+${brief}
+
+SCHEMA case fingerprint:
+${JSON.stringify(D.case_schema)}`;
+    return askJson(prompt, { modelTier: "complex", cache: false, ...imageOpts() });
+  }
+  async function extractFacts(brief, c, model) {
+    const spec = APD.MODELS[model], tipo = c.base_type, op = c.operation === "image_edit" ? "edit" : "create";
+    const prompt = `Eres el extractor de hechos del AI Production Director v3.4. NO redactas prompts: llenas los slots del template del modelo (schema facts adjunto) y el renderizador determinista arma el prompt. Reglas absolutas:
+1. Cada hoja de facts (excepto brief_id y provenance) lleva entrada en provenance: source "user" (cita literal del brief o de la imagen adjunta), "skill" (ruta:<línea> de los archivos adjuntos; la línea debe existir y decir eso) o "research" (URL). No existe la fuente "criterio propio": lo que no salga del brief ni de una línea de skill no se inventa; se cubre con el mínimo que exija el template citando la línea del template.
+2. model "${model}" (decidido por model_router: ${run.routeReason}); operation "${op}"; brief_id corto en minúsculas y guiones.
+3. size: ${spec.template === "nb" ? `ratio "${c.deliverable.aspect_ratio}" (Nano Banana usa aspectRatio; nano-banana.md:20) y "format": "${c.deliverable.aspect_ratio}"` : `WxH según gpt-image.md:60-62 para el ratio ${c.deliverable.aspect_ratio} (3:2 → 1536x1024, 2:3 → 1024x1536, 1:1 → 1024x1024)`}. quality según la tabla de gpt-image.md:44-50 (retratos, identidad, texto → high; si no, medium).
+4. references: exactamente ${(c.references.roles || []).length} entradas {index, role} con los roles del case: ${JSON.stringify(c.references.roles || [])}${(c.references.roles || []).length && op !== "edit" ? '; y slots.references_line que indexe cada imagen con su rol (gpt-image.md, Multi-image references)' : ''}.
+5. Tipo sw30 ${tipo}${tipo === "T4" ? ": incluye el slot contact (anatomía del contacto)" : ""}${tipo === "T1" ? ": los cuatro bloques canónicos los añade el renderizador; en el slot who describe una cara irregular (sw30 SKILL.md:76)" : ""}. Si el case dice hands_visible=true, describe manos o agarre.
+6. Tope del prompt final: ${D.ceilings[spec.capabilities_id]} palabras (las etiquetas del template las pone el renderizador; tú sólo valores). ${spec.template === "nb" ? "Nada de 50mm / f/2.8 / ISO (nano-banana.md:24)." : ""}
+7. Salida: ÚNICAMENTE {"facts": {...}}.
+
+BRIEF DE ERIC:
+${brief}
+
+CASE FINGERPRINT (ya enrutado):
+${JSON.stringify(c)}
+
+SCHEMA facts:
+${JSON.stringify(D.facts_schema)}
+
+ARCHIVOS DE SKILL (fuente de las procedencias "skill"):`;
+    return askJson(fit(prompt, model), { modelTier: "complex", cache: false, ...imageOpts() });
+  }
+  function chooseModel(candidates, sourceText) {
+    return new Promise((resolve) => {
+      $("choiceText").textContent = `Para este caso el skill (models.md) permite más de un modelo: ${sourceText || ""}. Elige uno.`;
+      const box = $("choiceButtons"); box.innerHTML = "";
+      for (const cnd of candidates) {
+        const b = document.createElement("button"); b.type = "button"; b.textContent = MODEL_NAMES[cnd.model] || cnd.model;
+        if (!APD.MODELS[cnd.model]) { b.disabled = true; b.textContent += " (sin template en esta versión)"; }
+        b.addEventListener("click", () => { $("choicePanel").hidden = true; resolve(cnd); }); box.appendChild(b);
+      }
+      $("choicePanel").hidden = false;
+    });
+  }
+  async function auditAndLedger() {
+    const req = APD.auditPack(D, run, APD.TANDA);
+    const entries = {};
+    for (const t of req.tandas) {
+      progress("RUNNING", `auditando reglas… tanda ${t.i} de ${req.tandas.length}`);
+      const li = addStage({ name: `auditor tanda ${t.i}/${req.tandas.length}`, status: "RUN", detail: `${t.rules.length} reglas` });
+      const out = await sample.json(APD.auditRequestText(req, t), { modelTier: "default", cache: false });
+      const got = (out && out.entries) || {}; let ok = 0, fails = 0;
+      for (const r of t.rules) if (got[r.rule_id]) { const st = String(got[r.rule_id].status || "").toUpperCase(); entries[r.rule_id] = { status: st, by: "auditor", reason: String(got[r.rule_id].reason || "") }; ok++; if (st === "FAIL") fails++; }
+      updStage(li, ok === t.rules.length ? "PASS" : "WARN", `${ok}/${t.rules.length} entradas · ${fails} FAIL`);
+    }
+    await APD.ledger(D, run, { nonce: req.nonce, prompt_sha256: req.prompt_sha256, entries }, addStage);
+  }
+  function showRun() {
+    if (run.status === "DELIVERED") {
+      progress("DELIVERED", `${MODEL_NAMES[run.facts.model] || run.facts.model} · ${run.ledger.pass} de ${run.ledger.active_rules} reglas cumplidas · revisión ${run.prompt_revision}`);
+      $("prompt").textContent = run.prompt.trimEnd();
+      $("params").textContent = `Model: ${run.facts.model} · Quality: ${run.facts.quality} · Size: ${run.facts.size}` + ((run.facts.references || []).length ? ` · References: ${run.facts.references.map((r) => `Image ${r.index}: ${r.role}`).join(" · ")}` : "") + `\nsha256 ${run.deliverable_sha256}`;
+      $("result").hidden = false; $("blocked").hidden = true; $("revise").hidden = false; $("fixFails").hidden = true;
+    } else if (run.status === "BLOCKED") {
+      const last = run.stages[run.stages.length - 1], why = typeof last.detail === "string" ? last.detail : JSON.stringify(last.detail);
+      const ul = $("blockedList"); ul.innerHTML = "";
+      if (run.blocked_by === "runtime_ledger" && run.ledger) {
+        progress("BLOCKED", `${run.ledger.fail} reglas no se cumplen; el prompt no se entrega`);
+        $("blockedText").textContent = "El auditor rechazó estas reglas:";
+        for (const rid of run.ledger.failed_ids.slice(0, 12)) { const li = document.createElement("li"); li.textContent = run.evidence[rid].reason; ul.appendChild(li); }
+        $("revise").hidden = false; $("fixFails").hidden = false;
+      } else if (run.blocked_by === "prompt_gates" || run.blocked_by === "mechanical_evidence") {
+        progress("BLOCKED", "el prompt no pasa los gates; no se entrega");
+        $("blockedText").textContent = why; $("revise").hidden = false; $("fixFails").hidden = false;
+      } else {
+        progress("BLOCKED", `falta algo en ${last.name}`); $("blockedText").textContent = why; $("revise").hidden = true;
+      }
+      $("blocked").hidden = false; $("result").hidden = true;
+    } else progress(run.status, "");
+  }
+
+  // ---- el botón
+  async function produce() {
+    const brief = $("brief").value.trim();
+    if (!brief) { toast("Escribe qué imagen quieres"); return; }
+    if (!sample) { toast("Claude no está disponible en esta vista"); return; }
+    if (images.some((im) => !im.role.trim())) { toast("Escribe el rol de cada imagen de referencia"); return; }
+    resetView(); $("go").disabled = true; run = { routeReason: "" };
+    try {
+      // 1. caso
+      progress("RUNNING", "leyendo el brief…");
+      const li1 = addStage({ name: "compilador de caso", status: "RUN", detail: "Claude → case fingerprint" });
+      const c = (await extractCase(brief)).case;
+      if (!c) throw new Error("Claude no devolvió el caso");
+      const bt = APD.deriveBaseType(c);
+      if (!bt.base_type) { updStage(li1, "FAIL", bt.reason); progress("BLOCKED", "este caso no está en la matriz sw30 (T1..T5)"); $("blockedText").textContent = bt.reason; $("blocked").hidden = false; return; }
+      c.base_type = bt.base_type; updStage(li1, "PASS", `tipo ${bt.base_type} — ${bt.reason}`);
+      const blocking = (c.unknowns || []).filter((u) => u.blocking);
+      if (blocking.length || !c.deliverable || !c.deliverable.aspect_ratio) { progress("BLOCKED", "falta información en el brief"); $("blockedText").textContent = "Añade al brief: " + (blocking.map((u) => u.reason).join("; ") || "el formato (horizontal, vertical, cuadrado o la proporción)"); $("blocked").hidden = false; return; }
+      // 2. modelo por reglas
+      const route = APD.modelRoute(D, c); let model = null;
+      const li2 = addStage({ name: "model_router", status: "RUN", detail: route.status });
+      if (["ROUTED", "USER_MODEL_LOCK_PRESERVED"].includes(route.status)) { model = route.selected.model; run.routeReason = route.status === "ROUTED" ? `${route.route.id} (models.md)` : "modelo nombrado en el brief (lock de usuario)"; }
+      else if (["MODEL_CHOICE_REQUIRED", "MODEL_TIE"].includes(route.status)) {
+        progress("RUNNING", "el skill permite más de un modelo; elige");
+        const src = (D.routing.canonical.routes.concat(D.routing.canonical.neutral_routes || []).find((r) => r.id === route.route.id) || {}).source_text || route.route.id;
+        const pick = await chooseModel(route.choices, src); model = pick.model; run.routeReason = `${route.status} en ${route.route.id}; elegido por Eric`;
+      }
+      if (!model || !APD.MODELS[model]) { updStage(li2, "FAIL", route.status); progress("BLOCKED", "ninguna regla de models.md enruta este caso"); $("blockedText").textContent = "Nombra el modelo en el brief (GPT Image 2 o Nano Banana Pro) o describe mejor el caso: ninguna regla del skill decide el modelo aquí."; $("blocked").hidden = false; return; }
+      c.generator = { family: APD.MODELS[model].family, model, adapter_version: "kb-v3.4.0" };
+      updStage(li2, "PASS", `${model} — ${run.routeReason}`);
+      // 3. hechos con procedencia (hasta 2 intentos: el segundo recibe los errores del primero)
+      let facts = null, errs = [];
+      for (let attempt = 1; attempt <= 2 && !facts; attempt++) {
+        progress("RUNNING", `extrayendo hechos con procedencia (${attempt}/2)…`);
+        const li = addStage({ name: `extractor de hechos (${attempt}/2)`, status: "RUN", detail: "Claude → facts.json" });
+        const out = await extractFacts(brief + (errs.length ? `\n\nERRORES DEL INTENTO ANTERIOR (corrígelos todos): ${errs.join("; ")}` : ""), c, model);
+        const f = out && out.facts;
+        errs = f ? APD.validateSchema(f, D.facts_schema).concat(APD.checkProvenance(D, f)) : ["respuesta sin facts"];
+        updStage(li, errs.length ? "WARN" : "PASS", errs.length ? errs.slice(0, 4).join("; ") : `${Object.keys(f.provenance).length} hojas con procedencia`);
+        if (!errs.length) facts = f;
+      }
+      if (!facts) { progress("BLOCKED", "los hechos no pasaron la verificación de procedencia"); $("blockedText").textContent = errs.slice(0, 5).join("; "); $("blocked").hidden = false; return; }
+      // 4. pipeline determinista + 5. auditoría + ledger
+      progress("RUNNING", "renderizando y pasando gates…");
+      run = await APD.run(D, { facts, case: c }, { onStage: addStage });
+      if (run.status === "AWAITING_AUDIT") await auditAndLedger();
+      showRun();
+    } catch (e) { progress("BLOCKED", errText(e)); }
+    $("go").disabled = false;
+  }
+  $("go").addEventListener("click", produce);
+
+  // ---- revisión: tu instrucción = autorización; Claude sólo la transcribe a deltas sobre slots.*
+  async function proposeDelta(instruction, fails) {
+    const head = `Eres el editor de deltas del AI Production Director v3.4. No redactas prompts: transcribes la instrucción a un delta autorizado sobre los hechos congelados. Sólo rutas "slots.*" con op "replace" (nunca model, size, references, notes, operation). Cada cambio con procedencia "user" (la instrucción literal) o "skill" (ruta:<línea> de los archivos adjuntos). Mantén el prompt final bajo ${D.ceilings[APD.MODELS[run.facts.model].capabilities_id]} palabras. Salida: ÚNICAMENTE {"changes":[{"path":"slots….","op":"replace","value":"…"}],"provenance":{"slots….":{"source":"user","ref":"…"}}}.
+
+INSTRUCCIÓN DE ERIC: ${instruction}
+FALLAS A CORREGIR: ${fails.join(" | ") || "ninguna"}
+HECHOS ACTUALES (slots): ${JSON.stringify(run.facts.slots)}
+PROMPT ACTUAL: ${run.prompt}
+ARCHIVOS DE SKILL:`;
+    const out = await sample.json(fit(head, run.facts.model), { modelTier: "default", cache: false });
+    return { delta: { schema_version: "1.1", base_brief_hash: run.briefs[run.brief_version - 1].brief_hash, authorized_by: "user", reason: instruction, changes: out.changes || [] }, provenance: out.provenance || {} };
+  }
+  async function applyDelta(pd) {
+    resetView(); progress("RUNNING", "aplicando el cambio…");
+    await APD.revise(D, run, pd.delta, pd.provenance, { onStage: addStage });
+    if (run.delta_rejected) { progress(run.status, `cambio rechazado: ${run.delta_rejected}`); showRun(); return; }
+    if (run.status === "AWAITING_AUDIT") await auditAndLedger();
+    showRun();
+  }
+  $("applyChange").addEventListener("click", async () => {
+    const text = $("deltaText").value.trim(); if (!text || !run || !sample) { toast(text ? "Claude no disponible" : "Escribe qué cambias"); return; }
+    $("applyChange").disabled = true;
+    try { await applyDelta(await proposeDelta(text, [])); $("deltaText").value = ""; } catch (e) { progress("BLOCKED", errText(e)); }
+    $("applyChange").disabled = false;
+  });
+  $("fixFails").addEventListener("click", async () => {
+    if (!run || !sample) return;
+    const fails = run.ledger && run.ledger.failed_ids ? run.ledger.failed_ids.map((rid) => run.evidence[rid].reason) : [typeof run.stages[run.stages.length - 1].detail === "string" ? run.stages[run.stages.length - 1].detail : ""];
+    $("fixFails").disabled = true;
+    try {
+      const pd = await proposeDelta("Corrige las fallas señaladas cambiando sólo lo necesario.", fails);
+      const box = $("proposal"); box.innerHTML = "";
+      const ul = document.createElement("ul"); ul.className = "plain";
+      for (const ch of pd.delta.changes) { const li = document.createElement("li"); li.textContent = `${ch.path.replace(/^slots\./, "")}: ${ch.value}`; ul.appendChild(li); }
+      const b = document.createElement("button"); b.type = "button"; b.textContent = "Autorizar y aplicar";
+      b.addEventListener("click", async () => { try { await applyDelta(pd); } catch (e) { progress("BLOCKED", errText(e)); } });
+      box.append(ul, b); box.hidden = false;
+    } catch (e) { toast("No se pudo proponer: " + errText(e)); }
+    $("fixFails").disabled = false;
+  });
+
+  // ---- copiar / guardar
+  $("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(run.prompt.trimEnd()); toast("Prompt copiado"); } catch (e) { toast("No se pudo copiar"); } });
+  $("download").addEventListener("click", async () => { if (!downloads || !run || !run.deliverable) return; try { await downloads.save({ filename: `DELIVERABLE-${run.facts.brief_id}-r${run.prompt_revision}.txt`, data: run.deliverable }); toast("Guardado"); } catch (e) { if (e.code !== "declined") toast(`No se pudo guardar: ${e.code || e}`); } });
+
+})();
+</script>

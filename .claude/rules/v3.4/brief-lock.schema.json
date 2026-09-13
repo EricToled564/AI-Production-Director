@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/brief-lock-v1.1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "brief_id",
+    "brief_version",
+    "status",
+    "facts",
+    "field_states",
+    "brief_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "brief_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brief_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "const": "FROZEN"
+    },
+    "facts": {
+      "type": "object"
+    },
+    "field_states": {
+      "type": "object"
+    },
+    "brief_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "delta_history": {
+      "type": "array"
+    }
+  }
+}

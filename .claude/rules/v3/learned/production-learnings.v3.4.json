@@ -1,0 +1,154 @@
+{
+  "version": "3.4.0",
+  "status": "PUBLISHED_LEARNED_OVERLAY",
+  "provenance": {
+    "source": "controlled production trial: tennis editorial composition and repeated prompt drift",
+    "date": "2026-09-11",
+    "policy": "Adds deterministic brief freeze and revision controls. Canonical KB rules remain unchanged."
+  },
+  "rules": [
+    {
+      "rule": {
+        "id": "lrn34_frozen_brief",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.4.json",
+        "line": 1,
+        "text": "Every prompt must target an immutable frozen brief by exact SHA-256. Downstream prompt generation may not mutate brief facts."
+      },
+      "metadata": {
+        "rule_id": "lrn34_frozen_brief",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 995,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "prompt",
+            "generation",
+            "qa"
+          ]
+        },
+        "validator": {
+          "id": "v34:brief-freeze",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.4-brief-freeze",
+          "reviewed_at": "2026-09-11",
+          "notes": "Promoted after repeated unauthorized brief/prompt drift during tennis production."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn34_required_fields_resolved",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.4.json",
+        "line": 2,
+        "text": "Prompt compilation is blocked while any case-relevant prompt-required field is unresolved. Resolve it from an authorized source or ask the user before compiling."
+      },
+      "metadata": {
+        "rule_id": "lrn34_required_fields_resolved",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 1000,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "prompt",
+            "generation",
+            "qa"
+          ]
+        },
+        "validator": {
+          "id": "v34:brief-preflight",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.4-brief-freeze",
+          "reviewed_at": "2026-09-11",
+          "notes": "Promoted after repeated unauthorized brief/prompt drift during tennis production."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn34_authorized_delta_only",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.4.json",
+        "line": 3,
+        "text": "After a prompt is approved, every revision must begin with an explicit authorized delta against the exact prior brief hash. No implicit or opportunistic changes are permitted."
+      },
+      "metadata": {
+        "rule_id": "lrn34_authorized_delta_only",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 1000,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "prompt",
+            "generation"
+          ]
+        },
+        "validator": {
+          "id": "v34:authorized-delta",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.4-brief-freeze",
+          "reviewed_at": "2026-09-11",
+          "notes": "Promoted after repeated unauthorized brief/prompt drift during tennis production."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn34_immutable_prompt_ast",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.4.json",
+        "line": 4,
+        "text": "Prompt revisions may not be freely rewritten. Re-render the same immutable Prompt AST against the updated frozen brief; any AST/model/parameter/template change outside a separately authorized structural revision is blocking drift."
+      },
+      "metadata": {
+        "rule_id": "lrn34_immutable_prompt_ast",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 1000,
+        "when": {
+          "path": "stage",
+          "op": "eq",
+          "value": "prompt"
+        },
+        "validator": {
+          "id": "v34:prompt-revision-gate",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.4-brief-freeze",
+          "reviewed_at": "2026-09-11",
+          "notes": "Promoted after repeated unauthorized brief/prompt drift during tennis production."
+        }
+      }
+    }
+  ]
+}

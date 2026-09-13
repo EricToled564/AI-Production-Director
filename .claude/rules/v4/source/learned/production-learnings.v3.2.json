@@ -1,0 +1,598 @@
+{
+  "version": "3.2.1",
+  "status": "PUBLISHED_LEARNED_OVERLAY",
+  "provenance": {
+    "source": "controlled production trial: Olympic 10 m platform diver, split-level underwater editorial image",
+    "date": "2026-09-11",
+    "policy": "Empirical production learnings do not mutate the canonical KB extractor. They are versioned overlays and require regression tests before promotion. v3.2.1 adds composition-abstraction/no-reference and cross-task lock isolation."
+  },
+  "rules": [
+    {
+      "rule": {
+        "id": "lrn32_lock_preservation",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 1,
+        "text": "On a revision, every user/project lock remains inherited verbatim unless the user explicitly changes that lock."
+      },
+      "metadata": {
+        "rule_id": "lrn32_lock_preservation",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 920,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "prompt",
+            "generation",
+            "qa"
+          ]
+        },
+        "validator": {
+          "id": "v32:lock-preservation",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Prevents revision drift observed when correcting the diver pose."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_small_delta_revision",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 2,
+        "text": "When correcting a localized failure in an otherwise accepted or strong asset, change only the failed element(s); do not rewrite or reinterpret unaffected locks."
+      },
+      "metadata": {
+        "rule_id": "lrn32_small_delta_revision",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 915,
+        "when": {
+          "path": "operation",
+          "op": "in",
+          "value": [
+            "image_edit",
+            "image_to_image",
+            "text_to_image"
+          ]
+        },
+        "validator": {
+          "id": "v32:small-delta",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Repeated verbose rewrites degraded adherence while local edits preserved strengths."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_domain_pose_literal",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 3,
+        "text": "Preserve a sufficiently specific domain-native pose/technique label instead of expanding it into speculative anatomy. Expand only when the target adapter requires it or evidence shows the literal domain label fails."
+      },
+      "metadata": {
+        "rule_id": "lrn32_domain_pose_literal",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 930,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "subject.human",
+              "op": "eq",
+              "value": true
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:domain-pose-preservation",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "The user-specified Olympic 10 m platform entry label was clearer than assistant-added anatomical decompositions."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_reference_role_isolation",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 4,
+        "text": "A reference may control only its declared role. Features explicitly excluded from that role must not be copied into subject identity, pose, camera, framing, environment, color, or other locked dimensions."
+      },
+      "metadata": {
+        "rule_id": "lrn32_reference_role_isolation",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 940,
+        "when": {
+          "path": "references.mode",
+          "op": "not_in",
+          "value": [
+            "none"
+          ]
+        },
+        "validator": {
+          "id": "v32:reference-role-isolation",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Water reference was useful only when explicitly isolated to bubble/turbulence physics."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_generation_params_are_hard",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 5,
+        "text": "Delivery parameters such as requested aspect ratio are hard generator settings when the platform exposes them; prompt prose alone is not sufficient. Validate the generated file after generation."
+      },
+      "metadata": {
+        "rule_id": "lrn32_generation_params_are_hard",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 950,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "stage",
+              "op": "in",
+              "value": [
+                "prompt",
+                "generation",
+                "qa",
+                "delivery"
+              ]
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:generation-params",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "A prompt requested 16:9 while one output canvas was vertical; parameter and pixel QA must be separate."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_ratio_tolerance",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 6,
+        "text": "Post-generation aspect ratio QA: exact requested ratio is preferred; deviation up to 1% is a minor delivery/crop correction, greater deviation is a blocking delivery failure unless the user accepts it."
+      },
+      "metadata": {
+        "rule_id": "lrn32_ratio_tolerance",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 945,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "stage",
+              "op": "in",
+              "value": [
+                "qa",
+                "delivery"
+              ]
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:aspect-ratio-output",
+          "kind": "deterministic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "1024x572 was visually accepted as a minor near-16:9 deviation; vertical output was blocking."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_no_unspecified_amplification",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 7,
+        "text": "Do not amplify an unspecified quantity, density, intensity, or prominence. Presence of an element does not authorize sparse/full/dense/large unless the brief or inherited state specifies it."
+      },
+      "metadata": {
+        "rule_id": "lrn32_no_unspecified_amplification",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 900,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "prompt",
+            "generation"
+          ]
+        },
+        "validator": {
+          "id": "v32:no-amplification",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Audience present was initially overinterpreted as packed stands; later explicit full-stands instruction correctly changed the lock."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_physical_occlusion_strategy",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 8,
+        "text": "For complex underwater human anatomy, physically justified bubbles/turbulence may obscure non-critical anatomical detail when the brief does not require that detail, provided the required pose silhouette, human proportions, orientation, and continuity remain readable."
+      },
+      "metadata": {
+        "rule_id": "lrn32_physical_occlusion_strategy",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "RECOMMEND",
+        "priority": 780,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "physics.water",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "path": "subject.human",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "path": "risk_flags",
+              "op": "contains",
+              "value": "HUMAN_ANATOMY"
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:physical-occlusion",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "User-proposed method to trade invisible fine anatomy for physically plausible turbulence while preserving proportions."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_camera_geometry_visibility",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 9,
+        "text": "Scene objects whose locked spatial relationship places them behind the camera must not appear in frame. Camera-relative environment geometry is a critical spatial invariant, not decorative context."
+      },
+      "metadata": {
+        "rule_id": "lrn32_camera_geometry_visibility",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 925,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "composition.load_bearing",
+              "op": "eq",
+              "value": true
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:camera-geometry",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "The diving platform appeared even though the camera geometry placed the platforms behind the camera."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_qa_before_claim",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 10,
+        "text": "Do not declare a generated asset or model successful for a case before running the applicable QA. Separate deterministic/mechanical checks from semantic visual checks and mark non-visually-verifiable brief facts as such rather than PASS."
+      },
+      "metadata": {
+        "rule_id": "lrn32_qa_before_claim",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 970,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "qa",
+            "delivery"
+          ]
+        },
+        "validator": {
+          "id": "v32:qa-before-claim",
+          "kind": "process"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "An informal visual judgment was made before exhaustive QA; the subsequent audit was required to certify the Nano output."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_surgical_edit_after_accept",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 11,
+        "text": "Once an image is accepted and requested changes are local, perform a surgical image edit and preserve the approved pixels/locks outside the requested delta; do not reroll the full scene."
+      },
+      "metadata": {
+        "rule_id": "lrn32_surgical_edit_after_accept",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 935,
+        "when": {
+          "path": "operation",
+          "op": "eq",
+          "value": "image_edit"
+        },
+        "validator": {
+          "id": "v32:surgical-edit",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Final crowd/platform corrections were correctly handled as two local edits to an accepted asset."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn32_nano_underwater_diving_route",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 12,
+        "text": "For complex split-level underwater images with a human in Olympic/platform diving or similarly extreme aquatic anatomy, prefer Nano Banana Pro as the default model candidate unless the user explicitly locks another model or current benchmark evidence supersedes this heuristic."
+      },
+      "metadata": {
+        "rule_id": "lrn32_nano_underwater_diving_route",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "RECOMMEND",
+        "priority": 850,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "task.tags",
+              "op": "contains",
+              "value": "AQUATIC"
+            },
+            {
+              "path": "task.tags",
+              "op": "contains",
+              "value": "OLYMPIC_DIVING"
+            },
+            {
+              "path": "subject.human",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "path": "composition.split_level",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "path": "risk_flags",
+              "op": "contains",
+              "value": "HUMAN_ANATOMY"
+            }
+          ]
+        },
+        "validator": {
+          "id": "v32:model-routing-evidence",
+          "kind": "routing"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "In this controlled trial Nano Banana Pro achieved acceptable Olympic entry anatomy and water physics where GPT Image 2 repeatedly distorted the pose/head/feet. Empirical preference, not universal capability claim."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn321_composition_abstraction_no_ref",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 13,
+        "text": "When a user supplies an image only to follow or study its composition, first translate the visible composition into an abstract composition specification, then compile the generation prompt from that specification without attaching or treating the source image as a generation reference unless the user explicitly requests reference-image use."
+      },
+      "metadata": {
+        "rule_id": "lrn321_composition_abstraction_no_ref",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 955,
+        "when": {
+          "all": [
+            {
+              "path": "media",
+              "op": "eq",
+              "value": "image"
+            },
+            {
+              "path": "stage",
+              "op": "in",
+              "value": [
+                "brief",
+                "prompt",
+                "generation"
+              ]
+            }
+          ]
+        },
+        "validator": {
+          "id": "v321:composition-abstraction",
+          "kind": "process"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2.1-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Tennis composition trial showed that passing a composition-only source image directly to generation copied unwanted AI-specific details instead of only the intended spatial arrangement."
+        }
+      }
+    },
+    {
+      "rule": {
+        "id": "lrn321_no_cross_task_attribute_leak",
+        "skill": "learned-production",
+        "source_path": "learned/production-learnings.v3.2.json",
+        "line": 14,
+        "text": "Do not carry subject demographics, nationality, ethnicity, gender, wardrobe, brand, or other content locks from a previous task into a new task unless the current brief explicitly inherits them. Current-task source material may inform only the dimensions the user asked to preserve."
+      },
+      "metadata": {
+        "rule_id": "lrn321_no_cross_task_attribute_leak",
+        "classification_status": "CLASSIFIED",
+        "authority": "LEARNED_PRODUCTION",
+        "effect": "REQUIRE",
+        "priority": 965,
+        "when": {
+          "path": "stage",
+          "op": "in",
+          "value": [
+            "brief",
+            "prompt",
+            "generation"
+          ]
+        },
+        "validator": {
+          "id": "v321:no-cross-task-leak",
+          "kind": "semantic"
+        },
+        "supersedes": [],
+        "conflict_key": null,
+        "classification_provenance": {
+          "method": "production_trial",
+          "reviewer": "APD-v3.2.1-learning-patch",
+          "reviewed_at": "2026-09-11",
+          "notes": "Tennis task incorrectly inherited a Chinese female subject from the prior diver task."
+        }
+      }
+    }
+  ]
+}

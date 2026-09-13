@@ -1,0 +1,51 @@
+{
+ "schema_version": "1.0",
+ "note": "Decisiones de dirección de Eric sobre contradicciones entre autoridades instaladas. Cada una cita su instrucción escrita literal y la fecha. No son criterio del asistente y ningún turno futuro las renegocia: se citan desde el run y el auditor las lee en el artefacto.",
+ "policies": [
+  {
+   "id": "POLICY_ERIC_WORD_CEILING_001",
+   "conflict_key": "final_prompt.word_ceiling_authority",
+   "loser": "aurora-prompt-linter Regla 10 v6.1 (rango 75-130 como HARD MAX)",
+   "winner": "visual-prompt-forge/adapters/_capabilities.json (max_prompt_words por generador)",
+   "authorized_by": "user",
+   "authorized_on": "2026-09-13",
+   "instruction_verbatim": "EL CONTENO DEBE DE SER SOLO MAIN SIN NEGATIVO ... ADICIOLAMANTE QUIRO QUE SE PRIOROCE QUE TODAS LAS RE3GAS S EINCLOYENA EN EL OROMNOT SONRE EL COTEO D EPLABRAS Y QUE ELUSUARIO DECIDA",
+   "effect": "El techo vigente es el de _capabilities.json. El rango del linter es objetivo recomendado, no límite. Excederlo no bloquea: se reporta el número, se nombran las reglas que fuerzan el contenido, y recortar es decisión de Eric. El conteo se mide sólo sobre MAIN.",
+   "kb_support": "visual-prompt-forge/SKILL.md:102 declara _capabilities.json única fuente de verdad de los límites por generador; :104 dice que el rango de un adapter es el objetivo recomendado dentro del techo y que eso es guía, no conflicto."
+  },
+  {
+   "id": "POLICY_ERIC_PROSE_OVER_JSON_001",
+   "conflict_key": "nano_banana.complex_scene_syntax",
+   "loser": "image/references/models.md:52 (JSON para escenas de 5+ elementos en Nano Banana)",
+   "winner": "image/references/nano-banana.md:13 (lenguaje natural, 1-2 párrafos)",
+   "authorized_by": "user",
+   "authorized_on": "2026-09-13",
+   "instruction_verbatim": "OK PROSA ENTIOMNCES",
+   "effect": "En Nano Banana el prompt se rinde en prosa aunque la escena cruce el umbral de 5+ elementos. El archivo específico del modelo pesa más que la fila de la tabla comparativa.",
+   "kb_support": "ai-production-director/SKILL.md §6.2 resuelve la autoridad de sintaxis del prompt final a favor del archivo model-specific."
+  },
+  {
+   "id": "POLICY_ERIC_LEGIBLE_ANCHOR_001",
+   "conflict_key": "subject_placement.authority",
+   "loser": "visual-prompt-forge/SKILL.md:301 (nombrar el tercio que ocupa el cuerpo)",
+   "winner": "produccion-visual-sw30/SKILL.md:118 (posición anclada a un elemento legible de la escena)",
+   "authorized_by": "user",
+   "authorized_on": "2026-09-13",
+   "instruction_verbatim": "YA YE DIJE QWUE SI CON EL ANVLA",
+   "effect": "La posición del sujeto se ancla a un elemento legible de la propia escena y NO se expresa como fracción de encuadre. Queda prohibido 'centre', 'left half', 'just left of X' y también 'two-thirds of the frame'. Un ancla a elemento legible satisface el requisito de fijar la posición que pide el forge.",
+   "kb_support": "produccion-visual-sw30/SKILL.md:118 es regla crítica del skill del proyecto y del registro aprendido v3.2; forge:301 es guía general. La regla del proyecto gana."
+  },
+  {
+   "id": "POLICY_ERIC_NEGATIVE_PROMPT_001",
+   "conflict_key": "generator.supports_negative_prompt",
+   "loser": "aurora-prompt-linter (exige bloque NEGATIVE para nano_banana_pro y gpt_image_2)",
+   "winner": "visual-prompt-forge/adapters/_capabilities.json (supports_negative_prompt: false en ambos)",
+   "authorized_by": "user",
+   "authorized_on": "2026-09-13",
+   "instruction_verbatim": "VAS A CORREGIR CONFORME A LOS FINDINGS Y SOLO VQAS A VERIFICAR QUE EOSS FINDING SE HAYAN CORREGIDO",
+   "effect": "Donde el generador declara supports_negative_prompt: false no se emite bloque Negative, y la violación 'negative_prompt' del linter no aplica. El contenido que iba ahí se expresa en positivo o se elimina si es redundante.",
+   "kb_support": "visual-prompt-forge/SKILL.md:102 declara _capabilities.json única fuente de verdad de los límites y capacidades por generador, nombrando max_prompt_words, supports_text_render, supports_motion, aspect_param 'y así sucesivamente'. supports_negative_prompt es una de ellas. El linter viene del mundo de video, donde el prompt negativo sí existe.",
+   "found_by": "auditoría del run nfl-tackle-010, tanda 1, regla b06edb823b07 (golden-rules.md:3): el bloque Negative citaba gpt-image.md:166 en un run de Nano Banana y duplicaba en negativo lo que slots.style ya decía en positivo."
+  }
+ ]
+}

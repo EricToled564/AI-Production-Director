@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-production-director.local/schemas/authorized-delta-v1.1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "base_brief_hash",
+    "authorized_by",
+    "changes",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "base_brief_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authorized_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string"
+    },
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "op"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "op": {
+            "enum": [
+              "replace",
+              "add",
+              "remove"
+            ]
+          },
+          "value": {}
+        }
+      }
+    }
+  }
+}
