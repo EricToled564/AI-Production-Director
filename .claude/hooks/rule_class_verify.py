@@ -75,6 +75,16 @@ def main() -> int:
             if not cita:
                 citas_mal.append((rid, d, "rama sin cita"))
                 continue
+            # Una cita que empieza con "§" se comprueba contra el encabezado de
+            # sección de la unidad: el alcance derivado de la sección donde vive la
+            # regla es estructural, igual que el derivado del archivo.
+            if cita.startswith("§"):
+                seccion = norm(" / ".join(unid[rid].get("seccion") or []))
+                if norm(cita[1:]) and norm(cita[1:]) in seccion:
+                    citas_ok += 1
+                else:
+                    citas_mal.append((rid, d, f"la cita de sección no está en el encabezado: {cita[:70]}"))
+                continue
             if norm(cita) in texto:
                 citas_ok += 1
             else:
