@@ -4,6 +4,9 @@
 > No se edita a mano: si el schema gana una dimensión, este archivo gana su pregunta en la
 > siguiente corrida. Se desfasó una vez y costó 41 reglas muertas del lado imagen.
 
+> **APROBADO por Eric, 2026-09-13: "EL TEMPLATE ESTA APROBADO".** Las 14 dimensiones de la
+> parte 2 quedan autorizadas a entrar al schema; eso obliga a republicar el ruleset.
+
 > **Alcance: sólo imagen.** Video queda para después, por decisión de Eric. Las dimensiones
 > de audio, secuencia y movimiento de cámara no se preguntan todavía; siguen en el schema.
 
