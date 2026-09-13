@@ -699,6 +699,7 @@
     if (name === "prompt.negative") { const p = String(art.prompt || "").split(/^\s*negative\s*:/im); return p.length > 1 ? p[1] : ""; }
     if (name === "notes") return art.notes || "";
     if (name === "provenance") return JSON.stringify(art.provenance || {});
+    if (name === "gates") return JSON.stringify(art.gates || {});
     if (name === "stages") return art.stages || [];
     if (name === "files") return art.files || [];
     if (name.startsWith("slots.")) {
@@ -738,6 +739,13 @@
       if (!(spec.stage in st)) return ["FAIL", `la etapa ${spec.stage} no se ejecutó`];
       return st[spec.stage] === "PASS" ? ["PASS", `etapa ${spec.stage} PASS`] : ["FAIL", `etapa ${spec.stage} en ${st[spec.stage]}`];
     }
+    if (op === "stages_ok") {
+      const st = vTarget(art, "stages") || [];
+      if (!st.length) return ["UNRESOLVED", "el artefacto no trae etapas"];
+      const mal = st.filter((s) => s.status !== "PASS" && s.status !== "NA").map((s) => s.name);
+      return mal.length ? ["FAIL", `etapas sin pasar: ${mal.join(", ")}`]
+                        : ["PASS", `las ${st.length} etapas del run pasaron o quedaron NA`];
+    }
     if (op === "file_exists") {
       // La página no tiene sistema de archivos: puede confirmar lo que produjo, no puede
       // demostrar una ausencia. Sin prueba no hay veredicto, así que la regla pasa al
@@ -774,9 +782,21 @@
     }
     return out;
   }
-  function validatorArtifact(facts, caso, prompt, stages, files) {
+  // Los sub-gates de gates.json vistos como etapas `gate:<nombre>`: sin esto un validador
+  // sólo puede citar la etapa gruesa y pierde saber cuál de los controles cubre su regla.
+  function gateStages(gates) {
+    const out = [];
+    for (const sec of ["lexical", "structural"]) {
+      for (const [name, val] of Object.entries((gates || {})[sec] || {})) {
+        if (val && typeof val === "object" && "status" in val) out.push({ name: `gate:${name}`, status: val.status });
+      }
+    }
+    return out;
+  }
+  function validatorArtifact(facts, caso, prompt, stages, files, gates) {
     return { prompt, notes: facts.notes || "", slots: facts.slots || {}, provenance: facts.provenance || {},
-             case: caso, stages: (stages || []).map((s) => ({ name: s.name, status: s.status })),
+             case: caso, gates: gates || {},
+             stages: (stages || []).map((s) => ({ name: s.name, status: s.status })).concat(gateStages(gates)),
              files: files || [], files_complete: false };
   }
 
@@ -929,7 +949,7 @@
     // Python: en el artefacto no corre, así que sus reglas no se dan por comprobadas y
     // pasan al auditor. Es un límite declarado, no una aprobación silenciosa.
     const archivos = ["prompt_v1.ast.json", "template_spec.json", "match.json"];
-    const art = validatorArtifact(facts, c, prompt, run.stages, archivos);
+    const art = validatorArtifact(facts, c, prompt, run.stages, archivos, gates);
     const [ev, pending] = mechanicalEvidence(run.match, gates, mode, D, art);
     run.evidence_mechanical = ev; run.audit_pending = pending;
     const mechFail = Object.entries(ev).filter(([, v]) => v.status === "FAIL").map(([k]) => k);
@@ -1032,5 +1052,5 @@
       `\n\nResponde ÚNICAMENTE con el JSON de salida descrito arriba, con una entrada por cada uno de los ${tanda.rules.length} rule_id de esta tanda.`;
   }
 
-  root.APD = { MODELS, deriveBaseType, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, checkLiteralProvenance, checkStrict, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA };
+  root.APD = { MODELS, deriveBaseType, run: newRun, revise, auditPack, ledger, auditRequestText, validateSchema, checkProvenance, checkLiteralProvenance, checkStrict, caseValidate, ruleMatch, modelRoute, buildAst, render, ratioOf, wordCount, sha256, canonical, variantOf, auditGi2, templateEngine, TANDA, vEval, vSelftest, gateStages };
 })(typeof window !== "undefined" ? window : globalThis);

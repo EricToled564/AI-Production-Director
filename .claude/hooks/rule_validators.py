@@ -46,6 +46,8 @@ def _target(art: dict, name: str):
         return cur
     if name == "provenance":
         return json.dumps(art.get("provenance", {}), ensure_ascii=False)
+    if name == "gates":                            # el informe de los gates mecánicos
+        return json.dumps(art.get("gates", {}), ensure_ascii=False)
     if name == "stages":
         return art.get("stages", [])
     if name == "files":
@@ -102,6 +104,12 @@ def evaluate(spec: dict, art: dict) -> tuple[str, str]:
             return "FAIL", f"la etapa {spec['stage']} no se ejecutó"
         return ("PASS", f"etapa {spec['stage']} PASS") if st[spec["stage"]] == "PASS" else \
                ("FAIL", f"etapa {spec['stage']} en {st[spec['stage']]}")
+    if op == "stages_ok":
+        mal = [s["name"] for s in _target(art, "stages") if s["status"] not in ("PASS", "NA")]
+        if not _target(art, "stages"):
+            return UNRESOLVED, "el artefacto no trae etapas"
+        return ("FAIL", f"etapas sin pasar: {', '.join(mal)}") if mal else \
+               ("PASS", f"las {len(_target(art, 'stages'))} etapas del run pasaron o quedaron NA")
     if op == "file_exists":
         return ("PASS", f"{spec['file']} presente en el run") if spec["file"] in _target(art, "files") else \
                ("FAIL", f"falta {spec['file']} en el run")

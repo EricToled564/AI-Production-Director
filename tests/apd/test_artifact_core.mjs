@@ -103,4 +103,34 @@ for (const [name, ex] of Object.entries(EXAMPLES)) {
   run = await APD.run(D, ex); assert.equal(run.blocked_by, "prompt_gates"); assert.match(run.stages.at(-1).detail, /word/);
   console.log("ok  procedencia / tope de palabras"); n++;
 }
+// El motor de validadores de la página da el mismo veredicto que el de Python sobre
+// TODAS las entradas del registro —aprobadas y pendientes—, en sus dos casos de prueba.
+// Sin esto, un validador nuevo podría aprobar en la CLI y fallar en el artefacto.
+{
+  const registro = readFileSync(join(ROOT, ".claude/rules/v3/validators/image.jsonl"), "utf8")
+    .split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l));
+  const casos = [];
+  for (const e of registro) for (const esperado of ["pass", "fail"]) for (const art of e.tests[esperado] || [])
+    casos.push({ rule_id: e.rule_id, check: e.check, art, esperado });
+  const py = spawnSync("python3", ["-c", `
+import json, sys
+sys.path.insert(0, ".claude/hooks")
+import rule_validators as rv
+casos = json.load(sys.stdin)
+print(json.dumps([rv.evaluate(c["check"], c["art"])[0] for c in casos]))
+`], { cwd: ROOT, encoding: "utf8", input: JSON.stringify(casos) });
+  assert.equal(py.status, 0, py.stderr);
+  const esperados = JSON.parse(py.stdout);
+  const js = casos.map((c) => APD.vEval(c.check, c.art)[0]);
+  const difs = casos.map((c, i) => [c, esperados[i], js[i]]).filter(([, a, b]) => a !== b);
+  assert.equal(difs.length, 0, `veredictos distintos JS/Python: ${JSON.stringify(difs.slice(0, 3))}`);
+  // Y los dos casos de cada validador siguen distinguiendo en la página, no sólo en Python.
+  const rotos = registro.filter((e) => !APD.vSelftest(e)[0]).map((e) => `${e.rule_id} (${e.source})`);
+  assert.equal(rotos.length, 0, `autoprueba JS fallida: ${rotos.join(", ")}`);
+  // Los sub-gates se ven como etapas gate:<nombre>, igual que en la CLI.
+  const gs = APD.gateStages({ lexical: { natural_language: { status: "PASS" } }, structural: { audit_gi2: { status: "FAIL" }, word_ceiling_source: "x" } });
+  // JSON y no deepEqual: los objetos vienen del contexto vm y no son reference-equal.
+  assert.equal(JSON.stringify(gs), JSON.stringify([{ name: "gate:natural_language", status: "PASS" }, { name: "gate:audit_gi2", status: "FAIL" }]));
+  console.log(`ok  motor de validadores: ${casos.length} veredictos idénticos JS/Python sobre ${registro.length} validadores`); n++;
+}
 console.log(`\n${n} bloques de prueba OK`);

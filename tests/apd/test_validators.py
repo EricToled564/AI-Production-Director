@@ -52,7 +52,33 @@ class Validadores(unittest.TestCase):
         for e in entradas():
             self.assertTrue(e.get("regla", "").strip(), f"{e['rule_id']} sin el texto de la regla")
             self.assertTrue(e.get("comprueba", "").strip(), f"{e['rule_id']} sin explicar qué comprueba")
-            self.assertRegex(e.get("source", ""), r".+\.md:\d+", f"{e['rule_id']} sin archivo y línea de origen")
+            # El overlay aprendido v3.2 vive en un .json, no en un .md; lo que el test
+            # exige es archivo y línea verificables, no una extensión concreta.
+            self.assertRegex(e.get("source", ""), r".+\.(md|json):\d+", f"{e['rule_id']} sin archivo y línea de origen")
+
+    def test_07_stages_ok_solo_pasa_con_todas_las_etapas_en_verde(self):
+        spec = {"op": "stages_ok"}
+        verde = {"stages": [{"name": "a", "status": "PASS"}, {"name": "b", "status": "NA"}]}
+        self.assertEqual(rv.evaluate(spec, verde)[0], "PASS")
+        rojo = {"stages": [{"name": "a", "status": "PASS"}, {"name": "b", "status": "FAIL"}]}
+        estado, razon = rv.evaluate(spec, rojo)
+        self.assertEqual(estado, "FAIL"); self.assertIn("b", razon)
+        # Sin etapas no hay veredicto: nunca un PASS a ciegas.
+        self.assertEqual(rv.evaluate(spec, {"stages": []})[0], rv.UNRESOLVED)
+
+    def test_08_los_sub_gates_se_ven_como_etapas_y_gates_como_texto(self):
+        sys.path.insert(0, str(ROOT / "apd"))
+        import apd_run
+        gates = {"lexical": {"natural_language": {"status": "PASS"}},
+                 "structural": {"audit_gi2": {"status": "FAIL"}, "word_ceiling_source": "…/_capabilities.json"}}
+        self.assertEqual(apd_run.gate_stages(gates),
+                         [{"name": "gate:natural_language", "status": "PASS"},
+                          {"name": "gate:audit_gi2", "status": "FAIL"}])
+        # El informe de gates es consultable como texto: así una regla puede exigir que el
+        # techo aplicado cite _capabilities.json y no la memoria.
+        art = {"gates": gates}
+        self.assertEqual(rv.evaluate({"in": "gates", "op": "regex", "pattern": r"_capabilities\.json"}, art)[0], "PASS")
+        self.assertEqual(rv.evaluate({"in": "gates", "op": "regex", "pattern": r"_capabilities\.json"}, {"gates": {}})[0], "FAIL")
 
 
 if __name__ == "__main__":

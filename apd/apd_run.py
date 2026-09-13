@@ -688,12 +688,26 @@ def length_policy(facts: dict, prompt: str, ceiling: int | None) -> tuple[dict, 
 
 
 # ------------------------------------------------------------- evidencia mecánica
-def validator_artifact(run: Run, facts: dict, case: dict, prompt: str) -> dict:
+def gate_stages(gates: dict) -> list[dict]:
+    """Los sub-gates de gates.json vistos como etapas `gate:<nombre>`. Sin esto un
+    validador sólo puede citar la etapa gruesa `prompt_gates` y pierde la precisión de
+    saber cuál de los quince controles es el que cubre su regla."""
+    out = []
+    for sec in ("lexical", "structural"):
+        for name, val in (gates.get(sec) or {}).items():
+            if isinstance(val, dict) and "status" in val:
+                out.append({"name": f"gate:{name}", "status": val["status"]})
+    return out
+
+
+def validator_artifact(run: Run, facts: dict, case: dict, prompt: str, gates: dict | None = None) -> dict:
     """Lo que un validador puede mirar: el prompt, los hechos, el caso y lo que el run
     dejó escrito. Nada más — un validador no interpreta, comprueba."""
+    gates = gates or {}
     return {"prompt": prompt, "notes": facts.get("notes", ""), "slots": facts.get("slots", {}),
-            "provenance": facts.get("provenance", {}), "case": case,
-            "stages": [{"name": st["name"], "status": st["status"]} for st in run.state.get("stages", [])],
+            "provenance": facts.get("provenance", {}), "case": case, "gates": gates,
+            "stages": [{"name": st["name"], "status": st["status"]} for st in run.state.get("stages", [])]
+                      + gate_stages(gates),
             "files": sorted(f.name for f in run.dir.iterdir() if f.is_file())}
 
 
@@ -905,7 +919,7 @@ def _render(run: Run, facts: dict, case: dict, match: dict, mode: str) -> None:
     else:
         run.stage("estructura_vs_base", "NA", f"aún no hay prompt probado para esta firma de caso ({sig})")
 
-    ev, pending = mechanical_evidence(run, match, gates, mode, validator_artifact(run, facts, case, prompt))
+    ev, pending = mechanical_evidence(run, match, gates, mode, validator_artifact(run, facts, case, prompt, gates))
     jdump(run.dir / "evidence.mechanical.json", ev)
     jdump(run.dir / "audit_pending.json", pending)
     mech_fail = [k for k, v in ev.items() if v["status"] == "FAIL"]
