@@ -41,6 +41,7 @@ ge() { # ge <nombre> <minimo> <obtenido>
   fi
 }
 q() { python3 -c 'import sqlite3,sys; print(sqlite3.connect(sys.argv[1]).execute(sys.argv[2]).fetchone()[0])' "$DB" "$1"; }
+q_write() { python3 -c 'import sqlite3,sys; c=sqlite3.connect(sys.argv[1]); c.execute(sys.argv[2]); c.commit()' "$DB" "$1"; }
 
 # intérprete con fastembed + numpy, si lo hay
 PYV="${RULES_V3_PY:-}"
@@ -157,19 +158,33 @@ if [[ -n "$PYV" ]]; then
     check "audit-export tiene hoja 'caso' + una por faceta cerrada (d1,d2,d3,d4,d8,d9)" 7 \
       "$("$PYX" -c "import openpyxl; print(len(openpyxl.load_workbook('$XLSX', read_only=True).sheetnames))")"
 
-    # round-trip: corrige a mano una fila de la hoja 'caso' y reimporta
+    # round-trip determinista: se fuerza una regla concreta a quedar sin caso (sin depender
+    # de que la capa vectorial deje alguna abierta por azar de punto flotante entre corridas
+    # de embedding, que es justo lo que las capas 1+2 ya resuelven bien la mayor parte del
+    # tiempo) para probar audit-export + audit-import de punta a punta siempre, no solo cuando
+    # sobra algo por clasificar.
+    RID_FORZADA=$(q "SELECT id FROM reglas ORDER BY id LIMIT 1")
+    q_write "DELETE FROM regla_caso WHERE regla_id='$RID_FORZADA'"
+    "$PYX" "$HOOKS/rules_v3.py" --db "$DB" audit-export --xlsx "$XLSX" >"$TMP/audit_export2.log" 2>&1
+    check "audit-export vuelve a salir 0 tras forzar una fila abierta" 0 $?
+    check "la fila forzada aparece en la hoja 'caso'" 1 "$("$PYX" -c "
+import openpyxl
+wb = openpyxl.load_workbook('$XLSX', read_only=True)
+ws = wb['caso']
+print(1 if any(r[0].value == '$RID_FORZADA' for r in ws.iter_rows(min_row=2)) else 0)
+")"
+
     RID_PRUEBA=$("$PYX" -c "
 import openpyxl
 wb = openpyxl.load_workbook('$XLSX')
 ws = wb['caso']
-row = next(ws.iter_rows(min_row=2, max_row=2), None)
-if row is None:
-    print('')
-else:
-    row[8].value = 'NINGUNO'
-    row[9].value = 'prueba automatica test_rules_v3.sh'
-    wb.save('$XLSX')
-    print(row[0].value)
+for row in ws.iter_rows(min_row=2):
+    if row[0].value == '$RID_FORZADA':
+        row[8].value = 'NINGUNO'
+        row[9].value = 'prueba automatica test_rules_v3.sh'
+        wb.save('$XLSX')
+        print(row[0].value)
+        break
 ")
     if [[ -n "$RID_PRUEBA" ]]; then
       "$PYX" "$HOOKS/rules_v3.py" --db "$DB" audit-import --xlsx "$XLSX" --auditor test_ci >"$TMP/audit_import.log" 2>&1
@@ -179,7 +194,8 @@ else:
       check "la corrección queda registrada en auditorias" 1 \
         "$(q "SELECT COUNT(*) > 0 FROM auditorias WHERE regla_id='$RID_PRUEBA' AND auditor='test_ci'")"
     else
-      echo "  SKIP  round-trip de audit-import (hoja 'caso' vacía: nada pendiente de auditar)"
+      echo "  FAIL  no se encontró la fila forzada ($RID_FORZADA) en la hoja 'caso' para el round-trip"
+      FAIL=$((FAIL + 1))
     fi
   else
     echo "  SKIP  audit-export/audit-import (sin openpyxl en el intérprete con fastembed: pip install openpyxl)"
