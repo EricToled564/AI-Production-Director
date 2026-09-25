@@ -786,14 +786,18 @@ def importar_clasificacion(con: sqlite3.Connection, path: Path) -> tuple[int, in
             if origen not in ("archivo", "regla", "auditoria"):
                 origen = "regla"
             if caso not in CASOS:
-                con.execute("INSERT INTO importacion_huerfana VALUES (?,?,?,?,?,?,?)",
-                            (nombre, rid, caso, origen, "caso_desconocido", json.dumps(meta, ensure_ascii=False), fecha))
+                if rid not in huerfanas:
+                    con.execute("INSERT INTO importacion_huerfana VALUES (?,?,?,?,?,?,?)",
+                                (nombre, rid, caso, origen, "caso_desconocido", json.dumps(meta, ensure_ascii=False), fecha))
                 huerfanas.add(rid)
                 continue
             if rid not in existentes:
-                con.execute("INSERT INTO importacion_huerfana VALUES (?,?,?,?,?,?,?)",
-                            (nombre, rid, caso, origen, "id_no_en_registro",
-                             f"{meta.get('s')}/{meta.get('a')}:{meta.get('l')} · {meta.get('t', '')[:160]}", fecha))
+                # un mismo id puede aparecer bajo más de un caso en porCaso; se registra
+                # como huérfana una sola vez, no una fila por cada caso donde aparece.
+                if rid not in huerfanas:
+                    con.execute("INSERT INTO importacion_huerfana VALUES (?,?,?,?,?,?,?)",
+                                (nombre, rid, caso, origen, "id_no_en_registro",
+                                 f"{meta.get('s')}/{meta.get('a')}:{meta.get('l')} · {meta.get('t', '')[:160]}", fecha))
                 huerfanas.add(rid)
                 continue
             con.execute("INSERT OR REPLACE INTO regla_caso VALUES (?,?,?,?,?,?)",
