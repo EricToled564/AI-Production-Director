@@ -1,6 +1,8 @@
 # Etapa 5 — bitácora del linter aurora (`.claude/hooks/aurora/prompt_linter.py`)
 
 Comando base + resultado por prompt. Todos `STATUS: PASS` antes de entregar (SW30 micro-gate).
+Revisión 2026-09-25b: cast a color (Kodak Vision3 500T, no Kodak Tri-X) y rasgos atractivos,
+manteniendo solo los anclas de identidad ya usados en 03-direccion.md / shots.json.
 
 ```
 # T1_vera
