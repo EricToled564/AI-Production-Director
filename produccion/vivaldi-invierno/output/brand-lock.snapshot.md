@@ -1,4 +1,4 @@
-<!-- snapshot taken: 2026-09-25T17:32:52Z -->
+<!-- snapshot taken: 2026-09-25T18:02:25Z -->
 <!-- source: produccion/vivaldi-invierno/brand-lock.md -->
 # Brand Lock: Anatomía del frío (Visual Theme ligero)
 
