@@ -246,7 +246,7 @@ def main() -> int:
     l = sub.add_parser("load")
     l.add_argument("--clasificacion", required=True)
     l.add_argument("--origen", choices=("archivo", "regla", "auditoria"), required=True)
-    l.add_argument("--auditor", default="notebooklm")
+    l.add_argument("--auditor", default="eric")
     l.add_argument("--razon", default="")
     l.set_defaults(fn=cmd_load)
 
