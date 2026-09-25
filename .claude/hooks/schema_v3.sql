@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS regla_faceta (
   regla_id  TEXT NOT NULL REFERENCES reglas(id),
   dimension TEXT NOT NULL CHECK (dimension IN ('d1','d2','d3','d4','d5','d6','d7','d8','d9')),
   valor     TEXT NOT NULL,
-  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regex','vector','auditoria','manual')),
+  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regex','vector','llm','auditoria','manual')),
   fecha     TEXT NOT NULL,
   PRIMARY KEY (regla_id, dimension, valor)
 );

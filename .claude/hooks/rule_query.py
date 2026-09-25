@@ -175,11 +175,15 @@ def filtrar(con: sqlite3.Connection, confirmadas: dict[str, list[str]]) -> tuple
             condiciones.append(f"(EXISTS (SELECT 1 FROM regla_tarea x WHERE x.regla_id=r.id AND x.tarea IN ({marcas}))"
                                " OR NOT EXISTS (SELECT 1 FROM regla_tarea x WHERE x.regla_id=r.id))")
         else:
+            # 'ninguno' es un valor explícito que significa "esta regla no discrimina por esta
+            # dimensión": se comporta exactamente como no tener fila, nunca excluye.
             condiciones.append(f"(EXISTS (SELECT 1 FROM regla_faceta x WHERE x.regla_id=r.id AND x.dimension=? AND x.valor IN ({marcas}))"
-                               " OR NOT EXISTS (SELECT 1 FROM regla_faceta x WHERE x.regla_id=r.id AND x.dimension=?))")
+                               " OR NOT EXISTS (SELECT 1 FROM regla_faceta x WHERE x.regla_id=r.id AND x.dimension=?)"
+                               " OR EXISTS (SELECT 1 FROM regla_faceta x WHERE x.regla_id=r.id AND x.dimension=? AND x.valor='ninguno'))")
             params.append(dim)
         params.extend(valores)
         if dim not in ("caso", "tarea"):
+            params.append(dim)
             params.append(dim)
     sql = "SELECT r.id FROM reglas r WHERE " + " AND ".join(condiciones)
     ids = [row[0] for row in con.execute(sql, params)]
@@ -188,7 +192,7 @@ def filtrar(con: sqlite3.Connection, confirmadas: dict[str, list[str]]) -> tuple
     tiene_caso = {r[0] for r in con.execute("SELECT DISTINCT regla_id FROM regla_caso")}
     tiene_tarea = {r[0] for r in con.execute("SELECT DISTINCT regla_id FROM regla_tarea")}
     tiene_dim: dict[str, set[str]] = {}
-    for rid, dim in con.execute("SELECT DISTINCT regla_id, dimension FROM regla_faceta"):
+    for rid, dim in con.execute("SELECT DISTINCT regla_id, dimension FROM regla_faceta WHERE valor <> 'ninguno'"):
         tiene_dim.setdefault(dim, set()).add(rid)
     for rid in ids:
         faltan = []
