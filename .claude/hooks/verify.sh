@@ -331,7 +331,7 @@ get_health  -> authenticated: false
 ```
 
 ```bash
-python3 nblm_load.py --corpus notebooklm-corpus
+python3 rules_v3.py classify --db rules.sqlite
 ```'
 for g in gate_image gate_dramaturgy gate_microgate; do
   check "$g deja pasar salida de terminal y shell" 0 "$(fire $g.py "$(msg fp-$g "$TECNICO")")"
