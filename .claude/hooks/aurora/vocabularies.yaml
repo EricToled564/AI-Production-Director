@@ -1,0 +1,690 @@
+# Aurora Prompt Linter — Vocabulary Lists v1.2-fupai (2026-09-25)
+# Copia ampliada de scripts/vocabularies.yaml v1.0/v1.1 del skill aurora-prompt-linter.
+# Cada lista P/O/L/PR/S corresponde a una categoría de la IDs system v6.0 §7.
+# Cuando un ref carga esa categoría, los términos listados quedan BANNED en el MAIN
+# (no en el bloque negativo). P/O solo se banean con rol ff/lf (ver prompt_linter.py P3).
+#
+# Cambios respecto al original, con fuente:
+#   - P: fuera sweat / sweaty / jawline (micro-acción corporal, dramaturgy §2, U3) → BODY_MICRO_ACTION_EXEMPT.
+#   - S: fuera "cinematic" (director §6.1 / dramaturgy §2) → BANNED.
+#   - BANNED: fuera slow motion / cartoon / anime / 3D render (condicionados: SLOW_MOTION_TERMS,
+#     STYLE_BANNED_FOTORREAL); dentro la lista de dramaturgy §2 y la anti-slop de gpt-image.md.
+#   - L / PR / O ampliadas: agua, automotriz, café/interior, clima, música/ensamble.
+#   - Nuevas tablas: WORD_BUDGET_BY_PLATFORM, NEGATIVE_BLOCK_POLICY, IDENTITY_BLOCK_GROUPS,
+#     TREATMENT_SECTION_OVERRIDES, snapshots seedance_2.5 / flux / ideogram / hailuo / seedream /
+#     nano_banana_2 / kling_3.0__4.
+
+# ---------- P: Personaje / Sujeto ----------
+P:
+  - athletic woman
+  - athletic man
+  - lean build
+  - muscular build
+  - toned build
+  - athletic build
+  - lean toned build
+  - mid-20s
+  - mid-30s
+  - mid-40s
+  - mid-50s
+  - young woman
+  - young man
+  - dark hair
+  - brown hair
+  - dark brown hair
+  - blonde hair
+  - black hair
+  - red hair
+  - ponytail
+  - high ponytail
+  - low ponytail
+  - loose hair
+  - curly hair
+  - hair tied
+  - female cyclist
+  - male cyclist
+  - female athlete
+  - male athlete
+  - athletic
+  - lean
+  - muscular
+  - toned
+  - tanned skin
+  - face
+  - female
+  - male
+  # ampliación por dominio
+  - female swimmer
+  - male swimmer
+  - wakeboarder
+  - female driver
+  - male driver
+  - racing driver
+  - barista
+  - violinist
+  - cellist
+  - musician
+
+# ---------- BODY_MICRO_ACTION_EXEMPT (P5) ----------
+# Nunca cuentan como re-descripción de P aunque un vocab custom los liste:
+# dramaturgy.md §2 "Physical micro-action on the body. Jaw locks. Knuckles whiten...",
+# universal-rules U3 / §1, race-and-speed.md §1 ley 2 y §7 ("sweat reads as discrete specular dots").
+BODY_MICRO_ACTION_EXEMPT:
+  - sweat
+  - sweat bead
+  - sweat beads
+  - sweaty
+  - jaw
+  - jawline
+  - knuckles
+  - breath
+  - exhale
+  - exhales
+  - swallow
+  - swallows
+  - tendon
+  - vein
+  - veins
+  - blink
+  - blinks
+
+# ---------- O: Outfit ----------
+O:
+  - red sports bra
+  - red shorts
+  - red tank top
+  - red top
+  - red high-waist
+  - red performance tank
+  - red high-waist shorts
+  - black t-shirt
+  - black shorts
+  - black tank top
+  - black tights
+  - black sneakers
+  - white sneakers
+  - performance tank top
+  - athletic wear
+  - workout clothes
+  - sports bra
+  - tank top
+  - t-shirt
+  - shorts
+  - sneakers
+  - shoes
+  - leggings
+  # agua
+  - wetsuit
+  - neoprene
+  - neoprene wetsuit
+  - swimsuit
+  - swim cap
+  - goggles
+  - life vest
+  # automotriz
+  - racing suit
+  - race suit
+  - fireproof suit
+  - helmet
+  - racing helmet
+  - racing gloves
+  - balaclava
+  # café / interior
+  - apron
+  - navy apron
+  - denim apron
+  # música / ensamble
+  - concert black
+  - black gown
+  - tuxedo
+  - bow tie
+
+# ---------- L: Locación ----------
+L:
+  - studio
+  - gym
+  - indoor cycling studio
+  - modern studio
+  - sunlit studio
+  - climbing wall
+  - bouldering wall
+  - bouldering grips
+  - black triangular volume
+  - black triangular prism
+  - wood floor
+  - wooden floor
+  - polished wood floor
+  - polished light wood floor
+  - concrete walls
+  - concrete floor
+  - cool gray walls
+  - cool gray concrete
+  - glass walls
+  - floor-to-ceiling windows
+  - floor-to-ceiling glass walls
+  - city skyline
+  - skyline
+  - trees beyond
+  - city beyond
+  - out-of-focus city
+  - windows
+  - tungsten spots
+  - warm tungsten
+  - warm lighting
+  - industrial lighting
+  - natural daylight
+  - soft shadows
+  - soft directional shadows
+  - night
+  - at night
+  - daylight
+  - cycling studio
+  - spin studio
+  # agua
+  - pool
+  - swimming pool
+  - lap pool
+  - infinity pool
+  - pool deck
+  - pool edge
+  - cenote
+  - water surface
+  - pool surface
+  - still water
+  - open water
+  - lake
+  - wake park
+  - cable park
+  - water spray
+  - spray of water
+  # automotriz
+  - racetrack
+  - race track
+  - drag strip
+  - pit lane
+  - asphalt
+  - wet asphalt
+  - tarmac
+  - armco barrier
+  - barrier
+  - guardrail
+  - grandstand
+  - start line
+  - finish line
+  - lane stripe
+  # café / interior
+  - café
+  - cafe
+  - coffee shop
+  - coffee bar
+  - bar counter
+  - coffee counter
+  - kitchen counter
+  - wooden table
+  - marble table
+  - table
+  - window
+  - window seat
+  - chair
+  - stool
+  - bar stool
+  - booth
+  # clima
+  - lightning
+  - thunderstorm
+  - storm clouds
+  - rain
+  - heavy rain
+  - drizzle
+  - fog
+  - mist
+  - haze
+  - dust
+  - dust cloud
+  - snow
+  - snowfall
+  - blizzard
+  # música / ensamble
+  - concert hall
+  - concert stage
+  - the stage
+  - stage lights
+  - rehearsal room
+  - orchestra pit
+  - recording studio
+  - auditorium
+
+# ---------- PR: Prop ----------
+PR:
+  - soccer ball
+  - football
+  - black and white ball
+  - red and white ball
+  - black panel
+  - red panel
+  - sports ball
+  - the ball changes color
+  - traditional ball
+  # agua
+  - wakeboard
+  - tow rope
+  - rope
+  - handle
+  - kickboard
+  - lane rope
+  - paddle
+  # automotriz
+  - steering wheel
+  - gear lever
+  - shifter
+  - traffic cone
+  - cone
+  - tire
+  - tyre
+  - slick tire
+  - tachometer
+  - tach needle
+  - christmas tree lights
+  # café / interior
+  - coffee cup
+  - espresso cup
+  - ceramic cup
+  - mug
+  - saucer
+  - portafilter
+  - espresso machine
+  - milk pitcher
+  # música / ensamble
+  - violin
+  - cello
+  - viola
+  - double bass
+  - violin bow
+  - cello bow
+  - music stand
+  - sheet music
+  - microphone
+  - mic stand
+  - grand piano
+
+# ---------- S: Estilo ----------
+# "cinematic" sale de aquí (director §6.1: vocabulario prohibido gana siempre) → BANNED.
+S:
+  - photorealistic
+  - editorial
+  - documentary
+  - studio lighting
+
+# ---------- BANNED: siempre prohibido en MAIN (P6, P11) ----------
+# dramaturgy.md §2 "What is banned" + universal-rules §1 + image/gpt-image.md Anti-Slop.
+# Una mención negada ("no cartoon") no cuenta (prompt_linter.py is_negated).
+BANNED:
+  # dramaturgy §2 / universal-rules §1
+  - cinematic
+  - professional
+  - high quality
+  - masterpiece
+  - stunning
+  - epic
+  - amazing
+  - beautiful lighting
+  - dynamic camera
+  - intense moment
+  - powerful scene
+  # gpt-image.md anti-slop (los que no estaban ya arriba)
+  - incredible
+  - gorgeous
+  # originales v1.0 que siguen siendo cross-platform
+  - dreamy slowmo
+  - dreamy
+  - perfume ad
+  - perfume ad aesthetic
+  - plastic skin
+  - smooth plastic
+  - dreamlike
+  - soft glow
+
+# ---------- STYLE_BANNED_FOTORREAL (P7) ----------
+# Solo se banean con --treatment fotorreal o race. En ilustracion/animacion son legítimos:
+# image/references/patterns/character-design.md ("Anime-Style Character Card"),
+# multi-panel.md ("Pixar-style 3D", "anime cel shading"), editing.md ("vibrant anime").
+STYLE_BANNED_FOTORREAL:
+  - anime
+  - anime-style
+  - cartoon
+  - cartoonish
+  - 3D render
+  - 3D rendered
+  - 3D-rendered
+  - CGI look
+  - cel shading
+  - cel-shaded
+  - cel shaded
+  - pixar-style
+  - pixar style
+  - claymation
+  - vector illustration
+  - flat illustration
+
+# ---------- SLOW MOTION (P7) ----------
+# WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing; dramaturgy §7 pide razón),
+# FAIL con --treatment race (race-and-speed.md §1 ley 1), exento con prefijo "ultra-" (kling.md §3 tempo).
+SLOW_MOTION_TERMS:
+  - slow motion
+  - slow-motion
+  - slowmo
+  - slow-mo
+  - slow mo
+SLOW_MOTION_ALLOWED_PREFIXES:
+  - "ultra-"
+  - "ultra "
+
+# ---------- REQUIRED por caso ----------
+# Keywords obligatorios cuando el caso aplica (solo casos de video 3a/3b/3c/4 — P8).
+REQUIRED_SPORTS_BROADCAST:
+  - 60fps
+  - broadcast realism
+
+# ---------- NEGATIVE_BLOCK_POLICY (P2) ----------
+# required        → falta de bloque = FAIL (campo negativo dedicado).
+# optional        → no se exige (positive framing). Si aparece con marcador "Negative:" en NB/GPT/Veo/Flux → WARN.
+# legacy_required → plataforma no resuelta: comportamiento v1.1 (required) + WARN.
+NEGATIVE_BLOCK_POLICY:
+  kling: required            # kling.md §6 "Kling has a dedicated negative prompts field"
+  seedance_2.5: required     # seedance-25.md §7 Prohibitions + §19-A "[Negative Prompts]"
+  seedance: optional         # seedance.md §12 "1.0 does NOT support negative prompts... 2.0 fragile"
+  gpt-image: optional        # gpt-image.md 5 slots: "Constraints:" cuenta como bloque; lo exige la sección constraints_slot
+  nano-banana: optional      # golden-rules §2 positive framing; models.md "Negative framing: использовать позитив"
+  veo: optional              # veo.md §7 "Describe only motion, camera, light change, and audio"; fixes §4 "Veo body text"
+  midjourney: optional       # U1 "only if the model supports them" — no se exige
+  flux: optional             # _capabilities.json supports_negative_prompt false
+  ideogram: optional
+  seedream: optional
+  hailuo: optional           # _capabilities.json supports_negative_prompt false
+NEGATIVE_MAX_ITEMS: 8        # SW30 R16 "≤8 ítems"; kling.md §6 "Keep the list short"
+
+# ---------- WORD_BUDGET_BY_PLATFORM (P1) — referencia, nunca bloquea ----------
+# default: rango recomendado por el adaptador de forge / archivo de modelo.
+# i2v: rango para casos 3a/3b/3c cuando el archivo de modelo da uno propio.
+# ceiling: max_prompt_words de _capabilities.json ("a ceiling, not a target").
+WORD_BUDGET_BY_PLATFORM:
+  midjourney:
+    default: [40, 80]
+    ceiling: 100
+    source: "forge adapters/midjourney.md 'Aim for 40–80 words'; _capabilities.json max_prompt_words 100"
+  flux:
+    default: [80, 150]
+    ceiling: 150
+    source: "forge adapters/flux.md '80–150 words'; _capabilities.json 150"
+  ideogram:
+    default: [60, 120]
+    ceiling: 120
+    source: "forge adapters/ideogram.md '60–120 words'; _capabilities.json 120"
+  gpt-image:
+    default: [150, 300]
+    ceiling: 300
+    source: "forge adapters/gpt-image.md '150–300 words'; _capabilities.json 300; SW30 template T1 ~250 palabras"
+  nano-banana:
+    default: [60, 120]
+    ceiling: 120
+    source: "forge adapters/nano-banana.md '60–120 words'; _capabilities.json 120 (SW30 T1 ~250 se reporta, no bloquea)"
+  seedream:
+    default: [40, 70]
+    ceiling: 120
+    source: "forge adapters/seedream.md '40–70 words'; _capabilities.json 120"
+  kling:
+    default: [80, 150]
+    i2v: [20, 40]
+    ceiling: 150
+    source: "forge adapters/kling.md '80–150 words'; kling.md §5/§10 'Image-to-video (any version). 20-40 words'; _capabilities.json 150"
+  veo:
+    default: [80, 150]
+    i2v: [50, 100]
+    ceiling: 150
+    source: "forge adapters/veo.md '80–150 words'; veo.md §3 sweet spot 50-200, §9 'Compress to the 50-100 word range'; _capabilities.json 150"
+  seedance:
+    default: [80, 150]
+    ceiling: 150
+    source: "forge adapters/seedance.md '80–150 words'; _capabilities.json 150; seedance.md §13 no fija número para I2V"
+  seedance_2.5:
+    default: [80, 150]
+    ceiling: 150
+    source: "forge adapters/seedance.md 80–150 / _capabilities.json 150 como única cifra disponible; seedance-25.md no fija número y sus ejemplos oficiales (§19) la superan — referencia informativa"
+  hailuo:
+    default: [60, 120]
+    ceiling: 120
+    source: "forge adapters/hailuo.md '60–120 words'; _capabilities.json 120"
+
+# ---------- IDENTITY_BLOCK_GROUPS (P3) ----------
+# U7: "face shape, eye color, skin tone. Hair color, length, style. Facial hair. Exact clothing items.
+# Distinctive accessories." Se exige presencia de al menos IDENTITY_BLOCK_MIN_GROUPS grupos.
+IDENTITY_BLOCK_MIN_GROUPS: 3
+IDENTITY_BLOCK_GROUPS:
+  hair: [hair, ponytail, bald, braid, braided, bun, curly, blonde, brunette, buzz cut, fringe, bangs, dreadlocks, afro]
+  eyes_skin: [eyes, eye color, brown eyes, green eyes, blue eyes, hazel eyes, skin, skin tone, complexion, freckles, pores]
+  garment: [wearing, dressed in, shirt, tank, jacket, dress, hoodie, blazer, coat, sweater, jersey, apron, suit, t-shirt, shorts, leggings, pants, jeans, crewneck, hanfu, wetsuit, uniform, kit]
+  accessory: [glasses, sunglasses, watch, earrings, necklace, cap, hat, headband, bracelet, helmet, scarf, bag, ring, wristband, chain, piercing]
+  distinctive: [scar, tattoo, beard, stubble, moustache, mustache, goatee, birthmark, dimple, gap tooth, crooked nose, jawline, cheekbones, nose bridge, mole, wrinkles, crow's feet]
+
+# ---------- ALLOWED motion/camera vocabulary (exento de baneo) ----------
+ALLOWED_MOTION_PREFIXES:
+  - camera
+  - shot
+  - lens
+  - framing
+  - angle
+  - view
+  - perspective
+  - pans
+  - tilts
+  - arcs
+  - pulls
+  - dollies
+  - pushes
+  - tracks
+  - follows
+  - swings
+  - orbits
+  - descends
+  - rises
+
+# ---------- TREATMENT_SECTION_OVERRIDES (P7) ----------
+# Se aplican sobre cualquier snapshot: reemplazan los patrones de la sección nombrada,
+# o la eliminan (null) cuando no aplica a ese tratamiento.
+TREATMENT_SECTION_OVERRIDES:
+  ilustracion:
+    style: [illustration, illustrated, anime, cel, cel-shaded, watercolor, watercolour, vector, line art, ink, painterly, comic, graphic novel, flat color, flat colour, gouache, pencil]
+    anti_style: null
+    details: [line weight, brushwork, texture, palette, shading, hatching, fabric, fine detail, pattern]
+    photoreal_closing: null
+  animacion:
+    style: [3d, pixar, pixar-style, cel, cel-shaded, anime, stop motion, claymation, cgi, rendered, toon, stylized, stylised, low poly, hand-drawn]
+    anti_style: null
+    details: [texture, shading, palette, subsurface, fabric, fine detail, rig, squash, stretch]
+    photoreal_closing: null
+
+# ---------- REQUIRED_SECTIONS_BY_PLATFORM_CASE ----------
+# Secciones obligatorias que debe contener el MAIN prompt por plataforma + caso. Cada sección
+# tiene patrones (case-insensitive, substring). PRESENTE si AL MENOS UNO matchea. Falta = FAIL.
+# Convención de keys: <platform>__<case>. Si no hay snapshot → WARN "honor system".
+# "cinematic" ya no aparece en ningún patrón (P6).
+REQUIRED_SECTIONS_BY_PLATFORM_CASE:
+
+  # ====== Caso 1 — Génesis text-to-image ======
+  gpt_image_2__1:   # gpt-image.md "5 slots": Scene / Subject / Important Details / Use Case / Constraints
+    subject:        [woman, man, person, subject, character, animal, dog, cat, building, object, group, product]
+    action_or_pose: [standing, sitting, holding, walking, looking, running, leaning, resting, posing, locking, frozen, mid-]
+    environment:    [studio, gym, room, street, outdoor, indoor, landscape, forest, urban, beach, field, scene:, storefront, pool, track, café, cafe, hall]
+    style:          [photorealistic, documentary, editorial, candid, journalistic, naturalistic, reportage, photograph]
+    camera_or_lens: [lens, mm, telephoto, wide angle, close-up, medium shot, full body, framing, shot, feel]
+    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, soft light, backlit, rim light]
+    anti_style:     [not illustration, not render, no stylization, no cartoon, no anime, photoreal, real photo, looks like a real]
+    use_case:       ["use case:", "use-case:", "usecase:"]
+    constraints_slot: ["constraints:"]
+
+  midjourney__1:
+    subject:        [woman, man, person, subject, character, animal, object]
+    style:          [photorealistic, editorial, candid, documentary, photography, --style]
+    composition:    [composition, framing, rule of thirds, centered, off-center, shot, negative space]
+    lighting:       [lighting, sunlight, daylight, tungsten, golden hour, soft light, side-light, rim light]
+    aspect_ratio:   ["--ar", aspect ratio, 16:9, 9:16, 3:2, 2:3, 1:1]
+    quality:        ["--v", "--style", "--q", "--stylize", "--s "]
+
+  nano_banana_pro__1:   # nano-banana.md: Subject + Action + Location/context + Composition + Style; sin números de lente
+    subject:        [woman, man, person, subject, character, animal, product]
+    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]
+    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]
+    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]
+    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]
+    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]
+
+  nano_banana_2__1:     # models.md: mismo estilo de prompt que NBP (natural language, 1-2 párrafos)
+    subject:        [woman, man, person, subject, character, animal, product]
+    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]
+    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]
+    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]
+    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]
+    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]
+
+  flux__1:              # forge adapters/flux.md: subject+action / environment+lighting / photographic spec / photoreal closing
+    subject:        [woman, man, person, subject, character, animal, object, product, founder]
+    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]
+    environment:    [office, studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, setting is, landscape]
+    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, softbox, side-light, rim]
+    photographic_spec: [shot on, mm, f/, depth of field, prime, hasselblad, sony, film aesthetic, grain]
+    photoreal_closing: [photorealistic, natural skin texture, no ai artifacts]
+
+  ideogram__1:          # forge adapters/ideogram.md Mode 1 (composited): subject / environment+lighting / photographic spec / negative space
+    subject:        [woman, man, person, subject, character, object, product, composition]
+    environment:    [studio, gym, room, outdoor, indoor, background, environment, setting]
+    lighting:       [light, lighting, sunlight, daylight, tungsten, diffused, softbox, rim]
+    composition:    [composition, negative space, centered, center of the frame, framing, third]
+
+  seedream__1:          # forge adapters/seedream.md: {framing} of {anchor}, {action}, {environment}, {lighting}, {grade}, {mood}, photorealistic
+    subject:        [woman, man, person, subject, character, object, product, founder]
+    framing:        [shot of, close-up, medium, wide, full body, portrait, framing]
+    environment:    [studio, gym, room, outdoor, indoor, office, pool, track, café, cafe, street]
+    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, side-light, rim]
+    style:          [photorealistic, photoreal, editorial, documentary]
+
+  # ====== Caso 2 — Imagen Ancla (refs @img / Elements / image N) ======
+  gpt_image_2__2:
+    ref_roles:      [image 1, image 2, image 3, "ref:", reference image, ref 1, ref 2, "image 1:"]
+    subject_action: [holding, standing, sitting, walking, looking, posing, performing, locking, frozen, mid-]
+    camera_or_lens: [lens, mm, telephoto, close-up, medium shot, framing, feel, shot]
+    lighting:       [light, lighting, sunlight, tungsten, soft, daylight, hard light]
+    style_consistency: [preserve, maintain, same style, consistent, exact, keep]
+    constraints_slot: ["constraints:"]
+
+  gpt_image_1_5__2:
+    ref_roles:      [image 1, image 2, image 3, "ref:", reference image, face strip, ref 1]
+    face_preservation: [preserve exact facial, preserve face, preserve identity, exact facial structure, eye shape, jawline, skin texture]
+    subject_action: [holding, standing, sitting, performing, posing, walking]
+    camera_or_lens: [lens, mm, telephoto, framing, medium shot, close-up]
+    lighting:       [light, lighting, sunlight, soft, tungsten]
+
+  nano_banana_pro__2:   # nano-banana.md Multi-Reference "[Image 1: face] ... Combine: face from Image 1"
+    ref_roles:      [image 1, image 2, image 3, "ref:", reference, "@img"]
+    subject_action: [holding, standing, sitting, walking, posing, frozen, mid-, looking, leaning]
+    camera_or_lens: [lens, mm, framing, shot, close-up, medium, wide, depth of field]
+    lighting:       [light, lighting, sunlight, soft, tungsten, hard light]
+    placement_anchor: [on the, at the, in the, beside, next to, between, in front of, level with]
+
+  nano_banana_2__2:
+    ref_roles:      [image 1, image 2, image 3, "ref:", reference, "@img"]
+    subject_action: [holding, standing, sitting, walking, posing, frozen, mid-, looking, leaning]
+    camera_or_lens: [lens, mm, framing, shot, close-up, medium, wide, depth of field]
+    lighting:       [light, lighting, sunlight, soft, tungsten, hard light]
+    placement_anchor: [on the, at the, in the, beside, next to, between, in front of, level with]
+
+  # ====== Caso 3a — I2V FF only ======
+  kling_3.0__3a:        # kling.md §3 "Image-to-video on 3.0 — lock first, then move" + §10 "preserve X"
+    scene_or_motion: [scene, motion, movement, action, evolution, transition, glides, follows, arcs, travels, drifts, turns, exhales, push-in, preserve]
+    subject_action:  [she, he, the subject, the ball, the camera, the figure, lifts, turns, extends, rotates, character a]
+    camera:          [camera, shot, lens, angle, view, dollies, pans, tilts, arcs, pushes, holds, push-in, mm]
+    style:           [realism, broadcast, documentary, photorealistic, naturalistic, realistic]
+    anti_morphing:   [no morphing, anti-morph, smooth, stable, consistent, no warping, preserve]
+
+  veo_3.1__3a:          # veo.md §7: "Maintain the subject from the first frame" + motion, camera, light change, audio, duration
+    subject_action: [she, he, the subject, lifts, turns, extends, walks, runs, glides, exhales]
+    timing_or_beat: [seconds, second, beat, gradually, slowly, quickly, over, during, then, "duration:"]
+    camera:         [camera, shot, lens, angle, dollies, pans, tilts, tracks, push-in, mm]
+    style:          [realism, photorealistic, 24fps, cinema, broadcast, naturalism, maintain the subject]
+    physics_cue:    [gravity, momentum, weight, mass, falls, bounces, drops, follows, arc, trajectory, wind, light grows, breath]
+
+  seedance__3a:         # seedance.md §13 "Describe only motion and camera work" + §14 audio in body
+    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, freezes]
+    camera:         [camera, shot, tracking, dolly, push, pan, tilt, mm, handheld, static]
+    audio:          ["audio.", "audio:", sound, hum, ambience, footsteps, breath, silence]
+
+  seedance_2.5__3a:     # seedance-25.md §3 fórmula oficial, §5 roles de referencia, §6 end state, §4 marcadores
+    reference_role: ["@image", "@img", defines, first frame, keep, strictly]
+    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, freezes, performs]
+    camera:         [camera, shot, push in, pull out, pan, tilt, orbit, follow, handheld, close-up, wide]
+    audio_markers:  ["<", "(", "audio includes", "audio:", sound]
+    end_state:      [end state, ends on, final frame, final image, freezes on, last frame]
+
+  hailuo__3a:           # forge adapters/hailuo.md: camera sentence leading / subject+action / environment+lighting / grade+mood
+    camera:         [camera, static, dollies, pans, tilts, handheld, orbits, whip, rack focus]
+    subject_action: [she, he, the subject, leans, turns, lifts, walks, exhales, looks]
+    light_change:   [light, lighting, side-light, glow, shadow, sun, lamp]
+    mood:           [mood, calm, tense, quiet, restless, unhurried, deliberate]
+
+  # ====== Caso 3b — I2V FF + LF ======
+  kling_3.0__3b:
+    scene_or_motion:  [scene, motion, transition, evolves, glides, travels, follows, transforms, preserve, push-in]
+    transition_FF_LF: [from, into, to, through, evolves, transitions, becomes, settles, ends, arrives, tail image, last frame]
+    camera:           [camera, shot, dollies, pans, tilts, arcs, holds, tracks, push-in, mm]
+    style:            [realism, broadcast, photorealistic, documentary, realistic, naturalistic]
+    anti_morphing:    [no morphing, smooth transition, stable, consistent, organic transition, preserve]
+
+  veo_3.1__3b:
+    transition_FF_LF: [from, into, to, through, evolves, transitions, becomes, then, settles, last frame]
+    timing_or_beat:   [seconds, beat, gradually, then, over, during, "duration:"]
+    camera:           [camera, shot, dollies, pans, tilts, push-in, mm]
+    physics_cue:      [gravity, momentum, weight, falls, arc, trajectory, lands, wind, breath]
+    anti_morphing:    [no morphing, smooth, stable, consistent, maintain the subject]
+
+  seedance_2.5__3b:     # seedance-25.md §16 "First + last frame ... declare each anchor separately" + §10 transiciones
+    reference_role: ["@image 1", "@image 2", first frame, last frame, "@img"]
+    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, performs]
+    camera:         [camera, shot, push in, pull out, pan, tilt, orbit, follow, handheld]
+    transition:     [transition, cut, dissolve, match cut, prohibit rigid cutting, evolves, settles]
+    end_state:      [end state, ends on, final frame, final image, last frame]
+
+  # ====== Caso 3c — Motion control ======
+  kling_3.0__3c:        # kling.md §9 Motion Control: "The prompt then focuses on subject description only"
+    scene:                [scene, environment, setting, location, backdrop]
+    motion_reference:     [motion reference, "@video", reference video, skeletal, pose ref, mocap]
+    character_orientation: [orientation, facing, front-facing, character orientation, 人物朝向]
+    camera:               [camera, shot, framing, angle, lens]
+
+  # ====== Caso 4 — Video con diálogo ======
+  kling_3.0__4:         # kling.md §3 dialogue protocol P1-P4 + Shot N (t) + Audio.
+    character_tags: ["[character a", "[character b", "character a:", "character b:"]
+    shot_list:      ["shot 1", "shot 2"]
+    dialogue:       ['"', '"', '"', "'"]
+    voice_tag:      [voice, raspy, whisper, calm, fearful, even, low, clear]
+    temporal_link:  [immediately, then, after, beat later, a moment later]
+    audio:          ["audio.", "audio:", ambience, footsteps, hum, no music]
+
+  veo_3.1__4:           # veo.md §4 dialogue syntax + §5 SFX labels + §10 skeleton
+    subject_action: [she, he, the subject, the speaker, says, speaks, talks]
+    dialogue:       ['"', '"', "'", "'", says, speaking, dialogue]
+    tone_or_accent: [tone, accent, voice, whispers, shouts, calmly, excitedly, authoritative, soft, deep, weary]
+    timing:         [seconds, beat, pauses, then, during, over, "duration:"]
+    audio_specs:    [audio, ambient, music, sound, room tone, breath, footsteps, native audio, "sfx:"]
+
+  seedance_2.5__4:      # seedance-25.md §4 marcadores { } < > ( ), "Dialogue language" reinforcement
+    dialogue_marker: ["{", "}"]
+    dialogue_language: [dialogue language, says in, vernacular, accent, softly, whispers]
+    subject_action: [she, he, the subject, the speaker, looks, lowers, forms, says]
+    camera:         [camera, shot, close-up, wide, push in, handheld, one continuous shot]
+    end_state:      [end state, ends on, final frame, final image, stage]
+
+  sora_2__4:
+    subject_action: [she, he, the subject, says, speaks, performs]
+    dialogue:       ['"', '"', says, speaking]
+    tone_or_accent: [tone, accent, voice, whispers, shouts, calmly]
+    timing:         [seconds, beat, then, over]
+    audio_specs:    [audio, ambient, sound, native audio]
