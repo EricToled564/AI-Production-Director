@@ -135,6 +135,8 @@ fi
 
 echo
 echo "=== 5b. classify + auditoría (capas 2 y 3, decisión 9) ==="
+PYX=""
+if [[ -n "$PYV" ]] && "$PYV" -c 'import openpyxl' 2>/dev/null; then PYX="$PYV"; fi
 if [[ -n "$PYV" ]]; then
   ANTES_CASO=$(q 'SELECT COUNT(DISTINCT regla_id) FROM regla_caso')
   ANTES_FACETA=$(q 'SELECT COUNT(DISTINCT regla_id||dimension) FROM regla_faceta')
@@ -147,15 +149,16 @@ if [[ -n "$PYV" ]]; then
   check "classify solo suma (nunca quita) filas de regla_faceta" 1 "$((DESPUES_FACETA >= ANTES_FACETA))"
   check "0 filas de vector con confianza por debajo del umbral 0.80" 0 "$(q "SELECT COUNT(*) FROM regla_caso WHERE origen='vector' AND confianza<0.80")"
 
-  XLSX="$TMP/auditoria.xlsx"
-  "$PYV" "$HOOKS/rules_v3.py" --db "$DB" audit-export --xlsx "$XLSX" >"$TMP/audit_export.log" 2>&1
-  check "audit-export sale 0" 0 $?
-  check "auditoria.xlsx escrito" 1 "$([[ -f "$XLSX" ]] && echo 1 || echo 0)"
-  check "audit-export tiene hoja 'caso' + una por faceta cerrada (d1,d2,d3,d4,d8,d9)" 7 \
-    "$("$PYV" -c "import openpyxl; print(len(openpyxl.load_workbook('$XLSX', read_only=True).sheetnames))")"
+  if [[ -n "$PYX" ]]; then
+    XLSX="$TMP/auditoria.xlsx"
+    "$PYX" "$HOOKS/rules_v3.py" --db "$DB" audit-export --xlsx "$XLSX" >"$TMP/audit_export.log" 2>&1
+    check "audit-export sale 0" 0 $?
+    check "auditoria.xlsx escrito" 1 "$([[ -f "$XLSX" ]] && echo 1 || echo 0)"
+    check "audit-export tiene hoja 'caso' + una por faceta cerrada (d1,d2,d3,d4,d8,d9)" 7 \
+      "$("$PYX" -c "import openpyxl; print(len(openpyxl.load_workbook('$XLSX', read_only=True).sheetnames))")"
 
-  # round-trip: corrige a mano una fila de la hoja 'caso' y reimporta
-  RID_PRUEBA=$("$PYV" -c "
+    # round-trip: corrige a mano una fila de la hoja 'caso' y reimporta
+    RID_PRUEBA=$("$PYX" -c "
 import openpyxl
 wb = openpyxl.load_workbook('$XLSX')
 ws = wb['caso']
@@ -168,15 +171,18 @@ else:
     wb.save('$XLSX')
     print(row[0].value)
 ")
-  if [[ -n "$RID_PRUEBA" ]]; then
-    "$PYV" "$HOOKS/rules_v3.py" --db "$DB" audit-import --xlsx "$XLSX" --auditor test_ci >"$TMP/audit_import.log" 2>&1
-    check "audit-import sale 0" 0 $?
-    check "la corrección queda con origen=auditoria" 1 \
-      "$(q "SELECT COUNT(*) FROM regla_caso WHERE regla_id='$RID_PRUEBA' AND caso='NINGUNO' AND origen='auditoria' AND auditor='test_ci'")"
-    check "la corrección queda registrada en auditorias" 1 \
-      "$(q "SELECT COUNT(*) > 0 FROM auditorias WHERE regla_id='$RID_PRUEBA' AND auditor='test_ci'")"
+    if [[ -n "$RID_PRUEBA" ]]; then
+      "$PYX" "$HOOKS/rules_v3.py" --db "$DB" audit-import --xlsx "$XLSX" --auditor test_ci >"$TMP/audit_import.log" 2>&1
+      check "audit-import sale 0" 0 $?
+      check "la corrección queda con origen=auditoria" 1 \
+        "$(q "SELECT COUNT(*) FROM regla_caso WHERE regla_id='$RID_PRUEBA' AND caso='NINGUNO' AND origen='auditoria' AND auditor='test_ci'")"
+      check "la corrección queda registrada en auditorias" 1 \
+        "$(q "SELECT COUNT(*) > 0 FROM auditorias WHERE regla_id='$RID_PRUEBA' AND auditor='test_ci'")"
+    else
+      echo "  SKIP  round-trip de audit-import (hoja 'caso' vacía: nada pendiente de auditar)"
+    fi
   else
-    echo "  SKIP  round-trip de audit-import (hoja 'caso' vacía: nada pendiente de auditar)"
+    echo "  SKIP  audit-export/audit-import (sin openpyxl en el intérprete con fastembed: pip install openpyxl)"
   fi
 else
   echo "  SKIP  classify + auditoría (sin fastembed: classify necesita embeddings y prototipos)"
