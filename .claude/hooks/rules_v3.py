@@ -43,6 +43,7 @@ HOOKS = Path(__file__).resolve().parent
 REPO = HOOKS.parent.parent
 SCHEMA = HOOKS / "schema_v3.sql"
 CLASIFICACION_V2 = REPO / ".claude" / "rules" / "clasificacion_v2_app.json"
+CLASIFICACION_LLM = REPO / ".claude" / "rules" / "clasificacion_llm_facetas.json"
 BUILD_APP = REPO / "app" / "build_app.py"
 MODELO_EMB = "intfloat/multilingual-e5-large"
 FASTEMBED_CACHE = Path(os.environ.get("FASTEMBED_CACHE_PATH", "/tmp/fastembed_cache"))
@@ -763,6 +764,11 @@ def cmd_build(args) -> int:
             importar_clasificacion(con, clas)
         else:
             print(f"clasificación v2 no encontrada en {clas}; omitida")
+        clas_llm = Path(args.clasificacion_llm)
+        if clas_llm.is_file():
+            importar_clasificacion_llm(con, clas_llm)
+        else:
+            print(f"clasificación por lectura (llm) no encontrada en {clas_llm}; omitida")
     reconstruir_fts(con)
     con.commit()
     return 0
@@ -826,6 +832,51 @@ def importar_clasificacion(con: sqlite3.Connection, path: Path) -> tuple[int, in
             (nombre,)):
         print(f"  huérfana {rid} · {razon} · {det}")
     return total, len(importadas), len(huerfanas)
+
+
+def importar_clasificacion_llm(con: sqlite3.Connection, path: Path) -> tuple[int, int]:
+    """Importa .claude/rules/clasificacion_llm_facetas.json: facetas D1-D9 clasificadas por
+    lectura real del texto (capa 2b de la Decisión 9), origen='llm'. Reproducible en cada
+    build sin volver a correr agentes. Valida cada valor contra facetas_catalogo antes de
+    insertar; nunca inserta a ciegas."""
+    datos = json.loads(path.read_text(encoding="utf-8"))
+    fecha = now()
+    ids_conocidos = {r[0] for r in con.execute("SELECT id FROM reglas")}
+    valores_validos: dict[str, set[str]] = {}
+    for dim, valor in con.execute("SELECT dimension, valor FROM facetas_catalogo WHERE cerrada=1"):
+        valores_validos.setdefault(dim, set()).add(valor)
+
+    n_faceta = n_descartada = 0
+    for r in datos.get("reglas", []):
+        rid = r["id"]
+        if rid not in ids_conocidos:
+            n_descartada += 1
+            continue
+        for dim, valor in r.get("valores", {}).items():
+            if dim not in valores_validos or valor not in valores_validos[dim]:
+                n_descartada += 1
+                continue
+            cur = con.execute("INSERT OR IGNORE INTO regla_faceta VALUES (?,?,?,?,?)",
+                               (rid, dim, valor, "llm", fecha))
+            n_faceta += cur.rowcount
+
+    n_caso = 0
+    for c in datos.get("casos", []):
+        rid = c["id"]
+        if rid in ids_conocidos and c["caso"] in CASOS:
+            con.execute("INSERT OR REPLACE INTO regla_caso VALUES (?,?,?,?,?,?)",
+                        (rid, c["caso"], "regla", None, c.get("razon", ""), fecha))
+            n_caso += 1
+    con.commit()
+    print(f"import-llm: {len(datos.get('reglas', []))} reglas en {path.name} · "
+          f"+{n_faceta} regla_faceta (origen=llm) · +{n_caso} regla_caso · {n_descartada} descartadas")
+    return n_faceta, n_descartada
+
+
+def cmd_import_llm(args) -> int:
+    con = connect(args.db)
+    importar_clasificacion_llm(con, Path(args.clasificacion_llm))
+    return 0
 
 
 def cmd_import_app(args) -> int:
@@ -1318,16 +1369,21 @@ def main() -> int:
     ap.add_argument("--db", default="rules.sqlite")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    b = sub.add_parser("build", help="esquema + registro + import-app + fts (base nueva)")
+    b = sub.add_parser("build", help="esquema + registro + import-app + import-llm + fts (base nueva)")
     b.add_argument("--force", action="store_true", help="borra la base si existe")
     b.add_argument("--root", action="append", default=[], help="raíz extra de régimen (repetible)")
     b.add_argument("--clasificacion", default=str(CLASIFICACION_V2))
+    b.add_argument("--clasificacion-llm", default=str(CLASIFICACION_LLM))
     b.add_argument("--sin-import", action="store_true")
     b.set_defaults(fn=cmd_build)
 
     i = sub.add_parser("import-app", help="importa la clasificación v2 de la app")
     i.add_argument("--clasificacion", default=str(CLASIFICACION_V2))
     i.set_defaults(fn=cmd_import_app)
+
+    il = sub.add_parser("import-llm", help="importa las facetas D1-D9 clasificadas por lectura real (capa 2b)")
+    il.add_argument("--clasificacion-llm", default=str(CLASIFICACION_LLM))
+    il.set_defaults(fn=cmd_import_llm)
 
     d = sub.add_parser("derive", help="tareas, casos por ruta y facetas")
     d.set_defaults(fn=cmd_derive)
