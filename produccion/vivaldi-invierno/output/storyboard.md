@@ -6,7 +6,7 @@
 | **Aspect** | 16:9 |
 | **Beat framework** | Custom (music-driven; loudness = shot count) |
 | **Brand lock** | [`brand-lock.snapshot.md`](./brand-lock.snapshot.md) |
-| **Generated** | 2026-09-25T17:32:52Z |
+| **Generated** | 2026-09-25T18:02:25Z |
 
 ---
 
@@ -54,71 +54,39 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_02 · 1.6–4.8s · ECU · static
+### shot_02 · 1.6–8.0s · ECU · static
 
 **Beat:** puertas-cerradas
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Bow hair under tension with one loose hair separating and whipping, rosin dust drifting down through the warm beam onto it, black behind
+**Subject:** Bow hair under tension with one loose hair separating and whipping, rosin dust drifting down through the warm beam onto it; then Vera's right hand closed on the frog of the bow, knuckles whitening, one vein raised on the back of the hand, warm light carving the tendons, rest of frame black
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** La música cae 17 dB en un segundo: el plano quieto va cerrado; el objeto ancla (la crin suelta) y el motivo (la resina) se presentan en el primer silencio.
+**Rationale:** La música cae 17 dB en un segundo y se mantiene baja hasta el 8: el objeto ancla (la crin suelta), el motivo (la resina) y la primera anatomía en decisión (el agarre del frog) comparten el mismo silencio antes de que exista un rostro.
 
 ---
 
-### shot_03 · 4.8–8.0s · CU · static
+### shot_03 · 8.0–14.0s · MCU · push
 
 **Beat:** puertas-cerradas
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Vera's right hand closed on the frog of the bow, knuckles whitening, one vein raised on the back of the hand, warm light carving the tendons, rest of frame black
+**Subject:** Ilan in profile as a black silhouette at the edge of the beam, two warm reflections on his glasses, his bow trembling in a low tremolo rendered as a slight blur while his head stays sharp; then Tomas's left hand gripping the cello neck, knobby knuckles whitening, a white tape mark on the dark floor soft in the background
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Primera anatomía en decisión (agarre): la resistencia se instala en la mano antes de que exista un rostro.
+**Rationale:** El tremolo grave del tramo 1-14 s es lo único que se mueve; la cámara se acerca despacio a leer ese temblor y cierra presentando la marca de cinta blanca (ancla de posición para la inserción) mientras la presión sigue subiendo en otra mano.
 
 ---
 
-### shot_04 · 8.0–11.2s · MCU · push
-
-**Beat:** puertas-cerradas
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Ilan in profile as a black silhouette at the edge of the beam, two warm reflections on his glasses, his bow trembling in a low tremolo rendered as a slight blur while his head stays sharp
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** El tremolo grave del tramo 1-14 s es lo único que se mueve; la cámara se acerca despacio a leer ese temblor (qué cambió: el arco empezó a vibrar).
-
----
-
-### shot_05 · 11.2–14.0s · CU · static
-
-**Beat:** puertas-cerradas
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Tomas's left hand gripping the cello neck, knobby knuckles whitening, a white tape mark on the dark floor soft in the background
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Cierra la escena presentando la marca de cinta blanca (ancla de posición para la inserción) mientras la presión sigue subiendo en una mano.
-
----
-
-### shot_06 · 14.0–16.4s · ECU · static
+### shot_04 · 14.0–16.4s · ECU · static
 
 **Beat:** sirocco
 
@@ -134,103 +102,55 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_07 · 16.4–18.8s · MCU · push
+### shot_05 · 16.4–20.8s · MCU · handheld
 
 **Beat:** sirocco
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Vera's jaw locked, one bead of sweat catching the top light on her temple, the scar through her left eyebrow deepening as she presses, black behind
+**Subject:** Vera's jaw locked, one bead of sweat catching the top light on her temple, the scar through her left eyebrow deepening as she presses; then Vera waist-up, right arm crossing the frame on a string change, shirt darkening with sweat at the back, four black silhouettes motionless at the edge of the beam behind her
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Cambió el esfuerzo: el push lento se acerca a la mandíbula trabada y a la gota, los dos speculares del plano.
+**Rationale:** Cambió el esfuerzo entre 16.4 y 20.8 s: la mandíbula trabada y la gota anticipan el único plano de la escena con el cuerpo entero trabajando; el handheld micro respira con el brazo, un solo movimiento dominante en el panel.
 
 ---
 
-### shot_08 · 18.8–20.8s · MS · handheld
-
-**Beat:** sirocco
-
-**Angle / DOF:** eye-level · deep
-
-**Subject:** Vera waist-up, right arm crossing the frame on a string change, shirt darkening with sweat at the back, four black silhouettes motionless at the edge of the beam behind her
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Único plano de la escena con el cuerpo entero trabajando; el handheld micro respira con el brazo (un solo movimiento).
-
----
-
-### shot_09 · 20.8–22.8s · ECU · static
+### shot_06 · 20.8–25.2s · ECU · static
 
 **Beat:** sirocco
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Rosin dust leaping off the bow hair at the moment of an accent and hanging in the warm beam, bow edge sharp, dust as a constellation of specular points
+**Subject:** Rosin dust leaping off the bow hair at the moment of an accent and hanging in the warm beam, bow edge sharp, dust as a constellation of specular points; then the f-hole edge of Tomas's cello catching a single warm specular as the sound falls into the valley, the rest of the instrument and Tomas in black silhouette
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** El acento de 21-22 s se rinde como consecuencia física: la resina salta; el motivo se ata al ritmo.
+**Rationale:** El acento de 21-22 s se rinde como consecuencia física y el panel se queda ahí hasta el valle de 25 s (-41 dBFS): el motivo se ata al ritmo y el plano más oscuro de la escena llega dentro del mismo encuadre; loud only works next to quiet.
 
 ---
 
-### shot_10 · 22.8–25.2s · CU · static
+### shot_07 · 25.2–29.6s · MCU · pull
 
 **Beat:** sirocco
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** The f-hole edge of Tomas's cello catching a single warm specular, the rest of the instrument and Tomas in black silhouette
+**Subject:** Vera from behind, the black linen shirt clinging wet to her back, shoulder blades working, the beam edge cutting across her; then her fingertip pads blanched white against the string, nail edges pressing, one string vibrating to a blur beside a sharp one
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Valle de 25 s (-41 dBFS): el plano más oscuro de la escena, un solo brillo; loud only works next to quiet.
+**Rationale:** Cambió el aire: la camisa mojada revela el costo y el pull leve abre para verla entera antes de volver a las yemas en la segunda subida de agudos (28-30 s), con blur parcial solo en la cuerda.
 
 ---
 
-### shot_11 · 25.2–27.6s · MCU · pull
-
-**Beat:** sirocco
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Vera from behind, the black linen shirt clinging wet to her back, shoulder blades working, the beam edge cutting across her
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Cambió el aire: la camisa mojada revela el costo; el pull leve abre para ver la espalda entera.
-
----
-
-### shot_12 · 27.6–29.6s · ECU · static
-
-**Beat:** sirocco
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Vera's fingertip pads blanched white against the string, nail edges pressing, one string vibrating to a blur beside a sharp one
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Segunda subida de agudos (28-30 s): la precisión se muestra en las yemas, con blur parcial solo en la cuerda.
-
----
-
-### shot_13 · 29.6–32.0s · MS · static
+### shot_08 · 29.6–32.0s · MS · static
 
 **Beat:** sirocco
 
@@ -246,71 +166,39 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_14 · 32.0–33.6s · CU · static
+### shot_09 · 32.0–35.2s · CU · handheld
 
 **Beat:** borea
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Tomas's left hand on the cello neck, knuckles whitening, a vein crossing the forearm, warm light on the back of the hand
+**Subject:** Tomas's left hand on the cello neck, knuckles whitening, a vein crossing the forearm, warm light on the back of the hand; then Kai's right hand dropping the bow onto the double-bass strings, the geometric tattoo on his forearm tensing and slackening, the bass body vibrating against his hip
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Salto de nivel medido en 32.0-32.5 s: el tutti entra por la mano de Tomás.
+**Rationale:** Salto de nivel medido en 32.0-32.5 s: el tutti entra por la mano de Tomás y el golpe del contrabajo se recibe en el mismo panel; handheld como único movimiento dominante.
 
 ---
 
-### shot_15 · 33.6–35.2s · CU · handheld
+### shot_10 · 35.2–38.4s · CU · push
 
 **Beat:** borea
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Kai's right hand dropping the bow onto the double-bass strings, the geometric tattoo on his forearm tensing and slackening, the bass body vibrating against his hip
+**Subject:** Noor's neck with a vein standing out, the dark braid jumping on her right shoulder, the gold nose ring returning one point of light; then Ilan's glasses catching the top light as two warm reflections moving with his head, grey beard shining with sweat
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** El golpe del contrabajo se recibe en cámara: handheld como único movimiento del plano.
+**Rationale:** Tercera y cuarta voz del tutti comparten panel; el push acerca los reflejos que se mueven con el fraseo mientras el aro sigue siendo el specular de la primera mitad.
 
 ---
 
-### shot_16 · 35.2–36.8s · CU · static
-
-**Beat:** borea
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Noor's neck with a vein standing out, the dark braid jumping on her right shoulder, the gold nose ring returning one point of light
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Tercera voz del tutti; el aro es el specular del plano.
-
----
-
-### shot_17 · 36.8–38.4s · MCU · push
-
-**Beat:** borea
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Ilan's glasses catching the top light as two warm reflections moving with his head, grey beard shining with sweat
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Cuarta voz; el push acerca los reflejos que se mueven (qué cambió: la cabeza se inclina con el fraseo).
-
----
-
-### shot_18 · 38.4–40.8s · MS · static
+### shot_11 · 38.4–40.8s · MS · static
 
 **Beat:** borea
 
@@ -326,39 +214,23 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_19 · 40.8–42.4s · ECU · static
+### shot_12 · 40.8–44.0s · ECU · static
 
 **Beat:** borea
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** The shaved nape of Kai's head with one drop of sweat running down it, warm rim on the skin, black behind
+**Subject:** The shaved nape of Kai's head with one drop of sweat running down it, warm rim on the skin, black behind; then Noor's hands on the viola, left fingers stopping the strings, right hand mid-stroke with the bow hair slightly blurred
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Cuerpo al límite sin rostro: la gota en la nuca es el indicador de estado.
+**Rationale:** Cuerpo al límite sin rostro: la gota en la nuca es el indicador de estado y las manos de la viola cierran el panel con blur parcial solo en el arco, torso nítido.
 
 ---
 
-### shot_20 · 42.4–44.0s · CU · static
-
-**Beat:** borea
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Noor's hands on the viola, left fingers stopping the strings, right hand mid-stroke with the bow hair slightly blurred
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Manos de la viola con blur parcial solo en el arco; torso nítido.
-
----
-
-### shot_21 · 44.0–46.0s · MCU · push
+### shot_13 · 44.0–46.0s · MCU · push
 
 **Beat:** borea
 
@@ -374,7 +246,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_22 · 46.0–49.2s · ECU · static
+### shot_14 · 46.0–49.2s · ECU · static
 
 **Beat:** borea
 
@@ -390,7 +262,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_23 · 49.2–52.0s · MS · push
+### shot_15 · 49.2–52.0s · MS · push
 
 **Beat:** guerra
 
@@ -406,7 +278,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_24 · 52.0–54.4s · WS · static
+### shot_16 · 52.0–54.4s · WS · static
 
 **Beat:** guerra
 
@@ -422,71 +294,23 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_25 · 54.4–55.2s · ECU · whip
+### shot_17 · 54.4–58.4s · ECU · whip
 
 **Beat:** guerra
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Bow hair and rosin dust bursting in the beam, the whole frame raked into motion streaks with the bow edge surviving
+**Subject:** Rosin dust and bow hair bursting into raked motion streaks as the whip lands on the 54.65s accent; then Tomas's knuckles whitening hard on the cello neck; then Kai's bow striking the bass strings, the forearm tattoo tensing, dust trailing; then a single string blurring into a band of light beside a sharp neighbouring string
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Ráfaga A entra con el acento de 54.65 s; el whip es la transición, no un movimiento apilado.
+**Rationale:** Ráfaga A completa (54.4-58.4 s) fusionada en un panel: el whip de entrada sobre el acento de 54.65 s, las dos manos que responden a los acentos de 54.65-56.55 s, y el borrado de cuerda que cierra la ráfaga como prueba de un solo instante.
 
 ---
 
-### shot_26 · 55.2–56.0s · CU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Tomas's knuckles white on the cello neck, tendons raised, warm light hard on the hand
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Segundo panel de la ráfaga A: anatomía en decisión (agarre máximo).
-
----
-
-### shot_27 · 56.0–57.2s · CU · handheld
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Kai's bow striking the bass strings, the forearm tattoo tensing, the instrument shaking against his hip, dust trailing the bow
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Acentos de 56.2 y 56.55 s: el golpe del contrabajo, cámara sacudida por el golpe.
-
----
-
-### shot_28 · 57.2–58.4s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** A single string vibrating until it blurs into a band of light, the neighbouring string sharp, warm rim on both
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Cierra la ráfaga A con la cuerda borrada: blur parcial como prueba de un solo instante.
-
----
-
-### shot_29 · 58.4–60.8s · MCU · static
+### shot_18 · 58.4–60.8s · MCU · static
 
 **Beat:** guerra
 
@@ -502,39 +326,23 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_30 · 60.8–61.2s · ECU · static
+### shot_19 · 60.8–61.6s · ECU · static
 
 **Beat:** guerra
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** The frog of Ilan's bow gripped hard, thumb pressing white, warm specular on the ferrule
+**Subject:** The frog of Ilan's bow gripped hard, thumb pressing white, warm specular on the ferrule; then Vera's fingertips slamming down on the fingerboard, pads blanched
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Ráfaga B, acento 60.8 s.
+**Rationale:** Ráfaga B: los acentos de 60.8 y 61.05-61.15 s fusionados en un solo panel de 0.8 s; el arco se rompe en el panel siguiente.
 
 ---
 
-### shot_31 · 61.2–61.6s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Vera's fingertips slamming down on the fingerboard, pads blanched
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Ráfaga B, acento 61.05-61.15 s.
-
----
-
-### shot_32 · 61.6–62.4s · CU · static
+### shot_20 · 61.6–62.4s · CU · static
 
 **Beat:** guerra
 
@@ -550,7 +358,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_33 · 62.4–64.4s · MCU · static
+### shot_21 · 62.4–64.4s · MCU · static
 
 **Beat:** guerra
 
@@ -566,71 +374,23 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_34 · 64.4–65.6s · CU · handheld
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Kai's bow leaving a trail of rosin dust behind it in the beam, forearm tattoo sharp, bow hair blurred
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Tramo fuerte 63.55-64.5 s: la estela de polvo es el cue de velocidad (blur solo en el arco).
-
----
-
-### shot_35 · 65.6–66.8s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** high · shallow
-
-**Subject:** Tomas's shoe planted on the white gaffer-tape mark on the dark floor, the cello endpin beside it, dust settling in the light
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Ángulo alto porque el sujeto es el piso: el pie clavado en la marca dice que el cuerpo no cede.
-
----
-
-### shot_36 · 66.8–68.0s · MS · push
+### shot_22 · 64.4–69.2s · MS · handheld
 
 **Beat:** guerra
 
 **Angle / DOF:** low · shallow
 
-**Subject:** Ilan from a low angle, right arm driving the bow, glasses flaring warm, jacket pulling at the shoulder
+**Subject:** Kai's bow leaving a trail of rosin dust behind it in the beam, forearm tattoo sharp; then Tomas's shoe planted on the white gaffer-tape mark on the dark floor, the cello endpin beside it; then Ilan from a low angle driving the bow, glasses flaring warm, jacket pulling at the shoulder; then the loose broken hair of Vera's bow tangling around the tip and whipping free again
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Tramo fuerte 65.75-69.4 s: el push bajo sube la presión hacia el acento de 69.1 s.
+**Rationale:** Tramo fuerte 63.55-69.4 s comprimido en un panel de cuatro cuerpos: estela de polvo, pie clavado en la marca, empuje de Ilan hacia el acento de 69.1 s, y el objeto ancla roto siguiendo en su nuevo estado; handheld como movimiento dominante que ata el compuesto.
 
 ---
 
-### shot_37 · 68.0–69.2s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** The loose broken hair of Vera's bow tangling around the tip and whipping free again, warm rim on the hair, black behind
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Acento 69.1 s: el objeto ancla en su nuevo estado (roto) sigue trabajando.
-
----
-
-### shot_38 · 69.2–71.6s · MCU · static
+### shot_23 · 69.2–71.6s · MCU · static
 
 **Beat:** guerra
 
@@ -646,71 +406,23 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_39 · 71.6–72.0s · ECU · whip
+### shot_24 · 71.6–73.6s · ECU · whip
 
 **Beat:** guerra
 
 **Angle / DOF:** eye-level · shallow
 
-**Subject:** Bow hair and dust raked into streaks, bow tip surviving sharp
+**Subject:** Bow hair and dust raked into streaks as Ráfaga C enters on the 71.95s accent, bow tip surviving sharp; then Tomas's knuckles white on the neck, one vein raised; then Kai's shaved nape, sweat running, muscles of the neck tight; then Vera's jaw clenched hard, scar deepening, sweat on the temple, hair plastered at the nape
 
 **On-screen text:** none
 
 **VO:** none
 
-**Rationale:** Ráfaga C entra en 71.7 s con el primer acento de la carrera final (71.95 s).
+**Rationale:** Ráfaga C, la carrera final: los acentos de 72.2, 72.4-72.6 y 72.8 s fusionados en un panel; el rostro de Vera llega al final como recompensa dentro de la ráfaga, igual que en la versión sin fusionar.
 
 ---
 
-### shot_40 · 72.0–72.4s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Tomas's knuckles white on the neck, one vein raised
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Acento 72.2 s.
-
----
-
-### shot_41 · 72.4–72.8s · ECU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Kai's shaved nape, sweat running, muscles of the neck tight
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Acento 72.4-72.6 s.
-
----
-
-### shot_42 · 72.8–73.6s · CU · static
-
-**Beat:** guerra
-
-**Angle / DOF:** eye-level · shallow
-
-**Subject:** Vera's jaw clenched hard, scar deepening, sweat on the temple, hair plastered at the nape
-
-**On-screen text:** none
-
-**VO:** none
-
-**Rationale:** Acento 72.8 s: el rostro llega tarde y poco, como recompensa dentro de la ráfaga.
-
----
-
-### shot_43 · 73.6–75.2s · MS · push
+### shot_25 · 73.6–75.2s · MS · push
 
 **Beat:** guerra
 
@@ -726,7 +438,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_44 · 75.2–77.4s · ECU · static
+### shot_26 · 75.2–77.4s · ECU · static
 
 **Beat:** guerra
 
@@ -742,7 +454,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_45 · 77.4–80.0s · WS · static
+### shot_27 · 77.4–80.0s · WS · static
 
 **Beat:** quest-e-l-verno
 
@@ -758,7 +470,7 @@ Video musical de 82.15 s: quinteto de cuerdas (identidades inventadas, canonizad
 
 ---
 
-### shot_46 · 80.0–82.15s · ECU · static
+### shot_28 · 80.0–82.15s · ECU · static
 
 **Beat:** quest-e-l-verno
 
@@ -788,4 +500,4 @@ Ninguno. Créditos, si los hay, van en post fuera de este storyboard.
 
 ## Audit trail
 
-Generado contra `brand-lock.snapshot.md` (plantilla sin configurar, congelada en 2026-09-25T17:32:52Z) y contra `../audio-analisis.json` (medición de la grabación entregada por Eric el 2026-09-25).
+Generado contra `brand-lock.snapshot.md` (plantilla sin configurar, congelada en 2026-09-25T18:02:25Z) y contra `../audio-analisis.json` (medición de la grabación entregada por Eric el 2026-09-25).
