@@ -32,25 +32,47 @@ Reproducible: `for s in ...; do rule_registry.py --skill $s --stats; done`.
 
 ## Paso 2 — Decidir cuáles aplican a ESTE caso
 
-**Lo hace NotebookLM, no el agente.** Decisión de dirección, y el razonamiento es
-correcto: hay evidencia directa de que la selección del agente falla — en la sesión
-donde se construyó esto se saltó dos veces un skill que estaba instalado desde el
-primer minuto — y evidencia directa de que NotebookLM funciona.
+**Decisión 9 del 2026-09-25: NotebookLM queda fuera del flujo por completo.** El criterio
+no vuelve al agente: se reparte entre dos capas deterministas y la auditoría de Eric.
+
+1. **Capa determinista.** Tablas de patrón de ruta y expresiones regulares dentro de
+   `.claude/hooks/rules_v3.py` (`ARCHIVO_CASO`, `ARCHIVO_TAREA`, `ARCHIVO_FACETA`,
+   `REGEX_FACETA`), más el frontmatter de cada archivo de `regimenes/`, con la misma
+   disciplina que `scope.yaml`: cada entrada dice qué toca, qué valor asigna y por qué, y
+   gana la primera que hace match. La ejecuta `derive`. Se discute línea por línea, en Python,
+   por PR.
+2. **Capa vectorial.** El subcomando `classify`. Para lo que la capa 1 no decide, la
+   similitud del embedding de la regla (`intfloat/multilingual-e5-large`, tabla `embeddings`)
+   contra el prototipo de cada valor de faceta o caso (tabla `prototipos`, un centroide por
+   descripción, construido por `embed`) asigna el valor con `origen='vector'` si supera
+   `--umbral` (0.80 por defecto), y guarda la confianza. Es una sugerencia con número, nunca
+   una decisión editorial; las facetas D1-D9 solo se auditan en reglas de imagen o video.
+3. **Auditoría.** `audit-export` vuelca a una hoja xlsx, una pestaña por dimensión y otra
+   para `caso`, todo lo que sigue sin valor tras las capas 1 y 2, con la mejor sugerencia y su
+   confianza aunque no llegara al umbral. Eric llena `valor_corregido` y `razon`; `audit-import`
+   relee esa hoja y aplica cada corrección con `origen='auditoria'`, que manda sobre las otras
+   dos capas sin importar la confianza que tuvieran, y queda registrada en `auditorias` con
+   fecha. Así el sistema aprende de su detector más confiable.
 
 ```bash
-python3 .claude/hooks/rule_export.py \
-  --registry reg_image.json --out fuente.md --pregunta pregunta.txt \
-  --caso "maestro de rostro T1, Nano Banana Pro"
+python3 .claude/hooks/rules_v3.py --db rules.sqlite build
+python3 .claude/hooks/rules_v3.py --db rules.sqlite derive
+python3 .claude/hooks/rules_v3.py --db rules.sqlite embed         # requiere fastembed + numpy
+python3 .claude/hooks/rules_v3.py --db rules.sqlite classify
+python3 .claude/hooks/rules_v3.py --db rules.sqlite audit-export --xlsx auditoria.xlsx
+# Eric revisa auditoria.xlsx, llena valor_corregido y razon donde corresponde
+python3 .claude/hooks/rules_v3.py --db rules.sqlite audit-import --xlsx auditoria.xlsx
+python3 .claude/hooks/rules_v3.py --db rules.sqlite check         # exit 1 si algo quedó sin caso ni tarea
 ```
 
-Produce el documento a subir al notebook (todas las reglas, una por línea, con su
-id) y la pregunta canónica: clasificar **cada** id como `APLICA` o `NO APLICA` con
-razón. El servidor MCP está declarado en `.mcp.json`; requiere Chrome y una
-autenticación inicial con pantalla.
+`scope.yaml` sigue siendo válido como capa determinista para los casos `imagen` y `video`
+fuera de la base v3. Para extraer las reglas que aplican a un brief concreto una vez
+poblada `rules.sqlite`, el código de selección es `rule_query.py` (brief → facetas
+detectadas por regex y por similitud → filtro SQL duro → ranking híbrido BM25+coseno):
 
-`.claude/rules/scope.yaml` queda como respaldo determinista para cuando NotebookLM
-no esté disponible. **No es la autoridad** — es el plan B, y su criterio es del
-agente, por eso está escrito para poder discutirse línea por línea.
+```bash
+python3 .claude/hooks/rule_query.py --db rules.sqlite --brief "maestro de rostro T1 para Nano Banana Pro, documental"
+```
 
 ## Paso 3 — Medir que la selección fue exhaustiva
 
@@ -59,8 +81,8 @@ python3 .claude/hooks/rule_answer_check.py \
   --registry reg_image.json --respuesta respuesta.txt --faltantes faltan.txt
 ```
 
-No juzga si la selección fue acertada — eso es criterio, y el criterio ya no es del
-agente. Mide cobertura y detecta tres cosas:
+No juzga si la selección fue acertada — eso es criterio, y el criterio es de las capas
+deterministas y de la auditoría, no del agente. Mide cobertura y detecta tres cosas:
 
 - **SIN MENCIONAR** — reglas del registro que la respuesta no clasificó.
 - **Ids inexistentes** — ids citados que no están en el registro.
@@ -72,7 +94,7 @@ creerle a nadie.
 
 ## Por qué el paso 3 existe
 
-No es desconfianza hacia NotebookLM. Es que sin él, "fue exhaustivo" es una
+Sin él, "fue exhaustivo" es una
 opinión, y este repo existe justamente porque las opiniones sobre cumplimiento no
 resultaron confiables. El paso 3 cuesta un comando y convierte la afirmación en un
 número. Si el número sale 100%, la objeción se muere con datos.

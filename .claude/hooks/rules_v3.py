@@ -1016,6 +1016,231 @@ def cmd_fts(args) -> int:
     return 0
 
 
+# --------------------------------------------------------------------------- classify (capa 2: vector)
+# Decisión 9 (2026-09-25): NotebookLM queda fuera del flujo por completo. Quién decide
+# qué reglas aplican a una faceta o caso se reparte en tres capas, en este orden de
+# autoridad (la de abajo nunca puede ser pisada por las de arriba):
+#   1. Determinista — ya la aplica `derive`: ARCHIVO_CASO/ARCHIVO_FACETA/REGEX_FACETA en
+#      este mismo archivo, con la disciplina de scope.yaml (primer patrón que hace match
+#      manda, cada entrada se puede discutir línea por línea). origen='archivo'|'regex'.
+#   2. Vectorial — este comando. Solo toca lo que la capa 1 dejó sin asignar. Compara el
+#      embedding de la regla contra el prototipo de cada valor posible (construido por
+#      `embed` a partir de las descripciones de FACETAS/CASOS) y asigna origen='vector'
+#      con la confianza (coseno) si supera --umbral (0.80 por defecto). Es una sugerencia
+#      con número, nunca una decisión editorial.
+#   3. Auditoría de Eric — `audit-export`/`audit-import`. Todo lo que sigue sin valor
+#      tras las capas 1 y 2 sale a una hoja xlsx; su corrección entra con origen='auditoria'
+#      y manda sobre las otras dos, sin importar la confianza que tuvieran.
+#
+# Las facetas D1-D9 de la tarjeta de ancla solo tienen sentido para reglas de imagen o
+# video (Decisión 5); el resto del corpus (guion, empaquetado, meta) no se audita en D1-D9.
+FACETA_MEDIOS = ("IMAGEN", "VIDEO", "AMBOS")
+DIMENSIONES_CERRADAS = ("d1", "d2", "d3", "d4", "d8", "d9")
+
+
+def _vec(blob: bytes):
+    import numpy as np
+
+    return np.frombuffer(blob, dtype="<f4")
+
+
+def _mejor(v, candidatos: list[tuple[str, "object"]]) -> tuple[str | None, float]:
+    import numpy as np
+
+    if not candidatos:
+        return None, -1.0
+    mejor_valor, mejor_score = None, -1.0
+    for valor, cv in candidatos:
+        score = float(np.dot(v, cv))
+        if score > mejor_score:
+            mejor_valor, mejor_score = valor, score
+    return mejor_valor, mejor_score
+
+
+def _cargar_prototipos(con: sqlite3.Connection):
+    protos_caso: list[tuple[str, object]] = []
+    protos_faceta: dict[str, list[tuple[str, object]]] = {}
+    for tipo, codigo, blob in con.execute(
+            "SELECT tipo, codigo, vector FROM prototipos WHERE modelo_emb=?", (MODELO_EMB,)):
+        v = _vec(blob)
+        if tipo == "caso":
+            protos_caso.append((codigo, v))
+        elif tipo == "faceta":
+            dim, valor = codigo.split(":", 1)
+            protos_faceta.setdefault(dim, []).append((valor, v))
+    return protos_caso, protos_faceta
+
+
+def cmd_classify(args) -> int:
+    con = connect(args.db)
+    fecha = now()
+    umbral = args.umbral
+
+    vec_by_id = {rid: _vec(blob) for rid, blob in
+                 con.execute("SELECT regla_id, vector FROM embeddings WHERE modelo_emb=?", (MODELO_EMB,))}
+    if not vec_by_id:
+        print("classify: no hay embeddings en la base. Corre `embed` antes de `classify` "
+              "(capa 1 determinista ya corrió con `derive`; sin vectores, capa 2 no puede sugerir "
+              "nada y todo lo pendiente va directo a auditoría).", file=sys.stderr)
+        return 2
+
+    protos_caso, protos_faceta = _cargar_prototipos(con)
+    con_caso = {r[0] for r in con.execute("SELECT DISTINCT regla_id FROM regla_caso")}
+    medio_por_regla = dict(con.execute("SELECT id, medio FROM reglas"))
+    facetas_por_regla: dict[str, set[str]] = {}
+    for rid, dim in con.execute("SELECT regla_id, dimension FROM regla_faceta"):
+        facetas_por_regla.setdefault(rid, set()).add(dim)
+
+    n_caso = n_caso_bajo_umbral = 0
+    n_faceta = n_faceta_bajo_umbral = 0
+    for rid, v in vec_by_id.items():
+        if rid not in con_caso:
+            cod, score = _mejor(v, protos_caso)
+            if cod is not None and score >= umbral:
+                con.execute("INSERT OR IGNORE INTO regla_caso VALUES (?,?,?,?,?,?)",
+                            (rid, cod, "vector", score, None, fecha))
+                n_caso += 1
+            else:
+                n_caso_bajo_umbral += 1
+        if medio_por_regla.get(rid) in FACETA_MEDIOS:
+            tiene = facetas_por_regla.get(rid, set())
+            for dim in DIMENSIONES_CERRADAS:
+                if dim in tiene:
+                    continue
+                valor, score = _mejor(v, protos_faceta.get(dim, []))
+                if valor is not None and score >= umbral:
+                    registrar_valor_faceta(con, dim, valor)
+                    con.execute("INSERT OR IGNORE INTO regla_faceta VALUES (?,?,?,?,?)",
+                                (rid, dim, valor, "vector", fecha))
+                    n_faceta += 1
+                else:
+                    n_faceta_bajo_umbral += 1
+    con.commit()
+    print(f"classify: capa vectorial, umbral {umbral}")
+    print(f"  regla_caso   +{n_caso} asignadas por vector · {n_caso_bajo_umbral} bajo umbral o sin candidato (van a auditoría)")
+    print(f"  regla_faceta +{n_faceta} asignadas por vector · {n_faceta_bajo_umbral} bajo umbral o sin candidato (van a auditoría)")
+    return 0
+
+
+# --------------------------------------------------------------------------- auditoría (capa 3: Eric, xlsx)
+
+def _texto_regla(con: sqlite3.Connection, rid: str) -> tuple[str, str, str, int, str]:
+    row = con.execute("SELECT skill, archivo, linea, seccion, texto FROM reglas WHERE id=?", (rid,)).fetchone()
+    return row if row else ("", "", 0, "", "")
+
+
+def cmd_audit_export(args) -> int:
+    try:
+        from openpyxl import Workbook
+    except ImportError:
+        print("audit-export: falta openpyxl. pip install openpyxl", file=sys.stderr)
+        return 2
+
+    con = connect(args.db)
+    umbral = args.umbral
+    protos_caso, protos_faceta = _cargar_prototipos(con)
+    vec_by_id = {rid: _vec(blob) for rid, blob in
+                 con.execute("SELECT regla_id, vector FROM embeddings WHERE modelo_emb=?", (MODELO_EMB,))}
+    medio_por_regla = dict(con.execute("SELECT id, medio FROM reglas"))
+    con_caso = {r[0] for r in con.execute("SELECT DISTINCT regla_id FROM regla_caso")}
+    facetas_por_regla: dict[str, set[str]] = {}
+    for rid, dim in con.execute("SELECT regla_id, dimension FROM regla_faceta"):
+        facetas_por_regla.setdefault(rid, set()).add(dim)
+
+    wb = Workbook()
+    wb.remove(wb.active)
+    cabecera = ["id", "skill", "archivo", "linea", "seccion", "texto", "valor_sugerido", "confianza",
+                "valor_corregido", "razon"]
+
+    def hoja(nombre: str) -> None:
+        ws = wb.create_sheet(nombre[:31])
+        ws.append(cabecera)
+
+    # hoja 'caso': toda regla sin caso tras las capas 1 y 2
+    pendientes_caso = [rid for (rid,) in con.execute("SELECT id FROM reglas") if rid not in con_caso]
+    hoja("caso")
+    ws = wb["caso"]
+    for rid in pendientes_caso:
+        skill, archivo, linea, seccion, texto = _texto_regla(con, rid)
+        v = vec_by_id.get(rid)
+        sugerido, score = (_mejor(v, protos_caso) if v is not None else (None, None))
+        ws.append([rid, skill, archivo, linea, seccion, texto[:500], sugerido or "",
+                   round(score, 4) if score is not None else "", "", ""])
+
+    # una hoja por faceta cerrada, solo reglas de imagen/video
+    for dim in DIMENSIONES_CERRADAS:
+        hoja(f"faceta_{dim}")
+        ws = wb[f"faceta_{dim}"]
+        candidatos_dim = protos_faceta.get(dim, [])
+        for (rid,) in con.execute("SELECT id FROM reglas"):
+            if medio_por_regla.get(rid) not in FACETA_MEDIOS:
+                continue
+            if dim in facetas_por_regla.get(rid, set()):
+                continue
+            skill, archivo, linea, seccion, texto = _texto_regla(con, rid)
+            v = vec_by_id.get(rid)
+            sugerido, score = (_mejor(v, candidatos_dim) if v is not None else (None, None))
+            ws.append([rid, skill, archivo, linea, seccion, texto[:500], sugerido or "",
+                       round(score, 4) if score is not None else "", "", ""])
+
+    wb.save(args.xlsx)
+    resumen = ", ".join(f"{s.title}={s.max_row - 1}" for s in wb.worksheets)
+    print(f"audit-export: {args.xlsx} escrito · filas por hoja: {resumen}")
+    print(f"  umbral de referencia para lo ya auto-asignado por vector: {umbral} "
+          "(esta hoja es justo lo que quedó por debajo o sin candidato)")
+    return 0
+
+
+def cmd_audit_import(args) -> int:
+    try:
+        from openpyxl import load_workbook
+    except ImportError:
+        print("audit-import: falta openpyxl. pip install openpyxl", file=sys.stderr)
+        return 2
+
+    con = connect(args.db)
+    fecha = now()
+    auditor = args.auditor
+    wb = load_workbook(args.xlsx, read_only=True, data_only=True)
+    n_caso = n_faceta = 0
+
+    for ws in wb.worksheets:
+        cab = [c.value for c in next(ws.iter_rows(min_row=1, max_row=1))]
+        idx = {name: i for i, name in enumerate(cab)}
+        requeridos = {"id", "valor_sugerido", "valor_corregido", "razon"}
+        if not requeridos.issubset(idx):
+            print(f"audit-import: hoja '{ws.title}' sin las columnas esperadas, se omite", file=sys.stderr)
+            continue
+        for fila in ws.iter_rows(min_row=2, values_only=True):
+            rid = fila[idx["id"]]
+            corregido = fila[idx["valor_corregido"]]
+            if not rid or not corregido:
+                continue
+            corregido = str(corregido).strip()
+            if not corregido:
+                continue
+            sugerido = fila[idx["valor_sugerido"]] or ""
+            razon = fila[idx["razon"]] or ""
+            if ws.title == "caso":
+                con.execute("INSERT OR REPLACE INTO regla_caso VALUES (?,?,?,?,?,?)",
+                            (rid, corregido, "auditoria", 1.0, auditor, fecha))
+                con.execute("INSERT INTO auditorias VALUES (?,?,?,?,?,?)",
+                            (rid, str(sugerido), corregido, razon, auditor, fecha))
+                n_caso += 1
+            elif ws.title.startswith("faceta_"):
+                dim = ws.title.removeprefix("faceta_")
+                registrar_valor_faceta(con, dim, corregido)
+                con.execute("INSERT OR REPLACE INTO regla_faceta VALUES (?,?,?,?,?)",
+                            (rid, dim, corregido, "auditoria", fecha))
+                con.execute("INSERT INTO auditorias VALUES (?,?,?,?,?,?)",
+                            (rid, f"{dim}:{sugerido}", f"{dim}:{corregido}", razon, auditor, fecha))
+                n_faceta += 1
+    con.commit()
+    print(f"audit-import: {args.xlsx} · +{n_caso} regla_caso corregidas · +{n_faceta} regla_faceta corregidas "
+          f"(origen='auditoria', auditor={auditor})")
+    return 0
+
+
 # --------------------------------------------------------------------------- stats / check
 
 def cmd_stats(args) -> int:
@@ -1103,6 +1328,20 @@ def main() -> int:
 
     f = sub.add_parser("fts", help="reconstruye reglas_fts")
     f.set_defaults(fn=cmd_fts)
+
+    cl = sub.add_parser("classify", help="capa 2: vector contra prototipos, solo lo que capa 1 dejó sin asignar")
+    cl.add_argument("--umbral", type=float, default=0.80)
+    cl.set_defaults(fn=cmd_classify)
+
+    ax = sub.add_parser("audit-export", help="capa 3: vuelca a xlsx lo que quedó sin caso/faceta")
+    ax.add_argument("--xlsx", default="auditoria.xlsx")
+    ax.add_argument("--umbral", type=float, default=0.80)
+    ax.set_defaults(fn=cmd_audit_export)
+
+    ai = sub.add_parser("audit-import", help="capa 3: aplica las correcciones de Eric, origen='auditoria'")
+    ai.add_argument("--xlsx", default="auditoria.xlsx")
+    ai.add_argument("--auditor", default="eric")
+    ai.set_defaults(fn=cmd_audit_import)
 
     s = sub.add_parser("stats")
     s.set_defaults(fn=cmd_stats)

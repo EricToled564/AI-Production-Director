@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS facetas_catalogo (
 CREATE TABLE IF NOT EXISTS regla_caso (
   regla_id  TEXT NOT NULL REFERENCES reglas(id),
   caso      TEXT NOT NULL REFERENCES casos(codigo),
-  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regla','auditoria','nblm','vector')),
+  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regla','auditoria','vector')),
   confianza REAL,
   auditor   TEXT,
   fecha     TEXT NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS regla_faceta (
   regla_id  TEXT NOT NULL REFERENCES reglas(id),
   dimension TEXT NOT NULL CHECK (dimension IN ('d1','d2','d3','d4','d5','d6','d7','d8','d9')),
   valor     TEXT NOT NULL,
-  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regex','nblm','manual')),
+  origen    TEXT NOT NULL CHECK (origen IN ('archivo','regex','vector','auditoria','manual')),
   fecha     TEXT NOT NULL,
   PRIMARY KEY (regla_id, dimension, valor)
 );
