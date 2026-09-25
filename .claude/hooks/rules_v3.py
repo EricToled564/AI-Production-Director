@@ -149,6 +149,7 @@ FACETAS: dict[str, dict] = {
         "keyframe_lf": "keyframe final (last frame, tail) de un clip: la imagen de llegada",
         "hero_macro": "macro del objeto héroe: producto, detalle, textura en primer plano",
         "motif": "motivo visual recurrente: el objeto o forma que se repite en la pieza",
+        "ninguno": "la regla no habla de qué rol de ancla cumple la imagen (rostro, entorno, keyframe, macro, motivo); es información general que no discrimina por esta dimensión",
     }},
     "d2": {"nombre": "accion", "cerrada": 1, "valores": {
         "A_pose": "pose estática: retrato, postura sostenida, sujeto quieto",
@@ -157,6 +158,7 @@ FACETAS: dict[str, dict] = {
         "D_luz_clima": "la acción es la luz o el clima: rayo, lluvia, amanecer, niebla, polvo",
         "E_interaccion": "interacción entre sujetos: contacto, mirada, gesto compartido, high five",
         "F_multitud": "multitud como acción: masa que se mueve, público, estadio, marea de gente",
+        "ninguno": "la regla no describe un tipo de acción o instante (pose, pico, movimiento, clima, interacción, multitud); aplica sin importar cuál sea la acción del cuadro",
     }},
     "d3": {"nombre": "sujetos", "cerrada": 1, "valores": {
         "0": "sin sujeto humano: objeto, lugar, producto, vehículo sin piloto visible",
@@ -165,6 +167,7 @@ FACETAS: dict[str, dict] = {
         "2_contacto": "dos sujetos con contacto físico: abrazo, high five, apretón, choque",
         "ensamble": "grupo con identidad, cada miembro reconocible: equipo, banda, familia",
         "multitud": "multitud anónima, sin rostros legibles: estadio, público, calle llena",
+        "ninguno": "la regla no depende de cuántos sujetos hay en cuadro; aplica igual con cero, uno, dos, un grupo o una multitud",
     }},
     "d4": {"nombre": "tratamiento", "cerrada": 1, "valores": {
         "documental": "tratamiento documental: luz disponible, candid, sin puesta en escena visible",
@@ -173,6 +176,7 @@ FACETAS: dict[str, dict] = {
         "race": "tratamiento de carreras y velocidad: drift, drag, chase, montaje cinético sin rostros",
         "ugc": "tratamiento UGC: contenido de usuario, celular en mano, TikTok, reel orgánico",
         "animacion": "tratamiento de animación: 2D, 3D, stop motion, ilustración en movimiento",
+        "ninguno": "la regla no depende del tratamiento artístico (documental, narrativo, comercial, race, ugc, animación); aplica en cualquiera de ellos",
     }},
     "d5": {"nombre": "paleta", "cerrada": 0, "valores": {}},
     "d6": {"nombre": "encuadre_lente", "cerrada": 0, "valores": {}},
@@ -190,7 +194,8 @@ FACETAS: dict[str, dict] = {
         "seedance": "Seedance: video ByteDance, multi-shot nativo, storytelling en un prompt",
         "hailuo": "Hailuo: video MiniMax, movimiento de cámara por comandos",
         "sora": "Sora: video OpenAI",
-        "agnostico": "prompt agnóstico de modelo: artefacto intermedio, storyboard, shot card",
+        "agnostico": "prompt agnóstico de modelo, declarado como tal: artefacto intermedio, storyboard, shot card que a propósito no elige modelo",
+        "ninguno": "la regla no menciona ni depende de un modelo o herramienta de generación en particular; no es una decisión de modelo, es agnóstica por no tratar el tema",
     }},
     "d9": {"nombre": "angulo", "cerrada": 1, "valores": {
         "eye-level": "ángulo a nivel de ojos: cámara a la altura del sujeto",
@@ -199,6 +204,7 @@ FACETAS: dict[str, dict] = {
         "overhead": "cenital: cámara vertical desde arriba, top-down",
         "dutch": "ángulo holandés: horizonte inclinado, cámara ladeada",
         "pov": "punto de vista subjetivo: la cámara es los ojos del sujeto, primera persona",
+        "ninguno": "la regla no habla del ángulo de cámara; aplica sin importar si el plano es a nivel de ojos, alto, bajo, cenital, dutch o POV",
     }},
 }
 
