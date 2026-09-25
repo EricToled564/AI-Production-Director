@@ -92,3 +92,15 @@ archivos. Es exactamente lo que el propio `image/SKILL.md:18` advierte:
 > reading it alone. The actual rules live only in the reference files."*
 
 El paso 1 existe para que ese error sea imposible: la extracción no busca, lee todo.
+
+## Paso 0 — Las reglas que los skills no tienen
+
+Medido el 2026-09-25: los skills instalados no cubren instante pico, fenómenos de luz y clima,
+multitudes anónimas ni grupos con identidades. Esas reglas se escriben en el repo, en
+`.claude/rules/regimenes/`, como nueve familias por régimen físico con el mismo esqueleto
+que `race-and-speed.md`. Cada línea normativa lleva etiqueta de origen: `[FUENTE: …]` si está
+en un skill, `[A PRUEBA]` si es inferencia. Una inferencia nunca bloquea un gate. Pasa a
+`[CAMPO: url]` cuando la investigación en foros y tutoriales la confirma, y a `[CANONICA fecha]`
+cuando un ejercicio real la valida. `rule_registry.py` lee esa carpeta igual que los skills, así
+que el Paso 1 las incluye sin que nadie tenga que recordarlas. Las ocho decisiones que gobiernan
+esto están en `DECISIONES.md`.
