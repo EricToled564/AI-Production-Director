@@ -72,6 +72,9 @@ CASO_REGEX: list[tuple[str, re.Pattern]] = [
 
 TAREA_REGEX = re.compile(r"\b(E[0-7]\.\d|POST\.[12]|PROMPT_IMAGEN|PROMPT_VIDEO|ESTRATEGIA|DOC)\b")
 
+# Palabras que marcan que la cláusula habla de luz, no de cámara (ver detectar_facetas, d9).
+LUZ_REGEX = re.compile(r"\bluz\b|\blight(?:ing)?\b|\bilumina\w*|\bfoco\b|\bspot\b|\bbacklight\b|\bcontraluz\b|\brim\b|\bsol\b|\bsun\b", re.I)
+
 STOPWORDS = set("""
 de la el los las un una unos unas para por con sin sobre entre del al en y o u que como más mas muy
 the a an of to in on for with and or not is are be this that from by at as into
@@ -96,7 +99,17 @@ def detectar_facetas(brief: str) -> dict[str, list[str]]:
     for dim, valor, pat in v3.REGEX_FACETA:
         if dim in ("d5", "d6", "d7"):
             continue  # abiertas: sugerir, no filtrar
-        if pat.search(brief) and valor not in det.setdefault(dim, []):
+        m = pat.search(brief)
+        if not m:
+            continue
+        # d9 es ángulo de CÁMARA. En un brief, "luz cenital" o "luz que cae desde arriba"
+        # describe la luz, no la cámara: si la coincidencia va precedida en la misma cláusula
+        # por una palabra de luz, no fija el ángulo (se deja a la capa de sugerencia).
+        if dim == "d9":
+            clausula = re.split(r"[.;,]", brief[:m.start()])[-1]
+            if LUZ_REGEX.search(clausula):
+                continue
+        if valor not in det.setdefault(dim, []):
             det[dim].append(valor)
     # "keyframe de inicio / first frame" fija el rol
     if re.search(r"keyframe (?:de )?inicio|first frame|start frame|frame inicial", brief, re.I):
