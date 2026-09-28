@@ -1,0 +1,53 @@
+{
+ "fusiones": [
+  {
+   "grupo": "DUP-0614.1",
+   "texto": "Parche P10 del linter aurora (copia parcheada v1.2-fupai; `.claude/hooks/aurora/prompt_linter.py` docstring y `.claude/hooks/aurora/README.md`, contradicción #: 12, **Plataformas omitidas.**): el original solo traía snapshots para gpt_image_2, midjourney, nano_banana_pro, kling_3.0, veo_3.1, sora_2; forge produce prompts para flux, ideogram, seedream, hailuo, seedance y el pipeline usa nano_banana_2 y seedance_2.5. Sin snapshot, el linter opera en \"honor system\". P10 añade snapshots de secciones para seedance_2.5, flux, ideogram, hailuo, seedream, nano_banana_2, kling 3.0 caso 4: `flux__1`, `ideogram__1`, `seedream__1`, `nano_banana_2__1/__2`, `seedance__3a`, `seedance_2.5__3a/__3b/__4`, `hailuo__3a`, `kling_3.0__4`. Resolución por familia (`--platform kling` → `kling_3.0`, `seedance_2.5` → su propio snapshot). Reconoce también `Negative field.`, `[Negative Prompts]` y `Constraints:`. Vocabulario ampliado (L/PR/O para agua, automotriz, café/interior, clima, música). Fuente: adaptadores de forge (`adapters/*.md`, patrón de composición de cada uno) y archivos de modelo de `video`: kling.md §3 (protocolo P1–P4 y `Shot N (t)`), seedance-25.md §3-§7 (§3–§7), §16; `seedance.md` §13–§14; veo.md §10; `image/models.md` (NB2 mismo estilo que NBP).",
+   "cobertura": [
+    {
+     "id": "0854f2efd1e8",
+     "elementos": [
+      "P10 vocabulario ampliado",
+      "snapshots seedance_2.5, flux, ideogram, hailuo, seedream, nano_banana_2, kling 3.0 caso 4",
+      "fuentes kling.md §3, seedance-25.md §3-§7, veo.md §10",
+      "reconoce Negative field., [Negative Prompts], Constraints:"
+     ]
+    },
+    {
+     "id": "974a525545c8",
+     "elementos": [
+      "#: 12 Plataformas omitidas",
+      "lista original de snapshots",
+      "honor system",
+      "snapshots nuevos con ids",
+      "resolución por familia",
+      "fuentes adapters/*.md, §3–§7, §16, seedance.md §13–§14, image/models.md"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0619.1",
+   "texto": "`validate_capabilities.py` (Tools › Repo checks, en los README de tools de brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge; y Visual Prompt Forge › Workflow › Step 2. Pick the adapters): la regla ya se hace cumplir en vez de confiarse. `tools/validate_capabilities.py` checks the generator capability matrix (`skills/visual-prompt-forge/adapters/_capabilities.json`) against `capabilities.schema.json`, then checks it against the adapter prose that defers to it, y falla el build cuando:\n- every generator id has an adapter `.md` and every adapter `.md` has an entry\n- no adapter advertises more words than its own `max_prompt_words` ceiling\n- every adapter documents the `aspect_param` the matrix says to send\n- no `notes` field cites a word count above its own ceiling\n- warns when the matrix or an entry is past its 120-day freshness window.\nEl segundo chequeo (el de `aspect_param`) existe porque la entrada de nano-banana en la matriz decía `aspect_ratio` mientras su adaptador decía que la API espera `aspectRatio`; la regla de precedencia hizo que ganara la equivocada, en silencio, en cada prompt.",
+   "cobertura": [
+    {
+     "id": "6620e88f5882",
+     "elementos": [
+      "matriz vs schema",
+      "cinco checks listados",
+      "120-day freshness window",
+      "alcance: cinco README de tools"
+     ]
+    },
+    {
+     "id": "c032cfbdd294",
+     "elementos": [
+      "enforced rather than trusted",
+      "tools/validate_capabilities.py falla el build",
+      "caso nano-banana aspect_ratio vs aspectRatio"
+     ]
+    }
+   ]
+  }
+ ]
+}

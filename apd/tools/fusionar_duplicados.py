@@ -144,6 +144,18 @@ Devuelve JSON {"componentes": [{"grupo": "...", "subgrupos": [{"ids": [...], "re
 "misma_regla_otro_alcance", "regla": "la regla común en una frase, con su alcance"}], "sueltos": [ids]}]}; cada id del
 grupo aparece exactamente una vez."""
 
+SIS_DEPURAR = """Eliminas duplicados SIN reescribir nada. Cada grupo trae registros originales (texto completo, documento y
+encabezado) que dicen la misma regla. Decide qué originales se CONSERVAN tal cual y cuáles se ELIMINAN:
+- Un original se elimina solo si TODO su contenido (cada exigencia, valor, número, cita literal, excepción, ejemplo y
+  alcance) ya está en alguno de los conservados. Indica en cuál o cuáles.
+- Conserva el conjunto más pequeño de originales que juntos cubren todo el contenido del grupo; si ninguno contiene a
+  los demás, se conservan varios.
+- El alcance que da el encabezado no se pierde al eliminar: las ubicaciones del eliminado se añaden al conservado.
+  Pero si un original dice algo propio de su alcance (un valor distinto para otro modelo), ese contenido no está en
+  los otros y el original se conserva.
+Devuelve JSON {"grupos": [{"grupo": "...", "conservar": [ids], "eliminar": [{"id": "...", "contenido_en": [ids],
+"razon": "..."}]}]}; cada id del grupo aparece exactamente una vez (en conservar o en eliminar)."""
+
 SIS_FUSIONAR = """Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:
 - Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.
 - No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal
@@ -181,6 +193,8 @@ def con():
     c.execute("create table if not exists registros_grupo (grupo text, registro_id text, relacion text, regla text)")
     c.execute("create table if not exists registros_fusion (grupo text primary key, texto text, relacion text, "
               "miembros text, verificado integer, faltan text)")
+    c.execute("create table if not exists registros_depuracion (grupo text primary key, conservar text, "
+              "eliminar text, verificado integer, faltan text)")
     c.execute("create table if not exists _grupos_crudos (lote text, ids text, relacion text, regla text)")
     return c
 
@@ -403,6 +417,23 @@ def cmd_lotes(a):
                           sum(len(m["texto"].split()) + 15 * len(m["ubicaciones"]) for m in miembros)))
         for lote in por_presupuesto(items, PALABRAS_LOTE, 80):
             lotes.append({"paso": "confirmar", "instrucciones": SIS_CONFIRMAR, "componentes": lote})
+    elif a.paso == "depurar":
+        ubic = {}
+        for rid, arch, sec in c.execute("select registro_id, archivo, seccion from registros_fuente"):
+            ubic.setdefault(rid, []).append({"documento": arch, "encabezado": sec or ""})
+        hechos_d = {g for (g,) in c.execute("select grupo from registros_depuracion where verificado = 1")}
+        items = []
+        for g, dd in grupos_actuales(c).items():
+            if g in hechos_d:
+                continue
+            miembros = [{"id": i, "ubicaciones": ubic.get(i, []), "texto": texto[i]} for i in dd["ids"]]
+            item = {"grupo": g, "relacion": dd["rel"], "miembros": miembros}
+            previo = c.execute("select faltan from registros_depuracion where grupo = ?", (g,)).fetchone()
+            if previo and previo[0] not in (None, "[]"):
+                item["fallo_en_el_intento_anterior"] = json.loads(previo[0])
+            items.append((item, sum(len(m["texto"].split()) for m in miembros)))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 40):
+            lotes.append({"paso": "depurar", "instrucciones": SIS_DEPURAR, "grupos": lote})
     elif a.paso == "fusionar":
         hechos_f = {g for (g,) in c.execute("select grupo from registros_fusion where verificado = 1")}
         ubic = {}
@@ -491,6 +522,18 @@ def cmd_importar(a):
                         c.execute("insert into registros_grupo values (?,?,?,?)",
                                   (f"{g}.{k}", i, sg.get("relacion", "misma_regla"), sg.get("regla", "")))
                 n += 1
+        elif a.paso == "depurar":
+            out = {x.get("grupo"): x for x in r.get("grupos", [])}
+            for item in lote["grupos"]:
+                g, ids = item["grupo"], sorted(m["id"] for m in item["miembros"])
+                x = out.get(g)
+                vistos = sorted(list((x or {}).get("conservar", [])) + [e.get("id") for e in (x or {}).get("eliminar", [])])
+                if x is None or vistos != ids or not x.get("conservar"):
+                    errores.append(f"{fout.name}: {g} no reparte cada id exactamente una vez")
+                    continue
+                c.execute("insert or replace into registros_depuracion values (?,?,?,NULL,NULL)",
+                          (g, json.dumps(x["conservar"]), json.dumps(x["eliminar"], ensure_ascii=False)))
+                n += 1
         elif a.paso == "fusionar":
             out = {x.get("grupo"): x for x in r.get("fusiones", [])}
             for item in lote["grupos"]:
@@ -573,6 +616,29 @@ def cmd_literal(_a):
         sys.exit(1)
 
 
+def cmd_literal_depuracion(_a):
+    """Chequeo mecánico de la depuración: cada número y cita literal de cada eliminado debe estar, tal cual, en los
+    originales conservados que declara. Los que fallan vuelven a 'lotes depurar' con la lista."""
+    c = con()
+    texto = dict(c.execute("select id, texto from registros"))
+    malos = 0
+    for g, cons, elim in c.execute("select grupo, conservar, eliminar from registros_depuracion").fetchall():
+        cons = json.loads(cons)
+        falt = []
+        for e in json.loads(elim):
+            base = " ".join(texto[i] for i in (e.get("contenido_en") or cons) if i in texto)
+            falt += [{"id": e["id"], "elemento": x} for x in literales_faltantes(texto[e["id"]], base)]
+        c.execute("update registros_depuracion set verificado = ?, faltan = ? where grupo = ?",
+                  (0 if falt else 1, json.dumps(falt, ensure_ascii=False), g))
+        malos += bool(falt)
+    c.commit()
+    total = c.execute("select count(*) from registros_depuracion").fetchone()[0]
+    elim = sum(len(json.loads(e)) for (e,) in c.execute("select eliminar from registros_depuracion"))
+    print(f"depuración: {total - malos}/{total} grupos sin pérdida literal · {elim} originales eliminados")
+    if malos:
+        sys.exit(1)
+
+
 def cmd_estado(_a):
     c = con()
     for q in ("select count(*) from registros", "select count(*) from registros_enunciado",
@@ -583,8 +649,8 @@ def cmd_estado(_a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar", "literal"])
-    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "confirmar", "fusionar", "verificar"])
+    ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar", "literal", "literal-depuracion"])
+    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "confirmar", "depurar", "fusionar", "verificar"])
     a = ap.parse_args()
     if a.accion in ("lotes", "importar"):
         if not a.paso:
@@ -593,7 +659,7 @@ def main():
         return
     a.paso = a.accion
     {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado,
-     "literal": cmd_literal}[a.accion](a)
+     "literal": cmd_literal, "literal-depuracion": cmd_literal_depuracion}[a.accion](a)
 
 
 if __name__ == "__main__":
