@@ -1,0 +1,608 @@
+{
+ "registros": [
+  {
+   "id": "f1344c8bc172",
+   "enunciado": "El subproceso POST.1 genera los clips a partir de los prompts de E6 y los verifica contra la shot card en encuadre, acción y luz antes de aprobarlos.",
+   "alcance": "Mapa del Spot Publicitario, subproceso POST.1",
+   "temas": [
+    "flujo_pipeline",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "f5c40220b1fe",
+   "enunciado": "El subproceso POST.2 ensambla clips, grade, audio y overlays de text-overlays.json con el brand-lock y exporta el master por plataforma tras un QA final contra los cinco anclas.",
+   "alcance": "Mapa del Spot Publicitario, subproceso POST.2",
+   "temas": [
+    "postproduccion",
+    "flujo_pipeline",
+    "cinco_anclas_motivo"
+   ]
+  },
+  {
+   "id": "b2c2940a3779",
+   "enunciado": "Explicación: un activo génesis es todo sujeto que debe fijarse en imagen antes de tener referencia, y su clase (seis clases) decide modelo, patrón, bloques del prompt y herencia posterior.",
+   "alcance": "Mapa del Spot Publicitario, taxonomía de génesis",
+   "temas": [
+    "genesis_maestros",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "0d93e62b9564",
+   "enunciado": "Especifica el flujo de génesis: clasificar el sujeto en persona, lugar, edificación, animal, producto u objeto, aplicar el modelo y patrón de cada clase, y detener la génesis si un producto o logo de marca carece de foto real para entrar por flujo con referencia.",
+   "alcance": "Mapa del Spot Publicitario, taxonomía de génesis (diagrama)",
+   "temas": [
+    "genesis_maestros",
+    "seleccion_modelo",
+    "logos_marcas_en_imagen"
+   ]
+  },
+  {
+   "id": "8744da58a936",
+   "enunciado": "Un producto con logo o etiqueta real no puede nacer de texto: el logo solo se hereda de un asset aprobado y se trata como flujo con referencia; las demás clases entran al subflujo atómico de génesis.",
+   "alcance": "Mapa del Spot Publicitario, taxonomía de génesis",
+   "temas": [
+    "genesis_maestros",
+    "logos_marcas_en_imagen",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "960110d30ef5",
+   "enunciado": "La génesis de persona exige dos pasos: rostro T1 sin referencia canonizado con hash y luego cuerpo entero T2 con el rostro como Image 1 y 'keep facial features exactly the same', nunca cuerpo entero de un tiro; probar NB2 y NBP en rostros, GPT Image 2 high para piel, sin grounding.",
+   "alcance": "génesis clase Persona (T1, T2)",
+   "temas": [
+    "genesis_maestros",
+    "consistencia_identidad",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "6695dc164277",
+   "enunciado": "La génesis de lugar genérico es una placa vacía sin persona, con el entorno tomado verbatim de series_lock.environment y una sola presión ambiental por escena, con cualquier modelo.",
+   "alcance": "génesis clase Lugar genérico",
+   "temas": [
+    "genesis_maestros",
+    "clima_atmosfera"
+   ]
+  },
+  {
+   "id": "9571ccce35da",
+   "enunciado": "La génesis de edificación o landmark usa NB2 con grounding cuando la arquitectura debe ser fiel, GPT Image 2 solo para época y cultura, verifica contra el lugar real y usa thinking_level high si combina grounding y razonamiento espacial.",
+   "alcance": "génesis clase Edificación/landmark",
+   "temas": [
+    "genesis_maestros",
+    "seleccion_modelo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "bfa0f4058b62",
+   "enunciado": "La génesis de animal usa NB2 con grounding para la anatomía de la especie y NBP para física compleja; la consistencia solo se logra con referencias de personaje (NB2 hasta 4, NBP hasta 5) y anatomía y pelaje se auditan como manos y rostros.",
+   "alcance": "génesis clase Animal",
+   "temas": [
+    "genesis_maestros",
+    "seleccion_modelo",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "ebbe78fefcaf",
+   "enunciado": "La génesis de producto usa GPT Image 2 quality high para etiquetas, materiales y condensación y NBP para distorsión física; logos y lettering solo se heredan de asset aprobado o se componen en post, y ningún cuerpo tapa un logo.",
+   "alcance": "génesis clase Producto",
+   "temas": [
+    "genesis_maestros",
+    "logos_marcas_en_imagen",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "8b867fe0d21b",
+   "enunciado": "El objeto o prop ancla se canoniza como una persona porque reaparece como motivo en varios shots, debe ser legible en macro y en plano general, y usa NBP si tiene física o transparencia.",
+   "alcance": "génesis clase Objeto/prop",
+   "temas": [
+    "genesis_maestros",
+    "cinco_anclas_motivo"
+   ]
+  },
+  {
+   "id": "78900aa6b3c1",
+   "enunciado": "La génesis fija solo la parte del sujeto que lleva la identidad y todo lo que la extiende es un paso posterior con la génesis adjunta: rostro T1 → cuerpo T2 → cuadros T3/T4; en animal cabeza y pelaje primero; en producto hero shot frontal primero.",
+   "alcance": "Mapa del Spot Publicitario, génesis de todas las clases",
+   "temas": [
+    "genesis_maestros",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "6bf2d54e2024",
+   "enunciado": "Explicación: la taxonomía de casos solo tenía T1, T2 y PROD, por lo que debe ampliarse con LUGAR, EDIF, ANIMAL y OBJ antes de clasificar, separando las reglas de grounding de las de producto.",
+   "alcance": "base de reglas, dimensión caso",
+   "temas": [
+    "regimenes_etiquetado",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "5faa221bffdf",
+   "enunciado": "Nada que lleve referencia puede existir antes que un activo sin referencia; cada clase de génesis siembra una rama que se cruza en los cuadros compuestos.",
+   "alcance": "Mapa del Spot Publicitario, cadena de dependencia",
+   "temas": [
+    "genesis_maestros",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "4a1ad9fd27fa",
+   "enunciado": "Especifica la cadena de dependencia visual: génesis por clase → T2 y poses → cuadro T3 → T4 un sujeto por generación → edición T5 → keyframes → clips encadenados con bloque de continuidad U7 y roles U13 → ensamble en NLE.",
+   "alcance": "Mapa del Spot Publicitario, cadena de dependencia (diagrama)",
+   "temas": [
+    "flujo_pipeline",
+    "genesis_maestros",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "ab90d448fe06",
+   "enunciado": "Cada herencia lleva su referencia adjunta en ese prompt; el cuadro T3 es donde convergen las seis clases canonizadas y un error en una génesis se propaga a todo lo posterior.",
+   "alcance": "Mapa del Spot Publicitario, cadena de dependencia, cuadro T3",
+   "temas": [
+    "referencias_roles",
+    "genesis_maestros",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "57bdf7643aaa",
+   "enunciado": "La génesis sin referencias empieza por la clase de sujeto, que decide modelo y bloques, y exige leer image/SKILL.md, la arquitectura por secciones y el micro-gate de SW30 y aplicar el veto de vocabulario de ai-production-director §6.1.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2)",
+   "temas": [
+    "genesis_maestros",
+    "flujo_pipeline",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "2894b6e22306",
+   "enunciado": "Especifica el subflujo de génesis: clase → grounding NB2 o elección de modelo → reglas de oro → secciones por clase → lints → pregunta de avance → micro-gate → preflight de costo → generar barato, seleccionar, regenerar en alta → inspección al 100% → crítica → canonizar con hash, editar hasta 3 veces o cambiar de método.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2) (diagrama)",
+   "temas": [
+    "genesis_maestros",
+    "validacion_gates",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "9d5e09028961",
+   "enunciado": "Si el sujeto debe ser fiel a algo real el grounding de NB2 fuerza el modelo, y cada método admite como máximo dos intentos, nunca una tercera vuelta de lo mismo.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2)",
+   "temas": [
+    "seleccion_modelo",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "cc9830f01401",
+   "enunciado": "La génesis recibe como entrada la clase y tipo de sujeto: persona T1, lugar, edificación, animal, producto u objeto.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "temas": [
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "fe11c08cce65",
+   "enunciado": "La génesis recibe como entrada el plan de anchors de E5.1 que indica qué shot la necesita.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "temas": [
+    "genesis_maestros",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "cb516a70ab40",
+   "enunciado": "La génesis recibe como entrada del brand-lock la paleta, la never list y el grade.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "temas": [
+    "marca_brandlock",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "b92c3acf8c10",
+   "enunciado": "La génesis recibe como entrada el series_lock de shots.json con personaje, entorno y luz.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "temas": [
+    "shots_json_schema",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "dc1439b830e6",
+   "enunciado": "La génesis recibe como entrada el modelo destino y el presupuesto de créditos.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "temas": [
+    "seleccion_modelo",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "8581947f3820",
+   "enunciado": "La génesis entrega la cabecera de 3 líneas, Model/Quality/Size, el prompt y las notas.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "temas": [
+    "validacion_gates",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "e8c5f05cabaf",
+   "enunciado": "La génesis entrega un render ACCEPT con su critique.json y su procedencia.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "temas": [
+    "critica_qa",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "e535a28bfe8b",
+   "enunciado": "La génesis entrega el asset canonizado con hash SHA-256.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "temas": [
+    "trazabilidad_procedencia",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "aa814e29bd9a",
+   "enunciado": "La génesis registra los prompts en prompts/round-N y los frames en frames/round-N.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "6c1e97b3a658",
+   "enunciado": "En génesis de persona el template T1 es obligatorio, el grounding es inútil y se prueban NB2 y NBP.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Persona",
+   "temas": [
+    "genesis_maestros",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "322c4f20bd2a",
+   "enunciado": "En génesis de edificación y animal se usa grounding de NB2 y se verifica el resultado contra la realidad.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clases Edificación y Animal",
+   "temas": [
+    "seleccion_modelo",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "15249a817e6a",
+   "enunciado": "En génesis de producto las etiquetas se hacen con GPT Image 2 quality high y el logo nunca se genera desde texto.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Producto",
+   "temas": [
+    "logos_marcas_en_imagen",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "873ce50f3007",
+   "enunciado": "En génesis de lugar no hay persona, el entorno va verbatim y hay una sola presión ambiental.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Lugar",
+   "temas": [
+    "genesis_maestros",
+    "clima_atmosfera"
+   ]
+  },
+  {
+   "id": "1539002dfddf",
+   "enunciado": "En génesis de objeto este debe ser legible en macro y en plano general y se canoniza como motivo.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Objeto",
+   "temas": [
+    "genesis_maestros",
+    "cinco_anclas_motivo"
+   ]
+  },
+  {
+   "id": "8842c06cea86",
+   "enunciado": "Las referencias adjuntas no entran en la génesis; pertenecen a T2 en adelante.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), exclusiones",
+   "temas": [
+    "genesis_maestros",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "78097821e2a8",
+   "enunciado": "Los logos y etiquetas de marca reales no entran en la génesis; van por el flujo con referencia.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), exclusiones",
+   "temas": [
+    "logos_marcas_en_imagen",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "9394571f4a1b",
+   "enunciado": "El texto en pantalla no entra en la génesis; es una capa separada en text-overlays.json.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), exclusiones",
+   "temas": [
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "365894b52510",
+   "enunciado": "El movimiento no entra en la génesis: un still es un instante congelado.",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), exclusiones",
+   "temas": [
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "012c16c075c6",
+   "enunciado": "La base de reglas usa los códigos de subproceso E0.1 a POST.2 como dimensión tarea y amplía la dimensión caso con LUGAR, EDIF, ANIMAL y OBJ además de T1-T5 y PROD, para filtrar reglas por brief (p. ej. E5.2 + EDIF).",
+   "alcance": "base de reglas, taxonomía caso/tarea",
+   "temas": [
+    "regimenes_etiquetado",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "45a3ef7a08ff",
+   "enunciado": "Explicación: el linter aurora v1.2-fupai es una copia parcheada del original v1.1 (que no se modifica), con vocabulario ampliado, misma CLI y exit codes (0 PASS, 1 FAIL, 2 uso) y nuevas opciones --ref-role, --series-lock y --treatment.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo)",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "ba413d6239ad",
+   "enunciado": "El conteo de palabras deja de ser fallo duro y pasa a advertencia con el presupuesto por plataforma como referencia (p. ej. kling 80-150, gpt-image 150-300, nano-banana 60-120, T1 ~250), usando el presupuesto original del caso solo si la plataforma no está en la tabla.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P1",
+   "temas": [
+    "longitud_prompt",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "0557179ffce0",
+   "enunciado": "El bloque negativo solo es obligatorio si la plataforma tiene campo negativo (el slot Constraints de GPT Image cuenta como tal), y si existe se advierte si usa 'no X' o supera 8 ítems.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P2",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "2531bcd20bce",
+   "enunciado": "La prohibición de descriptores de persona/outfit solo aplica con referencia de rol primer o último frame (i2v); con rol character el identity block es obligatorio y se advierte si faltan 3 o más de pelo, ojos/piel, prenda, accesorio o rasgo distintivo.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P3",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "72c0160ce7f2",
+   "enunciado": "Los términos que forman parte de una cadena verbatim del series_lock (character, environment, lighting, color_grade) quedan exentos de la capa de redundancia del linter.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P4",
+   "temas": [
+    "validacion_gates",
+    "continuidad_multiclip",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "39382210e7f9",
+   "enunciado": "Las micro-acciones corporales (sweat, jaw, knuckles, breath, exhale, swallow, tendon, vein, blink, etc.) quedan exentas de la categoría de persona del linter aunque un vocabulario personalizado las reintroduzca.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P5",
+   "temas": [
+    "validacion_gates",
+    "tres_detalles"
+   ]
+  },
+  {
+   "id": "de13b72640a3",
+   "enunciado": "'cinematic' y términos como professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera o incredible pasan a vocabulario prohibido, con precedencia de ai-production-director §6.1.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P6",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "801e9ea3d024",
+   "enunciado": "Los bans de estilo (anime, cartoon, 3D render) solo aplican en tratamiento fotorreal, y 'slow motion' pasa a advertencia en fotorreal, fallo en tratamiento race y queda permitido con prefijo 'ultra-' o con OVERRIDE.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P7",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "4ff5f35b273b",
+   "enunciado": "La opción --sports-broadcast solo aplica a casos de video (3a/3b/3c/4); en casos de imagen 1 y 2 se ignora con advertencia porque los stills no llevan movimiento.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P8",
+   "temas": [
+    "validacion_gates",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "db5cb9160457",
+   "enunciado": "Los casos del pipeline se mapean a los del linter: T1/T2/placa → 1; T3/T4/T5 con referencias → 2; clip I2V → 3a/3b/3c; clip con diálogo → 4.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P9",
+   "temas": [
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "0854f2efd1e8",
+   "enunciado": "El linter amplía el vocabulario (agua, automotriz, café/interior, clima, música) y las secciones requeridas para más plataformas (seedance 2.5, flux, ideogram, hailuo, seedream, NB2, kling 3.0 caso 4) y reconoce los marcadores de bloque negativo 'Negative field.', '[Negative Prompts]' y 'Constraints:'.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P10",
+   "temas": [
+    "validacion_gates",
+    "negativos"
+   ]
+  },
+  {
+   "id": "c383faced13a",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no cuenta como violación de vocabulario prohibido o de estilo en el linter, aunque sigue siendo mala práctica en NB/GPT que cubre gate_image.py.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P11",
+   "temas": [
+    "validacion_gates",
+    "negativos",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "c6cb11fd6555",
+   "enunciado": "Si una referencia ya cubre el estilo, la sección 'style' requerida se dispensa y se reporta como advertencia informativa, porque no se debe repetir lo que la referencia define.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P12",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "5b1912cacc26",
+   "enunciado": "Especifica que la versión del linter es 'v1.2-fupai'.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante LINTER_VERSION",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "61a7380c2b2e",
+   "enunciado": "Especifica los presupuestos de palabras de respaldo por caso: génesis y ancla con refs 75-130, I2V (3a/3b/3c) 50-90, video con diálogo 75-130.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_CONFIGS",
+   "temas": [
+    "longitud_prompt",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "ed8dc29c3ada",
+   "enunciado": "Especifica que los casos de video del linter son 3a, 3b, 3c y 4.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante VIDEO_CASES",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "889cd8a702ab",
+   "enunciado": "Especifica que los casos imagen a video del linter son 3a, 3b y 3c.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante I2V_CASES",
+   "temas": [
+    "herramientas_codigo",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "b36c7f356f95",
+   "enunciado": "Especifica los alias de casos del pipeline aceptados por el linter (T1/T2/PLACA/GENESIS → 1, T3-T5/ANCLA → 2, CLIP/FF/I2V → 3a, FF-LF/TAIL → 3b, MOTION-CONTROL → 3c, DIALOGO → 4).",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_ALIASES",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "b4f23b84f9fc",
+   "enunciado": "Especifica los tratamientos admitidos por el linter: fotorreal, ilustracion, animacion y race.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante TREATMENTS",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6682aa8abddf",
+   "enunciado": "Especifica los roles de referencia admitidos por el linter: ff, lf, character, location, prop y style.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante REF_ROLES",
+   "temas": [
+    "herramientas_codigo",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "75154a7f0341",
+   "enunciado": "Especifica las expresiones regulares que identifican cada familia de plataforma (nano-banana, gpt-image, midjourney, flux, ideogram, seedream, kling, veo, seedance, hailuo, sora).",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), FAMILY_PATTERNS",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "41eea6bd5bad",
+   "enunciado": "Especifica cómo el linter separa el prompt principal del bloque negativo por marcadores (en gpt-image el slot 'Constraints:' cuenta como negativo), cuenta palabras, parsea ítems negativos y busca términos.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), split_main_and_negative y helpers",
+   "temas": [
+    "herramientas_codigo",
+    "negativos"
+   ]
+  },
+  {
+   "id": "04507790341d",
+   "enunciado": "Especifica la regex que detecta negaciones (no, not, never, avoid, without, non) hasta dos palabras antes de un término.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), NEGATION_BEFORE",
+   "temas": [
+    "herramientas_codigo",
+    "negativos"
+   ]
+  },
+  {
+   "id": "872a27238f7a",
+   "enunciado": "Especifica la sintaxis de override 'OVERRIDE: término - razón' reconocida por el linter, sin cambios respecto a v1.1.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), OVERRIDE_PATTERN",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "fbb94f676649",
+   "enunciado": "Especifica las claves del series_lock consideradas por el linter: character, environment, lighting y color_grade.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), SERIES_LOCK_KEYS",
+   "temas": [
+    "herramientas_codigo",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "3864abd36dcb",
+   "enunciado": "Especifica los nombres aceptados para el rol de primer frame: FF, START, FIRST, FIRST_FRAME, START_IMAGE.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), FF_ROLES",
+   "temas": [
+    "herramientas_codigo",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "7314aac6fa52",
+   "enunciado": "Especifica los nombres aceptados para el rol de último frame: LF, TAIL, LAST, LAST_FRAME, TAIL_IMAGE, END, END_FRAME.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), LF_ROLES",
+   "temas": [
+    "herramientas_codigo",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "d5b7aef6b5bd",
+   "enunciado": "Especifica los nombres aceptados para el rol de referencia de personaje: CHARACTER, CHAR, ELEMENT, IMG, CREF, REF, OMNI, IDENTITY, @IMG.",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CHAR_ROLES",
+   "temas": [
+    "herramientas_codigo",
+    "referencias_roles"
+   ]
+  }
+ ]
+}
