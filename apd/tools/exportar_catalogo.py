@@ -55,7 +55,7 @@ def main():
     ap.add_argument("--db", default=str(APD / "data/rules.sqlite"))
     ap.add_argument("--xlsx", required=True)
     ap.add_argument("--sin-duplicados", action="store_true",
-                    help="quita los duplicados eliminados en la depuración; cada original conservado recibe las ubicaciones de los que contiene")
+                    help="quita los duplicados de dd_eliminado (depurar_duplicados.py); cada conservado recibe las ubicaciones de los que contiene")
     a = ap.parse_args()
     con = sqlite3.connect(a.db)
     regs = con.execute("select id, orden, texto from registros order by orden").fetchall()
@@ -66,18 +66,14 @@ def main():
         fuentes.setdefault(rid, []).append((arch, li, lf, sec, par, tot))
     eliminados = []
     if a.sin_duplicados:
-        filas = con.execute("select grupo, conservar, eliminar, verificado from registros_depuracion order by grupo").fetchall()
-        malos = [g for g, _, _, v in filas if v != 1]
-        if malos:
-            raise SystemExit(f"{len(malos)} grupos sin chequeo literal aprobado: {malos[:5]}")
+        if not (APD / "data/depuracion/final.json").exists():
+            raise SystemExit("falta el cierre: correr 'depurar_duplicados.py final' antes de exportar")
         texto_de = {rid: t for rid, _, t in regs}
-        for g, cons, elim, _ in filas:
-            for e in json.loads(elim):
-                eliminados.append((g, e, json.loads(cons)))
-                # la ubicación del duplicado eliminado pasa al original conservado que lo contiene
-                destino = (e.get("contenido_en") or json.loads(cons))[0]
-                fuentes[destino] = fuentes.get(destino, []) + fuentes.get(e["id"], [])
-        fuera = {e["id"] for _, e, _ in eliminados}
+        for rid, cont, g, raz in con.execute("select id, contenedor, grupo, razon from dd_eliminado order by grupo"):
+            eliminados.append((g, rid, cont, raz))
+            # la ubicación del duplicado eliminado pasa al original conservado que lo contiene
+            fuentes[cont] = fuentes.get(cont, []) + fuentes.get(rid, [])
+        fuera = {rid for _, rid, _, _ in eliminados}
         regs = [r for r in regs if r[0] not in fuera]
     wb = Workbook()
     ws = wb.active
@@ -117,10 +113,8 @@ def main():
         wd = wb.create_sheet("Duplicados eliminados")
         wd.append(["Grupo", "ID eliminado", "Texto eliminado (literal)", "Contenido en (ID conservado)",
                    "Texto conservado (literal)", "Razón"])
-        for g, e, cons in eliminados:
-            dest = e.get("contenido_en") or cons
-            wd.append([g, e["id"], texto_de[e["id"]], ", ".join(dest), "\n\n".join(texto_de[x] for x in dest),
-                       e.get("razon", "")])
+        for g, rid, cont, raz in eliminados:
+            wd.append([g, rid, texto_de[rid], cont, texto_de[cont], raz])
         for col, w in zip("ABCDEFG", (12, 14, 70, 16, 70, 50)):
             wd.column_dimensions[col].width = w
         for row in wd.iter_rows(min_row=2):

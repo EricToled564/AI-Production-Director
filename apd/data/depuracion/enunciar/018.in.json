@@ -1,0 +1,1336 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "d573663a71ce",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "77-77",
+     "encabezado": "Seedance reference (ByteDance) › 4. The Details Law (read this first)"
+    }
+   ],
+   "texto": "This rule is hard. Multi-shot prompts on Seedance fail not because of the model, but because the writer was lazy on a single shot. One thin shot drags the whole sequence down."
+  },
+  {
+   "id": "340306ed4a03",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "81-90",
+     "encabezado": "Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)"
+    }
+   ],
+   "texto": "For single-shot 5s clips with one clear action.\n\n```text\nSubject. [Who or what]\nMotion. [Present-tense verb, one clear action]\nCamera. [Movement + framing + lens]\nEnvironment. [Where, props, atmosphere]\nLighting. [Direction + quality + color]\nStyle. [Realism level, genre reference]\n```"
+  },
+  {
+   "id": "19453edd814b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "92-92",
+     "encabezado": "Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)"
+    }
+   ],
+   "texto": "Write in full sentences, not tags. Seedance prefers clear grammatical prose. For dramatic / multi-shot / character-locked work, **use the production-grade skeleton in section 6 instead.**"
+  },
+  {
+   "id": "6cf160475d9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "96-96",
+     "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+    }
+   ],
+   "texto": "Use this for any dramatic piece, multi-shot ad, music-video segment, or character-locked clip. Each block answers a specific failure mode. Skipping a block reintroduces that failure."
+  },
+  {
+   "id": "2a360d148e16",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "98-150",
+     "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+    }
+   ],
+   "texto": "```text\n[1] Character lock.\n    Use @img1 as the main character reference and preserve the exact same person\n    across the whole clip: <face shape, eye color, hair, facial hair, build, distinctive\n    features>. Dress him in <exact wardrobe>. No nudity. No glasses (unless reference).\n    No extra characters.\n\n[2] Length + genre + editing intent.\n    Generate a <duration>-second multi-shot <genre> sequence with <fast / slow / staircase>\n    dynamic editing.\n\n[3] Story (one paragraph).\n    <Concrete physical events of this clip in present tense. What changes from start to\n    end. Name the break point.>\n\n[4] Visual style.\n    <Palette, contrast, grain, color temperature, what to avoid (e.g. \"no warm yellow\n    tones\"). Texture cues — realistic skin, food detail, fabric, surfaces.>\n\n[5] Camera style.\n    <Camera body / look (e.g. Sony FX3 handheld). Lenses with purpose:\n    35mm / 50mm for medium, 85mm for emotional close-ups, 100mm macro for inserts,\n    24mm for wide silhouettes. Handheld micro-shake or static. Strict cuts between\n    shots. No continuous take.>\n\n[6] Editing style.\n    <Hard cuts vs match cuts. Rhythmic escalation. Where the pause lands. Where the\n    impact hits. The rhythmic staircase: long → shorter → shorter → pause → impact.>\n\n[7] Audio.\n    <Diegetic sounds in order: ambient, micro-actions, impact, silence moment, final\n    cue. Examples: stomach growl, refrigerator hum, fork clink, wet thud, abrupt\n    silence, distant city ambience. No dialogue / No subtitles / No on-screen text.>\n\n[8] Shot-by-shot timeline.\n    Shot 1, 0.0–X.X sec: <framing, lens, camera move, action, environment detail,\n                           emotion translated into body>.\n    Shot 2, X.X–Y.Y sec: <...>.\n    ...\n    (See section 7 for the 5-second rhythm template.)\n\n[9] Lighting (recap and specifics).\n    <Main source, fill, rim. Direction. Color temperature. What it carries\n    psychologically — judgment, isolation, hope, grief.>\n\n[10] Composition.\n    <Where the subject sits in frame across shots. Negative space. Reflections.\n    Silhouettes. Foreground obstruction. The final image must be named.>\n\n[11] Output specs.\n    <Exact duration. Aspect ratio. Realism level. CLI: --resolution 1080p\n    --duration 5 --camerafixed false>\n```"
+  },
+  {
+   "id": "d3c8cb311190",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "152-152",
+     "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+    }
+   ],
+   "texto": "Why 11 blocks and not 6? Each block prevents one specific Seedance failure: identity drift, one-take collapse, mood smear, lens chaos, audio mismatch, drift on rhythm. Cheap insurance."
+  },
+  {
+   "id": "c1669a46217b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "156-164",
+     "encabezado": "Seedance reference (ByteDance) › 7. The 5-second shot timeline (rhythm template)"
+    }
+   ],
+   "texto": "For a 5-second multi-shot clip, the model performs best with **5 shot beats** following a dramatic micro-arc. Use this timing as the default scaffold:\n\n```text\n0.0–0.8 sec  | Establish     | extreme close-up or insert that anchors emotion / situation\n0.8–1.6 sec  | Action        | medium shot, hero moves or reacts\n1.6–2.5 sec  | Turn          | new framing reveals the shift (POV, OTS, rack focus)\n2.5–3.6 sec  | Reaction      | tight close-up, slow push-in, emotion lands on the body\n3.6–5.0 sec  | Climax / hero | hero shot, low angle, slow-mo if earned, final image\n```"
+  },
+  {
+   "id": "f9053caacd6a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "166-166",
+     "encabezado": "Seedance reference (ByteDance) › 7. The 5-second shot timeline (rhythm template)"
+    }
+   ],
+   "texto": "For 10s clips, double the structure or insert one pause before the climax (the pause beats speed). For 15s+ stories, split into 3 × 5s clips and stitch in the editor — Seedance is more reliable in shorter generations than one long take."
+  },
+  {
+   "id": "f6ccb3547583",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "170-170",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ],
+   "texto": "Seedance reads explicit cut markers inside a single prompt and generates distinct shots connected by visible cuts. This is its strongest card. Use it when you need montage in a single generation."
+  },
+  {
+   "id": "a5201fee4da2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "172-180",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ],
+   "texto": "Supported cut markers.\n\n```text\nShot 1. [description]\nCut to. [description]\nCamera cut to. [description]\nCamera switching. [description]\nLens switch to. [description]\n```"
+  },
+  {
+   "id": "9c632722ca69",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "182-186",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ],
+   "texto": "Inline timeline syntax.\n\n```text\n[Shot A description] -> Cut to -> [Shot B description] -> Camera cut to -> [Shot C description]\n```"
+  },
+  {
+   "id": "8bf1a7bd5916",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "188-194",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ],
+   "texto": "Example.\n\n```text\nShot 1. Medium close-up on a tired man in a kitchen. He opens the refrigerator.\nCut to. Macro insert. His hand reaches toward a single sausage on an empty shelf.\nCut to. Over-the-shoulder shot. The fridge light paints his face cold blue.\n```"
+  },
+  {
+   "id": "b3f64b916811",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "196-196",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ],
+   "texto": "Use 2-3 shots per 5-second clip for tight cinematic montage, 4-5 shot beats only when each beat is short and physically distinct (see section 7). Hard cap: 5 shots per generation — beyond that the model drops or compresses shots. Size the duration to the shot count (4 shots need 10-15s, not 5s). Every shot must share an anchor with its neighbors — same character, same location, or same lighting recipe — or the model produces disconnected clips instead of a sequence."
+  },
+  {
+   "id": "1afe67b91f09",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "200-210",
+     "encabezado": "Seedance reference (ByteDance) › 9. Anti-mush guard block"
+    }
+   ],
+   "texto": "Seedance sometimes ignores cuts and produces one continuous take, smears multiple shots into a single moving frame, or drifts character identity across the timeline. Drop this block at the **very top of the prompt** (before block [1]) when it happens or to prevent it pre-emptively on heavy multi-shot work:\n\n```text\nImportant direction:\nThis must be a clearly edited multi-shot sequence with visible cuts between shots.\nDo not generate a single continuous take. Each shot must have a different camera angle\nand different framing. Use rapid montage pacing with rhythmic escalation. Keep the same\ncharacter appearance throughout. Preserve the same clothing, face, body type, facial\nhair, and hairstyle in every shot. The tone is <serious cinematic drama / tragicomedy /\ndocumentary realism / etc.>.\n```"
+  },
+  {
+   "id": "d5db5a5a0d8a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "212-212",
+     "encabezado": "Seedance reference (ByteDance) › 9. Anti-mush guard block"
+    }
+   ],
+   "texto": "This is the highest-leverage paragraph in any Seedance prompt. Add it any time the model produced mush on a previous attempt."
+  },
+  {
+   "id": "fab35a6d8aad",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "216-216",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ],
+   "texto": "Seedance 2.0 accepts image references inline using `@img1`, `@img2`, etc. Use this to lock the protagonist's likeness across all shots in a multi-shot clip and across multiple stitched clips."
+  },
+  {
+   "id": "243b2c23ffff",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "218-222",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ],
+   "texto": "```text\nUse @img1 as the main character reference and preserve the exact same man across the\nwhole clip: <full identity block: face, eyes, hair, facial hair, build, distinctive\nfeatures, wardrobe>. No nudity. No glasses (unless in reference). No extra characters.\n```"
+  },
+  {
+   "id": "2d4efeed7f1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "224-229",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ],
+   "texto": "Rules.\n\n- The full identity block must follow the `@img1` mention. The model needs the textual description as a backup signal — the image alone drifts.\n- Repeat the identity block in **every** clip of a stitched sequence. Treat each generation as briefing a new intern.\n- For multiple references (character + setting, character + outfit), label each: `@img1` is the protagonist, `@img2` is the location reference, `@img3` is the outfit reference. Then state the role inline.\n- 2.0 also takes `@Video1` (motion/style reference, 480-720p) and `@Audio1` (voiceover / music) tags — state each reference's role in prose, e.g. \"@Audio1 plays as the voiceover\". Limits: 12 files total on 2.0 (up to 9 images, 3 videos, 3 audio); up to 50 on 2.5."
+  },
+  {
+   "id": "8595c2c526d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "233-233",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Dolly Out. Reveals context, pulling away."
+  },
+  {
+   "id": "ca2536de5569",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "234-234",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Dolly In. Pushes into subject, builds tension."
+  },
+  {
+   "id": "06eff3ce7783",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "235-235",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Pan Left / Pan Right. Horizontal reveal, landscape, row."
+  },
+  {
+   "id": "883e18c9eb1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "236-236",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Tilt Up / Tilt Down. Vertical reveal."
+  },
+  {
+   "id": "143a88929c5d",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "237-237",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Tracking. Follows a moving subject."
+  },
+  {
+   "id": "9d6e8e38e033",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "238-238",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Crane / Aerial. Epic scale, establishing."
+  },
+  {
+   "id": "f5e20c079da1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "239-239",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Handheld. Documentary, intimate, UGC."
+  },
+  {
+   "id": "9883193eeaa5",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "240-240",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Zoom In / Zoom Out. Tension or detail."
+  },
+  {
+   "id": "66a711852f54",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "241-241",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Hitchcock Zoom. \"dolly out while zooming in\" for vertigo effect."
+  },
+  {
+   "id": "488c7fca1555",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "242-242",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "- Static (via `--camerafixed true`). Locked frame."
+  },
+  {
+   "id": "20a04334a866",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "244-244",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ],
+   "texto": "Combine sparingly. Multiple camera moves in 5s rarely resolve cleanly."
+  },
+  {
+   "id": "31ca990ce87f",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "248-248",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ],
+   "texto": "Seedance 1.0 Pro does NOT support negative prompts. No `--no blur` syntax works."
+  },
+  {
+   "id": "6281b9631195",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "250-250",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ],
+   "texto": "Seedance 2.0 adds limited negative prompt support but it's fragile and often ignored."
+  },
+  {
+   "id": "1b4a34314d95",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "252-252",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ],
+   "texto": "Workaround for 1.x/2.0. Always invert to positive phrasing. Instead of \"no yellow tones\" write \"cold blue-gray palette with desaturated skin tones.\" Instead of \"no distorted hands\" write \"anatomically correct hands with clear finger separation.\""
+  },
+  {
+   "id": "7aff661fa0f8",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "254-254",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ],
+   "texto": "**Seedance 2.5 fixed this.** Direct bans are reliable: \"pure video, no subtitles, no background music\" actually suppresses them, and specific prohibition lists (\"no exaggerated crying, no fast cuts\") are a core part of the official 2.5 prompt structure. See `seedance-25.md` §7."
+  },
+  {
+   "id": "b35669e7802f",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "258-258",
+     "encabezado": "Seedance reference (ByteDance) › 13. Image-to-video rule"
+    }
+   ],
+   "texto": "When using a reference image, DO NOT describe elements already visible in the image. The model sees it. Describe only motion and camera work. Re-describing static elements creates identity drift."
+  },
+  {
+   "id": "afbf48903404",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "260-261",
+     "encabezado": "Seedance reference (ByteDance) › 13. Image-to-video rule"
+    }
+   ],
+   "texto": "Bad. \"A man in red shirt stands in kitchen. He walks to the fridge.\"\nGood. \"He slowly walks toward the fridge, opens it with hesitation, freezes when he sees the empty shelves. Tracking shot from behind, 35mm.\""
+  },
+  {
+   "id": "648e43441777",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "265-265",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ],
+   "texto": "Seedance 1.5 Pro, 2.0 and 2.5 generate native audio and support lip-sync. Include audio cues in the body of the prompt — treat the prompt as a sound brief."
+  },
+  {
+   "id": "c85740a874a5",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "267-269",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ],
+   "texto": "```text\nAudio. fridge hum, distant rain on window, one stomach growl at 2.3 sec, final silence.\n```"
+  },
+  {
+   "id": "d11ee082acba",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "271-276",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ],
+   "texto": "Rules:\n\n- Dialogue goes in **double quotes** on 1.5/2.0 — the model voices it, generates the voice and syncs lips to the cut. State the delivery: \"Play her line dry and a little proud, his quiet and worn out.\" **On 2.5, use the dedicated markers instead**: dialogue in `{ }`, SFX in `< >`, music in `( )`, titles in `【 】` (see `seedance-25.md` §4).\n- Keep lines short. Long monologues drift out of sync — split into several lines and hold sync with cuts. Still less robust than Veo for speech-first work.\n- Write **\"no music\"** explicitly when you want none — otherwise the model lays an ad-style score under everything.\n- Subtitles: describe the voiceover, then ask for \"text along the bottom edge, timed to the voice\"."
+  },
+  {
+   "id": "54997e6dbe07",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "282-282",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › One continuous take when multi-shot was requested"
+    }
+   ],
+   "texto": "Fix. Add explicit \"Cut to\" markers. Say \"multi-shot sequence with visible hard cuts. Do not generate a single continuous take.\""
+  },
+  {
+   "id": "3a69653f3473",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "286-286",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Character drift across shots"
+    }
+   ],
+   "texto": "Fix. Repeat the full identity block at each shot boundary inside the prompt."
+  },
+  {
+   "id": "6cef92b0342a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "290-290",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Motion ignored below 5 seconds"
+    }
+   ],
+   "texto": "Fix. Minimum duration 5s for any scene that has multiple actions or camera moves."
+  },
+  {
+   "id": "1a897396cbb0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "294-294",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Negative phrasing ignored"
+    }
+   ],
+   "texto": "Fix. Use positive substitutes. Seedance 1.0 has no negative parser."
+  },
+  {
+   "id": "4ddb287a8d3b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "298-298",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Multi-shot fails on 4+ shots in 5s"
+    }
+   ],
+   "texto": "Fix. Cap at 2-3 shots per 5-second clip for tight cinematic, or 4-5 short beats following the section 7 timeline. If more shots are needed, split into multiple generations."
+  },
+  {
+   "id": "c0fc8b9ea44a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "302-302",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Mood smear / \"everything looks the same\""
+    }
+   ],
+   "texto": "Fix. Each shot needs a distinct emotional function (Establish / Power / Pressure / Detail / Reaction / Shift / Impact / Aftermath — see dramaturgy.md §10, Layer 2). If two adjacent shots have the same function, the model averages them into the same frame. Vary function and framing in every cut."
+  },
+  {
+   "id": "2292bbdc15e7",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "306-306",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Lazy abstract phrasing produces lifeless clips"
+    }
+   ],
+   "texto": "Fix. Apply the Details Law (section 4). Audit your draft: every shot must have one environmental pressure, one micro-action, one sound or visual motif anchor. Replace adjectives like \"dramatic\", \"intense\", \"beautiful\" with concrete physical facts."
+  },
+  {
+   "id": "dd29e2e87b7d",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "310-310",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Human faces rejected or degraded (2.0)"
+    }
+   ],
+   "texto": "After the 2026 deepfake crackdown, 2.0 aggressively filters human faces, helmets, sunglasses, and anything resembling protected IP or celebrity likeness. Fix. Route face-heavy drama to Seedance 2.5 (realistic humans are its headline feature), 1.5 Pro, Kling, or Veo; keep 2.0 for scenes, architecture, product and montage work. Use only owned or synthetic character references — the IP/celebrity filter applies on 2.5 too."
+  },
+  {
+   "id": "005632495113",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "314-314",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips"
+    }
+   ],
+   "texto": "A 15s narrative is **never** one prompt. It is three self-contained 5-second prompts, each with the full character lock, the full visual style, the full audio block, and a different dramatic function. Stitch in the editor."
+  },
+  {
+   "id": "4bfe7ea5a1b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "317-317",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Story spine"
+    }
+   ],
+   "texto": "- Beat 1 (Clip A, 0-5s). Hunger. Hero opens an almost empty fridge. Discovers one lonely sausage. Despair flips to hope."
+  },
+  {
+   "id": "4e4e27b728e8",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "318-318",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Story spine"
+    }
+   ],
+   "texto": "- Beat 2 (Clip B, 5-10s). Cooking. Pot, water, fire, sausage, bubbling, anticipation, hero shot lifting the sausage with a fork."
+  },
+  {
+   "id": "0919cc922402",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "319-319",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Story spine"
+    }
+   ],
+   "texto": "- Beat 3 (Clip C, 10-15s). Catastrophe. Sausage slips, falls, wet thud. Window. Bedroom. Hungry sleep. Cut to black."
+  },
+  {
+   "id": "eba7c7fff777",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "323-380",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)"
+    }
+   ],
+   "texto": "```text\nImportant direction:\nThis must be a clearly edited multi-shot sequence with visible cuts between shots.\nDo not generate a single continuous take. Each shot must have a different camera angle\nand different framing. Use rapid montage pacing.\n\nUse @img1 as the main character reference and preserve the exact same man across the\nwhole clip: bald head, gray-green eyes, round expressive face, moustache, long black\nbraided goatee, short dark side hair tufts, slightly overweight build, tragicomic face.\nDress him in a dark oversized T-shirt and dark sweatpants. No nudity. No glasses.\nNo extra characters.\n\nGenerate a 5-second multi-shot tragicomic cinematic sequence with fast dynamic editing.\n\nStory:\nThe man is hungry at night. He suddenly goes to the refrigerator, opens it, feels\ndisappointment because it is almost empty, then notices one lonely sausage and becomes\ninstantly hopeful.\n\nVisual style:\nCold night kitchen. Blue-green refrigerator light. Desaturated colors. No warm yellow\ntones. Slightly harsh LED reflections. Realistic cinematic look. High contrast but\nnatural skin texture. Subtle film grain. Realistic food detail.\n\nCamera style:\nSony FX3 handheld look. 35mm and 50mm lenses for medium and close shots. 100mm macro\nfor inserts. Handheld micro-shake. Visible cuts between shots.\n\nEditing style:\nFast montage with hard cuts. Each shot a different angle and framing. Tense rhythm,\nescalating to the moment of discovery.\n\nAudio:\nDeep stomach growl, soft room tone, refrigerator hum, quiet footsteps, fridge door\nsound. No dialogue. No subtitles. No on-screen text.\n\nShot 1, 0.0–0.8 sec. Extreme close-up of the man's eyes in darkness. He is awake,\nhungry, tense. Static close shot, faint blue ambient light.\nShot 2, 0.8–1.6 sec. Medium handheld side shot. He sits up and walks fast to the\nkitchen. Slight shake, push-in.\nShot 3, 1.6–2.6 sec. POV from inside the refrigerator. The door opens toward camera.\nCold blue-green light hits his face. Shelves almost empty. His face drops.\nShot 4, 2.6–3.5 sec. Rapid inserts: empty shelf, empty container, lonely sauce stain,\nhis sad eyes, his hand moving items aside.\nShot 5, 3.5–5.0 sec. Macro insert of one single sausage in the corner. Rack focus\nfrom empty shelf to sausage. Smash cut to a slightly low-angle close-up of his face.\nHis eyes widen, despair flips to joy, tiny victorious smile.\n\nLighting:\nDark apartment, very low ambient fill. Main source is cold refrigerator light,\nblue-green, top-front. Strong contrast. No warm kitchen light.\n\nComposition:\nTight close-ups and inserts. Negative space inside the empty fridge. Final face shot\nheroic and absurd.\n\n--resolution 1080p --duration 5 --camerafixed false\n```"
+  },
+  {
+   "id": "066ae646cfd0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "382-382",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)"
+    }
+   ],
+   "texto": "Clips B and C follow the same structure with their own story paragraph, shot list, and final image. The character lock and visual style blocks are repeated **verbatim** in each clip — Seedance has no memory between generations."
+  },
+  {
+   "id": "b57d84fb117b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "386-399",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+    }
+   ],
+   "texto": "For a single non-dramatic shot or a quick test, the original 6-step skeleton still works:\n\n```text\nSubject. [identity block with face, hair, clothing, distinguishing features].\nMotion. [one clear present-tense action for the scene].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time of day, props, weather].\nLighting. [dominant source, direction, quality, color].\nStyle. [realism level, genre reference, palette].\nAudio. [ambient, SFX, silence moments]. (1.5+ only)\nContinuity. [what must remain constant across shots].\n\n--resolution 1080p --duration 5 --camerafixed false\n```"
+  },
+  {
+   "id": "03cc62ed2296",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "401-401",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+    }
+   ],
+   "texto": "For dramatic, multi-shot, character-locked, or stitched-clip work — always use the 11-block production-grade skeleton from section 6."
+  },
+  {
+   "id": "10a22738afb7",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "405-405",
+     "encabezado": "Seedance reference (ByteDance) › 17. Seedance 2.5 → read `seedance-25.md`"
+    }
+   ],
+   "texto": "2.5 changes the workflow: a 15-30s narrative that used to be 3-6 stitched clips is now one generation with one continuous arc, extendable to 60s, with a separate Ultra Long mode to 180s. The dramaturgy does not change — the beat map from `dramaturgy.md` §10 moves inside a single prompt."
+  },
+  {
+   "id": "7688db646aba",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "lineas": "407-407",
+     "encabezado": "Seedance reference (ByteDance) › 17. Seedance 2.5 → read `seedance-25.md`"
+    }
+   ],
+   "texto": "Everything 2.5-specific lives in **`seedance-25.md`**: the official prompt formulas, the `( ) < > { } 【 】` markers, the 50-slot reference discipline, stages + end states, video editing, extension, Ultra Long, blockout/green-screen pipeline, and the official worked examples. For any 2.5 production task, read that file before writing the prompt."
+  },
+  {
+   "id": "c0970b123a8b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "3-3",
+     "encabezado": "Universal rules — apply to every video model"
+    }
+   ],
+   "texto": "These rules apply to Seedance, Kling, Veo, and any other AI video generator. They exist because all current video models share a common failure mode. They reward concrete physical direction. They punish abstraction, contradictions, and keyword spam. Ignoring these produces muddy generations regardless of which model you target."
+  },
+  {
+   "id": "619f0a291aef",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "5-5",
+     "encabezado": "Universal rules — apply to every video model"
+    }
+   ],
+   "texto": "Read this file after `dramaturgy.md` and before any model-specific file. The model-specific syntax sits on top of these rules — it does not replace them."
+  },
+  {
+   "id": "fdb0c2c55d0c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "29-29",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ],
+   "texto": "This is the most violated rule in AI video, and the one reason most multi-shot prompts fail. The dramaturgy is fine — the writer just got lazy on a single shot, and that one thin shot drags the whole sequence into mush."
+  },
+  {
+   "id": "77e58413cfd3",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "31-35",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ],
+   "texto": "Every shot in every prompt owns at least three concrete physical details:\n\n1. **One environmental pressure.** Cold blue refrigerator light. Steam off boiling water. Wet asphalt. Flickering fluorescent. Dripping tap. Curtain breathing in the AC. (Kurosawa: weather is a character. See `dramaturgy.md` §9.)\n2. **One physical micro-action.** Jaw locks. Knuckles whiten on the fork. Lips press into a line. He swallows hard. Fingers curl against the doorframe. (Show, not tell — the body is the only place where feelings render.)\n3. **One sound anchor or visual motif.** Stomach growl at 2.3s. Reflection in a darkened phone screen. Rain on the same windowpane. A single fluorescent flicker before each cut."
+  },
+  {
+   "id": "c3a695f78034",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "37-37",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ],
+   "texto": "If a shot has none of these — it is filler. Delete it or rewrite it. No exceptions for \"establishing\", \"transition\", or \"hero product\" shots — those are exactly the shots that go lazy first."
+  },
+  {
+   "id": "a486f8562d0e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "39-43",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ],
+   "texto": "Words that do not render and mark the writer being lazy:\n\n- \"cinematic\", \"professional\", \"high quality\", \"masterpiece\", \"stunning\", \"epic\", \"amazing\"\n- \"beautiful lighting\", \"dynamic camera\", \"intense moment\", \"powerful scene\"\n- \"he is sad\", \"she is angry\", \"he is afraid\" — emotions named without a body"
+  },
+  {
+   "id": "0bead1ff3435",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "45-45",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ],
+   "texto": "Replace each with concrete physical facts. The full theory of why this works lives in `dramaturgy.md` §2 (Second law)."
+  },
+  {
+   "id": "3b8559afab13",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "49-62",
+     "encabezado": "Universal rules — apply to every video model › 2. U1. Universal prompt skeleton"
+    }
+   ],
+   "texto": "Build every prompt from these layers, roughly in this order:\n\n```text\n[Subject / Character]\n[Action / Motion]\n[Scene / Environment]\n[Camera / Shot / Lens]\n[Lighting / Atmosphere]\n[Style / Mood / Palette]\n[Sound / Audio]\n[Duration / Aspect ratio / Resolution]\n[Continuity rules]\n[Negative constraints — only if the model supports them]\n```"
+  },
+  {
+   "id": "4c1ece8f1d5b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "64-64",
+     "encabezado": "Universal rules — apply to every video model › 2. U1. Universal prompt skeleton"
+    }
+   ],
+   "texto": "Model-specific skeletons live in their reference files (`seedance.md`, `kling.md`, `veo.md`). For dramatic / multi-shot / character-locked Seedance work, the production-grade 11-block skeleton in `seedance.md` §6 supersedes this generic skeleton."
+  },
+  {
+   "id": "dbedf015bc56",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "68-68",
+     "encabezado": "Universal rules — apply to every video model › 3. U2. Weight-at-start"
+    }
+   ],
+   "texto": "Generators put more attention on the first 30-40% of tokens. Lead with subject and action. Style modifiers go at the end. Camera, lighting, and environment live in the middle."
+  },
+  {
+   "id": "11ac9d3160ac",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "72-72",
+     "encabezado": "Universal rules — apply to every video model › 4. U3. Show don't tell"
+    }
+   ],
+   "texto": "The model cannot render feelings. It renders bodies. Translate every emotion into a physical action."
+  },
+  {
+   "id": "d6a9e417556a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "74-74",
+     "encabezado": "Universal rules — apply to every video model › 4. U3. Show don't tell"
+    }
+   ],
+   "texto": "- Bad. \"He is scared.\""
+  },
+  {
+   "id": "be3527525cba",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "75-75",
+     "encabezado": "Universal rules — apply to every video model › 4. U3. Show don't tell"
+    }
+   ],
+   "texto": "- Good. \"His jaw locks. He stops breathing for one beat. His fingers curl against the doorframe.\""
+  },
+  {
+   "id": "483510204954",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "77-77",
+     "encabezado": "Universal rules — apply to every video model › 4. U3. Show don't tell"
+    }
+   ],
+   "texto": "Calibration: for one emotional transition, **2-4 observable cues** (eye movement, brow tension, mouth, breathing, throat swallow, hands) are enough. Fewer leaves the model guessing; more reads as overacting."
+  },
+  {
+   "id": "770fabbe163b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "81-81",
+     "encabezado": "Universal rules — apply to every video model › 5. U4. Natural language beats tag spam"
+    }
+   ],
+   "texto": "Video models are not image models. Tag stuffing like \"masterpiece, 4k, cinematic, beautiful\" fails. Write in full cinematic sentences as if briefing a human DOP."
+  },
+  {
+   "id": "6adfb3543a39",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "85-85",
+     "encabezado": "Universal rules — apply to every video model › 6. U5. One primary camera move per shot"
+    }
+   ],
+   "texto": "Do not stack three camera moves in a 5-second clip. Pick one dominant move (dolly-in, pan, tracking, static). Layer a subtle micro-adjustment if needed (slight handheld shake, gentle rack focus). More than that produces visual chaos."
+  },
+  {
+   "id": "62010082d193",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "89-96",
+     "encabezado": "Universal rules — apply to every video model › 7. U6. Precise lens language"
+    }
+   ],
+   "texto": "State the lens. \"Shot on 50mm\" works across all major models. Quick map:\n\n- 24mm. wide, immersive, exaggerated space\n- 35mm. natural documentary\n- 50mm. intimate, human perspective\n- 85mm. portrait, compressed background\n- 100mm macro. texture, detail\n- anamorphic 40mm. cinematic widescreen"
+  },
+  {
+   "id": "dda3c7dafee6",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "98-98",
+     "encabezado": "Universal rules — apply to every video model › 7. U6. Precise lens language"
+    }
+   ],
+   "texto": "Full vocabulary in `camera-lighting-vocabulary.md`."
+  },
+  {
+   "id": "8aa6994ecda1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "102-102",
+     "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+    }
+   ],
+   "texto": "Anchor identity at the START of every prompt. In a multi-clip sequence, repeat the full identity block in every single prompt. Video generators have no memory between generations. Treat every clip like briefing a brilliant intern with memory damage."
+  },
+  {
+   "id": "44ea8302bb06",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "104-104",
+     "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+    }
+   ],
+   "texto": "Identity block must include: face shape, eye color, skin tone. Hair color, length, style. Facial hair. Exact clothing items. Distinctive accessories."
+  },
+  {
+   "id": "1d2c850bfb5a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "106-110",
+     "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+    }
+   ],
+   "texto": "Model-specific syntax for character locking:\n- Seedance: `@img1` reference + identity block (see `seedance.md` §10)\n- Kling 1.x – 2.x: Element Binding with 3-4 reference images (see `kling.md` §7)\n- Kling 3.0: in-prompt `[Character A: <full identity>]` labels, optionally combined with Element Library (see `kling.md` §3)\n- Veo: reference ingredients / JSON identity (see `veo.md`)"
+  },
+  {
+   "id": "8438b412cacf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "114-114",
+     "encabezado": "Universal rules — apply to every video model › 9. U8. No contradictions"
+    }
+   ],
+   "texto": "The model obeys the strongest signal. Contradictions produce artifacts."
+  },
+  {
+   "id": "b92dcb072567",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "116-118",
+     "encabezado": "Universal rules — apply to every video model › 9. U8. No contradictions"
+    }
+   ],
+   "texto": "- Bad. \"Still pond\" + \"flowing water.\"\n- Bad. \"Close-up\" + \"wide cinematic landscape.\"\n- Bad. \"Quiet moment\" + \"explosive action.\""
+  },
+  {
+   "id": "08b11cbca488",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "122-122",
+     "encabezado": "Universal rules — apply to every video model › 10. U9. Concrete physical detail over abstract concept"
+    }
+   ],
+   "texto": "\"Loneliness\" does not render. \"A man sitting alone, shoulders collapsed, face lit by blue phone glow, empty bottles on the table\" does."
+  },
+  {
+   "id": "cc085c029ca5",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "124-124",
+     "encabezado": "Universal rules — apply to every video model › 10. U9. Concrete physical detail over abstract concept"
+    }
+   ],
+   "texto": "This is the same rule as the Details Law in section 1, viewed from a different angle. Section 1 is the audit. This is the principle."
+  },
+  {
+   "id": "a3cd21f0d971",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "126-126",
+     "encabezado": "Universal rules — apply to every video model › 10. U9. Concrete physical detail over abstract concept"
+    }
+   ],
+   "texto": "Corollary — **consequence prompting**. Current models render real physics, so describe the consequence of an action, not just the action: tires kick up water curtains; the hand grips the jar and the lid actually unscrews; the impact shatters the surface into a spider-web pattern. Action chains where each step forces the next also work as QA — a broken chain exposes a failed generation at a glance."
+  },
+  {
+   "id": "1ef0d3a37848",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "130-130",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ],
+   "texto": "Most models work in 5-10 second clips. Longer narratives live in multiple clips stitched in the editor. Do not cram a 30-second story into a 5-second prompt."
+  },
+  {
+   "id": "a88e34cf3ed9",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "132-137",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ],
+   "texto": "Default splits:\n\n- 10s = 2 clips × 5s\n- 15s = 3 × 5s\n- 30s = 6 × 5s\n- 60s = 12 × 5s"
+  },
+  {
+   "id": "7a597689a1e3",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "139-142",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ],
+   "texto": "Three exceptions:\n- Seedance — 2-3 shots inside one 5-10s clip via \"Cut to\" syntax (see `seedance.md` §8).\n- Kling 3.0 — up to 6 shots inside one generation, up to 15s, with native audio and dialogue (see `kling.md` §3).\n- Seedance 2.5 — up to 30s in one pass. The working structure is consecutive stages, each with one primary state change and an explicit visible end state (see `seedance-25.md` §6)."
+  },
+  {
+   "id": "1a6e8fa7b007",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "146-146",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "Every clip needs a clear final frame. The model uses the ending as emotional destination."
+  },
+  {
+   "id": "d698e3c6bea2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "148-148",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "- \"Ends on his face frozen in the blue refrigerator light\" beats \"he stands there sadly.\""
+  },
+  {
+   "id": "1e3bd475dec4",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "150-150",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "The final image is also one of the five anchors (see `dramaturgy.md` §13). Naming it is non-negotiable."
+  },
+  {
+   "id": "1285e3c81acf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "154-158",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "Before returning the final prompt to the user, audit every shot. Each shot must carry at least one of each:\n\n1. Environmental pressure (lighting, weather, surface, sound of the room).\n2. Physical micro-action on the body (jaw, hand, breath, eye, gesture).\n3. Sound anchor or recurring visual motif tied to the emotional spine."
+  },
+  {
+   "id": "ced2e15c121c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "160-160",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "If a shot has zero, fix it before sending. If a shot has only one, ask whether you can make it two without bloat. The strongest prompts in this skill's worked examples always have all three."
+  },
+  {
+   "id": "10f0c7be66f0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "162-162",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "Empty descriptors that fail this check: \"establishing wide shot\", \"beautiful lighting\", \"dynamic camera move\", \"cinematic look\", \"intense moment\", \"dramatic close-up\". Replace each with three concrete physical facts."
+  },
+  {
+   "id": "64539d677446",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "166-166",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "Wherever a model accepts reference assets (Seedance `@Image/@Video/@Audio`, Kling Element Binding and Omni references, Veo ingredients), **every asset gets an explicit role written in the prompt**: what it defines (appearance, motion, voice, scene, camera path) and what to ignore (\"Do not use the image background\", \"Do not use the people in the image\")."
+  },
+  {
+   "id": "aa0ae2147e58",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "168-168",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- Bind each subject individually: \"<Character A> corresponds to @Image 1 — use only the appearance, hairstyle, and clothing.\" Never the collective form \"@Images 1 through 4 define four characters respectively\" — it does not state which is which."
+  },
+  {
+   "id": "6990e65c2d04",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "169-169",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- Do not restate what a reference already defines. If a video reference carries the motion, name only the attributes to inherit; re-describing every action fights the reference."
+  },
+  {
+   "id": "bf6a50093e8b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "170-170",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- More assets is not more control. Control comes from role clarity; unassigned assets bleed into the frame."
+  },
+  {
+   "id": "91d63f9db086",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "172-172",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "Model-specific limits and templates live in the model files (`seedance-25.md` §5 has the fullest system)."
+  },
+  {
+   "id": "56ce60992fcf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "176-181",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ],
+   "texto": "When a prompt is overloaded (10+ scenes, many subjects, spatial tricks), adding more description makes it worse. Instead, declare priorities — the model cannot know what matters most unless told what to protect and what to sacrifice:\n\n1. The core subject that must survive every shot.\n2. The key shots that must appear.\n3. The transitions where the model may freestyle.\n4. The mandatory final frame."
+  },
+  {
+   "id": "c8674c1d59c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "183-183",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ],
+   "texto": "This ranks above prompt-length discipline: a shorter prompt with declared priorities beats a longer one without them."
+  },
+  {
+   "id": "e1b6718eef08",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "20-20",
+     "encabezado": "Veo reference (Google) › 1. What Veo is"
+    }
+   ],
+   "texto": "Google's cinematic video model with NATIVE synchronized audio. The only major generator that creates dialogue, SFX, and music in sync with the video and does lip-sync natively. Best for commercial polish, narrative with dialogue, and cinematic audio."
+  },
+  {
+   "id": "9004529ad50e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "24-24",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "- Veo 3. Text-to-video, native audio, 4 / 6 / 8 second clips."
+  },
+  {
+   "id": "458af3069496",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "25-25",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "- Veo 3.1. Adds image-to-video with First Frame, improved audio, reference ingredients, stronger motion coherence."
+  },
+  {
+   "id": "7f0ad55e9cf2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "27-28",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "Duration. 4, 6, or 8 seconds.\nDialogue budget. Max 8 seconds of spoken audio per clip."
+  },
+  {
+   "id": "ec680bd260b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "32-32",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "Order matters. Lead with subject and camera. Quality modifiers go at the end."
+  },
+  {
+   "id": "0101f79e5045",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "34-42",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "```text\n[Subject / Action]\n+ [Environment / Setting]\n+ [Camera / Shot Type / Lens]\n+ [Lighting / Atmosphere]\n+ [Style / Quality]\n+ [Audio]\n+ [Duration]\n```"
+  },
+  {
+   "id": "dc96ec2e78b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "44-47",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "Sweet spot. 50-200 words.\n\n- Shorter prompts = more creative latitude, less control.\n- Longer prompts = tighter control, higher risk of contradictions."
+  },
+  {
+   "id": "6021cdb83f0e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "51-51",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical)"
+    }
+   ],
+   "texto": "Veo is the only model that renders synced lip movement and voice. The syntax matters."
+  },
+  {
+   "id": "9a8c9fac925a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "55-55",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "Double quotes + lead-in verb (says, whispers, shouts, mutters, asks)."
+  },
+  {
+   "id": "26b5a4ee5b8c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "57-61",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "```text\nA woman says, \"Welcome to the future.\"\nHe whispers, \"Don't move.\"\nShe shouts, \"Get out!\"\n```"
+  },
+  {
+   "id": "49b4fcb2de3b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "63-63",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "Colon after the lead-in verb works too and is often more reliable."
+  },
+  {
+   "id": "33e554078782",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "65-67",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "```text\nA woman says: \"Welcome to the future.\"\n```"
+  },
+  {
+   "id": "5a47f9bf4c00",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "71-77",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Voice character modifiers"
+    }
+   ],
+   "texto": "Place modifiers before the lead-in verb.\n\n```text\nHe says in a weary voice, \"We are fine. We are fine.\"\nShe whispers nervously, \"I don't want to be here.\"\nHe shouts excitedly, \"We did it!\"\n```"
+  },
+  {
+   "id": "d068742c1923",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "81-81",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Timing rule"
+    }
+   ],
+   "texto": "Maximum 8 seconds of spoken audio. Cram too many words into a 5s clip and the delivery speeds up unnaturally. Cut the line until it fits."
+  },
+  {
+   "id": "562e346f392e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "85-93",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ],
+   "texto": "Three supported formats. Mix as needed.\n\n```text\nSFX: thunder cracks in the distance\nAudio: rain on tin roof, distant traffic, one slow breath\n(a loud thunderclap)\n(key turning in a lock)\n(wet footsteps on concrete)\n```"
+  },
+  {
+   "id": "98680e82a979",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "95-95",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ],
+   "texto": "Use labels `Audio:`, `Says:`, `SFX:` to separate sound direction from visual direction. The model needs an explicit signal that audio should be generated."
+  },
+  {
+   "id": "74495978d63c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "99-99",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique)"
+    }
+   ],
+   "texto": "Veo parses structured JSON. This prevents \"concept bleed\" where describing mood accidentally changes object colors. Use JSON for complex scenes with strict continuity needs."
+  },
+  {
+   "id": "dd065ad8d5e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "103-159",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › Full schema"
+    }
+   ],
+   "texto": "```json\n{\n  \"version\": \"veo-3.1\",\n  \"output\": {\n    \"duration_sec\": 8,\n    \"fps\": 24,\n    \"resolution\": \"1080p\",\n    \"aspect_ratio\": \"16:9\"\n  },\n  \"global_style\": {\n    \"look\": \"cinematic naturalism\",\n    \"color\": \"cold blue-gray palette, desaturated skin\",\n    \"mood\": \"quiet domestic tragedy\",\n    \"reference\": \"Fincher-style motivated camera\"\n  },\n  \"continuity\": {\n    \"characters\": [\n      {\n        \"id\": \"man\",\n        \"description\": \"40s, tired eyes, stubble, dark blue t-shirt, grey sweatpants, barefoot\"\n      }\n    ],\n    \"props\": [\"empty refrigerator\", \"single sausage\", \"chipped white plate\"],\n    \"lighting_constant\": \"cold fridge light as key\"\n  },\n  \"scenes\": [\n    {\n      \"id\": \"01\",\n      \"start\": \"0.0\",\n      \"end\": \"3.0\",\n      \"shot\": {\n        \"type\": \"medium close-up\",\n        \"framing\": \"eye-level, slightly offset\",\n        \"camera\": \"slow push-in, 50mm\"\n      },\n      \"action\": \"He opens the fridge. His face catches the cold light. His eyes stop on the empty shelf.\",\n      \"environment\": \"small kitchen, 3am, rain outside window\",\n      \"lighting\": \"cold fridge light as key, warm window spill as rim\",\n      \"audio\": \"fridge hum, distant rain, one stomach growl\"\n    },\n    {\n      \"id\": \"02\",\n      \"start\": \"3.0\",\n      \"end\": \"8.0\",\n      \"shot\": {\n        \"type\": \"extreme close-up\",\n        \"framing\": \"macro insert on hand\",\n        \"camera\": \"static, 100mm macro\"\n      },\n      \"action\": \"His hand hovers over a single sausage. He picks it up slowly, exhales.\",\n      \"environment\": \"inside the fridge\",\n      \"lighting\": \"cold fridge light, high contrast\",\n      \"audio\": \"quiet breath, soft plastic crinkle\"\n    }\n  ]\n}\n```"
+  },
+  {
+   "id": "102af6f242dd",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "163-163",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Multiple scenes in one generation."
+  },
+  {
+   "id": "b6160e69d19b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "164-164",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Strict character continuity across shots."
+  },
+  {
+   "id": "b26f73ebf4f9",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "165-165",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Complex props that must stay the same color and size."
+  },
+  {
+   "id": "35b856f550ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "166-166",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- When a prose prompt kept changing subject colors when you added mood words."
+  },
+  {
+   "id": "64e0e5324da9",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "168-168",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "Not every Veo prompt needs JSON. For simple clips, prose is faster and often better."
+  }
+ ]
+}

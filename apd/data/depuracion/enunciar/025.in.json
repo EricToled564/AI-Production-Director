@@ -1,0 +1,1813 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "61552c36943f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "152-158",
+     "encabezado": "shots.schema.json › shots[].assets.generated"
+    }
+   ],
+   "texto": "              \"generated\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"required\": [\"path\"],\n                  \"additionalProperties\": false,\n                  \"properties\": {"
+  },
+  {
+   "id": "1aa849ed3538",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "159-162",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].path"
+    }
+   ],
+   "texto": "                    \"path\": {\n                      \"type\": \"string\",\n                      \"minLength\": 1,\n                      \"description\": \"Relative to the output directory root.\""
+  },
+  {
+   "id": "da802c8fd317",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "164-167",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].sha256"
+    }
+   ],
+   "texto": "                    \"sha256\": {\n                      \"type\": \"string\",\n                      \"pattern\": \"^[0-9a-f]{64}$\",\n                      \"description\": \"SHA-256 of the frame. Without this, 'accepted' is an assertion about a filename.\""
+  },
+  {
+   "id": "d76fcf14a489",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "169-169",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].round"
+    }
+   ],
+   "texto": "                    \"round\": { \"type\": \"integer\", \"minimum\": 1 },"
+  },
+  {
+   "id": "273ac222b9e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "170-173",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].generator"
+    }
+   ],
+   "texto": "                    \"generator\": {\n                      \"type\": \"string\",\n                      \"pattern\": \"^[a-z0-9][a-z0-9-]*$\",\n                      \"description\": \"Must match an id in visual-prompt-forge/adapters/_capabilities.json.\""
+  },
+  {
+   "id": "76cbdccbe754",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "175-175",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].model_version"
+    }
+   ],
+   "texto": "                    \"model_version\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "a97049af64ba",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "176-180",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].seed"
+    }
+   ],
+   "texto": "                    \"seed\": {\n                      \"oneOf\": [\n                        { \"type\": \"null\" },\n                        { \"type\": \"integer\" },\n                        { \"type\": \"string\", \"minLength\": 1 }"
+  },
+  {
+   "id": "012d0488501a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "183-183",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].prompt_ref"
+    }
+   ],
+   "texto": "                    \"prompt_ref\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "fa10cbe066d7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "184-184",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].prompt_sha256"
+    }
+   ],
+   "texto": "                    \"prompt_sha256\": { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" },"
+  },
+  {
+   "id": "0b18833bb596",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "185-188",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].critique_ref"
+    }
+   ],
+   "texto": "                    \"critique_ref\": {\n                      \"type\": \"string\",\n                      \"minLength\": 1,\n                      \"description\": \"Path to the critique.json that produced 'accepted'. An accepted frame with no critique_ref is an unsourced approval.\""
+  },
+  {
+   "id": "ccf1fe1aaa06",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "190-190",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].accepted"
+    }
+   ],
+   "texto": "                    \"accepted\": { \"type\": \"boolean\" }"
+  },
+  {
+   "id": "b2ae67f4ac23",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "lineas": "2-9",
+     "encabezado": "shots.schema.json › (raíz)"
+    }
+   ],
+   "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/shots.schema.json\",\n  \"title\": \"Shots\",\n  \"description\": \"Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic. Write-once: the QA loop never mutates this file, so its hash in run.json stays valid for the life of the project. Cross-field rules this schema cannot express (end greater than start, shots tiling project.duration_s, on_screen_text resolving into text-overlays.json, overlay colors coming from the brand-lock palette) are enforced by tools/validate_shots.py.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"project\", \"brand_lock_ref\", \"series_lock\", \"shots\"],\n  \"additionalProperties\": false,\n  \"properties\": {"
+  },
+  {
+   "id": "80458d758ead",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "10-12",
+     "encabezado": "text-overlays.schema.json › version"
+    }
+   ],
+   "texto": "    \"version\": {\n      \"type\": \"string\",\n      \"const\": \"1.0\""
+  },
+  {
+   "id": "0e6a103567f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "14-24",
+     "encabezado": "text-overlays.schema.json › overlays"
+    }
+   ],
+   "texto": "    \"overlays\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\", \"shot_id\", \"content\",\n          \"font\", \"size\", \"weight\", \"color\",\n          \"position\", \"enter\", \"exit\"\n        \"additionalProperties\": false,\n        \"properties\": {"
+  },
+  {
+   "id": "a87095935081",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "25-27",
+     "encabezado": "text-overlays.schema.json › overlays[].id"
+    }
+   ],
+   "texto": "          \"id\": {\n            \"type\": \"string\",\n            \"pattern\": \"^text_[0-9]{2,3}$\""
+  },
+  {
+   "id": "0125c15225a6",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "29-38",
+     "encabezado": "text-overlays.schema.json › overlays[].shot_id"
+    }
+   ],
+   "texto": "          \"shot_id\": {\n            \"oneOf\": [\n              { \"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\" },\n                \"type\": \"array\",\n                \"minItems\": 2,\n                \"items\": { \"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\" }\n            \"description\": \"Single shot ID, or array of consecutive shot IDs for persistent overlays.\""
+  },
+  {
+   "id": "7d6abc89b0e1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "40-40",
+     "encabezado": "text-overlays.schema.json › overlays[].content"
+    }
+   ],
+   "texto": "          \"content\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "00411d2714f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "41-43",
+     "encabezado": "text-overlays.schema.json › overlays[].font"
+    }
+   ],
+   "texto": "          \"font\": {\n            \"type\": \"string\",\n            \"description\": \"Must reference a font defined in brand-lock typography.\""
+  },
+  {
+   "id": "45ac32b61bfd",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "45-47",
+     "encabezado": "text-overlays.schema.json › overlays[].size"
+    }
+   ],
+   "texto": "          \"size\": {\n            \"type\": \"string\",\n            \"enum\": [\"display\", \"headline\", \"body\", \"caption\"]"
+  },
+  {
+   "id": "a45496cce84d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "49-51",
+     "encabezado": "text-overlays.schema.json › overlays[].weight"
+    }
+   ],
+   "texto": "          \"weight\": {\n            \"type\": \"string\",\n            \"enum\": [\"regular\", \"medium\", \"bold\", \"black\"]"
+  },
+  {
+   "id": "66fc8ce0bfd8",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "53-56",
+     "encabezado": "text-overlays.schema.json › overlays[].color"
+    }
+   ],
+   "texto": "          \"color\": {\n            \"type\": \"string\",\n            \"pattern\": \"^#[0-9A-Fa-f]{6}$\",\n            \"description\": \"Hex value. Must come from brand-lock palette.\""
+  },
+  {
+   "id": "f6ec8bb8ee2c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "58-72",
+     "encabezado": "text-overlays.schema.json › overlays[].position"
+    }
+   ],
+   "texto": "          \"position\": {\n            \"oneOf\": [\n                \"type\": \"string\",\n                \"enum\": [\n                  \"center\",\n                  \"lower-third\", \"upper-third\",\n                  \"left-third\", \"right-third\"\n                \"type\": \"object\",\n                \"required\": [\"x\", \"y\"],\n                \"additionalProperties\": false,\n                \"properties\": {"
+  },
+  {
+   "id": "e462299893c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "73-73",
+     "encabezado": "text-overlays.schema.json › overlays[].position.oneOf.1.x"
+    }
+   ],
+   "texto": "                  \"x\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 100 },"
+  },
+  {
+   "id": "10a777dfee9d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "74-74",
+     "encabezado": "text-overlays.schema.json › overlays[].position.oneOf.1.y"
+    }
+   ],
+   "texto": "                  \"y\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 100 }"
+  },
+  {
+   "id": "4911e41d505d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "79-83",
+     "encabezado": "text-overlays.schema.json › overlays[].enter"
+    }
+   ],
+   "texto": "          \"enter\": {\n            \"type\": \"object\",\n            \"required\": [\"at\", \"animation\"],\n            \"additionalProperties\": false,\n            \"properties\": {"
+  },
+  {
+   "id": "b65cdcff2d1e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "84-84",
+     "encabezado": "text-overlays.schema.json › overlays[].enter.at"
+    },
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "96-96",
+     "encabezado": "text-overlays.schema.json › overlays[].exit.at"
+    }
+   ],
+   "texto": "              \"at\": { \"type\": \"number\", \"minimum\": 0 },"
+  },
+  {
+   "id": "35271d944efa",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "85-87",
+     "encabezado": "text-overlays.schema.json › overlays[].enter.animation"
+    }
+   ],
+   "texto": "              \"animation\": {\n                \"type\": \"string\",\n                \"enum\": [\"fade-in\", \"slide-up\", \"slide-down\", \"type-on\", \"hard-cut\"]"
+  },
+  {
+   "id": "4813e6b7295a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "91-95",
+     "encabezado": "text-overlays.schema.json › overlays[].exit"
+    }
+   ],
+   "texto": "          \"exit\": {\n            \"type\": \"object\",\n            \"required\": [\"at\", \"animation\"],\n            \"additionalProperties\": false,\n            \"properties\": {"
+  },
+  {
+   "id": "38a8510d16af",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "97-99",
+     "encabezado": "text-overlays.schema.json › overlays[].exit.animation"
+    }
+   ],
+   "texto": "              \"animation\": {\n                \"type\": \"string\",\n                \"enum\": [\"fade-out\", \"slide-up\", \"slide-down\", \"hard-cut\"]"
+  },
+  {
+   "id": "959a02b7a21a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+     "lineas": "2-9",
+     "encabezado": "text-overlays.schema.json › (raíz)"
+    }
+   ],
+   "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/text-overlays.schema.json\",\n  \"title\": \"Text Overlays\",\n  \"description\": \"On-screen text elements that get composited over generated images. Never baked into prompts.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"overlays\"],\n  \"additionalProperties\": false,\n  \"properties\": {"
+  },
+  {
+   "id": "633665790efb",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "10-10",
+     "encabezado": "run.schema.json › version"
+    }
+   ],
+   "texto": "    \"version\": { \"type\": \"string\", \"const\": \"1.0\" },"
+  },
+  {
+   "id": "efed176d35be",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "11-14",
+     "encabezado": "run.schema.json › meta"
+    }
+   ],
+   "texto": "    \"meta\": {\n      \"type\": \"object\",\n      \"description\": \"Forward-compat passthrough. Ignored by core skills.\",\n      \"additionalProperties\": true"
+  },
+  {
+   "id": "eb2f0236b550",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "16-19",
+     "encabezado": "run.schema.json › run_id"
+    }
+   ],
+   "texto": "    \"run_id\": {\n      \"type\": \"string\",\n      \"pattern\": \"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\",\n      \"description\": \"UTC compact timestamp, a dash, then 8 hex characters. Example: 20260730T142300Z-9f2c1ab4. The hex suffix distinguishes two runs started in the same second by different operators.\""
+  },
+  {
+   "id": "53a0a4a71b76",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "21-24",
+     "encabezado": "run.schema.json › created_at"
+    }
+   ],
+   "texto": "    \"created_at\": {\n      \"type\": \"string\",\n      \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\",\n      \"description\": \"UTC ISO-8601 instant the run started. Must agree with the timestamp embedded in run_id.\""
+  },
+  {
+   "id": "d0b9e077ee10",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "26-29",
+     "encabezado": "run.schema.json › shotkit_version"
+    }
+   ],
+   "texto": "    \"shotkit_version\": {\n      \"type\": \"string\",\n      \"pattern\": \"^[0-9]+\\\\.[0-9]+\\\\.[0-9]+$\",\n      \"description\": \"Version of shotkit that produced the run.\""
+  },
+  {
+   "id": "386ea60a868e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "31-36",
+     "encabezado": "run.schema.json › operator"
+    }
+   ],
+   "texto": "    \"operator\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Who started the run. Free text: a name, a handle, or a CI job id. Null when nobody recorded it.\""
+  },
+  {
+   "id": "9f554340761c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "49-49",
+     "encabezado": "run.schema.json › project.framework"
+    }
+   ],
+   "texto": "        \"framework\": { \"type\": \"string\", \"minLength\": 1 }"
+  },
+  {
+   "id": "c635434d10fc",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "52-61",
+     "encabezado": "run.schema.json › inputs"
+    }
+   ],
+   "texto": "    \"inputs\": {\n      \"type\": \"object\",\n      \"description\": \"Every file the run was built from, by path and by hash. Paths are relative to the output directory root.\",\n      \"required\": [\n        \"shots_ref\", \"shots_sha256\",\n        \"text_overlays_ref\", \"text_overlays_sha256\",\n        \"brand_lock_ref\", \"brand_lock_sha256\", \"brand_lock_source\"\n      \"additionalProperties\": false,\n      \"properties\": {"
+  },
+  {
+   "id": "6d45abdcfd8d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "62-62",
+     "encabezado": "run.schema.json › inputs.shots_ref"
+    }
+   ],
+   "texto": "        \"shots_ref\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "3b223cb9849c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "63-63",
+     "encabezado": "run.schema.json › inputs.shots_sha256"
+    }
+   ],
+   "texto": "        \"shots_sha256\": { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" },"
+  },
+  {
+   "id": "25c7c107d5f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "64-69",
+     "encabezado": "run.schema.json › inputs.text_overlays_ref"
+    }
+   ],
+   "texto": "        \"text_overlays_ref\": {\n          \"oneOf\": [\n            { \"type\": \"null\" },\n            { \"type\": \"string\", \"minLength\": 1 }\n          \"description\": \"Null for a storyboard with no on-screen text.\""
+  },
+  {
+   "id": "1a89a00dce20",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "71-74",
+     "encabezado": "run.schema.json › inputs.text_overlays_sha256"
+    }
+   ],
+   "texto": "        \"text_overlays_sha256\": {\n          \"oneOf\": [\n            { \"type\": \"null\" },\n            { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" }"
+  },
+  {
+   "id": "d7afcd5429c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "77-77",
+     "encabezado": "run.schema.json › inputs.brand_lock_ref"
+    }
+   ],
+   "texto": "        \"brand_lock_ref\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "57b5bfe40b4f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "78-78",
+     "encabezado": "run.schema.json › inputs.brand_lock_sha256"
+    }
+   ],
+   "texto": "        \"brand_lock_sha256\": { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" },"
+  },
+  {
+   "id": "da5384479e88",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "79-82",
+     "encabezado": "run.schema.json › inputs.brand_lock_source"
+    }
+   ],
+   "texto": "        \"brand_lock_source\": {\n          \"type\": \"string\",\n          \"minLength\": 1,\n          \"description\": \"Where the snapshot was copied from, e.g. 'brand-packs/whystrohm.md'. The literal string 'template default' records an UNCONFIGURED run built from brand-packs/_template.md.\""
+  },
+  {
+   "id": "c797e58bed64",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "84-86",
+     "encabezado": "run.schema.json › inputs.brand_lock_configured"
+    }
+   ],
+   "texto": "        \"brand_lock_configured\": {\n          \"type\": \"boolean\",\n          \"description\": \"False when the snapshot is an unfilled template. tools/validate_brand_lock.py --require-configured is what decides this.\""
+  },
+  {
+   "id": "831225d2a565",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "90-97",
+     "encabezado": "run.schema.json › generators"
+    }
+   ],
+   "texto": "    \"generators\": {\n      \"type\": \"array\",\n      \"description\": \"Generators targeted by this run, with the model version current at run time. The capability matrix records what is current now; this records what was current then.\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\"id\", \"model_version\"],\n        \"additionalProperties\": false,\n        \"properties\": {"
+  },
+  {
+   "id": "e5d33006d625",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "98-98",
+     "encabezado": "run.schema.json › generators[].id"
+    }
+   ],
+   "texto": "          \"id\": { \"type\": \"string\", \"pattern\": \"^[a-z0-9][a-z0-9-]*$\" },"
+  },
+  {
+   "id": "b3d23c33f4b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "99-99",
+     "encabezado": "run.schema.json › generators[].model_version"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "37-37",
+     "encabezado": "capabilities.schema.json › generators[].model_version"
+    }
+   ],
+   "texto": "          \"model_version\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "3294591cf65c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "100-103",
+     "encabezado": "run.schema.json › generators[].capabilities_sha256"
+    }
+   ],
+   "texto": "          \"capabilities_sha256\": {\n            \"type\": \"string\",\n            \"pattern\": \"^[0-9a-f]{64}$\",\n            \"description\": \"SHA-256 of _capabilities.json as read, so a later matrix edit is detectable.\""
+  },
+  {
+   "id": "9c890b1ca6d6",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "108-115",
+     "encabezado": "run.schema.json › rounds"
+    }
+   ],
+   "texto": "    \"rounds\": {\n      \"type\": \"array\",\n      \"description\": \"Appended once per revision round. Each round records the prompt files it produced. Frames and critiques are found on disk under frames/round-N/ and critiques/round-N/, not listed here, so two operators working the same round never write the same JSON.\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\"round\", \"started_at\", \"prompts\"],\n        \"additionalProperties\": false,\n        \"properties\": {"
+  },
+  {
+   "id": "dfcc918a2b81",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "116-116",
+     "encabezado": "run.schema.json › rounds[].round"
+    }
+   ],
+   "texto": "          \"round\": { \"type\": \"integer\", \"minimum\": 1 },"
+  },
+  {
+   "id": "6745b52df88e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "117-119",
+     "encabezado": "run.schema.json › rounds[].started_at"
+    }
+   ],
+   "texto": "          \"started_at\": {\n            \"type\": \"string\",\n            \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\""
+  },
+  {
+   "id": "0656316ef973",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "121-124",
+     "encabezado": "run.schema.json › rounds[].reason"
+    }
+   ],
+   "texto": "          \"reason\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Why this round exists. Round 1 is 'initial'. Later rounds cite the critiques that triggered them.\""
+  },
+  {
+   "id": "e7c79107e62b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "126-133",
+     "encabezado": "run.schema.json › rounds[].prompts"
+    }
+   ],
+   "texto": "          \"prompts\": {\n            \"type\": \"array\",\n            \"minItems\": 1,\n            \"items\": {\n              \"type\": \"object\",\n              \"required\": [\"generator\", \"ref\", \"sha256\"],\n              \"additionalProperties\": false,\n              \"properties\": {"
+  },
+  {
+   "id": "634baf23693f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "134-134",
+     "encabezado": "run.schema.json › rounds[].prompts[].generator"
+    }
+   ],
+   "texto": "                \"generator\": { \"type\": \"string\", \"pattern\": \"^[a-z0-9][a-z0-9-]*$\" },"
+  },
+  {
+   "id": "3333d33d3443",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "135-135",
+     "encabezado": "run.schema.json › rounds[].prompts[].ref"
+    }
+   ],
+   "texto": "                \"ref\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "8cc248a4b396",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "136-136",
+     "encabezado": "run.schema.json › rounds[].prompts[].sha256"
+    }
+   ],
+   "texto": "                \"sha256\": { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" },"
+  },
+  {
+   "id": "1a653480e2fa",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "137-140",
+     "encabezado": "run.schema.json › rounds[].prompts[].shot_ids"
+    }
+   ],
+   "texto": "                \"shot_ids\": {\n                  \"type\": \"array\",\n                  \"items\": { \"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\" },\n                  \"description\": \"Which shots this file covers. A full pass lists every shot; a revision file lists only the shots it re-emitted.\""
+  },
+  {
+   "id": "70ba35b1c75c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "145-148",
+     "encabezado": "run.schema.json › rounds[].post_only_shots"
+    }
+   ],
+   "texto": "          \"post_only_shots\": {\n            \"type\": \"array\",\n            \"items\": { \"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\" },\n            \"description\": \"Shots whose only outstanding issues are post-level. They get no new prompt, so without this list the compositing obligation exists nowhere on disk.\""
+  },
+  {
+   "id": "10cb97b7efa6",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "lineas": "2-9",
+     "encabezado": "run.schema.json › (raíz)"
+    }
+   ],
+   "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/run.schema.json\",\n  \"title\": \"Run\",\n  \"description\": \"Written once at the start of a storyboard run and never edited. Pins every input by content hash, so six months later you can prove which brand-lock, shot list, and text spec a set of frames was produced against, rather than trusting that the files sitting next to them are the originals. Everything downstream (prompts, frames, critiques) is addressed by round and shot id under the output root, so no two operators write the same path. Validated by tools/validate_provenance.py.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"run_id\", \"created_at\", \"shotkit_version\", \"project\", \"inputs\"],\n  \"additionalProperties\": false,\n  \"properties\": {"
+  },
+  {
+   "id": "cd7b11b65253",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "10-13",
+     "encabezado": "critique.schema.json › version"
+    }
+   ],
+   "texto": "    \"version\": {\n      \"type\": \"string\",\n      \"enum\": [\"1.0\", \"1.1\"],\n      \"description\": \"1.1 adds run_id, round, created_at, the *_sha256 hashes, prompt_ref, generator, model_version, seed, and the meta passthrough. 1.0 documents remain valid and are treated as legacy: they carry a verdict with no proof of what it reviewed.\""
+  },
+  {
+   "id": "abaac3c3a578",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "15-18",
+     "encabezado": "critique.schema.json › meta"
+    }
+   ],
+   "texto": "    \"meta\": {\n      \"type\": \"object\",\n      \"description\": \"Forward-compat passthrough for tooling that needs to annotate a critique without a schema bump. Ignored by core skills.\",\n      \"additionalProperties\": true"
+  },
+  {
+   "id": "c0e14c9f4e20",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "20-25",
+     "encabezado": "critique.schema.json › run_id"
+    }
+   ],
+   "texto": "    \"run_id\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\" }\n      \"description\": \"The run this critique belongs to. Matches run.json:run_id. Format: UTC compact timestamp, a dash, then 8 hex characters.\""
+  },
+  {
+   "id": "b154a9d4967f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "27-32",
+     "encabezado": "critique.schema.json › round"
+    }
+   ],
+   "texto": "    \"round\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"integer\", \"minimum\": 1 }\n      \"description\": \"Revision round, 1-indexed. Round 1 is the first generation pass.\""
+  },
+  {
+   "id": "6cdbca179401",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "34-42",
+     "encabezado": "critique.schema.json › created_at"
+    }
+   ],
+   "texto": "    \"created_at\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n          \"type\": \"string\",\n          \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\"\n      \"description\": \"UTC ISO-8601 instant the critique was written. Second precision, trailing Z required.\""
+  },
+  {
+   "id": "f29436705c9d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "44-49",
+     "encabezado": "critique.schema.json › shot_id"
+    }
+   ],
+   "texto": "    \"shot_id\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\" }\n      \"description\": \"Shot this frame was generated for. Null when critiquing a standalone image with no storyboard.\""
+  },
+  {
+   "id": "e2c3e0a3c738",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "51-56",
+     "encabezado": "critique.schema.json › brand_lock_ref"
+    }
+   ],
+   "texto": "    \"brand_lock_ref\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Path to the brand-lock.snapshot.md the frame was judged against, relative to the output directory root. Null when no brand-lock was available, which caps confidence at MEDIUM.\""
+  },
+  {
+   "id": "ce39eedcc616",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "58-63",
+     "encabezado": "critique.schema.json › brand_lock_sha256"
+    }
+   ],
+   "texto": "    \"brand_lock_sha256\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" }\n      \"description\": \"SHA-256 of the brand-lock file as read. Null only when brand_lock_ref is null.\""
+  },
+  {
+   "id": "ea56ca6febba",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "65-70",
+     "encabezado": "critique.schema.json › image_ref"
+    }
+   ],
+   "texto": "    \"image_ref\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Path to the frame that was critiqued, relative to the output directory root.\""
+  },
+  {
+   "id": "08928d4cd973",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "72-77",
+     "encabezado": "critique.schema.json › image_sha256"
+    }
+   ],
+   "texto": "    \"image_sha256\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" }\n      \"description\": \"SHA-256 of the frame bytes as reviewed. This is what makes the verdict falsifiable: if the file at image_ref no longer hashes to this value, the verdict does not describe it.\""
+  },
+  {
+   "id": "c5cbcfbed56e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "79-84",
+     "encabezado": "critique.schema.json › prompt_ref"
+    }
+   ],
+   "texto": "    \"prompt_ref\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Path to the prompt file the frame was generated from, relative to the output directory root. Null when the prompt is unknown, which caps confidence at MEDIUM.\""
+  },
+  {
+   "id": "69c137f03123",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "86-91",
+     "encabezado": "critique.schema.json › prompt_sha256"
+    }
+   ],
+   "texto": "    \"prompt_sha256\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\" }\n      \"description\": \"SHA-256 of the prompt file. Null only when prompt_ref is null.\""
+  },
+  {
+   "id": "d0e0659b686a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "93-98",
+     "encabezado": "critique.schema.json › generator"
+    }
+   ],
+   "texto": "    \"generator\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"pattern\": \"^[a-z0-9][a-z0-9-]*$\" }\n      \"description\": \"Generator id that produced the frame. Must match an id in visual-prompt-forge/adapters/_capabilities.json. Null when unknown.\""
+  },
+  {
+   "id": "111086a45566",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "100-105",
+     "encabezado": "critique.schema.json › model_version"
+    }
+   ],
+   "texto": "    \"model_version\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Model version string as of generation, copied from the capability matrix entry. The matrix records what is current; this records what ran.\""
+  },
+  {
+   "id": "b9a7fea89555",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "107-113",
+     "encabezado": "critique.schema.json › seed"
+    }
+   ],
+   "texto": "    \"seed\": {\n      \"oneOf\": [\n        { \"type\": \"null\" },\n        { \"type\": \"integer\" },\n        { \"type\": \"string\", \"minLength\": 1 }\n      \"description\": \"Generation seed if the generator exposes one. Null when it does not.\""
+  },
+  {
+   "id": "e9a09dac2bad",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "115-117",
+     "encabezado": "critique.schema.json › verdict"
+    }
+   ],
+   "texto": "    \"verdict\": {\n      \"type\": \"string\",\n      \"enum\": [\"ACCEPT\", \"REVISE\", \"REJECT\"]"
+  },
+  {
+   "id": "8b5daa821974",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "119-121",
+     "encabezado": "critique.schema.json › confidence"
+    }
+   ],
+   "texto": "    \"confidence\": {\n      \"type\": \"string\",\n      \"enum\": [\"HIGH\", \"MEDIUM\", \"LOW\"]"
+  },
+  {
+   "id": "fbff30ef3894",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "123-126",
+     "encabezado": "critique.schema.json › working"
+    }
+   ],
+   "texto": "    \"working\": {\n      \"type\": \"array\",\n      \"description\": \"Concrete positives. Observations, not flattery.\",\n      \"items\": { \"type\": \"string\", \"minLength\": 1 }"
+  },
+  {
+   "id": "e13296e38c35",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "128-134",
+     "encabezado": "critique.schema.json › issues"
+    }
+   ],
+   "texto": "    \"issues\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\"layer\", \"severity\", \"note\", \"fix_type\", \"fix\"],\n        \"additionalProperties\": false,\n        \"properties\": {"
+  },
+  {
+   "id": "8872c1991916",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "135-137",
+     "encabezado": "critique.schema.json › issues[].layer"
+    }
+   ],
+   "texto": "          \"layer\": {\n            \"type\": \"string\",\n            \"enum\": [\"Brand Lock\", \"Series Lock\", \"Shot Spec\", \"Composition\", \"Technical\", \"Continuity\"]"
+  },
+  {
+   "id": "a65e00bbb834",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "139-142",
+     "encabezado": "critique.schema.json › issues[].severity"
+    }
+   ],
+   "texto": "          \"severity\": {\n            \"type\": \"string\",\n            \"enum\": [\"minor\", \"major\", \"blocking\"],\n            \"description\": \"Any blocking issue forces REJECT. One or two major issues cap the verdict at REVISE. Three or more major issues force REJECT. Enforced by tools/validate_critique.py, not by this schema.\""
+  },
+  {
+   "id": "c0af6f329216",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "144-144",
+     "encabezado": "critique.schema.json › issues[].note"
+    }
+   ],
+   "texto": "          \"note\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "623427c452ef",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "145-147",
+     "encabezado": "critique.schema.json › issues[].fix_type"
+    }
+   ],
+   "texto": "          \"fix_type\": {\n            \"type\": \"string\",\n            \"enum\": [\"prompt-level\", \"post-level\", \"re-roll\"]"
+  },
+  {
+   "id": "a506cc8087b7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "149-149",
+     "encabezado": "critique.schema.json › issues[].fix"
+    }
+   ],
+   "texto": "          \"fix\": { \"type\": \"string\", \"minLength\": 1 }"
+  },
+  {
+   "id": "f32a2530345b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "157-157",
+     "encabezado": "critique.schema.json › allOf.0.if.version"
+    }
+   ],
+   "texto": "        \"properties\": { \"version\": { \"const\": \"1.1\" } },"
+  },
+  {
+   "id": "133b1b99e789",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "lineas": "2-178",
+     "encabezado": "critique.schema.json › (raíz)"
+    }
+   ],
+   "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/critique.schema.json\",\n  \"title\": \"Critique\",\n  \"description\": \"Machine-readable verdict for one generated frame reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Version 1.1 adds run provenance: the frame, prompt, and brand-lock are identified by content hash as well as by path, so a verdict can be proven to describe the bytes that were actually reviewed. Every provenance field is required at 1.1 and explicitly nullable, so an absent input is a recorded decision rather than an omission.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"verdict\", \"confidence\", \"issues\"],\n  \"additionalProperties\": false,\n  \"properties\": {\n  \"allOf\": [\n      \"if\": {\n        \"required\": [\"version\"]\n      \"then\": {\n        \"required\": [\n          \"version\",\n          \"run_id\",\n          \"round\",\n          \"created_at\",\n          \"shot_id\",\n          \"brand_lock_ref\",\n          \"brand_lock_sha256\",\n          \"image_ref\",\n          \"image_sha256\",\n          \"prompt_ref\",\n          \"prompt_sha256\",\n          \"generator\",\n          \"model_version\",\n          \"seed\",\n          \"verdict\",\n          \"confidence\",\n          \"issues\""
+  },
+  {
+   "id": "eea866dc6749",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "10-10",
+     "encabezado": "capabilities.schema.json › $schema_note"
+    }
+   ],
+   "texto": "    \"$schema_note\": { \"type\": \"string\" },"
+  },
+  {
+   "id": "13e29048dacf",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "11-11",
+     "encabezado": "capabilities.schema.json › version"
+    }
+   ],
+   "texto": "    \"version\": { \"type\": \"string\" },"
+  },
+  {
+   "id": "9ac901db636a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "12-15",
+     "encabezado": "capabilities.schema.json › matrix_last_reviewed"
+    }
+   ],
+   "texto": "    \"matrix_last_reviewed\": {\n      \"type\": \"string\",\n      \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}$\",\n      \"description\": \"ISO date the whole matrix was last reviewed.\""
+  },
+  {
+   "id": "f0d516925a5f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "17-30",
+     "encabezado": "capabilities.schema.json › generators"
+    }
+   ],
+   "texto": "    \"generators\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\", \"display_name\", \"model_version\", \"last_verified\",\n          \"prompt_style\", \"max_prompt_words\",\n          \"supports_text_render\", \"supports_motion\",\n          \"supports_character_ref\", \"supports_style_ref\", \"supports_negative_prompt\",\n          \"aspect_param\", \"api_access\"\n        \"additionalProperties\": false,\n        \"properties\": {"
+  },
+  {
+   "id": "be60fb854b75",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "31-34",
+     "encabezado": "capabilities.schema.json › generators[].id"
+    }
+   ],
+   "texto": "          \"id\": {\n            \"type\": \"string\",\n            \"pattern\": \"^[a-z0-9][a-z0-9-]*$\",\n            \"description\": \"Must match an adapter .md filename (without extension).\""
+  },
+  {
+   "id": "9737e8260742",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "36-36",
+     "encabezado": "capabilities.schema.json › generators[].display_name"
+    }
+   ],
+   "texto": "          \"display_name\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "8847dad24c5d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "38-40",
+     "encabezado": "capabilities.schema.json › generators[].last_verified"
+    }
+   ],
+   "texto": "          \"last_verified\": {\n            \"type\": \"string\",\n            \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}$\""
+  },
+  {
+   "id": "10ab20e11152",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "42-44",
+     "encabezado": "capabilities.schema.json › generators[].prompt_style"
+    }
+   ],
+   "texto": "          \"prompt_style\": {\n            \"type\": \"string\",\n            \"enum\": [\"keyword\", \"natural\", \"paragraph\"]"
+  },
+  {
+   "id": "280c48b65f15",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "46-46",
+     "encabezado": "capabilities.schema.json › generators[].max_prompt_words"
+    }
+   ],
+   "texto": "          \"max_prompt_words\": { \"type\": \"integer\", \"exclusiveMinimum\": 0 },"
+  },
+  {
+   "id": "208a26f4a1a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "47-47",
+     "encabezado": "capabilities.schema.json › generators[].supports_text_render"
+    }
+   ],
+   "texto": "          \"supports_text_render\": { \"type\": \"boolean\" },"
+  },
+  {
+   "id": "d828c31dec82",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "48-48",
+     "encabezado": "capabilities.schema.json › generators[].supports_motion"
+    }
+   ],
+   "texto": "          \"supports_motion\": { \"type\": \"boolean\" },"
+  },
+  {
+   "id": "26af6f367ab6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "49-49",
+     "encabezado": "capabilities.schema.json › generators[].supports_character_ref"
+    }
+   ],
+   "texto": "          \"supports_character_ref\": { \"type\": \"boolean\" },"
+  },
+  {
+   "id": "8e27e8bd5468",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "50-50",
+     "encabezado": "capabilities.schema.json › generators[].supports_style_ref"
+    }
+   ],
+   "texto": "          \"supports_style_ref\": { \"type\": \"boolean\" },"
+  },
+  {
+   "id": "53d9f5a9f427",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "51-51",
+     "encabezado": "capabilities.schema.json › generators[].supports_negative_prompt"
+    }
+   ],
+   "texto": "          \"supports_negative_prompt\": { \"type\": \"boolean\" },"
+  },
+  {
+   "id": "d17deddd353a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "52-52",
+     "encabezado": "capabilities.schema.json › generators[].aspect_param"
+    }
+   ],
+   "texto": "          \"aspect_param\": { \"type\": \"string\", \"minLength\": 1 },"
+  },
+  {
+   "id": "178717467065",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "53-55",
+     "encabezado": "capabilities.schema.json › generators[].api_access"
+    }
+   ],
+   "texto": "          \"api_access\": {\n            \"type\": \"string\",\n            \"enum\": [\"full\", \"limited\", \"none\"]"
+  },
+  {
+   "id": "72f10345231d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "57-57",
+     "encabezado": "capabilities.schema.json › generators[].notes"
+    }
+   ],
+   "texto": "          \"notes\": { \"type\": \"string\" }"
+  },
+  {
+   "id": "09bc2af37787",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "lineas": "2-9",
+     "encabezado": "capabilities.schema.json › (raíz)"
+    }
+   ],
+   "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/capabilities.schema.json\",\n  \"title\": \"Generator Capabilities\",\n  \"description\": \"Capability matrix for visual-prompt-forge adapters. The single source of truth for per-generator limits (prompt length, text/motion support, aspect param). Adapter .md files describe how to prompt; this file owns the numbers.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"matrix_last_reviewed\", \"generators\"],\n  \"additionalProperties\": false,\n  \"properties\": {"
+  },
+  {
+   "id": "19d0bfef1d95",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "16-19",
+     "encabezado": "Agua en superficie"
+    }
+   ],
+   "texto": "Especializa el método de keyframes para sujetos que se mueven sobre el agua. El agua es a la vez el\nsuelo, el fondo barrido y la fuente de partículas. La velocidad se lee en la superficie, no en el\nsujeto. Las reglas de velocidad de `race-and-speed.md` valen aquí con el agua ocupando el papel del\nasfalto."
+  },
+  {
+   "id": "2f7dbda84272",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "23-23",
+     "encabezado": "Agua en superficie › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar este archivo siempre que el sujeto se desplace sobre una superficie de agua: tabla, casco, remo, pie descalzo o esquí. [A PRUEBA]"
+  },
+  {
+   "id": "ea1736c11eb1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "24-24",
+     "encabezado": "Agua en superficie › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Si el sujeto cruza la superficie hacia adentro o hacia afuera, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+  },
+  {
+   "id": "c6b284bc940e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "25-25",
+     "encabezado": "Agua en superficie › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Si hay motor o vehículo acuático, leer antes `race-and-speed.md` §3 y §10: el presupuesto de velocidad y el anti-fake aplican íntegros. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "d3b01abc9cbb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "29-29",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. La estela y el spray deben salir del punto de contacto y apuntar en sentido contrario a la dirección de viaje declarada; una estela que no coincide con la dirección de viaje es una contradicción y el modelo obedece la señal más fuerte. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "36db64d002d7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "30-30",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. El spray se prompt como consecuencia física del canto de la tabla o del casco cortando el agua, nunca como \"splash\" abstracto: describe qué lo provoca y hacia dónde vuela. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "726044ef7468",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "31-31",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. Las gotas congeladas se describen como constelación de puntos speculares con rim en el borde de ataque; sin ese rim el spray se lee como niebla blanca. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "abe968cc669f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "32-32",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. La superficie del agua debe mostrar textura direccional, rizado o chop, para que el barrido tenga algo que barrer; agua lisa equivale a asfalto sin textura. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "e0314379cc66",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "33-33",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "5. Toda cuerda de remolque se dibuja tensa y recta desde el mango hasta fuera de cuadro; una cuerda con comba dice que no hay tracción y desmiente la velocidad. [A PRUEBA]"
+  },
+  {
+   "id": "1c21ce1dad28",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "34-34",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "6. El cuerpo del rider debe mostrar el vector de la maniobra: rodillas flexionadas, cadera cargada hacia el canto, brazos en tensión; un rider erguido y relajado es un panel neutro y se descarta. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "79e2223b3c82",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "35-35",
+     "encabezado": "Agua en superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "7. El agua desplazada tiene masa: la pared de agua junto al canto se levanta más alta en el lado de presión y se rompe en el lado libre; no es simétrica. [A PRUEBA]"
+  },
+  {
+   "id": "084be0886a89",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "39-39",
+     "encabezado": "Agua en superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto: sujeto nítido contra superficie de agua barrida en el sentido del viaje, con el spray en blur parcial. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "f9fe075e2274",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "40-40",
+     "encabezado": "Agua en superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Un still de superficie se considera rápido solo si reúne al menos tres de cinco cues: cámara a ras del agua, agua barriendo el borde inferior, referencia cercana pasando el borde, sujeto nítido contra fondo barrido, cue de vibración o spray golpeando la lente. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "177e498b2815",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "41-41",
+     "encabezado": "Agua en superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Las gotas sobre la lente o la carcasa son la cue de vibración de este medio y se nombran como tal. [A PRUEBA]"
+  },
+  {
+   "id": "a9dc1c207afd",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "45-45",
+     "encabezado": "Agua en superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- El spray solo se lee luminoso a contraluz o a contraluz lateral; el spray frontal es una masa gris muerta, igual que el humo frontal. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "18035ac26d2d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "46-46",
+     "encabezado": "Agua en superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- La superficie del agua es el espejo del régimen: los prácticos y el sol se reflejan como estrías largas; usa el reflejo como spine de composición y saca la fuente real medio fuera de cuadro. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "a8d46a69f414",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "47-47",
+     "encabezado": "Agua en superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Piel y neopreno mojados devuelven speculares duros; un cuerpo mojado sin brillos speculares se lee seco y falso. [A PRUEBA]"
+  },
+  {
+   "id": "ad6619dc91fa",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "48-48",
+     "encabezado": "Agua en superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Con sol alto el agua pierde textura y el spray se quema: preferir sol bajo, y declararlo en el prompt con hora y dirección, no con \"golden hour\" suelto. [A PRUEBA]"
+  },
+  {
+   "id": "c8869330ac2b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "52-52",
+     "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- La cámara debe poder montarse en un rig real: torre de la lancha, pole cam desde la embarcación, carcasa a nivel del agua, dron bajo o cámara en el mango de la cuerda; un ángulo que ningún rig acuático puede ocupar se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "73a43541f7ed",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "53-53",
+     "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Ángulo por defecto low a ras del agua: la superficie ocupa el tercio inferior y barre; el ángulo alto y limpio es el god-angle que mata la velocidad. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "d36aebc5ea97",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "54-54",
+     "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- El ángulo alto se reserva para el proof shot lejano: estela larga como prueba de distancia cubierta, una sola vez en la secuencia. [FUENTE: video/references/race-and-speed.md §5]"
+  },
+  {
+   "id": "a8f96b169a7b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "55-55",
+     "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Reservar el dutch para el único beat de pérdida de canto o caída. [FUENTE: video/references/race-and-speed.md §6]"
+  },
+  {
+   "id": "ad7491ef0e92",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "56-56",
+     "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Lente: 24mm en el rig cercano para exagerar la proximidad del agua; larga focal desde la orilla para comprimir al rider contra la estela y la lancha. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "7b0226eb90c5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "60-60",
+     "encabezado": "Agua en superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Escenas con física de agua, spray y tela mojada: Nano Banana Pro, que es el modelo para escenas complejas con física y materiales finos. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "261c281f4039",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "61-61",
+     "encabezado": "Agua en superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Si la cara del rider está visible y es identidad de campaña, generar el maestro de rostro aparte según el template T1 y probar NB2 y NBP, porque NBP a veces sostiene peor los rostros. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "6147b0613fb7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "62-62",
+     "encabezado": "Agua en superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Pedir \"natural contrast, no HDR look\": el agua y el spray disparan la tendencia a sobrecocer el HDR. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "51fb0525e7a5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "63-63",
+     "encabezado": "Agua en superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Lugar reconocible, una bahía o un lago concreto: NB2 con image grounding. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "655710159ae7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "67-67",
+     "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- El rostro suele quedar fragmentado por spray, gafas o casco: convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "86a646973d74",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "68-68",
+     "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Cuando la identidad del rider importa, la cara se fija en el maestro T1 y el cuadro de acción se inserta con referencia; nunca se pide identidad y spray en la misma génesis. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "340f0ff4dfa6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "69-69",
+     "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Las manos en el mango son anatomía en decisión: nudillos, tendones y agarre máximo; una mano relajada en el mango es filler. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "e331307888ed",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "70-70",
+     "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Dos riders en el mismo cuadro: uno por generación sobre la placa de agua, con la estela de cada uno coherente con su dirección. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "a8b6d34f9dc5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "74-74",
+     "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El agua congelada parece vidrio o gel: falta textura direccional y blur parcial en el spray; añadir chop, gotas con rim y blur diferencial. [A PRUEBA]"
+  },
+  {
+   "id": "8adb5e9d9e10",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "75-75",
+     "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El spray sale como nube blanca sin forma: está iluminado de frente; pasar la fuente detrás o al lado del spray. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "87ab0f6b2d8c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "76-76",
+     "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- La estela va hacia el lado equivocado: la dirección de viaje no estaba declarada; declararla antes que el sujeto. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "4c480ed73e25",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "77-77",
+     "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Horizonte inclinado sin querer: el modelo interpreta el movimiento como dutch; pedir horizonte nivelado salvo en el beat de caída. [A PRUEBA]"
+  },
+  {
+   "id": "c75216637bc0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "78-78",
+     "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Cuerda floja o que termina en el aire: nombrar el destino de la cuerda fuera de cuadro y su tensión. [A PRUEBA]"
+  },
+  {
+   "id": "0396b0dfe76c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "82-82",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Estela y spray coherentes con la dirección de viaje declarada. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "6b860d3a9eda",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "83-83",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Al menos tres cues de velocidad presentes y nombrables. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "b05fbb6ce423",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "84-84",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Spray con rim de contraluz, no masa gris. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "58df6b0ed16f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "85-85",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Cuerpo con vector de maniobra, cuerda tensa si existe. [A PRUEBA]"
+  },
+  {
+   "id": "909672f201a3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "86-86",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    },
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "83-83",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Rig montable identificable. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "afe6a1309af5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "lineas": "87-87",
+     "encabezado": "Agua en superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Sin HDR sobrecocido, sin rostro pedido a través del spray. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "c26c6737054f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "16-18",
+     "encabezado": "Ruptura de superficie"
+    }
+   ],
+   "texto": "El instante en que un cuerpo cruza la frontera entre aire y agua. Es el tipo B en estado puro: un\ndiezmilésimo de segundo arrestado. La regla que gobierna todo el archivo es boardear el estado\nposterior del umbral, nunca el anterior."
+  },
+  {
+   "id": "d12a9c2b161d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "22-22",
+     "encabezado": "Ruptura de superficie › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar cuando el beat es el cruce de la superficie en cualquier sentido: entrada de clavado, salida de un nadador, salto de un animal marino, objeto que cae al agua. [A PRUEBA]"
+  },
+  {
+   "id": "4554ae8c6095",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "23-23",
+     "encabezado": "Ruptura de superficie › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- No cargar para un sujeto totalmente sumergido; eso es `03-subacuatico.md`. Para un sujeto que se desplaza encima sin cruzar, `01-agua-superficie.md`. [A PRUEBA]"
+  },
+  {
+   "id": "c1acb190eda7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "27-27",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. Boardear el estado posterior: el agua ya abierta, la corona de salpicadura ya formada, el cuerpo ya parcialmente dentro; el instante anterior se implica. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "9f78847e67be",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "28-28",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. La forma de la salpicadura depende de la entrada y hay que declararla: un cuerpo alineado y vertical produce entrada limpia con corona baja y un chorro fino; un cuerpo abierto produce corona ancha y agua blanca. [A PRUEBA]"
+  },
+  {
+   "id": "8405f4e645e6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "29-29",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. La parte sumergida se ve desplazada y ligeramente comprimida respecto a la parte emergida por la refracción; una extremidad que cruza la línea del agua sin quiebre óptico se lee como recorte. [A PRUEBA]"
+  },
+  {
+   "id": "6609623be0c1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "30-30",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. Arriba de la línea hay gotas; abajo hay burbujas. No se mezclan: las gotas caen, las burbujas suben. [A PRUEBA]"
+  },
+  {
+   "id": "cb1911eed6b3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "31-31",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "5. El movimiento se prompt por su consecuencia: el cuerpo abre el agua, la superficie se hunde en el punto de entrada y se levanta alrededor. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "b96ff7424f85",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "32-32",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "6. Un still es un instante congelado: usar \"frozen mid-entry\" o \"frozen at the instant the hands break the surface\", nunca verbos de proceso como \"diving\" o \"splashing\". [FUENTE: produccion-visual-sw30/SKILL.md R8]"
+  },
+  {
+   "id": "4eda2a75d478",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "33-33",
+     "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "7. La línea de superficie es una sola: si el encuadre es split-level, hay exactamente un menisco que cruza el cuadro, con el aire nítido arriba y el agua con su propia atmósfera abajo. [A PRUEBA]"
+  },
+  {
+   "id": "3444d15e6538",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "37-37",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto: blur parcial congelado, el agua en movimiento apenas barrida y el cuerpo o el objeto tack-sharp; es la prueba de un único instante arrestado. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "f788942aecb1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "38-38",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Alternativa para el beat previo al impacto: vector de trayectoria, el cuerpo en el aire en una postura que solo puede resolverse hacia abajo, con espacio negativo hacia el agua. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "1aa2468af852",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "39-39",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Nunca blur uniforme en toda la imagen: iguala la salpicadura al fondo y borra el instante. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "4146d9b57017",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "43-43",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- La corona y las gotas solo se leen a contraluz o con luz lateral dura; iluminarlas de frente produce una mancha blanca sin volumen. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "362e2625f9c1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "44-44",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- En split-level la mitad de aire y la mitad de agua tienen exposiciones distintas: el agua uno o dos pasos más oscura, con cáusticas si hay sol; declararlo evita que el modelo unifique las dos mitades. [A PRUEBA]"
+  },
+  {
+   "id": "516a0e0ebf61",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "45-45",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Una presión ambiental por panel: la salpicadura ya es la atmósfera; no sumar niebla, lluvia o spray adicional. [FUENTE: video/references/race-and-speed.md §7]"
+  }
+ ]
+}

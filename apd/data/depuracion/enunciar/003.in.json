@@ -1,0 +1,2066 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "4f68688b0249",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "52-65",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 6 — Sección 5 (Aprendizajes validados) — Nueva sub-sección 5.5"
+    }
+   ],
+   "texto": "```\n5.5 Linter determinista — disciplina sobre memoria\n\nSesión 2026-05-27 documentó que la regla \"no redescribir lo que está en los refs\" (v6.0 §5.4) se viola repetidamente bajo presión de iteración rápida. La memoria del agente falla; el código no. El linter aurora-linter/prompt_linter.py mueve enforcement de memoria a código determinista. Aplica las siguientes reglas como gates duros:\n\n- Redundancia por categoría P/O/L/PR/S vía IDs system §7.\n- Word count duro (Regla 10 v6.0): 130 max T2I, 90 max I2V.\n- Vocabulario baneado en MAIN: cartoon, anime, slow motion, etc. (deben ir en NEGATIVE).\n- Negative prompt obligatorio.\n- Keywords sports broadcast cuando aplica Regla 26.\n- Exenciones: motion/camera context, anchors direccionales (away from her face).\n\nOverride del linter solo se acepta con autorización expresa escrita en el turno actual, con scope específico (término o categoría). Esto preserva flexibilidad sin permitir abuso de la disciplina.\n```"
+  },
+  {
+   "id": "26a1e8b07bfa",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "70-72",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 7 — Sección 14 actualizada: \"27 total\" → \"28 total\" › ANTES"
+    }
+   ],
+   "texto": "```\n14. REGLAS INVIOLABLES — v6.0 (27 total)\n```"
+  },
+  {
+   "id": "697117135c14",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "75-77",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 7 — Sección 14 actualizada: \"27 total\" → \"28 total\" › DESPUÉS"
+    }
+   ],
+   "texto": "```\n14. REGLAS INVIOLABLES — v6.1 (28 total)\n```"
+  },
+  {
+   "id": "b2442405852c",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "82-85",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 8 — Header del prompt › ANTES"
+    }
+   ],
+   "texto": "```\nSYSTEM PROMPT v6.0\nFecha de emisión: 2026-05-23\n```"
+  },
+  {
+   "id": "6a910bb9ee28",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "88-91",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 8 — Header del prompt › DESPUÉS"
+    }
+   ],
+   "texto": "```\nSYSTEM PROMPT v6.1\nFecha de emisión: 2026-05-27\n```"
+  },
+  {
+   "id": "98c2dd59a7f7",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "97-106",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 9 — Añadir entrada al CHANGELOG › Insertar al inicio del bloque CHANGELOG (después del header de versión)"
+    }
+   ],
+   "texto": "```\nCHANGELOG v6.1 (desde v6.0)\nOrigen: Retrospectiva F7 sesión 2026-05-27 — proyecto \"Sports World Mundial 2026\", múltiples prompts I2V con redundancia repetida.\n- [CRÍTICO] Nueva Regla 28: linter determinista obligatorio antes de entregar cualquier prompt. Sin PASS o sin overrides cubriendo violaciones, no se entrega al usuario.\n- [MAYOR] Sección 5.5: nueva sub-sección sobre disciplina vía linter determinista — la memoria del agente falla bajo presión, el código no.\n- [MAYOR] Sección 1.3: nuevo principio — cuando una regla puede codificarse, debe codificarse.\n- [MENOR] Override de linter requiere autorización expresa escrita en turno actual con scope específico (sintaxis `OVERRIDE: <term> - <reason>`).\n- [MENOR] Actualizadas Secciones 4.6, 4.7, 4.8 con llamada explícita a Regla 28 antes de entrega.\n- Consistencia: v6.0 → v6.1; Reglas Inviolables 27 → 28; fecha 2026-05-23 → 2026-05-27.\n```"
+  },
+  {
+   "id": "55061fb453f9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "112-112",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 1 | Nueva Regla 28 | CRÍTICO | §14 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "cf73278ce4a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "113-113",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 2 | Nuevo principio enforcement determinista | MAYOR | §1.3 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "ca56b280b64f",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "114-114",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 3 | F4 paso final con linter | MENOR | §4.6 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "9e4313281a01",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "115-115",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 4 | F5 paso final con linter | MENOR | §4.7 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "373bbf5a1ad0",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "116-116",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 5 | F6 paso final con linter | MENOR | §4.8 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "c24bb5e788ad",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "117-117",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 6 | Nueva sub-sección 5.5 | MAYOR | §5 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "44cb9579dff7",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "118-118",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 7 | Contador 27→28 | MENOR | §14 |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "ce24309d3019",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "119-119",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 8 | Versión + fecha | MENOR | header |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "50c6d2a3b099",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "120-120",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+    }
+   ],
+   "texto": "| 9 | CHANGELOG v6.1 | MENOR | inicio doc |",
+   "contexto": "| # | Cambio | Tipo | Sección |\n|---|---|---|---|"
+  },
+  {
+   "id": "61cb8b0c70ac",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "124-124",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Aprobación"
+    }
+   ],
+   "texto": "Cada cambio puede aprobarse/rechazarse individualmente. Recomendación: aprobar el bundle completo (los 9 cambios forman una unidad coherente)."
+  },
+  {
+   "id": "9bfca9dc5d7d",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "126-126",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Aprobación"
+    }
+   ],
+   "texto": "- [ ] Aprobar bundle completo (recomendado)"
+  },
+  {
+   "id": "706926e6fdc7",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "127-127",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Aprobación"
+    }
+   ],
+   "texto": "- [ ] Aprobar selectivamente (especificar cuáles)"
+  },
+  {
+   "id": "4170972fad34",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "128-128",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Aprobación"
+    }
+   ],
+   "texto": "- [ ] Rechazar bundle (linter queda como herramienta opcional sin regla inviolable)"
+  },
+  {
+   "id": "e03f1450fb03",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Extract a production-ready brand-lock.md from a brand's existing assets. Point it at a website URL, a brand book PDF, screenshots, or a written description and it produces the nine-section brand-lock the rest of shotkit consumes, with a confidence and source noted for every value. Use when the user wants to onboard a brand, says \"build a brand lock\", \"extract my brand\", \"make a brand pack from my site\", or hands over brand assets. The cold-start killer that turns a blank brand-pack template into a filled, validate-ready file. Pairs with storyboard-architect downstream."
+  },
+  {
+   "id": "1cce05fc4b32",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "8-8",
+     "encabezado": "Brand Lock Extractor"
+    }
+   ],
+   "texto": "The blank `brand-packs/_template.md` is the single biggest point of friction in shotkit. Nobody wants to hand-author nine sections of brand parameters before they can produce a single storyboard. This skill removes that wall: hand it what you already have, get a filled brand-lock back."
+  },
+  {
+   "id": "b80eb8fe8ec1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "10-10",
+     "encabezado": "Brand Lock Extractor"
+    }
+   ],
+   "texto": "The output is a `brand-lock.md` in the exact format `tools/validate_brand_lock.py` validates and every other skill consumes. Same file the pipeline reads, produced from your assets instead of from scratch."
+  },
+  {
+   "id": "ab27bc5d007b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "12-12",
+     "encabezado": "Brand Lock Extractor"
+    }
+   ],
+   "texto": "This skill extracts. It does not invent. Every value is sampled from a real asset or flagged as an estimate the user must confirm. A confident-sounding wrong hex is worse than a flagged guess."
+  },
+  {
+   "id": "7da7d71099c3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "16-21",
+     "encabezado": "Brand Lock Extractor › When to use"
+    }
+   ],
+   "texto": "Trigger when the user:\n\n- Wants to onboard a brand into shotkit and has assets (a site, a brand book, screenshots)\n- Says \"extract my brand\", \"build a brand lock\", \"make a brand pack from my site/PDF\"\n- Hands over a URL, a PDF, image files, or a written brand description and asks for a brand-lock\n- Has a brand-lock that is half-filled and wants the gaps extracted from assets"
+  },
+  {
+   "id": "cfc1f803d3fc",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "23-23",
+     "encabezado": "Brand Lock Extractor › When to use"
+    }
+   ],
+   "texto": "If the user has nothing but a vague idea (no assets, no description), they are not extracting, they are authoring. Point them at `brand-packs/_template.md` and help them fill it directly."
+  },
+  {
+   "id": "914157987623",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "27-27",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "You can work from any one of these. More sources is a better extraction."
+  },
+  {
+   "id": "89cf4e8fc606",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "31-31",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "| Website URL | `WebFetch` homepage + about + one more page | Voice, positioning, palette, type |",
+   "contexto": "| Source | How you read it | Best for |\n|---|---|---|"
+  },
+  {
+   "id": "7f77535fb15b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "32-32",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "| Brand book PDF | `Read` the PDF | Palette (exact hex), type, motion rules |",
+   "contexto": "| Source | How you read it | Best for |\n|---|---|---|"
+  },
+  {
+   "id": "498258ff0da1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "33-33",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "| Screenshots / image files | `Read` the images | Palette (sample pixels), mood, layout |",
+   "contexto": "| Source | How you read it | Best for |\n|---|---|---|"
+  },
+  {
+   "id": "afb050304ba5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "34-34",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "| Written description | Use directly | Identity, archetype, voice posture |",
+   "contexto": "| Source | How you read it | Best for |\n|---|---|---|"
+  },
+  {
+   "id": "ffe9f6765a65",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "36-36",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ],
+   "texto": "At minimum you need one source. If the user offers none, ask for the one they have: **\"What can I work from, a website URL, a brand book PDF, screenshots, or a short description?\"** One question."
+  },
+  {
+   "id": "03ebb3ead98a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "42-42",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 1. Gather the source material"
+    }
+   ],
+   "texto": "- **URL:** `WebFetch` the homepage, then try the about page (`/about`, `/about-us`, `/our-story`) and one more (`/services`, `/work`, recent blog). Skip pages that 404. The homepage is the floor."
+  },
+  {
+   "id": "023d6125c8d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "43-43",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 1. Gather the source material"
+    }
+   ],
+   "texto": "- **PDF / images:** `Read` each file. Brand books carry exact hex and type; screenshots are for sampling color and reading mood."
+  },
+  {
+   "id": "fdb12645572f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "44-44",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 1. Gather the source material"
+    }
+   ],
+   "texto": "- **Description:** take it as written."
+  },
+  {
+   "id": "267aa8a2d886",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "46-46",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 1. Gather the source material"
+    }
+   ],
+   "texto": "Tell the user what you are pulling. Do not ask follow-ups yet, extract first, confirm gaps at the end."
+  },
+  {
+   "id": "9d52f0433fa1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "50-60",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 2. Extract each section"
+    }
+   ],
+   "texto": "Read `references/extraction-rubric.md`. It maps every brand-lock section to where the signal lives and how to read it. Work the nine sections in order:\n\n1. **Identity** (brand, one-line description, archetype, voice posture)\n2. **Palette** (sampled hex, by role)\n3. **Typography** (display, body, optional mono, with weights)\n4. **Mood adjectives** (3-5, specific, contrast clauses preferred)\n5. **Never list** (what the brand avoids, inferred from consistency)\n6. **Aspect ratios**\n7. **Color grade direction** (one sentence)\n8. **Motion language** (one paragraph)\n9. **Voice rules** (copy-level constraints)"
+  },
+  {
+   "id": "09509e352491",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "62-62",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 2. Extract each section"
+    }
+   ],
+   "texto": "For every value, hold two things: the value, and where it came from (which asset, which quote, which sampled swatch). You will need the source for the confidence pass."
+  },
+  {
+   "id": "33f87e730f90",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "66-70",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 3. Assign confidence and flag estimates"
+    }
+   ],
+   "texto": "Each value is one of:\n\n- **extracted**, read directly from an asset (a hex in the brand book, a font in the CSS, a quote from the site). State it plainly.\n- **inferred**, reasoned from evidence but not stated (archetype from positioning, never-list from consistency). Reasonable to ship, worth noting.\n- **needs confirmation**, your best estimate where the assets were silent or ambiguous (a color sampled from a JPEG with compression, a font you could not identify). Fill it, then flag it."
+  },
+  {
+   "id": "abd922ca9650",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "74-74",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 4. Write the brand-lock"
+    }
+   ],
+   "texto": "Use `templates/brand-lock.md.tpl`. Fill **every** required section, no placeholders left behind. Then append an `## Extraction notes` section that lists every `inferred` and `needs confirmation` value with its source and your reasoning. This section is the audit trail; it does not break validation (the validator checks the nine required sections are present, extra sections are fine)."
+  },
+  {
+   "id": "446d4853ba9a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "76-76",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 4. Write the brand-lock"
+    }
+   ],
+   "texto": "Set the footer: `Last updated` to today, `Owner` to the user or \"extracted\", `Version: 1.0`."
+  },
+  {
+   "id": "5488c579e6d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "80-84",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 5. Self-check, then hand off"
+    }
+   ],
+   "texto": "Before you present it, confirm the file would pass validation:\n\n- All nine required sections present: Identity, Palette, Typography, Mood adjectives, Never list, Aspect ratios, Color grade direction, Motion language, Voice rules.\n- Identity contains all four fields: Brand, One-line description, Archetype, Voice posture.\n- Palette has at least one real `#RRGGBB` hex (not a placeholder)."
+  },
+  {
+   "id": "3bf3306be3df",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "86-88",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 5. Self-check, then hand off"
+    }
+   ],
+   "texto": "Then hand off:\n\n> \"Here is your brand-lock. I sampled the palette and type from your assets and flagged N values that need your eyes (see Extraction notes). Drop it in `brand-packs/`, confirm the flagged values, and run `python tools/validate_brand_lock.py path/to/file.md` to verify. Then: `'30-second explainer. Use brand-packs/your-brand.md as the brand lock.'`\""
+  },
+  {
+   "id": "73740960c5d3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "94-94",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 1. Never invent a hex value"
+    }
+   ],
+   "texto": "Colors are sampled, never guessed. Read them from a brand book, from CSS, or by sampling pixels in a screenshot. If you genuinely cannot determine a color, fill your closest estimate and mark it `needs confirmation` in Extraction notes. \"Navy\" is not a palette entry. `#0F1F3A` is. A wrong hex stated confidently corrupts every downstream prompt."
+  },
+  {
+   "id": "c5f91a7a03cd",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "98-98",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 2. Never fabricate a typeface"
+    }
+   ],
+   "texto": "Identify fonts from the brand book, the site's CSS/font files, or clear visual match. If you cannot identify one, say so and flag it, do not name a plausible-sounding font you did not verify."
+  },
+  {
+   "id": "daef39d9fa4d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "102-102",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 3. Source everything"
+    }
+   ],
+   "texto": "Every extracted value traces to an asset. Every inferred value traces to reasoning. This is the same audit-trail discipline as the brand-lock snapshot, applied at extraction time."
+  },
+  {
+   "id": "c60d039297d7",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "106-106",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 4. The never-list is the highest-value section"
+    }
+   ],
+   "texto": "It is also the hardest to extract, because brands document what they do, not what they avoid. Infer it from consistency: if every image avoids stock-photo gloss, that is a never. If copy never uses exclamation points, that is a never. Read `references/extraction-rubric.md` for the method. Do not ship an empty never-list."
+  },
+  {
+   "id": "91aed03663a1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "110-110",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 5. Mood adjectives must be specific"
+    }
+   ],
+   "texto": "\"Professional, modern, clean\" describes every brand and constrains nothing. Extract contrast clauses that do work: \"operator not creator\", \"warm not precious\", \"confident without volume\". If the assets only support generic adjectives, that is a `needs confirmation` flag, not a license to ship filler."
+  },
+  {
+   "id": "5afe896a16c2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "114-114",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 6. No emojis, no hype"
+    }
+   ],
+   "texto": "The output is a clinical specification. It models the standards the brand-lock enforces. No emojis anywhere. No marketing adjectives about the brand in your own voice, report what the assets show."
+  },
+  {
+   "id": "9b70a93e4d2a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "118-118",
+     "encabezado": "Brand Lock Extractor › Reference"
+    }
+   ],
+   "texto": "- `references/extraction-rubric.md`, section-by-section extraction method and confidence definitions."
+  },
+  {
+   "id": "e47c3cf18a1d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "lineas": "122-122",
+     "encabezado": "Brand Lock Extractor › Example"
+    }
+   ],
+   "texto": "`examples/` contains a worked extraction: the source material provided (`input-brief.md`) and the `brand-lock.md` produced from it, including the Extraction notes audit trail. Use it to calibrate the level of specificity and the confidence flagging."
+  },
+  {
+   "id": "a50c3b25e464",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "3-3",
+     "encabezado": "Brand Packs"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "3-3",
+     "encabezado": "Brand Packs"
+    }
+   ],
+   "texto": "A brand pack is a single Markdown file that locks in palette, typography, voice, and visual rules for a project. The skills in this pack consume it. Every storyboard, every prompt, every generated frame inherits from it."
+  },
+  {
+   "id": "2bdd6b19b910",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "7-7",
+     "encabezado": "Brand Packs › How to use"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "7-7",
+     "encabezado": "Brand Packs › How to use"
+    }
+   ],
+   "texto": "1. Copy `_template.md` to a new file (e.g. `acme.md`)"
+  },
+  {
+   "id": "7f6ab502ab50",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "8-8",
+     "encabezado": "Brand Packs › How to use"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "8-8",
+     "encabezado": "Brand Packs › How to use"
+    }
+   ],
+   "texto": "2. Fill in every field. No placeholders left behind."
+  },
+  {
+   "id": "70e7e2a9cdb4",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "9-12",
+     "encabezado": "Brand Packs › How to use"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "9-12",
+     "encabezado": "Brand Packs › How to use"
+    }
+   ],
+   "texto": "3. Reference it from your storyboard requests:\n\n   > \"30-second founder explainer. Use `brand-packs/acme.md` as the brand lock.\"\n"
+  },
+  {
+   "id": "7bf82334a43a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "13-13",
+     "encabezado": "Brand Packs › How to use"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "13-13",
+     "encabezado": "Brand Packs › How to use"
+    }
+   ],
+   "texto": "4. The skill reads it, snapshots it into the output as `brand-lock.snapshot.md`, and applies it through the pipeline."
+  },
+  {
+   "id": "a00a0c874be1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "17-19",
+     "encabezado": "Brand Packs › How to write a good one"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "17-19",
+     "encabezado": "Brand Packs › How to write a good one"
+    }
+   ],
+   "texto": "The template is a checklist, not a creative-writing exercise. Three rules:\n\n**Be specific.** \"Modern, clean, professional\" is not a brand. \"Calm, considered, operator energy, confident without shouting\" is."
+  },
+  {
+   "id": "0435221e13e2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "21-21",
+     "encabezado": "Brand Packs › How to write a good one"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "21-21",
+     "encabezado": "Brand Packs › How to write a good one"
+    }
+   ],
+   "texto": "**Be exclusive.** The \"never\" list is more valuable than the \"always\" list. Listing what the brand will not do narrows the generator's space and produces tighter output."
+  },
+  {
+   "id": "3859c02a4793",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "23-23",
+     "encabezado": "Brand Packs › How to write a good one"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "23-23",
+     "encabezado": "Brand Packs › How to write a good one"
+    }
+   ],
+   "texto": "**Be hex-precise.** Every color is a hex value. Every font is named. The skills consume structured data; vagueness here cascades into bad prompts later."
+  },
+  {
+   "id": "44d7d3c8bfbf",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "27-30",
+     "encabezado": "Brand Packs › Examples"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "27-30",
+     "encabezado": "Brand Packs › Examples"
+    }
+   ],
+   "texto": "The pack ships with two reference brand packs:\n\n- **`whystrohm.md`** (flagship). The actual brand pack WhyStrohm uses on its own content. Real palette, real voice rules, real \"never\" list. Use this as the reference for the level of specificity production work requires.\n- **`examples/saas-clean.md`**. B2B SaaS, restrained, professional. Light backgrounds, single accent. Inter type stack. A neutral counterpoint to the WhyStrohm flagship."
+  },
+  {
+   "id": "06b1cb1e3bae",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "32-32",
+     "encabezado": "Brand Packs › Examples"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "32-32",
+     "encabezado": "Brand Packs › Examples"
+    }
+   ],
+   "texto": "More example brand packs will land in v2.0.0. PRs welcome."
+  },
+  {
+   "id": "41bdf67652bd",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "36-38",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "36-38",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    }
+   ],
+   "texto": "Don't hand-author from scratch if the brand already exists. The **`brand-lock-extractor`** skill (ships in this repo at `skills/brand-lock-extractor/`) takes a website URL, a brand book PDF, screenshots, or a written description and produces a `brand-lock.md` in this exact format, with a confidence and source noted for every value:\n\n> \"Extract a brand-lock from acme.com\" or \"build a brand pack from this brand book PDF.\""
+  },
+  {
+   "id": "acc42d47f000",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    }
+   ],
+   "texto": "For bulk or programmatic extraction across many URLs, [media-tsunami](https://github.com/whystrohm/media-tsunami) (WhyStrohm's open-source brand voice extractor) scrapes URLs and produces a `brand-lock.md` in the same format."
+  },
+  {
+   "id": "2518a7a0ef7b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "44-44",
+     "encabezado": "Brand Packs › Versioning"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "44-44",
+     "encabezado": "Brand Packs › Versioning"
+    }
+   ],
+   "texto": "Every storyboard run snapshots the brand pack it was built against. If you update `acme.md` later, previous storyboards still reference the version they were built on. This is intentional, the audit trail tells you exactly what brand state any given piece of content was built against."
+  },
+  {
+   "id": "daffef3680e7",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "46-50",
+     "encabezado": "Brand Packs › Versioning"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "46-50",
+     "encabezado": "Brand Packs › Versioning"
+    }
+   ],
+   "texto": "When you make a brand-pack revision that materially changes look or voice, bump the `Version:` field at the bottom and note the change. e.g.:\n\n```\nVersion: 1.1 (2026-05-12: switched accent from #D94F3A coral to #C44233 deeper coral)\n```"
+  },
+  {
+   "id": "b4bec04a4354",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "lineas": "54-54",
+     "encabezado": "Brand Packs › Contributing examples"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "lineas": "54-54",
+     "encabezado": "Brand Packs › Contributing examples"
+    }
+   ],
+   "texto": "PRs welcome for new brand-pack examples that fill gaps in the current set. Open an issue with the `brand-pack-request` template before submitting."
+  },
+  {
+   "id": "362db2330b99",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "3-4",
+     "encabezado": "Brand Lock: {{BRAND_NAME}}"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "3-4",
+     "encabezado": "Brand Lock: {{BRAND_NAME}}"
+    }
+   ],
+   "texto": "> Replace placeholders. Delete this blockquote when you're done.\n> Every field below feeds into the storyboard pipeline. Be specific."
+  },
+  {
+   "id": "176f1c6c4c1e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "8-11",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Identity"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "8-11",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Identity"
+    }
+   ],
+   "texto": "**Brand:** {{BRAND_NAME}}\n**One-line description:** What this brand actually does, who for.\n**Archetype:** Operator / Creator / Sage / Rebel / Caregiver / Other\n**Voice posture:** Confident / Warm / Sharp / Quiet / Playful / Authoritative"
+  },
+  {
+   "id": "b783689a2a84",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "15-15",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "12-12",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "15-15",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "Every hex value here is allowed. Anything outside this list is not."
+  },
+  {
+   "id": "d54a5873d9d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "19-19",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "19-19",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "| Background | `#______` | Primary canvas |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "b6bb492ebc5a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "20-20",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "20-20",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "| Ink | `#______` | Primary text, dark elements |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "82a75f7b8e12",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "21-21",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "21-21",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "| Accent | `#______` | Highlights, CTAs, brand pop |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "63830d5d4787",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "22-22",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "22-22",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "| Muted | `#______` | Secondary text, captions |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "e8cbd58153a7",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "23-23",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "23-23",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "| Rule | `#______` | Borders, dividers, subtle UI |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "ae90616cd2a2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "25-25",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "25-25",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Palette"
+    }
+   ],
+   "texto": "Add more rows if the brand has more named colors. Don't add more than 8, past that, the brand stops being recognizable."
+  },
+  {
+   "id": "73d16eb117d4",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "29-31",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "29-31",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ],
+   "texto": "**Display font:** `______`\n**Body font:** `______`\n**Mono font (optional):** `______`"
+  },
+  {
+   "id": "4a7ad3e97893",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "33-35",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "33-35",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ],
+   "texto": "Put the font name and weight in backticks immediately after the label, e.g.\n`` **Display font:** `Inter Black 900`, headlines and hooks ``. The HTML preview and\nthe overlay-font check read that backticked value; anything before it is prose."
+  },
+  {
+   "id": "4b5502c43c25",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "37-37",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "37-37",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ],
+   "texto": "Two fonts max for production work. Three only if one is reserved for code/data."
+  },
+  {
+   "id": "a7d20a295f1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Mood adjectives"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Mood adjectives"
+    }
+   ],
+   "texto": "Pick 3–5. These flow into prompts as the brand's emotional posture."
+  },
+  {
+   "id": "757cff6533e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "43-45",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Mood adjectives"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "43-45",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Mood adjectives"
+    }
+   ],
+   "texto": "- adjective_1\n- adjective_2\n- adjective_3"
+  },
+  {
+   "id": "82cb6412ee42",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "49-49",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "49-49",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    }
+   ],
+   "texto": "What this brand never does, visually or tonally. Be specific."
+  },
+  {
+   "id": "2b0e354e8c09",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "51-56",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "51-56",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    }
+   ],
+   "texto": "- never use stock photo aesthetic\n- never use AI uncanny faces\n- never over-saturate\n- never shout in copy\n- never use clip-art icons\n- (add more, the more specific, the better)"
+  },
+  {
+   "id": "e5dac45b63fb",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "60-60",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Aspect ratios"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "60-60",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Aspect ratios"
+    }
+   ],
+   "texto": "Default: 16:9 / 9:16 / 1:1 / 4:5 / other"
+  },
+  {
+   "id": "88198d623f9e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "64-64",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Color grade direction"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "64-64",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Color grade direction"
+    }
+   ],
+   "texto": "How footage and generated images should be graded. One sentence."
+  },
+  {
+   "id": "f99aed3c959a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "66-66",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Color grade direction"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "66-66",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Color grade direction"
+    }
+   ],
+   "texto": "> e.g. \"Warm filmic, muted teal shadows, slight grain. Reminiscent of Kodak Portra 400.\""
+  },
+  {
+   "id": "ad9aa95367ce",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "70-70",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Motion language"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "70-70",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Motion language"
+    }
+   ],
+   "texto": "How motion behaves in this brand's content. One paragraph."
+  },
+  {
+   "id": "3550f012c782",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "72-72",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Motion language"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "72-72",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Motion language"
+    }
+   ],
+   "texto": "> e.g. \"Camera moves are minimal and deliberate. Static or slow-push. Cuts on action, not on time. Type-on for emphasis, never bouncing or wobbling text.\""
+  },
+  {
+   "id": "8494b8777a63",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "76-76",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "76-76",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    }
+   ],
+   "texto": "Copy-level rules that apply to VO and on-screen text."
+  },
+  {
+   "id": "588e81e53853",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "78-82",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "78-82",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    }
+   ],
+   "texto": "- e.g. no em dashes\n- no emojis in body copy\n- no exclamation points in headlines\n- no clichéd metaphors (\"game-changing\", \"revolutionary\", \"next-level\")\n- no hype words"
+  },
+  {
+   "id": "39f86823ca3e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "86-86",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "86-86",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    }
+   ],
+   "texto": "Optional. Links to past work, mood boards, or style guides that further define the brand."
+  },
+  {
+   "id": "c6bebb2ad968",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "88-90",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "88-90",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    }
+   ],
+   "texto": "- Link to brand guide\n- Link to past hero film\n- Link to mood board"
+  },
+  {
+   "id": "0ba0b60b4e3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "lineas": "94-96",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "lineas": "94-96",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+    }
+   ],
+   "texto": "**Last updated:** YYYY-MM-DD\n**Owner:** name / role\n**Version:** 1.0"
+  },
+  {
+   "id": "0350395c95a0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "3-3",
+     "encabezado": "Brand Lock: Acme SaaS (Example)"
+    }
+   ],
+   "texto": "> Reference example for B2B SaaS brands. Restrained, professional, single-accent palette."
+  },
+  {
+   "id": "b7aa450e67cf",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "7-10",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Identity"
+    }
+   ],
+   "texto": "**Brand:** Acme SaaS\n**One-line description:** B2B platform that helps SaaS teams cut churn 40% in 90 days through customer health scoring and intervention workflows.\n**Archetype:** Sage\n**Voice posture:** Confident, data-driven, peer-to-peer (not vendor-to-buyer)"
+  },
+  {
+   "id": "74f2a6740d78",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "16-16",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Background | `#FFFFFF` | Pure white, primary canvas |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "82cc433358b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "17-17",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Ink | `#0F1F3A` | Deep navy, primary text |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "4b4d9563f203",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "18-18",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Accent | `#3B82F6` | Bright blue. CTAs, data highlights |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "2d6814cc818d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "19-19",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Muted | `#64748B` | Slate, secondary text, captions |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "621571598e62",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "20-20",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Rule | `#E2E8F0` | Light gray, borders, dividers |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "cc3c7b349639",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "21-21",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Success | `#10B981` | Emerald, positive metrics, gains |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "88994ae2e112",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "22-22",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Palette"
+    }
+   ],
+   "texto": "| Warning | `#F59E0B` | Amber, alerts, attention items |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "3b21b3748a63",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "26-28",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Typography"
+    }
+   ],
+   "texto": "**Display font:** `Inter Bold 700`\n**Body font:** `Inter Regular 400`\n**Mono font:** `JetBrains Mono Regular`, for data, code, dashboards"
+  },
+  {
+   "id": "2790deabfdf8",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "32-36",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Mood adjectives"
+    }
+   ],
+   "texto": "- credible\n- precise\n- helpful\n- restrained\n- expert"
+  },
+  {
+   "id": "f9715eb23472",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "lineas": "43-43",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ],
+   "texto": "- never use stock photo aesthetic"
+  },
+  {
+   "id": "bc638cfa0376",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "lineas": "44-44",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ],
+   "texto": "- never use AI uncanny faces"
+  },
+  {
+   "id": "76acb55a7c86",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "42-42",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use illustrations of people (real photography or abstract data viz only)"
+  },
+  {
+   "id": "5bd6b9d577e1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "43-43",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use gradients (flat color only)"
+  },
+  {
+   "id": "b2a8f143b5b2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "44-44",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use rounded corners larger than 8px"
+  },
+  {
+   "id": "e5508c5b6dd2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "45-45",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    },
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "39-39",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use exclamation points"
+  },
+  {
+   "id": "5e8ba2fe7c3f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "46-46",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use vague claims (\"the best\", \"industry-leading\", \"cutting-edge\")"
+  },
+  {
+   "id": "1ec178fcfc0d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "47-47",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use AI/ML buzzwords without specifics"
+  },
+  {
+   "id": "4f1cd93ec7d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "48-48",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never default to dark mode in primary marketing"
+  },
+  {
+   "id": "4bab3e701df0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "49-49",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    }
+   ],
+   "texto": "- never use animated icons or lottie illustrations"
+  },
+  {
+   "id": "f830ee05211a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "53-53",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ],
+   "texto": "- 16:9, primary for product demos and hero films"
+  },
+  {
+   "id": "82edbe480451",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "54-54",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ],
+   "texto": "- 9:16, short-form social"
+  },
+  {
+   "id": "dad268292e7f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "55-55",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ],
+   "texto": "- 1:1. LinkedIn carousels"
+  },
+  {
+   "id": "f855845e25a4",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "59-59",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Color grade direction"
+    }
+   ],
+   "texto": "Clean, neutral, slight cool bias. White points pure white, blacks deep but not crushed. Skin tones natural. No filmic grain. Reminiscent of Apple keynote photography, clean, evenly lit, technically perfect."
+  },
+  {
+   "id": "fcf1105bf17f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "63-63",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Motion language"
+    }
+   ],
+   "texto": "Minimal motion. UI elements appear with subtle 200ms fade. Cuts on logic beats, not on time. Data visualizations animate with linear easing, no bounce, no overshoot. Camera moves limited to slow push on hero shots. No handheld, no whip pans, no transitions beyond hard cuts."
+  },
+  {
+   "id": "d59a24773263",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "67-67",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "lineas": "76-76",
+     "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+    }
+   ],
+   "texto": "- no em dashes"
+  },
+  {
+   "id": "d79b8ba902f8",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "68-68",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- no exclamation points"
+  },
+  {
+   "id": "76c9bf2a7bfa",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "69-69",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- no hype words"
+  },
+  {
+   "id": "38d15d23fa48",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "70-70",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- prefer specific numbers (\"40% reduction in 90 days\" not \"significant improvement\")"
+  },
+  {
+   "id": "84db69aa0a9d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "71-71",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- prefer \"we\" and \"you\" over \"the company\" and \"the user\""
+  },
+  {
+   "id": "84ded1042bf4",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "72-72",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- prefer present-tense"
+  },
+  {
+   "id": "0048ca963431",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "73-73",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- never start a sentence with \"Just\" or \"Simply\""
+  },
+  {
+   "id": "dcc42bfff0ed",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "74-74",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+    }
+   ],
+   "texto": "- avoid corporate hedge language (\"seek to\", \"look to\", \"aim to\")"
+  },
+  {
+   "id": "4f523a411230",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "78-80",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Reference materials"
+    }
+   ],
+   "texto": "- Vercel marketing, design language reference\n- Linear marketing, voice and pacing reference\n- Stripe Press, typography and density reference"
+  },
+  {
+   "id": "eca2c9c2f2e6",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "lineas": "84-86",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Reference materials"
+    }
+   ],
+   "texto": "**Last updated:** 2026-05-07\n**Owner:** Example\n**Version:** 1.0"
+  },
+  {
+   "id": "b78d4d5e0d55",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "5-8",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Identity"
+    }
+   ],
+   "texto": "**Brand:** Northwind Coffee Roasters\n**One-line description:** Small-batch coffee, roasted and shipped the same morning, with full origin transparency, for people who want real coffee and no subscription to babysit.\n**Archetype:** Maker, with a Rebel edge against pretension (frames the category's problem as cheap beans hidden behind burnt roasts and luxury pricing).\n**Voice posture:** Plainspoken and confident. Short declaratives, dry, no decoration."
+  },
+  {
+   "id": "e31a64d6e46c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "16-16",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Background | `#F4EFE6` | Paper cream, primary canvas |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "ebcf65eb95b0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "17-17",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Ink | `#2B2018` | Espresso brown, primary text and dark elements |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "da0373d97ae9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "18-18",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Accent | `#C5562B` | Ember, highlights and CTAs |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "86e0e826b2f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "19-19",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Muted | `#8A8076` | Stone, secondary text and captions |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "75ed3331e760",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "20-20",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Rule | `#DCD3C4` | Borders and dividers |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "d77e36914d8d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "24-25",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Typography"
+    }
+   ],
+   "texto": "**Display font:** `Tiempos Headline Semibold`, serif\n**Body font:** `Söhne Regular`, sans-serif, Medium for emphasis"
+  },
+  {
+   "id": "b2ab7562736d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "29-32",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Mood adjectives"
+    }
+   ],
+   "texto": "- plainspoken, not precious\n- warm, not cozy-cute\n- honest about origin\n- unhurried"
+  },
+  {
+   "id": "d7a89b3741d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "36-36",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use stock smiles or posed lifestyle photography"
+  },
+  {
+   "id": "54ebaa0863e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "37-37",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use latte art as decoration"
+  },
+  {
+   "id": "c5b30bec6e3d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "38-38",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use the word \"artisanal\""
+  },
+  {
+   "id": "2aeee8752467",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never shoot glossy product-on-white; matte and natural-light only"
+  },
+  {
+   "id": "c3dfc5d90eaf",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never lean on burnt, dark-roast cliche imagery"
+  },
+  {
+   "id": "8cdd167f9b22",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "45-45",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Aspect ratios"
+    }
+   ],
+   "texto": "Default: 4:5 and 9:16 for social, 16:9 for the web hero."
+  },
+  {
+   "id": "ec4a46d30fae",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "49-49",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Color grade direction"
+    }
+   ],
+   "texto": "> Matte, low contrast, natural window light, warm but restrained. Reminiscent of Kinfolk editorial photography. Never glossy commercial product lighting."
+  },
+  {
+   "id": "98385a03853f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "53-53",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Motion language"
+    }
+   ],
+   "texto": "> Minimal and unhurried. Static or slow push only. Cuts land on action, not on a timer. Type sets in place, it does not bounce or wobble. No fast cuts, no whip pans."
+  },
+  {
+   "id": "fea3ea382233",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "57-57",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- no exclamation points, anywhere"
+  },
+  {
+   "id": "0a8706bb7ae9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "58-58",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- never the word \"artisanal\" (or \"curated\", \"elevated\")"
+  },
+  {
+   "id": "c54f349197b3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "59-59",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- short declarative sentences; cut adjectives before nouns that do not need them"
+  },
+  {
+   "id": "980c6ad8001c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "60-60",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- prefer specific origin claims (farm, region, roast date) over vague quality words"
+  },
+  {
+   "id": "bab782ac8443",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "61-61",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- no hype words (\"best\", \"premium\", \"game-changing\")"
+  },
+  {
+   "id": "f85a893819e2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "65-65",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "Audit trail for this extraction. Values not listed here were read directly from an asset (`extracted`): the four palette hex from the site CSS, both font names from the CSS, the never-list lines from the brand sheet, and the aspect ratios from the brand sheet."
+  },
+  {
+   "id": "36b3030cd368",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "67-70",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Inferred** (reasoned from evidence, reasonable to ship):\n- Archetype \"Maker / Rebel\", from \"we are roasters, not a lifestyle brand. The coffee does the talking\" and the framing of competitors as burnt-cheap or overpriced.\n- Mood adjectives, from the plainspoken homepage copy and the matte, natural-light photography described on the brand sheet.\n- Color grade direction, inferred from the brand sheet's photography notes (matte, low-contrast, window light); no graded footage was provided."
+  },
+  {
+   "id": "d9db63a90369",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "72-75",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Needs confirmation** (best estimate, please verify):\n- Rule color `#DCD3C4`, no divider/border color was given; estimated as a darker tint of the paper background. Confirm or replace.\n- Font weights (Tiempos Headline Semibold, Söhne Regular/Medium), fonts are confirmed from CSS, weights are estimated from visual weight. Confirm against the brand book.\n- Motion language, no motion assets were provided; this is a conservative default consistent with the Plainspoken/Confident posture. Confirm against any existing video."
+  },
+  {
+   "id": "e95b95ec4d3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "79-81",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Last updated:** 2026-06-18\n**Owner:** extracted\n**Version:** 1.0"
+  },
+  {
+   "id": "1b8fcc8df4d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "3-3",
+     "encabezado": "Example input: what the user handed over"
+    }
+   ],
+   "texto": "This is the raw source material for the worked extraction. The user provided a URL and a one-page brand sheet. The `brand-lock.md` in this folder is what the skill produced from it."
+  },
+  {
+   "id": "9d91ffd51c50",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "7-13",
+     "encabezado": "Example input: what the user handed over › Source 1: website (fetched)"
+    }
+   ],
+   "texto": "**Homepage hero:**\n> Northwind Coffee Roasters\n> Small-batch coffee, roasted the morning it ships.\n> No subscriptions to forget about. No bitter shortcuts. Just coffee that tastes like someone cared.\n\n**About page excerpt:**\n> We started Northwind in a one-car garage in Duluth because the coffee we could buy locally was either burnt to hide cheap beans or priced like a luxury good. We roast in small batches, ship the same day, and tell you exactly where the beans came from and who grew them. We are roasters, not a lifestyle brand. The coffee does the talking."
+  },
+  {
+   "id": "cd4c270db068",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "15-23",
+     "encabezado": "Example input: what the user handed over › Source 1: website (fetched)"
+    }
+   ],
+   "texto": "**CSS (from the page source):**\n```\n--paper: #F4EFE6;\n--espresso: #2B2018;\n--ember: #C5562B;\n--stone: #8A8076;\nfont-family: \"Tiempos Headline\", Georgia, serif;   /* headings */\nfont-family: \"Söhne\", -apple-system, sans-serif;    /* body */\n```"
+  },
+  {
+   "id": "14f9ddaea83a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "27-27",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Logo: wordmark only, espresso brown on paper cream. No icon."
+  },
+  {
+   "id": "d9446588964b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "28-28",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Photography: matte, low-contrast, natural window light. Beans, hands, kraft bags. Never glossy product-on-white."
+  },
+  {
+   "id": "88630c8c5ce5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "29-29",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- \"We don't do: stock smiles, latte art as decoration, exclamation points, or the word 'artisanal'.\""
+  },
+  {
+   "id": "0babaeb5d140",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "30-30",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Formats noted: Instagram (4:5 and 9:16), website hero (16:9)."
+  },
+  {
+   "id": "53ad38434c9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "3-3",
+     "encabezado": "Extraction rubric"
+    }
+   ],
+   "texto": "How to read each brand-lock section out of real assets. For every section: where the signal lives, how to read it, and how to assign confidence."
+  },
+  {
+   "id": "ea30aeb75371",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "7-11",
+     "encabezado": "Extraction rubric › Confidence levels"
+    }
+   ],
+   "texto": "Apply one to every value.\n\n- **extracted**, read directly from an asset. A hex in the brand book PDF. A `font-family` in the site CSS. A verbatim quote from the homepage. Ship it plainly.\n- **inferred**, reasoned from evidence, not stated. Archetype from how the brand frames problems. Never-list from what the assets consistently avoid. Ship it, note the reasoning.\n- **needs confirmation**, a best estimate where assets were silent, compressed, or contradictory. A color sampled from a low-quality JPEG. A font you could not positively identify. Fill it so the file is complete, then flag it in Extraction notes."
+  }
+ ]
+}

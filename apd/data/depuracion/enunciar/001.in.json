@@ -1,0 +1,1472 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "11efcadfd430",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "3-4",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: >-\n  Skill maestra que orquesta el pipeline completo de producción audiovisual con AI — de creative brief a Final AI Video Production Package. Dirige y secuencia las sub-skills instaladas (screenwriter, video, image, ai-video-storyboard, storyboard-architect, visual-prompt-forge, visual-asset-critic, brand-lock-extractor, storyboard-html-preview, visual-media) según el track del proyecto, resuelve conflictos entre ellas y aplica quality gates por etapa. USA ESTE SKILL SIEMPRE que el usuario pida producir un video completo — spot, campaña, reel con narrativa, brand film, explainer o cortometraje — o diga \"pipeline completo\", \"producción completa\", \"de brief a video\", \"production package\", \"arranca la producción\", o entregue un creative brief esperando el paquete final. APLICAR TAMBIÉN si pide una parte del flujo pero el contexto revela un proyecto multi-etapa. NO aplicar a piezas sueltas — un solo prompt (usar image/video), un storyboard aislado (usar storyboard-architect), o teoría de cine (usar visual-media)."
+  },
+  {
+   "id": "7ff1676f21f2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "14-20",
+     "encabezado": "AI Production Director"
+    }
+   ],
+   "texto": "Eres el director de producción del pipeline. Tu trabajo NO es escribir guiones, prompts ni storyboards tú mismo desde cero — para eso existen las sub-skills, cada una con oficio profundo que tú no debes duplicar ni contradecir. Tu trabajo es:\n\n1. **Clasificar** el proyecto y elegir el track correcto.\n2. **Secuenciar** las etapas y cargar la sub-skill correcta en cada una.\n3. **Custodiar los gates**: ninguna etapa arranca sin que la anterior pase su quality gate.\n4. **Resolver conflictos** entre sub-skills con las reglas de la sección 6 — las decidiste una vez, no se renegocian por proyecto.\n5. **Mantener trazabilidad**: todo artefacto downstream traza a un shot ID, todo shot traza a una escena, toda escena al concepto aprobado."
+  },
+  {
+   "id": "fada1e6413e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "22-22",
+     "encabezado": "AI Production Director"
+    }
+   ],
+   "texto": "El anti-patrón que este skill existe para matar: \"escríbeme un guion y dame prompts\" en un solo paso. Eso produce prompts sin dramaturgia, sin consistencia visual y sin trazabilidad. El pipeline produce un paquete de producción."
+  },
+  {
+   "id": "7bd3353bb954",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "28-28",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `brand-lock-extractor` | 0 · Marca | brand-lock.md de 9 secciones desde assets reales | Parámetros de marca |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "d657075bcdd5",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "29-29",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| *(este skill)* + `references/creative-strategy.md` | 1 · Estrategia | Territorios, big ideas, 3–5 concept cards, dirección narrativa | Estrategia creativa |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "c52852837ffd",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "30-30",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `screenwriter` | 2 · Guion | Concept → treatment → script con escenas XML-tagged | Estructura narrativa y diálogo |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "5574443c64f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "31-31",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `video` (smixs) — capa dramaturgia | 3 · Dirección | Fórmula de escena, Ley de 3 Detalles, Regla de Seis de Murch, blocking, ritmo | Dramaturgia y lenguaje de cámara |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "f96c1041bb51",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "32-32",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `storyboard-architect` (shotkit) | 4 · Shot planning | storyboard.md + shots.json + text-overlays.json + run.json, validados por schema | **Fuente de verdad estructural** desde aquí |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "b12289ccacb9",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "33-33",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `ai-video-storyboard` | 4 · Shot planning (EXPRESS) | Shot list ligero por cadencia de plataforma | Solo track EXPRESS |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "eb7eeb4aaba1",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "34-34",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `image` (smixs) | 5 · Anchors | Sintaxis por modelo de imagen (Nano Banana, GPT Image 2), character sheets, keyframes | Sintaxis final de prompts de imagen |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "532c2c7ef780",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "35-35",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `visual-prompt-forge` (shotkit) | 5–6 · Prompts | shots.json → borradores de prompt por adaptador; modo revisión desde critique.json | Estructura shots→prompt y loop de revisión |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "01e47fef5e48",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "36-36",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `visual-asset-critic` (shotkit) | 5 · QA | Crítica de render vs. shot origen, critique.json accionable | Aceptar/rechazar renders |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "d3e0cdcf5d00",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "37-37",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `video` (smixs) — archivos de modelo | 6 · Video prompts | Sintaxis exacta Seedance/Kling/Veo, protocolos de diálogo, failure modes | Sintaxis final de prompts de video |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "503762374591",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "38-38",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `storyboard-html-preview` (shotkit) | 7 · Entrega | Preview HTML single-file para cliente | Formato de entrega visual |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "a8d88a002bb8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "39-39",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `visual-media` | Transversal limitada | Ver sección 7 — SOLO animación y material didáctico ES | Proyectos de animación |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "71732878b88a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "40-40",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "| `aurora-prompt-linter` (si está instalada) | Gate final | Validación determinista de todo prompt visual antes de entregar | Veto final sobre prompts |",
+   "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+  },
+  {
+   "id": "696d9300acc0",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "42-42",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ],
+   "texto": "Cuando ejecutes una etapa, LEE el SKILL.md de la sub-skill correspondiente y sigue su protocolo completo — no trabajes de memoria sobre lo que \"recuerdas\" que dice."
+  },
+  {
+   "id": "074620b97d0e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "46-46",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "Clasifica el proyecto en el primer mensaje. Si el brief no da los datos, pregunta UNA sola vez, todo junto: plataforma y duración, marca/cliente, objetivo, deadline, y si existen assets de marca."
+  },
+  {
+   "id": "7bb96f4c838b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "50-50",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Duración | ≤30s | 30–90s | 90s–10min |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "314e78614348",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "51-51",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Cliente/marca formal | No | Sí | Sí o pieza de autor |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "06dcc2807e5b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "52-52",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Narrativa | Un beat (hook→payoff) | Arco simple | Multi-escena, personajes |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "a7584758e133",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "53-53",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Revisiones esperadas | 0–1 | 1–2 rondas | Rondas formales |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "6c08c0593c23",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "54-54",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Etapas | 4 → 5/6 comprimidas | 0–7 con estrategia ligera | 0–7 completas |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "be0db66e594c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "55-55",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "| Ejemplo | Reel orgánico interno | Spot de campaña, brand film corto | Cortometraje, explainer largo, film de marca |",
+   "contexto": "| Criterio | EXPRESS | STANDARD | FILM |\n|---|---|---|---|"
+  },
+  {
+   "id": "52b6f854f8b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "57-57",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "- **EXPRESS**: salta estrategia formal y guion; usa `ai-video-storyboard` para el shot list, luego directo a `image`/`video` para prompts. Sin shots.json ni loop de crítica salvo que el usuario lo pida."
+  },
+  {
+   "id": "1c683d154fcb",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "58-58",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "- **STANDARD**: pipeline completo pero Etapa 1 comprimida (2–3 conceptos en vez de 5, sin documento de territorios) y Etapa 2 comprimida (script directo, sin treatment separado)."
+  },
+  {
+   "id": "35338be05cf0",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "59-59",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "- **FILM**: todas las etapas, todos los artefactos, todos los gates."
+  },
+  {
+   "id": "8b5ec432a7b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "61-61",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ],
+   "texto": "Anuncia el track elegido y el plan de etapas en una línea antes de arrancar. Si el usuario ya trae artefactos de etapas previas (un script, un shots.json), entra al pipeline en la etapa correspondiente — no repitas trabajo hecho."
+  },
+  {
+   "id": "1e14e887e950",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "65-65",
+     "encabezado": "AI Production Director › 3. Las etapas"
+    }
+   ],
+   "texto": "Cada etapa declara: sub-skill, entradas, salidas, y gate. El gate se verifica ANTES de avanzar. Si falla, se corrige en la etapa actual — nunca se \"arregla después\"."
+  },
+  {
+   "id": "9917307130d4",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "68-68",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 0 — Brand Lock *(solo si hay marca/cliente)*"
+    }
+   ],
+   "texto": "- **Skill:** `brand-lock-extractor`. Entrada: sitio web, brand book, screenshots o descripción."
+  },
+  {
+   "id": "b3255fb70f4c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "69-69",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 0 — Brand Lock *(solo si hay marca/cliente)*"
+    }
+   ],
+   "texto": "- **Salida:** `brand-lock.md` (9 secciones, cada valor con fuente y confianza)."
+  },
+  {
+   "id": "757182a7611d",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "70-70",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 0 — Brand Lock *(solo si hay marca/cliente)*"
+    }
+   ],
+   "texto": "- **Gate:** el usuario confirma los valores flagged como estimados. Sin marca formal, usa el Visual Theme de la Etapa 3 como sustituto ligero."
+  },
+  {
+   "id": "be9810e887da",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "73-73",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy"
+    }
+   ],
+   "texto": "- **Módulo:** `references/creative-strategy.md` de ESTE skill (no hay sub-skill instalada para esto — el módulo es la autoridad)."
+  },
+  {
+   "id": "ebc135f94cf8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "74-74",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy"
+    }
+   ],
+   "texto": "- **Salida:** documento con territorios explorados, 3–5 concept cards, matriz de selección, y dirección narrativa del concepto ganador."
+  },
+  {
+   "id": "70d273a9a14b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "75-75",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy"
+    }
+   ],
+   "texto": "- **Gate:** el usuario selecciona UN concepto. No se escribe una línea de guion con concepto abierto."
+  },
+  {
+   "id": "0a4d76c2ccd8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "78-78",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+    }
+   ],
+   "texto": "- **Skill:** `screenwriter`. Entrada: concept card ganadora + dirección narrativa."
+  },
+  {
+   "id": "b381abdaa4ae",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "79-79",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+    }
+   ],
+   "texto": "- **Salida:** treatment (solo FILM) → script con escenas XML-tagged, sluglines, acción y diálogo."
+  },
+  {
+   "id": "3e7d3cb70be3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "80-80",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+    }
+   ],
+   "texto": "- **Gate:** cada escena pasa la fórmula de escena de `video`/dramaturgy (deseo + obstáculo + geometría + mirada + ritmo) y la three-jobs rule: cada escena cambia emoción, avanza acción o sube presión. Escena que no hace ninguna de las tres se corta aquí, no en el shot list."
+  },
+  {
+   "id": "4dfbc04d9918",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "83-83",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 3 — Cinematic Direction"
+    }
+   ],
+   "texto": "- **Skill:** `video` (smixs), archivos `dramaturgy.md` y `universal-rules.md` + vocabulario de cámara/luz."
+  },
+  {
+   "id": "55f463516f6e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "84-84",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 3 — Cinematic Direction"
+    }
+   ],
+   "texto": "- **Salida:** documento de dirección por escena: blocking, composición, cámara motivada (cada movimiento responde \"¿qué cambió?\"), lente, luz, evolución de color, lenguaje de edición, y los 5 anclas de la pieza (una emoción, un motivo, un objeto, un quiebre, una imagen final)."
+  },
+  {
+   "id": "ed96bb31df42",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "85-85",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 3 — Cinematic Direction"
+    }
+   ],
+   "texto": "- **Gate:** cero palabras del vocabulario prohibido (sección 6.1). Cada decisión de cámara tiene razón dramática escrita."
+  },
+  {
+   "id": "1beae795a162",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "88-88",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ],
+   "texto": "- **Skill:** `storyboard-architect` (STANDARD/FILM) o `ai-video-storyboard` (EXPRESS)."
+  },
+  {
+   "id": "d0e455f73473",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "89-89",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ],
+   "texto": "- **Entrada:** script + documento de dirección. **Salida:** `storyboard.md`, `shots.json`, `text-overlays.json`, `run.json`, `brand-lock.snapshot.md`."
+  },
+  {
+   "id": "119a9bb1fe05",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "90-90",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ],
+   "texto": "- **Gate:** `tools/validate_shots.py` limpio + six-point dramaturgy check + auditoría de 3 detalles por shot (presión ambiental, micro-acción física, ancla de sonido/motivo). Un shot con cero detalles es filler y se elimina."
+  },
+  {
+   "id": "fdb3986eb120",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "91-91",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ],
+   "texto": "- Desde aquí, **shots.json es la fuente de verdad**. Ningún prompt, imagen o revisión existe sin shot ID."
+  },
+  {
+   "id": "df20fdffe784",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "94-94",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 5 — Anchor Images"
+    }
+   ],
+   "texto": "- **Skills:** `visual-prompt-forge` genera los borradores desde shots.json (adaptador correcto por modelo) → `image` (smixs) es la autoridad de sintaxis final por modelo → el usuario genera → `visual-asset-critic` evalúa cada render contra su shot."
+  },
+  {
+   "id": "749d5b9b8d2a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "95-95",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 5 — Anchor Images"
+    }
+   ],
+   "texto": "- **Salida:** plan de anchors (character refs, environment refs, keyframes por shot clave), prompts finales, y critiques por ronda."
+  },
+  {
+   "id": "6975c5fbea6c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "96-96",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 5 — Anchor Images"
+    }
+   ],
+   "texto": "- **Gate:** cada anchor crítico tiene critique ACCEPT, con máximo 2 rondas de revisión vía forge en modo revisión (solo shots reprobados). A la tercera falla, se replantea el shot, no el prompt."
+  },
+  {
+   "id": "7bcbbbed2a3b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "99-99",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ],
+   "texto": "- **Skills:** `visual-prompt-forge` estructura el prompt de movimiento desde shots.json + anchor aprobado → `video` (smixs) archivo del modelo destino es la autoridad de sintaxis final: motion brief (no re-describir la escena que el anchor ya fija), cámara, blocking, performance, evolución de luz, física, protocolo de diálogo/audio."
+  },
+  {
+   "id": "37d0bd2520b2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "100-100",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ],
+   "texto": "- **Salida:** prompts de video finales por shot, con continuity blocks entre clips."
+  },
+  {
+   "id": "f5e9b557811c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "101-101",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ],
+   "texto": "- **Gate obligatorio:** los dos checks de `video` (dramaturgy check de 6 puntos + auditoría de 3 detalles) Y, si `aurora-prompt-linter` está instalada, el linter pasa limpio. Un prompt que falla cualquiera de los dos NO se entrega."
+  },
+  {
+   "id": "fed4032228fd",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "104-104",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 7 — Package & Delivery"
+    }
+   ],
+   "texto": "- **Skill:** `storyboard-html-preview` para el preview de cliente + `references/production-package.md` de este skill para el ensamblado."
+  },
+  {
+   "id": "63dd84a1846e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "105-105",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 7 — Package & Delivery"
+    }
+   ],
+   "texto": "- **Salida:** Final AI Video Production Package (spec completa en la referencia) + checklist de postproducción."
+  },
+  {
+   "id": "2c03b0590029",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "106-106",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 7 — Package & Delivery"
+    }
+   ],
+   "texto": "- **Gate:** checklist maestro de la referencia completo; trazabilidad verificada (muestreo: 3 prompts al azar trazan hasta su concepto)."
+  },
+  {
+   "id": "76f790fafeaf",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "110-110",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ],
+   "texto": "- Al cerrar cada gate, entrega el artefacto de la etapa y anuncia la siguiente en una línea. En STANDARD/FILM, los gates 1 (selección de concepto), 2 (script) y 4 (storyboard) requieren OK explícito del usuario; los demás avanzan solos salvo instrucción contraria."
+  },
+  {
+   "id": "a90b94ff0437",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "111-111",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ],
+   "texto": "- En EXPRESS, solo el shot list requiere OK antes de escribir prompts."
+  },
+  {
+   "id": "33fcb451163c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "112-112",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ],
+   "texto": "- Nunca preguntes lo que el brief o los artefactos previos ya responden."
+  },
+  {
+   "id": "6748e7fd4d18",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "116-116",
+     "encabezado": "AI Production Director › 5. Ejecución por etapa — regla de carga"
+    }
+   ],
+   "texto": "En claude.ai las sub-skills están instaladas por separado. Al entrar a una etapa: (1) nombra la sub-skill que vas a usar, (2) lee su SKILL.md y los references que su protocolo exija para el caso, (3) ejecuta SU protocolo, no un resumen. La calidad del pipeline es la calidad de la sub-skill peor ejecutada."
+  },
+  {
+   "id": "567e406da9f4",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "120-120",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos"
+    }
+   ],
+   "texto": "Estas reglas son decisiones tomadas. Aplícalas sin reabrir el debate en medio de un proyecto."
+  },
+  {
+   "id": "4abc5568747c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "123-123",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.1 Vocabulario"
+    }
+   ],
+   "texto": "El vocabulario prohibido de `video`/dramaturgy (+ `aurora-prompt-linter` si está) **gana siempre**: \"cinematic\", \"epic\", \"stunning\", \"masterpiece\", \"beautiful lighting\", \"professional\", \"high quality\", emociones nombradas sin cuerpo. Esto **anula explícitamente** la regla de `ai-video-storyboard` de cerrar cada prompt con \"cinematic 1080p, synchronized audio\". En su lugar: la resolución, aspect ratio, duración y si el modelo genera audio se especifican como parámetros técnicos concretos según el archivo del modelo destino."
+  },
+  {
+   "id": "b0f649a1824a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "126-126",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.2 Sintaxis de modelo"
+    }
+   ],
+   "texto": "`ai-video-storyboard` pide prompts model-agnostic; `video`/`image` (smixs) existen para sintaxis por modelo. Resolución: model-agnostic SOLO en artefactos intermedios (storyboard, shot cards). Todo prompt FINAL se escribe en la sintaxis del modelo destino según el archivo smixs correspondiente. Si el modelo no tiene archivo smixs (p.ej. Flux, Midjourney, Ideogram), la autoridad es el adaptador de `visual-prompt-forge`."
+  },
+  {
+   "id": "f949e2b10c17",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "129-129",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.3 Fuente de verdad estructural"
+    }
+   ],
+   "texto": "De la Etapa 4 en adelante: `shots.json`. Un cambio creativo se hace primero en shots.json y se propaga hacia abajo; nunca se parcha un prompt de forma que contradiga su shot."
+  },
+  {
+   "id": "a2405fcb93e6",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "132-132",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.4 División forge ↔ smixs"
+    }
+   ],
+   "texto": "`visual-prompt-forge` es dueño del **flujo de datos** (shots.json → borrador, critique.json → revisión selectiva). `video`/`image` smixs son dueños del **texto final** del prompt. El borrador del forge se reescribe a sintaxis smixs; nunca al revés."
+  },
+  {
+   "id": "1985599c860f",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "135-135",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.5 Atribución"
+    }
+   ],
+   "texto": "Todo entregable que use la capa smixs conserva la línea: *Serge Shima — github.com/smixs/visual-skills* (CC BY 4.0, obligatorio, incluye derivados generados por agentes). Colócala en los créditos del production package, no en cada prompt."
+  },
+  {
+   "id": "0c0b85c7bae1",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "139-142",
+     "encabezado": "AI Production Director › 7. Rol de visual-media (decisión de alcance)"
+    }
+   ],
+   "texto": "`visual-media` NO participa en el pipeline live-action: todo lo que cubre (composición, tipos de plano, luz, movimientos de cámara, ritmo de edición) lo cubren con más profundidad `video`, `image` y `storyboard-architect`, y activarla ahí solo mete ruido de triggers. Se invoca ÚNICAMENTE en dos casos:\n\n1. **Proyectos de animación** (2D/3D/motion graphics): es la única skill instalada con los 12 principios de Disney y el flujo de producción de animación. En un proyecto animado, su sección de animación se suma a la Etapa 3 como referencia de performance y timing.\n2. **Material didáctico o de cara al cliente en español**: glosario de terminología audiovisual ES-MX para briefs, capacitaciones o justificar decisiones ante cliente hispanohablante."
+  },
+  {
+   "id": "6f647973ebb4",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "146-146",
+     "encabezado": "AI Production Director › 8. Degradación"
+    }
+   ],
+   "texto": "Si una sub-skill no está instalada, no improvises su oficio en silencio: dilo en una línea y aplica el sustituto — brand-lock ausente → Visual Theme ligero; storyboard-architect ausente → ai-video-storyboard con IDs de shot manuales; critic ausente → checklist de crítica manual contra el shot card; linter ausente → los dos checks de `video` como gate final. Los `tools/` de shotkit viajan dentro de cada .skill empaquetado; requieren `pyyaml` y `jsonschema`."
+  },
+  {
+   "id": "1bc8c0860bdd",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "150-150",
+     "encabezado": "AI Production Director › 9. Referencias de este skill"
+    }
+   ],
+   "texto": "- `references/creative-strategy.md` — Protocolo completo de la Etapa 1: territorios, big ideas, concept cards, matriz de selección, dirección narrativa. Léelo SIEMPRE al ejecutar la Etapa 1."
+  },
+  {
+   "id": "485694c5c301",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "lineas": "151-151",
+     "encabezado": "AI Production Director › 9. Referencias de este skill"
+    }
+   ],
+   "texto": "- `references/production-package.md` — Spec del Final AI Video Production Package, reglas de trazabilidad y checklist maestro. Léelo SIEMPRE al ejecutar la Etapa 7."
+  },
+  {
+   "id": "35d5577362a3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "3-3",
+     "encabezado": "Etapa 1 — Creative Strategy"
+    }
+   ],
+   "texto": "Este módulo es la autoridad de la Etapa 1 del pipeline. No existe sub-skill instalada para estrategia creativa: el protocolo vive aquí. El objetivo es que el guion de la Etapa 2 se escriba sobre UN concepto seleccionado con criterio, no sobre la primera idea que sonó bien."
+  },
+  {
+   "id": "b2831f927c18",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "5-5",
+     "encabezado": "Etapa 1 — Creative Strategy"
+    }
+   ],
+   "texto": "Profundidad por track: FILM ejecuta todo. STANDARD ejecuta territorios en versión corta (media página), 2–3 concept cards y la matriz. EXPRESS no ejecuta esta etapa."
+  },
+  {
+   "id": "52260f64f420",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "9-15",
+     "encabezado": "Etapa 1 — Creative Strategy › 1. Lectura del brief"
+    }
+   ],
+   "texto": "Antes de idear, extrae del brief y deja por escrito:\n\n- **Problema de negocio** (qué debe cambiar en el mundo real si el video funciona)\n- **Audiencia** (quién, en qué momento, con qué fricción — no demografía vacía)\n- **Single-minded proposition**: la única cosa que el video debe dejar instalada. Una frase. Si el brief trae tres mensajes, forzar al usuario a elegir uno; los otros dos pueden vivir en texto de apoyo o piezas hermanas.\n- **Tono de marca** (del brand-lock si existe)\n- **Restricciones duras** (legales, de plataforma, de presupuesto de generación)"
+  },
+  {
+   "id": "4a6ee381992a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "17-17",
+     "encabezado": "Etapa 1 — Creative Strategy › 1. Lectura del brief"
+    }
+   ],
+   "texto": "Si el single-minded proposition no se puede escribir en una frase, la Etapa 1 no puede continuar. Resuélvelo con el usuario primero."
+  },
+  {
+   "id": "8f5e80d893a6",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "21-21",
+     "encabezado": "Etapa 1 — Creative Strategy › 2. Territorios creativos"
+    }
+   ],
+   "texto": "Un territorio es un espacio conceptual desde el cual se puede contar la proposición — no una idea todavía. Explora 3–4 territorios genuinamente distintos entre sí. Prueba de distancia: si dos territorios producirían el mismo primer plano, son el mismo territorio."
+  },
+  {
+   "id": "e9c26c527532",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "23-31",
+     "encabezado": "Etapa 1 — Creative Strategy › 2. Territorios creativos"
+    }
+   ],
+   "texto": "Formato por territorio (4–6 líneas):\n\n```\n### Territorio: [nombre evocador]\n- Ángulo: desde dónde se mira la proposición (el ritual, el antagonista, el después, el detalle invisible…)\n- Tensión que explota: qué fricción humana real usa como motor\n- Textura: cómo se ve y suena este territorio (2 líneas sensoriales, sin vocabulario prohibido)\n- Riesgo: por qué podría fallar o ya estar quemado en la categoría\n```"
+  },
+  {
+   "id": "ef7cc41184c0",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "33-33",
+     "encabezado": "Etapa 1 — Creative Strategy › 2. Territorios creativos"
+    }
+   ],
+   "texto": "Registros útiles para forzar distancia entre territorios: emocional vs. funcional · íntimo vs. épico de escala · humor vs. gravedad · protagonista humano vs. producto/entorno como personaje · tiempo real vs. elipsis."
+  },
+  {
+   "id": "345da3021998",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "37-49",
+     "encabezado": "Etapa 1 — Creative Strategy › 3. Big ideas y concept cards"
+    }
+   ],
+   "texto": "De los territorios más fuertes, baja 3–5 conceptos (FILM) o 2–3 (STANDARD). Cada concepto es UNA película posible, no una variación de la anterior. Formato obligatorio:\n\n```\n## Concept Card [N] — [Nombre]\n**Territorio de origen:** [cuál]\n**Logline:** [la película en 1–2 frases: quién quiere qué, qué lo impide, qué vemos]\n**Insight:** [la verdad humana sobre la que se para — algo que la audiencia reconoce como cierto]\n**Arco en 3 beats:** [apertura → quiebre → resolución, una línea cada uno]\n**Imagen final:** [el último frame, concreto — es lo que el espectador se lleva]\n**Por qué vende la proposición:** [mecánica explícita: cómo este concepto instala la single-minded proposition]\n**Riesgo principal:** [producción, tono, o percepción — y su mitigación en una línea]\n**Complejidad de generación AI:** [Baja/Media/Alta — nº de personajes con continuidad, entornos, física difícil, diálogo lip-sync]\n```"
+  },
+  {
+   "id": "b21de63a8d3f",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "51-51",
+     "encabezado": "Etapa 1 — Creative Strategy › 3. Big ideas y concept cards"
+    }
+   ],
+   "texto": "El campo de complejidad AI no es decorativo: un concepto brillante con 4 personajes en continuidad a través de 12 shots es un riesgo de producción real en video generativo, y el usuario debe elegirlo sabiéndolo."
+  },
+  {
+   "id": "1fa1a4735824",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "55-55",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ],
+   "texto": "Presenta los conceptos en una matriz 1–5, sin promediar a ciegas — el usuario pondera:"
+  },
+  {
+   "id": "00ea87db25d7",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "57-58",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ],
+   "texto": "| Concepto | Fuerza del insight | Distintividad vs. categoría | Fit de marca | Claridad de la proposición | Viabilidad AI | Riesgo |\n|---|---|---|---|---|---|---|"
+  },
+  {
+   "id": "5a734f4db0e7",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "60-60",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ],
+   "texto": "Debajo de la matriz, tu recomendación argumentada en un párrafo: cuál elegirías y por qué, nombrando el trade-off que implica. Recomendar es parte del trabajo; decidir es del usuario."
+  },
+  {
+   "id": "6645692951ba",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "62-62",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ],
+   "texto": "**Gate de la etapa:** el usuario selecciona un concepto (puede pedir un híbrido — trátalo como concepto nuevo con su propia card antes de avanzar)."
+  },
+  {
+   "id": "b1f7e63fb1c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "66-72",
+     "encabezado": "Etapa 1 — Creative Strategy › 5. Dirección narrativa del concepto ganador"
+    }
+   ],
+   "texto": "Puente hacia `screenwriter`. Media página que fija, para el concepto elegido:\n\n- **Estructura**: nº de escenas/actos y función de cada una (usar la three-jobs rule como criterio: cada escena cambia emoción, avanza acción o sube presión)\n- **Punto de vista**: desde quién se cuenta y por qué\n- **Los 5 anclas preliminares** (se refinan en Etapa 3): una emoción dominante, un motivo recurrente, un objeto, un quiebre, una imagen final\n- **Reglas del mundo**: qué existe y qué no en esta pieza (época, lugar, nivel de realismo, presencia del producto)\n- **Duración objetivo y densidad**: cuántos segundos por beat, dónde vive la pausa"
+  },
+  {
+   "id": "c596828155c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "lineas": "74-74",
+     "encabezado": "Etapa 1 — Creative Strategy › 5. Dirección narrativa del concepto ganador"
+    }
+   ],
+   "texto": "Este documento + la concept card son la entrada completa de la Etapa 2. Si `screenwriter` tuviera que preguntar algo estructural, esta etapa quedó corta — corrígela aquí."
+  },
+  {
+   "id": "786c6bdb6f89",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "3-3",
+     "encabezado": "Etapa 7 — Final AI Video Production Package"
+    }
+   ],
+   "texto": "Spec del entregable final del pipeline. El paquete debe permitir que un editor, una agencia o el propio usuario dentro de tres meses produzca el video sin hacer una sola pregunta de contexto."
+  },
+  {
+   "id": "e91b49f3cee2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "7-38",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 1. Estructura del paquete"
+    }
+   ],
+   "texto": "```\nproduction-package/\n├── 00-README.md                  # Índice, track usado, resumen de decisiones, créditos\n├── 01-strategy/\n│   ├── brief.md                  # Brief original o su reconstrucción\n│   ├── territories.md            # Territorios explorados (STANDARD/FILM)\n│   ├── concept-cards.md          # Todas las cards + matriz + concepto seleccionado marcado\n│   └── narrative-direction.md\n├── 02-script/\n│   ├── treatment.md              # Solo FILM\n│   └── script.md                 # Escenas XML-tagged de screenwriter\n├── 03-direction/\n│   └── cinematic-direction.md    # Blocking, cámara, luz, color, 5 anclas, por escena\n├── 04-shots/\n│   ├── storyboard.md\n│   ├── shots.json                # FUENTE DE VERDAD\n│   ├── text-overlays.json\n│   ├── run.json\n│   └── brand-lock.snapshot.md\n├── 05-anchors/\n│   ├── anchor-plan.md            # Qué refs se necesitan y para qué shots\n│   ├── prompts/round-N/          # Prompts de imagen por modelo, por ronda\n│   ├── frames/round-N/           # Renders aprobados/evaluados\n│   └── critiques/round-N/        # critique.json por shot evaluado\n├── 06-video-prompts/\n│   ├── prompts/                  # Un archivo por shot: shot_NN.<modelo>.txt\n│   └── continuity-notes.md       # Bloques de continuidad entre clips\n├── 07-delivery/\n│   ├── preview.html              # storyboard-html-preview, single-file\n│   └── post-production.md        # Checklist de post (ver §3)\n└── brand-lock.md                 # Si existió Etapa 0\n```"
+  },
+  {
+   "id": "4912881efb1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "40-40",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 1. Estructura del paquete"
+    }
+   ],
+   "texto": "En EXPRESS el paquete se comprime a: README, shot list, prompts y checklist de post — misma trazabilidad, menos carpetas."
+  },
+  {
+   "id": "bfa5c99a4443",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "44-44",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ],
+   "texto": "1. Todo prompt (imagen o video) lleva en comentario su `shot_id`."
+  },
+  {
+   "id": "e09aed024dc2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "45-45",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ],
+   "texto": "2. Todo shot en shots.json referencia su escena del script (`scene` field o nota)."
+  },
+  {
+   "id": "f1c2259db1ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "46-46",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ],
+   "texto": "3. El script referencia la concept card ganadora en su encabezado."
+  },
+  {
+   "id": "89b98454943c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "47-47",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ],
+   "texto": "4. Cambios: si un prompt necesita cambiar algo que su shot fija (encuadre, acción, luz), el cambio se hace en shots.json y se regenera hacia abajo. El paquete nunca contiene un prompt que contradiga su shot."
+  },
+  {
+   "id": "39a30b128267",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "48-48",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ],
+   "texto": "5. Verificación de cierre: muestrea 3 prompts al azar y traza la cadena prompt → shot → escena → concepto. Si un eslabón falta, el paquete no se entrega."
+  },
+  {
+   "id": "78d54c7ca1a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "52-64",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 3. Checklist de post-producción (07-delivery/post-production.md)"
+    }
+   ],
+   "texto": "Adaptar al proyecto, con specs concretos — no placeholders:\n\n```\n- [ ] Generar los N shots en [modelo(s)] con los prompts de 06-video-prompts/\n- [ ] Verificar cada clip contra su shot card (encuadre, acción, luz) antes de editar\n- [ ] Ensamblar en [NLE] siguiendo el orden y duraciones de shots.json\n- [ ] Aplicar grade de consistencia: [referencia de color del brand-lock o Visual Theme]\n- [ ] Transiciones: [tipo y duración definidos en dirección, no \"al gusto\"]\n- [ ] Audio: [música género/BPM/posición de beats + VO + ambientes según dirección de audio por shot]\n- [ ] Overlays de texto según text-overlays.json (tipografía del brand-lock)\n- [ ] Export: [resolución, aspect ratio, fps, códec, loudness según plataforma destino]\n- [ ] QA final contra los 5 anclas: ¿la pieza terminada conserva emoción, motivo, objeto, quiebre e imagen final?\n```"
+  },
+  {
+   "id": "190618760f30",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "68-68",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Concepto seleccionado por el usuario documentado en 01-strategy"
+  },
+  {
+   "id": "d16dfa30ca40",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "69-69",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Cada escena del script pasa fórmula de escena + three-jobs rule"
+  },
+  {
+   "id": "c5578bd6bd63",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "70-70",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Dirección cinematográfica sin vocabulario prohibido"
+  },
+  {
+   "id": "c4d55f4b9c7c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "71-71",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] shots.json validado (`validate_shots.py` limpio) y auditoría de 3 detalles por shot"
+  },
+  {
+   "id": "7c81483f6704",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "72-72",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Anchors críticos con critique ACCEPT (≤2 rondas)"
+  },
+  {
+   "id": "b28f318cacbe",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "73-73",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Prompts de video en sintaxis del modelo destino, con los dos checks de `video` pasados"
+  },
+  {
+   "id": "da55c2a3199a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "74-74",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] `aurora-prompt-linter` limpio sobre todos los prompts (si está instalada)"
+  },
+  {
+   "id": "430fe62f4a9c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "75-75",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Trazabilidad muestreada (§2.5)"
+  },
+  {
+   "id": "8b283ba763cd",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "76-76",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] preview.html abre offline y refleja el estado final"
+  },
+  {
+   "id": "ecb9593a3399",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "77-77",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] Créditos en 00-README.md: atribución *Serge Shima — github.com/smixs/visual-skills* si se usó la capa smixs; licencias de sub-skills anotadas"
+  },
+  {
+   "id": "94a1477c95e7",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "lineas": "78-78",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ],
+   "texto": "- [ ] 00-README.md explica en ≤1 página qué es el proyecto, qué track se usó y dónde está cada cosa"
+  },
+  {
+   "id": "1b3373911a72",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Use when planning a multi-shot AI video (TikTok Reel, Instagram Ad, YouTube Shorts, product explainer) where the target duration exceeds what a single AI generation can produce (over 15 seconds), and you need a coordinated shot list with visually consistent prompts for each segment"
+  },
+  {
+   "id": "9b7ae9796fbf",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "10-10",
+     "encabezado": "AI Video Storyboard Generator › Overview"
+    }
+   ],
+   "texto": "AI video generators produce 5–15 second clips. Real-world videos are longer: 30s TikToks, 60s ads, 90s explainers. This skill bridges that gap by producing a complete **shot-list storyboard** — a coordinated sequence of per-shot prompts with shared visual language, so the assembled final video looks like one intentional piece of work rather than six disconnected clips."
+  },
+  {
+   "id": "af691def8ded",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "12-12",
+     "encabezado": "AI Video Storyboard Generator › Overview"
+    }
+   ],
+   "texto": "**Core insight:** Visual consistency across shots matters more than any single shot being perfect. A mediocre but consistent set of shots edits together; six gorgeous but mismatched shots do not."
+  },
+  {
+   "id": "0edb33665221",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "16-16",
+     "encabezado": "AI Video Storyboard Generator › When to Use"
+    }
+   ],
+   "texto": "- User wants a video longer than 15 seconds"
+  },
+  {
+   "id": "88d01341cd63",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "17-17",
+     "encabezado": "AI Video Storyboard Generator › When to Use"
+    }
+   ],
+   "texto": "- User wants a TikTok / Reel / Short / ad / explainer / B-roll sequence"
+  },
+  {
+   "id": "e34c25addc7e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "18-18",
+     "encabezado": "AI Video Storyboard Generator › When to Use"
+    }
+   ],
+   "texto": "- User says \"help me make a video about X\" and has no shot list"
+  },
+  {
+   "id": "9a0df636ca11",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "19-19",
+     "encabezado": "AI Video Storyboard Generator › When to Use"
+    }
+   ],
+   "texto": "- User is about to generate multiple clips and needs a plan"
+  },
+  {
+   "id": "3e1f85b42a39",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "21-24",
+     "encabezado": "AI Video Storyboard Generator › When to Use"
+    }
+   ],
+   "texto": "**Do NOT use for:**\n- Single-shot generation (just help with one prompt instead)\n- Static image generation\n- Video editing advice after clips are generated (that's a separate concern)"
+  },
+  {
+   "id": "420ff9268b3a",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "30-36",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 1 — Brief Intake"
+    }
+   ],
+   "texto": "Ask the user these questions in a single message. Accept short answers:\n\n1. **Goal platform and duration?** (TikTok 30s / Reel 15-60s / YouTube Short / Instagram Ad / explainer)\n2. **What is the video about?** (subject, story, product)\n3. **Brand vibe / tone?** (cozy, energetic, premium, minimalist, playful, cinematic, etc.)\n4. **Call to action at the end?** (visit website, buy product, follow channel, etc.)\n5. **Any hard constraints?** (must include logo, specific colors, locations, etc.)"
+  },
+  {
+   "id": "d28175819cb2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "38-38",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 1 — Brief Intake"
+    }
+   ],
+   "texto": "If user already provided some of these, skip those questions and confirm the rest."
+  },
+  {
+   "id": "9f7774a7b3aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "42-42",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "Based on duration and platform, divide the timeline into shots of ~5 seconds each (the sweet spot for AI video generators)."
+  },
+  {
+   "id": "59123da75b75",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "44-44",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "**Standard cadences:**"
+  },
+  {
+   "id": "0648fcd395b7",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "48-48",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| TikTok Hook | 15s | 3 | Fast cuts, single idea |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "fc7528351d1c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "49-49",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| TikTok Reel | 30s | 6 | Hook → Build → Payoff → CTA |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "abb027c6b305",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "50-50",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| Instagram Ad | 15s | 3 | Hook → Product → CTA |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "b959f2c96901",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "51-51",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| Instagram Ad | 30s | 6 | Hook → Problem → Product → Benefit → Social proof → CTA |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "95078e3d41b6",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "52-52",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| YouTube Short | 60s | 12 | Hook → 3-act structure → CTA |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "2a6670eceab1",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "53-53",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| Product Explainer | 90s | 18 | Problem → Solution → How it works → Results → CTA |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "ad040d55c8f9",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "54-54",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ],
+   "texto": "| Brand Story | 60s | 10-12 | Atmosphere-driven, longer shot holds |",
+   "contexto": "| Platform | Duration | Shots | Pacing |\n|---|---|---|---|"
+  },
+  {
+   "id": "d257df135e0f",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "58-64",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+    }
+   ],
+   "texto": "Before writing any shot, lock in the shared visual language. This is what makes shots edit together:\n\n- **Color palette** (3-5 specific hex values or named colors)\n- **Lighting style** (golden hour / neon / overcast / motivated / cinematic rim light)\n- **Lens character** (shallow DOF / deep focus / wide angle distortion / macro)\n- **Film look** (clean digital / 16mm grain / anamorphic / VHS / 35mm)\n- **Motion language** (handheld / locked off / dolly only / gimbal smooth)"
+  },
+  {
+   "id": "e3d40303bdc2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "66-66",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+    }
+   ],
+   "texto": "Write these as a **Visual Theme** block at the top of the output. Every shot's prompt must respect this block."
+  },
+  {
+   "id": "f2d80d60f259",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "70-85",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 4 — Write Each Shot"
+    }
+   ],
+   "texto": "For each shot, produce this structure:\n\n```\n## Shot N (START-ENDs) — [Purpose label: Hook / Setting / Action / Detail / Reveal / CTA]\n\n**Composition:** [shot type + angle, e.g., \"Extreme close-up, overhead\"]\n**Camera move:** [locked / slow dolly in / tracking / crane up / etc.]\n**Lighting:** [from the Visual Theme, applied to this scene]\n**Subject:** [what is in frame]\n**Action:** [what is happening]\n\n**Prompt to copy:**\n> [Complete, cinematic-quality prompt, 40-80 words, including: subject + action + environment + camera + lighting + style + technical spec (duration, aspect ratio, resolution). Always ends with \"cinematic 1080p, synchronized audio\"]\n\n**Audio direction:** [what the synchronized audio should sound like — ambient sounds, music beat position, voice-over line]\n```"
+  },
+  {
+   "id": "5ed8061b9f95",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "87-94",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 4 — Write Each Shot"
+    }
+   ],
+   "texto": "**Critical rules for shot prompts:**\n\n1. **Always specify the shared visual language** in every prompt (color palette, lighting, lens character, film look). This is how you enforce consistency.\n2. **Specify exact duration** (4s / 5s / 8s) and **aspect ratio** (9:16 for TikTok/Reels, 16:9 for YouTube landscape, 1:1 for feed posts).\n3. **Always end with \"cinematic 1080p, synchronized audio\"** — this signals professional-grade quality and works with modern video models that support both.\n4. **Use cinematography vocabulary**: ECU (extreme close-up), CU, MS (medium shot), WS (wide shot), OTS (over-the-shoulder), POV, Dutch angle, low angle, high angle, bird's eye, dolly in, dolly out, tracking, handheld, rack focus, etc.\n5. **Don't write abstract prompts** — be concrete. \"A woman\" → \"A barista in her late 20s with wavy auburn hair, wearing a denim apron\".\n6. **No model-specific hacks** — don't write prompts tuned to specific model quirks. Write model-agnostic cinematic prompts that work anywhere."
+  },
+  {
+   "id": "0ac93614886e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "98-100",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 5 — Add Narrative Structure"
+    }
+   ],
+   "texto": "The sequence of shots must have a **story arc**, not a random list. Use one of these patterns:\n\n**Pattern A — Hook / Build / Payoff / CTA (TikTok default)**"
+  },
+  {
+   "id": "792369a7c070",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "101-104",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 5 — Add Narrative Structure"
+    }
+   ],
+   "texto": "- Shot 1: Visual hook (stop the scroll)\n- Shot 2-3: Build context / intrigue\n- Shot 4-5: Main content / payoff\n- Shot 6: CTA"
+  },
+  {
+   "id": "6bfa0c557c46",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "106-106",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 5 — Add Narrative Structure"
+    }
+   ],
+   "texto": "**Pattern B — Problem / Solution / Proof / CTA (Ad default)**"
+  },
+  {
+   "id": "7f9a411b0760",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "107-110",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 5 — Add Narrative Structure"
+    }
+   ],
+   "texto": "- Shots 1-2: Relatable problem\n- Shot 3: Your product as solution\n- Shots 4-5: Benefits / results\n- Shot 6: CTA"
+  },
+  {
+   "id": "b43206d4ade9",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "112-116",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 5 — Add Narrative Structure"
+    }
+   ],
+   "texto": "**Pattern C — Atmosphere → Climax (Brand story)**\n- Longer atmospheric shots\n- Slow reveal\n- Emotional climax\n- Logo reveal"
+  }
+ ]
+}
