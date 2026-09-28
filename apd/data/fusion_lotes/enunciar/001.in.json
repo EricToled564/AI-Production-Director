@@ -1,0 +1,750 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "da56b9ebb0ca",
+   "texto": "[Golden Rules › 2. Positive Framing] - ✅ \"empty street\" → ❌ \"street with no cars\""
+  },
+  {
+   "id": "84952824487f",
+   "texto": "[Golden Rules › 2. Positive Framing] - ✅ \"clean background\" → ❌ \"no clutter\""
+  },
+  {
+   "id": "31db35fee176",
+   "texto": "[Golden Rules › 2. Positive Framing] - ✅ \"solo portrait\" → ❌ \"no other people\""
+  },
+  {
+   "id": "8ba4140fa1a3",
+   "texto": "[Golden Rules › 3. Edit, Don't Re-roll] Image 80% correct? Request specific change:\n\"Change lighting to sunset\"; \"Make text neon blue\"; \"Move chart to right third\""
+  },
+  {
+   "id": "49547dd7e39c",
+   "texto": "[Golden Rules › 4. Natural Language] ❌ Bad: \"Cool car, neon, city, night, 8k\"\n✅ Good: \"A cinematic wide shot of a futuristic sports car speeding through a rainy Tokyo street at night. Neon signs reflect off wet pavement and metallic chassis.\""
+  },
+  {
+   "id": "7cabcc1b33d8",
+   "texto": "[Golden Rules › 5. Be Specific] Element: Subject · Vague: \"a woman\" · Specific: \"sophisticated elderly woman in vintage Chanel-style suit\""
+  },
+  {
+   "id": "96ddb7200eff",
+   "texto": "[Golden Rules › 5. Be Specific] Element: Material · Vague: \"shiny\" · Specific: \"brushed steel with matte finish\""
+  },
+  {
+   "id": "a146d6c13492",
+   "texto": "[Golden Rules › 5. Be Specific] Element: Color · Vague: \"dark green\" · Specific: \"#0d3d2d deep emerald\""
+  },
+  {
+   "id": "4ed98f96f8e3",
+   "texto": "[Golden Rules › 5. Be Specific] Element: Position · Vague: \"on the right\" · Specific: \"right third, bleeding off edge\""
+  },
+  {
+   "id": "8f8110d16b56",
+   "texto": "[Golden Rules › 6. Provide Context] Context helps model make logical decisions:\n- \"for Brazilian gourmet cookbook\" → infers professional plating, shallow DOF\n- \"for executive strategy presentation\" → infers corporate aesthetic\n- \"for children's educational app\" → infers friendly, colorful style"
+  },
+  {
+   "id": "06a106772149",
+   "texto": "[Golden Rules › 7. Quote Text Exactly] Any text for rendering goes in quotes:\n\"[HEADLINE TEXT]\"; Labels: \"[Revenue Growth]\", \"[Net Income]\"; Specify weight: bold, thin, extra bold; Specify position: \"upper third\", \"centered\""
+  },
+  {
+   "id": "648f53a7ba05",
+   "texto": "[Golden Rules › Prompt Template] Create a [TYPE] for [CONTEXT].\n\nBackground: [Description with hex colors]. [Atmospheric effects].\n\n[HERO ELEMENT]:\n[Detailed description - position, lighting, angle]\n\nTypography:\nLine 1: \"[TEXT]\" in [weight], [color], [size], [position]\nLine 2: \"[TEXT]\" in [weight], [color], [size], [position]\n\n[ADDITIONAL ELEMENTS]\n\nMood: [Emotional descriptor]\nFormat: [ASPECT RATIO]"
+  },
+  {
+   "id": "5d0adbf46eb0",
+   "texto": "[Golden Rules › Prompt Template] **Thinking Mode** (NB only), **`quality: low/medium/high`** (GPT Image 2 only) — см. соответствующие references."
+  },
+  {
+   "id": "17e1280e02fc",
+   "texto": "[Golden Rules › Cost Optimization (Batch Work)] - **Nano Banana:** прогон вариантов на `0.5K` Flash → отбор → переген победителя на `2K`/`4K`."
+  },
+  {
+   "id": "e3591da02b52",
+   "texto": "[Golden Rules › Cost Optimization (Batch Work)] - **GPT Image 2:** прогон на `quality: low` → отбор → переген на `medium` или `high`."
+  },
+  {
+   "id": "cd043cd32be5",
+   "texto": "[Golden Rules › Cost Optimization (Batch Work)] В обоих случаях: дешёвая разведка → дорогой финал."
+  },
+  {
+   "id": "7a35d00eb717",
+   "texto": "[Golden Rules › Conversational Refinement] After generation:\n\"Change the headline color to #3b82f6\"; \"Add subtle drop shadow to text\"; \"Increase contrast, make it more dramatic\"; \"Soften the background, add blur\""
+  },
+  {
+   "id": "d12331b63569",
+   "texto": "[Golden Rules › Reference Images] Multi-image вход: **NB до 14**, **GPT Image 2 до 16**. Индексируй с ролью каждой картинки."
+  },
+  {
+   "id": "d2824a29f8ed",
+   "texto": "[Golden Rules › Reference Images] Используй для:\n**Вписать в существующий дизайн:**\n[Attach design/layout image]\nCreate content following this exact layout and style.\nReplace [ELEMENT] with [NEW CONTENT].\nKeep colors, typography, composition."
+  },
+  {
+   "id": "cca33b7b1576",
+   "texto": "[Golden Rules › Reference Images] **Лицо/персонаж как референс:**\n[Attach portrait]\nUse this person's face. Keep features exactly the same.\nChange: [expression/pose/setting]"
+  },
+  {
+   "id": "8a60ec4f47bc",
+   "texto": "[Golden Rules › Reference Images] **Продукт/объект как референс:**\n[Attach product photo]\nPlace this product in [NEW CONTEXT].\nMatch lighting and perspective."
+  },
+  {
+   "id": "fa764fb31f04",
+   "texto": "[Golden Rules › Reference Images] **Стиль как референс:**\n[Attach style reference]\nCreate [NEW CONTENT] in this exact visual style.\nMatch colors, textures, mood."
+  },
+  {
+   "id": "7db0ad7afcd6",
+   "texto": "[Golden Rules › Reference Images] **Несколько референсов сразу:**\n[Attach Image 1 - face]\n[Attach Image 2 - outfit]\n[Attach Image 3 - background]\nCombine: face from Image 1, outfit style from Image 2, setting from Image 3."
+  },
+  {
+   "id": "dd71bc1f89d7",
+   "texto": "[Golden Rules › World Knowledge Anchors] GPT Image 2 обладает глубокими знаниями о культуре, эпохах и визуальных стилях. Вместо описания каждой детали — дай модели культурный/временной/жанровый якорь, и она сама заполнит аутентичные детали."
+  },
+  {
+   "id": "49d658487abc",
+   "texto": "[Golden Rules › World Knowledge Anchors › Три типа якорей] **Era anchors** — временной и географический маркер, который вызывает целый визуальный мир:\n- \"Bethel, NY, August 1969\" → Woodstock aesthetic без необходимости описывать тай-дай, грязь, сцены\n- \"Berlin, November 1989\" → падение стены, толпы, граффити, эйфория\n- \"Tokyo, 1982\" → неоновый Shinjuku, аналоговая электроника, ранний cyberpunk"
+  },
+  {
+   "id": "a8116897ffae",
+   "texto": "[Golden Rules › World Knowledge Anchors › Три типа якорей] **Cultural anchors** — перенос визуального языка одного культурного объекта на другой контекст:\n- \"{game_title} in {real_city}\" → автоматически применяет визуальный стиль игры к реальной локации (GTA style, Persona style, и т.д.)\n- \"Soviet constructivism poster about {modern_topic}\" → стиль Родченко/Эль Лисицкого на современную тему\n- \"Ukiyo-e print of {modern_scene}\" → японская гравюра с современным содержанием"
+  },
+  {
+   "id": "907bd30c9e73",
+   "texto": "[Golden Rules › World Knowledge Anchors › Три типа якорей] **Genre anchors** — режиссёр/фотограф/движение как линза:\n- \"Peter Lindbergh influence\" → сильный Ч/Б, минимальная ретушь, raw editorial\n- \"Wes Anderson palette\" → симметричный кадр, пастельная палитра, центрированная композиция\n- \"Studio Ghibli mood\" → мягкое акварельное небо, зелёная листва, тёплый ностальгический свет\n- \"Roger Deakins lighting\" → натуральный свет, глубокие тени, кинематографичный объём"
+  },
+  {
+   "id": "3ec2b7ce8521",
+   "texto": "[Golden Rules › World Knowledge Anchors › Правила использования] 1. **Используй как HIGH-LEVEL steering** — якорь задаёт настроение и эстетику, а не заменяет весь промпт"
+  },
+  {
+   "id": "1ff5cb4d100c",
+   "texto": "[Golden Rules › World Knowledge Anchors › Правила использования] 2. **Комбинируй с конкретными визуальными деталями** — якорь устанавливает мир, детали устанавливают специфику"
+  },
+  {
+   "id": "d797405fa8df",
+   "texto": "[Golden Rules › World Knowledge Anchors › Правила использования] 3. **Не стакай несколько genre anchors** — выбери один. \"Peter Lindbergh + Wes Anderson\" = каша"
+  },
+  {
+   "id": "d0688a3dd0e8",
+   "texto": "[Golden Rules › World Knowledge Anchors › Правила использования] 4. **Era/cultural anchors работают лучше с GPT Image 2** (world knowledge). С Nano Banana результат менее предсказуем — NB больше опирается на явные описания"
+  },
+  {
+   "id": "53f17dfa702a",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] **Era anchor + конкретные детали:**\nCreate an editorial portrait set in Havana, 1957.\n\nSubject: jazz musician leaning against pastel-colored colonial building,\nholding trumpet loosely at his side. Linen suit, open collar.\nLighting: harsh Caribbean afternoon sun, deep shadows under awning.\nFormat: 3:4"
+  },
+  {
+   "id": "5f1cd6caf8c5",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] \"Havana, 1957\" вызывает: старые американские машины на заднем плане, облупившаяся штукатурка, кованые балконы, тропическая атмосфера — без необходимости это описывать."
+  },
+  {
+   "id": "3ba8fc71c537",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] **Cultural anchor + новый контекст:**\nCreate a scene of a quiet Kyoto temple garden, rendered in the visual style\nof Studio Ghibli. Morning mist over moss-covered stones, a single monk\nsweeping fallen maple leaves. Soft watercolor textures, warm nostalgic palette.\nFormat: 16:9"
+  },
+  {
+   "id": "549cf2f3e584",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] \"Studio Ghibli\" задаёт акварельность, теплоту, ностальгию. Детали (мох, клён, монах) задают конкретную сцену."
+  },
+  {
+   "id": "1f81cfa9ae1e",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] **Genre anchor + специфика:**\nCreate a fashion editorial portrait with Peter Lindbergh influence.\n\nSubject: model in oversized men's blazer, no makeup, wind-tousled hair.\nSetting: empty winter beach, overcast sky.\nMood: raw, unpolished beauty\nFormat: 2:3"
+  },
+  {
+   "id": "d7e2908b1821",
+   "texto": "[Golden Rules › World Knowledge Anchors › Примеры] \"Peter Lindbergh influence\" даёт: мощный Ч/Б (или desaturated), отсутствие ретуши, raw emotional quality. Детали (пляж, блейзер, ветер) конкретизируют кадр."
+  },
+  {
+   "id": "3b1099aff265",
+   "texto": "[GPT Image 2 — Specific Rules] Production default OpenAI: `gpt-image-2`. Migration-only: `gpt-image-1.5`, `gpt-image-1`. Бюджетный: `gpt-image-1-mini`."
+  },
+  {
+   "id": "7deabf21dd2b",
+   "texto": "[GPT Image 2 — Specific Rules › Структура промпта — 5 slots] GPT Image 2 сильнее всего реагирует на разделение по секциям. Пиши лейблами, не сплошным текстом."
+  },
+  {
+   "id": "91a29ca63b29",
+   "texto": "[GPT Image 2 — Specific Rules › Структура промпта — 5 slots] Scene: location, time of day, background, environment\nSubject: primary focus — who or what is central\nImportant Details: materials, textures, lighting, camera angle, mood, composition\nUse Case: editorial, product mockup, UI, poster, infographic\nConstraints: what must NOT change/appear (no watermarks, preserve face, no extra text)"
+  },
+  {
+   "id": "88b760d45099",
+   "texto": "[GPT Image 2 — Specific Rules › Структура промпта — 5 slots] «The fifth slot is where most mediocre prompts fail silently.» Без явных constraints модель дрейфует."
+  },
+  {
+   "id": "4e94a0df94bf",
+   "texto": "[GPT Image 2 — Specific Rules › Структура промпта — 5 slots › Минимальный пример] Scene: small Lisbon florist storefront at blue hour, wet cobblestones\nSubject: woman in navy apron locking the front door, half-turned to camera\nImportant Details: warm interior glow spilling onto pavement, 50mm feel,\n  soft contact shadows, brushed brass door handle, \"Florista\" hand-painted sign\nUse Case: editorial photography\nConstraints: no extra signage, no people in background, no text other than the sign"
+  },
+  {
+   "id": "4340f68e6875",
+   "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] GPT Image 2 особенно чувствителен к качеству формулировок. Vague praise = деградация результата."
+  },
+  {
+   "id": "52451de58cbe",
+   "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] ❌ Не пиши: stunning, incredible, epic, gorgeous, masterpiece · ✅ Пиши: overcast daylight, brushed aluminum, chipped paint, 50mm feel"
+  },
+  {
+   "id": "f1099a458d19",
+   "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] ❌ Не пиши: «minimalist brutalist luxury photoreal» (стиль-теги) · ✅ Пиши: «cream background, heavy black sans-serif, asymmetrical type block, one hero object, generous negative space»"
+  },
+  {
+   "id": "33b0b303ae45",
+   "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] ❌ Не пиши: «как в Apple-рекламе» · ✅ Пиши: конкретные визуальные факты"
+  },
+  {
+   "id": "bf28e16ae7ca",
+   "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] ❌ Не пиши: мудовый язык, в котором тонут функциональные требования · ✅ Пиши: прямое заявление: «image must contain a transit kiosk»"
+  },
+  {
+   "id": "3ce3569886d2",
+   "texto": "[GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency] Setting: `quality: low` · Когда: High-volume, превью, exploratory, latency-sensitive, draft"
+  },
+  {
+   "id": "00e9979fa32e",
+   "texto": "[GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency] Setting: `quality: medium` · Когда: **Default starting point**"
+  },
+  {
+   "id": "7a7529d833ac",
+   "texto": "[GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency] Setting: `quality: high` · Когда: Маленький/плотный текст, infographics, портреты, identity-sensitive edits, brand assets"
+  },
+  {
+   "id": "42d6343173d3",
+   "texto": "[GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency] Стартуй с `low`, апгрейди по необходимости. Часто `low` уже достаточно."
+  },
+  {
+   "id": "349ba3cd4233",
+   "texto": "[GPT Image 2 — Specific Rules › Размеры (gpt-image-2)] Max edge: <3840px; Обе стороны: кратны 16; Aspect ratio: max 3:1 (long:short); Total pixels: 655 360 – 8 294 400; Reliable upper bound: 2560×1440"
+  },
+  {
+   "id": "a80811a38388",
+   "texto": "[GPT Image 2 — Specific Rules › Размеры (gpt-image-2)] **Ходовые:**\nPortrait 1024×1536; Landscape 1536×1024; Square 1024×1024; 2K 2560×1440"
+  },
+  {
+   "id": "2b1e0d9a7db1",
+   "texto": "[GPT Image 2 — Specific Rules › Размеры (gpt-image-2)] Экстрим вроде 1:8 / 8:1 GPT Image 2 НЕ умеет — иди в Nano Banana."
+  },
+  {
+   "id": "8feb1df77adb",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Литеральный текст в `\"...\"` или ALL CAPS."
+  },
+  {
+   "id": "261ebdf657cc",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Шрифт, размер, цвет, позиция — явно."
+  },
+  {
+   "id": "7310a9fd5084",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Сложные слова и бренды: спеллинг по буквам."
+  },
+  {
+   "id": "535bea53e944",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Защита от мусора: «**no extra words, no duplicate text, no watermarks**»."
+  },
+  {
+   "id": "a56fb5480e0f",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Для нечитаемого мелкого текста: «**100 percent readable and physically believable**»."
+  },
+  {
+   "id": "9d5ecf236ef7",
+   "texto": "[GPT Image 2 — Specific Rules › Text in Image] - Маленький/плотный/multi-font → `quality: high` обязательно."
+  },
+  {
+   "id": "22a782683bab",
+   "texto": "[GPT Image 2 — Specific Rules › Editing — двухколоночная логика] Endpoint: `openai/gpt-image-2/edit` (на fal.ai) или соответствующий через OpenAI API."
+  },
+  {
+   "id": "bd8569478414",
+   "texto": "[GPT Image 2 — Specific Rules › Editing — двухколоночная логика] Change: [single concrete change]\nPreserve: face, identity, pose, lighting, framing, background, geometry, text, layout\nConstraints: no extra objects, no redesign, no drift"
+  },
+  {
+   "id": "1cc8e7161a2c",
+   "texto": "[GPT Image 2 — Specific Rules › Editing — двухколоночная логика] **Правила edit:**\n- **Один edit за итерацию.** Не пытайся менять всё разом.\n- **Preserve list повторять каждую итерацию.** Иначе дрейф.\n- **Surgical edits:** явно перечисли что НЕ трогать (saturation, contrast, layout, arrows, labels, camera angle).\n- Опционально: `mask_image_url` для точечных edits."
+  },
+  {
+   "id": "addfeceaa776",
+   "texto": "[GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны] **Virtual try-on:** «Change garments only. Preserve exact face, body shape, pose, hair, expression, background, camera angle. Match lighting/shadows so outfit looks naturally worn.»\n**Object removal:** «Remove [X]. Do not change anything else. Use `input_fidelity: high` to maintain surrounding context» (только gpt-image-1.5/1, в gpt-image-2 high-fidelity по умолчанию).\n**Lighting/weather swap:** «Change ONLY environmental conditions: lighting direction/quality, shadows, atmosphere, precipitation. Preserve identity, geometry, camera angle, object placement.»\n**Interior swap:** «Swap [furniture]. Preserve camera angle, lighting, shadows, surrounding context. Photorealistic contact shadows.»"
+  },
+  {
+   "id": "b0e5b12c225b",
+   "texto": "[GPT Image 2 — Specific Rules › Multi-Image — до 16 рефов] Индексируй с **ролью**, не только номером:\nImage 1: base scene\nImage 2: jacket reference (apply only the jacket fabric/cut to subject in Image 1)\nImage 3: lighting reference (apply golden-hour quality from Image 3)"
+  },
+  {
+   "id": "d345cefb6c23",
+   "texto": "[GPT Image 2 — Specific Rules › Style Transfer] Не пиши абстрактно («minimalist», «editorial»). Назови конкретные визуальные свойства референса: палитра, edge treatment, силуэт, обработка теней, plane логика."
+  },
+  {
+   "id": "dbcd22a5f1e8",
+   "texto": "[GPT Image 2 — Specific Rules › World Knowledge] GPT Image 2 умеет домысливать контекст: «Bethel, NY, August 1969» → выведет Woodstock-эстетику. Используй: дай исторический/культурный анкер, не расписывай каждую деталь."
+  },
+  {
+   "id": "3a3189b93619",
+   "texto": "[GPT Image 2 — Specific Rules › Iteration Strategy] - Стартуй с **чистого** базового промпта."
+  },
+  {
+   "id": "8a7ba0664d42",
+   "texto": "[GPT Image 2 — Specific Rules › Iteration Strategy] - Один change за раунд. «Make lighting warmer», «remove extra tree», «restore original background»."
+  },
+  {
+   "id": "ca942d693475",
+   "texto": "[GPT Image 2 — Specific Rules › Iteration Strategy] - При drift — перечисли invariants заново."
+  },
+  {
+   "id": "983004d1ab20",
+   "texto": "[GPT Image 2 — Specific Rules › Iteration Strategy] - Для длинных промптов — labeled sections, не одна простыня."
+  },
+  {
+   "id": "e514240c1f84",
+   "texto": "[GPT Image 2 — Specific Rules › Use-Case Templates › Photoreal Editorial] Scene: [location, time, weather]\nSubject: [who, action, framing]\nImportant Details: [lens feel, light source, surface wear, imperfections, real texture]\nUse Case: editorial photograph, looks like a real photo\nConstraints: no glamorization, no heavy retouching, no studio gloss"
+  },
+  {
+   "id": "f10f1f56e5c4",
+   "texto": "[GPT Image 2 — Specific Rules › Use-Case Templates › Product Mockup (Clean Background)] Scene: plain white opaque background\nSubject: [product] centered\nImportant Details: crisp silhouette, no halos/fringing, light contact shadow,\n  preserve label legibility exactly, preserve geometry\nUse Case: product mockup\nConstraints: no restyling, only background removal + light polish"
+  },
+  {
+   "id": "027566cb7590",
+   "texto": "[GPT Image 2 — Specific Rules › Use-Case Templates › UI Mockup] Scene: [device frame, e.g. iPhone 15 Pro]\nSubject: [screen/app name] — describe AS IF IT EXISTS, not concept art\nImportant Details: layout, hierarchy, real interface elements, exact copy in quotes,\n  typography behavior, spacing, state\nUse Case: shipped product screenshot\nConstraints: no sketch language, no placeholder text, no Lorem Ipsum\nQuality: high (for small UI text)"
+  },
+  {
+   "id": "b3b956c34766",
+   "texto": "[GPT Image 2 — Specific Rules › Use-Case Templates › Marketing Creative with Text] Scene: [environment]\nSubject: [hero element]\nImportant Details: [composition, palette, mood]\nUse Case: ad creative for [audience]\nText: \"EXACT HEADLINE\" in [font style], [color], [position]\n      \"exact subhead\" in [font style], [color], [position]\nConstraints: no extra text, no duplicate text, no watermarks, no unrelated logos\nQuality: high"
+  },
+  {
+   "id": "a9564a15fe2a",
+   "texto": "[GPT Image 2 — Specific Rules › Use-Case Templates › Infographic / Diagram] Title: \"[TITLE]\"\nContent flow: [step 1] → [step 2] → [step 3]\nVisual format: [layout type — flowchart, pyramid, isometric, etc.]\nUse Case: educational infographic for [audience]\nConstraints: readable labels at all sizes, clear hierarchy, no clutter,\n  no decorative noise, ample whitespace\nQuality: high\nSize: 1536×1024"
+  },
+  {
+   "id": "06222320eefe",
+   "texto": "[GPT Image 2 — Specific Rules › Migration from Older GPT-Image] - Промпты в основном переносятся как есть."
+  },
+  {
+   "id": "d8678a4e0284",
+   "texto": "[GPT Image 2 — Specific Rules › Migration from Older GPT-Image] - После переноса — посмотри качество, latency, retry-rate; ретюнь."
+  },
+  {
+   "id": "196241ce7d2a",
+   "texto": "[GPT Image 2 — Specific Rules › Migration from Older GPT-Image] - `gpt-image-1-mini` — только если главное снизить цену batch'а на низкорисковых задачах."
+  },
+  {
+   "id": "667d46d4fd86",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2] Skill пишет промпты под две семьи моделей. Они мыслят по-разному — выбор модели меняет структуру промпта."
+  },
+  {
+   "id": "1c9872453052",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Реальное место/объект (с грунтингом) · Модель: **Nano Banana** (NB2/NBP)"
+  },
+  {
+   "id": "bc694bf2338e",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Сложная сцена с физикой/композицией · Модель: **Nano Banana Pro**"
+  },
+  {
+   "id": "dd4fb3675559",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Длинные горизонтальные/вертикальные форматы (1:8, 8:1, 4:1) · Модель: **Nano Banana** (только NB поддерживает экстрим)"
+  },
+  {
+   "id": "9924342e5b4e",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Дешёвая массовая генерация · Модель: **Nano Banana 2 Lite** или **gpt-image-1-mini**"
+  },
+  {
+   "id": "263558a27717",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Фотореализм с тонкой типографикой/UI · Модель: **GPT Image 2**"
+  },
+  {
+   "id": "ef05dc915614",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Точное editing с preservation (try-on, swap, weather) · Модель: **GPT Image 2** (в editing у него лучшая identity-preservation)"
+  },
+  {
+   "id": "6431dc73c9dc",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Маленький плотный текст в кадре · Модель: **GPT Image 2** (`quality: high`)"
+  },
+  {
+   "id": "cfa9b77f7b63",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Брендовая полиграфия / постеры с EXACT TEXT · Модель: **GPT Image 2**"
+  },
+  {
+   "id": "a022f7a6f7b8",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Сториборды, комиксы (последовательность) · Модель: **Nano Banana** (extreme ratios + thinking)"
+  },
+  {
+   "id": "41cb14321fee",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Storyboard с фокусом на типографике · Модель: **GPT Image 2**"
+  },
+  {
+   "id": "0892105975b8",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Style transfer без упоминаемых референс-картинок · Модель: **GPT Image 2** (concrete visual targets)"
+  },
+  {
+   "id": "67d81e7065a7",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Рендер из 14+ референсов · Модель: **Nano Banana Pro** (до 14) или **GPT Image 2** (до 16)"
+  },
+  {
+   "id": "879866eb1cfe",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в] - **Image grounding.** NB2 ищет реальные изображения в интернете перед генерацией — точная архитектура конкретного храма, моста, площади; конкретные виды животных, растений. GPT Image 2 этого не делает."
+  },
+  {
+   "id": "e3af17a13df6",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в] - **Экстремальные пропорции.** 1:8, 8:1, 1:4, 4:1 — баннеры, скроллы, комикс-стрипы. У GPT Image 2 max 3:1."
+  },
+  {
+   "id": "a9ac67864a42",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в] - **«Thinking» режим.** Сложные инфографики со spatial logic."
+  },
+  {
+   "id": "3308672701e8",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в] - **Цена/скорость.** NB2 = $0.04/img."
+  },
+  {
+   "id": "173a865c1b94",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **Identity preservation в edit.** Меняешь одежду / погоду / фон — лицо, поза, геометрия не плывут. Двухколоночная логика (change / preserve) работает как контракт."
+  },
+  {
+   "id": "41dc3ebd93e1",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **Тонкий текст в кадре.** Маленькие подписи, легенды, footnotes, multi-font layouts. На `quality: high` рендерит чётче."
+  },
+  {
+   "id": "1917b8949c5c",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **UI-моки и продуктовые скриншоты.** Иерархия, реальные интерфейс-элементы, читаемые лейблы."
+  },
+  {
+   "id": "f34efaf91c60",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **Структурированный 5-slot промпт.** Чёткое разделение Scene/Subject/Details/Use case/Constraints даёт предсказуемость."
+  },
+  {
+   "id": "086fdb72a519",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **`quality` рычаг.** low/medium/high — осознанный trade-off скорости и точности."
+  },
+  {
+   "id": "2161937d21d0",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши] Photorealistic портреты.; Product shots на нейтральном фоне.; Минималистичные постеры.; Editorial-фотография."
+  },
+  {
+   "id": "bf69ef1a0320",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Стиль промпта · Nano Banana: Натуральный язык, 1-2 параграфа · GPT Image 2: 5-slot с лейблами секций"
+  },
+  {
+   "id": "0f7abaafad9d",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Камера/линза · Nano Banana: **Не указывать** числа (50mm, f/2.8) — NB игнорит · GPT Image 2: Можно «50mm feel», но как high-level look"
+  },
+  {
+   "id": "c04ae74c7ef3",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: «Stunning/epic/masterpiece» · Nano Banana: Игнорит, не вредит · GPT Image 2: **Anti-slop**: вредит, делает результат хуже"
+  },
+  {
+   "id": "3fc4af93cb05",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Text in image · Nano Banana: `\"...\"` в кавычках, font + position · GPT Image 2: `\"...\"` или ALL CAPS + «no extra words / no duplicate text»"
+  },
+  {
+   "id": "2e5abfbed6ee",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Negative framing · Nano Banana: Использовать позитив · GPT Image 2: Использовать позитив + явный preserve list"
+  },
+  {
+   "id": "6b8a8f149195",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Сложные сцены · Nano Banana: JSON для 5+ элементов · GPT Image 2: 5-slot template со секциями"
+  },
+  {
+   "id": "2a73eb67f4cd",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Edit · Nano Banana: «Keep X same, change Y» · GPT Image 2: «Change: X / Preserve: Y / Constraints: Z» — повторять preserve каждую итерацию"
+  },
+  {
+   "id": "227b717c7248",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Множественные референсы · Nano Banana: До 14, индексировать · GPT Image 2: До 16, индексировать с ролью («Image 1: base», «Image 2: jacket reference»)"
+  },
+  {
+   "id": "c79557184927",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: Nano Banana 2 Lite · Цена: ~$0.034/img · Заметки: Только 1K, ~4 сек. Черновики и массовые батчи"
+  },
+  {
+   "id": "53e02aa14cc4",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: Nano Banana 2 (Flash) · Цена: ~$0.04/img · Заметки: Default для большинства задач"
+  },
+  {
+   "id": "981f29cb0553",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: Nano Banana Pro · Цена: ~$0.15/img · Заметки: Сложные сцены, до 14 рефов"
+  },
+  {
+   "id": "0d38e3423507",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: GPT Image 2 (`low`) · Цена: дёшево · Заметки: Latency-sensitive, превью"
+  },
+  {
+   "id": "dec9263049a9",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: GPT Image 2 (`medium`) · Цена: средне · Заметки: Default для GPT Image"
+  },
+  {
+   "id": "c31b2c22fa98",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: GPT Image 2 (`high`) · Цена: дороже · Заметки: Маленький текст, brand-sensitive, photorealism"
+  },
+  {
+   "id": "199550f68a8f",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: gpt-image-1-mini · Цена: дешёвый · Заметки: Высокообъёмная exploratory-генерация"
+  },
+  {
+   "id": "855a30bc4959",
+   "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Скилл сам не запускает генерацию — выдаёт промпт. Модель/quality указываем рядом с промптом как мета."
+  },
+  {
+   "id": "ae0c460d2442",
+   "texto": "[Multi-Panel Compositions] Single-image layouts containing multiple frames, panels, or grid cells. Unlike [storyboards.md](storyboards.md) (sequential images generated one-at-a-time), these patterns produce **one image** with all panels baked in."
+  },
+  {
+   "id": "eec800413a13",
+   "texto": "[Multi-Panel Compositions] Core principle: explicitly number and describe every panel. Models need panel-by-panel instructions — vague requests like \"show multiple angles\" produce inconsistent grids."
+  },
+  {
+   "id": "d349802f9a7a",
+   "texto": "[Multi-Panel Compositions › 1. 9-Cell Grid Storyboard] For a product-focused narrative variant, see [patterns/ecommerce.md](patterns/ecommerce.md#9-panel-tvc-storyboard-grid)."
+  },
+  {
+   "id": "09db91fc8c95",
+   "texto": "[Multi-Panel Compositions › 1. 9-Cell Grid Storyboard] **When to use:** TVC or commercial shot breakdown — one image = 9 panels with scene titles and timestamps."
+  },
+  {
+   "id": "550199f5b36d",
+   "texto": "[Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)] Scene: Dark storyboard layout — 3x3 grid of cinematic frames for a {duration}-second {product_name} commercial. Each cell has a thin dark border. Below each cell: scene number, title, and timestamp in small white sans-serif text on dark background.\n\nSubject: {product_name} commercial storyboard showing the complete narrative arc across 9 panels.\n\nImportant Details:\nPanel 1 (0:00–{t1}): {scene_1_description}\nPanel 2 ({t1}–{t2}): {scene_2_description}\nPanel 3 ({t2}–{t3}): {scene_3_description}\nPanel 4 ({t3}–{t4}): {scene_4_description}\nPanel 5 ({t4}–{t5}): {scene_5_description}\nPanel 6 ({t5}–{t6}): {scene_6_description}\nPanel 7 ({t6}–{t7}): {scene_7_description}\nPanel 8 ({t7}–{t8}): {scene_8_description}\nPanel 9 ({t8}–{duration}): {scene_9_description}\n\nEach panel labeled below: \"Scene {N}: {title}\" and \"{start}–{end}\"\n\nUse Case: Pre-production storyboard for video production team\nConstraints: All 9 panels must be clearly separated, no merged cells, every panel must contain distinct content, timestamps must be legible, {language} titles"
+  },
+  {
+   "id": "f0101a29311f",
+   "texto": "[Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)] **Variables:**\n- `{product_name}` — brand/product\n- `{duration}` — total spot length (e.g., \"30\", \"60\")\n- `{t1}` through `{t8}` — timestamp boundaries\n- `{scene_1_description}` through `{scene_9_description}` — shot description per panel\n- `{language}` — \"Chinese\" / \"English\" / \"bilingual\""
+  },
+  {
+   "id": "46283692fbdd",
+   "texto": "[Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)] **Recommended size:** 1536x1024 (landscape)\n**Model:** GPT Image 2 `quality: high` (text-heavy — timestamps and titles need legibility)\n**Common pitfalls:**\n- Omitting panel numbers causes the model to merge or skip panels\n- Vague scene descriptions produce near-identical panels — each must have a distinct action, angle, or subject\n- Timestamps in very small text need `quality: high` to remain readable"
+  },
+  {
+   "id": "26f3f6282c0e",
+   "texto": "[Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid] **When to use:** Same person shown from 4 angles/crops in one image for an editorial or casting look."
+  },
+  {
+   "id": "c2734c377e5c",
+   "texto": "[Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)] Scene: 2x2 grid of four editorial portraits, minimal gap between panels. {background_description}. {lighting_style}.\n\nSubject: {subject_description} — same person in all four panels, consistent identity and wardrobe.\n\nImportant Details:\nTop-left: front-facing portrait, direct eye contact, shoulders up\nTop-right: extreme macro close-up of face — eyes, skin texture, freckles visible\nBottom-left: lower angle looking up, chin slightly raised, confident expression\nBottom-right: side profile, clean silhouette against background\n\nConsistent lighting across all four panels. Skin texture realistic, no airbrushing.\n\nUse Case: editorial photography, model portfolio, casting composite\nConstraints: same person in every panel, no wardrobe changes between panels, no extra people, no text overlays"
+  },
+  {
+   "id": "dc8f71afb6be",
+   "texto": "[Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)] **Variables:**\n- `{subject_description}` — age, appearance, wardrobe (e.g., \"woman in her 30s, dark curly hair, white linen shirt\")\n- `{background_description}` — (e.g., \"soft gray studio backdrop\")\n- `{lighting_style}` — (e.g., \"single key light from upper left, subtle fill from right\")"
+  },
+  {
+   "id": "60ca89f7ba28",
+   "texto": "[Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)] **Recommended size:** 1024x1024 (square) or 1024x1536 (vertical for portrait emphasis)\n**Model:** GPT Image 2 `quality: medium` or Nano Banana Pro (both handle photorealistic portraits well)\n**Common pitfalls:**\n- Not specifying \"same person\" in every panel — model may generate four different people\n- Omitting which quadrant gets which angle — model arranges arbitrarily\n- Requesting too-different crops (full body + extreme close-up) creates scale inconsistency within the grid"
+  },
+  {
+   "id": "0673f2ed89fc",
+   "texto": "[Multi-Panel Compositions › 3. 3-Panel Campaign Collage] **When to use:** Hero shot + close-up + action for a campaign visual — horizontal or vertical triptych."
+  },
+  {
+   "id": "db539042f137",
+   "texto": "[Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)] Scene: Three-panel {orientation} collage for {brand_name} campaign. Panels separated by thin white lines.\n\nSubject: {model_description} showcasing {product_description}.\n\nImportant Details:\nPanel 1 (left/top): Hero wide shot — full figure of model with product, environmental context, lifestyle setting\nPanel 2 (center/middle): Close-up product detail — {product_detail_description}, tactile textures, sharp focus\nPanel 3 (right/bottom): Action shot — model using/wearing/interacting with product, candid energy, slight motion blur on extremities\n\nConsistent warm golden-hour lighting across all panels. Same model identity throughout.\n{typography_instruction}\n\nUse Case: social media campaign visual, brand lookbook\nConstraints: same person across all panels, consistent color grading, no stock-photo stiffness, {product_name} must be visible in every panel"
+  },
+  {
+   "id": "26896c95b33d",
+   "texto": "[Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)] **Variables:**\n- `{orientation}` — \"horizontal\" (side by side) or \"vertical\" (stacked)\n- `{brand_name}`, `{product_name}`, `{product_description}` — brand context\n- `{model_description}` — who appears\n- `{product_detail_description}` — what the close-up shows\n- `{typography_instruction}` — e.g., `Text: \"{HEADLINE}\" in bold condensed white, overlaid on Panel 1 lower third` or omit for no text"
+  },
+  {
+   "id": "13ae4a595622",
+   "texto": "[Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)] **Recommended size:** 1536x1024 (horizontal triptych) or 1024x1536 (vertical triptych)\n**Model:** GPT Image 2 `quality: medium` — if text overlay needed, use `quality: high`\n**Common pitfalls:**\n- Not specifying panel order — \"hero, close-up, action\" without left/center/right assignment\n- Lighting inconsistency when mixing indoor close-up with outdoor hero shot — specify unified lighting\n- Forgetting to mention subject consistency causes three different models"
+  },
+  {
+   "id": "9f7e392a2c5e",
+   "texto": "[Multi-Panel Compositions › 4. 4x3 Borderless Grid] **When to use:** 12 panels telling a story or showing moods — no gaps between panels, seamless mosaic feel."
+  },
+  {
+   "id": "3c6eef295173",
+   "texto": "[Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)] Scene: 4x3 borderless grid (4 columns, 3 rows) where each of the 12 panels is an independent image but panels share no borders, gaps, or dividers — edges touch seamlessly. Overall theme: {theme}.\n\nSubject: {subject_description} — maintain strong subject consistency across all 12 panels.\n\nImportant Details:\nRow 1: {panel_1}, {panel_2}, {panel_3}, {panel_4}\nRow 2: {panel_5}, {panel_6}, {panel_7}, {panel_8}\nRow 3: {panel_9}, {panel_10}, {panel_11}, {panel_12}\n\nStyle: {style_description}\nMood progression: {mood_arc}\nEach panel is an independent composition but the overall grid reads as a unified artwork.\n\nUse Case: mood board, editorial spread, social media carousel preview, album artwork\nConstraints: borderless — no white lines, no black borders, no gaps between panels. Same subject identity across all panels. No text in panels."
+  },
+  {
+   "id": "15971cae21bf",
+   "texto": "[Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)] **Variables:**\n- `{subject_description}` — who/what appears across panels\n- `{theme}` — overarching concept (e.g., \"solitude in a city\", \"four seasons of a garden\")\n- `{panel_1}` through `{panel_12}` — brief shot description per cell\n- `{style_description}` — visual style (e.g., \"35mm film grain, desaturated palette\")\n- `{mood_arc}` — how energy changes across the grid (e.g., \"calm morning to chaotic night\")"
+  },
+  {
+   "id": "10f3527340f7",
+   "texto": "[Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)] **Recommended size:** 1536x1024 (landscape) — gives each cell enough resolution\n**Model:** Nano Banana Pro (handles complex multi-element compositions with thinking mode; no text needed)\n**Common pitfalls:**\n- Saying \"borderless\" is not enough — explicitly state \"no white lines, no black borders, no gaps\"\n- 12 panels in one image pushes detail limits — keep per-panel descriptions short and visually distinct\n- Without explicit subject consistency instructions, each panel may feature a different person/object"
+  },
+  {
+   "id": "b13dd87a46e2",
+   "texto": "[Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence] **When to use:** Fashion editorial or film-style sequence — multiple camera angles of the same scene in one image."
+  },
+  {
+   "id": "ffc383a04f6d",
+   "texto": "[Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)] Scene: 6-frame cinematic sequence arranged in a 3x2 grid. Dark film-strip aesthetic with thin black borders. {location_description}.\n\nSubject: {subject_description}, wearing {wardrobe_description}. Same person, same outfit, same location across all 6 frames.\n\nImportant Details:\nFrame 1 (top-left): Top-down bird's eye view — subject seen from directly above, full body visible against ground/floor\nFrame 2 (top-center): Low angle looking up — subject towering over camera, dramatic perspective, sky/ceiling visible\nFrame 3 (top-right): Wide isolation shot — subject small in frame, vast environment dominates, sense of scale\nFrame 4 (bottom-left): Close-up with slight tilt — face and upper body, Dutch angle, intimate intensity\nFrame 5 (bottom-center): Motion frame — subject mid-action ({motion_action}), natural motion blur on limbs\nFrame 6 (bottom-right): Grounded final — medium shot, subject at rest, direct gaze, resolving the sequence\n\nPhotographer reference: {photographer_style}\nLighting: consistent {lighting_description} across all frames\n\nUse Case: fashion editorial, film lookbook, director's shot list visualization\nConstraints: same person and wardrobe in every frame, no costume changes, consistent color grading, no text overlays"
+  },
+  {
+   "id": "062806e6e632",
+   "texto": "[Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)] **Variables:**\n- `{subject_description}` — model details\n- `{wardrobe_description}` — clothing\n- `{location_description}` — setting\n- `{motion_action}` — what the motion frame captures (e.g., \"walking forward\", \"turning sharply\", \"jumping\")\n- `{photographer_style}` — (e.g., \"Peter Lindbergh desaturated realism\", \"Helmut Newton dramatic contrast\")\n- `{lighting_description}` — (e.g., \"overcast natural light, soft shadows\")"
+  },
+  {
+   "id": "76161ee52504",
+   "texto": "[Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)] **Recommended size:** 1536x1024 (landscape, 3x2 grid)\n**Model:** GPT Image 2 `quality: medium` or Nano Banana Pro\n**Common pitfalls:**\n- Not naming each frame explicitly — \"various angles\" is too vague, the model needs per-frame instructions\n- Top-down and low-angle in the same grid confuse the model if you don't anchor each frame to a grid position\n- Motion blur instruction must be specific (\"blur on hands and feet\") or the model applies blur everywhere"
+  },
+  {
+   "id": "d6c4544455b3",
+   "texto": "[Multi-Panel Compositions › 6. Before/After Split] **When to use:** Product transformation, makeover, time comparison, renovation — two states side by side."
+  },
+  {
+   "id": "42de3639bf53",
+   "texto": "[Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)] Scene: Single image split into left and right halves with a {divider_style} dividing line down the center. Before/after comparison.\n\nSubject: {subject_description}\n\nImportant Details:\nLeft half (BEFORE): {before_description} — {before_condition}\nRight half (AFTER): {after_description} — {after_condition}\n\nThe transition at the center line should feel {transition_style}. Same camera angle, same framing, same background perspective in both halves — only the subject's state changes.\n\nUse Case: {use_case}\nConstraints: identical composition and camera angle on both sides, same lighting direction, no text unless specified, the dividing line must be clearly visible"
+  },
+  {
+   "id": "3fd9d58229da",
+   "texto": "[Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)] **Variables:**\n- `{subject_description}` — what is being compared\n- `{before_description}` / `{before_condition}` — left side state (e.g., \"faded, cracked wall with peeling paint\")\n- `{after_description}` / `{after_condition}` — right side state (e.g., \"freshly painted wall, smooth finish, vibrant color\")\n- `{divider_style}` — \"thin white line\" / \"subtle gradient blend\" / \"sharp vertical cut\"\n- `{transition_style}` — \"clean and abrupt\" / \"natural, as if wiping away\"\n- `{use_case}` — \"product marketing\", \"renovation portfolio\", \"skincare results\""
+  },
+  {
+   "id": "c1072203c37a",
+   "texto": "[Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)] **Recommended size:** 1536x1024 (landscape — gives each half a portrait-like proportion)\n**Model:** GPT Image 2 `quality: medium` — for text labels (\"BEFORE\" / \"AFTER\"), use `quality: high`\n**Common pitfalls:**\n- Not specifying \"same camera angle both sides\" — model may show two completely different viewpoints\n- Without a visible divider, the two halves can merge into one ambiguous scene\n- Left/right assignment matters — always state which side is before and which is after"
+  },
+  {
+   "id": "96aeae749ddb",
+   "texto": "[Multi-Panel Compositions › 7. 12-Panel Storyboard Poster] **When to use:** Full narrative in one image — 3x4 grid (3 columns, 4 rows) for animation or video pre-production."
+  },
+  {
+   "id": "4d2f20f0b393",
+   "texto": "[Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)] Scene: 12-panel storyboard poster, 3 columns x 4 rows. Dark background with each panel in a clean rectangular frame. \"{title}\" in bold white text at the top of the image. Below each panel: scene number and one-line description in small white text.\n\nSubject: {character_description} — maintain consistent character design, proportions, and colors across all 12 panels.\n\nImportant Details:\nPanel 1: {scene_1} — \"{caption_1}\"\nPanel 2: {scene_2} — \"{caption_2}\"\nPanel 3: {scene_3} — \"{caption_3}\"\nPanel 4: {scene_4} — \"{caption_4}\"\nPanel 5: {scene_5} — \"{caption_5}\"\nPanel 6: {scene_6} — \"{caption_6}\"\nPanel 7: {scene_7} — \"{caption_7}\"\nPanel 8: {scene_8} — \"{caption_8}\"\nPanel 9: {scene_9} — \"{caption_9}\"\nPanel 10: {scene_10} — \"{caption_10}\"\nPanel 11: {scene_11} — \"{caption_11}\"\nPanel 12: {scene_12} — \"{caption_12}\"\n\nPanels read left-to-right, top-to-bottom (like a comic page). Character appearance, clothing, and color palette must stay identical across all 12 panels — only pose, expression, angle, and environment change.\n\nStyle: {art_style}\n\nUse Case: animation pre-production, pitch deck visualization, narrative overview poster\nConstraints: all 12 panels must be distinct scenes (no duplicates), character consistency is critical, scene numbers must be legible, {language} captions\nQuality: high"
+  },
+  {
+   "id": "ebd81a3e2c44",
+   "texto": "[Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)] **Variables:**\n- `{title}` — project/episode title displayed at top\n- `{character_description}` — detailed character design (colors, outfit, distinguishing features)\n- `{scene_1}` through `{scene_12}` — visual description of each panel\n- `{caption_1}` through `{caption_12}` — text label under each panel\n- `{art_style}` — (e.g., \"Pixar-style 3D\", \"anime cel shading\", \"watercolor illustration\", \"graphic novel ink\")\n- `{language}` — caption language"
+  },
+  {
+   "id": "b30d70cfd602",
+   "texto": "[Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)] **Recommended size:** 1024x1536 (portrait — 3 columns x 4 rows needs vertical space)\n**Model:** GPT Image 2 `quality: high` (text-heavy — scene numbers and captions must be readable)\n**Common pitfalls:**\n- Character drift is the biggest risk at 12 panels — repeat character design details in the prompt, not just \"same character\"\n- Without explicit scene numbering in the prompt, panels may appear in random order\n- 12 panels with captions is extremely text-dense — keep captions under 5 words each for legibility\n- Art style must be stated once and applied uniformly; mixing styles across panels produces visual chaos"
+  },
+  {
+   "id": "26b0e714d502",
+   "texto": "[Multi-Panel Compositions › General Multi-Panel Tips] **Panel count vs. detail trade-off:** More panels = less detail per panel. 4 panels allow rich per-panel descriptions; 12 panels need brief, visually distinct descriptions (3-8 words each).\n**Subject consistency:** Always include an explicit instruction: \"same person / same character / same product across all panels.\" Repeat key identity markers (hair color, clothing, distinguishing features) rather than saying \"same as before.\"\n**Grid specification:** Always state the grid dimensions (e.g., \"3x2 grid, 3 columns 2 rows\"). Saying \"6 panels\" without layout instruction lets the model choose an unpredictable arrangement.\n**Borders and gaps:** Be explicit — \"thin white border between panels\" or \"borderless, no gaps.\" Default behavior varies by model and is unreliable.\n**Reading order:** State it: \"left-to-right, top-to-bottom\" or \"numbered 1-9 starting top-left.\" Without this, narrative flow may be jumbled.\n**Model selection summary:**\n- Text/labels in panels --> GPT Image 2 `quality: high`\n- No text, complex composition --> Nano Banana Pro\n- Budget/exploration --> Nano Banana 2 or GPT Image 2 `quality: low`"
+  },
+  {
+   "id": "f16b4babe723",
+   "texto": "[Nano Banana — Specific Rules] Три тира. «Thinking» модели — понимают намерение, физику, композицию."
+  },
+  {
+   "id": "e890a2ef7bcb",
+   "texto": "[Nano Banana — Specific Rules] Тир: **NB2 Lite** · Model ID: `gemini-3.1-flash-lite-image` · Роль: Самая быстрая и дешёвая ($0.034, ~4 сек), только 1K. Черновики, массовые батчи"
+  },
+  {
+   "id": "bfa0c0c280c6",
+   "texto": "[Nano Banana — Specific Rules] Тир: **NB2** (Flash) · Model ID: `gemini-3.1-flash-image` · Роль: Дефолтный workhorse: Pro-фичи (текст, 4K, grounding, консистентность) на скорости Flash"
+  },
+  {
+   "id": "0df3e2055ab6",
+   "texto": "[Nano Banana — Specific Rules] Тир: **NBP** (Pro) · Model ID: `gemini-3-pro-image` · Роль: Топ-тир: сложные многослойные сцены, максимум reasoning и контроля"
+  },
+  {
+   "id": "d91d6979de61",
+   "texto": "[Nano Banana — Specific Rules › Стиль промпта] Натуральный язык, 1-2 параграфа. Структура свободная, но порядок помогает:\n**Subject + Action + Location/context + Composition + Style**"
+  },
+  {
+   "id": "77878d053a64",
+   "texto": "[Nano Banana — Specific Rules › Стиль промпта] A cinematic wide shot of a futuristic sports car speeding through a rainy\nTokyo street at night. Neon signs reflect off wet pavement and metallic\nchassis. Format: 16:9."
+  },
+  {
+   "id": "cee1aa9a093f",
+   "texto": "[Nano Banana — Specific Rules › Что НЕ указывать] - Числовые параметры объектива: **50mm, 85mm, f/2.8, ISO 400** — NB игнорит. Используй описание: «shallow depth of field», «wide-angle distortion»."
+  },
+  {
+   "id": "26d738c30fec",
+   "texto": "[Nano Banana — Specific Rules › Что НЕ указывать] - Tag-soup: «cool, modern, 4k, cinematic» — пишет связным предложением."
+  },
+  {
+   "id": "fb73d7faf6a7",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)] NB2 ищет реальные изображения в интернете до генерации. Архитектурно точные конкретные локации, корректные виды животных/растений."
+  },
+  {
+   "id": "95e220635e37",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)] Generate a cinematic, golden-hour photograph of [SPECIFIC REAL PLACE].\nEnsure the architectural details, the spire, the surrounding square, and\nthe landscape are accurate to reality."
+  },
+  {
+   "id": "676de01edc87",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)] **Работает:** здания, мосты, площади, виды животных, виды растений, насекомые.\n**Не работает:** конкретные люди."
+  },
+  {
+   "id": "234ee992c854",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)] 1:8, 8:1, 1:4, 4:1 — для баннеров, скроллов, комикс-стрипов."
+  },
+  {
+   "id": "b35e0fe4b099",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)] Create a 4-panel horizontal comic strip (aspect ratio 4:1).\nThe story follows [CHARACTER] doing [ACTION] that ends with a twist.\nUse a vibrant comic book style. Keep character design consistent."
+  },
+  {
+   "id": "d6a933a08dd5",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)] Стандартные: 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9."
+  },
+  {
+   "id": "84d2878f62ab",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Thinking Mode] Включён по умолчанию; у NBP отключить нельзя (модель рисует до 2 «thought images» в бэкенде, они не тарифицируются как картинки, но thinking-токены платные). У NB2 есть рычаг `thinking_level: minimal | high` (default `minimal`) — поднимай до `high` для:\nНевнятных результатов, требующих reasoning; Сложных инфографик со spatial logic; Grounding + spatial reasoning одновременно"
+  },
+  {
+   "id": "2c6819aa5f37",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)] col1: High-fidelity объекты · NB2 Lite: до 14 · NB2: до 10 · NBP: до 6"
+  },
+  {
+   "id": "db88861eabed",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)] col1: Character-consistency рефы · NB2 Lite: нет · NB2: до 4 · NBP: до 5"
+  },
+  {
+   "id": "1095d57c3bc9",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)] col1: Style рефы · NB2 Lite: нет · NB2: нет · NBP: до 3"
+  },
+  {
+   "id": "decaf2656e0c",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)] [Image 1: face]\n[Image 2: outfit]\n[Image 3: background]\nCombine: face from Image 1, outfit style from Image 2, setting from Image 3.\nMatch lighting and perspective."
+  },
+  {
+   "id": "08ce20018858",
+   "texto": "[Nano Banana — Specific Rules › Уникальные возможности › JSON для сложных сцен (5+ элементов)] {\n  \"subject\": {\"description\": \"main subject\", \"expression\": \"emotion/pose\"},\n  \"photography\": {\"angle\": \"eye-level\", \"shot_type\": \"waist-up\", \"aspect_ratio\": \"16:9\"},\n  \"background\": {\"setting\": \"location\", \"lighting\": \"soft natural\"}\n}"
+  },
+  {
+   "id": "5a6a98513fb3",
+   "texto": "[Nano Banana — Specific Rules › Editing у Nano Banana] Conversational, без масок:\nRemove [OBJECT] from this image.\nFill with [LOGICAL REPLACEMENT] matching surroundings.\nKeep [PRESERVED ELEMENTS] exactly the same."
+  },
+  {
+   "id": "a865df585175",
+   "texto": "[Nano Banana — Specific Rules › Editing у Nano Banana] После генерации добавляй итеративно:\n«Make it warmer»; «Increase contrast»; «Soften background, add blur»; «Change headline color to #3b82f6»"
+  },
+  {
+   "id": "4e86d2fd321a",
+   "texto": "[Nano Banana — Specific Rules › Editing у Nano Banana] Interactions API держит контекст сессии — до 3 последовательных правок стэкаются без потери исходника. Правило «Edit, don't re-roll»: картинка верна на 80% — проси точечное изменение, а не новую генерацию."
+  },
+  {
+   "id": "2c412832d9cc",
+   "texto": "[Nano Banana — Specific Rules › Text Rendering] - SOTA по 100+ языкам."
+  },
+  {
+   "id": "53db7b583d97",
+   "texto": "[Nano Banana — Specific Rules › Text Rendering] - Font можно называть: «Century Gothic 12px», «Brush Script», «Impact», «Heavy blocky sans-serif»."
+  },
+  {
+   "id": "f0cb486767ac",
+   "texto": "[Nano Banana — Specific Rules › Text Rendering] - Multi-language в одном кадре работает."
+  },
+  {
+   "id": "875a75cec0bb",
+   "texto": "[Nano Banana — Specific Rules › Text Rendering] - Hack: для сложного текста — сначала попроси модель **написать текст**, потом отдельным промптом «вставь этот текст в картинку»."
+  },
+  {
+   "id": "af5b2b7f39a9",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] Resolution: 0.5K · Использование: Самая дешёвая, batch и А/B варианты"
+  },
+  {
+   "id": "fec64e550b97",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] Resolution: 1K · Использование: Default"
+  },
+  {
+   "id": "21aaf491e400",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] Resolution: 2K · Использование: Финальный отбор"
+  },
+  {
+   "id": "3f8040c3d5f6",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] Resolution: 4K · Использование: Печать, hero-ассеты"
+  },
+  {
+   "id": "c522963bcfb4",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] **Workflow:** прогон вариантов на `0.5K` flash (или NB2 Lite на 1K) → отбор → переген победителя на `2K`/`4K`."
+  },
+  {
+   "id": "19ea0507c62c",
+   "texto": "[Nano Banana — Specific Rules › Resolution / Cost] В API `image_size` пишется строго с заглавной K (`1K`, `2K`, `4K`) — `1k` отклоняется. `512px` есть только у NB2; Lite — только 1K. Без указания размера модель матчит вход, иначе 1:1."
+  },
+  {
+   "id": "c32ab5819873",
+   "texto": "[Nano Banana — Specific Rules › Кейфреймы для видео] Nano Banana — image-слой перед motion-слоем. Всё критичное фиксируется на картинке ДО анимации: identity, композиция, aspect ratio, видимый текст, состояние продукта. Видеомодель усиливает любую неоднозначность стилла."
+  },
+  {
+   "id": "4a2eb9b21114",
+   "texto": "[Nano Banana — Specific Rules › Кейфреймы для видео] - **Character sheet / hero frame.** Утверди один кадр-эталон персонажа, на него ссылаются все последующие video-промпты."
+  },
+  {
+   "id": "05945a26b60d",
+   "texto": "[Nano Banana — Specific Rules › Кейфреймы для видео] - **Aspect ratio сразу целевой.** Кампании нужен вертикальный ролик — генери 9:16, а не кропай после анимации (тихая точка отказа)."
+  }
+ ]
+}

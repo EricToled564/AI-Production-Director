@@ -8,6 +8,7 @@ Uso: python3 tools/exportar_catalogo.py --xlsx salida.xlsx [--db data/rules.sqli
 from __future__ import annotations
 
 import argparse
+import json
 import sqlite3
 from pathlib import Path
 
@@ -17,60 +18,34 @@ from openpyxl.utils import get_column_letter
 
 APD = Path(__file__).resolve().parents[1]
 
-# Columnas de catálogo, en el orden de decisión dictado por el usuario; valores posibles = propuesta a aprobar.
-CATALOGO = [
-    # --- 1ª capa: el sistema de clasificación que ya define ai-production-director/SKILL.md ---
-    ("Etapa (director §3)", "0 Brand Lock · 1 Creative Strategy · 2 Screenwriting · 3 Cinematic Direction · 4 Shot Planning · "
-                            "5 Anchor Images · 6 Video Prompts · 7 Package & Delivery · Post-producción (production-package §3) · "
-                            "Gate final (aurora-prompt-linter) · Director (orquestación, todas las etapas)"),
-    ("Sub-skill con autoridad (director §1)", "brand-lock-extractor · creative-strategy.md · screenwriter · video/dramaturgia · "
-                            "storyboard-architect · ai-video-storyboard · image · visual-prompt-forge · visual-asset-critic · "
-                            "video/archivos de modelo · storyboard-html-preview · visual-media (solo §7) · aurora-prompt-linter · "
-                            "produccion-visual-sw30 · regímenes del repo · decisiones del usuario"),
-    ("Autoridad sobre (director §1)", "Parámetros de marca · Estrategia creativa · Estructura narrativa y diálogo · Dramaturgia y "
-                            "lenguaje de cámara · Fuente de verdad estructural · Shot list EXPRESS · Sintaxis final de prompts de imagen · "
-                            "Estructura shots→prompt y loop de revisión · Aceptar/rechazar renders · Sintaxis final de prompts de video · "
-                            "Formato de entrega visual · Proyectos de animación / material didáctico ES · Veto final sobre prompts"),
-    ("Track (director §2)", "EXPRESS · STANDARD · FILM · todos"),
-    ("Gate de la etapa (director §3)", "define o verifica el gate de su etapa · no"),
-    ("Precedencia en conflicto (director §6)", "6.1 vocabulario prohibido gana · 6.2 sintaxis final del modelo destino · "
-                            "6.3 shots.json fuente de verdad · 6.4 forge = flujo de datos, smixs = texto final · 6.5 atribución · no aplica"),
-    # --- 2ª capa: subprocesos (Mapa del Spot) y dimensiones dictadas por el usuario ---
-    ("Subproceso", "E0.1–E0.4 · E1.1–E1.5 · E2.1–E2.4 · E3.1–E3.5 · E4.1–E4.6 · E5.1–E5.9 · E6.1–E6.6 · E7.1–E7.4 · POST.1–POST.2"),
-    ("Medio", "imagen · video · ambos · documento de preproducción (texto) · proceso"),
-    ("Tipo de creación (imagen)", "génesis sin referencias · maestro derivado con referencia (T2, variantes) · cuadro compuesto con "
-                                  "referencias (T3/T4, producto en escena) · edición quirúrgica (T5) · keyframe FF/LF · no aplica"),
-    ("Modo del clip (video)", "texto a video · imagen a video FF · FF+LF · referencias/elements/ingredients · motion control / video de "
-                              "movimiento · multi-shot · diálogo y lip-sync · edición de video · extensión · ultra long / blockout · no aplica"),
-    ("Tipo de acción (D2)", "A pose sostenida · B instante pico · C movimiento continuo · D fenómeno de luz o clima · "
-                            "E interacción o diálogo · F multitud · ensamble · sin acción (gráfico/UI/slide) · no aplica"),
-    ("Régimen físico", "01 agua superficie · 02 ruptura de superficie · 03 subacuático · 04 objeto balístico · 05 vehículo · "
-                       "06 cuerpo en esfuerzo · 07 luz y clima · 08 multitud anónima · 09 grupo ensamble · no aplica"),
-    ("Clase de sujeto", "persona · lugar genérico · edificación/landmark · animal · producto · objeto/prop · gráfico/tipografía/UI · no aplica"),
-    ("Espacio", "interior · exterior · estudio o fondo vacío · no aplica"),
-    ("Tratamiento (D4)", "documental · narrativo cinematográfico · comercial pulido · race/kinetic · UGC/social · editorial/moda · "
-                         "animación/ilustración · gráfico/diseño · no aplica"),
-    ("Número de sujetos (D3)", "0 placa · 1 · 2 sin contacto · 2 con contacto · ensamble 3–8 con identidad · multitud anónima · no aplica"),
-    ("Rostro en cuadro", "rostro ≥20% del cuadro · rostro <20% · fragmentado/silueta/casco · sin rostro · no aplica"),
-    ("Referencias", "sí · no · no aplica"),
-    ("Tipo de referencia", "persona (P) · vestuario (O) · lugar (L) · producto/prop (PR) · estilo (S) · frame FF/LF · video de movimiento · "
-                           "audio/voz · layout/boceto/grid · no aplica"),
-    ("Rol del ancla (D1)", "character ref · environment ref · keyframe FF · keyframe LF · hero/macro · motif insert · no aplica"),
-    ("Modelo (D8)", "Nano Banana 2 · Nano Banana Pro · GPT Image 2 · Flux · Midjourney · Ideogram · Seedream · Kling · Veo · "
-                    "Seedance 2.0 · Seedance 2.5 · Hailuo · agnóstico"),
-    ("Ángulo y altura (D9)", "eye-level · high · low · overhead · dutch · worm's eye · POV · no aplica"),
-    ("Cámara y lente (D6)", "encuadre · lente · DOF · movimiento/cámara implícita · rig · no aplica"),
-    ("Luz (D7)", "fuente motivada · dirección · dureza · ratio · specular · atmósfera · no aplica"),
-    ("Paleta y grade (D5)", "brand-lock hex · series_lock grade · paleta nombrada · no aplica"),
-    ("Audio", "diálogo · VO · SFX · música · silencio · no aplica"),
-    ("Texto en pantalla", "overlay compuesto en post · texto dentro de la imagen · sin texto · no aplica"),
-    ("Formato y plataforma", "9:16 social · 16:9 · 1:1 · 4:5 · póster/impreso · slide · UI/app · no aplica"),
-    ("Marca", "con brand-lock · logo o producto real · sin marca · no aplica"),
-    ("Tipo de registro", "prohibición · obligación · recomendación · sintaxis/plantilla · límite o dato de plataforma · gate/verificación · "
-                         "ejemplo · explicación"),
-    ("Ámbito", "pipeline · ejemplo de marca · herramienta/validador · conducta del agente · aprendizaje de producción · "
-               "decisión del usuario · candidata a prueba"),
-]
+TAXONOMIA = APD.parent / ".claude/rules/TAXONOMIA.md"
+
+
+def leer_taxonomia(ruta=TAXONOMIA):
+    """Facetas aprobadas (decisión 10): [("N. Nombre", "valor · valor · ...")], leídas de TAXONOMIA.md."""
+    import re
+    t = ruta.read_text(encoding="utf-8")
+    out = []
+    for b in re.split(r"\n### ", t)[1:]:
+        b = b.split("\n## ")[0]
+        cab = b.split("\n", 1)[0]
+        nombre = cab.split(" — ")[0].split(" (")[0].strip()
+        filas = [l for l in b.split("\n") if l.startswith("|") and not l.startswith("|---")]
+        hdr = [c.strip() for c in filas[0].strip("|").split("|")] if filas else []
+        vals = []
+        for f in filas[1:]:
+            cel = [c.strip() for c in f.strip("|").split("|")]
+            if hdr[:2] == ["Rama", "Valores"] or hdr[0] == "Etapa":
+                vals += [x.strip() for x in cel[1].split("·")]
+            elif hdr[0] == "Rama":
+                vals.append(cel[1])
+            else:
+                vals.append(cel[0])
+        out.append((nombre, " · ".join(dict.fromkeys(vals))))
+    return out
+
+
+CATALOGO = leer_taxonomia()
 
 UBICACION = ["Documento", "Página / sección", "Párrafo nº (de N)", "Líneas", "ID registro"]
 
@@ -79,6 +54,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=str(APD / "data/rules.sqlite"))
     ap.add_argument("--xlsx", required=True)
+    ap.add_argument("--sin-duplicados", action="store_true",
+                    help="una fila por regla: cada grupo de duplicados sale como su registro fusionado y verificado")
     a = ap.parse_args()
     con = sqlite3.connect(a.db)
     regs = con.execute("select id, orden, texto from registros order by orden").fetchall()
@@ -86,6 +63,22 @@ def main():
     for rid, arch, li, lf, sec, par, tot in con.execute(
             "select registro_id, archivo, linea_ini, linea_fin, seccion, parrafo, parrafos_en_documento from registros_fuente"):
         fuentes.setdefault(rid, []).append((arch, li, lf, sec, par, tot))
+    fusiones = []
+    if a.sin_duplicados:
+        fusiones = con.execute("select grupo, texto, miembros, verificado from registros_fusion order by grupo").fetchall()
+        malos = [g for g, _, _, v in fusiones if v != 1]
+        if malos:
+            raise SystemExit(f"{len(malos)} fusiones sin verificar: {malos[:5]}")
+        orden = {rid: o for rid, o, _ in regs}
+        texto_de = {rid: t for rid, _, t in regs}
+        absorbidos = set()
+        nuevas = []
+        for g, t, miembros, _ in fusiones:
+            ids = json.loads(miembros)
+            absorbidos.update(ids)
+            fuentes[g] = [f for i in ids for f in fuentes.get(i, [])]
+            nuevas.append((g, min(orden[i] for i in ids), t))
+        regs = sorted([r for r in regs if r[0] not in absorbidos] + nuevas, key=lambda r: r[1])
 
     wb = Workbook()
     ws = wb.active
@@ -120,8 +113,24 @@ def main():
     ws.freeze_panes = "B2"
     ws.auto_filter.ref = f"A1:{get_column_letter(len(cab))}{ws.max_row}"
 
-    wc = wb.create_sheet("Catálogo propuesto")
-    wc.append(["Columna (etiqueta de catálogo)", "Valores propuestos — pendientes de tu aprobación"])
+    if fusiones:
+        wd = wb.create_sheet("Fusiones")
+        wd.append(["Grupo", "Registro fusionado", "ID original", "Texto original", "Documento", "Página / sección", "Líneas"])
+        for g, t, miembros, _ in fusiones:
+            for i in json.loads(miembros):
+                for f in fuentes.get(i, [])[:1] or [("", "", "", "", "", "")]:
+                    wd.append([g, t, i, texto_de[i], " | ".join(x[0] for x in fuentes.get(i, [])),
+                               " | ".join(x[3] or "" for x in fuentes.get(i, [])), f"{f[1]}–{f[2]}" if f[1] else ""])
+        for col, w in zip("ABCDEFG", (12, 70, 14, 70, 40, 40, 12)):
+            wd.column_dimensions[col].width = w
+        for row in wd.iter_rows(min_row=2):
+            for c in row:
+                c.alignment = Alignment(wrap_text=True, vertical="top")
+        wd.freeze_panes = "A2"
+        wd.auto_filter.ref = f"A1:G{wd.max_row}"
+
+    wc = wb.create_sheet("Taxonomía")
+    wc.append(["Faceta (TAXONOMIA.md, decisión 10)", "Valores aprobados"])
     for c, v in CATALOGO:
         wc.append([c, v])
     wc.column_dimensions["A"].width = 30
@@ -162,7 +171,7 @@ def main():
     wf.column_dimensions["A"].width = 80
     wf.column_dimensions["B"].width = 90
     wb.save(a.xlsx)
-    print(f"{len(regs)} registros · {len(CATALOGO)} columnas de catálogo · {a.xlsx}")
+    print(f"{len(regs)} registros · {len(fusiones)} fusiones · {len(CATALOGO)} columnas de catálogo · {a.xlsx}")
 
 
 if __name__ == "__main__":

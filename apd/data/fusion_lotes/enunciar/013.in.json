@@ -1,0 +1,710 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "d4856cab577a",
+   "texto": "[Visual Asset Critic › Workflow › Step 1. Establish intent] What was this shot supposed to do? Pull from:\nShot's `rationale` field (if shots.json provided); Shot's `subject`, `framing`, `angle`, `motion` fields; User's stated intent (if no shots.json); The beat this shot serves"
+  },
+  {
+   "id": "df8ee096d06d",
+   "texto": "[Visual Asset Critic › Workflow › Step 1. Establish intent] If you can't establish intent in one sentence, ask. Don't critique blind."
+  },
+  {
+   "id": "4dce21a34e68",
+   "texto": "[Visual Asset Critic › Workflow › Step 2. Critique by layer] Read `references/critique-rubric.md` for the full rubric. Quick version, check the image against:\n1. **Brand Lock**, does it respect palette, mood, \"never\" list?\n2. **Series Lock**, does it match character/environment/lighting anchors?\n3. **Shot Spec**, does framing/angle/composition match the spec?\n4. **Composition**, does it reserve space for on-screen text if applicable?\n5. **Technical**, skin texture, hands, eyes, anatomy, AI artifacts?\n6. **Continuity**, if previous shots in the series are available, does it match?"
+  },
+  {
+   "id": "5aaf13ce00b1",
+   "texto": "[Visual Asset Critic › Workflow › Step 2. Critique by layer] For each layer, note: pass / soft fail / hard fail. The verdict aggregates these."
+  },
+  {
+   "id": "489c34d8feda",
+   "texto": "[Visual Asset Critic › Workflow › Step 3. Map issues to fixes] For every \"not working\" point, the critique must say what to do about it. Three buckets:\n**Prompt-level fix**, change the prompt and re-roll. Specify the exact change:\n> \"The character has brown hair instead of salt-and-pepper. Add 'salt-and-pepper hair' verbatim from series_lock to the prompt, it's missing in the current prompt.\""
+  },
+  {
+   "id": "cd8b7f653c91",
+   "texto": "[Visual Asset Critic › Workflow › Step 3. Map issues to fixes] **Post-level fix**, acceptable to address in compositing. Specify what:\n> \"Color grade is slightly cool, push warmth +5 in post, no need to re-generate.\""
+  },
+  {
+   "id": "144b6068ee89",
+   "texto": "[Visual Asset Critic › Workflow › Step 3. Map issues to fixes] **Re-roll required**, no prompt fix will help; the generator just produced a bad sample. Budget 2–3 attempts:\n> \"Hands are mangled. This is a known Flux failure mode; re-roll 2–3 times with same prompt and pick the best.\""
+  },
+  {
+   "id": "6ee3ddc7f531",
+   "texto": "[Visual Asset Critic › Workflow › Step 4. Verdict] Verdict: ACCEPT · When: All layers pass or soft-fail in ways post can fix"
+  },
+  {
+   "id": "569bdaa255d4",
+   "texto": "[Visual Asset Critic › Workflow › Step 4. Verdict] Verdict: REVISE · When: One or two layers hard-fail; clear fix path"
+  },
+  {
+   "id": "24a5d0557ecf",
+   "texto": "[Visual Asset Critic › Workflow › Step 4. Verdict] Verdict: REJECT · When: Three+ layers fail or one critical layer (Brand Lock, Series Lock) hard-fails with no clear fix"
+  },
+  {
+   "id": "e8ef7322320c",
+   "texto": "[Visual Asset Critic › Workflow › Step 5. Confidence] Be honest about uncertainty:"
+  },
+  {
+   "id": "522b2f2c5bfd",
+   "texto": "[Visual Asset Critic › Workflow › Step 5. Confidence] Confidence: HIGH · When: Storyboard reference + brand-lock + prompt all available, clear assessment"
+  },
+  {
+   "id": "78cbf39d8deb",
+   "texto": "[Visual Asset Critic › Workflow › Step 5. Confidence] Confidence: MEDIUM · When: Some references missing but core intent is clear"
+  },
+  {
+   "id": "7ed756cc62df",
+   "texto": "[Visual Asset Critic › Workflow › Step 5. Confidence] Confidence: LOW · When: Only the image, intent is inferred; verdict is your best guess"
+  },
+  {
+   "id": "77b0fe63522d",
+   "texto": "[Visual Asset Critic › Workflow › Step 5. Confidence] HIGH is a factual claim about what you had, not a mood. `tools/validate_critique.py`\nrejects a `1.1` critique that claims HIGH while `shot_id`, `brand_lock_ref`, or\n`prompt_ref` is null, because that combination says the three inputs HIGH depends on were\nnot there."
+  },
+  {
+   "id": "b2f1aa5e3ece",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] After writing the markdown critique, **also** write\n`output/critiques/round-{N}/{shot_id}.critique.json` conforming to\n`templates/critique.schema.json` at version `1.1`. Same review, two surfaces. The markdown\nis for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision\nmode) can act on the verdict without parsing prose."
+  },
+  {
+   "id": "ab2cd1848462",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] **Map the markdown to the schema, section for section:**"
+  },
+  {
+   "id": "083f7f3cd91c",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Markdown: `## Verdict` · JSON field: `verdict` (`ACCEPT` / `REVISE` / `REJECT`)"
+  },
+  {
+   "id": "d58f8299ff74",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Markdown: `## What's working` bullets · JSON field: `working[]` (one string each)"
+  },
+  {
+   "id": "e613acf67714",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Markdown: `## What's not working` + `## Revision plan` · JSON field: `issues[]`, merge them: each issue carries its layer/note from \"what's not working\" and its `fix_type`/`fix` from the matching revision-plan line"
+  },
+  {
+   "id": "992c42b92193",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Markdown: `## Confidence` · JSON field: `confidence` (`HIGH` / `MEDIUM` / `LOW`)"
+  },
+  {
+   "id": "90d7e8c2f612",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] **Provenance, all of it required at 1.1.** A verdict is a claim about specific bytes. Name\nthem, and hash them:"
+  },
+  {
+   "id": "c27a5fbed98b",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `run_id`, `round` · Value: from `run.json` and the round directory you are writing into"
+  },
+  {
+   "id": "7b694259d49f",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `created_at` · Value: UTC instant, `YYYY-MM-DDThh:mm:ssZ`"
+  },
+  {
+   "id": "eb49581a8a70",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `shot_id` · Value: the shot, or `null` for a standalone image with no storyboard"
+  },
+  {
+   "id": "ab061f026cb9",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `image_ref`, `image_sha256` · Value: the frame you reviewed, and its SHA-256"
+  },
+  {
+   "id": "8772e614fcb2",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `prompt_ref`, `prompt_sha256` · Value: the prompt file it came from, and its SHA-256"
+  },
+  {
+   "id": "d7864655091f",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `brand_lock_ref`, `brand_lock_sha256` · Value: the snapshot you judged against, and its SHA-256"
+  },
+  {
+   "id": "e3878e887b41",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `generator`, `model_version` · Value: the generator id from `_capabilities.json`, and its model version"
+  },
+  {
+   "id": "7998b2c405d7",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `seed` · Value: if the generator exposes one, else `null`"
+  },
+  {
+   "id": "0894093e180a",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] shasum -a 256 output/frames/round-1/shot_03.png \\\n              output/prompts/round-1/flux.txt \\\n              output/brand-lock.snapshot.md"
+  },
+  {
+   "id": "2cf79bbda78a",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Every one of those fields is required, and every one is nullable. That combination is\ndeliberate: `null` records that an input genuinely was not available, while a missing field\nrecords nothing at all. If you did not have the prompt, write `prompt_ref: null` and drop\nyour confidence to MEDIUM. Do not omit the key."
+  },
+  {
+   "id": "317914d3ac3d",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] The hashes are the point. Without `image_sha256`, a frame regenerated after this review\nstill satisfies `image_ref`, and a stale ACCEPT sails through the gate attached to a file\nnobody looked at."
+  },
+  {
+   "id": "54238b85a6c8",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] **Severity, assign one per issue.** This is the field the gate runs on, so map it from the layer rubric deterministically:"
+  },
+  {
+   "id": "d81c3fe48049",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Severity: `minor` · Means: soft-fail, fixable in post · Maps from: a soft-fail on any layer; `fix_type: post-level`"
+  },
+  {
+   "id": "7f56df9a6712",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Severity: `major` · Means: hard-fail **with** a clear fix path · Maps from: a hard-fail that a prompt change or re-roll fixes"
+  },
+  {
+   "id": "1282cd0e42c6",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Severity: `blocking` · Means: hard-fail on a critical layer (Brand Lock / Series Lock) with **no** clear fix, or a defect that makes the asset unusable · Maps from: an unrecoverable hard-fail"
+  },
+  {
+   "id": "9236230a4f73",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] **Gating rule, the verdict is derived from severities, not chosen freely.** This guarantees the markdown verdict and the JSON verdict always agree:\n- Any `blocking` issue ⇒ verdict is `REJECT`.\n- Three or more `major` issues ⇒ verdict is `REJECT`.\n- One or two `major` issues (and no blocking) ⇒ verdict is `REVISE`.\n- Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes)."
+  },
+  {
+   "id": "90971e84803b",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] The three-major rule used to read \"escalate to REJECT at your discretion.\" Discretion in a\ngate is not a gate, and it disagreed with `references/critique-rubric.md`, which called\nthree hard fails a REJECT outright. It is now a threshold, and the validator enforces it."
+  },
+  {
+   "id": "57e1db91c372",
+   "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Pick the markdown `## Verdict` by this same rule."
+  },
+  {
+   "id": "867323c3c0a9",
+   "texto": "[Visual Asset Critic › Workflow › Step 7. Run the gate] Writing a schema-valid critique is not the same as passing the gate. Run it:\npython tools/validate_critique.py output/critiques/round-1/shot_03.critique.json"
+  },
+  {
+   "id": "fba76141b6ed",
+   "texto": "[Visual Asset Critic › Workflow › Step 7. Run the gate] Or check the whole tree at once, which also recomputes every hash against the files on\ndisk:\npython tools/validate_provenance.py output/"
+  },
+  {
+   "id": "6a9143ec9c3c",
+   "texto": "[Visual Asset Critic › Workflow › Step 7. Run the gate] This step is not optional and it is not someone else's job. A critique that says `ACCEPT`\nwhile carrying a `major` issue is a bug, and the only reason to write a validator for that\nbug is to actually run it. Before this step existed, the gate ran in CI against two\nfixtures that ship in the repo and never once against a real client's critique."
+  },
+  {
+   "id": "b26078bec3bf",
+   "texto": "[Visual Asset Critic › Workflow › Step 7. Run the gate] Worked examples: `examples/critique.accept.json` and `examples/critique.revise.json` show\nthe shape at version `1.0`, which is still valid and carries no provenance.\n`examples/worked-run/critiques/` shows version `1.1` with real hashes, two shots across two\nrounds."
+  },
+  {
+   "id": "7a77afdb0142",
+   "texto": "[Visual Asset Critic › Hard rules › Rule 1. No vibes-based critique] \"Looks great\" / \"feels off\" without specifics is not a critique. Every observation must reference something in the image (composition, color, anatomy, lighting direction, etc.)."
+  },
+  {
+   "id": "198d4dc00d9f",
+   "texto": "[Visual Asset Critic › Hard rules › Rule 2. Prompt-level fixes must be specific] \"Change the prompt\" is not a fix. \"Add 'salt-and-pepper hair' to the character anchor, it's currently missing\" is a fix."
+  },
+  {
+   "id": "2f5b911b5291",
+   "texto": "[Visual Asset Critic › Hard rules › Rule 3. Don't critique what wasn't asked] If the brief was \"founder at laptop, calm mood\" and the generation delivered exactly that, don't note that \"the room could be more visually interesting.\" That's scope creep, not critique."
+  },
+  {
+   "id": "1f747dd0ff92",
+   "texto": "[Visual Asset Critic › Hard rules › Rule 4. Be honest about generator limits] Some failures (mangled hands, weird eye reflections, jewelry shimmer) are known generator weaknesses. Surface them as such, don't pretend a different prompt will fix them. Recommend re-roll or post."
+  },
+  {
+   "id": "b0f70ec11e49",
+   "texto": "[Visual Asset Critic › Hard rules › Rule 5. When in doubt, ACCEPT and recommend post] Generation is one stage in a pipeline. If the image is 80% right and the gap is fixable in post, that's an ACCEPT with post notes. Don't send the user back to re-generate when an editor would handle it in 90 seconds."
+  },
+  {
+   "id": "de90057166cd",
+   "texto": "[Visual Asset Critic › Reference] - `references/critique-rubric.md`, the full layer-by-layer rubric"
+  },
+  {
+   "id": "e8fad963c886",
+   "texto": "[Visual Asset Critic › Example output] ## Verdict\nREVISE\n\n## What's working\n- Composition correctly reserves the right two-thirds for text overlay (matches shot_03 rationale)\n- Lighting direction matches series_lock (window-left, warm afternoon)\n- Mood reads as calm/considered, on-brand\n\n## What's not working\n- **Series Lock, character mismatch.** The character has brown hair, but series_lock specifies \"salt-and-pepper.\" This is a verbatim-anchor failure.\n- **Technical, left hand.** Hand on the laptop has six fingers (Flux known failure mode).\n- **Shot Spec, framing.** Generated as MS but spec called for MCU. Subject is too small in frame.\n\n## Revision plan\n- **Hair:** Prompt-level. Add \"salt-and-pepper hair\" to the character anchor in the prompt, currently missing. Re-roll.\n- **Hand:** Re-roll required. Generate 2–3 more times with same prompt and pick a clean one.\n- **Framing:** Prompt-level. Change \"medium shot\" to \"medium close-up\" in the prompt. Re-roll.\n\n## Confidence\nHIGH"
+  },
+  {
+   "id": "963a79a6b286",
+   "texto": "[Visual Asset Critic › Handoff] After delivering the critique, if the verdict is REVISE, offer:\n\"Want me to draft the revised prompt? Point `visual-prompt-forge` at this output tree in\nrevision mode and it will re-emit prompts for just the shots that need them.\""
+  },
+  {
+   "id": "62e7087976cb",
+   "texto": "[Visual Asset Critic › Handoff] If the verdict is REJECT, do not offer that. REJECT means a blocking issue or three or more\nmajor ones, which is a failure with no clear fix path, and revision mode is built to stop\nthere and ask. Say what blocked it and what decision it needs: a changed shot spec, a\nchanged brand-lock, or a different generator."
+  },
+  {
+   "id": "6c1b4468c0f9",
+   "texto": "[Visual Asset Critic › Handoff] Don't auto-revise. The user picks. The critique you just wrote is exactly what closes that\nloop."
+  },
+  {
+   "id": "687fcd951be8",
+   "texto": "[Critique Rubric] The structured layer-by-layer pass. Use this as the checklist when reviewing a generated image."
+  },
+  {
+   "id": "c411ef569ed7",
+   "texto": "[Critique Rubric › Layer 1. Brand Lock check] Check: Palette · Pass: Image colors come from brand-lock palette · Soft fail: Colors close but slightly off · Hard fail: Colors not in palette at all"
+  },
+  {
+   "id": "705609d21072",
+   "texto": "[Critique Rubric › Layer 1. Brand Lock check] Check: Mood adjectives · Pass: Image reads as the brand mood · Soft fail: Mood reads as adjacent (e.g. \"calm\" vs \"neutral\") · Hard fail: Image reads as a different mood (e.g. \"energetic\" when brief was \"calm\")"
+  },
+  {
+   "id": "3c039d2e7b56",
+   "texto": "[Critique Rubric › Layer 1. Brand Lock check] Check: \"Never\" list · Pass: None of the items in the never list are present · Soft fail: One item in the never list shows softly · Hard fail: Multiple never-list violations"
+  },
+  {
+   "id": "69e8c8f57549",
+   "texto": "[Critique Rubric › Layer 1. Brand Lock check] Check: Aspect ratio · Pass: Matches `project.aspect` · Soft fail: Within a crop of the spec · Hard fail: Wrong aspect"
+  },
+  {
+   "id": "b2ba76657152",
+   "texto": "[Critique Rubric › Layer 1. Brand Lock check] Hard fail on Brand Lock = REJECT or REVISE depending on whether prompt fix exists."
+  },
+  {
+   "id": "887fd135701b",
+   "texto": "[Critique Rubric › Layer 2. Series Lock check] Check: Character anchor · Pass: All described features visible · Soft fail: One minor feature off (e.g. wrong shirt color) · Hard fail: Wrong person (different age/race/build than anchor)"
+  },
+  {
+   "id": "8a437ec421f2",
+   "texto": "[Critique Rubric › Layer 2. Series Lock check] Check: Environment · Pass: Matches series_lock · Soft fail: Slight environment drift · Hard fail: Different environment entirely"
+  },
+  {
+   "id": "66bf0a8bc33c",
+   "texto": "[Critique Rubric › Layer 2. Series Lock check] Check: Lighting direction · Pass: Matches series_lock · Soft fail: Lighting is right but slightly different angle · Hard fail: Lighting from wrong direction (continuity break)"
+  },
+  {
+   "id": "6059a0293fdc",
+   "texto": "[Critique Rubric › Layer 2. Series Lock check] Check: Color grade · Pass: Matches series_lock · Soft fail: Slight tonal drift · Hard fail: Different color grade"
+  },
+  {
+   "id": "9c326bcdaefd",
+   "texto": "[Critique Rubric › Layer 2. Series Lock check] Hard fail on Series Lock = REJECT (continuity break) or REVISE if specific fix available."
+  },
+  {
+   "id": "ddae3f8a1f62",
+   "texto": "[Critique Rubric › Layer 3. Shot Spec check] Check: Framing · Pass: Matches spec (ECU/CU/MS/etc.) · Soft fail: One step off (e.g. MS instead of MCU) · Hard fail: Two+ steps off"
+  },
+  {
+   "id": "c301b51a50c0",
+   "texto": "[Critique Rubric › Layer 3. Shot Spec check] Check: Angle · Pass: Matches spec · Soft fail: Slight angle variation · Hard fail: Wrong angle (low when spec was eye-level)"
+  },
+  {
+   "id": "2be9719d9edb",
+   "texto": "[Critique Rubric › Layer 3. Shot Spec check] Check: Subject action · Pass: Matches `subject` description · Soft fail: Subject doing similar but slightly different action · Hard fail: Subject doing wrong action"
+  },
+  {
+   "id": "f028856783b1",
+   "texto": "[Critique Rubric › Layer 3. Shot Spec check] Check: Depth of field · Pass: Matches if specified · Soft fail: Slight DOF variation · Hard fail: Deep when shallow was specified"
+  },
+  {
+   "id": "6d40546f4072",
+   "texto": "[Critique Rubric › Layer 3. Shot Spec check] Soft fail = post-level fix or accept. Hard fail = revise."
+  },
+  {
+   "id": "de8bc8dd2e7a",
+   "texto": "[Critique Rubric › Layer 4. Composition check] Check: Negative space for text · Pass: Reserved per spec · Soft fail: Reserved but tight · Hard fail: No reserved space, overlay won't fit"
+  },
+  {
+   "id": "349dd2b1982e",
+   "texto": "[Critique Rubric › Layer 4. Composition check] Check: Subject placement · Pass: Matches rationale · Soft fail: Slightly off (subject in left-third vs right-third) · Hard fail: Subject blocks where text was meant to go"
+  },
+  {
+   "id": "f03ed09825fd",
+   "texto": "[Critique Rubric › Layer 4. Composition check] Check: Eye-line · Pass: Looks where intended · Soft fail: Slight gaze direction off · Hard fail: Looking the wrong way"
+  },
+  {
+   "id": "7e1d2d506cd0",
+   "texto": "[Critique Rubric › Layer 4. Composition check] Check: Headroom · Pass: Appropriate · Soft fail: Slightly tight or loose · Hard fail: Cropped at hairline / huge headroom"
+  },
+  {
+   "id": "0960a583d8db",
+   "texto": "[Critique Rubric › Layer 4. Composition check] Composition fails are usually prompt-level fixable. Re-roll with explicit composition language."
+  },
+  {
+   "id": "83ec77e9fd53",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Check: Hands · Pass: Anatomically correct · Soft fail: Slight finger weirdness · Hard fail: Six fingers, fused fingers, wrong joints"
+  },
+  {
+   "id": "31d70283774e",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Check: Eyes · Pass: Symmetrical, focused · Soft fail: Slight asymmetry · Hard fail: Wonky eyes, wrong reflections"
+  },
+  {
+   "id": "f056159e9292",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Check: Skin texture · Pass: Natural · Soft fail: Slightly plastic · Hard fail: Heavy AI plastic"
+  },
+  {
+   "id": "c3df486a8c66",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Check: Anatomy · Pass: Correct · Soft fail: Minor weirdness · Hard fail: Major anatomy errors"
+  },
+  {
+   "id": "e9987ccd9178",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Check: Background artifacts · Pass: Clean · Soft fail: Minor weirdness · Hard fail: Distorted text, melted objects, impossible geometry"
+  },
+  {
+   "id": "b6515bead7eb",
+   "texto": "[Critique Rubric › Layer 5. Technical check] Technical hard fails are almost always **re-roll required**. The prompt was probably fine; the generator just produced a bad sample. Budget 2–3 re-rolls."
+  },
+  {
+   "id": "d59f805e9582",
+   "texto": "[Critique Rubric › Layer 6. Continuity check (if previous shots available)] Check: Character match · Pass: Same person, same look · Soft fail: Slight drift · Hard fail: Clearly different person"
+  },
+  {
+   "id": "fd5e14ef2e35",
+   "texto": "[Critique Rubric › Layer 6. Continuity check (if previous shots available)] Check: Lighting continuity · Pass: Same direction, time of day · Soft fail: Subtle shift · Hard fail: Direction reversed, time of day jumped"
+  },
+  {
+   "id": "e2fa81ebb5ee",
+   "texto": "[Critique Rubric › Layer 6. Continuity check (if previous shots available)] Check: Environment continuity · Pass: Same space · Soft fail: Slight environment drift · Hard fail: Different space"
+  },
+  {
+   "id": "4d49c027a240",
+   "texto": "[Critique Rubric › Layer 6. Continuity check (if previous shots available)] Check: Color grade match · Pass: Identical · Soft fail: Subtle shift · Hard fail: Visibly different"
+  },
+  {
+   "id": "b72ed66cbd6b",
+   "texto": "[Critique Rubric › Layer 6. Continuity check (if previous shots available)] Continuity hard fails break the storyboard. REVISE with verbatim-anchor checks on the prompt."
+  },
+  {
+   "id": "60e24a851e76",
+   "texto": "[Critique Rubric › From pass/fail to severity] The tables above grade each check as pass, soft fail, or hard fail. The JSON critique\nrecords a severity instead, and the verdict is derived from those severities. Map them\nthis way, and only this way:"
+  },
+  {
+   "id": "3a03d7cb84d2",
+   "texto": "[Critique Rubric › From pass/fail to severity] Rubric result: Soft fail on any layer · Severity: `minor` · Why: Post can absorb it. `fix_type` is usually `post-level`"
+  },
+  {
+   "id": "640c9591432d",
+   "texto": "[Critique Rubric › From pass/fail to severity] Rubric result: Hard fail **with** a clear fix path · Severity: `major` · Why: A prompt change or a re-roll resolves it"
+  },
+  {
+   "id": "8ae2be913527",
+   "texto": "[Critique Rubric › From pass/fail to severity] Rubric result: Hard fail on Brand Lock or Series Lock **with no** fix path · Severity: `blocking` · Why: Nothing downstream recovers this"
+  },
+  {
+   "id": "bbbcb366f1ea",
+   "texto": "[Critique Rubric › From pass/fail to severity] Rubric result: Any defect that makes the asset unusable · Severity: `blocking` · Why: Same, regardless of layer"
+  },
+  {
+   "id": "4714b4eca1a9",
+   "texto": "[Critique Rubric › Aggregating verdict] The verdict follows from the severities. It is not a separate judgement:"
+  },
+  {
+   "id": "861a2df6b6ce",
+   "texto": "[Critique Rubric › Aggregating verdict] Severities present: any `blocking` · Verdict: REJECT"
+  },
+  {
+   "id": "3b7c61f13990",
+   "texto": "[Critique Rubric › Aggregating verdict] Severities present: three or more `major` · Verdict: REJECT"
+  },
+  {
+   "id": "8a5a24d41e2e",
+   "texto": "[Critique Rubric › Aggregating verdict] Severities present: one or two `major` · Verdict: REVISE"
+  },
+  {
+   "id": "739206ebb081",
+   "texto": "[Critique Rubric › Aggregating verdict] Severities present: only `minor`, or none · Verdict: ACCEPT (with post notes)"
+  },
+  {
+   "id": "d41b50530315",
+   "texto": "[Critique Rubric › Aggregating verdict] `tools/validate_critique.py` enforces exactly this table, so a critique that disagrees with\nit fails rather than shipping. Earlier versions of this file counted hard fails and called\n3+ a REJECT while the skill said \"escalate at your discretion.\" Those two rules disagreed,\nand the disagreement is the reason the threshold is now a number."
+  },
+  {
+   "id": "b35b3bbf6079",
+   "texto": "[Critique Rubric › Aggregating verdict] Soft fails are noted but don't change the verdict on their own. If you have three or more of\nthem, look again: a cluster of soft fails usually means one of them is really a hard fail\nyou talked yourself out of."
+  },
+  {
+   "id": "606253b451e0",
+   "texto": "[Critique Rubric › Speed bumps to remember] - **Don't critique what wasn't asked**, if the spec didn't call for cinematic mood, don't say \"could be more cinematic\""
+  },
+  {
+   "id": "0d63f0e8d67a",
+   "texto": "[Critique Rubric › Speed bumps to remember] - **Don't pile-on once verdict is set**, if you're rejecting, list the issues that drive the rejection; don't list every cosmetic concern"
+  },
+  {
+   "id": "5d5b81b7f080",
+   "texto": "[Critique Rubric › Speed bumps to remember] - **Be specific, always**, \"lighting is off\" is not a critique; \"key light is camera-right but series_lock says camera-left\" is"
+  },
+  {
+   "id": "1d54dcf4a519",
+   "texto": "[Critique Rubric › Speed bumps to remember] - **Cite the layer**, every issue gets tagged with which layer it falls under. This makes the fix path obvious"
+  },
+  {
+   "id": "2d5bce946fe0",
+   "texto": "[Critique Rubric › Speed bumps to remember] - **Distinguish prompt failure from generator failure**, if the prompt was fine and the generator produced garbage hands, that's \"re-roll required\", not \"fix the prompt\""
+  },
+  {
+   "id": "f83b266252bf",
+   "texto": "[frontmatter › description] Creación visual — fotografía, producción de video, animación, cine, contenido de formato corto (Reels/TikTok/Shorts) y postproducción. Cubre triángulo de exposición, reglas de composición, tipos de plano, movimientos de cámara, los 12 principios de animación de Disney, ritmo de edición, J-cut/L-cut, regla de los 180 grados y color grading. Usa este skill siempre que el usuario mencione fotografía, video, animación, cine, edición, postproducción, storyboard, guion técnico, encuadre, iluminación, plano, movimiento de cámara, colorización, Reels, TikTok, Shorts, photography, filmmaking, editing, color grading, 攝影, 影片, 動畫, 剪輯 o 短影音 — y también cuando pida un plan de rodaje, feedback sobre material grabado, storytelling visual, un flujo de producción audiovisual o decisiones de encuadre e iluminación, aunque nunca diga la palabra \"skill\". No aplicar a tareas de código, API o backend."
+  },
+  {
+   "id": "2022b5b460b3",
+   "texto": "[Creación Visual — Visual Media] Contar historias con lenguaje visual y crear imágenes memorables."
+  },
+  {
+   "id": "3ff3edbf4d67",
+   "texto": "[Creación Visual — Visual Media › Cuándo aplica] Composición y técnica fotográfica; Planeación y producción de video; Creación de contenido de formato corto; Flujo de producción de animación; Edición y colorización en postproducción"
+  },
+  {
+   "id": "cc7a84965680",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Triángulo de exposición] ┌─────────────────────────────────────────────────────────────────┐\n│  Triángulo de exposición — Exposure Triangle                    │\n│                                                                 │\n│              Diafragma / Aperture                               │\n│                 /\\                                              │\n│                /  \\                                             │\n│               /    \\                                            │\n│              /      \\                                           │\n│             /        \\                                          │\n│            /          \\                                         │\n│           /            \\                                        │\n│          /______________\\                                       │\n│    Obturador Shutter    ISO Sensibilidad                        │\n│                                                                 │\n│  Diafragma (f/1.4 – f/22)                                       │\n│  ├─ Abierto (número bajo): poca profundidad, fondo desenfocado  │\n│  └─ Cerrado (número alto): mucha profundidad, todo nítido       │\n│                                                                 │\n│  Obturador (1/4000s – 30s)                                      │\n│  ├─ Alta velocidad: congela el movimiento                       │\n│  └─ Baja velocidad: motion blur, estelas de luz                 │\n│                                                                 │\n│  ISO (100 – 12800+)                                             │\n│  ├─ ISO bajo: imagen limpia y detallada                         │\n│  └─ ISO alto: sirve en poca luz, pero introduce ruido           │\n└─────────────────────────────────────────────────────────────────┘"
+  },
+  {
+   "id": "7e3f6c1cff37",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Reglas de composición] ## Composición básica\n\n### Regla de tercios\n- Divide el encuadre en una retícula de 3×3\n- Coloca el sujeto en los puntos de intersección\n- Sitúa el horizonte en la línea superior o inferior\n\n### Líneas guía\n- Usa líneas para conducir la mirada\n- Caminos, ríos, barandales\n- Que apunten al sujeto\n\n### Encuadre dentro del encuadre\n- Enmarca al sujeto con elementos del primer plano\n- Marcos de puerta, ventanas, ramas\n- Aporta capas y profundidad\n\n### Simetría y equilibrio\n- Simetría perfecta = estabilidad, solemnidad\n- Asimetría = dinamismo, tensión\n- Equilibra el peso visual\n\n### Espacio negativo\n- El vacío refuerza el punto focal\n- Da \"espacio para respirar\" al sujeto\n- Estética minimalista"
+  },
+  {
+   "id": "6a2a1a9f362a",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Luz frontal** · Característica: Plana, con pocas sombras · Ideal para: Registro, foto de documento"
+  },
+  {
+   "id": "2a37ef5b2d2d",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Luz lateral** · Característica: Volumétrica, con sombras · Ideal para: Retrato, arquitectura"
+  },
+  {
+   "id": "77a6c6ea6515",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Contraluz** · Característica: Silueta, halo · Ideal para: Atmósfera, pieza artística"
+  },
+  {
+   "id": "70d6a7acc73a",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Luz cenital** · Característica: Sombras duras · Ideal para: Evitar al mediodía"
+  },
+  {
+   "id": "eebcf0bb7292",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Hora dorada** · Característica: Cálida y suave · Ideal para: Paisaje, retrato"
+  },
+  {
+   "id": "5984fccd47fc",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de fotografía › Uso de la luz] Tipo de luz: **Hora azul** · Característica: Fría, enigmática · Ideal para: Ciudad, nocturnas"
+  },
+  {
+   "id": "e7f3bcabc0c4",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Flujo de producción] ┌─────────────────────────────────────────────────────────────────┐\n│  Las tres etapas de producción                                  │\n│                                                                 │\n│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │\n│  │ Preproducción│  │   Rodaje     │  │Postproducción│          │\n│  │  Pre-prod    │→ │  Production  │→ │  Post-prod   │          │\n│  └──────────────┘  └──────────────┘  └──────────────┘          │\n│                                                                 │\n│  Preproducción (30%)                                            │\n│  ├─ Guion / concepto                                            │\n│  ├─ Storyboard                                                  │\n│  ├─ Casting / scouting de locaciones                            │\n│  └─ Equipo técnico y humano                                     │\n│                                                                 │\n│  Rodaje (20%)                                                   │\n│  ├─ Dirección en set                                            │\n│  ├─ Montaje de iluminación                                      │\n│  ├─ Captura de audio                                            │\n│  └─ Cobertura desde varios ángulos                              │\n│                                                                 │\n│  Postproducción (50%)                                           │\n│  ├─ Edición                                                     │\n│  ├─ Colorización                                                │\n│  ├─ Diseño sonoro / musicalización                              │\n│  └─ VFX y titulaje                                              │\n└─────────────────────────────────────────────────────────────────┘"
+  },
+  {
+   "id": "a3ad04449d87",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Push in** · Efecto: Énfasis, acercamiento · Cuándo usarlo: Revelar el punto clave"
+  },
+  {
+   "id": "fbaf05c16c7b",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Pull out** · Efecto: Revela el conjunto · Cuándo usarlo: Cierre, transición"
+  },
+  {
+   "id": "023282f20ac4",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Pan** · Efecto: Desplazamiento horizontal · Cuándo usarlo: Seguimiento, presentar el entorno"
+  },
+  {
+   "id": "cc35ca8814a6",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Tilt** · Efecto: Desplazamiento vertical · Cuándo usarlo: Mostrar altura"
+  },
+  {
+   "id": "8c3869b5fc10",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Track** · Efecto: Acompaña al sujeto · Cuándo usarlo: Caminata, persecución"
+  },
+  {
+   "id": "3be5c11cd2bb",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Órbita** · Efecto: Giro de 360° · Cuándo usarlo: Momento dramático"
+  },
+  {
+   "id": "99b24dbae023",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Movimientos de cámara] Movimiento: **Cámara en mano** · Efecto: Inmediatez, presencia · Cuándo usarlo: Documental, tensión"
+  },
+  {
+   "id": "1b4263be3173",
+   "texto": "[Creación Visual — Visual Media › Producción de video › Uso de los tipos de plano] ## Tipos de plano — Shot Types\n\n### Plano general (Wide Shot)\n- Establece la escena\n- Muestra el entorno\n- El personaje se ve pequeño\n\n### Plano entero (Full Shot)\n- Cuerpo completo\n- Acción legible\n- Luce el vestuario\n\n### Plano medio (Medium Shot)\n- De la cintura hacia arriba\n- Escenas de diálogo\n- Gestualidad de manos\n\n### Primer plano (Close-up)\n- De los hombros hacia arriba\n- Expresión emocional\n- Línea de diálogo importante\n\n### Primerísimo primer plano (Extreme Close-up)\n- Detalle de ojos o manos\n- Emoción intensa\n- Detalle de objeto"
+  },
+  {
+   "id": "b7cbced9640b",
+   "texto": "[Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma] Plataforma: TikTok · Duración óptima: 15–60s · Relación de aspecto: 9:16 · Carácter: Entretenimiento, retos"
+  },
+  {
+   "id": "7af1b130c266",
+   "texto": "[Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma] Plataforma: Reels · Duración óptima: 15–90s · Relación de aspecto: 9:16 · Carácter: Cuidado, estética"
+  },
+  {
+   "id": "9fc939657221",
+   "texto": "[Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma] Plataforma: Shorts · Duración óptima: 15–60s · Relación de aspecto: 9:16 · Carácter: Divulgación, humor"
+  },
+  {
+   "id": "064966515e21",
+   "texto": "[Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma] Plataforma: Douyin · Duración óptima: 15–60s · Relación de aspecto: 9:16 · Carácter: Contenido local"
+  },
+  {
+   "id": "f82c8a2e4398",
+   "texto": "[Creación Visual — Visual Media › Contenido de formato corto › Estructura de un video corto] ┌─────────────────────────────────────────────────────────────────┐\n│  Fórmula de oro del formato corto                               │\n│                                                                 │\n│  0–3 s: Hook                                                    │\n│  ├─ Pregunta o intriga                                          │\n│  ├─ Impacto visual                                              │\n│  └─ \"Espérate a ver esto…\"                                      │\n│                                                                 │\n│  3–50 s: Contenido                                              │\n│  ├─ Ritmo acelerado                                             │\n│  ├─ Entrega por bloques                                         │\n│  └─ Sostener el interés                                         │\n│                                                                 │\n│  Últimos 5 s: CTA                                               │\n│  ├─ Like / seguir                                               │\n│  ├─ Invitar a comentar                                          │\n│  └─ Ver más contenido                                           │\n│                                                                 │\n│  Clave: ¡los primeros 3 segundos deciden todo!                  │\n└─────────────────────────────────────────────────────────────────┘"
+  },
+  {
+   "id": "028607870036",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de animación › Los 12 principios] ## Los 12 principios de animación de Disney\n\n1. **Squash & Stretch** (compresión y estiramiento)\n   - Conservar el volumen\n   - Comunicar peso y elasticidad\n\n2. **Anticipación** (Anticipation)\n   - Agacharse antes de saltar\n   - Retraer el brazo antes del golpe\n\n3. **Puesta en escena** (Staging)\n   - Comunicar la intención con claridad\n   - Guiar la mirada del espectador\n\n4. **Directo vs. pose a pose** (Straight Ahead & Pose to Pose)\n   - Directo: fluido, orgánico\n   - Pose a pose: preciso, controlable\n\n5. **Acción continuada y superpuesta** (Follow Through & Overlapping)\n   - El retardo del cabello y la ropa\n   - Aporta naturalidad\n\n6. **Entradas y salidas lentas** (Slow In & Slow Out)\n   - El movimiento arranca y termina lento\n   - Y acelera en medio\n\n7. **Arcos** (Arcs)\n   - El movimiento natural es curvo\n   - Evita la sensación mecánica\n\n8. **Acción secundaria** (Secondary Action)\n   - Micromovimientos además de la acción principal\n   - Enriquecen al personaje\n\n9. **Timing** (Timing)\n   - El número de cuadros define la velocidad\n   - Afecta la sensación de peso\n\n10. **Exageración** (Exaggeration)\n    - Más intenso que la realidad\n    - Resalta el rasgo distintivo\n\n11. **Dibujo sólido** (Solid Drawing)\n    - Entender la estructura tridimensional\n    - Peso y equilibrio\n\n12. **Atractivo** (Appeal)\n    - Carisma del personaje\n    - Que dé ganas de verlo"
+  },
+  {
+   "id": "5f7abbac7265",
+   "texto": "[Creación Visual — Visual Media › Fundamentos de animación › Flujo de producción de animación] Concepto → Guion → Storyboard → Diseño → Animación → Post → Entrega\n                                   ↓\n                          Diseño de personajes\n                          Diseño de escenarios\n                          Paleta de color"
+  },
+  {
+   "id": "e96cc4dc9e2a",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Ritmo de edición] ## Principios de edición\n\n### Corte en movimiento\n- Cambia de plano durante la acción\n- Mantiene la fluidez\n\n### Corte en reposo\n- Cambia durante una pausa\n- Habitual en escenas de diálogo\n\n### Regla de los 180 grados\n- Conserva la posición relativa de los personajes\n- Evita cruzar el eje\n\n### J-Cut / L-Cut\n- J-Cut: el audio entra antes que la imagen\n- L-Cut: la imagen se mantiene después del audio\n- Aumentan la fluidez"
+  },
+  {
+   "id": "47532f269dc6",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Exposición · Función: Brillo general · Ejemplo: Levantar una toma subexpuesta"
+  },
+  {
+   "id": "655fb899b845",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Contraste · Función: Distancia entre luces y sombras · Ejemplo: Ganar volumen"
+  },
+  {
+   "id": "4c99709721fb",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Temperatura · Función: Frío / cálido · Ejemplo: Cálido para calidez emocional"
+  },
+  {
+   "id": "27997945ce73",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Tinte · Función: Verde / magenta · Ejemplo: Corrección de tonos de piel"
+  },
+  {
+   "id": "a5944adf11bf",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Saturación · Función: Intensidad de color · Ejemplo: Desaturar para look cinematográfico"
+  },
+  {
+   "id": "933dd449cd38",
+   "texto": "[Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización] Parámetro: Curvas · Función: Ajuste fino · Ejemplo: Curva en S para más contraste"
+  },
+  {
+   "id": "3bf8ca823419",
+   "texto": "[Creación Visual — Visual Media › Herramientas recomendadas › Equipo de captura] **Cámaras**: Sony A7, Canon R, Fujifilm; **Celular**: iPhone Pro, Pixel; **Estabilizadores**: DJI RS, Zhiyun"
+  },
+  {
+   "id": "21fe26cd15dd",
+   "texto": "[Creación Visual — Visual Media › Herramientas recomendadas › Software de edición] - **Profesional**: Premiere Pro, DaVinci Resolve, Final Cut"
+  },
+  {
+   "id": "9ba49c8fdb98",
+   "texto": "[Creación Visual — Visual Media › Herramientas recomendadas › Software de edición] - **Ligero**: CapCut, iMovie, Filmora"
+  },
+  {
+   "id": "bc64dbf5c295",
+   "texto": "[Creación Visual — Visual Media › Herramientas recomendadas › Software de edición] - **VFX**: After Effects, Motion"
+  },
+  {
+   "id": "272c0e71e2ef",
+   "texto": "[Creación Visual — Visual Media › Herramientas recomendadas › Herramientas de animación] **2D**: Toon Boom, Clip Studio, Procreate; **3D**: Blender, Maya, Cinema 4D; **Motion**: After Effects, Lottie"
+  },
+  {
+   "id": "ea483a5d11e0",
+   "texto": "[Creación Visual — Visual Media › Recursos] [StudioBinder](https://www.studiobinder.com/) — Formación en producción audiovisual; [Peter McKinnon](https://www.youtube.com/@PeterMcKinnon) — Fotografía y video; [Corridor Crew](https://www.youtube.com/@CorridorCrew) — Tutoriales de VFX; [The Animator's Survival Kit](https://www.amazon.com/Animators-Survival-Kit-Richard-Williams/dp/0571238343)"
+  },
+  {
+   "id": "20168a701423",
+   "texto": "[frontmatter › description] Generate model-specific prompts from shots.json. Outputs copy-paste-ready prompts for stills (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream) and motion video (Kling, Veo, Seedance, Hailuo). Also runs a revision mode that reads a critique.json and re-emits prompts for only the failed shots, closing the QA loop. Use when the user asks for image or video prompts, mentions any of those generators, wants AI-generated frames for a storyboard, or hands over shots.json. The prompt half of the pipeline. Composes with storyboard-architect upstream, visual-asset-critic downstream."
+  },
+  {
+   "id": "5592ef3002bd",
+   "texto": "[Visual Prompt Forge] You are turning structured shot data into prompts that work in production. Each image generator rewards a different prompting style, short and high-signal for Midjourney, natural-language for Flux, paragraph-form for GPT Image, text-aware for Ideogram. A prompt that crushes in one will produce slop in another."
+  },
+  {
+   "id": "5a4fbc91e86d",
+   "texto": "[Visual Prompt Forge] This skill adapts. Same shot, different syntax."
+  },
+  {
+   "id": "2e7df3aa03a5",
+   "texto": "[Visual Prompt Forge › When to use] Trigger when the user:\n- Hands over a `shots.json` (or any structured shot list) and asks for prompts\n- Names a specific generator (Midjourney, Flux, Ideogram, GPT Image, Nano Banana, Seedream, Kling, Veo, Seedance, Hailuo)\n- Asks for \"image prompts,\" \"Midjourney prompts,\" \"AI prompts,\" \"generation prompts\" for a storyboard\n- Wants the same shot adapted to multiple generators"
+  },
+  {
+   "id": "19c978f54aa6",
+   "texto": "[Visual Prompt Forge › When to use] If the user wants to build a storyboard from scratch (no shots.json yet), use `storyboard-architect` first, then chain into this skill."
+  },
+  {
+   "id": "76d89c3e65dc",
+   "texto": "[Visual Prompt Forge › What you produce] For a given `shots.json` and a list of target generators, produce one file per generator,\ninside a directory named for the round:\noutput/prompts/round-1/\n├── midjourney.txt          # If targeted\n├── flux.txt\n├── ideogram.txt\n├── gpt-image.txt\n├── nano-banana.txt\n├── seedream.txt\n├── kling.txt               # Motion-aware video, default\n├── veo.txt                 # Motion, dialogue/lipsync + native audio\n├── seedance.txt            # Motion, multi-shot sequences\n└── hailuo.txt              # Motion, budget iteration"
+  },
+  {
+   "id": "ec8149c9afc4",
+   "texto": "[Visual Prompt Forge › What you produce] Round 1 is the first pass. Revision mode writes `output/prompts/round-2/`, and so on.\nThe round in the path is not decoration: prompt files used to be written to one fixed\npath per generator, so round 2 destroyed round 1 and the prompt that actually produced\nmost of the surviving frames was gone."
+  },
+  {
+   "id": "d99156d94cd7",
+   "texto": "[Visual Prompt Forge › What you produce] Each file is plain text, one prompt per shot, separated by a blank line and a `# shot_NN` comment. Designed for copy-paste workflows, drop into the generator's UI or pipe into an API."
+  },
+  {
+   "id": "77e5fd8c0c25",
+   "texto": "[Visual Prompt Forge › The five-layer prompt anatomy] Every prompt is composed from these layers. Read `references/prompt-anatomy.md` for the full theory. Quick version:\n1. **Brand Lock**, palette, type, mood, \"never\" list (constant across project)\n2. **Series Lock**, character/environment/lighting anchors (constant across storyboard)\n3. **Shot Spec**, framing, angle, motion, subject (per shot)\n4. **Text Layer**, **never in the prompt**, composited separately\n5. **Generator Adapter**, model-specific syntax wrapper"
+  },
+  {
+   "id": "4dff4f9bb137",
+   "texto": "[Visual Prompt Forge › The five-layer prompt anatomy] The first four come from `shots.json` and the brand-lock. The fifth is what this skill applies."
+  },
+  {
+   "id": "508714fff2af",
+   "texto": "[Visual Prompt Forge › Workflow › Step 1. Read inputs] You need:\n- `shots.json` (required), the structured shot list\n- `brand-lock.snapshot.md` (required), referenced from shots.json\n- Target generators (required), ask if not specified"
+  },
+  {
+   "id": "831a5a47805c",
+   "texto": "[Visual Prompt Forge › Workflow › Step 1. Read inputs] Validate before composing:\npython tools/validate_shots.py output/"
+  },
+  {
+   "id": "cafbd538dd25",
+   "texto": "[Visual Prompt Forge › Workflow › Step 1. Read inputs] If the brand-lock is missing or `shots.json` does not validate, stop and tell the user.\nDon't try to forge prompts from incomplete data."
+  },
+  {
+   "id": "94530db04f40",
+   "texto": "[Visual Prompt Forge › Workflow › Step 1. Read inputs] If `tools/` is not on hand (a Claude.ai upload, or a single-skill install), read the\nschema from `../storyboard-architect/templates/shots.schema.json` and check by hand. That\nrelative path only resolves when the skills sit side by side; when they don't, ask the\nuser for the schema rather than composing from memory of it."
+  },
+  {
+   "id": "8db2bc905f60",
+   "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] For each target generator, read the matching adapter file:\n`adapters/midjourney.md`; `adapters/flux.md`; `adapters/ideogram.md`; `adapters/gpt-image.md`; `adapters/nano-banana.md`; `adapters/seedream.md`; `adapters/kling.md`      (motion video, default); `adapters/veo.md`        (motion video, dialogue/lipsync + native audio); `adapters/seedance.md`   (motion video, multi-shot sequences); `adapters/hailuo.md`     (motion video, budget iteration)"
+  },
+  {
+   "id": "69e5f6c4ec9a",
+   "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] Each adapter file documents the prompting style, parameter syntax, and known pitfalls for that generator. You **must** read the adapter before writing prompts for it. Don't guess from training data, image-gen syntax has churned multiple times."
+  },
+  {
+   "id": "9e79702e6357",
+   "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] **`adapters/_capabilities.json` is the single source of truth for per-generator limits** (`max_prompt_words`, `supports_text_render`, `supports_motion`, `aspect_param`, and so on). Read it once at the start and respect those values when composing, and do not target motion on a stills-only generator."
+  },
+  {
+   "id": "b026c8414d37",
+   "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] `max_prompt_words` is a ceiling. The range in an adapter `.md` is the recommended target\nand always sits inside that ceiling, so a `.md` saying \"40 to 70 words\" under a ceiling of\n120 is guidance, not a conflict. Where a fact in a `.md` and a fact in the JSON genuinely\ndisagree, **the JSON wins**."
+  },
+  {
+   "id": "c032cfbdd294",
+   "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] That rule is now enforced rather than trusted. `tools/validate_capabilities.py` fails the\nbuild when an adapter advertises more words than its ceiling, or when an adapter never\ndocuments the `aspect_param` the JSON tells you to send. The second check exists because\nnano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects\n`aspectRatio`; the precedence rule meant the wrong one won, silently, on every prompt."
+  },
+  {
+   "id": "736b95a77538",
+   "texto": "[Visual Prompt Forge › Workflow › Step 3. Compose per shot] For each shot in `shots.json`, for each target generator:\n1. Pull brand-lock palette, mood, \"never\" list\n2. Pull series_lock character/environment/lighting\n3. Pull shot framing/angle/motion/subject\n4. **Strip any on_screen_text reference**, text never goes in the prompt\n5. Apply the generator adapter's syntax wrapper\n6. Append generator-specific parameters (aspect ratio, style flags, seed if applicable)"
+  },
+  {
+   "id": "c73cf86443ea",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4. Write output files] One file per generator, into `output/prompts/round-{N}/`. Format:\n# Storyboard: {project title}\n# Generator: midjourney\n# Model: {model_version from _capabilities.json}\n# Aspect: 9:16\n# Brand-lock: brand-lock.snapshot.md\n# Run: {run_id from run.json}\n# Round: 1\n\n# shot_01, hook, 0.0-2.0s, MCU eye-level static\n{the prompt}\n\n# shot_02, pain, 2.0-6.0s, MS eye-level push\n{the prompt}\n\n..."
+  },
+  {
+   "id": "dbfe4bb36c87",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4. Write output files] The `#` lines are comments; the user copies just the prompt body. `tools/copy-prompt.py`\nparses this format, treating a comment line that names a shot as a block header and any\nother comment inside a block as an annotation it will not copy."
+  },
+  {
+   "id": "9092841ee47a",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4. Write output files] Record the run and round in the header, not a wall-clock \"Generated\" line. A timestamp in\nthe header made every file differ between two otherwise identical runs, which is a strange\nthing to put in an artifact whose selling point is determinism."
+  },
+  {
+   "id": "a74a14e0e8e1",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json] After writing the files, append an entry to `run.json`'s `rounds` array: the round number,\n`started_at`, a `reason`, and for each file its generator, path, SHA-256, and the shot ids\nit covers."
+  },
+  {
+   "id": "6dd1261dbe56",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json] shasum -a 256 output/prompts/round-1/*.txt"
+  },
+  {
+   "id": "f33cae58fa09",
+   "texto": "[Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json] This is the only writeable part of `run.json`. Everything else was fixed when the\narchitect wrote it."
+  },
+  {
+   "id": "bdda0885fe05",
+   "texto": "[Visual Prompt Forge › Workflow › Step 5. Hand off] Tell the user where the files are. Offer the next step:\n\"Want me to QA the generated images against the storyboard? Use `visual-asset-critic` once you have the renders.\""
+  },
+  {
+   "id": "ad987d0f66f5",
+   "texto": "[Visual Prompt Forge › Workflow › Step 5. Hand off] For paste-into-generator workflows, the user can pipe individual shots to the clipboard with the bundled helper:\npython tools/copy-prompt.py output/prompts/round-1/midjourney.txt\npython tools/copy-prompt.py output/prompts/round-2/revised-midjourney.txt --shot shot_03"
+  },
+  {
+   "id": "041bd710a1e6",
+   "texto": "[Visual Prompt Forge › Workflow › Step 5. Hand off] This is optional. The `.txt` files are also directly readable, and the user can copy any block by hand. The helper exists for the case where the operator is bouncing between the terminal and a generator UI repeatedly."
+  },
+  {
+   "id": "d6fe2178a9ec",
+   "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop)] This is what `visual-asset-critic`'s structured output is for. When the user hands you `shots.json` plus one or more `critique.json` files (the machine-readable verdict the critic writes), don't re-forge the whole storyboard, re-emit prompts for **only the shots that failed**, with the fix already applied."
+  },
+  {
+   "id": "a7b50f2fdeb0",
+   "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop) › Trigger] The user says \"apply the critique\", \"revise the failed shots\", \"re-roll what didn't pass\", or hands over an output tree containing `critiques/`."
+  },
+  {
+   "id": "415c43a2e646",
+   "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow] 1. Read every critique under `output/critiques/round-{N}/`, where N is the highest round\n   present. Each file is one shot's verdict (`shot_id`, `verdict`, `issues[]`)."
+  },
+  {
+   "id": "24543d53d0c4",
+   "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow] 2. Skip any with `verdict: ACCEPT`. Those are done."
+  }
+ ]
+}

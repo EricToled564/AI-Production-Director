@@ -1,0 +1,590 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "583f68f06ecc",
+   "texto": "[Grupo ensamble › 9. Checklist del crítico] - [ ] Instrumentos y manos con lateralidad correcta. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "fb6209c95202",
+   "texto": "[Grupo ensamble › 9. Checklist del crítico] - [ ] Eyelines coordinadas según lo declarado. [FUENTE: visual-asset-critic/references/critique-rubric.md Layer 4]"
+  },
+  {
+   "id": "73b8534ee80b",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas] Nueve archivos, uno por régimen. Cada uno especializa `video/references/animatic-keyframes.md`\nigual que `race-and-speed.md` lo hace para el dominio de carreras: no repite el método general,\nañade lo que cambia en ese medio físico."
+  },
+  {
+   "id": "c1bce1e322b4",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas] Decisiones que gobiernan esta carpeta (sesión 2026-09-25):\n1. Viven en el repo. `rule_registry.py` las lee además de los skills instalados.\n2. Toda regla lleva una etiqueta de origen al final de la línea. Sin etiqueta, la regla no entra a la base.\n3. Las inferencias entran con `[A PRUEBA]`, prioridad 4, y nunca bloquean un gate hasta canonizarse.\n4. Canonización en tres pasos: investigación de campo en foros y tutoriales → un ejercicio real por\n   familia → etiqueta `[CANONICA fecha]` con el template que funcionó."
+  },
+  {
+   "id": "88eee8b78a31",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[FUENTE: skill/archivo.md §sección]` · Significado: La regla está textual o casi textual en un skill instalado · Prioridad en la base: la del skill"
+  },
+  {
+   "id": "6083c9df0a1e",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[A PRUEBA]` · Significado: Inferencia desde reglas vecinas o física; sin fuente textual · Prioridad en la base: 4, nunca bloquea"
+  },
+  {
+   "id": "ac1ab09cfe80",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[CAMPO: url]` · Significado: Inferencia confirmada por casos de uso reales, foros o tutoriales; todavía sin ejercicio propio · Prioridad en la base: 4, se muestra como recomendada"
+  },
+  {
+   "id": "44544303883a",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[REFUTADA: url]` · Significado: La investigación de campo la contradijo; se conserva para no volver a inferirla · Prioridad en la base: no se sirve"
+  },
+  {
+   "id": "b07822ecf676",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[CANONICA 2026-MM-DD]` · Significado: Ejercicio real hecho, template registrado en el archivo · Prioridad en la base: 1 dentro de su familia"
+  },
+  {
+   "id": "0c93e179c997",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] La etiqueta va al final de la línea normativa, entre corchetes. Una línea puede llevar una sola\netiqueta. El extractor la separa del texto, guarda `estado` y `fuente`, y el id de la regla se\ncalcula sobre el texto sin etiqueta, así canonizar no cambia el id."
+  },
+  {
+   "id": "4f6f982d6c07",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Esqueleto obligatorio de cada archivo] Cuándo cargar; Leyes físicas que el still debe evidenciar; Cue de movimiento congelado por defecto; Luz en este medio; Cámara, ángulo y rig montable; Modelo recomendado; Tratamiento de personas dentro del régimen; Fallos conocidos y su corrección; Checklist del crítico"
+  },
+  {
+   "id": "96ccbd198f5d",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 01 · Archivo: `01-agua-superficie.md` · Cubre: wakeboarding, surf, jet ski, remo, esquí acuático"
+  },
+  {
+   "id": "26b0746746e7",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 02 · Archivo: `02-agua-ruptura.md` · Cubre: clavado entrando, nadador emergiendo, salto de ballena, split-level"
+  },
+  {
+   "id": "5f95282c6724",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 03 · Archivo: `03-subacuatico.md` · Cubre: buceador en cenote, nadador bajo el agua, apnea"
+  },
+  {
+   "id": "20a19ca42e59",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 04 · Archivo: `04-objeto-balistico.md` · Cubre: pelota de tenis, balón, gota, flecha, chispa"
+  },
+  {
+   "id": "70fb8b034221",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 05 · Archivo: `05-vehiculo.md` · Cubre: auto de carreras, moto, bici, tren, dron; extiende race-and-speed"
+  },
+  {
+   "id": "723bfb8c466b",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 06 · Archivo: `06-cuerpo-en-esfuerzo.md` · Cubre: corredor rompiendo la cinta, salto, golpe, levantamiento"
+  },
+  {
+   "id": "8d73f7c0e0c9",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 07 · Archivo: `07-luz-y-clima.md` · Cubre: rayo, amanecer, lluvia, polvo, niebla, nieve"
+  },
+  {
+   "id": "a944b783ed7a",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 08 · Archivo: `08-multitud-anonima.md` · Cubre: estadio, manifestación, calle llena, público"
+  },
+  {
+   "id": "a27e997415ce",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 09 · Archivo: `09-grupo-ensamble.md` · Cubre: quinteto, grupo de K-pop, equipo titular, familia"
+  },
+  {
+   "id": "3ced589df58b",
+   "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] Facetas de la tarjeta de ancla que cada archivo declara en su frontmatter: `d2_accion`,\n`d3_sujetos`, `d4_tratamiento`, `d8_modelo`, `d9_angulo`. El extractor las hereda a todas las\nreglas del archivo salvo que una regla las sobrescriba con `{d9: low}` al inicio de la línea."
+  },
+  {
+   "id": "b72a8eab0e89",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 1. **Siempre** nombrar qué objeto o textura se ve deformado a través del agua (refracción, transparencia, reflejos); un agua que no distorsiona lo que hay detrás se lee como humo azul u opaco. `[CAMPO: https://gadrex.com/ai-water-and-fluid-generation-prompts/]` (Q16, Q17; reforzado por Q24)."
+  },
+  {
+   "id": "7aa3002641cb",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 2. **Siempre** incluir en el negativo de cualquier cuadro de spray: \"frozen solid-looking fluid, random droplets, impossible gravity, broken refraction\". `[CAMPO: https://promptatlas.co/prompts/splash-photography-prompt]` (Q13)."
+  },
+  {
+   "id": "fe764e713269",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 3. **Nunca** pedir spray sin un punto de impacto y un instante únicos; la salpicadura debe leerse como evento, no como decoración líquida. `[CAMPO: https://promptatlas.co/prompts/splash-photography-prompt]` (Q14). Confirma de campo la U9 ya existente."
+  },
+  {
+   "id": "2c3aeb111893",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 4. **Nunca** confiar el spray a un modelo de video: los difusores de video rompen columnas en el aire y dispersan salpicaduras sin momento ni gravedad; el spray se fija en el still y el clip lo hereda. `[CAMPO: https://arxiv.org/abs/2607.25321]` (Q18)."
+  },
+  {
+   "id": "ce42df735636",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 5. **Debe** declararse el ángulo del impacto cuando el spray sale de un canto o casco: sólo el impacto vertical produce corona simétrica; el oblicuo produce corona asimétrica con jet direccional. `[CAMPO: https://arxiv.org/abs/2608.29762]` (Q19–Q21)."
+  },
+  {
+   "id": "8584c13dbce1",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 6. **Debe** describirse la cuerda con su punto de anclaje: desde torre sube en ángulo, desde el espejo de popa va casi horizontal. `[CAMPO: monstertower, SNIPPET-ONLY, Q28]` — candidata débil hasta leer el cuerpo."
+  },
+  {
+   "id": "081e51dea244",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 7. **Nunca** usar adjetivos decorativos como sustituto de una instrucción funcional (\"beautiful\" no hace nada). `[CAMPO: https://pixverse.ai/en/blog/gpt-image-2-review-and-prompt-guide]` (Q23). Coincide con `image/references/gpt-image.md:36`."
+  },
+  {
+   "id": "c275b0c62630",
+   "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 8. Afirmación de blog, no verificada: \"Nano Banana has an internal database of IOR values\" y \"describe the physics\". `[CAMPO débil: https://theneuralpost.com/2025/12/10/...]` (Q22). No canonizar sin ejercicio propio."
+  },
+  {
+   "id": "20c15a6efae1",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 1. **Nunca** dibujar un chorro vertical central al boardear una entrada limpia: el Worthington jet es la firma de la entrada fallida y llega después de la cavidad; la entrada limpia muestra sólo una lámina radial baja. `[CAMPO: https://www.youtube.com/watch?v=8GqWTqDhahM]` (Q1–Q4)."
+  },
+  {
+   "id": "a9408c23506b",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 2. **Debe** aparecer, en el cuadro posterior a una entrada limpia, el par de \"swim bubbles\" a los lados del agujero de entrada, no una nube única bajo el cuerpo. `[CAMPO: https://www.youtube.com/watch?v=8GqWTqDhahM]` (Q5)."
+  },
+  {
+   "id": "94c9468ac2ea",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 3. **Siempre** que el split-level sea a contraluz (atardecer), declarar un práctico sumergido (dos strobes bajo el agua); sin él la mitad inferior es negra y el modelo la inventará. `[CAMPO: https://www.youtube.com/watch?v=BV5Jzq-DUBI]` (Q16, Q17)."
+  },
+  {
+   "id": "9f1fcade8d7c",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 4. **Debe** describirse el menisco como banda fina con grosor, nunca como línea de pelo; su grosor crece con oleaje y domo pequeño. `[CAMPO: https://dan.org/alert-diver/article/ten-tips-for-stunning-splits/ · https://www.backscatter.com/reviews/post/Underwater-Split-Photography-Tips-A-View-Of-Two-Worlds]` (Q14, Q15)."
+  },
+  {
+   "id": "807a1aa31bdd",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 5. **Debe** declararse un fondo claro (arena, azulejo) y poca profundidad para justificar una mitad sumergida bien expuesta con luz natural; de lo contrario el agua va 1–2 pasos más oscura. `[CAMPO: https://www.youtube.com/watch?v=BV5Jzq-DUBI · https://www.terragalleria.com/...]` (Q18, Q30)."
+  },
+  {
+   "id": "122ee2f943a6",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 6. Las gotas sobre el domo por encima de la línea de agua son inevitables en fotografía real de split-level; una o dos gotas fuera del sujeto son cue de realismo, un rastro sobre el rostro es defecto. `[CAMPO: https://www.youtube.com/watch?v=BV5Jzq-DUBI]` (Q29)."
+  },
+  {
+   "id": "c85d13d81752",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 7. **Nunca** confiar en que el modelo respete un nivel de líquido atípico: los generadores regresan al nivel \"habitual\" del dataset (caso \"completely full wine glass\"); declarar el nivel con referencia geométrica (a media altura del cuadro, a la altura de los hombros). `[CAMPO: https://www.rapidata.ai/blog/wine-glasses]` (Q31)."
+  },
+  {
+   "id": "6bf055de7e9e",
+   "texto": "[RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 8. Posición del sol por defecto en split-level: a la espalda de la cámara, para minimizar el rango tonal. `[CAMPO: https://www.ikelite.com/blogs/advanced-techniques/how-to-shoot-split-shots-half-in-half-out-of-the-water · uwphotographyguide]` (Q21, Q32)."
+  },
+  {
+   "id": "a251da9c8878",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 1. **Siempre** que el beat sean haces de luz: cámara en la penumbra mirando hacia la luz, superficie fuera de cuadro y exposición alta, para que los haces sean lo más brillante del encuadre; la condición física es superficie calma + sol fuerte + fondo oscuro, no turbidez. `[CAMPO: https://dan.org/alert-diver/article/light-in-the-dark-shooting-cenotes/ · https://www.ikelite.com/blogs/advanced-techniques/chasing-light-rays · https://www.waterdogphotographyblog.com/caves-caverns-and-cenotes/]` (Q12, Q14–Q16, Q18). Sustituye a la regla refutada."
+  },
+  {
+   "id": "3b4e34fb5d98",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 2. **Nunca** añadir un práctico frontal en un cuadro de haces salvo que haya un sujeto en primer plano que lo justifique; el flash \"arruina la atmósfera\". `[CAMPO: https://dan.org/alert-diver/article/light-in-the-dark-shooting-cenotes/]` (Q17)."
+  },
+  {
+   "id": "31b753432a8e",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 3. **Debe** declararse la distancia cámara-sujeto además de la profundidad: el color se pierde con el camino total de la luz (10 ft de profundidad + 10 ft de distancia = 20 ft, sin rojos). `[CAMPO: https://www.uwphotographyguide.com/underwater-photography-lighting-fundamentals]` (Q2)."
+  },
+  {
+   "id": "ba9c2938b202",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 4. Criterio del crítico: si la piel es cálida sin práctico visible, el agua **debe** virar a aqua/cian y los rayos de sol a rojizo (firma del balance de blancos); piel cálida con agua azul pura y rayos blancos es incoherente. `[CAMPO: https://dan.org/alert-diver/article/recovering-color-in-underwater-photography/]` (Q6, Q7)."
+  },
+  {
+   "id": "28ce178cb7b8",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 5. **Nunca** pedir \"solo un tinte azul\" para sumergir un retrato: sin pelo/tela que se levanten, burbujas que suben y bandas de luz de superficie sobre la piel, el resultado es un retrato seco con un grade encima. `[CAMPO: https://morphic.com/resources/vfx/underwater-portrait-effect]` (Q33, Q34)."
+  },
+  {
+   "id": "03e072e5eb4b",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 6. **Debe** pedirse una sola fuente de luz consistente y textura de piel natural; los fallos típicos reportados son piel demasiado lisa, burbujas aleatorias y dirección de luz que no coincide. `[CAMPO: https://www.vibemeai.net/trending/underwater-prompt · https://www.media.io/ai-prompts/gemini-ai-underwater-prompt.html]` (Q35, Q36). Confirma U8 desde el campo."
+  },
+  {
+   "id": "395c58b55f37",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 7. **Debe** declararse la haloclina cuando el cenote la tiene: la capa se ve como \"sheet of glass\" intacta y como neblina borrosa al cruzarla; la borrosidad es del agua, no del foco. `[CAMPO: https://www.uwphotographyguide.com/top-11-tips-for-cenote-photography/]` (Q23)."
+  },
+  {
+   "id": "3de8376e5d66",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 8. Backlight con luces de video detrás del sujeto produce un \"halo\" legítimo y muy usado en cenotes; es la variante de silueta con rim que la familia ya contempla, ahora con fuente de campo. `[CAMPO: https://www.uwphotographyguide.com/top-11-tips-for-cenote-photography/]` (Q25)."
+  },
+  {
+   "id": "c21e08bd320b",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 9. En POV de máscara o puerto plano los objetos se ven ~33 % más grandes y ~25 % más cerca; con domo no. Declarar el tipo de puerto cuando el tamaño relativo importa. `[CAMPO: https://www.uwphotographyguide.com/underwater-photography-lighting-fundamentals]` (Q27)."
+  },
+  {
+   "id": "640a03d5a2ad",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 10. Burbujas y rostro: las burbujas de exhalación tapan la cara salvo que la cabeza esté atrás; el instante correcto es cuando el racimo ya pasó por encima de la cabeza. `[CAMPO: https://www.underwater-photographer.com/underwater-modelling-hints-tips/]` (Q30)."
+  },
+  {
+   "id": "83e7d158eb48",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 11. Desde abajo, la superficie calma **refleja** al sujeto en su cara inferior (el retrato aparece dos veces): es física legítima, no el fallo de \"dos superficies\" de la familia 02. `[CAMPO: https://morphic.com/resources/vfx/underwater-portrait-effect]` (Q41)."
+  },
+  {
+   "id": "2a949a9a0177",
+   "texto": "[RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)] 12. Telas: las ligeras (organza, gasa) flotan más tiempo; las naturales oscurecen al mojarse. Declarar el tipo de tela cuando se pide flotación. `[CAMPO: https://www.underwater-photographer.com/underwater-modelling-hints-tips/]` (Q29, Q31)."
+  },
+  {
+   "id": "c318f900a6e4",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] Cada uno redactado como regla candidata con marcador deóntico y etiqueta de campo."
+  },
+  {
+   "id": "aaf357a4b2c9",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 1. **Nunca** pedir \"contact shadow\" a secas; **siempre** describir la forma de la sombra: estrecha, borde suave, pegada a la línea de contacto, desvaneciéndose en corta distancia; la orden desnuda produce un charco gris ancho. [CAMPO: https://www.artarch.ai/blog/ai-contact-shadow-occlusion-prompt] — (C-09) `[QUOTED]`"
+  },
+  {
+   "id": "7327408c3357",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 2. **Nunca** añadir sombra de contacto a un objeto en vuelo ni a un contacto blando (mano sujetando la pelota, pelota hundiéndose en arcilla); en esos casos la sombra va proyectada y separada, o describe el hundimiento. [CAMPO: https://www.artarch.ai/blog/ai-contact-shadow-occlusion-prompt] — (C-10) `[QUOTED]`"
+  },
+  {
+   "id": "7a571a315a05",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 3. **Siempre** declarar la dirección del blur (\"horizontal motion blur streaks\" para paneo, \"radial blur\" para giro); la dirección es la palanca principal para que se lea intencional y no glitch. [CAMPO: https://miraflow.ai/blog/ai-motion-blur-photo-prompts-2026] — (C-16) `[QUOTED]`"
+  },
+  {
+   "id": "6502bc7fd544",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 4. La intensidad del blur **debe** ser proporcional a la velocidad implícita del sujeto; un mismo barrido para todo se lee falso. [CAMPO: https://miraflow.ai/blog/ai-motion-blur-photo-prompts-2026] — (C-17) `[QUOTED]`"
+  },
+  {
+   "id": "d0721595c42d",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 5. En un prompt de motion blur **siempre** nombrar cuatro cosas: sujeto que se barre, dirección, velocidad e intensidad. [CAMPO: https://www.youtube.com/watch?v=vb_cGHOWWo0] — (C-25) `[QUOTED]`"
+  },
+  {
+   "id": "eca79204516c",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 6. Bajo luz dura con sombras nítidas y objetos que proyectan sombras complejas, **debe** inspeccionarse la coherencia geométrica de las sombras al 100%: ahí es donde los modelos de difusión fallan más. [CAMPO: https://www.forensicfocus.com/articles/how-to-reveal-ai-generated-images-by-checking-shadows-and-reflections-in-amped-authenticate/] — (C-15) `[QUOTED]`"
+  },
+  {
+   "id": "baa92c0df16c",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 7. El objeto **siempre** se describe con sus componentes físicos concretos (número de costuras, material, dónde apoya), no como categoría; \"a ball\" es el equivalente del \"an instrument\" que produce saxofones comestibles. [CAMPO: https://elements.envato.com/learn/ai-image-fails] — (C-23) `[QUOTED]`"
+  },
+  {
+   "id": "858094b65b35",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 8. **Nunca** usar palabras ornamento (\"8K\", \"cinematic\", \"masterpiece\"); mover las variables a ingredientes fotográficos. [CAMPO: https://nightjar.so/blog/how-to-make-ai-product-photos-look-real-checklist] — (C-24) `[QUOTED]` — coincide con la lista prohibida de `image/references/gpt-image.md:36`."
+  },
+  {
+   "id": "fd34990d34da",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 9. Frases de campo que funcionan en Nano Banana 2 para congelar objeto y barrer fondo: \"freeze-frame sports journalism style\", \"ball mid-air\", \"motion blur on background, sharp focus on face\". [CAMPO: https://pose.ai/blog/sports-event-photo-prompts-guide-2026] — (C-18) `[QUOTED]`"
+  },
+  {
+   "id": "e3586587a268",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 10. Para el look de impacto congelado la referencia física es 1/2000 s o más rápido (el contacto raqueta-pelota dura 0.004 s); a 1/250 s el cuerpo se congela y la raqueta se barre, lo que es un cue de blur parcial legítimo. [CAMPO: http://tt.tennis-warehouse.com/index.php?threads/tennis-photography.712575/] — (C-19, C-20, C-01) `[DERIVED]` — inferencia: la descripción \"fast-shutter look\" del prompt puede anclarse en \"1/2000 s\" para GPT Image 2 y en \"high-speed freeze\" para NBP."
+  },
+  {
+   "id": "507a344b29f6",
+   "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 11. El negative prompt reutilizable de campo para objeto incluye \"floating shadows\" y \"extra reflections\". [CAMPO: https://promer.ai/blog/ai-product-photography-prompts] — (C-14) `[QUOTED]`"
+  },
+  {
+   "id": "31805379999a",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 1. En moto la postura del piloto **debe** declararse según la fase: tumbado sobre el depósito en recta, erguido haciendo freno aerodinámico en la frenada, descolgado en la curva; la postura cuenta más que cualquier técnica compositiva. [CAMPO: https://www.motorsportphotographer.com/how-to-photograph-motorcycle-racing/] — (C-04) `[QUOTED]`"
+  },
+  {
+   "id": "2967825721da",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 2. La cámara **siempre** baja a la altura del piloto en moto: desde arriba la moto se ve pequeña y el piloto mira hacia el lado bajo, lejos de cámara. [CAMPO: https://www.motorsportphotographer.com/how-to-photograph-motorcycle-racing/] — (C-05) `[QUOTED]`"
+  },
+  {
+   "id": "1080e6944428",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 3. Si el rim no se puede barrer, **debe** ocultarse: las ruedas congeladas hacen que el vehículo parezca aparcado. [CAMPO: https://www.motorsportphotographer.com/how-to-photograph-motorcycle-racing/] — (C-03) `[QUOTED]` — refuerza `race-and-speed.md §10` y añade la salida de encuadre."
+  },
+  {
+   "id": "e14570a64d76",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 4. **Nunca** aceptar rayos ni palas curvados en forma de hoz: es el artefacto de rolling shutter y se lee como defecto de cámara barata. [CAMPO: https://coinis.com/blog/bicycle-ad-photo-warped-spokes-fix-coinis] — (C-26, C-13) `[QUOTED]`"
+  },
+  {
+   "id": "dbe6239c3fa8",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 5. Para hélice, el objetivo por defecto **debe** ser un arco de 1/6 a 1/4 de barrido, no necesariamente el disco completo; el disco completo puede desaparecer contra el fondo. [CAMPO: https://vansairforce.net/threads/capturing-the-prop-blur.56891/] — (C-14) `[QUOTED]`"
+  },
+  {
+   "id": "601c503d1bbc",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 6. Frase de campo para bici y moto: \"camera panning at the rider's speed, the spokes blurred into a wheel-shaped smear\", con \"near pedal\" o \"front fairing\" nítidos. [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-24) `[QUOTED]`"
+  },
+  {
+   "id": "a43cf3274f6b",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 7. El rig POV **debe** nombrarse por lo que muestra: chest mount = manillar + manos + horquilla en cuadro; helmet/chin mount = sigue la mirada, bici fuera de cuadro. [CAMPO: https://www.telesinstore.com/blogs/news/helmet-vs-chest-vs-handlebar-mount] — (C-17, C-18, C-19) `[QUOTED]`"
+  },
+  {
+   "id": "0c306f074566",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 8. Referencia física para describir el \"panning look\": 1/125–1/250 s en autos, 1/60–1/125 s en motos (racetagger) y 1/30–1/60 s en atletas (Sony); un prompt puede anclar el cue con el número. [CAMPO: https://racetagger.cloud/blog/NEW-2-Panning-Photography-Masterclass] — `[DERIVED]` de C-07 y de Sony F-13 (familia 04)."
+  },
+  {
+   "id": "8409c4044fcc",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 9. Los prompts de MotoGP que circulan en tutoriales de Nano Banana piden logos de patrocinador y el número \"46\": **nunca** copiarlos tal cual; violan la regla de marcas generadas. [CAMPO: https://www.youtube.com/watch?v=10fhs81W6Bc] — `[QUOTED]` (descripción del video: \"full Yamaha racing suit with sponsor logos and racing number '46'\")."
+  },
+  {
+   "id": "da3820ba2262",
+   "texto": "[RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos] 10. En la frenada, la carrocería **debe** mostrar el cabeceo (\"the car's body dipping during braking\") como cue de física. [CAMPO: https://www.tamron.com/global/consumer/sp/impression/detail/article-how-to-shoot-motorsport-photography.html] — `[QUOTED]` — coincide con `race-and-speed.md §1` (nariz/squat)."
+  },
+  {
+   "id": "aa08a8cb1640",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 1. **Nunca** insistir más de dos o tres regeneraciones distintas sobre un sprint de cuerpo entero con anatomía rota; cambiar a plano cerrado de rostro, mano o pie en el instante decisivo, porque los miembros extra y el pie que atraviesa el suelo no son fallos de redacción. [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-13, C-15, C-18) `[QUOTED]`"
+  },
+  {
+   "id": "3dedce708eb3",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 2. **Siempre** un solo atleta por generación en sprint; una salida de tacos con varios corredores falla mucho más que un corredor solo. [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-14) `[QUOTED]` — refuerza `produccion-visual-sw30 R9`."
+  },
+  {
+   "id": "dc51e1936215",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 3. El cuerpo en esfuerzo **debe** llevar anticipación y follow-through nombrados (peso ya desplazado, brazo ya arrastrando); una pose que solo muestra el medio del gesto se lee posada. [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-17) `[QUOTED]`"
+  },
+  {
+   "id": "9fc089172e83",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 4. Frase de campo para sprint con pies correctos: \"freeze the driving arm and front leg sharp, a light motion blur on the trailing foot ... Peak moment: the instant the front foot strikes the track\". [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-16) `[QUOTED]`"
+  },
+  {
+   "id": "9b2ca972d64f",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 5. **Siempre** nombrar el momento de la zancada con vocabulario de fase (start, mid-stride, finish tape) y qué pie carga el peso. [CAMPO: https://www.media.io/ai-prompts/gemini-ai-runner-photo-prompts.html] — (C-19) `[QUOTED]`; snippet ai-prompt.jp lo repite."
+  },
+  {
+   "id": "1e80448284d6",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 6. **Nunca** pedir a la vez \"freeze-frame clarity\" y \"panning blur\" al máximo. [CAMPO: https://www.media.io/ai-prompts/gemini-ai-runner-photo-prompts.html] — (C-20) `[QUOTED]` — confirma la ley de una sola lógica de blur."
+  },
+  {
+   "id": "2420d28b6603",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 7. El sudor en campo se pide como \"sharp sweat highlights\" o \"sweat droplets frozen in the air near the fist\" bajo \"harsh single overhead light source\", nunca como piel mojada. [CAMPO: https://www.media.io/ai-prompts/gemini-ai-runner-photo-prompts.html ; https://miraflow.ai/blog/ai-motion-blur-photo-prompts-2026] — (C-21, C-28) `[QUOTED]` — confirma la regla FUENTE de sudor como speculares."
+  },
+  {
+   "id": "8b8032cc6a3f",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 8. La luz del sujeto nítido y la del fondo barrido **deben** compartir fuente y temperatura; si no, se lee compuesto. [CAMPO: https://miraflow.ai/blog/ai-motion-blur-photo-prompts-2026] — (C-29) `[QUOTED]`"
+  },
+  {
+   "id": "df603f740e61",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 9. El prompt **debe** declarar el tipo de estadio: 4 postes = sombras múltiples duras en la cara; 6 postes o ring lighting profesional = sombras múltiples suaves casi invisibles; y el centro del campo es la zona más iluminada. [CAMPO: https://improvephotography.com/38680/friday-night-lights-photograph-sports-high-school-stadiums/ ; https://www.quora.com/Why-do-players-have-shadows-around-them-in-all-four-directions-while-playing-on-the-stadium] — (C-10, C-11, C-12) `[DERIVED]`: la familia asume un solo tipo de estadio; el campo distingue dos regímenes lumínicos."
+  },
+  {
+   "id": "d7112d11bbc2",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 10. Lista negativa de campo para cuerpo en NBP: \"warped anatomy, extra fingers, disfigured hands, double shadow, plastic skin, over-smoothing, excessive sharpening, blown highlights\". [CAMPO: https://charliehills.substack.com/p/how-to-prompt-nano-banana-pt2] — (C-24) `[QUOTED]`"
+  },
+  {
+   "id": "cd339674ad18",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 11. Inspección al 100% **debe** incluir la transición calcetín–zapatilla y la fusión ropa–piel, fallos deportivos repetidos que la familia no lista. [CAMPO: https://rosagranados.substack.com/p/finding-the-flaws-how-to-identify] — (C-26) `[QUOTED]`"
+  },
+  {
+   "id": "450e00ee4a40",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 12. **Tensión con una regla FUENTE**: la familia recomienda \"GPT Image 2 quality high para piel\"; un A/B fechado (2026-04-22) da a Nano Banana Pro la victoria en piel, poros y gotas en el aire, y a GPT Image 2 la tipografía; el flujo de campo es NBP para la placa fotográfica y GPT para el texto. [CAMPO: https://aivideobootcamp.com/blog/gpt-image-2-vs-nano-banana-pro-2026/] — (C-22, C-23) `[QUOTED]` — no refuta la regla FUENTE (es de otro origen) pero merece prueba propia."
+  },
+  {
+   "id": "1dc939079a1b",
+   "texto": "[RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos] 13. Bajo luz dura, la cara **debe** mostrar sombra pronunciada en un lado; una cara plana bajo sol intenso es tell de AI. [CAMPO: https://rosagranados.substack.com/p/finding-the-flaws-how-to-identify] — (C-25, C-27) `[QUOTED]` — confirma la regla FUENTE de luz dura rasante."
+  },
+  {
+   "id": "72cf54d2e937",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 1. Nunca pedir reflejos en suelo mojado sin un práctico visible que los origine; cada franja de luz\n   en el asfalto debe corresponder a una fuente en cuadro o justo fuera de él, porque las franjas \"que\n   vienen de ninguna parte\" son la delación más rápida de un render. `[QUOTED]` (Q13, Q14)\n   [CAMPO: https://aiformule.com/blog/reflections-ai-photos]"
+  },
+  {
+   "id": "0a0a97bb99d9",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 2. Si se quiere que el charco o el asfalto devuelvan el skyline o los prácticos, la cámara debe ir baja\n   y mirar a través de la superficie, nunca hacia abajo; el reflejo crece con el ángulo rasante (Fresnel).\n   `[QUOTED]` (Q15, Q16) [CAMPO: https://aiformule.com/blog/reflections-ai-photos]"
+  },
+  {
+   "id": "42c192283697",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 3. El rayo se describe siempre por su aura y sus ramas de color, nunca por detalle en el núcleo: el\n   fotógrafo real expone para \"the aura of the strike and the colours in the branches\" porque el canal\n   central siempre clipea. `[QUOTED]` (Q2, Q4)\n   [CAMPO: https://stushort.com/lightning-photography-guide-2/]"
+  },
+  {
+   "id": "4cd1166ad1af",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 4. La luz de contra para lluvia debe quedar oculta detrás del sujeto; si entra en cuadro, solo como\n   flare controlado y declarado. `[QUOTED]` (Q8)\n   [CAMPO: https://www.diyphotography.net/20-gorgeous-backlit-rainy-photos-tutorial-take/]"
+  },
+  {
+   "id": "7a322c15373a",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 5. Nunca pedir gotas o partículas \"uniformes\": el espaciado regular de gotas y la regularidad de\n   detalle fueron señalados por evaluadores humanos como fallo de GPT Image 2; declarar densidad y\n   tamaño desiguales. `[QUOTED]` (Q27) [CAMPO: https://research.everypixel.com/gpt-image-2-0/]"
+  },
+  {
+   "id": "d59fc7b10d1d",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 6. La dirección de la luz debe declararse por ancla de la escena (ventana, farola, horizonte), nunca\n   por \"left/right\" a secas: al menos un modelo (Midjourney, 2023) no distinguía izquierda de derecha\n   para la luz; coherente con la regla R2 del repo de anclas legibles. `[QUOTED]` (Q26) `[INFERRED]`\n   para NBP/GPT Image 2 no se probó. [CAMPO: https://www.youtube.com/watch?v=uEBihQiuxzY]"
+  },
+  {
+   "id": "29fd5ac5510f",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 7. En lluvia, declarar siempre el look de obturación elegido con una sola palabra de longitud\n   (\"gotas congeladas\" o \"trazos cortos\" o \"trazos largos débiles\") porque cada uno corresponde a un\n   rango de obturación distinto y mezclarlos rompe la física. `[QUOTED]` (Q9, Q10, Q11)\n   [CAMPO: https://www.nickdalephotography.com/blog/how-to-photograph-in-the-rain]"
+  },
+  {
+   "id": "3c1d605ef979",
+   "texto": "[Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)] 8. `[SNIPPET-ONLY]` Los tells meteorológicos de imagen falsa (combinaciones imposibles: arcoíris con\n   sol en cuadro, rayo desde cúmulos de buen tiempo, imagen \"demasiado cinemática\") citados a\n   M. Shepherd/Forbes no pudieron leerse (403). Queda como lead, no como regla.\n   [https://www.forbes.com/sites/marshallshepherd/2026/01/14/5-tips-for-spotting-fake-ai-generated-weather-images/]"
+  },
+  {
+   "id": "87e61534b48f",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 1. Nunca dar por fija la multitud de fondo después de una edición: cualquier edición local de NBP\n   regenera los rostros del fondo, así que tras insertar cada héroe el crítico debe volver a contar y\n   revisar rostros de fondo, no solo el del héroe. `[QUOTED]` (Q24)\n   [CAMPO: https://www.reddit.com/r/Bard/comments/1mvhhh1/nanobanana_is_amazing_but_it_does_not_produce/]"
+  },
+  {
+   "id": "63c25e070ee4",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 2. Nunca aprobar a la primera una multitud densa con rostros a distancia en GPT Image 2: es el único\n   brief que falló el listón de producción del benchmark (6.9/10), con rostros distorsionados al fondo;\n   siempre generar varias variantes y seleccionar, o resolver la placa con foto licenciada.\n   `[QUOTED]` (Q15, Q16, Q17, Q19) [CAMPO: https://research.everypixel.com/gpt-image-2-0/]"
+  },
+  {
+   "id": "cb362d6a0f02",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 3. En escenas densas de GPT Image 2 debe usarse quality high y la resolución máxima (3840×2160): un\n   elemento pequeño en multitud faltaba a calidad por defecto y aparecía a alta. `[QUOTED]` (Q18, Q26)\n   [CAMPO: https://research.everypixel.com/gpt-image-2-0/ · https://simonwillison.net/2026/Apr/21/gpt-image-2/]"
+  },
+  {
+   "id": "109d608a37a5",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 4. Declarar siempre el tipo de instalación lumínica del estadio: \"cuatro torres de esquina\" produce\n   sombras múltiples duras; \"anillo de luminarias en cubierta\" produce sombras suaves casi sin dirección.\n   Pedir \"sombras múltiples\" en un estadio moderno es un anacronismo físico. `[QUOTED]` (Q1–Q4)\n   [CAMPO: https://documents.uefa.com/r/UEFA-Stadium-Lighting-Guide-2023-2023/Player-shadows-Online]"
+  },
+  {
+   "id": "68e92768f3a5",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 5. El público de concierto puede llevar rostros iluminados por el wash frontal del escenario cuando el\n   beat lo pide (\"hands raised, faces lit by stage wash\"); la silueta es el default, no una prohibición,\n   y esos rostros siguen siendo anónimos aunque estén iluminados. `[QUOTED]` (Q7)\n   [CAMPO: https://photographyicon.com/concert-photography/]"
+  },
+  {
+   "id": "6a52c99c2c0e",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 6. El crítico debe buscar rostros que compartan la misma estructura ósea y proporciones dentro de la masa,\n   no solo \"clones\" evidentes: es el criterio que usan las guías de detección. `[QUOTED]` (Q14)\n   [CAMPO: https://blog.picassoia.com/how-to-spot-ai-generated-images]"
+  },
+  {
+   "id": "fb72245b0613",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 7. Los rostros deformados del fondo en planos abiertos se reparan con restauración facial localizada\n   (GFPGAN/CodeFormer o inpainting de región), nunca regenerando la placa entera. `[QUOTED]` (Q20)\n   [CAMPO: https://promptsera.com/fix-weird-ai-faces/]"
+  },
+  {
+   "id": "9dd544e1a791",
+   "texto": "[Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)] 8. `[SNIPPET-ONLY]` Hilos r/StableDiffusion 1are9rn y 1oic1d0 tratan exactamente este problema\n   (rostros de multitud) pero no pudieron leerse; quedan como lead para el ejercicio."
+  },
+  {
+   "id": "7c3e7e176614",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 1. Nunca describir el rostro en texto cuando ya viaja en la referencia: la descripción facial larga\n   compite con la imagen y produce un \"blended stranger\". `[QUOTED]` (Q17)\n   [CAMPO: https://www.ud.hk/en/blogs/insight/article/2026-06-29-nano-banana-consistent-characters]"
+  },
+  {
+   "id": "c6fdf05aa8e5",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 2. Para una inserción de cuerpo entero debe adjuntarse una hoja lado a lado (rostro en primer plano +\n   cuerpo entero con vestuario) y no solo el maestro de rostro: con solo la cara el modelo \"has to guess\n   the rest of the body\" y los detalles de cuerpo entero derivan (tatuajes desplazados). `[QUOTED]` (Q30, Q31)\n   [CAMPO: https://www.youtube.com/watch?v=aiKGYFx3VPg]"
+  },
+  {
+   "id": "32ced481c6d7",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 3. Siempre etiquetar a cada persona por número o nombre visible en su hoja de referencia y usar esa\n   etiqueta en el prompt; nunca \"la mujer del fondo\". `[QUOTED]` (Q7, Q14, Q33)\n   [CAMPO: https://replicate.com/openai/gpt-image-2 · https://queststudio.io/blog/chatgpt-group-photo-prompts]"
+  },
+  {
+   "id": "a72dfebf3051",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 4. Nunca corregir dos regiones en la misma instrucción: cambiar una región por vez, porque una\n   instrucción grande \"invita\" al modelo a redibujar lo que ya estaba bien. `[QUOTED]` (Q16)\n   [CAMPO: https://queststudio.io/blog/chatgpt-group-photo-prompts]"
+  },
+  {
+   "id": "5e8ff1956824",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 5. Más referencias no es mejor: nunca adjuntar del mismo miembro fotos con luz y expresión dispares;\n   una referencia limpia primero, escalar a varias solo si el rostro no se sostiene. `[QUOTED]` (Q18)\n   [CAMPO: https://www.ud.hk/en/blogs/insight/article/2026-06-29-nano-banana-consistent-characters]"
+  },
+  {
+   "id": "be05a203b661",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 6. En secuencias largas debe re-anclarse al maestro original por capítulos en lugar de encadenar\n   siempre sobre la última salida. `[QUOTED]` (Q36)\n   [CAMPO: https://flowith.io/blog/nano-banana-consistent-characters-storyboard/]"
+  },
+  {
+   "id": "8b27ceb9ada3",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 7. El presupuesto de referencias de NBP debe contarse en identidades, no en imágenes: 14 imágenes de\n   entrada, 5 identidades; el resto del cupo es para props, escenario y estilo. `[QUOTED]` (Q1, Q4)\n   [CAMPO: https://ai.google.dev/gemini-api/docs/image-generation · https://blog.google/innovation-and-ai/products/nano-banana-pro/]"
+  },
+  {
+   "id": "ad4fa1e31d14",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 8. Tras cada inserción el crítico debe re-verificar a **todos** los miembros ya colocados, no solo al\n   nuevo: la edición regenera rostros que no eran el objetivo. `[QUOTED]` (Q37)\n   [CAMPO: https://www.reddit.com/r/Bard/comments/1mvhhh1/nanobanana_is_amazing_but_it_does_not_produce/]"
+  },
+  {
+   "id": "886ff5e3f9cd",
+   "texto": "[Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)] 9. `[SNIPPET-ONLY]` r/aiArt reporta que NBP supera a GPT Image en consistencia de identidad en una\n   rejilla de 9 miradas (Q38); r/StableDiffusion 1wetnrt describe un flujo \"Multi Reference Shot\" con\n   referencias separadas para luz, composición y blocking. Ambos ilegibles; leads para el ejercicio."
+  },
+  {
+   "id": "1ca0b71565f4",
+   "texto": "[Decisiones de dirección — 2026-09-25] Ocho decisiones tomadas una por una por Eric Toledano en la sesión del 25 de septiembre de 2026.\nNo se reabren en medio de un proyecto; se cambian aquí, con fecha, si cambian."
+  },
+  {
+   "id": "36911e570496",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 1 · Decisión: Dónde viven las familias de régimen físico, el vocabulario ampliado del linter y su copia parcheada · Opción elegida: En el repo, `.claude/rules/regimenes/` y `.claude/hooks/aurora/`; `rule_registry.py` lee la carpeta del repo además de los skills instalados · Consecuencia operativa: Versionado en git, auditable por PR; se empaqueta como skill cuando esté canonizado"
+  },
+  {
+   "id": "fd82a9054cd5",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 2 · Decisión: Alcance del linter aurora · Opción elegida: Copia parcheada en el repo. El conteo de palabras nunca bloquea: es advertencia con el presupuesto de la plataforma como referencia. Siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas · Consecuencia operativa: Los templates de 250 palabras de SW30 y los prompts de 5 slots de GPT Image pasan"
+  },
+  {
+   "id": "676e3aa7a62c",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 3 · Decisión: Bloque de identidad con referencia de persona adjunta · Opción elegida: Por rol de la referencia. Keyframe de inicio o fin en imagen a video: no re-describir. Referencia de personaje sin start frame, casos con @img, Elements o ancla con refs: bloque de identidad completo y verbatim · Consecuencia operativa: Resuelve la contradicción entre U7, Seedance §10, forge Rule 3 y Kling §10, Veo §7, Seedance §13, SW30 R5 y R16"
+  },
+  {
+   "id": "981fe9625e52",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 4 · Decisión: Taxonomía de la base de reglas · Opción elegida: Caso ampliado con LUGAR, EDIF, ANIMAL, OBJ, MULTITUD, ENSAMBLE. Tarea por subproceso, E0.1 a POST.2 · Consecuencia operativa: Las 852 clasificaciones existentes se importan tal cual; los códigos nuevos se clasifican con el clasificador de dos capas de la decisión 9"
+  },
+  {
+   "id": "cd18b0928504",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 5 · Decisión: Tarjeta de ancla en la base · Opción elegida: Las nueve dimensiones D1 a D9 como facetas multivalor de cada regla · Consecuencia operativa: Una pasada de clasificación adicional sobre reglas de imagen y video"
+  },
+  {
+   "id": "3fe94e478415",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 6 · Decisión: Modelo de embeddings · Opción elegida: `intfloat/multilingual-e5-large` local, sin API key; la tabla admite añadir OpenAI después · Consecuencia operativa: Cubre inglés, español y ruso"
+  },
+  {
+   "id": "6a03dcb6707c",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 7 · Decisión: Familias de régimen físico · Opción elegida: Nueve familias con esqueleto de nueve secciones: agua en superficie, ruptura de superficie, subacuático, objeto balístico, vehículo, cuerpo en esfuerzo, luz y clima, multitud anónima, grupo ensamble · Consecuencia operativa: Cada regla etiquetada FUENTE o A PRUEBA"
+  },
+  {
+   "id": "7dcf30bd73bf",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 8 · Decisión: Cómo entran las inferencias · Opción elegida: Con etiqueta `[A PRUEBA]`; investigación de campo en foros y tutoriales para confirmar o refutar cada una; un ejercicio real por caso; se canonizan según el resultado · Consecuencia operativa: Nunca bloquean un gate hasta ser canónicas"
+  },
+  {
+   "id": "6e160f4e24a7",
+   "texto": "[Decisiones de dirección — 2026-09-25] #: 9 · Decisión: Quién clasifica sin NotebookLM · Opción elegida: NotebookLM eliminado del flujo por completo. Clasificador de dos capas, determinista por ruta y regex más similitud vectorial con confianza, y auditoría de Eric en hoja xlsx cuyo veredicto manda · Consecuencia operativa: Se retiran el servidor MCP, los scripts nblm_* , rule_export.py y el corpus; rule_answer_check.py se conserva para medir cobertura de cualquier respuesta"
+  },
+  {
+   "id": "e3fa12343e38",
+   "texto": "[Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo] - La génesis fija solo la parte del sujeto que lleva la identidad; todo lo que la extiende es un paso posterior con esa génesis adjunta como referencia. Rostro T1 antes que cuerpo T2, siempre."
+  },
+  {
+   "id": "a7aa940244f8",
+   "texto": "[Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo] - Multitud anónima y grupo ensamble son técnicas distintas, no dos tamaños de la misma. En la multitud nadie tiene rostro legible; en el ensamble todos."
+  },
+  {
+   "id": "fd55f375cd0a",
+   "texto": "[Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo] - El ángulo de cámara es una dimensión de decisión propia, D9, elegida por la dinámica de poder del beat, nunca por variedad."
+  },
+  {
+   "id": "06668f066c00",
+   "texto": "[Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo] - Un producto con logo o etiqueta real no nace de texto: es flujo con referencia."
+  },
+  {
+   "id": "63321bb005de",
+   "texto": "[Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo] - Cuando una regla puede codificarse, se codifica; pero un límite de longitud es dirección, no bloqueo."
+  },
+  {
+   "id": "0686d4811dc6",
+   "texto": "[Composition-only source policy] When the user supplies an image to follow its composition but does not request reference-image generation:\n1. Inspect the source and extract only spatial/compositional facts: aspect/orientation, camera height/angle, subject placement, subject scale, negative space, action vector, foreground/background layering, major prop placement, depth-of-field pattern, horizon/background bands.\n2. Record them as COMPOSITION LOCKS.\n3. Do not attach the source image to the generator.\n4. Do not copy identity, face, wardrobe, logos, brands, venue-specific marks, textures, artifacts, or AI signatures unless explicitly requested.\n5. Compile a fresh scene from the composition locks and the current brief.\n6. Current-task locks override any prior-task context."
+  },
+  {
+   "id": "eb1c42331709",
+   "texto": "[Surgical Image Edit Template v3.2] Edit the existing approved image only."
+  },
+  {
+   "id": "275dde5906fb",
+   "texto": "[Surgical Image Edit Template v3.2] CHANGE:\n- List only the explicit requested delta(s)."
+  },
+  {
+   "id": "3a8de7810965",
+   "texto": "[Surgical Image Edit Template v3.2] PRESERVE EXACTLY:\nEvery approved subject/identity/pose lock; Composition and camera unless explicitly changed; Lighting/color unless explicitly changed; Approved environment elements unless explicitly changed; Water/physics/material behavior unless explicitly changed; Aspect/framing unless explicitly changed"
+  },
+  {
+   "id": "7e6bef922b08",
+   "texto": "[Surgical Image Edit Template v3.2] Do not reroll or reinterpret unaffected parts of the image."
+  },
+  {
+   "id": "a53afb3aa633",
+   "texto": "[Underwater Human Reference Policy v3.2] Use for complex underwater/split-level human images."
+  },
+  {
+   "id": "3e6142b5d64e",
+   "texto": "[Underwater Human Reference Policy v3.2 › Preserve first] - User/project locks remain verbatim across revisions."
+  },
+  {
+   "id": "0bbe042f109f",
+   "texto": "[Underwater Human Reference Policy v3.2 › Preserve first] - If the user gave a recognized domain pose/technique, preserve the domain label; do not expand it into speculative anatomy by default."
+  },
+  {
+   "id": "bc21a757705e",
+   "texto": "[Underwater Human Reference Policy v3.2 › Reference roles] Each reference has one role and explicit ignored dimensions. Example:\n`REF1 = water physics only; ignore identity, pose, framing, camera, environment, color.`\nDo not borrow an ignored dimension even when the source image makes it salient."
+  },
+  {
+   "id": "71181702a11b",
+   "texto": "[Underwater Human Reference Policy v3.2 › Prompt revision] When the existing result is strong, use small deltas. Do not rewrite water, lighting, environment, subject, or pose when they already pass."
+  },
+  {
+   "id": "47448be957f0",
+   "texto": "[Underwater Human Reference Policy v3.2 › Complex underwater anatomy] If fine upper-body anatomy is non-critical, physically plausible turbulence/bubbles may hide detail while preserving the required pose silhouette, frontal orientation, continuous proportions and body geometry."
+  },
+  {
+   "id": "23b95bf900c6",
+   "texto": "[Underwater Human Reference Policy v3.2 › Crowd/background] Do not infer density. `audience present` does not imply `packed stands`. If the user later locks `stands full`, update only that background property."
+  },
+  {
+   "id": "736158bbfffc",
+   "texto": "[Underwater Human Reference Policy v3.2 › Camera geometry] Objects behind the camera under the locked viewpoint must not be visible. Treat camera-relative object visibility as a critical spatial invariant."
+  },
+  {
+   "id": "cd690dd5f045",
+   "texto": "[Underwater Human Reference Policy v3.2 › Delivery] Aspect ratio belongs in generator settings when supported and must be checked on output pixels. Prompt text alone is not a delivery guarantee."
+  },
+  {
+   "id": "6ce3fe71d1c1",
+   "texto": "[AI Production Director — Learning Registry v3.2] These are versioned production learnings from the controlled Olympic 10 m platform-diving image trial. They do **not** rewrite the canonical KB extractor. Promotion path: production evidence → learned overlay → regression tests → versioned ruleset."
+  },
+  {
+   "id": "658443f56a83",
+   "texto": "[AI Production Director — Learning Registry v3.2] 1. **Lock preservation on revision.** Do not reinterpret unaffected user/project locks."
+  },
+  {
+   "id": "f46ef1908218",
+   "texto": "[AI Production Director — Learning Registry v3.2] 2. **Small-delta revision.** Correct only failed elements when the rest of the asset/prompt is passing."
+  },
+  {
+   "id": "4dbac62e682f",
+   "texto": "[AI Production Director — Learning Registry v3.2] 3. **Preserve domain-native pose terminology.** A precise phrase such as a standard Olympic 10 m platform diving entry position should not be expanded into speculative anatomical prose unless required or proven necessary."
+  },
+  {
+   "id": "dca73ef03dbe",
+   "texto": "[AI Production Director — Learning Registry v3.2] 4. **Reference-role isolation.** A water-physics reference controls water physics only; ignored dimensions must not leak into pose, framing, identity, environment, color, etc."
+  },
+  {
+   "id": "635dfca2f0b0",
+   "texto": "[AI Production Director — Learning Registry v3.2] 5. **Generation parameters are hard settings.** Aspect ratio/size must be passed as generator settings when possible and verified from output pixels."
+  },
+  {
+   "id": "26bd20b56c95",
+   "texto": "[AI Production Director — Learning Registry v3.2] 6. **Aspect-ratio output policy.** Exact is preferred; <=1% deviation is minor/crop-fix; >1% is blocking unless explicitly accepted."
+  },
+  {
+   "id": "1dabc9313a07",
+   "texto": "[AI Production Director — Learning Registry v3.2] 7. **No unspecified amplification.** Presence does not imply quantity/density. Audience present does not mean packed stands; packed stands require a lock."
+  }
+ ]
+}

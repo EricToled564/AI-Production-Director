@@ -1,0 +1,806 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "514dab59be95",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 2 · Contradicción detectada: **Negativo obligatorio.** El original exige bloque `Negative:` en todos los casos y plataformas. Nano Banana, Veo, Flux, Hailuo no tienen campo negativo; `image` manda positive framing; GPT Image usa el slot `Constraints:`. · Parche en esta copia: P2 — `NEGATIVE_BLOCK_POLICY`: **required** solo en Kling y Seedance 2.5; `Constraints:` cuenta como bloque negativo en GPT Image; en el resto no se exige (si aparece con marcador `Negative:` en NB/GPT/Veo/Flux se avisa). Si el bloque existe se valida SW30 R16: sin \"no X\" en Kling y ≤8 ítems → WARN. Sin `--platform` se mantiene el comportamiento v1.1 (required) con WARN. · Fuente que lo sustenta: `universal-rules.md` U1 (\"Negative constraints — only if the model supports them\"); `kling.md` §6 (\"dedicated negative prompts field … Do not write 'no X' … Keep the list short\"); `seedance-25.md` §7 y §19-A (`[Negative Prompts]`); `seedance.md` §12 (1.x/2.0 sin soporte fiable); `veo.md` §7; `image/golden-rules.md` §2; `image/gpt-image.md` \"5 slots\" (Constraints); SW30 R16 (\"negativos sin 'no X', ≤8 ítems\")."
+  },
+  {
+   "id": "b63bca3ae8aa",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 3 · Contradicción detectada: **Identity block por rol de la referencia.** El original banea los descriptores P/O siempre que un ref cargue P/O. En I2V eso es correcto (no re-describir el first frame). En caso 2 con refs `@img1` / Elements / `Image 1` es al revés: U7 y Seedance §10 **exigen** el identity block completo junto a la referencia. · Parche en esta copia: P3 — `--ref-role {ff,lf,character,location,prop,style}` (si no se pasa, se deriva del campo `role` de `refs.yaml` y del caso). Con **ff/lf** los descriptores P/O siguen prohibidos. Con **character** se permiten y el identity block es obligatorio: si faltan ≥3 de {pelo, ojos/piel, prenda, accesorio, rasgo distintivo} → WARN \"identity block absent\". · Fuente que lo sustenta: `kling.md` §3 (\"Describe how the scene evolves from the image, not what is in the image\") y §10; `veo.md` §7 (\"Do not re-describe static elements\"); `seedance.md` §13; SW30 R5 y R16; `universal-rules.md` U7 (\"Identity block must include: face shape, eye color, skin tone. Hair … Exact clothing items. Distinctive accessories\"); `seedance.md` §10 (\"The full identity block must follow the @img1 mention\"); forge SKILL.md Rule 3 y `consistency-locks.md` Lock 1."
+  },
+  {
+   "id": "28038930db4e",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 4 · Contradicción detectada: **series_lock verbatim vs L.** Forge Rule 3 exige que `environment`/`lighting`/`color_grade` aparezcan **verbatim** en cada prompt y `validate_prompts.py` bloquea si faltan. El original banea \"gym\", \"polished light wood floor\", \"floor-to-ceiling windows\" cuando L está cubierta: un validador exige lo que el otro castiga. · Parche en esta copia: P4 — `--series-lock <json|yaml>`: todo término del vocabulario de redundancia que caiga dentro de una de esas cadenas exactas queda exento. Si una cadena no aparece verbatim se avisa (WARN), porque `validate_prompts.py` la bloqueará. · Fuente que lo sustenta: forge SKILL.md Rule 3 (\"flow into every prompt **verbatim** … no synonym, no inserted adjective\"); `tools/validate_prompts.py` check 7; `references/consistency-locks.md` Locks 1–3 y 8."
+  },
+  {
+   "id": "4e34e6581de9",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 5 · Contradicción detectada: **Micro-acción corporal.** El original lista `sweat`, `sweaty`, `jawline` en P: con un ref de persona quedan prohibidos. La Ley de Detalles obliga a que cada shot tenga una micro-acción física (\"Jaw locks. Knuckles whiten. He swallows hard\"). · Parche en esta copia: P5 — salen de P y existe `BODY_MICRO_ACTION_EXEMPT` (sweat, sweat bead, sweaty, jaw, jawline, knuckles, breath, exhale, swallow, tendon, vein, blink) que el código respeta aunque un vocab custom los reintroduzca. · Fuente que lo sustenta: `dramaturgy.md` §2 \"Physical micro-action on the body\"; `universal-rules.md` §1 (Details Law) y U3; `race-and-speed.md` §1 ley 2 (\"feeling renders only on a knuckle … or a sweat bead\") y §7 (\"sweat reads as discrete specular dots\")."
+  },
+  {
+   "id": "d3ff3b7ceee6",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 6 · Contradicción detectada: **\"cinematic\" requerido vs prohibido.** El original lo pone en S (se banea solo si hay ref de estilo) **y** lo usa como patrón que satisface la sección `style` en 6 snapshots. El director §6.1 dice que el vocabulario prohibido de dramaturgy \"gana siempre\". · Parche en esta copia: P6 — `cinematic` sale de S y de **todos** los patrones de secciones; entra en `BANNED` con professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, intense moment, powerful scene, incredible, gorgeous. Una mención negada (\"no cartoon\") no cuenta (P11). · Fuente que lo sustenta: `ai-production-director/SKILL.md` §6.1; `dramaturgy.md` §2 \"What is banned\"; `universal-rules.md` §1 y U12; `image/gpt-image.md` Anti-Slop (stunning, incredible, epic, gorgeous, masterpiece); `models.md` (\"Anti-slop: вредит\" en GPT Image 2)."
+  },
+  {
+   "id": "d9e8a6b904f1",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 7 · Contradicción detectada: **slow motion.** BANNED global en el original. `kling.md` lo recomienda como técnica anti-morphing y define \"ultra-slow motion\" como palabra de tempo que el modelo obedece; `race-and-speed` lo prohíbe de verdad (ley 1). · Parche en esta copia: P7 — deja de ser BANNED global: **WARN** en fotorreal/ilustración/animación (pide causa), **FAIL** con `--treatment race`, **permitido sin aviso** con prefijo `ultra-` o con `OVERRIDE: slow motion - <razón>`. · Fuente que lo sustenta: `kling.md` §3 tempo words (\"ultra-slow motion (2-3s feel)\") y §11 (\"Generate the action in slow motion and speed it up in post\"); `dramaturgy.md` §7 (toda decisión de cámara con razón); `race-and-speed.md` §1 ley 1 (\"never CGI-clean or sped-up … Over-crank … drain all threat\")."
+  },
+  {
+   "id": "23243a8baf39",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 8 · Contradicción detectada: **anime / cartoon / 3D render.** BANNED global en el original. Los patterns del skill `image` los usan de forma legítima (character cards anime, grids Pixar-style). · Parche en esta copia: P7 — `--treatment {fotorreal,ilustracion,animacion,race}` (default fotorreal). `STYLE_BANNED_FOTORREAL` solo aplica en fotorreal/race. En ilustración/animación además se sustituyen los patrones de la sección `style` (`TREATMENT_SECTION_OVERRIDES`) y se retira `anti_style`. · Fuente que lo sustenta: `image/references/patterns/character-design.md` (\"Anime-Style Character Card\", \"clean cel-shaded anime\"); `multi-panel.md` (\"Pixar-style 3D\", \"anime cel shading\"); `editing.md` (\"vibrant anime\"); `dimensional.md` (\"photorealistic 3D render\")."
+  },
+  {
+   "id": "bfda7f865cde",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 9 · Contradicción detectada: **Flag broadcast en stills.** `--sports-broadcast` exige `60fps` y `broadcast realism` también en casos 1 y 2 (imagen), donde \"60fps\" no significa nada y SW30 prohíbe cualquier idea de movimiento. · Parche en esta copia: P8 — en casos 1/2 el flag se ignora con WARN explicativo; en 3a/3b/3c/4 sigue siendo FAIL si faltan las keywords. · Fuente que lo sustenta: `kling.md` §2 (\"up to 60 fps\" es especificación de video); SW30 R8 (\"Stills en instante congelado; nada de movimiento en imagen fija\"); Regla 26 v6.0 (origen del flag) habla de clips."
+  },
+  {
+   "id": "c05588da565f",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 10 · Contradicción detectada: **Presupuesto I2V Veo/Seedance.** El original aplica 50–90 a todo I2V. Veo tiene sweet spot 50–200 y comprime a 50–100; Seedance no fija número y su skeleton de 11 bloques supera cualquier techo; Kling I2V es 20–40. · Parche en esta copia: P1 — presupuesto `i2v` por familia: Kling 20–40, Veo 50–100; Seedance usa el rango del adaptador (80–150) como única cifra disponible y lo declara en `source`. Todo WARN. · Fuente que lo sustenta: `kling.md` §5 y §10; `veo.md` §3 y §9; `seedance.md` §6 y §13; `seedance-25.md` §19 (ejemplos oficiales largos); forge `adapters/seedance.md`."
+  },
+  {
+   "id": "be9cfc827b9b",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 11 · Contradicción detectada: **S vs secciones requeridas.** Con un ref de estilo, `photorealistic/documentary/editorial` quedan prohibidos en MAIN y a la vez la sección `style` exige exactamente una de esas palabras: imposible de satisfacer. · Parche en esta copia: P12 — si S está cubierta por refs, la sección `style` se **dispensa** y se reporta como WARN informativo. · Fuente que lo sustenta: `universal-rules.md` U13 (\"Do not restate what a reference already defines\"); `seedance-25.md` §5; `consistency-locks.md` Lock 6 (style refs)."
+  },
+  {
+   "id": "974a525545c8",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 12 · Contradicción detectada: **Plataformas omitidas.** Snapshots solo para gpt_image_2, midjourney, nano_banana_pro, kling_3.0, veo_3.1, sora_2. Forge produce prompts para flux, ideogram, seedream, hailuo, seedance; el pipeline usa nano_banana_2 y seedance_2.5. Sin snapshot, el linter opera en \"honor system\". · Parche en esta copia: P10 — snapshots nuevos: `flux__1`, `ideogram__1`, `seedream__1`, `nano_banana_2__1/__2`, `seedance__3a`, `seedance_2.5__3a/__3b/__4`, `hailuo__3a`, `kling_3.0__4`. Resolución por familia (`--platform kling` → `kling_3.0`, `seedance_2.5` → su propio snapshot). Reconoce `Negative field.`, `[Negative Prompts]`, `Constraints:`. Vocabulario L/PR/O ampliado a agua, automotriz, café/interior, clima y música. · Fuente que lo sustenta: forge `adapters/*.md` (patrón de composición de cada uno); `kling.md` §3 (protocolo P1–P4 y `Shot N (t)`); `seedance-25.md` §3–§7, §16; `seedance.md` §13–§14; `veo.md` §10; `image/models.md` (NB2 mismo estilo que NBP)."
+  },
+  {
+   "id": "74bdc51ca45a",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - La capa 1 (redundancia con refs por categoría P/O/L/PR/S) sigue bloqueando exactamente igual\n  cuando el rol es ff/lf. Es la razón de ser del linter y se conserva."
+  },
+  {
+   "id": "9776a38b7040",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - Las secciones requeridas siguen bloqueando (salvo los dispensados por P12 y los overrides\n  por tratamiento)."
+  },
+  {
+   "id": "a21237f6c38b",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - El vocabulario prohibido sigue bloqueando; ahora es más largo, no más corto."
+  },
+  {
+   "id": "d71bf7a924b3",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - El mecanismo `OVERRIDE: <término-o-categoría> - <razón>` es idéntico: solo el turno actual,\n  solo con scope específico."
+  },
+  {
+   "id": "2dedbdfb89d3",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - Exenciones de contexto de cámara y anclas direccionales: idénticas."
+  },
+  {
+   "id": "42c75d5f4804",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió] - `--json`: misma salida con las claves originales intactas; se añaden `case_alias`,\n  `treatment`, `ref_role`, `ref_role_source`, `word_budget_source`, `negative_policy`,\n  `negative_marker`, `series_lock_keys`, `linter_version`."
+  },
+  {
+   "id": "8298b6b01303",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso] python3 .claude/hooks/aurora/prompt_linter.py \\\n  --prompt draft.txt --refs refs.yaml --case CLIP-FF --platform kling_3.0 \\\n  --ref-role ff --series-lock series_lock.json --treatment fotorreal \\\n  --overrides user_msg.txt [--sports-broadcast] [--json]"
+  },
+  {
+   "id": "0c49b7491702",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `T1`, `T2`, `PLACA` / `PLATE`, `GENESIS` · Linter: `1` · Etapa del director: Etapa 5 (anchors) · Notas: maestro de rostro, maestro de cuerpo, placa vacía (SW30 R7) — sin refs"
+  },
+  {
+   "id": "8d3cb5216fc3",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `T3`, `T4`, `T5`, `ANCLA` / `ANCHOR` · Linter: `2` · Etapa del director: Etapa 5 · Notas: cuadro 1 persona, 2 personas, edición quirúrgica — con refs `Image N` / `@img`"
+  },
+  {
+   "id": "c1ca3448fe05",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `CLIP-FF`, `CLIP`, `I2V`, `CLIP-I2V` · Linter: `3a` · Etapa del director: Etapa 6 (video prompts) · Notas: image-to-video con first frame"
+  },
+  {
+   "id": "ac73cbebfd6f",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `CLIP-FF-LF`, `CLIP-LF`, `CLIP-TAIL` · Linter: `3b` · Etapa del director: Etapa 6 · Notas: first + tail image (Kling start/tail; Seedance 2.5 first & last)"
+  },
+  {
+   "id": "58f5c954acc3",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `CLIP-MC`, `CLIP-MOTION`, `MOTION-CONTROL` · Linter: `3c` · Etapa del director: Etapa 6 · Notas: Kling Motion Control (§9)"
+  },
+  {
+   "id": "8967b7293fd3",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Del pipeline: `CLIP-DIALOGO`, `CLIP-DIALOG`, `CLIP-DIALOGUE` · Linter: `4` · Etapa del director: Etapa 6 · Notas: Kling 3.0 P1–P4, Veo `Says:`, Seedance 2.5 `{ }`"
+  },
+  {
+   "id": "79dca3bed4b2",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)] Mayúsculas, guiones y guiones bajos son indiferentes. Un alias desconocido sale con `2`."
+  },
+  {
+   "id": "739b1283b3c6",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] `--ref-role`: `ff` / `lf` · Descriptores P/O en MAIN: **prohibidos** (FAIL) · Identity block: no aplica · Cuándo: casos 3a/3b/3c/4: la imagen ancla identidad y wardrobe"
+  },
+  {
+   "id": "80d153a3d430",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] `--ref-role`: `character` · Descriptores P/O en MAIN: permitidos · Identity block: **obligatorio** (WARN si <3 grupos) · Cuándo: caso 2 con `Image 1: face`, `@img1`, Elements, `--cref`"
+  },
+  {
+   "id": "dc133f52b4e0",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] `--ref-role`: `location` / `prop` / `style` · Descriptores P/O en MAIN: permitidos (WARN si además hay tags P/O) · Identity block: no aplica · Cuándo: refs que no son de persona; L/PR/S se rigen por sus tags"
+  },
+  {
+   "id": "78e6a6e52ea0",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] Si no se pasa, se deriva del campo `role` de `refs.yaml` (`FF`, `LF`, `TAIL`, `CHARACTER`,\n`ELEMENT`, `IMG`…) y, en su defecto, del caso (video → ff; 1/2 → character)."
+  },
+  {
+   "id": "1e9305f61040",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Tratamiento (P7)] `--treatment fotorreal` (default) banea anime/cartoon/3D render y avisa sobre slow motion.\n`ilustracion` y `animacion` levantan esos bans y ajustan la sección `style`. `race` mantiene\nlos bans fotorreal y convierte slow motion en FAIL (`race-and-speed.md` ley 1)."
+  },
+  {
+   "id": "ca03139a7453",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline] El director (`ai-production-director`) nombra al linter como \"gate final\" con \"veto final\nsobre prompts\" (§1) y lo exige en la Etapa 6; la Etapa 5 lo recomienda. Con esta copia:"
+  },
+  {
+   "id": "2127669766f1",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)] 1. `refs.yaml` se escribe desde el plan de anchors: cada referencia con `role` (`CHARACTER`,\n   `LOCATION`, `PROP`, `STYLE`) y `tags` (`P1`, `O1`, `L1`, `PR1`, `S1`)."
+  },
+  {
+   "id": "8b33fdd79d7e",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)] 2. `series_lock.json` se extrae de `shots.json` (`series_lock.character/environment/\n   lighting/color_grade`) — son las mismas cadenas que forge exige verbatim."
+  },
+  {
+   "id": "45cc21b2f318",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)] 3. Se ejecuta por prompt, con el caso SW30 tal cual (`--case T1`, `--case T3`) y la\n   plataforma del header `Model:` del skill `image` (`nano_banana_pro`, `nano_banana_2`,\n   `gpt_image_2`)."
+  },
+  {
+   "id": "2f8a0d773406",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)] python3 .claude/hooks/aurora/prompt_linter.py \\\n  --prompt out/anchors/T3_shot_04.txt --refs out/anchors/refs_shot_04.yaml \\\n  --case T3 --platform nano_banana_pro --ref-role character \\\n  --series-lock out/series_lock.json --overrides /tmp/user_turn.txt"
+  },
+  {
+   "id": "dccfa910763d",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)] Exit `0` → se entrega con el reporte adjunto (trazabilidad, SKILL.md del linter §\"Interpretar el\nresultado\"). Exit `1` → no se entrega; se itera. Los WARN de palabras se leen junto al techo\ndel adaptador, no se \"arreglan\" recortando el T1."
+  },
+  {
+   "id": "ed18d66b9ace",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)] 1. `refs.yaml` con la imagen aprobada como `role: FF` (y `LF`/`TAIL` si hay tail image),\n   tags de lo que esa imagen ya fija — normalmente `P`, `O`, `L`, `PR`."
+  },
+  {
+   "id": "b8b71dbdae94",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)] 2. Plataforma del archivo de modelo destino (`kling_3.0`, `veo_3.1`, `seedance_2.5`, `hailuo`)."
+  },
+  {
+   "id": "7673328effd4",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)] 3. `--treatment race` en spots de velocidad; `--sports-broadcast` solo si aplica la Regla 26."
+  },
+  {
+   "id": "54ceb05f09b4",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)] python3 .claude/hooks/aurora/prompt_linter.py \\\n  --prompt out/clips/shot_04_kling.txt --refs out/clips/refs_shot_04.yaml \\\n  --case CLIP-FF-LF --platform kling_3.0 --series-lock out/series_lock.json \\\n  --overrides /tmp/user_turn.txt"
+  },
+  {
+   "id": "7d517a935399",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)] El gate de la Etapa 6 sigue siendo doble: los dos checks de `video` (dramaturgy check de 6\npuntos + auditoría de 3 detalles) **y** este linter limpio."
+  },
+  {
+   "id": "798cbeca409a",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)] Los tres gates `Stop` del repo (`gate_microgate.py`, `gate_dramaturgy.py`, `gate_image.py`)\ncomparten el mismo esqueleto: leen el payload JSON del hook por stdin, abren el transcript,\ntoman el último mensaje del asistente, extraen los bloques cercados que `prompt_detect.\nvisual_blocks()` clasifica como entrega de prompt visual, y devuelven `exit 2` con el motivo\nen stderr para que el turno no cierre. Un `gate_aurora.py` haría lo mismo delegando en este\nlinter:\n1. **Entrada**: para cada bloque visual detectado, escribir el bloque a un archivo temporal\n   (`--prompt`) y el último mensaje del usuario a otro (`--overrides`), igual que hoy hace\n   `gate_dramaturgy.py` con los `OVERRIDE:`.\n2. **Caso y plataforma**: leer del propio bloque o de sus líneas inmediatas la cabecera que el\n   pipeline ya obliga a emitir — `Model:` del skill `image` (→ `--platform`), el tipo SW30\n   (`T1..T5`) o el `shot_NN` + `CLIP-*` de la Etapa 6 (→ `--case`). Si no se resuelve, el gate\n   **no opina** (mismo default de `prompt_detect.py`: \"un gate que bloquea texto que no es un\n   prompt se desactiva a la semana\").\n3. **Refs y series_lock**: `refs.yaml` y `series_lock.json` del run activo (`output/` del\n   storyboard-architect); si no existen, correr sin refs y avisar en stderr que la capa 1 no\n   se aplicó.\n4. **Semántica de salida**: linter `1` → hook `exit 2` con el reporte; linter `0` → `exit 0`\n   (los WARN se dejan pasar al transcript por stderr sin bloquear).\n5. **Registro en `settings.json`**: una entrada más en `hooks.Stop`, después de\n   `gate_dramaturgy.py`:\n\n   ```json\n   {\n     \"type\": \"command\",\n     \"command\": \"python3 \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_aurora.py\\\"\",\n     \"timeout\": 30,\n     \"statusMessage\": \"Aurora linter: redundancia, secciones, vocabulario...\"\n   }\n   ```\n6. **Anti-bucle**: reutilizar el contador por sesión de `gate_dramaturgy.py`\n   (`MAX_CONSECUTIVE_BLOCKS = 3`) para que un prompt imposible no deje el turno colgado."
+  },
+  {
+   "id": "820b4931ef44",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)] Nada de esto está hecho. Esta copia es la herramienta invocable a mano y desde el pipeline;\nel hook es el siguiente paso, cuando el cableado de caso/plataforma desde la cabecera esté\nvalidado en sesiones reales."
+  },
+  {
+   "id": "e1ff2f87488d",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] bash .claude/hooks/aurora/tests/run.sh           # 18 pruebas, exit 0 si pasan todas\nVERBOSE=1 bash .claude/hooks/aurora/tests/run.sh # con la salida completa de cada una"
+  },
+  {
+   "id": "250b1f8e0f0e",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T01 · Qué reproduce: T1 SW30 de ~250 palabras en nano_banana_pro caso 1 → exit 0 con WARN de palabras · Parche: P1"
+  },
+  {
+   "id": "aae3207e5f20",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T02 · Qué reproduce: GPT Image 2 con `Constraints:` y sin `Negative:` caso 1 → exit 0 · Parche: P2"
+  },
+  {
+   "id": "e2d96441dba5",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T03 · Qué reproduce: Kling caso 3a sin bloque negativo → exit 1 · Parche: P2"
+  },
+  {
+   "id": "cc592af7c172",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T04 / T04b · Qué reproduce: Caso 2 `--ref-role character` con identity block → exit 0 y descriptores P permitidos; sin identity block → exit 0 con WARN · Parche: P3"
+  },
+  {
+   "id": "2c35f4311101",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T05 · Qué reproduce: Caso 3a `--ref-role ff` con descriptores P → exit 1 · Parche: P3"
+  },
+  {
+   "id": "da080e211bae",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T06 / T06b · Qué reproduce: `--series-lock` con \"gym\" y prompt con \"gym\" verbatim → exit 0; el mismo prompt sin series-lock → exit 1 `FAIL [L] 'gym'` · Parche: P4"
+  },
+  {
+   "id": "d4714e753de8",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T07 · Qué reproduce: \"her jaw locks, sweat beads\" con ref P rol ff → exit 0 · Parche: P5"
+  },
+  {
+   "id": "a4e77be67b77",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T08 · Qué reproduce: \"cinematic\" → exit 1 · Parche: P6"
+  },
+  {
+   "id": "9a492782dcf2",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T09 · Qué reproduce: \"anime\" con `--treatment ilustracion` → exit 0; fotorreal → exit 1 · Parche: P7"
+  },
+  {
+   "id": "1c0e5dabbf6d",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T10 · Qué reproduce: \"ultra-slow motion\" Kling → exit 0 sin WARN; \"slow motion\" `--treatment race` → exit 1; fotorreal → WARN · Parche: P7"
+  },
+  {
+   "id": "50ffa64d4461",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T11 · Qué reproduce: `--sports-broadcast` en caso 1 → exit 0 con WARN · Parche: P8"
+  },
+  {
+   "id": "6fb210b39e05",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T12 · Qué reproduce: `--case T1` → 1, `CLIP-FF` → 3a, `CLIP-DIALOGO` → 4 (snapshot `kling_3.0__4`); alias desconocido → exit 2 · Parche: P9, P10"
+  },
+  {
+   "id": "1b421c1ae688",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T13 · Qué reproduce: Negativo Kling con \"no blur\" y 10 ítems → exit 0 con dos WARN R16 · Parche: P2"
+  },
+  {
+   "id": "838d2958a192",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T14 · Qué reproduce: GOOD del README del skill pasa (con y sin `--platform`), BAD falla con las mismas violaciones y overrides aceptados; ya no falla por longitud · Parche: todos"
+  },
+  {
+   "id": "2cd9c1470a32",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T15 · Qué reproduce: `--json` sigue produciendo las claves originales · Parche: —"
+  },
+  {
+   "id": "e03c49107435",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] #: T16 · Qué reproduce: Ref con S y prompt sin palabras de estilo → exit 0 con la sección `style` dispensada; sin ref S → exit 1 · Parche: P12"
+  },
+  {
+   "id": "ebb61004edb7",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas] Los fixtures `prompt_GOOD.txt`, `prompt_BAD.txt`, `refs_session.yaml` y `override_msg.txt`\nse reconstruyeron según `references/README.md` del skill, porque el paquete instalado no\ntrae los `test_*` que ese README lista."
+  },
+  {
+   "id": "0406da084b93",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 1. **Sin `--platform`, el negativo sigue siendo obligatorio** (política `legacy_required`,\n   con WARN). Alternativa descartada: hacerlo opcional por defecto. Se descartó porque el\n   SKILL.md original invoca el linter sin plataforma y su README promete \"Negative prompt:\n   bloque obligatorio\"; sin plataforma no hay forma de aplicar U1, y relajar en silencio\n   habría cambiado el contrato del original."
+  },
+  {
+   "id": "e017264c67b5",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 2. **La exención de series_lock no cubre `BANNED`.** Alternativa descartada: eximir\n   \"cualquier término del vocabulario\", literal. Se descartó porque el director §6.1 dice que\n   el vocabulario prohibido gana siempre; un `color_grade: \"cinematic teal\"` no debe colar\n   \"cinematic\". Solo se eximen P/O/L/PR/S."
+  },
+  {
+   "id": "7e49702354f8",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 3. **La regla \"sin 'no X'\" del negativo solo se aplica a Kling.** Alternativa descartada:\n   aplicarla a todo bloque negativo. Se descartó porque `seedance-25.md` §7 y §19-A muestran\n   que en Seedance 2.5 el formato oficial de `[Negative Prompts]` **es** \"no X\". El ≤8 ítems sí\n   aplica a todas (SW30 R16 habla de clips en general)."
+  },
+  {
+   "id": "74a6b681ad7e",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 4. **Mención negada no dispara BANNED ni bans de estilo** (P11: \"no cartoon\", \"not anime\").\n   Alternativa descartada: flaggear igual y obligar a moverlo al negativo. Se descartó porque\n   el propio snapshot `gpt_image_2__1` del original exige \"no cartoon, no anime\" en MAIN como\n   patrón de `anti_style`; el linter se contradecía a sí mismo."
+  },
+  {
+   "id": "f6d52677b411",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 5. **La sección `style` se dispensa cuando S está cubierta** (P12). Alternativa descartada:\n   sacar `photorealistic/documentary/editorial` de S. Se descartó porque eso vacía la categoría\n   S y U13 es explícito en que lo que define la referencia no se restata."
+  },
+  {
+   "id": "0045a9129f41",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 6. **`--treatment race` existe como cuarto valor** aunque la spec lo enuncia como\n   `{fotorreal,ilustracion,animacion}`: la spec misma pide \"salvo `--treatment race`\" para slow\n   motion, y no hay otra forma de expresarlo. `race` hereda los bans de fotorreal."
+  },
+  {
+   "id": "d9fe8cafdbb7",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 7. **Presupuesto de Seedance 2.5**: se usa 80–150 del adaptador de Seedance 2.0 con la nota\n   de que `seedance-25.md` no fija cifra y sus ejemplos oficiales la superan. Alternativa\n   descartada: inventar un rango \"razonable\" para 30 s; SW30 R19 prohíbe afirmar límites de\n   plataforma sin fuente."
+  },
+  {
+   "id": "48a0a19bf729",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 8. **Alias desconocido de `--case` → exit 2** (error de uso), no un reporte FAIL. Alternativa\n   descartada: exit 1 con \"Unknown case\". Se descartó porque el original usaba `choices=` de\n   argparse, cuyo contrato ya era exit 2; se conserva."
+  },
+  {
+   "id": "b3e3b67987f6",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 9. **Vocabulario nuevo evita términos de una sola palabra con colisión conocida**: no se\n   añadió `stage` a secas (rompería `[Stage 1]` de Seedance 2.5), ni `counter`\n   (`counter-steer`), ni `cup` (`World Cup`); se usaron formas compuestas (`concert stage`,\n   `bar counter`, `coffee cup`). Alternativa descartada: añadirlos y confiar en la exención\n   direccional, que no cubre esos contextos."
+  },
+  {
+   "id": "599b19492a91",
+   "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 10. **`--ref-role location/prop/style` no altera P/O** y solo avisa si los refs traen tags\n    P/O. Alternativa descartada: tratar esos roles como `character`. Se descartó porque el\n    identity block de U7 no tiene sentido para una placa o un prop."
+  },
+  {
+   "id": "343c8ca29fac",
+   "texto": "[_capabilities.json › midjourney] midjourney: display_name=\"Midjourney\"; model_version=\"v7\"; last_verified=\"2026-05-08\"; prompt_style=\"keyword\"; max_prompt_words=100; supports_text_render=false; supports_motion=false; supports_character_ref=true; supports_style_ref=true; supports_negative_prompt=true; aspect_param=\"--ar\"; api_access=\"limited\"; notes=\"Short high-signal phrases. 100 words is the ceiling, past which signal drops off; the adapter recommends 40 to 80. --cref/--sref for series consistency.\""
+  },
+  {
+   "id": "444b10fafe2e",
+   "texto": "[_capabilities.json › flux] flux: display_name=\"Flux\"; model_version=\"2 Pro\"; last_verified=\"2026-05-08\"; prompt_style=\"natural\"; max_prompt_words=150; supports_text_render=true; supports_motion=false; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=false; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Natural-language descriptive. Stronger text rendering than MJ but still treat on-screen copy as a separate compositing pass.\""
+  },
+  {
+   "id": "7b39a781f09e",
+   "texto": "[_capabilities.json › ideogram] ideogram: display_name=\"Ideogram\"; model_version=\"v3\"; last_verified=\"2026-05-08\"; prompt_style=\"natural\"; max_prompt_words=120; supports_text_render=true; supports_motion=false; supports_character_ref=false; supports_style_ref=true; supports_negative_prompt=true; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Best in-class text rendering. The exception case: if a shot truly needs baked text, Ideogram is the fallback. Default is still composite-after.\""
+  },
+  {
+   "id": "9e3fa7c7b5d5",
+   "texto": "[_capabilities.json › gpt-image] gpt-image: display_name=\"GPT Image\"; model_version=\"1.5/2\"; last_verified=\"2026-05-08\"; prompt_style=\"paragraph\"; max_prompt_words=300; supports_text_render=true; supports_motion=false; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=false; aspect_param=\"size\"; api_access=\"full\"; notes=\"Paragraph-form, instruction-following. Tolerates the most context. Good for complex compositions described in sentences.\""
+  },
+  {
+   "id": "f13c6db20c3e",
+   "texto": "[_capabilities.json › nano-banana] nano-banana: display_name=\"Nano Banana (Gemini Flash Image)\"; model_version=\"Gemini 2.5 Flash Image\"; last_verified=\"2026-05-08\"; prompt_style=\"natural\"; max_prompt_words=120; supports_text_render=true; supports_motion=false; supports_character_ref=true; supports_style_ref=true; supports_negative_prompt=false; aspect_param=\"aspectRatio\"; api_access=\"full\"; notes=\"Fast, cheap, strong editing/consistency via reference images. Good for high-volume iteration. Parameter name is camelCase here, unlike the fal.ai models; it ignores --ar.\""
+  },
+  {
+   "id": "368612e84bc2",
+   "texto": "[_capabilities.json › seedream] seedream: display_name=\"Seedream\"; model_version=\"4.5\"; last_verified=\"2026-05-08\"; prompt_style=\"natural\"; max_prompt_words=120; supports_text_render=true; supports_motion=false; supports_character_ref=true; supports_style_ref=true; supports_negative_prompt=true; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Strong photoreal and bilingual text. Competitive on character consistency.\""
+  },
+  {
+   "id": "a9d61d611a10",
+   "texto": "[_capabilities.json › kling] kling: display_name=\"Kling 3.0\"; model_version=\"3.0\"; last_verified=\"2026-06-18\"; prompt_style=\"natural\"; max_prompt_words=150; supports_text_render=false; supports_motion=true; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=true; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Default motion model. Best camera-motion realism per dollar on fal.ai, strongest image-to-video (start/tail frame). 5s or 10s. Reach for this first; escalate only for what it cannot do.\""
+  },
+  {
+   "id": "9c777c0c2ee7",
+   "texto": "[_capabilities.json › veo] veo: display_name=\"Veo 3\"; model_version=\"3\"; last_verified=\"2026-06-18\"; prompt_style=\"natural\"; max_prompt_words=150; supports_text_render=false; supports_motion=true; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=false; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Dialogue and lipsync. Only adapter that generates synchronised native audio in the same pass. Strongest prompt adherence and physics; highest cost. ~8s. Spoken lines go in the prompt; on-screen text still does not.\""
+  },
+  {
+   "id": "8fc97da4b65b",
+   "texto": "[_capabilities.json › seedance] seedance: display_name=\"Seedance 2.0\"; model_version=\"2.0\"; last_verified=\"2026-06-18\"; prompt_style=\"natural\"; max_prompt_words=150; supports_text_render=false; supports_motion=true; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=false; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Multi-shot sequences in a single generation with subject consistency across cuts. Use when consecutive beats share one subject and should feel like one take. Up to ~4 cuts per generation.\""
+  },
+  {
+   "id": "ff43235b3b9c",
+   "texto": "[_capabilities.json › hailuo] hailuo: display_name=\"Hailuo 02 Pro\"; model_version=\"02 Pro\"; last_verified=\"2026-06-18\"; prompt_style=\"natural\"; max_prompt_words=120; supports_text_render=false; supports_motion=true; supports_character_ref=true; supports_style_ref=false; supports_negative_prompt=false; aspect_param=\"aspect_ratio\"; api_access=\"full\"; notes=\"Budget, fast iteration. Use to block out camera move, framing, and timing across cheap drafts, then re-roll the keeper on Kling, Veo, or Seedance. Draft tier, not finals.\""
+  },
+  {
+   "id": "b89e4bbd4261",
+   "texto": "[_capabilities.json › meta] {\"$schema_note\": \"Capability matrix for visual-prompt-forge adapters. Generator models churn monthly. When you re-verify an adapter, bump its model_version and last_verified date here, then reconcile the prose adapter file. This file is the single source of truth for 'what each generator can do'; the .md files are the how-to-prompt guidance. max_prompt_words is a ceiling, not a target: an adapter .md may recommend a narrower range, but it may never advertise more than the ceiling. tools/validate_capabilities.py enforces that relationship and checks that each .md documents the aspect_param named here.\", \"version\": \"1.1\", \"matrix_last_reviewed\": \"2026-07-30\"}"
+  },
+  {
+   "id": "60c12b2f108f",
+   "texto": "[shots.schema.json › (raíz)] title=\"Shots\"; description=\"Structured shot list for a storyboard. Versioned, audit-friendly, generator-agnostic. Write-once: the QA loop never mutates this file, so its hash in run.json stays valid for the life of the project. Cross-field rules this schema cannot express (end greater than start, shots tiling project.duration_s, on_screen_text resolving into text-overlays.json, overlay colors coming from the brand-lock palette) are enforced by tools/validate_shots.py.\""
+  },
+  {
+   "id": "5421b1d317d4",
+   "texto": "[shots.schema.json › version] version: type=\"string\"; enum=[\"1.0\", \"1.1\", \"1.2\"]; description=\"1.1 added optional shot.assets and top-level meta. 1.2 added content hashes and critique back-references to shot.assets.generated, and allows on_screen_text to be an array so a shot can carry more than one overlay. Backward compatible: every valid 1.0 file is a valid 1.2 file.\"; requerido"
+  },
+  {
+   "id": "2f03e29c8f6c",
+   "texto": "[shots.schema.json › meta] meta: type=\"object\"; description=\"Forward-compat passthrough for tooling that needs to annotate a storyboard without a schema bump. Ignored by core skills.\"; opcional"
+  },
+  {
+   "id": "ec1564cd46ba",
+   "texto": "[shots.schema.json › project | run.schema.json › project] project: type=\"object\"; requerido"
+  },
+  {
+   "id": "52980383644d",
+   "texto": "[shots.schema.json › project.title | run.schema.json › project.title] project.title: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "201e20bdb7ed",
+   "texto": "[shots.schema.json › project.duration_s | run.schema.json › project.duration_s] project.duration_s: type=\"number\"; requerido"
+  },
+  {
+   "id": "9ff8edce13df",
+   "texto": "[shots.schema.json › project.aspect | run.schema.json › project.aspect] project.aspect: type=\"string\"; enum=[\"16:9\", \"9:16\", \"1:1\", \"4:5\", \"21:9\"]; requerido"
+  },
+  {
+   "id": "c7d22ee5ffc2",
+   "texto": "[shots.schema.json › project.framework] project.framework: type=\"string\"; description=\"Beat framework name. e.g. 'pain-reframe-promise', 'hero-trilogy', 'founder-explainer', 'content-spiral', 'educational-demo', 'custom'\"; opcional"
+  },
+  {
+   "id": "d82e9bdb6d7e",
+   "texto": "[shots.schema.json › project | run.schema.json › project] project: additionalProperties=false (ningún campo fuera de: title, duration_s, aspect, framework)"
+  },
+  {
+   "id": "e8bef97287fa",
+   "texto": "[shots.schema.json › brand_lock_ref] brand_lock_ref: type=\"string\"; minLength=1; description=\"Path to brand-lock.snapshot.md, relative to the output directory root. The content hash of that file lives in run.json:inputs.brand_lock_sha256, which is what actually pins the brand state. This field alone is a name, not a proof.\"; requerido"
+  },
+  {
+   "id": "a10e90de8661",
+   "texto": "[shots.schema.json › series_lock] series_lock: type=\"object\"; requerido"
+  },
+  {
+   "id": "fce1dae225c8",
+   "texto": "[shots.schema.json › series_lock.character] series_lock.character: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "7f23523d7b6d",
+   "texto": "[shots.schema.json › series_lock.environment] series_lock.environment: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "b31201c45ef2",
+   "texto": "[shots.schema.json › series_lock.lighting] series_lock.lighting: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "e850b096edfc",
+   "texto": "[shots.schema.json › series_lock.color_grade] series_lock.color_grade: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "e17536ce5ea6",
+   "texto": "[shots.schema.json › series_lock] series_lock: additionalProperties=false (ningún campo fuera de: character, environment, lighting, color_grade)"
+  },
+  {
+   "id": "17384786c917",
+   "texto": "[shots.schema.json › shots] shots: type=\"array\"; minItems=1; requerido"
+  },
+  {
+   "id": "fe21a494137c",
+   "texto": "[shots.schema.json › shots[].id] shots[].id: type=\"string\"; pattern=\"^shot_[0-9]{2,3}$\"; requerido"
+  },
+  {
+   "id": "11b4cb9198aa",
+   "texto": "[shots.schema.json › shots[].beat] shots[].beat: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "f6416c598a65",
+   "texto": "[shots.schema.json › shots[].start] shots[].start: type=\"number\"; minimum=0; requerido"
+  },
+  {
+   "id": "0eac71538d4b",
+   "texto": "[shots.schema.json › shots[].end] shots[].end: type=\"number\"; description=\"Must be greater than start. JSON Schema cannot compare two sibling properties, so tools/validate_shots.py enforces it.\"; requerido"
+  },
+  {
+   "id": "9ec4623168e5",
+   "texto": "[shots.schema.json › shots[].framing] shots[].framing: type=\"string\"; enum=[\"ECU\", \"CU\", \"MCU\", \"MS\", \"MLS\", \"WS\", \"EWS\"]; requerido"
+  },
+  {
+   "id": "5e77bda1c7c3",
+   "texto": "[shots.schema.json › shots[].angle] shots[].angle: type=\"string\"; enum=[\"eye-level\", \"high\", \"low\", \"overhead\", \"dutch\"]; requerido"
+  },
+  {
+   "id": "afa3364d518b",
+   "texto": "[shots.schema.json › shots[].motion] shots[].motion: type=\"string\"; enum=[\"static\", \"push\", \"pull\", \"pan-left\", \"pan-right\", \"tilt-up\", \"tilt-down\", \"handheld\", \"orbit\", \"whip\", \"rack\"]; description=\"Camera movement. 'rack' here means a rack focus used as the shot's motion. The identically named depth_of_field value describes the focus state instead.\"; requerido"
+  },
+  {
+   "id": "dc40bd780a82",
+   "texto": "[shots.schema.json › shots[].depth_of_field] shots[].depth_of_field: type=\"string\"; enum=[\"shallow\", \"deep\", \"rack\"]; description=\"Focus behaviour. 'rack' means focus shifts mid-shot.\"; opcional"
+  },
+  {
+   "id": "bae5658bb7d8",
+   "texto": "[shots.schema.json › shots[].subject] shots[].subject: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "090df6139af8",
+   "texto": "[shots.schema.json › shots[].environment_ref] shots[].environment_ref: type=\"string\"; description=\"Default 'series_lock.environment'. Override only with reason.\"; opcional"
+  },
+  {
+   "id": "775b70fe8b2d",
+   "texto": "[shots.schema.json › shots[].lighting_ref] shots[].lighting_ref: type=\"string\"; description=\"Default 'series_lock.lighting'. Override only with reason.\"; opcional"
+  },
+  {
+   "id": "0fd8a04eb14d",
+   "texto": "[shots.schema.json › shots[].on_screen_text] shots[].on_screen_text: description=\"Overlay id, array of overlay ids for a shot carrying several, or null. Added the array form in 1.2: text-overlays.json has always allowed many overlays per shot, and a single string could not represent that.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}, {\"type\": \"array\", \"minItems\": 1, \"uniqueItems\": true, \"items\": {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}}]; opcional"
+  },
+  {
+   "id": "1f5a461694d0",
+   "texto": "[shots.schema.json › shots[].vo] shots[].vo: oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "d7031938d15e",
+   "texto": "[shots.schema.json › shots[].rationale] shots[].rationale: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "bc43459f14ce",
+   "texto": "[shots.schema.json › shots[].assets] shots[].assets: type=\"object\"; description=\"Optional. Frames associated with this shot. Read by tools/shots-to-html.py and tools/validate_provenance.py; both fall back to the frames/round-N/{shot_id}.{ext} path convention when this block is absent. Added in 1.1, given content hashes and critique back-references in 1.2.\"; opcional"
+  },
+  {
+   "id": "2b93c6d2e86a",
+   "texto": "[shots.schema.json › shots[].assets.source] shots[].assets.source: type=\"array\"; description=\"User-supplied images for this shot (skip generation). Paths relative to the output directory root.\"; opcional"
+  },
+  {
+   "id": "24a9b7f1d9ec",
+   "texto": "[shots.schema.json › shots[].assets.generated] shots[].assets.generated: type=\"array\"; opcional"
+  },
+  {
+   "id": "75c764d15a30",
+   "texto": "[shots.schema.json › shots[].assets.generated[].path] shots[].assets.generated[].path: type=\"string\"; minLength=1; description=\"Relative to the output directory root.\"; requerido"
+  },
+  {
+   "id": "42d9a1dc423f",
+   "texto": "[shots.schema.json › shots[].assets.generated[].sha256] shots[].assets.generated[].sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; description=\"SHA-256 of the frame. Without this, 'accepted' is an assertion about a filename.\"; opcional"
+  },
+  {
+   "id": "7c6386e9e47f",
+   "texto": "[shots.schema.json › shots[].assets.generated[].round] shots[].assets.generated[].round: type=\"integer\"; minimum=1; opcional"
+  },
+  {
+   "id": "04bedb973836",
+   "texto": "[shots.schema.json › shots[].assets.generated[].generator] shots[].assets.generated[].generator: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; description=\"Must match an id in visual-prompt-forge/adapters/_capabilities.json.\"; opcional"
+  },
+  {
+   "id": "1ae8833edf12",
+   "texto": "[shots.schema.json › shots[].assets.generated[].model_version] shots[].assets.generated[].model_version: type=\"string\"; minLength=1; opcional"
+  },
+  {
+   "id": "4f815b995a81",
+   "texto": "[shots.schema.json › shots[].assets.generated[].seed] shots[].assets.generated[].seed: oneOf=[{\"type\": \"null\"}, {\"type\": \"integer\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "c232c0e61568",
+   "texto": "[shots.schema.json › shots[].assets.generated[].prompt_ref] shots[].assets.generated[].prompt_ref: type=\"string\"; minLength=1; opcional"
+  },
+  {
+   "id": "eaf213b99d7a",
+   "texto": "[shots.schema.json › shots[].assets.generated[].prompt_sha256] shots[].assets.generated[].prompt_sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; opcional"
+  },
+  {
+   "id": "c861373c4c10",
+   "texto": "[shots.schema.json › shots[].assets.generated[].critique_ref] shots[].assets.generated[].critique_ref: type=\"string\"; minLength=1; description=\"Path to the critique.json that produced 'accepted'. An accepted frame with no critique_ref is an unsourced approval.\"; opcional"
+  },
+  {
+   "id": "27dc1f2164a0",
+   "texto": "[shots.schema.json › shots[].assets.generated[].accepted] shots[].assets.generated[].accepted: type=\"boolean\"; opcional"
+  },
+  {
+   "id": "e4c90fe80be4",
+   "texto": "[shots.schema.json › shots[].assets.generated[]] shots[].assets.generated[]: additionalProperties=false (ningún campo fuera de: path, sha256, round, generator, model_version, seed, prompt_ref, prompt_sha256, critique_ref, accepted)"
+  },
+  {
+   "id": "0eda76669895",
+   "texto": "[shots.schema.json › shots[].assets] shots[].assets: additionalProperties=false (ningún campo fuera de: source, generated)"
+  },
+  {
+   "id": "cafa32243f61",
+   "texto": "[shots.schema.json › shots[]] shots[]: additionalProperties=false (ningún campo fuera de: id, beat, start, end, framing, angle, motion, depth_of_field, subject, environment_ref, lighting_ref, on_screen_text, vo, rationale, assets)"
+  },
+  {
+   "id": "05cb456932f1",
+   "texto": "[shots.schema.json › (raíz)] (raíz): additionalProperties=false (ningún campo fuera de: version, meta, project, brand_lock_ref, series_lock, shots)"
+  },
+  {
+   "id": "2e67d42b5c0f",
+   "texto": "[text-overlays.schema.json › (raíz)] title=\"Text Overlays\"; description=\"On-screen text elements that get composited over generated images. Never baked into prompts.\""
+  },
+  {
+   "id": "3d8f40272270",
+   "texto": "[text-overlays.schema.json › version | run.schema.json › version] version: type=\"string\"; const=\"1.0\"; requerido"
+  },
+  {
+   "id": "0dbe1c661421",
+   "texto": "[text-overlays.schema.json › overlays] overlays: type=\"array\"; requerido"
+  },
+  {
+   "id": "1292a7382536",
+   "texto": "[text-overlays.schema.json › overlays[].id] overlays[].id: type=\"string\"; pattern=\"^text_[0-9]{2,3}$\"; requerido"
+  },
+  {
+   "id": "edccaa227f14",
+   "texto": "[text-overlays.schema.json › overlays[].shot_id] overlays[].shot_id: description=\"Single shot ID, or array of consecutive shot IDs for persistent overlays.\"; oneOf=[{\"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\"}, {\"type\": \"array\", \"minItems\": 2, \"items\": {\"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\"}}]; requerido"
+  },
+  {
+   "id": "75aca8d51742",
+   "texto": "[text-overlays.schema.json › overlays[].content] overlays[].content: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "42345bc0954b",
+   "texto": "[text-overlays.schema.json › overlays[].font] overlays[].font: type=\"string\"; description=\"Must reference a font defined in brand-lock typography.\"; requerido"
+  },
+  {
+   "id": "57e8beed4480",
+   "texto": "[text-overlays.schema.json › overlays[].size] overlays[].size: type=\"string\"; enum=[\"display\", \"headline\", \"body\", \"caption\"]; requerido"
+  },
+  {
+   "id": "4cb3083ec6e7",
+   "texto": "[text-overlays.schema.json › overlays[].weight] overlays[].weight: type=\"string\"; enum=[\"regular\", \"medium\", \"bold\", \"black\"]; requerido"
+  },
+  {
+   "id": "c987b8d0dcb0",
+   "texto": "[text-overlays.schema.json › overlays[].color] overlays[].color: type=\"string\"; pattern=\"^#[0-9A-Fa-f]{6}$\"; description=\"Hex value. Must come from brand-lock palette.\"; requerido"
+  },
+  {
+   "id": "59dc79893071",
+   "texto": "[text-overlays.schema.json › overlays[].position] overlays[].position: oneOf=[{\"type\": \"string\", \"enum\": [\"center\", \"lower-third\", \"upper-third\", \"left-third\", \"right-third\"]}, {\"type\": \"object\", \"required\": [\"x\", \"y\"], \"additionalProperties\": false, \"properties\": {\"x\": {\"type\": \"number\", \"minimum\": 0, \"maximum\": 100}, \"y\": {\"type\": \"number\", \"minimum\": 0, \"maximum\": 100}}}]; requerido"
+  },
+  {
+   "id": "6fa753ef4a4d",
+   "texto": "[text-overlays.schema.json › overlays[].enter] overlays[].enter: type=\"object\"; requerido"
+  },
+  {
+   "id": "22f4e03d1112",
+   "texto": "[text-overlays.schema.json › overlays[].enter.at] overlays[].enter.at: type=\"number\"; minimum=0; requerido"
+  },
+  {
+   "id": "89a549c21c76",
+   "texto": "[text-overlays.schema.json › overlays[].enter.animation] overlays[].enter.animation: type=\"string\"; enum=[\"fade-in\", \"slide-up\", \"slide-down\", \"type-on\", \"hard-cut\"]; requerido"
+  },
+  {
+   "id": "9bf94847c6d1",
+   "texto": "[text-overlays.schema.json › overlays[].enter] overlays[].enter: additionalProperties=false (ningún campo fuera de: at, animation)"
+  },
+  {
+   "id": "38b13f589757",
+   "texto": "[text-overlays.schema.json › overlays[].exit] overlays[].exit: type=\"object\"; requerido"
+  },
+  {
+   "id": "35c1cc38184a",
+   "texto": "[text-overlays.schema.json › overlays[].exit.at] overlays[].exit.at: type=\"number\"; minimum=0; requerido"
+  },
+  {
+   "id": "10be209e8d82",
+   "texto": "[text-overlays.schema.json › overlays[].exit.animation] overlays[].exit.animation: type=\"string\"; enum=[\"fade-out\", \"slide-up\", \"slide-down\", \"hard-cut\"]; requerido"
+  },
+  {
+   "id": "9bf89d22ce13",
+   "texto": "[text-overlays.schema.json › overlays[].exit] overlays[].exit: additionalProperties=false (ningún campo fuera de: at, animation)"
+  },
+  {
+   "id": "9fecbf6fc833",
+   "texto": "[text-overlays.schema.json › overlays[]] overlays[]: additionalProperties=false (ningún campo fuera de: id, shot_id, content, font, size, weight, color, position, enter, exit)"
+  },
+  {
+   "id": "865552c4b2ee",
+   "texto": "[text-overlays.schema.json › (raíz)] (raíz): additionalProperties=false (ningún campo fuera de: version, overlays)"
+  },
+  {
+   "id": "d4ff13253324",
+   "texto": "[run.schema.json › (raíz)] title=\"Run\"; description=\"Written once at the start of a storyboard run and never edited. Pins every input by content hash, so six months later you can prove which brand-lock, shot list, and text spec a set of frames was produced against, rather than trusting that the files sitting next to them are the originals. Everything downstream (prompts, frames, critiques) is addressed by round and shot id under the output root, so no two operators write the same path. Validated by tools/validate_provenance.py.\""
+  },
+  {
+   "id": "f184f5d55209",
+   "texto": "[run.schema.json › meta] meta: type=\"object\"; description=\"Forward-compat passthrough. Ignored by core skills.\"; opcional"
+  },
+  {
+   "id": "4e7474b5eb76",
+   "texto": "[run.schema.json › run_id] run_id: type=\"string\"; pattern=\"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\"; description=\"UTC compact timestamp, a dash, then 8 hex characters. Example: 20260730T142300Z-9f2c1ab4. The hex suffix distinguishes two runs started in the same second by different operators.\"; requerido"
+  },
+  {
+   "id": "c3f81179412d",
+   "texto": "[run.schema.json › created_at] created_at: type=\"string\"; pattern=\"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\"; description=\"UTC ISO-8601 instant the run started. Must agree with the timestamp embedded in run_id.\"; requerido"
+  },
+  {
+   "id": "1656e2dff675",
+   "texto": "[run.schema.json › shotkit_version] shotkit_version: type=\"string\"; pattern=\"^[0-9]+\\\\.[0-9]+\\\\.[0-9]+$\"; description=\"Version of shotkit that produced the run.\"; requerido"
+  },
+  {
+   "id": "a7f780296a9c",
+   "texto": "[run.schema.json › operator] operator: description=\"Who started the run. Free text: a name, a handle, or a CI job id. Null when nobody recorded it.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "a514e43664c6",
+   "texto": "[run.schema.json › project.framework] project.framework: type=\"string\"; minLength=1; opcional"
+  },
+  {
+   "id": "5461464224b1",
+   "texto": "[run.schema.json › inputs] inputs: type=\"object\"; description=\"Every file the run was built from, by path and by hash. Paths are relative to the output directory root.\"; requerido"
+  },
+  {
+   "id": "b8b5433dd57d",
+   "texto": "[run.schema.json › inputs.shots_ref] inputs.shots_ref: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "d059c73c4bd6",
+   "texto": "[run.schema.json › inputs.shots_sha256] inputs.shots_sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; requerido"
+  },
+  {
+   "id": "db8afb677ab7",
+   "texto": "[run.schema.json › inputs.text_overlays_ref] inputs.text_overlays_ref: description=\"Null for a storyboard with no on-screen text.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; requerido"
+  },
+  {
+   "id": "109518c26c28",
+   "texto": "[run.schema.json › inputs.text_overlays_sha256] inputs.text_overlays_sha256: oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\"}]; requerido"
+  },
+  {
+   "id": "42f02c32ca08",
+   "texto": "[run.schema.json › inputs.brand_lock_ref] inputs.brand_lock_ref: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "5bcfbe1cd981",
+   "texto": "[run.schema.json › inputs.brand_lock_sha256] inputs.brand_lock_sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; requerido"
+  },
+  {
+   "id": "514785653462",
+   "texto": "[run.schema.json › inputs.brand_lock_source] inputs.brand_lock_source: type=\"string\"; minLength=1; description=\"Where the snapshot was copied from, e.g. 'brand-packs/whystrohm.md'. The literal string 'template default' records an UNCONFIGURED run built from brand-packs/_template.md.\"; requerido"
+  },
+  {
+   "id": "9ca0f5bc42bb",
+   "texto": "[run.schema.json › inputs.brand_lock_configured] inputs.brand_lock_configured: type=\"boolean\"; description=\"False when the snapshot is an unfilled template. tools/validate_brand_lock.py --require-configured is what decides this.\"; opcional"
+  },
+  {
+   "id": "b149e8dce517",
+   "texto": "[run.schema.json › inputs] inputs: additionalProperties=false (ningún campo fuera de: shots_ref, shots_sha256, text_overlays_ref, text_overlays_sha256, brand_lock_ref, brand_lock_sha256, brand_lock_source, brand_lock_configured)"
+  },
+  {
+   "id": "93f532262006",
+   "texto": "[run.schema.json › generators] generators: type=\"array\"; description=\"Generators targeted by this run, with the model version current at run time. The capability matrix records what is current now; this records what was current then.\"; opcional"
+  },
+  {
+   "id": "86a2ff3a5b9d",
+   "texto": "[run.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; requerido"
+  },
+  {
+   "id": "ddb81184b5a3",
+   "texto": "[run.schema.json › generators[].model_version | capabilities.schema.json › generators[].model_version] generators[].model_version: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "a7b7127aa2eb",
+   "texto": "[run.schema.json › generators[].capabilities_sha256] generators[].capabilities_sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; description=\"SHA-256 of _capabilities.json as read, so a later matrix edit is detectable.\"; opcional"
+  },
+  {
+   "id": "cc94cf4a8a2c",
+   "texto": "[run.schema.json › generators[]] generators[]: additionalProperties=false (ningún campo fuera de: id, model_version, capabilities_sha256)"
+  },
+  {
+   "id": "3af60ba5b737",
+   "texto": "[run.schema.json › rounds] rounds: type=\"array\"; description=\"Appended once per revision round. Each round records the prompt files it produced. Frames and critiques are found on disk under frames/round-N/ and critiques/round-N/, not listed here, so two operators working the same round never write the same JSON.\"; opcional"
+  },
+  {
+   "id": "b1f572e5a17c",
+   "texto": "[run.schema.json › rounds[].round] rounds[].round: type=\"integer\"; minimum=1; requerido"
+  },
+  {
+   "id": "b35f45480422",
+   "texto": "[run.schema.json › rounds[].started_at] rounds[].started_at: type=\"string\"; pattern=\"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\"; requerido"
+  },
+  {
+   "id": "fadcd3187a8a",
+   "texto": "[run.schema.json › rounds[].reason] rounds[].reason: type=\"string\"; minLength=1; description=\"Why this round exists. Round 1 is 'initial'. Later rounds cite the critiques that triggered them.\"; opcional"
+  },
+  {
+   "id": "f0f0a1093e64",
+   "texto": "[run.schema.json › rounds[].prompts] rounds[].prompts: type=\"array\"; minItems=1; requerido"
+  },
+  {
+   "id": "337dd7086aad",
+   "texto": "[run.schema.json › rounds[].prompts[].generator] rounds[].prompts[].generator: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; requerido"
+  },
+  {
+   "id": "f728af876a99",
+   "texto": "[run.schema.json › rounds[].prompts[].ref] rounds[].prompts[].ref: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "76058fdef8d9",
+   "texto": "[run.schema.json › rounds[].prompts[].sha256] rounds[].prompts[].sha256: type=\"string\"; pattern=\"^[0-9a-f]{64}$\"; requerido"
+  },
+  {
+   "id": "d07b6b21e4de",
+   "texto": "[run.schema.json › rounds[].prompts[].shot_ids] rounds[].prompts[].shot_ids: type=\"array\"; description=\"Which shots this file covers. A full pass lists every shot; a revision file lists only the shots it re-emitted.\"; opcional"
+  },
+  {
+   "id": "98f99d579ffe",
+   "texto": "[run.schema.json › rounds[].prompts[]] rounds[].prompts[]: additionalProperties=false (ningún campo fuera de: generator, ref, sha256, shot_ids)"
+  },
+  {
+   "id": "ac1c4a178644",
+   "texto": "[run.schema.json › rounds[].post_only_shots] rounds[].post_only_shots: type=\"array\"; description=\"Shots whose only outstanding issues are post-level. They get no new prompt, so without this list the compositing obligation exists nowhere on disk.\"; opcional"
+  },
+  {
+   "id": "d1dd59930097",
+   "texto": "[run.schema.json › rounds[]] rounds[]: additionalProperties=false (ningún campo fuera de: round, started_at, reason, prompts, post_only_shots)"
+  },
+  {
+   "id": "c6b452d4d6d9",
+   "texto": "[run.schema.json › (raíz)] (raíz): additionalProperties=false (ningún campo fuera de: version, meta, run_id, created_at, shotkit_version, operator, project, inputs, generators, rounds)"
+  },
+  {
+   "id": "711051986f03",
+   "texto": "[critique.schema.json › (raíz)] title=\"Critique\"; description=\"Machine-readable verdict for one generated frame reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Version 1.1 adds run provenance: the frame, prompt, and brand-lock are identified by content hash as well as by path, so a verdict can be proven to describe the bytes that were actually reviewed. Every provenance field is required at 1.1 and explicitly nullable, so an absent input is a recorded decision rather than an omission.\""
+  },
+  {
+   "id": "ff35e6206b1c",
+   "texto": "[critique.schema.json › version] version: type=\"string\"; enum=[\"1.0\", \"1.1\"]; description=\"1.1 adds run_id, round, created_at, the *_sha256 hashes, prompt_ref, generator, model_version, seed, and the meta passthrough. 1.0 documents remain valid and are treated as legacy: they carry a verdict with no proof of what it reviewed.\"; requerido"
+  },
+  {
+   "id": "680c1786b022",
+   "texto": "[critique.schema.json › meta] meta: type=\"object\"; description=\"Forward-compat passthrough for tooling that needs to annotate a critique without a schema bump. Ignored by core skills.\"; opcional"
+  },
+  {
+   "id": "5404351f6fe4",
+   "texto": "[critique.schema.json › run_id] run_id: description=\"The run this critique belongs to. Matches run.json:run_id. Format: UTC compact timestamp, a dash, then 8 hex characters.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\"}]; opcional"
+  },
+  {
+   "id": "c6d25b70f0d6",
+   "texto": "[critique.schema.json › round] round: description=\"Revision round, 1-indexed. Round 1 is the first generation pass.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"integer\", \"minimum\": 1}]; opcional"
+  },
+  {
+   "id": "c63899eeb1b7",
+   "texto": "[critique.schema.json › created_at] created_at: description=\"UTC ISO-8601 instant the critique was written. Second precision, trailing Z required.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\"}]; opcional"
+  },
+  {
+   "id": "1016b80d8292",
+   "texto": "[critique.schema.json › shot_id] shot_id: description=\"Shot this frame was generated for. Null when critiquing a standalone image with no storyboard.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\"}]; opcional"
+  },
+  {
+   "id": "408a326b89c5",
+   "texto": "[critique.schema.json › brand_lock_ref] brand_lock_ref: description=\"Path to the brand-lock.snapshot.md the frame was judged against, relative to the output directory root. Null when no brand-lock was available, which caps confidence at MEDIUM.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "9504e855ad03",
+   "texto": "[critique.schema.json › brand_lock_sha256] brand_lock_sha256: description=\"SHA-256 of the brand-lock file as read. Null only when brand_lock_ref is null.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\"}]; opcional"
+  },
+  {
+   "id": "b1d3d05bd367",
+   "texto": "[critique.schema.json › image_ref] image_ref: description=\"Path to the frame that was critiqued, relative to the output directory root.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "7d6985e23a9c",
+   "texto": "[critique.schema.json › image_sha256] image_sha256: description=\"SHA-256 of the frame bytes as reviewed. This is what makes the verdict falsifiable: if the file at image_ref no longer hashes to this value, the verdict does not describe it.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\"}]; opcional"
+  },
+  {
+   "id": "f756617856b6",
+   "texto": "[critique.schema.json › prompt_ref] prompt_ref: description=\"Path to the prompt file the frame was generated from, relative to the output directory root. Null when the prompt is unknown, which caps confidence at MEDIUM.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "89290c8e5c6d",
+   "texto": "[critique.schema.json › prompt_sha256] prompt_sha256: description=\"SHA-256 of the prompt file. Null only when prompt_ref is null.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9a-f]{64}$\"}]; opcional"
+  },
+  {
+   "id": "22dcb10cb124",
+   "texto": "[critique.schema.json › generator] generator: description=\"Generator id that produced the frame. Must match an id in visual-prompt-forge/adapters/_capabilities.json. Null when unknown.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[a-z0-9][a-z0-9-]*$\"}]; opcional"
+  }
+ ]
+}

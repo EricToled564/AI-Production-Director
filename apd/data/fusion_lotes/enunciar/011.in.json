@@ -1,0 +1,486 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "baf52c0e3f59",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Exit.** Final state. The image the viewer leaves with."
+  },
+  {
+   "id": "7c46cd8d5583",
+   "texto": "[Role modes › 4. Shot function taxonomy] A full scene usually moves. Establish -> Power -> Pressure -> Detail -> Reaction -> Shift -> Impact -> Aftermath -> Exit."
+  },
+  {
+   "id": "11c93bcab15b",
+   "texto": "[Role modes › 4. Shot function taxonomy] A montage sequence can compress or loop. Use function tags to keep the structure readable even at high speed."
+  },
+  {
+   "id": "e8d49c065265",
+   "texto": "[Role modes › 4. Shot function taxonomy] Each tag is also a question the shot must answer. Establish. Where. Power. Who commands. Pressure. What pushes. Detail. What to notice. Reaction. What it cost. Shift. What changed inside. Impact. The moment. Aftermath. The residue. Exit. The image carried out."
+  },
+  {
+   "id": "b546a3af9d34",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31)] Read `seedance.md` first for the family basics (Details Law, multi-shot syntax, 11-block skeleton). This file covers what 2.5 adds: the official prompt formulas, the 50-slot reference system, video editing, extension, ultra-long mode, and the blockout pipeline. Sources: the official Dreamina/Jimeng User Guide and Prompt Guide (both published 2026-07-31), verified against practitioner tests from the first launch week."
+  },
+  {
+   "id": "d8bdea979ffb",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **30-second native single-pass clip.** One generation, one continuous arc, no stitching. Extension pushes it to 60s; a separate Ultra Long mode goes to 180s (see sections 13-14)."
+  },
+  {
+   "id": "e734733dc702",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **50 multimodal references** (30 images + 10 videos + 10 audio) with per-asset role binding. The model understands which asset is responsible for character, scene, prop, camera move, or rhythm — if you tell it."
+  },
+  {
+   "id": "4d51f91ea6e9",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **Realistic humans are a headline feature**, not a liability: real skin pores, restrained micro-acting, multilingual lip-sync in 11 languages. The 2.0-era face caution does not apply."
+  },
+  {
+   "id": "9922dd15de18",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **Negative commands became reliable.** \"Pure video, no subtitles, no background music\" now actually suppresses random subtitles and unwanted score — the classic 1.x/2.0 failure is fixed."
+  },
+  {
+   "id": "b884fd3b4a54",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **Second-level timestamp control.** `[0-4s] ...` beat windows are honored as timing, not just ordering."
+  },
+  {
+   "id": "16a9140bc286",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **Editing an existing video** (partial re-render, background swap, language re-dub) and **extending** it are first-class modes, not workarounds."
+  },
+  {
+   "id": "1541558e33db",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] - **Blockout control**: white-model 3D previz video (or green-screen plates) locks camera path, staging and blocking; Blender/Maya plugins upload straight to Jimeng."
+  },
+  {
+   "id": "f16d80254fb3",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes] Entry points: Jimeng (jimeng.jianying.com — Omni Reference / Smart Edit / Long Video / First & Last Frames), Doubao (Pro subscription), Xiaoyunque (xyq.jianying.com — character library, 3D director stage, segment reshoot)."
+  },
+  {
+   "id": "efbe3766ef51",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Single-pass duration · 2.0: up to 15s · 2.5: up to **30s** (duration `-1` or 4-30)"
+  },
+  {
+   "id": "c101b7719dab",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Images per request · 2.0: 9 · 2.5: **30** (each ≤4K, ≤30 MB)"
+  },
+  {
+   "id": "525517558b43",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Video references · 2.0: 3 clips, ≤15s total · 2.5: **10 clips**, single 2-30s, **≤30s total**"
+  },
+  {
+   "id": "947209454241",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Audio references · 2.0: 3 clips, ≤15s total · 2.5: **10 clips, ≤30s total**; audio-only input now allowed"
+  },
+  {
+   "id": "c74b22188070",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Output resolution · 2.0: up to 4K · 2.5: **480p / 720p** on Jimeng web"
+  },
+  {
+   "id": "a7548af18570",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Parameter: Timestamps · 2.0: ordering hints only · 2.5: honored to the second"
+  },
+  {
+   "id": "06314701affe",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Generation parameters (duration, aspect ratio, resolution) are set on the generation page or via API — **they do not belong in the prompt**. The 1.x/2.0 CLI tail (`--resolution ... --duration ...`) is not 2.5 syntax. Exception: in Ultra Long mode, restate duration and ratio at the top of the prompt."
+  },
+  {
+   "id": "0a6b43f8e9fd",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits] Auto-locked parameters: video editing locks ratio and duration to the input (±0.3s); first/last frame locks ratio to the first image (a mismatched last frame gets stretched); extension locks ratio, duration settable."
+  },
+  {
+   "id": "36a1965781be",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] Base formula for any 2.5 prompt:\n<Subject> performs <primary action or event> in <scene and environment>.\nThe visuals feature <visual style>.\nUse <shot size, camera angle, camera movement, or cuts>.\nAudio includes <dialogue, ambience, sound effects, or music>."
+  },
+  {
+   "id": "b0846fee5843",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] Any component may be omitted. For long or reference-heavy work, the macro-formula:\nComplete prompt = [reference declaration] + [one-line summary] + [plot by timeline] + [global tail]"
+  },
+  {
+   "id": "8219c604dd08",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] - **Reference declaration.** Each asset by upload order + its role (character / voice / motion / scene). See section 5."
+  },
+  {
+   "id": "80a918c0e34e",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] - **One-line summary.** Subject + place + event + genre/style + special camera treatment."
+  },
+  {
+   "id": "708e006f4028",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] - **Plot by timeline.** Per beat: ➕ positive content (picture + camera + action + dialogue + SFX) and ➖ local bans (\"no subtitles\", \"no BGM\")."
+  },
+  {
+   "id": "1d7e3208cf40",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] - **Global tail.** Re-state the must-hold globals (camera position, environment, sound, lighting) and repeat the global bans."
+  },
+  {
+   "id": "545ba7fc9759",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula] Re-@ the same asset multiple times through the prompt — the official guide says repeated mentions increase accuracy."
+  },
+  {
+   "id": "94ec689d7117",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] 2.5 has dedicated markers. Use them — do not describe audio in loose prose:"
+  },
+  {
+   "id": "3ee49129d60b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Content: Music · Marker: `( )` · Example: `(Soft, rhythmic piano music plays in the background)`"
+  },
+  {
+   "id": "21f28de5bac5",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Content: Sound effect · Marker: `< >` · Example: `<A bell rings in the distance>`"
+  },
+  {
+   "id": "27f7b78b5d98",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Content: Dialogue · Marker: `{ }` · Example: `{Hello, welcome back.}`"
+  },
+  {
+   "id": "0d5e469cc3db",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Content: Subtitles / titles · Marker: `【 】` · Example: `【Chapter One: Departure】`"
+  },
+  {
+   "id": "cf0ebef5d57d",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Dialogue language reinforcement — the formula is `Dialogue language + regional variety or accent + delivery style + speaker + {line}`:\nDialogue language: authentic Los Angeles English. The young man says in natural\nLos Angeles vernacular: {No way, you actually made it.}\nThe girl says softly in Japanese: {もう大丈夫です}"
+  },
+  {
+   "id": "e88e4a887532",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text] Lip shape, speech rhythm and face match the assigned language in one pass — this holds across all 11 supported languages, including mixed-language scenes."
+  },
+  {
+   "id": "e39bf0c09ba4",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] The point of 50 slots is not dumping assets in. **Every material's role must be written in the prompt.** Do not rely on text labels inside images; do not make the model infer mappings."
+  },
+  {
+   "id": "d0634de86141",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Role template:\n@Image 1 defines <subject>'s <appearance, clothing, structure, or material>.\n@Video 1 defines <motion, camera movement, or pacing>.\n@Audio 1 defines <character or sound type>'s <voice, dialogue, ambience, or music>."
+  },
+  {
+   "id": "421011dc701e",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Rules:\n- **Bind each subject individually.** `<Character A> corresponds to @Image 1. Use only the appearance, hairstyle, and clothing.` The officially forbidden pattern: \"@Images 1 through 4 define four characters respectively\" — it never states which is which.\n- **Add exclusions** for anything that could bleed in: \"Do not use the image background.\" / \"Do not use the people in the image.\" / \"Do not use the person's identity, clothing, or scene from the video.\"\n- **Do not restate what a reference already defines.** If a reference video defines the motion, state only which attributes to inherit — re-describing every action conflicts with the reference.\n- **Subject Profile** for a recurring character:"
+  },
+  {
+   "id": "ec0338f6661f",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] [Subject Profile: Conservator]\nAppearance and clothing: @Image 1.\nFixed prop: <Sample Case> from @Image 5.\nLocations: <Conservation Lab> and <Gallery>.\nMotion references: the case-opening motion from @Video 1.\nDo not use: other characters' clothing. Do not give this character <Record Board>."
+  },
+  {
+   "id": "0e950aa0cded",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] - **Select references per scene**, not all at once: `Scene 1 | Use: <list>. Event: ... End state: ...`"
+  },
+  {
+   "id": "a0bc99fcd67e",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] - The same character in two states (before / after a transformation) = **two separate image slots**, each bound to its time range. Expect this to be the flakiest binding — budget re-rolls."
+  },
+  {
+   "id": "ab612d42f35a",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Official stability sweet spots:"
+  },
+  {
+   "id": "1a3b4f8939d5",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Input: Subjects in a reference video/audio · Best: 1-5 · Possible but unstable: 6-10"
+  },
+  {
+   "id": "f99819c9c8e2",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Input: Reference clip length · Best: 5-10s per subject · Possible but unstable: longer"
+  },
+  {
+   "id": "dd3572afc4e4",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Input: Subjects across reference images · Best: 1-8 · Possible but unstable: 9-12"
+  },
+  {
+   "id": "7b43a97388a4",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Input: Multi-view sheets · Best: ≤5 subjects: any · Possible but unstable: >5 subjects: single view only; separate images per view beat a collage"
+  },
+  {
+   "id": "b50b8f53f3bb",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)] Input: Video-edit source length · Best: ≤20s · Possible but unstable: longer stalls"
+  },
+  {
+   "id": "0ea2ac58526f",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 6. The 30-second structure: stages and end states] Divide the clip into consecutive stages. **One primary state change per stage, and always state the visible end state** — the end state is what the model steers toward (this is the U11 final-image rule, per stage)."
+  },
+  {
+   "id": "58304c0d533f",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 6. The 30-second structure: stages and end states] [Generation Goal] Generate a <video type>. The central subject is <subject>,\nand the primary event is <story summary>.\n[Stage 1] Initial state: ... Primary event: <one primary action>. End state: <visible state>.\n[Stage 2] Continue from the previous stage: <what must remain unchanged>.\n          Primary event: ... End state: ...\n[Stage 3] Primary event: <closing event>. End state: <final visible state>.\n[Maintain Consistency] Keep <identity, count, clothing, prop ownership,\nspatial direction, audio relationships> consistent."
+  },
+  {
+   "id": "bc4f667b2161",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 6. The 30-second structure: stages and end states] Timestamp rules:\n- A time range is an event's **time budget, not an edit point**. Ranges must be consecutive and non-overlapping.\n- **Windows of 3 seconds or more.** Shorter windows execute unreliably.\n- **One core action + one camera move per window.** Do not demand frequencies (\"three actions in one second\").\n- Second-precision only where it matters: critical handoffs, entrances, transitions, beat hits. `At 5 seconds, the camera whip-pans left and completes the transition.` Relative triggers work too: `Three seconds after the character presses the button, the room lights turn off.`\n- Too little content in a window = model freedom; too much = over-cutting and omissions. Match content volume to the budget."
+  },
+  {
+   "id": "d496214952dc",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 7. The anti-collapse skeleton (3 modules)] The official structure for dramatic 30-second work. It maps onto our 11-block skeleton but is leaner:\n<One-line tone summary — the logline>\n\n[Module 1 — Reference layer]\nStrictly keep @Image 1's face and features consistent. Keep @Image 2's\ncomposition / blockout / spatial relations. Strictly lock character blocking.\n\n[Module 2 — Global settings (\"worldview + anti-collapse\")]\nBase environment & texture (emphasize extreme, realistic physical texture).\nVisual style (film look, depth of field, lighting).\nCamera language.\nCharacter styling (use the section 8 formula).\nPerformance core (the acting register for the whole piece).\nProhibitions: <sound bans> + <subtitle bans> + <behavior bans> + <known collapse points>.\n\n[Module 3 — Timestamped storyboard]\n[start-end s] [beat name] — physical directives (shot size, composition,\nmicro-actions) + emotional subtext."
+  },
+  {
+   "id": "feba56f28052",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 7. The anti-collapse skeleton (3 modules)] Two techniques carry this skeleton:\n- **The prohibition list is specific, not generic.** From the official farewell example: \"No exaggerated crying, no fast cuts, no large body movements, no extra dialogue, no BGM, no runny nose, no premature dropping of tears.\" Ban the exact ways this scene can collapse.\n- **Directive + subtext.** After the physical directive, explain to the model *why* the action happens: \"Emotion analysis: she is not complaining — she is waiting for him to confirm an answer she already guessed.\" The model acts better when it knows the intent. This is the official guide's signature trick and it composes directly with our Details Law."
+  },
+  {
+   "id": "5b66ae356a4b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] Character = [age / ethnicity] + [skin tone / skin texture] + [3-4 facial details]\n          + [gaze / soul] + [hairstyle / hair color] + [clothing / fabric]\n          + [build / emotion / aura]"
+  },
+  {
+   "id": "fbd0a3b5e0bc",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] - **Force-append the fidelity suffix:** \"retaining real fine pores and skin texture\" (optionally freckles, blemishes). This single clause is the official anti-plastic-skin fix."
+  },
+  {
+   "id": "446b57dc7ef8",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] - Facial details need 3-4 concrete points: eye shape, brow bone, nose bridge, lips, jawline."
+  },
+  {
+   "id": "829e6b31993e",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] - Gaze/soul = the emotion the eyes carry, separate from the facial geometry."
+  },
+  {
+   "id": "90a53dd30c76",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] - Works for animated characters too — swap the texture register."
+  },
+  {
+   "id": "7cf5f991fb50",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)] For one emotional transition, **2-4 observable cues are enough** (eye movement, brow tension, mouth, breathing, throat swallow, hands). More reads as overacting; abstract emotion words leave too much room."
+  },
+  {
+   "id": "6222668ac893",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 9. Camera language] Officially understood without translation: extreme wide / wide / medium / close-up / extreme close-up; push in, pull out, pan, lateral move, follow shot, orbit, dive, dolly out, tilt, handheld shake; low angle, overhead, first-person; one-take shot, dolly zoom, aerial, FPV, bullet time, bounce speed ramp."
+  },
+  {
+   "id": "9ce0331cac67",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 9. Camera language] For rarer terms, keep the term **and** translate it to observable change: `term + target subject + visual change + foreground/background relationship + direction or speed`. Full pattern and vocabulary in `camera-lighting-vocabulary.md` §10."
+  },
+  {
+   "id": "55d5e546cba6",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 9. Camera language] Aperture and focal-length numbers are allowed, but the visible result phrased in words is what actually steers the model."
+  },
+  {
+   "id": "ff4013f709f3",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] The transition vocabulary (natural cut, fade, dissolve, flash, wipe, occlusion mask, match cut, action/whip cut, motion-relay, zoom-through, ink-wash) lives in `camera-lighting-vocabulary.md` §11. Seedance-specific usage:\ncut = [transition type] + [basic constraints] + [cut logic]"
+  },
+  {
+   "id": "4ee187e1bff9",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] - Always attach the incantation: **\"prohibit rigid cutting, prohibit objects appearing out of thin air\"** — it is the official anti-jump-cut clause, repeated in every transition template."
+  },
+  {
+   "id": "cdfd4771e92b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] - Transitions can be **delegated**: \"From [natural cut / occlusion mask / ink-wash / match cut], choose the one that best fits the style of this film.\""
+  },
+  {
+   "id": "f8c6cdcbc4d5",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] - Order-gate effects that must not fire early: \"The ink-wash effect must only appear AFTER 25 seconds, triggered by the 'click' sound — absolutely no premature appearance.\""
+  },
+  {
+   "id": "14733454ce84",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 11. Physics through consequences and triggers] 2.5 renders real physics and couples it with audio. Exploit this in four moves:\n1. **Declare the physics regime up front.** \"Rain reflections on metal, water splashed by tires, and the specular refraction of exhaust flames must strictly obey real-world physics.\"\n2. **Narrate consequences, not just actions.** Tires kick up water curtains; the impact shatters the bridge into a spider-web pattern; the shockwave blows the rain away in a ring. Action chains where each step forces the next (\"hand grips jar → lid actually unscrews\") double as QA — a broken chain exposes a failed generation instantly.\n3. **Negatively constrain the known failure.** \"No soft-body or mollusk-like twisting of the mecha structure (must maintain metallic rigidity).\" \"The amber stays attached to the palm and must not clip through the fingers.\"\n4. **Gate events on triggers.** \"Three seconds after she presses the button...\" / \"only when he says {now}...\" — triggers beat raw seconds for anything tied to performance."
+  },
+  {
+   "id": "98b6dde8815b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] 2.5 edits an existing video: replace a subject, swap a background, remove a watermark, change the spoken language — while everything else stays put. The canonical pattern:\n[Edit Goal] Edit @Video 1. Within <entire video or time range>,\n<add / remove / replace / adjust> <object, region, or audio category>.\n[Source Video Role] @Video 1 is the sole editing master. It defines <characters,\nscene, actions, composition, camera movement, occlusion, audio, and event order>.\n[Target Material Role] @Image 1 defines <attributes of the replacement>.\n[Edit Scope] Modify only <object, region, time range, or audio category>.\n[Content to Preserve] Keep <everything that must not change> from @Video 1."
+  },
+  {
+   "id": "e0a1229b0d89",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **Subject replacement** adds a `[Timeline Inheritance]` block: \"<Target> inherits every appearance, motion, occlusion, and exit of <original>, including timing, duration, path, and speed changes.\" Close with the catch-all: \"Except for the object explicitly modified above, keep all other people, props, scene content, camera movements, cuts, and event order from @Video 1 unchanged.\""
+  },
+  {
+   "id": "ac6468a9f9f2",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **The preservation-clause opener.** For filmed footage, enumerate everything to keep before stating any change — down to focal length, aspect and floor perspective: \"Fully preserve from @Video 1 the person's identity, face, hair, skin tone, lip movement, original voice, speech rhythm, expression, gestures, camera position, focal length, aspect ratio, wall and floor perspective, and total duration.\" The longer the keep-list, the less drift."
+  },
+  {
+   "id": "6e8876ec02b3",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **Anchor timing to speech, not seconds**, when the source has narration: \"When they say {now look at my hand}, a golden amber appears in the palm.\" The voice is the timeline."
+  },
+  {
+   "id": "5252c8c182d4",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **Slice long sources first.** Editing works best on clips ≤20s; longer sources stall or fail."
+  },
+  {
+   "id": "5afef23d5ce8",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **Audio-only edits** work: \"Remove only the original background music. Keep the dialogue, lip sync, ambience, and action sound effects; preserve the visuals and editing rhythm.\""
+  },
+  {
+   "id": "4360c0e95a21",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - **Localization pattern** — shoot once, re-dub per market: \"Replace the Chinese narration in @Video 1 with natural fluent Spanish, and replace the presenter with a Spanish woman. Keep the original camera movement, blocking, performance pacing, scene, and product; preserve the overall audio-visual rhythm.\""
+  },
+  {
+   "id": "554c9c29dddb",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)] - Background swap scope: \"modify only the background outside the subject's silhouette.\""
+  },
+  {
+   "id": "50a7351860af",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] Any clip ≤30s extends by 4-30s per pass, nested repeatedly, **hard ceiling 60s**. The new prompt applies only to the appended segment; original frames are untouched. Required verbs: extend forward / extend backward / continue."
+  },
+  {
+   "id": "6ee593180758",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] Forward:\nExtend @Video 1 forward. The first frame of the extended segment directly\ncontinues from the last frame of @Video 1. Maintain continuity in <pose,\nprop position, background, camera position, lighting, motion direction>.\nThen, <new content>.\nKeep each subject as the same continuous instance throughout: do not duplicate\nor split it, and keep the person's appearance stable."
+  },
+  {
+   "id": "31cf775fde51",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] Backward (prepend a beginning): describe the preceding events, then define @Video 1's **first frame as the extension's explicit end state**. Gotcha: materials that belong to the source video only must be flagged — \"<X> must not appear early in the backward extension\" — or later characters leak into the past."
+  },
+  {
+   "id": "341874199c49",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] - Boundary frames connect visually, not pixel-identically."
+  },
+  {
+   "id": "23dce50e7b5d",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] - Extensions hold character look, art style **and voice timbre** even without re-supplied references — plot-only extension prompts work."
+  },
+  {
+   "id": "ec2119c57adc",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension] - Community-proven minimal extension prompt: \"Extend the video. Keep character identity, facial structure, body proportions, lighting, art style, and the space fully unchanged. Only change camera movement; do not redesign character or action.\""
+  },
+  {
+   "id": "e37eb1ca4fb9",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 14. Ultra Long mode (30-180s)] A separate mode (not the same as extension): one submission, 30-180 seconds. Restate duration and aspect ratio at the top of the prompt. Two working registers:\n- **Timestamped** (1-minute ambient pieces): windowed beats with per-window bans — \"0-20s (quiet opening): fixed camera... no shake, no characters enter, hard cuts prohibited.\"\n- **Narrative flow** (3-minute pieces): loose event chain with inline references — the official 3-minute example is a cat-waiter vlog listing a full day of beats with 12 image refs assigned by role, closed with \"No subtitles throughout, no background music.\""
+  },
+  {
+   "id": "57477fcd77b4",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 14. Ultra Long mode (30-180s)] Plan pacing in advance — without timestamps or a beat chain the back half drifts. Under the hood the pipeline generates segment-by-segment, carrying the **last ~3 seconds of each segment as the reference for the next** — which is why hand-offs are smooth and why a weak middle segment propagates forward. On Xiaoyunque the same mechanism powers chained extension to 90s plus **segment reshoot**: select a bad span on the timeline and regenerate only it, everything outside stays identical — the cheapest fix for pop-in objects and missed expressions."
+  },
+  {
+   "id": "234157072269",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 15. Blockout and green screen] The controllability king: lock space, camera and staging in 3D first, let the model render materials and light. Two granularities:\n- **Coarse blockout** — primitive geometry as a \"dynamic skeleton\" (trajectories, blocking, camera path, cuts, light changes). **Map every primitive to a reference**: \"The tall cylinder in @Video 1 corresponds to <Guide>. The rectangular block corresponds to <Display Cart>.\" Exclude the render style: \"Do not use its gray geometry or empty scene.\" Best practice: **no limbed or winged models in coarse blockouts** — unless you write the full limb motion sequence, they go stiff.\n- **Fine blockout** — complete 3D animation; the model re-renders materials, color and style only: \"@Video 1 is a fine blockout reference. Preserve structure, action, spatial layout, camera position, camera movement, and cuts. Do not use its original gray materials or empty background. Re-render <subject> as <final subject>...\" **Clean the viewport capture first**: remove path lines, coordinate axes, controllers and camera frustums. Coarse currently works better than fine."
+  },
+  {
+   "id": "477f74dbeeb0",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 15. Blockout and green screen] Pipeline notes:\n- Blender/Maya plugins (\"Clay Renderer\" / 白模渲染上传器) render the blockout and upload straight to Jimeng as the reference video. Blender ≥3.6 works; no C4D/3ds Max. Color-coding blockout objects is unreliable — disambiguate primitives via prompt text, not material colors.\n- No 3D package? Xiaoyunque's 3D director stage reconstructs a blockout from a concept image, offers action/camera/prop libraries, and lets you **drag-draw the camera path in the viewport**, then renders the previz clip for you.\n- A **camera-path diagram works as an image reference** too: supply a top-down route sketch as @Image N and write \"follow the camera route in @Image N\".\n- **Green screen, both directions**: upload green-screen footage + scene refs (\"composite the person naturally into the classroom from @Image 2\"), or convert an existing video's background *into* green screen for downstream comps (\"Change all the white backgrounds into green screen backgrounds. Remove the sound, keep it muted.\")."
+  },
+  {
+   "id": "02ebe484cd61",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes] - **Storyboard grid as input**: one image, ≤15 panels official (practitioners have pushed 50), clean line art, minimal text. Declare the reading order and exclude the style: \"@Image 1 provides a 12-panel storyboard grid for shot order and approximate composition. Read it left to right, top to bottom. Do not use the grid's line-art style, text labels, or placeholder characters.\" Then `Shot 1: ... Shot N: ...`"
+  },
+  {
+   "id": "2dbb9d183922",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes] - **Multi-keyframe sequences**: \"Use @Image 1 through @Image N as keyframes in this order\", one key state per image. Independent images align better than a grid. Keyframes control stage order and key states, not exact frames."
+  },
+  {
+   "id": "e1ff88994802",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes] - **First + last frame** works inside omni-reference mode — declare each anchor separately (\"@Image 1 is the first frame... @Image 2 is the last frame...\"), never jointly. Same aspect ratio required."
+  },
+  {
+   "id": "5747b606017c",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes] - This is where the `image` skill chains in: character sheets and keyframes from `animatic-keyframes.md` become the reference kit."
+  },
+  {
+   "id": "fc486f5d9d51",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Twins / face-blending in multi-person scenes] Fix. Per-subject binding (section 5) + explicit differentiation: \"Their movements are not synchronized. Clothing colors, hairstyles, and facial features must all be distinct. No identical clones in the background.\""
+  },
+  {
+   "id": "dc4c3ca24a41",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Same character in two states appears at the wrong time] Pre/post-transformation slots confuse the model. Fix. Bind each state to its time range explicitly; budget re-rolls — this is the flakiest binding in 2.5."
+  },
+  {
+   "id": "020ec3ac33b1",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Random subtitles or unwanted BGM] Fix. \"Pure video, no subtitles, no background music\" — reliable in 2.5. Repeat in the global tail."
+  },
+  {
+   "id": "80dfcaf81e5b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Plastic AI skin] Fix. \"Retaining real fine pores and skin texture\" + production language instead of \"hyperrealistic 8k\"."
+  },
+  {
+   "id": "e575d8093212",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Long-context plausibility slips] Over 30s the model can place a plausible object in an impossible spot (a freighter on dry concrete). Fix. State the world's hard constraints in the global tail; verify the full timeline before shipping — errors hide in the back half."
+  },
+  {
+   "id": "1630731a8c31",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › The one-take that refuses to stay one take] 2.5 errs by commission: it completes more instructions than rivals but may cut freely even when told \"one continuous take\". Fix. \"One continuous shot, no cuts of any kind\" + a camera path that never motivates a cut; if montage keeps leaking in, drop to a 10-15s window where one-takes are stable."
+  },
+  {
+   "id": "39749aec40e6",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Edit mode stalls or ignores the instruction] Fix. Source ≤20s (slice first); name @Video 1 as \"the sole editing master\"; one edit target per pass."
+  },
+  {
+   "id": "161fe112293b",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 18. Economics and model choice] - Costs are real: a 30s/720p generation on Jimeng runs ~500-700 credits. Production budgets must assume re-rolls, extensions and segment reshoots — fix with edit/extend/reshoot instead of full regeneration whenever possible. Draft at 480p, finish at 720p."
+  },
+  {
+   "id": "08da59cee9a1",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 18. Economics and model choice] - Versus Minimax H3 (the other frontier model of this launch window): **H3 errs by omission, Seedance 2.5 errs by commission** — H3 delivers a more filmic whole but drops shots from the list; 2.5 executes nearly every instruction but may misuse a reference or break a global constraint. Pick 2.5 for timestamp precision, dense shot choreography, 50-reference kits and the editing/blockout toolchain; pick H3 (or Kling/Veo) when overall cinematic coherence per credit matters more than instruction compliance."
+  },
+  {
+   "id": "e4ae55993d58",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › A. Restrained micro-acting — \"Riverside Farewell\" (29s one-shot)] The flagship official example for emotional performance. Abridged; the structure is what to copy:\n29-Second One-Shot (Ancient Costume Woman's Riverside Farewell)\n\n[Global Scene Setting] Early morning by the river, a blurred small boat in the\nbackground, a lonely farewell. Quiet, restrained. Cinematic, shallow depth of\nfield, soft natural light. The camera holds a close-up of the woman, imitating\nthe subjective POV of \"him\" standing opposite her. Subtle handheld breathing,\none continuous shot with no fast cuts.\n\n[Character Styling] [Age/Ethnicity] 22-year-old East Asian woman, classical\ngentle cinematic face. [Skin] Cool-toned fair skin, delicate and moist,\nretaining realistic fine pores and natural skin texture. [Facial Features]\nSlender elegant eyes (slightly moist), relaxed brows, delicate straight nose\nbridge, full lips with a faint gentle smile, soft jawline. [Eyes/Soul] Deeply\naffectionate gaze, eyes shimmering like spring water. [Hair] Jet-black hair in\na casual classical low bun, a plain jade hairpin. [Clothing] Minimalist pure\nwhite cross-collar Hanfu. [Physique/Aura] Slender, delicate narrow shoulders,\ngentle classical romantic aura.\n\n[Core Performance] Restrained and nuanced. Capture the shifting gaze, the rise\nand fall of breathing, slight lip trembling, subtle brow movements, nostril\nchanges, throat swallowing, and the natural process of a tear sliding down.\n\n[Negative Prompts] No exaggerated crying, no fast cuts, no large body\nmovements, no extra dialogue, no BGM, no runny nose, no premature dropping\nof tears.\n\n[Emotion and Action Storyboard]\nStage 1: 0-3s [Questioning]. She looks directly into the lens, lips slightly\nparted, and whispers: {Are you really leaving?} Emotion analysis: she is not\ncomplaining — she is waiting for him to confirm an answer she already guessed.\nStage 2: 3-10s [Resignation] — swallowing the bitterness. ...\nStage 3: 11-17s [Remembering] — a 0.5-second dead-silent pause; her lips twitch\nthen press together, jaw tightens, throat swallows.\nStage 4: 18-23s [Regret] — she lowers her eyes, and only then do the tears\nbegin to fall. She shakes her head slightly, almost imperceptibly.\nStage 5: 24-29s [Letting Go] — extreme close-up. She forms a gentle smile and\nsays in a barely audible but steadied voice: {You can go.} (On the word \"go\"\nthere is a faint tremble, forcefully suppressed.)"
+  },
+  {
+   "id": "cca7e92233c6",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › A. Restrained micro-acting — \"Riverside Farewell\" (29s one-shot)] Every stage: one state change, physical directives, emotional subtext, and the bans list names the exact collapse modes of *this* scene."
+  },
+  {
+   "id": "5424b695dec7",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › B. Physics and prohibitions — sci-fi mecha chase (30s one-shot)] 30-Second One-Shot (Sci-Fi Mecha Chase and Transformation)\n\n[Global Setting] A cyberpunk cross-sea bridge in 2077, heavy rain. Emphasize\nextreme, realistic physical textures: rain reflections on metal, water\nsplashed by tires, and the specular refraction of exhaust flames must strictly\nobey real-world physics. Hardcore sci-fi cinematic feel, high-contrast neon\n(cyber-pink and icy blue), high-speed shutter. High-speed drone POV, one\ncontinuous shot. Subject: a silver-and-black concept mecha motorcycle.\n\n[Negative Prompts] No soft-body or mollusk-like twisting/clipping of the mecha\nstructure during movement (must maintain metallic rigidity); no human\nentities; strictly remove irrelevant subtitles; force mute / no default BGM;\navoid copyrighted IP elements like Transformers or Tron.\n\n[Timestamp Storyboard]\n[00:00-00:08] [Extreme Speed] The camera skims the waterlogged road; the\nspinning wide tires kick up massive water curtains meters high. Camera\nsubtext: convey speed through the physical interaction of rain, puddle\nreflections and engine flames.\n[00:09-00:16] [Evasion] The tires grind the road, sparking orange friction\nsparks, executing a tight \"S\" curve.\n[00:17-00:24] [Mid-Air Reassembly] During slow-mo hang time the armor flips,\ndeconstructs, and reassembles — strictly rejecting \"noodle-like\" soft-body\ntransformation.\n[00:25-00:30] [Heavy Landing] The tonnage impact shatters the bridge surface\ninto a spider-web pattern; the shockwave blows the surrounding rain away in\nan expanding ring. A frozen \"superhero landing\" as the final image."
+  },
+  {
+   "id": "b1cf0dfa1258",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › B. Physics and prohibitions — sci-fi mecha chase (30s one-shot)] Physics regime declared up front, every beat narrates a consequence, and each ban targets a known failure of exactly this material."
+  },
+  {
+   "id": "9277e0f8cff0",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)] Photoreal suspense-film texture. Set at the museum charity gala of @Image 10;\nmain hall structure, twin staircases and central exhibit stay consistent\nthroughout; sub-spaces reference @Image 11 and @Image 12; lighting and\nmaterials reference @Image 15 and @Image 17. Follow the camera route in\n@Image 16; smart auto-cutting, cinema-grade camera moves.\n\n[0-4s] Camera advances behind the shoulder of the @Image 4 waiter carrying\nthe @Image 14 silver champagne tray through the main hall; the @Image 5\ncurator greets guests at the staircase; the @Image 6 reporter raises a\ncamera. The @Image 1 blue-diamond necklace sits in its glass case.\n[4-8s] The @Image 7 woman in red brushes past the @Image 8 magician in black\ntails, who smiles faintly at the lens; the @Image 9 security chief watches\nbeside the case.\n[8-11s] The chandelier dies; the hall snaps to the crimson emergency lighting\nof @Image 13; the crowd falls silent; <a soft clink from the case>, then\n<a short alarm>. (Low strings and heartbeat stop together) — keep only an\ninhale, the glass clink and the alarm.\n[11-16s] Close-ups in sequence: the curator frozen, the reporter raising the\ncamera, the woman in red stepping back. Lights return to warm gold; cut back\nto the case — glass intact, the @Image 1 diamond gone.\n[16-20s] Slow push toward the magician's lowered right hand; a tiny blue\nglint inside his silver cuff; he lifts his eyes to the lens and smiles.\n\nNo subtitles, no logo, no watermark."
+  },
+  {
+   "id": "3df86a7c14f7",
+   "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)] Seventeen references, every one role-bound per scene; the camera choreography is supplied as a route diagram (@Image 16), not prose; sound is designed per beat with the `< >` and `( )` markers."
+  },
+  {
+   "id": "36b1ea2c44fd",
+   "texto": "[Seedance reference (ByteDance) › 1. What Seedance is] A ByteDance video model with the UNIQUE ability to generate several distinct shots in ONE generation. The only major model that can pack a mini-montage inside a single 5-10s clip. Good cinematic motion, strong at ads and short narrative."
+  },
+  {
+   "id": "348203425ade",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] - Seedance 1.0 Pro. 1080p, 5-10s (API up to 12s). Strong multi-shot."
+  },
+  {
+   "id": "827fe669e713",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] - Seedance 1.0 Lite. 720p, faster, cheaper."
+  },
+  {
+   "id": "16057f5f304f",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] - Seedance 1.5 Pro. Native audio and lip-sync added."
+  },
+  {
+   "id": "5d1760ba712d",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] - Seedance 2.0. Improved motion, better audio, 9 camera movement presets, limited negative prompt support, up to 12 reference inputs via `@` tags. Since June 2026: native 4K, 10-bit color. 2.0 Mini: ~2× faster, ~30% cheaper, for drafts and batches."
+  },
+  {
+   "id": "46f848e17a93",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] - **Seedance 2.5** (released 2026-07-31). Native 30-second single-pass clip, up to 60s via extension, 30-180s in Ultra Long mode. 50 multimodal reference inputs (30 images + 10 video + 10 audio), video editing (partial re-render), 3D white-model camera blockout, realistic humans with multilingual lip-sync in 11 languages. **Full production reference: `seedance-25.md`.**"
+  },
+  {
+   "id": "6615a8a1f03d",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] Resolutions. 480p, 720p, 1080p; 2.0 adds native 4K; 2.5 outputs 480p/720p on Jimeng.\nAspect ratios. 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, 9:21.\nFrame rate. 24-30 fps."
+  },
+  {
+   "id": "176160e30710",
+   "texto": "[Seedance reference (ByteDance) › 2. Versions and specs] **Model pick within the family:** one continuous 15-30s arc, heavy reference kits, editing/extension of existing footage → 2.5 (realistic humans and lip-sync are a 2.5 headline feature — the 2.0-era face caution below does not apply to it). People-centric drama on a 2.0-only pipeline → 1.5 Pro (2.0 aggressively filters human faces and celebrity-adjacent content after the 2026 deepfake crackdown). Scenes, architecture, product, montage in short clips → 2.0. Cheap drafts → 2.0 Mini, then re-render keepers high."
+  },
+  {
+   "id": "66de534672b9",
+   "texto": "[Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)] Append at the end of the prompt.\n--resolution 1080p --duration 5 --camerafixed false --seed 42"
+  },
+  {
+   "id": "a3c8652c4d7c",
+   "texto": "[Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)] `--resolution`. 480p | 720p | 1080p; `--duration`. 2 to 12 (Pro); `--camerafixed`. true locks the camera. false allows movement.; `--seed`. for reproducibility"
+  },
+  {
+   "id": "96198aa9ca2d",
+   "texto": "[Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)] **Not 2.5 syntax.** On 2.5, duration / aspect ratio / resolution are set on the generation page or via API and do not belong in the prompt (exception: Ultra Long mode restates duration and ratio at the top — see `seedance-25.md` §2)."
+  },
+  {
+   "id": "72fa1aa53d7d",
+   "texto": "[Seedance reference (ByteDance) › 4. The Details Law (read this first)] **Details intensify emotion. Laziness kills the prompt.**"
+  },
+  {
+   "id": "e61a7f7bd287",
+   "texto": "[Seedance reference (ByteDance) › 4. The Details Law (read this first)] Seedance does not render abstractions. It renders **physical specifics**. Every adjective must be a sensory fact. Every emotion must be a body. Every shot must own at least three concrete details:\n1. **One environmental pressure.** Cold blue refrigerator light. Steam off boiling water. Wet asphalt. Flickering fluorescent. Dripping tap. Curtain breathing in the AC.\n2. **One physical micro-action.** Jaw locks. Finger taps the counter. Knuckles whiten on the fork. Lips press into a line. He swallows hard.\n3. **One sound anchor or visual motif.** Stomach growl at 2.3s. Reflection in the dark phone screen. Rain hitting the same windowpane."
+  },
+  {
+   "id": "66d3b7bd551c",
+   "texto": "[Seedance reference (ByteDance) › 4. The Details Law (read this first)] If a shot has none of these — it is filler. Delete it or rewrite it."
+  },
+  {
+   "id": "91080510eda2",
+   "texto": "[Seedance reference (ByteDance) › 4. The Details Law (read this first)] Banned, lazy phrasing that produces mush:\n\"cinematic, professional, high quality, masterpiece\"; \"beautiful lighting\"; \"epic scene\"; \"amazing visuals\"; \"he is sad / he is angry\" (with no physical translation)"
+  },
+  {
+   "id": "fe0c4f1b6581",
+   "texto": "[Seedance reference (ByteDance) › 4. The Details Law (read this first)] This rule is hard. Multi-shot prompts on Seedance fail not because of the model, but because the writer was lazy on a single shot. One thin shot drags the whole sequence down."
+  },
+  {
+   "id": "d276df8d5a49",
+   "texto": "[Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)] For single-shot 5s clips with one clear action.\nSubject. [Who or what]\nMotion. [Present-tense verb, one clear action]\nCamera. [Movement + framing + lens]\nEnvironment. [Where, props, atmosphere]\nLighting. [Direction + quality + color]\nStyle. [Realism level, genre reference]"
+  }
+ ]
+}
