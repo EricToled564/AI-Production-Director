@@ -3,6 +3,7 @@ auditoría caducada, y procesamiento por lotes con un proveedor simulado (reinte
 
 import copy
 import json
+import os
 import unittest
 
 import util
@@ -113,6 +114,22 @@ class TestLotesConModeloSimulado(unittest.TestCase):
         self.assertEqual(r["lotes"], 7)  # 1,398 / 200 → 7 lotes; nunca se reduce el universo
         self.assertEqual(sum(1 for v in dec.values() if v.get("capa") == "modelo"), 1398)
         self.assertGreater(r["uso"]["entrada"], 0)
+
+    def test_modo_abiertas_solo_revisa_lo_que_la_seleccion_mecanica_dejo_abierto(self):
+        """DECISIONES #9: la selección de reglas es mecánica; el modelo sólo ve lo abierto y no toca lo ya decidido."""
+        base = self.e["_ledgers_completos"][self.clave]["decisiones"]
+        abiertas = {k for k, v in base.items() if RV.abierta(v)}
+        os.environ["APD_REVISION"] = "abiertas"
+        try:
+            r, dec, p = self._run("ok", "prueba-abiertas")
+        finally:
+            os.environ["APD_REVISION"] = "todas"
+        self.assertTrue(r["completo"])
+        self.assertEqual(r["lotes"], -(-len(abiertas) // 200))
+        revisadas = {k for k, v in dec.items() if v.get("capa") == "modelo"}
+        self.assertEqual(revisadas, abiertas)
+        self.assertTrue(all(dec[k] == base[k] for k in base if k not in abiertas))  # lo cerrado queda idéntico
+        self.assertLess(len(abiertas), 200)
 
     def test_reintento_recupera_lote(self):
         r, dec, p = self._run("omite_una_vez", "prueba-reintento")

@@ -11,6 +11,8 @@ sys.path.insert(0, str(APD))
 _tmp = tempfile.mkdtemp(prefix="apd-test-")
 os.environ["APD_DB"] = str(Path(_tmp) / "proyectos.sqlite")
 os.environ.setdefault("APD_LLM", "none")
+# las pruebas de lotes verifican el modo exhaustivo (todo el medio); el modo por defecto «abiertas» tiene su propia prueba
+os.environ.setdefault("APD_REVISION", "todas")
 
 from apd import datos, fuentes as F, store as ST  # noqa: E402
 if not F.RULES_DB.exists() or not (F.DATA / "registro.json").exists():

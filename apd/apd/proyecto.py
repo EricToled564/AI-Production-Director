@@ -448,7 +448,8 @@ def trabajo(tid):
 
 
 def revisar_con_modelo(pid, en_hilo=True) -> str:
-    """Revisa todos los ids de cada perfil. Reanudable: los lotes válidos no se repiten."""
+    """Revisa con el modelo los ids que la selección mecánica dejó abiertos (APD_REVISION=todas: todos los del medio).
+    Reanudable: los lotes válidos no se repiten."""
     if not llm.proveedor().disponible():
         raise llm.SinModelo(llm.estado()["motivo"])
     tid = uuid.uuid4().hex[:8]
