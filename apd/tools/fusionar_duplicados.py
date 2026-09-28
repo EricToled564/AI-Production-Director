@@ -295,7 +295,7 @@ def cmd_fusionar(_a):
 
 # ---------------------------------------------------------------- ejecución por lotes en archivo
 
-MAX_VENTANA = 220
+MAX_VENTANA = 400  # el tema más grande (390) cabe entero: dentro de un tema se compara todo contra todo
 
 
 def ventanas_por_tema(c):
