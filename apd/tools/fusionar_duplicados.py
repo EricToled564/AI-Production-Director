@@ -1,0 +1,298 @@
+"""Fusiona reglas repetidas (mismo contenido normativo con distinta redacción) SIN vectores.
+
+1. enunciar  — el modelo reduce cada registro a un enunciado normativo en español + alcance + 1-3 temas de
+               una lista cerrada. Todos los registros pasan; se verifica que vuelva cada id.
+2. agrupar   — por tema, el modelo ve TODOS los enunciados del tema a la vez y devuelve los grupos que
+               establecen la misma regla con el mismo alcance. Los grupos que comparten registros se unen.
+3. fusionar  — por grupo, el modelo redacta un registro fusionado que conserva cada exigencia de cada miembro
+               y un segundo llamado verifica miembro por miembro que no se perdió nada.
+Tablas: registros_enunciado, registros_grupo, registros_fusion (originales intactos en registros).
+Uso: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar|estado
+"""
+
+from __future__ import annotations
+
+import argparse
+import concurrent.futures as cf
+import hashlib
+import json
+import sqlite3
+import sys
+from pathlib import Path
+
+APD = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(APD))
+from apd import llm  # noqa: E402
+
+DB = APD / "data/rules.sqlite"
+CACHE = APD / "data/fusion_cache"
+LOTE = 25
+HILOS = 8
+
+TEMAS = {
+    "marca_brandlock": "brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores",
+    "estrategia_conceptos": "brief, SMP, territorios, concept cards, matriz, dirección narrativa",
+    "guion_formato": "guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas",
+    "dramaturgia_escena": "fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada",
+    "tres_detalles": "ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual",
+    "emocion_sin_nombrar": "mostrar no contar, emoción como cuerpo u objeto, 2-4 señales",
+    "vocabulario_prohibido": "palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos",
+    "cinco_anclas_motivo": "cinco anclas, objeto ancla, motivo, imagen final, quiebre",
+    "ritmo_montaje": "ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types",
+    "funcion_de_plano": "etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats",
+    "beat_framework_timing": "frameworks de beats, duración de shots, hook, CTA, curva de energía",
+    "shots_json_schema": "shots.json, campos, schema, series_lock, rationale, run.json, versión",
+    "texto_en_pantalla": "texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura",
+    "logos_marcas_en_imagen": "logos, lettering, marcas generadas, patrocinadores, composición en post",
+    "consistencia_identidad": "identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift",
+    "referencias_roles": "imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs",
+    "genesis_maestros": "génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos",
+    "composicion_insercion": "cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos",
+    "edicion_imagen": "edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting",
+    "estructura_prompt_imagen": "slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera",
+    "estructura_prompt_video": "esqueletos de prompt de video por modelo, bloques, orden, peso al inicio",
+    "longitud_prompt": "número de palabras, elementos máximos, compresión, presupuesto",
+    "negativos": "negative prompt, no X, framing positivo, prohibiciones en el prompt",
+    "parametros_tecnicos": "aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API",
+    "seleccion_modelo": "qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo",
+    "capacidades_modelo": "límites y capacidades de cada modelo, versiones, fallos conocidos del modelo",
+    "camara_movimiento": "movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable",
+    "encuadre_lente_dof": "encuadre ECU-EWS, lente mm, profundidad de campo, compresión",
+    "angulo_camara": "ángulo y altura de cámara, low/high/dutch/overhead, poder",
+    "composicion_frame": "tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo",
+    "luz": "fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos",
+    "color_grade_paleta": "paleta concreta, grade, stock de película, textura, grano, halación, HDR",
+    "piel_rostro_realismo": "piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico",
+    "anatomia_manos": "manos, dedos, anatomía, lateralidad, inspección al 100%",
+    "movimiento_congelado_blur": "still como instante congelado, blur diferencial, cues de movimiento, estado posterior",
+    "fisica_consecuencia": "física por consecuencia, agua, spray, humo, partículas, deformación",
+    "velocidad_vehiculo": "cues de velocidad, rim barrido, carreras, vehículos, anti-fake",
+    "multitud_grupo": "multitud anónima, ensamble, número de personas, rostros legibles",
+    "clima_atmosfera": "lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera",
+    "audio_dialogo": "audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio",
+    "continuidad_multiclip": "continuidad entre clips, repetir bloque, luz constante, empalme de clips",
+    "multishot": "varios shots en una generación, marcadores de corte, anti-mush",
+    "i2v_keyframes": "imagen a video, primer/último frame, no re-describir, motion brief",
+    "edicion_extension_video": "editar video existente, extender, ultra long, blockout, green screen",
+    "critica_qa": "crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post",
+    "revision_iteracion": "revisión selectiva, rondas, máximo de intentos, cambio de método, costo",
+    "validacion_gates": "validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos",
+    "trazabilidad_procedencia": "hashes, snapshot, run.json, rondas, procedencia, fuente de verdad",
+    "entrega_paquete": "production package, preview HTML, estructura de carpetas, atribución, checklist",
+    "postproduccion": "edición, grade, audio en post, export, specs de plataforma",
+    "patrones_genero": "plantillas por género: moda, comida, producto, retrato, póster, UI, social",
+    "layout_grafico": "slides, infografías, grids, multi-panel, bento, layouts",
+    "animacion_ilustracion": "animación, principios Disney, estilos ilustrados, anime, 3D",
+    "conducta_agente": "cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar",
+    "flujo_pipeline": "tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas",
+    "regimenes_etiquetado": "etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen",
+    "herramientas_codigo": "instalación, uso y mantenimiento de herramientas, scripts, CI",
+    "ejemplo_marca": "contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)",
+}
+
+SIS_ENUNCIAR = """Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en
+inglés, ruso o español). Para CADA registro devuelve:
+- "enunciado": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro
+  es un ejemplo o una explicación sin norma, di qué ilustra ("Ejemplo: ...", "Explicación: ...").
+- "alcance": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o "general".
+- "temas": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.
+Lista de temas (clave: descripción):
+{temas}
+Devuelve JSON {{"registros": [{{"id": "...", "enunciado": "...", "alcance": "...", "temas": ["..."]}}]}} con
+exactamente los ids recibidos, en el mismo orden."""
+
+SIS_AGRUPAR = """Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |
+enunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.
+- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más
+  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.
+- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es "misma_regla_otro_alcance".
+- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo
+  con la regla que ilustra.
+Devuelve JSON {"grupos": [{"ids": [...], "relacion": "misma_regla" | "misma_regla_otro_alcance",
+"regla": "la regla común en una frase"}]}. Solo grupos de 2 o más ids del listado."""
+
+SIS_FUSIONAR = """Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:
+- Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.
+- No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal
+  como aparecen. Escribe en español; los términos y frases de prompt que deben ir en inglés se dejan en inglés.
+- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado.
+Devuelve JSON {"texto": "registro fusionado", "cobertura": [{"id": "...", "elementos": ["cada exigencia del
+miembro y dónde quedó en el texto"]}]}"""
+
+SIS_VERIFICAR = """Verifica una fusión. Recibes los registros originales y el texto fusionado. Para cada original,
+lista las exigencias, límites, valores, excepciones y alcances que contiene y di si están en el fusionado.
+Devuelve JSON {"completo": true|false, "faltan": [{"id": "...", "elemento": "..."}], "agregado_sin_fuente": ["..."]}"""
+
+
+def llamar(sis, usuario, clave):
+    CACHE.mkdir(parents=True, exist_ok=True)
+    f = CACHE / (hashlib.sha1((sis + usuario).encode()).hexdigest()[:20] + ".json")
+    if f.exists():
+        return json.loads(f.read_text(encoding="utf-8"))
+    ultimo = None
+    for _ in range(4):
+        try:
+            r = llm.extraer_json(llm.proveedor().completar(sis, usuario)["texto"])
+            f.write_text(json.dumps(r, ensure_ascii=False), encoding="utf-8")
+            return r
+        except Exception as e:  # noqa: BLE001
+            ultimo = e
+    raise RuntimeError(f"{clave}: {ultimo}")
+
+
+def con():
+    c = sqlite3.connect(DB)
+    c.execute("create table if not exists registros_enunciado (registro_id text primary key, enunciado text, "
+              "alcance text, temas text)")
+    c.execute("create table if not exists registros_grupo (grupo text, registro_id text, relacion text, regla text)")
+    c.execute("create table if not exists registros_fusion (grupo text primary key, texto text, relacion text, "
+              "miembros text, verificado integer, faltan text)")
+    return c
+
+
+def cmd_enunciar(_a):
+    c = con()
+    hechos = {r for (r,) in c.execute("select registro_id from registros_enunciado")}
+    regs = [(i, t) for i, t in c.execute("select id, texto from registros order by orden") if i not in hechos]
+    lotes = [regs[i:i + LOTE] for i in range(0, len(regs), LOTE)]
+    sis = SIS_ENUNCIAR.format(temas="\n".join(f"{k}: {v}" for k, v in TEMAS.items()))
+
+    def uno(lote):
+        usuario = json.dumps([{"id": i, "texto": t} for i, t in lote], ensure_ascii=False)
+        for intento in range(3):
+            r = llamar(sis, usuario + ("" if intento == 0 else f"\n(reintento {intento})"), lote[0][0])
+            out = {x.get("id"): x for x in r.get("registros", [])}
+            ok = all(i in out and out[i].get("enunciado") and out[i].get("temas") for i, _ in lote)
+            if ok:
+                return [(i, out[i]) for i, _ in lote]
+        raise RuntimeError(f"lote {lote[0][0]}: faltan ids o campos tras 3 intentos")
+
+    n = 0
+    with cf.ThreadPoolExecutor(HILOS) as ex:
+        for res in ex.map(uno, lotes):
+            for i, x in res:
+                temas = [t for t in x["temas"] if t in TEMAS][:3] or ["conducta_agente"]
+                c.execute("insert or replace into registros_enunciado values (?,?,?,?)",
+                          (i, x["enunciado"], x.get("alcance", "general"), json.dumps(temas)))
+            c.commit()
+            n += len(res)
+            print(f"enunciados {n + len(hechos)}/{len(regs) + len(hechos)}", file=sys.stderr, flush=True)
+    total = c.execute("select count(*) from registros").fetchone()[0]
+    hechos = c.execute("select count(*) from registros_enunciado").fetchone()[0]
+    print(f"enunciados: {hechos}/{total}")
+
+
+def cmd_agrupar(_a):
+    c = con()
+    por_tema: dict[str, list] = {}
+    for rid, en, al, temas in c.execute("select registro_id, enunciado, alcance, temas from registros_enunciado"):
+        for t in json.loads(temas):
+            por_tema.setdefault(t, []).append((rid, al, en))
+    MAX = 220
+
+    def uno(item):
+        tema, filas = item
+        filas = sorted(filas, key=lambda x: x[1])
+        # un tema grande se revisa en ventanas solapadas del 50% para que todo par cercano por alcance se compare
+        ventanas = [filas] if len(filas) <= MAX else [filas[i:i + MAX] for i in range(0, len(filas), MAX // 2)]
+        grupos = []
+        for v in ventanas:
+            usuario = f"Tema: {tema} — {TEMAS.get(tema, '')}\n" + "\n".join(f"{r} | {a} | {e}" for r, a, e in v)
+            res = llamar(SIS_AGRUPAR, usuario, tema)
+            validos = {r for r, _, _ in v}
+            for g in res.get("grupos", []):
+                ids = [i for i in g.get("ids", []) if i in validos]
+                if len(set(ids)) >= 2:
+                    grupos.append({"ids": sorted(set(ids)), "relacion": g.get("relacion", "misma_regla"),
+                                   "regla": g.get("regla", "")})
+        return tema, len(filas), len(ventanas), grupos
+
+    todos = []
+    with cf.ThreadPoolExecutor(HILOS) as ex:
+        for tema, n, nv, gs in ex.map(uno, sorted(por_tema.items())):
+            print(f"{tema}: {n} registros, {nv} ventana(s), {len(gs)} grupos", file=sys.stderr, flush=True)
+            todos.extend(gs)
+    # unir grupos que comparten registros (misma_regla domina sobre otro_alcance)
+    padre = {}
+
+    def raiz(x):
+        padre.setdefault(x, x)
+        while padre[x] != x:
+            padre[x] = padre[padre[x]]
+            x = padre[x]
+        return x
+    for g in todos:
+        for i in g["ids"][1:]:
+            padre[raiz(i)] = raiz(g["ids"][0])
+    comp: dict[str, dict] = {}
+    for g in todos:
+        r = raiz(g["ids"][0])
+        d = comp.setdefault(r, {"ids": set(), "relaciones": set(), "reglas": []})
+        d["ids"].update(g["ids"])
+        d["relaciones"].add(g["relacion"])
+        d["reglas"].append(g["regla"])
+    c.execute("delete from registros_grupo")
+    for k, d in enumerate(sorted(comp.values(), key=lambda d: -len(d["ids"])), 1):
+        rel = "misma_regla" if d["relaciones"] == {"misma_regla"} else "misma_regla_otro_alcance" \
+            if d["relaciones"] == {"misma_regla_otro_alcance"} else "mixta"
+        for rid in sorted(d["ids"]):
+            c.execute("insert into registros_grupo values (?,?,?,?)", (f"DUP-{k:04d}", rid, rel, " / ".join(dict.fromkeys(d["reglas"]))))
+    c.commit()
+    n_g = c.execute("select count(distinct grupo) from registros_grupo").fetchone()[0]
+    n_r = c.execute("select count(distinct registro_id) from registros_grupo").fetchone()[0]
+    print(f"{n_g} grupos de duplicados · {n_r} registros implicados")
+
+
+def cmd_fusionar(_a):
+    c = con()
+    texto = dict(c.execute("select id, texto from registros"))
+    grupos: dict[str, dict] = {}
+    for g, rid, rel, regla in c.execute("select grupo, registro_id, relacion, regla from registros_grupo"):
+        d = grupos.setdefault(g, {"ids": [], "rel": rel, "regla": regla})
+        d["ids"].append(rid)
+    hechos = {g for (g,) in c.execute("select grupo from registros_fusion where verificado = 1")}
+
+    def uno(item):
+        g, d = item
+        miembros = json.dumps([{"id": i, "texto": texto[i]} for i in d["ids"]], ensure_ascii=False)
+        faltan = []
+        for intento in range(3):
+            extra = "" if not faltan else "\nEn el intento anterior faltaron: " + json.dumps(faltan, ensure_ascii=False)
+            f = llamar(SIS_FUSIONAR, miembros + extra, g)
+            v = llamar(SIS_VERIFICAR, json.dumps({"originales": json.loads(miembros), "fusionado": f.get("texto", "")},
+                                                 ensure_ascii=False), g)
+            faltan = v.get("faltan", []) + [{"agregado_sin_fuente": x} for x in v.get("agregado_sin_fuente", [])]
+            if v.get("completo") and not faltan:
+                return g, d, f["texto"], 1, []
+        return g, d, f.get("texto", ""), 0, faltan
+
+    pend = [(g, d) for g, d in grupos.items() if g not in hechos]
+    with cf.ThreadPoolExecutor(HILOS) as ex:
+        for n, (g, d, t, ok, faltan) in enumerate(ex.map(uno, pend), 1):
+            c.execute("insert or replace into registros_fusion values (?,?,?,?,?,?)",
+                      (g, t, d["rel"], json.dumps(d["ids"]), ok, json.dumps(faltan, ensure_ascii=False)))
+            c.commit()
+            print(f"fusionados {n}/{len(pend)} ({'ok' if ok else 'FALTA'} {g})", file=sys.stderr, flush=True)
+    malos = c.execute("select count(*) from registros_fusion where verificado = 0").fetchone()[0]
+    print(f"{len(grupos)} grupos · {len(grupos) - malos} fusiones verificadas completas · {malos} con faltantes")
+    if malos:
+        sys.exit(1)
+
+
+def cmd_estado(_a):
+    c = con()
+    for q in ("select count(*) from registros", "select count(*) from registros_enunciado",
+              "select count(distinct grupo), count(*) from registros_grupo",
+              "select count(*), sum(verificado) from registros_fusion"):
+        print(q, "→", c.execute(q).fetchone())
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("paso", choices=["enunciar", "agrupar", "fusionar", "estado"])
+    a = ap.parse_args()
+    {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado}[a.paso](a)
+
+
+if __name__ == "__main__":
+    main()
