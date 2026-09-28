@@ -498,6 +498,9 @@ def cmd_importar(a):
                 if not out.get(g, {}).get("texto"):
                     errores.append(f"{fout.name}: falta la fusión de {g}")
                     continue
+                previo = c.execute("select texto from registros_fusion where grupo = ?", (g,)).fetchone()
+                if previo and previo[0] == out[g]["texto"]:
+                    continue  # misma fusión ya importada: no se pierde su verificación
                 c.execute("insert or replace into registros_fusion values (?,?,?,?,NULL,NULL)",
                           (g, out[g]["texto"], item["relacion"], json.dumps([m["id"] for m in item["miembros"]])))
                 n += 1
@@ -509,6 +512,9 @@ def cmd_importar(a):
                 if v is None:
                     errores.append(f"{fout.name}: falta la verificación de {g}")
                     continue
+                actual = c.execute("select texto from registros_fusion where grupo = ?", (g,)).fetchone()
+                if not actual or actual[0] != item["fusionado"]:
+                    continue  # veredicto sobre un texto que ya fue reemplazado
                 faltan = v.get("faltan", []) + [{"agregado_sin_fuente": x} for x in v.get("agregado_sin_fuente", [])]
                 ok = 1 if v.get("completo") and not faltan else 0
                 c.execute("update registros_fusion set verificado = ?, faltan = ? where grupo = ?",
