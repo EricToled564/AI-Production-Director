@@ -1,39 +1,349 @@
 {
  "paso": "agrupar",
  "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
- "tema": "shots_json_schema",
- "descripcion_tema": "shots.json, campos, schema, series_lock, rationale, run.json, versión",
+ "tema": "validacion_gates",
+ "descripcion_tema": "validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos",
  "ventana": "1 de 1",
  "filas": [
   {
-   "id": "89feb7b04fc6",
-   "alcance": "Desde Etapa 4; shots.json y prompts",
-   "enunciado": "Desde la Etapa 4, shots.json es la fuente de verdad estructural y todo cambio creativo debe hacerse allí antes de propagarse, sin parchear prompts en contradicción con su shot."
+   "id": "37d00919b637",
+   "alcance": "AI Production Director; pipeline completo",
+   "enunciado": "El director de producción debe clasificar el proyecto, secuenciar sub-skills, exigir gates, resolver conflictos según las reglas establecidas y mantener la trazabilidad desde el concepto hasta cada artefacto."
   },
   {
-   "id": "eb7f201f5ad4",
-   "alcance": "E4",
-   "enunciado": "Desde E4 Shot Planning, shots.json es la fuente de verdad."
+   "id": "4f1604d5603d",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "Aurora Prompt Linter v1.0 con tags por categoría y override tiene una cobertura efectiva aproximada del 92-94%."
   },
   {
-   "id": "821ea86e0188",
-   "alcance": "E4.3 storyboard-architect",
-   "enunciado": "E4.3: la shot list produce shots[] con id, beat, tiempos, framing, angle, motion, subject, refs, vo y rationale, validada contra shots.schema.json sin propiedades adicionales."
+   "id": "837cee442524",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "El linter no inspecciona imágenes y depende de tags correctos, por lo que se debe revisar humanamente el tageo antes de ejecutarlo."
   },
   {
-   "id": "133369c77abf",
-   "alcance": "E4.5 storyboard-architect",
-   "enunciado": "E4.5: el series lock (character, environment, lighting, color_grade) define qué génesis hacen falta, como mínimo personaje y entorno."
+   "id": "c7d51f53e8dd",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "Explicación: la versión 1.0 no detecta sinónimos redundantes entre referencias y prompt."
   },
   {
-   "id": "6f5635e1e030",
-   "alcance": "Etapa 4, Shot Planning",
-   "enunciado": "La Etapa 4 recibe el guion y el documento de dirección, y debe entregar storyboard.md, shots.json, text-overlays.json, run.json y brand-lock.snapshot.md."
+   "id": "f35deb5473bb",
+   "alcance": "Aurora Prompt Linter v1.0; MAIN prompt",
+   "enunciado": "Si existe al menos una referencia para una categoría, se prohíben en el prompt MAIN los descriptores estáticos de esa categoría, mientras que las categorías sin referencia pueden describirse."
   },
   {
-   "id": "c73457aac170",
-   "alcance": "Etapa 5, Anchor Images",
-   "enunciado": "La Etapa 5 genera borradores de imagen desde shots.json con visual-prompt-forge, aplica la sintaxis final autorizada por image, requiere generación del usuario y evalúa cada render con visual-asset-critic contra su shot."
+   "id": "f00e2758ff04",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 10 v6.0; todos los casos",
+   "enunciado": "El máximo de palabras es un fallo bloqueante y el mínimo es una advertencia no bloqueante porque puede haber compresión intencional."
+  },
+  {
+   "id": "70f81aa3c5dc",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 1; MAIN prompt",
+   "enunciado": "Si una referencia carga una categoría, está prohibido describir esa categoría en el prompt MAIN."
+  },
+  {
+   "id": "f38cd7740a80",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 2; prompts cross-platform",
+   "enunciado": "El vocabulario baneado multiplataforma, como «slow motion», «cartoon», «anime» o «3D render», solo puede aparecer en el bloque NEGATIVE."
+  },
+  {
+   "id": "bd9eb51b8385",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 3; casos I2V y T2I",
+   "enunciado": "El límite máximo de palabras es 90 para I2V y 130 para T2I, mientras que los mínimos no bloqueantes son 50 y 75 respectivamente."
+  },
+  {
+   "id": "84b2e9411791",
+   "alcance": "Aurora Prompt Linter v1.0; Step 5 de prompt-production-protocol",
+   "enunciado": "El linter Aurora v1.0 bloquea la entrega de prompts con redundancia respecto a referencias, violaciones estructurales, vocabulario baneado o keywords obligatorias ausentes y es un gate obligatorio del paso 5 de prompt-production-protocol."
+  },
+  {
+   "id": "f1450745ccf0",
+   "alcance": "Aurora Prompt Linter v1.0; categorías O y P de referencias",
+   "enunciado": "Explicación: la versión 1.0 no admite sub-tags de categoría y una referencia etiquetada cubre toda la categoría, incluso si no muestra todos sus elementos."
+  },
+  {
+   "id": "c482b33f1ea4",
+   "alcance": "Aurora Prompt Linter v1.0; ejecución por CLI",
+   "enunciado": "El linter devuelve código 0 si el prompt pasa y puede entregarse, y código 1 si falla y su entrega queda bloqueada."
+  },
+  {
+   "id": "c17be61903ba",
+   "alcance": "Aurora Prompt Linter v1.0; ejecución por CLI",
+   "enunciado": "El linter se ejecuta indicando el archivo de prompt, las referencias, el caso, los overrides y opcionalmente el modo de retransmisión deportiva."
+  },
+  {
+   "id": "3607bb185a78",
+   "alcance": "Aurora Prompt Linter v1.0; etiquetas declaradas de referencias",
+   "enunciado": "El agente debe reverificar las etiquetas de las referencias antes de invocar el linter porque este no inspecciona las imágenes."
+  },
+  {
+   "id": "43d5d9fd2141",
+   "alcance": "Aurora Prompt Linter v1.0; mecanismo de override",
+   "enunciado": "Ejemplo: un override válido identifica específicamente el término o categoría autorizada y justifica la excepción."
+  },
+  {
+   "id": "3a8cf5fb3f29",
+   "alcance": "Aurora Prompt Linter v1.0; mecanismo de override",
+   "enunciado": "Los overrides deben escribirse con la sintaxis «OVERRIDE: término o categoría - motivo»."
+  },
+  {
+   "id": "642fac1beb8f",
+   "alcance": "Aurora Prompt Linter v1.0; mecanismo de override",
+   "enunciado": "Los overrides solo valen en el turno actual y cada prompt nuevo debe iniciar en modo estricto sin autorizaciones previas."
+  },
+  {
+   "id": "b1efd6f3348d",
+   "alcance": "Aurora Prompt Linter v1.0; mecanismo de override",
+   "enunciado": "Se prohíben los overrides genéricos sin un alcance y una justificación específicos."
+  },
+  {
+   "id": "60ff2512a1b1",
+   "alcance": "Aurora Prompt Linter v1.0; mecanismo de override",
+   "enunciado": "Una violación solo puede ignorarse si el usuario la autoriza expresamente y de forma específica en el caso actual."
+  },
+  {
+   "id": "3011f07db739",
+   "alcance": "Aurora Prompt Linter v1.0; proyectos fuera de cycling, soccer y fitness",
+   "enunciado": "Las listas de vocabulario deben ampliarse cuando el proyecto use dominios distintos de los casos típicos de Aurora."
+  },
+  {
+   "id": "a20c9463e5f9",
+   "alcance": "Aurora Prompt Linter v1.0; v6.0 §5.4",
+   "enunciado": "Explicación: el linter convierte en una regla determinista en código la prohibición de describir en el prompt contenido ya visible en las referencias."
+  },
+  {
+   "id": "ad9673b7ddf5",
+   "alcance": "Aurora Prompt Linter; MAIN",
+   "enunciado": "El linter bloquea siempre en MAIN las infracciones estructurales de conteo de palabras o ausencia de negative prompt."
+  },
+  {
+   "id": "95e6ada2d33d",
+   "alcance": "Aurora Prompt Linter; MAIN con referencias que cubren S",
+   "enunciado": "La categoría S de estilo se prohíbe en MAIN cuando una referencia ya cubre esa categoría."
+  },
+  {
+   "id": "43b0578a51e0",
+   "alcance": "Aurora Prompt Linter; MAIN y negative prompt",
+   "enunciado": "El conteo de palabras debe calcularse solo sobre MAIN y excluir el bloque negative prompt."
+  },
+  {
+   "id": "ce4fc81496fd",
+   "alcance": "Aurora Prompt Linter; MAIN y negative prompt",
+   "enunciado": "Los términos cross-platform vetados deben excluirse siempre de MAIN e incluirse en el bloque NEGATIVE."
+  },
+  {
+   "id": "6c3aa750683f",
+   "alcance": "Aurora Prompt Linter; caso 4; MAIN",
+   "enunciado": "El caso 4 debe tener entre 75 y 130 palabras, con máximo bloqueante y mínimo solo de advertencia."
+  },
+  {
+   "id": "8f54a671d062",
+   "alcance": "Aurora Prompt Linter; casos 1 y 2; MAIN",
+   "enunciado": "Los casos 1 y 2 deben tener entre 75 y 130 palabras, con máximo bloqueante y mínimo solo de advertencia."
+  },
+  {
+   "id": "e5366417a0a6",
+   "alcance": "Aurora Prompt Linter; casos 3a, 3b y 3c; MAIN",
+   "enunciado": "Los casos 3a, 3b y 3c deben tener entre 50 y 90 palabras, con máximo bloqueante según la Regla 10 v6.0 y mínimo solo de advertencia."
+  },
+  {
+   "id": "9c3f4d6247ab",
+   "alcance": "Aurora Prompt Linter; casos sujetos a Regla 26 v6.0 y modo sports broadcast",
+   "enunciado": "Cuando aplica la Regla 26 v6.0, se requieren `60fps` y `broadcast realism` con el flag `--sports-broadcast`."
+  },
+  {
+   "id": "df28342a52a2",
+   "alcance": "Aurora Prompt Linter; detección contextual de términos",
+   "enunciado": "Explicación: el linter distingue entre descriptores estáticos y usos funcionales de un término."
+  },
+  {
+   "id": "7c0d82fe4673",
+   "alcance": "Aurora Prompt Linter; detección de términos en prompts",
+   "enunciado": "El linter debe exentar términos usados tras contexto de cámara o preposiciones direccionales, aunque coincidan con vocabulario detectable."
+  },
+  {
+   "id": "0fb4c67621e8",
+   "alcance": "Aurora Prompt Linter; especialmente caso 3b y modo sports-broadcast",
+   "enunciado": "Antes de entregar un prompt, se deben etiquetar las referencias, guardar el borrador y el mensaje actual, ejecutar el linter y no entregar hasta obtener estado PASS."
+  },
+  {
+   "id": "66b91461ea58",
+   "alcance": "Aurora Prompt Linter; mecanismo de override",
+   "enunciado": "Ejemplo: un override válido identifica un término o categoría concreta y aporta una razón explícita."
+  },
+  {
+   "id": "177e65eb5f24",
+   "alcance": "Aurora Prompt Linter; mecanismo de override",
+   "enunciado": "El override debe escribirse con la sintaxis `OVERRIDE: <término-o-categoría> - <razón>`."
+  },
+  {
+   "id": "6c47c395c415",
+   "alcance": "Aurora Prompt Linter; mecanismo de override",
+   "enunciado": "El usuario puede autorizar expresamente por escrito en el turno actual una infracción legítima detectada."
+  },
+  {
+   "id": "2676c0f260cf",
+   "alcance": "Aurora Prompt Linter; mecanismo de override",
+   "enunciado": "Las autorizaciones genéricas sin un término o categoría específicos no cuentan como override."
+  },
+  {
+   "id": "05b1b291a63e",
+   "alcance": "Aurora Prompt Linter; mecanismo de override",
+   "enunciado": "Los overrides solo valen en el turno actual, cada prompt comienza en modo STRICT y su cobertura se limita al término o categoría autorizados."
+  },
+  {
+   "id": "b1b066b6bfe0",
+   "alcance": "Aurora Prompt Linter; prompts con referencias",
+   "enunciado": "El Aurora Prompt Linter debe usarse como gate entre el borrador y la entrega para impedir redescribir contenido ya cubierto por referencias."
+  },
+  {
+   "id": "b1dc2e73c21b",
+   "alcance": "Aurora Prompt Linter; regla v6.0 §5.4",
+   "enunciado": "Explicación: el linter existe porque el agente tiende a sobre-describir lo que ya contienen las referencias durante iteraciones rápidas."
+  },
+  {
+   "id": "327b58f1b8b4",
+   "alcance": "Aurora Prompt Linter; salida de validación",
+   "enunciado": "Cuando el linter devuelve PASS, la entrega queda permitida."
+  },
+  {
+   "id": "145192234ebd",
+   "alcance": "Aurora Prompt Linter; salida de validación",
+   "enunciado": "El linter debe emitir un reporte en texto plano o JSON que detalle caso, estructura, infracciones, overrides, sugerencias y bloquee la entrega si el estado es FAIL."
+  },
+  {
+   "id": "fbb26a83c318",
+   "alcance": "Aurora Prompt Linter; versión Linter regex genérico",
+   "enunciado": "La versión de linter regex genérico tiene una cobertura efectiva aproximada del 70%."
+  },
+  {
+   "id": "e9573bb8b752",
+   "alcance": "Aurora Prompt Linter; versión Solo memoria + skill",
+   "enunciado": "La versión basada solo en memoria y skill tiene una cobertura efectiva aproximada del 50%."
+  },
+  {
+   "id": "bc38aa135672",
+   "alcance": "Brand Lock > Typography",
+   "enunciado": "Coloca el nombre y peso de cada fuente entre comillas invertidas inmediatamente después de su etiqueta para que la previsualización HTML y la comprobación de overlays lo lean."
+  },
+  {
+   "id": "45fb2f016004",
+   "alcance": "Brand Lock Extractor, fase de extracción",
+   "enunciado": "La lista de prohibiciones debe inferirse de las consistencias de los activos cuando sea necesario y no puede entregarse vacía."
+  },
+  {
+   "id": "5d37517ee631",
+   "alcance": "Brand Lock Extractor; paso 4 de redacción",
+   "enunciado": "Completa todas las secciones requeridas con templates/brand-lock.md.tpl sin dejar placeholders y añade notas de extracción para cada valor inferido o pendiente de confirmación con su fuente y razonamiento."
+  },
+  {
+   "id": "b35e4fbef027",
+   "alcance": "Brand Lock Extractor; paso 5 de autocontrol",
+   "enunciado": "Antes de entregar, verifica que estén las nueve secciones obligatorias, que Identity incluya sus cuatro campos y que Palette contenga al menos un hex real #RRGGBB."
+  },
+  {
+   "id": "502b5f179187",
+   "alcance": "Brand Lock Extractor; paso 5 de entrega",
+   "enunciado": "Al entregar el brand-lock, indica los valores que requieren revisión, pide guardarlo en brand-packs/, validarlo con tools/validate_brand_lock.py y usarlo después como referencia de producción."
+  },
+  {
+   "id": "84840754d0ec",
+   "alcance": "Brand Lock Extractor; salida brand-lock.md",
+   "enunciado": "El resultado debe ser un archivo brand-lock.md en el formato exacto que valida tools/validate_brand_lock.py y consumen las demás habilidades."
+  },
+  {
+   "id": "017ac47f54ea",
+   "alcance": "Brand packs, creación",
+   "enunciado": "Todos los campos del brand pack deben completarse sin dejar placeholders."
+  },
+  {
+   "id": "7b4dd92ee4d4",
+   "alcance": "Casos 1, 2 y 4",
+   "enunciado": "El Aurora Prompt Linter está recomendado para el caso 1 de génesis texto a imagen, el caso 2 con referencias parciales y el caso 4 de vídeo con diálogo."
+  },
+  {
+   "id": "c83e49e29ec8",
+   "alcance": "Casos 3a/3b/3c, I2V con refs FF/LF",
+   "enunciado": "El Aurora Prompt Linter es obligatorio para los casos 3a, 3b y 3c de imagen a vídeo con referencias de primer y último fotograma."
+  },
+  {
+   "id": "1879b07ebfeb",
+   "alcance": "E0.4 brand-lock-extractor",
+   "enunciado": "E0.4: se escribe brand-lock.md con notas de extracción desde el template y se valida con validate_brand_lock.py."
+  },
+  {
+   "id": "aaecfa78aaab",
+   "alcance": "E1.1 creative-strategy",
+   "enunciado": "E1.1: la lectura del brief produce problema, audiencia, SMP en una frase, tono y restricciones; sin SMP en una frase la etapa no continúa."
+  },
+  {
+   "id": "3e5b81185e44",
+   "alcance": "E1.4 creative-strategy",
+   "enunciado": "E1.4: matriz de selección 1-5 con recomendación argumentada; el usuario elige un solo concepto."
+  },
+  {
+   "id": "4e4e21c688d8",
+   "alcance": "E2.4 screenwriter",
+   "enunciado": "E2.4: la salida es script.md XML-tagged con key_visuals por escena y pasa el gate de fórmula de escena de dramaturgy.md."
+  },
+  {
+   "id": "261c9730ab46",
+   "alcance": "E3.1 dramaturgy §1",
+   "enunciado": "E3.1: cada escena nombra en una frase deseo, obstáculo, geometría, mirada y ritmo; si falta uno la escena no está lista."
+  },
+  {
+   "id": "712e8b7c361d",
+   "alcance": "E4.6 storyboard-architect",
+   "enunciado": "E4.6: se generan storyboard.md, brand-lock.snapshot.md y run.json con SHA-256, validados con validate_shots, validate_brand_lock y validate_provenance."
+  },
+  {
+   "id": "0471c4cc82b6",
+   "alcance": "E5.6 visual-prompt-forge",
+   "enunciado": "E5.6: visual-prompt-forge genera borradores por adaptador en prompts/round-N/ validados con validate_prompts.py (series_lock verbatim, sin texto ni logos)."
+  },
+  {
+   "id": "1940d38d7d5c",
+   "alcance": "E6.4 dramaturgy §15, U12",
+   "enunciado": "E6.4: cada prompt pasa el dramaturgy check de seis respuestas sí y tres detalles por shot; si una falla no se entrega."
+  },
+  {
+   "id": "497661ce3898",
+   "alcance": "E6.5 aurora-prompt-linter",
+   "enunciado": "E6.5: el prompt pasa el linter determinista aurora-prompt-linter con exit 0."
+  },
+  {
+   "id": "bad0168389ca",
+   "alcance": "E6.6 produccion-visual-sw30",
+   "enunciado": "E6.6: el prompt se entrega con cabecera de micro-gate SKILL / RIESGOS / TÉCNICA; sin cabecera la entrega es inválida."
+  },
+  {
+   "id": "179a70241f42",
+   "alcance": "Etapa 0, proyectos con o sin marca formal",
+   "enunciado": "El usuario debe confirmar los valores estimados del Brand Lock y, si no existe marca formal, se debe usar como sustituto ligero el Visual Theme de la Etapa 3."
+  },
+  {
+   "id": "ab4d191447d1",
+   "alcance": "Etapa 1 — Lectura del brief",
+   "enunciado": "La Etapa 1 no puede continuar hasta que la single-minded proposition pueda formularse en una sola frase y, si no es posible, debe resolverse con el usuario."
+  },
+  {
+   "id": "e644e660d0eb",
+   "alcance": "Etapa 1, gate de Creative Strategy.",
+   "enunciado": "No se debe avanzar hasta que el usuario seleccione un concepto, y un híbrido solicitado debe tratarse como un concepto nuevo con su propia concept card."
+  },
+  {
+   "id": "dccfa910763d",
+   "alcance": "Etapa 5, imágenes ancla",
+   "enunciado": "Con exit 0 el prompt se entrega con el reporte adjunto; con exit 1 no se entrega y se itera; los avisos de palabras no se arreglan recortando el T1."
+  },
+  {
+   "id": "2f8a0d773406",
+   "alcance": "Etapa 5, imágenes ancla",
+   "enunciado": "Ejemplo: invocación del linter para un T3 en nano_banana_pro con --ref-role character y series_lock."
+  },
+  {
+   "id": "45cc21b2f318",
+   "alcance": "Etapa 5, imágenes ancla",
+   "enunciado": "El linter se ejecuta por prompt, con el caso SW30 tal cual y la plataforma del header Model: del skill image."
   },
   {
    "id": "8b33fdd79d7e",
@@ -41,9 +351,74 @@
    "enunciado": "series_lock.json se extrae de shots.json (character, environment, lighting, color_grade), las mismas cadenas que forge exige verbatim."
   },
   {
-   "id": "9bb75174b902",
-   "alcance": "Etapa 6, Video Prompts",
-   "enunciado": "La Etapa 6 debe entregar prompts finales de video por shot con bloques de continuidad entre clips."
+   "id": "2127669766f1",
+   "alcance": "Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5, refs.yaml se escribe desde el plan de anchors con role (CHARACTER, LOCATION, PROP, STYLE) y tags (P1, O1, L1, PR1, S1) por referencia."
+  },
+  {
+   "id": "86b15320e3b2",
+   "alcance": "Etapa 6 — Video Prompts; prompts de video",
+   "enunciado": "En la Etapa 6, todo prompt de video debe aprobar el check dramatúrgico de 6 puntos, la auditoría de 3 detalles y, si está disponible, el aurora-prompt-linter; de lo contrario no se entrega."
+  },
+  {
+   "id": "54ceb05f09b4",
+   "alcance": "Etapa 6, prompts de video",
+   "enunciado": "Ejemplo: invocación del linter para un clip CLIP-FF-LF en kling_3.0 con series_lock y overrides."
+  },
+  {
+   "id": "7d517a935399",
+   "alcance": "Etapa 6, prompts de video",
+   "enunciado": "El gate de la Etapa 6 es doble: los dos checks del skill video (dramaturgy de 6 puntos y auditoría de 3 detalles) y el linter limpio."
+  },
+  {
+   "id": "7673328effd4",
+   "alcance": "Etapa 6, prompts de video",
+   "enunciado": "En spots de velocidad se usa --treatment race y --sports-broadcast solo si aplica la Regla 26."
+  },
+  {
+   "id": "b8b71dbdae94",
+   "alcance": "Etapa 6, prompts de video",
+   "enunciado": "La plataforma del linter se toma del archivo de modelo destino (kling_3.0, veo_3.1, seedance_2.5, hailuo)."
+  },
+  {
+   "id": "ed18d66b9ace",
+   "alcance": "Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6, refs.yaml lleva la imagen aprobada como role FF (y LF/TAIL si hay tail image) con los tags de lo que esa imagen ya fija."
+  },
+  {
+   "id": "89c952484feb",
+   "alcance": "Etapa 7 — Package & Delivery",
+   "enunciado": "La Etapa 7 solo se cierra con el checklist maestro completo y la trazabilidad verificada mediante el muestreo de tres prompts hasta su concepto de origen."
+  },
+  {
+   "id": "8b283ba763cd",
+   "alcance": "Etapa 7, checklist maestro del pipeline",
+   "enunciado": "El archivo preview.html debe abrirse sin conexión y reflejar el estado final del proyecto."
+  },
+  {
+   "id": "b42f1213a438",
+   "alcance": "Etapa 7, checklist maestro del pipeline.",
+   "enunciado": "El concepto seleccionado por el usuario debe quedar documentado en 01-strategy para superar el gate de la Etapa 7."
+  },
+  {
+   "id": "729983f63022",
+   "alcance": "Etapa 7, checklist maestro del pipeline.",
+   "enunciado": "La trazabilidad debe verificarse mediante el muestreo establecido en la sección 2.5 antes de cerrar el pipeline."
+  },
+  {
+   "id": "482d6439634a",
+   "alcance": "Etapa 7, checklist maestro; anchors críticos.",
+   "enunciado": "Los anchors críticos deben obtener verdict ACCEPT en la crítica en un máximo de dos rondas."
+  },
+  {
+   "id": "71f00364d5b8",
+   "alcance": "Etapa 7, checklist maestro; dirección cinematográfica.",
+   "enunciado": "La dirección cinematográfica no debe contener vocabulario prohibido para superar el gate de la Etapa 7."
+  },
+  {
+   "id": "d18b95787693",
+   "alcance": "Etapa 7, checklist maestro; prompts de video.",
+   "enunciado": "Los prompts de video deben usar la sintaxis del modelo de destino y aprobar los dos checks de video."
   },
   {
    "id": "c4d55f4b9c7c",
@@ -51,129 +426,659 @@
    "enunciado": "shots.json debe validar sin errores con validate_shots.py y cada shot debe pasar una auditoría de tres detalles."
   },
   {
-   "id": "a7daf2e98d07",
-   "alcance": "Etapa 7, estructura del paquete de producción.",
-   "enunciado": "El production package debe organizarse en README, estrategia, guion, dirección, shots, anclas, prompts de video, entrega y brand-lock con los archivos especificados, siendo shots.json la fuente de verdad."
+   "id": "93f51cb8d66b",
+   "alcance": "Etapa 7, checklist maestro; todas las escenas del script.",
+   "enunciado": "Cada escena del script debe cumplir la fórmula de escena y la three-jobs rule para superar el gate de la Etapa 7."
   },
   {
-   "id": "21baa1d284b4",
-   "alcance": "Etapa 7, reglas de trazabilidad; cambios que afecten un shot.",
-   "enunciado": "Si un prompt requiere cambiar encuadre, acción o luz fijados por su shot, se debe actualizar shots.json y regenerar los documentos posteriores, sin permitir contradicciones entre prompt y shot."
+   "id": "da55c2a3199a",
+   "alcance": "Etapa 7, checklist maestro; todos los prompts cuando la herramienta esté instalada.",
+   "enunciado": "Si aurora-prompt-linter está instalado, todos los prompts deben pasar el linter sin errores."
   },
   {
-   "id": "8905f58314d9",
-   "alcance": "Etapa 7, reglas de trazabilidad; shots.json.",
-   "enunciado": "Cada shot en shots.json debe referenciar su escena correspondiente del script mediante el campo scene o una nota."
+   "id": "d52b90c93c00",
+   "alcance": "Etapa 7, verificación de cierre del paquete.",
+   "enunciado": "Antes de entregar se deben muestrear tres prompts y verificar la cadena prompt, shot, escena y concepto; si falta un eslabón, el paquete no se entrega."
   },
   {
-   "id": "33df9863d85c",
-   "alcance": "Etapa 7, reglas de trazabilidad; todos los prompts.",
-   "enunciado": "Todo prompt de imagen o video debe incluir su shot_id en un comentario."
+   "id": "69083508ea93",
+   "alcance": "F4 — Prompts Génesis, Sección 4.6",
+   "enunciado": "Los prompts Génesis F4 no deben entregarse sin PASS del linter o overrides que cubran las violaciones."
   },
   {
-   "id": "b92c3acf8c10",
-   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
-   "enunciado": "La génesis recibe como entrada el series_lock de shots.json con personaje, entorno y luz."
+   "id": "eea2d83afe50",
+   "alcance": "F5 — Prompts Ancla FF+LF, Sección 4.7",
+   "enunciado": "Las Anclas F5 no deben entregarse sin PASS del linter o overrides que cubran las violaciones."
   },
   {
-   "id": "d322bd192009",
-   "alcance": "Midjourney v7",
-   "enunciado": "La iluminación del prompt debe copiarse verbatim de series_lock.lighting."
+   "id": "ff3fb1a61455",
+   "alcance": "F6 — Research video + Prompts, Sección 4.8, I2V",
+   "enunciado": "Los prompts de video F6, especialmente I2V, no deben entregarse sin PASS del linter o overrides que cubran las violaciones."
   },
   {
-   "id": "546038ff4a2c",
-   "alcance": "Midjourney v7 (ejemplo de adaptador)",
-   "enunciado": "Ejemplo: datos de un shot (shot_03, MS, eye-level, estático, fundador frente al laptop) con rationale de espacio negativo para overlay de texto."
+   "id": "fd7a2af51221",
+   "alcance": "I2V; prompt-production-protocol Step 5",
+   "enunciado": "Explicación: el linter traslada a código la aplicación de la regla contra la sobre-descripción en I2V para evitar que el agente la olvide durante iteraciones rápidas."
   },
   {
-   "id": "d5c1335e0d1a",
-   "alcance": "Midjourney v7 (ejemplo de adaptador)",
-   "enunciado": "Ejemplo: series lock con personaje (fundador de treinta y tantos, canas, crewneck marino), entorno de oficina minimalista, luz lateral natural y grade cálido fílmico."
+   "id": "dd4b566c5e9e",
+   "alcance": "Interacción entre etapas; regímenes STANDARD y FILM",
+   "enunciado": "Al cerrar cada gate se debe entregar el artefacto de la etapa y anunciar la siguiente, y en STANDARD o FILM los gates 1, 2 y 4 requieren aprobación explícita del usuario जबकि los demás avanzan solos salvo instrucción contraria."
   },
   {
-   "id": "c7a30a50f160",
-   "alcance": "Seedance 2.0",
-   "enunciado": "Las entradas consecutivas de shots.json que comparten sujeto se agrupan en un solo prompt multi-shot de Seedance, referenciadas por rango de id en el comentario."
+   "id": "0acde42170d9",
+   "alcance": "Interacción entre etapas; régimen EXPRESS",
+   "enunciado": "En el régimen EXPRESS, solo el shot list requiere aprobación del usuario antes de redactar prompts."
   },
   {
-   "id": "264820185765",
-   "alcance": "capa 4; shot planning",
-   "enunciado": "La sub-skill storyboard-architect debe producir storyboard.md, shots.json, text-overlays.json y run.json validados por schema, que desde esta capa son la fuente de verdad estructural."
+   "id": "26bd20b56c95",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "El aspect ratio de salida debe ser exacto; una desviación de hasta 1% es menor y se arregla con recorte, y más de 1% bloquea salvo aceptación explícita."
   },
   {
-   "id": "1de02973e084",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "$schema_note es un texto opcional."
+   "id": "2894b6e22306",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2) (diagrama)",
+   "enunciado": "Especifica el subflujo de génesis: clase → grounding NB2 o elección de modelo → reglas de oro → secciones por clase → lints → pregunta de avance → micro-gate → preflight de costo → generar barato, seleccionar, regenerar en alta → inspección al 100% → crítica → canonizar con hash, editar hasta 3 veces o cambiar de método."
   },
   {
-   "id": "fe5c51c806a3",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "La raíz de la matriz de capacidades no admite campos fuera de $schema_note, version, matrix_last_reviewed y generators."
+   "id": "8581947f3820",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "enunciado": "La génesis entrega la cabecera de 3 líneas, Model/Quality/Size, el prompt y las notas."
   },
   {
-   "id": "199f010645c3",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "generators es un array obligatorio con al menos un elemento."
+   "id": "a770928ae820",
+   "alcance": "Paquete aurora-prompt-linter",
+   "enunciado": "Explicación: el paquete del linter incluye el skill, el ejecutable CLI, las listas de vocabulario y documentación de uso, pruebas y actualización."
   },
   {
-   "id": "4c7b91e92e41",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "generators[] no admite campos fuera de id, display_name, model_version, last_verified, prompt_style, max_prompt_words, supports_*, aspect_param, api_access y notes."
+   "id": "364f6097637c",
+   "alcance": "Plantilla de Brand Lock",
+   "enunciado": "Los placeholders del brand lock deben reemplazarse y el bloque de instrucciones debe eliminarse al terminar."
   },
   {
-   "id": "9df1a1b16279",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "generators[].id es obligatorio, en minúsculas/dígitos/guiones, y debe coincidir con el nombre de archivo .md del adaptador."
+   "id": "cbd5eacfc735",
+   "alcance": "SYSTEM PROMPT v6.1, Sección 1.3",
+   "enunciado": "Toda regla codificable debe implementarse de forma determinista y el linter prevalece sobre una regla equivalente en prosa."
   },
   {
-   "id": "1eaa2975ed60",
-   "alcance": "capabilities.schema.json",
-   "enunciado": "version es un texto obligatorio."
+   "id": "f9409e0aa457",
+   "alcance": "SYSTEM PROMPT v6.1, Sección 5.5; prompts T2I e I2V",
+   "enunciado": "El linter debe actuar como gate duro para redundancia con referencias, límites de palabras, vocabulario baneado, negative prompt y keywords deportivas, permitiendo solo las exenciones y overrides específicos definidos."
   },
   {
-   "id": "c082327b5a59",
+   "id": "8832d05dbcc4",
+   "alcance": "SYSTEM PROMPT v6.1, inicio del CHANGELOG",
+   "enunciado": "El CHANGELOG v6.1 debe registrar la Regla 28, el enforcement determinista, los requisitos de override, las actualizaciones de F4-F6 y los cambios de versión, fecha y contador de reglas."
+  },
+  {
+   "id": "69fc472f236b",
+   "alcance": "Skill prompt-production-protocol, entre el paso 4 y el paso 6; régimen con Regla 28 activa",
+   "enunciado": "El agente debe invocar automáticamente el linter al final del paso 4 y antes de la entrega, y este bloquea la entrega si la Regla 28 está activa."
+  },
+  {
+   "id": "4abb902ab2fb",
+   "alcance": "Skill prompt-production-protocol, paso 5b; prompts visuales de Kling 3.0, Veo 3.1, Sora 2, GPT Image 2, Nano Banana Pro y Midjourney",
+   "enunciado": "Se debe ejecutar obligatoriamente el gate determinista antes de entregar cualquier prompt visual, salvo un override expreso válido solo para el turno actual."
+  },
+  {
+   "id": "c3e33ddc55a1",
+   "alcance": "System prompt v6.0 y v6.1+; Aurora Prompt Linter",
+   "enunciado": "Con system prompt v6.1 o posterior que incluya la Regla 28, no se pueden entregar prompts sin pasar el linter o contar con overrides válidos; en v6.0 su uso es opcional pero recomendado."
+  },
+  {
+   "id": "f43ac1fec965",
+   "alcance": "Transición entre Etapa 1 y Etapa 2.",
+   "enunciado": "La concept card y la dirección narrativa deben ser una entrada completa para la Etapa 2, por lo que cualquier duda estructural de screenwriter debe resolverse antes de avanzar."
+  },
+  {
+   "id": "ca03139a7453",
+   "alcance": "ai-production-director, Etapas 5 y 6",
+   "enunciado": "El linter es el gate final con veto sobre prompts: obligatorio en la Etapa 6 y recomendado en la Etapa 5."
+  },
+  {
+   "id": "a8f40ac43529",
+   "alcance": "alta de herramientas nuevas",
+   "enunciado": "Las herramientas nuevas deben incluir un comando `--selftest` que demuestre que la comprobación se activa."
+  },
+  {
+   "id": "3d1609aa3f27",
+   "alcance": "alta de herramientas nuevas; CI",
+   "enunciado": "Las herramientas nuevas deben integrarse en `tools/check.sh`, que ejecuta CI."
+  },
+  {
+   "id": "46cdda3a64f5",
+   "alcance": "aurora-prompt-linter",
+   "enunciado": "Un término vetado a menos de 50 caracteres de un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y no se marca."
+  },
+  {
+   "id": "7585c6ae0528",
+   "alcance": "aurora-prompt-linter v1.2-fupai",
+   "enunciado": "Un término vetado junto a un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y queda exento del veto."
+  },
+  {
+   "id": "475c5e8a21e3",
+   "alcance": "aurora-prompt-linter v1.2-fupai (hooks del repo), vocabulario P",
+   "enunciado": "Especifica la lista P ampliada (v1.2-fupai) de términos de personaje vetados en el MAIN cuando una referencia ff/lf carga esa categoría, añadiendo roles de dominio (nadador, wakeboarder, piloto, barista, músicos) y retirando sudor y mandíbula."
+  },
+  {
+   "id": "01432b8a6b8a",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "enunciado": "Explicación: la copia existe porque el linter original, calibrado para un flujo anterior, bloquea prompts que los skills actuales exigen y deja pasar palabras que prohíben; cada parche cita su fuente."
+  },
+  {
+   "id": "566f2deb2904",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "enunciado": "Explicación: la copia parcheada v1.2-fupai del linter aurora amplía el vocabulario y resuelve contradicciones a favor de la fuente, sin tocar el original, con la misma interfaz y exit codes más las opciones --ref-role, --series-lock y --treatment."
+  },
+  {
+   "id": "c2d1193f4be2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, BANNED",
+   "enunciado": "Prohíbe siempre en el MAIN los términos vacíos (cinematic, professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, incredible, gorgeous, dreamy, plastic skin, soft glow, etc.); una mención negada no cuenta."
+  },
+  {
+   "id": "8caa623dd5ff",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Flux caso 1",
+   "enunciado": "En Flux caso 1 el MAIN debe contener sujeto, acción o pose, entorno, luz, especificación fotográfica (shot on, mm, f/, DOF) y cierre fotorreal."
+  },
+  {
+   "id": "63a4afcd983d",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 1",
+   "enunciado": "En GPT Image 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, cámara, luz, anti-estilo y los slots \"Use case:\" y \"Constraints:\" del formato de 5 slots."
+  },
+  {
+   "id": "1e2955c62581",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz, consistencia de estilo (preserve, keep) y el slot \"Constraints:\"."
+  },
+  {
+   "id": "2b8faa1d4388",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Hailuo caso 3a",
+   "enunciado": "En Hailuo caso 3a el MAIN debe contener frase de cámara, sujeto-acción, cambio de luz y mood."
+  },
+  {
+   "id": "061dcf08e53b",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Ideogram caso 1",
+   "enunciado": "En Ideogram caso 1 (modo compuesto) el MAIN debe contener sujeto, entorno, luz y composición con espacio negativo."
+  },
+  {
+   "id": "96b39d99ba52",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3a",
+   "enunciado": "En Kling 3.0 caso 3a el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo realista y anti-morphing (incluido \"preserve\")."
+  },
+  {
+   "id": "9984b52109d3",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3b",
+   "enunciado": "En Kling 3.0 caso 3b el MAIN debe contener escena o movimiento, transición FF→LF (tail image, last frame), cámara, estilo y anti-morphing."
+  },
+  {
+   "id": "663bd1b7dc9e",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento, orientación del personaje y cámara, centrándose en la descripción del sujeto."
+  },
+  {
+   "id": "2e4beae856ab",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 4",
+   "enunciado": "En Kling 3.0 caso 4 (diálogo) el MAIN debe contener etiquetas de personaje, lista de shots, diálogo entre comillas, etiqueta de voz, enlace temporal y línea de audio."
+  },
+  {
+   "id": "25a0fef32203",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Midjourney caso 1",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener sujeto, estilo, composición, luz, relación de aspecto y parámetro de calidad."
+  },
+  {
+   "id": "d4fd413a5bba",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 1",
+   "enunciado": "En Nano Banana 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, igual que NBP en lenguaje natural."
+  },
+  {
+   "id": "f963cf9426a4",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 2",
+   "enunciado": "En Nano Banana 2 caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "4edc399784f1",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 1",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, sin números de lente."
+  },
+  {
+   "id": "7077d4bcb711",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia (image N, @img), sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "5adda93a80aa",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P1",
+   "enunciado": "Define rangos de palabras recomendados y techos por plataforma (Midjourney 40-80, Flux 80-150, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70, Kling 80-150 o 20-40 en I2V, Veo 80-150 o 50-100 en I2V, etc.) como referencia que nunca bloquea."
+  },
+  {
+   "id": "dd48d0564bc0",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P2",
+   "enunciado": "Define por plataforma si el bloque negativo es obligatorio: requerido en Kling y Seedance 2.5; opcional (framing positivo) en Seedance, GPT Image, Nano Banana, Veo, Midjourney, Flux, Ideogram, Seedream y Hailuo."
+  },
+  {
+   "id": "ee39bbfd73f5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Define los grupos de rasgos del bloque de identidad: pelo, ojos y piel, prenda, accesorio y rasgo distintivo, cada uno con sus palabras clave."
+  },
+  {
+   "id": "6044e30c4de1",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Exige que el bloque de identidad contenga al menos 3 grupos de rasgos."
+  },
+  {
+   "id": "69f1818f842f",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P5",
+   "enunciado": "Los términos de micro-acción corporal (sudor, mandíbula, nudillos, respiración, tendón, venas, parpadeo) nunca cuentan como re-descripción del personaje aunque haya referencia."
+  },
+  {
+   "id": "f37166faf0f2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Especifica los términos de cámara lenta (slow motion, slowmo, slow-mo) que dan WARN en fotorreal y FAIL en tratamiento race."
+  },
+  {
+   "id": "47d827f37126",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Los términos de cámara lenta con prefijo \"ultra-\" quedan exentos del veto."
+  },
+  {
+   "id": "e256ca71614d",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamiento fotorreal/race",
+   "enunciado": "Veta términos de estilo no fotográfico (anime, cartoon, 3D render, CGI, cel shading, pixar-style, claymation, ilustración vectorial) solo con tratamiento fotorreal o race; en ilustración o animación son legítimos."
+  },
+  {
+   "id": "503aaba8a724",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamientos ilustración/animación",
+   "enunciado": "En tratamientos de ilustración y animación se reemplazan los patrones de estilo y detalle por vocabulario propio y se eliminan las secciones anti-estilo y cierre fotorreal."
+  },
+  {
+   "id": "c091ec497b2a",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3a",
+   "enunciado": "En Seedance 2.5 caso 3a el MAIN debe contener rol de la referencia (@image, first frame), sujeto-acción, cámara, marcadores de audio y estado final."
+  },
+  {
+   "id": "db4aed3f9ec2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3b",
+   "enunciado": "En Seedance 2.5 caso 3b el MAIN debe declarar por separado las anclas de primer y último frame, sujeto-acción, cámara, transición y estado final."
+  },
+  {
+   "id": "5b6701ceae11",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 4",
+   "enunciado": "En Seedance 2.5 caso 4 el MAIN debe contener marcadores de diálogo con llaves, refuerzo del idioma del diálogo, sujeto-acción, cámara y estado final."
+  },
+  {
+   "id": "ded49c910223",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance caso 3a",
+   "enunciado": "En Seedance caso 3a el MAIN debe contener sujeto-acción, cámara y audio en el cuerpo del prompt."
+  },
+  {
+   "id": "17bdfde9b359",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedream caso 1",
+   "enunciado": "En Seedream caso 1 el MAIN debe contener sujeto, encuadre, entorno, luz y estilo fotorreal."
+  },
+  {
+   "id": "96f1f3840ba7",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3a",
+   "enunciado": "En Veo 3.1 caso 3a el MAIN debe contener sujeto-acción, timing, cámara, estilo o \"maintain the subject\" y una pista de física."
+  },
+  {
+   "id": "f2287b490734",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3b",
+   "enunciado": "En Veo 3.1 caso 3b el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing o \"maintain the subject\"."
+  },
+  {
+   "id": "b8288490f388",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 4",
+   "enunciado": "En Veo 3.1 caso 4 el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio (incluidas etiquetas SFX)."
+  },
+  {
+   "id": "fa1780da9ec9",
+   "alcance": "aurora-prompt-linter v1.2-fupai, casos de video 3a/3b/3c/4",
+   "enunciado": "Exige \"60fps\" y \"broadcast realism\" en casos de video con estética de transmisión deportiva."
+  },
+  {
+   "id": "b8296d816a42",
+   "alcance": "aurora-prompt-linter v1.2-fupai, parche P1",
+   "enunciado": "El conteo de palabras nunca bloquea: da WARN con el presupuesto por plataforma y el techo de _capabilities.json en lugar del HARD FAIL original por encima de 130/90 palabras."
+  },
+  {
+   "id": "092198635f48",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario L",
+   "enunciado": "Especifica la lista L ampliada de locaciones vetadas en el MAIN cuando hay referencia de locación, con términos de agua, automotriz, café, clima y salas de concierto."
+  },
+  {
+   "id": "4caf7acdd2e5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario O",
+   "enunciado": "Especifica la lista O ampliada de vestuario vetado en el MAIN cuando hay referencia de outfit, con términos de agua, automotriz, café y música/ensamble."
+  },
+  {
+   "id": "1f1236650c36",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario PR",
+   "enunciado": "Especifica la lista PR ampliada de props vetados en el MAIN cuando hay referencia de prop, con términos de agua, automotriz, café e instrumentos musicales."
+  },
+  {
+   "id": "2576da1d98b2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario S",
+   "enunciado": "Especifica la lista S de estilo (photorealistic, editorial, documentary, studio lighting) vetada en el MAIN con referencia de estilo; \"cinematic\" sale de esta lista y pasa a BANNED."
+  },
+  {
+   "id": "8515c9ca1187",
+   "alcance": "aurora-prompt-linter, GPT Image 1.5 caso 2",
+   "enunciado": "En GPT Image 1.5 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (incluida face strip), preservación facial explícita, sujeto-acción, cámara o lente y luz."
+  },
+  {
+   "id": "11db95b506b8",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 1",
+   "enunciado": "En GPT Image 2 caso 1 (génesis texto-a-imagen) el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, cámara o lente, luz y anti-estilo, detectadas por palabras clave."
+  },
+  {
+   "id": "5c6da21a90e8",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (image 1, ref), sujeto-acción, cámara o lente, luz y consistencia de estilo (preserve, same style)."
+  },
+  {
+   "id": "f8eba1973bf3",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3a",
+   "enunciado": "En Kling 3.0 caso 3a (I2V solo primer frame) el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo y cláusula anti-morphing."
+  },
+  {
+   "id": "3ab59a9aefae",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3b",
+   "enunciado": "En Kling 3.0 caso 3b (I2V primer y último frame) el MAIN debe contener escena o movimiento, transición FF→LF, cámara, estilo y anti-morphing."
+  },
+  {
+   "id": "65377a8b9e6e",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento (@video, pose ref), orientación del personaje y cámara."
+  },
+  {
+   "id": "49eea291584e",
+   "alcance": "aurora-prompt-linter, Midjourney caso 1",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener secciones de sujeto, estilo, composición, luz, relación de aspecto y calidad (--v/--style/--q/--stylize)."
+  },
+  {
+   "id": "0071353ecbdb",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 1",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, luz y detalles de textura (piel, tela, asimetría, poros)."
+  },
+  {
+   "id": "ac617cc1938f",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara o lente, luz y ancla de colocación espacial (on the, beside, between...)."
+  },
+  {
+   "id": "f0d939d13274",
+   "alcance": "aurora-prompt-linter, Sora 2 caso 4",
+   "enunciado": "En Sora 2 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio."
+  },
+  {
+   "id": "dbc1e6d487bf",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3a",
+   "enunciado": "En Veo 3.1 caso 3a (I2V solo primer frame) el MAIN debe contener sujeto-acción, timing o beat, cámara, estilo y una pista de física (gravedad, momento, trayectoria)."
+  },
+  {
+   "id": "64600a82d2d2",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3b",
+   "enunciado": "En Veo 3.1 caso 3b (I2V primer y último frame) el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing."
+  },
+  {
+   "id": "607dab0950cb",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 4",
+   "enunciado": "En Veo 3.1 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo entre comillas, tono o acento, timing y especificaciones de audio."
+  },
+  {
+   "id": "62bc70593cd4",
+   "alcance": "aurora-prompt-linter, casos 3a-3c sports broadcast",
+   "enunciado": "Exige incluir \"60fps\" y \"broadcast realism\" en los casos 3a/3b/3c con estética de transmisión deportiva."
+  },
+  {
+   "id": "93053b069658",
+   "alcance": "aurora-prompt-linter, todas las plataformas",
+   "enunciado": "Prohíbe siempre en el prompt MAIN, en todas las plataformas, términos como slow motion, dreamy, cartoon, anime, 3D render, perfume ad, plastic skin, dreamlike y soft glow (permitidos solo en el negative)."
+  },
+  {
+   "id": "759912407824",
+   "alcance": "aurora-prompt-linter, todos los casos",
+   "enunciado": "Exige un negative prompt en todos los casos."
+  },
+  {
+   "id": "58e3356ddbf5",
+   "alcance": "aurora-prompt-linter, vocabulario L",
+   "enunciado": "Especifica la lista L (locación: estudio, gym, muros, suelos, ventanas, skyline, luz ambiente) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de locación los aporta."
+  },
+  {
+   "id": "270c245664cb",
+   "alcance": "aurora-prompt-linter, vocabulario O",
+   "enunciado": "Especifica la lista O (outfit: prendas y calzado) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de vestuario los aporta."
+  },
+  {
+   "id": "07d9700dc6b3",
+   "alcance": "aurora-prompt-linter, vocabulario P",
+   "enunciado": "Especifica la lista P (personaje: complexión, edad, pelo, género, sudor, etc.) cuyos términos quedan vetados en el prompt MAIN cuando una referencia carga esa categoría."
+  },
+  {
+   "id": "8de795317bc6",
+   "alcance": "aurora-prompt-linter, vocabulario PR",
+   "enunciado": "Especifica la lista PR (prop: balón y paneles) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de prop los aporta."
+  },
+  {
+   "id": "108e6010c88c",
+   "alcance": "aurora-prompt-linter, vocabulario S",
+   "enunciado": "Especifica la lista S (estilo: photorealistic, cinematic, editorial, documentary, studio lighting) cuyos términos quedan vetados en el MAIN cuando una referencia de estilo los aporta."
+  },
+  {
+   "id": "1c1173279dc6",
+   "alcance": "brand-pack y snapshot de brand-lock",
+   "enunciado": "Un brand-pack puede ser una plantilla sin completar, pero un snapshot debe incluir las cabeceras de fecha de captura y fuente, preferiblemente con fecha y hora UTC completas."
+  },
+  {
+   "id": "e978e017bb4b",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Antes de enviar el board, correr los checklists de animatic-keyframes.md §9, dramaturgy.md §15 y universal-rules.md §13, sin saltar el chequeo de tres detalles."
+  },
+  {
+   "id": "80a57e4c07a3",
+   "alcance": "casos 1/2/3a/3b/3c/4, final del Step 4 drafting",
+   "enunciado": "Antes de entregar cualquier prompt de los casos 1, 2, 3a, 3b, 3c o 4, debe ejecutarse el linter determinista y no entregarse si falla salvo overrides explícitos, vigentes solo en el turno actual y con alcance específico."
+  },
+  {
+   "id": "0c6546d7cf31",
+   "alcance": "chequeos de proyecto; directorio output",
+   "enunciado": "Los chequeos de proyecto deben ejecutarse sobre el directorio de salida del proyecto y no sobre el repositorio."
+  },
+  {
+   "id": "64d151f0931c",
+   "alcance": "compilación de prompts",
+   "enunciado": "La compilación del prompt se bloquea mientras haya un campo requerido del caso sin resolver; se resuelve desde fuente autorizada o preguntando al usuario."
+  },
+  {
+   "id": "735f59b64da7",
    "alcance": "critique.schema.json",
-   "enunciado": "La raíz de critique.json no admite campos fuera de version, meta, run_id, round, created_at, shot_id, brand_lock_ref/sha256, image_ref/sha256, prompt_ref/sha256, generator, model_version, seed, verdict, confidence, working e issues."
+   "enunciado": "issues[].severity es obligatorio (minor, major, blocking): un blocking fuerza REJECT, uno o dos major limitan a REVISE y tres o más major fuerzan REJECT, según validate_critique.py."
   },
   {
-   "id": "b6bd1d5ff4e2",
-   "alcance": "critique.schema.json",
-   "enunciado": "confidence es obligatorio y debe ser HIGH, MEDIUM o LOW."
+   "id": "fd82a9054cd5",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 2: en el linter aurora el conteo de palabras nunca bloquea (solo advierte); siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas."
   },
   {
-   "id": "0818a2cff7e0",
-   "alcance": "critique.schema.json",
-   "enunciado": "issues es un array obligatorio."
+   "id": "7dcf30bd73bf",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 8: las inferencias entran como [A PRUEBA], se confirman o refutan con investigación de campo y un ejercicio real, y nunca bloquean un gate hasta ser canónicas."
   },
   {
-   "id": "6b5a6f9aa7b9",
-   "alcance": "critique.schema.json",
-   "enunciado": "issues[] no admite campos fuera de layer, severity, note, fix_type y fix."
+   "id": "b05ff5c9adcb",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica el checklist de diapositiva: una idea por slide, máximo 5 puntos, título 44-54 pt y texto 18-24 pt, 3-4 colores con alto contraste, suficiente espacio en blanco y visuales en alta resolución de estilo único."
   },
   {
-   "id": "680c1786b022",
-   "alcance": "critique.schema.json",
-   "enunciado": "meta es un objeto opcional de paso libre que los skills núcleo ignoran."
+   "id": "91ebade7496c",
+   "alcance": "dramaturgia (dramaturgy.md, skill video)",
+   "enunciado": "Todo prompt construido por el skill debe pasar el dramaturgy check antes de enviarse al usuario."
   },
   {
-   "id": "1016b80d8292",
-   "alcance": "critique.schema.json",
-   "enunciado": "shot_id es null (imagen suelta sin storyboard) o un id shot_NN."
+   "id": "6db06fa6ae20",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §1",
+   "enunciado": "Antes de escribir un prompt se nombra cada elemento de la fórmula en una frase; si no se puede, la escena no está lista."
   },
   {
-   "id": "b5b0e9184f0c",
-   "alcance": "critique.schema.json",
-   "enunciado": "verdict es obligatorio y debe ser ACCEPT, REVISE o REJECT."
+   "id": "421db64518cd",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Si una tarjeta tiene campos vacíos, se llenan o se descarta el shot."
   },
   {
-   "id": "ff35e6206b1c",
-   "alcance": "critique.schema.json",
-   "enunciado": "version es obligatorio y debe ser 1.0 o 1.1; los documentos 1.0 son legado sin prueba de lo revisado."
+   "id": "4c636ff18836",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 1: ¿está completa la fórmula de escena (deseo, obstáculo, geometría, mirada, ritmo)?"
   },
   {
-   "id": "a72ccf06b60c",
-   "alcance": "desde Etapa 4 en adelante",
-   "enunciado": "Desde la Etapa 4, shots.json es la fuente de verdad y ningún prompt, imagen o revisión puede existir sin un shot ID."
+   "id": "6f0e6e25f0f7",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 2: ¿cada shot pasa el check de tres detalles?"
+  },
+  {
+   "id": "451d3fc20094",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 3: ¿cada shot cumple uno de los tres trabajos?"
+  },
+  {
+   "id": "35509efe9d5a",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 4: ¿cada movimiento de cámara tiene razón motivada?"
+  },
+  {
+   "id": "8737a153b919",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 5: ¿es legible la geometría espacial?"
+  },
+  {
+   "id": "22e09ce37541",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 6: ¿están nombradas las cinco anclas?"
+  },
+  {
+   "id": "4df1539f150e",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Si alguna respuesta es no se corrige antes de enviar; el check de tres detalles es el más violado."
+  },
+  {
+   "id": "8a86cfa78f58",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15 check",
+   "enunciado": "Antes de devolver el prompt final se corre el check dramatúrgico de seis puntos."
+  },
+  {
+   "id": "5f83accc40d0",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §1",
+   "enunciado": "Si falta algún punto de la checklist de continuidad se corrige antes de enviar."
+  },
+  {
+   "id": "a73dd79c5344",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §1 checklist de continuidad",
+   "enunciado": "Antes de enviar un prompt se verifica continuidad: mismo personaje y ropa nombrada, lógica de locación, progresión de estado del objeto, sin personajes, texto ni logos no deseados, sin acción mano-objeto imposible, sin cámara ni luz vagas, sin apilar directores, sin contradicciones, paleta concreta e imagen final explícita."
+  },
+  {
+   "id": "3e0982c0b0d7",
+   "alcance": "flujo con linter",
+   "enunciado": "Explicación: con linter, el agente reescribe tras un FAIL antes de mostrar la entrega al usuario, evitando turnos adicionales para este."
+  },
+  {
+   "id": "e868cd7b18bb",
+   "alcance": "flujo de anclas",
+   "enunciado": "Ninguna ancla se genera sin sus dependencias canonizadas ni sin tarjeta completa; el flujo tiene doce pasos y cinco gates."
+  },
+  {
+   "id": "e043e90fc907",
+   "alcance": "flujo de anclas cinematográficas",
+   "enunciado": "Especifica el flujo completo del ancla: inventario, tarjeta D1-D9, plan de dependencias, ruta por tipo de acción, bloques, lints, pregunta de avance, micro-gate, generación barata a alta, crítica, canonización o edición/cambio de método, y motion brief."
+  },
+  {
+   "id": "6484d36273e1",
+   "alcance": "gate de Etapa 1 antes de Etapa 2",
+   "enunciado": "El usuario debe seleccionar un único concepto antes de escribir cualquier línea de guion."
+  },
+  {
+   "id": "66f6bff88fe9",
+   "alcance": "gate de Etapa 2, Screenwriting",
+   "enunciado": "Cada escena debe cumplir deseo, obstáculo, geometría, mirada y ritmo, y además cambiar emoción, avanzar acción o subir presión; si no cumple ninguna función, se elimina antes del shot list."
+  },
+  {
+   "id": "43fc0a6f264c",
+   "alcance": "gate de Etapa 3, Cinematic Direction",
+   "enunciado": "La dirección cinematográfica no debe usar vocabulario prohibido y debe justificar por escrito la razón dramática de cada decisión de cámara."
+  },
+  {
+   "id": "94848598b3a4",
+   "alcance": "gate de Etapa 4, Shot Planning",
+   "enunciado": "El gate de Shot Planning exige validate_shots.py sin errores, six-point dramaturgy check y tres detalles por shot; todo shot sin detalles se elimina como filler."
+  },
+  {
+   "id": "560b31e5f50d",
+   "alcance": "gate final; si aurora-prompt-linter está instalada",
+   "enunciado": "Si está instalada, aurora-prompt-linter debe validar determinísticamente todos los prompts visuales antes de la entrega y puede vetarlos de forma final."
+  },
+  {
+   "id": "63321bb005de",
+   "alcance": "general",
+   "enunciado": "Cuando una regla puede codificarse se codifica, pero un límite de longitud es dirección y no bloqueo."
+  },
+  {
+   "id": "aac55562e41a",
+   "alcance": "general (QA de assets generados)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks mecánicos de semánticos; edad, nacionalidad o etnia no son certificables visualmente."
+  },
+  {
+   "id": "f114c9b37133",
+   "alcance": "general (QA)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks deterministas de semánticos y marcando como no verificables visualmente los hechos que lo sean."
+  },
+  {
+   "id": "e23f10f32234",
+   "alcance": "general (longitud de prompts)",
+   "enunciado": "La longitud del prompt es aspiracional: fuera de rango solo avisa y bloquea exigiendo regenerar solo si supera 2× el máximo."
+  },
+  {
+   "id": "a62bb815a42a",
+   "alcance": "herramientas del repositorio",
+   "enunciado": "Explicación: las utilidades de Python mantienen la integridad del repositorio, validan resultados de proyectos y generan previsualizaciones sin invocar Claude."
+  },
+  {
+   "id": "de3ba87a8c0a",
+   "alcance": "herramientas del repositorio, CI",
+   "enunciado": "Una ejecución local exitosa de `./tools/check.sh` equivale a una ejecución exitosa en CI."
+  },
+  {
+   "id": "79755afa932c",
+   "alcance": "herramientas del repositorio, `validate_capabilities.py`",
+   "enunciado": "Ejecuta `validate_capabilities.py` y su prueba interna con `python tools/validate_capabilities.py` y `python tools/validate_capabilities.py --selftest`."
+  },
+  {
+   "id": "6620e88f5882",
+   "alcance": "herramientas del repositorio, `validate_capabilities.py`",
+   "enunciado": "`validate_capabilities.py` debe validar la matriz de capacidades contra su esquema y contra los adaptadores, comprobando cobertura, límites de palabras, parámetro de aspecto, notas y vigencia de 120 días."
+  },
+  {
+   "id": "21ba992a9997",
+   "alcance": "herramientas del repositorio, `validate_schemas.py`",
+   "enunciado": "Ejecuta el validador de esquemas con `python tools/validate_schemas.py`."
+  },
+  {
+   "id": "cb26b39504ac",
+   "alcance": "herramientas del repositorio, `validate_schemas.py`",
+   "enunciado": "`validate_schemas.py` debe verificar que cada archivo `*.schema.json` sea un JSON Schema válido Draft 2020-12 e incluya `$id`, `title` y `description`."
+  },
+  {
+   "id": "5d12986ffd45",
+   "alcance": "herramientas del repositorio, `validate_skills.py`",
+   "enunciado": "Ejecuta el validador de skills con `python tools/validate_skills.py`."
+  },
+  {
+   "id": "08f64ef83f4f",
+   "alcance": "herramientas del repositorio, `validate_skills.py`",
+   "enunciado": "`validate_skills.py` debe comprobar que cada `SKILL.md` en `skills/` tenga frontmatter YAML obligatorio, un `name` coincidente con su directorio y una `description` sustantiva."
+  },
+  {
+   "id": "b224fe9944e7",
+   "alcance": "herramientas del repositorio, ejecución de comprobaciones",
+   "enunciado": "Ejecuta todas las comprobaciones con `./tools/check.sh`, usa `--quiet` para salida resumida y configura `PYTHON` para elegir la versión de Python."
   },
   {
    "id": "877fd94a0fd2",
@@ -181,14 +1086,179 @@
    "enunciado": "`validate_schemas.py` valida esquemas y no instancias; las instancias deben validarse con `validate_shots.py`."
   },
   {
+   "id": "0c9f5233f049",
+   "alcance": "herramientas del repositorio, validadores",
+   "enunciado": "Cada validador debe incluir `--selftest` con fixtures fallidos y fallar si deja de detectar los errores previstos."
+  },
+  {
+   "id": "277487626c14",
+   "alcance": "keyframes de Nano Banana para video",
+   "enunciado": "Los stills pueden ir a Veo 3.1, Kling 3.0, Seedance 2.0/2.5 o Gemini Omni Flash, pero solo los aprobados tras un gate de revisión del lote."
+  },
+  {
+   "id": "7c923e46a0bd",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §2 tarjeta",
+   "enunciado": "Cada keyframe exige una tarjeta de still con todos los campos llenos antes de generar, incluidos cámara implícita, emoción vía objeto y movimiento como still."
+  },
+  {
+   "id": "0e9d1c129e6b",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "Antes de enviar cada panel se corre la checklist y se descarta el panel si falla."
+  },
+  {
+   "id": "bc7a633d6d67",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe llevar emoción vía objeto congelada en un nudillo, aguja, pedal, humo o sudor; sin cambio de estado ni emoción se descarta."
+  },
+  {
+   "id": "90a4af3119d1",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe tener nombrada una etiqueta de función; sin etiqueta se descarta."
+  },
+  {
+   "id": "54e595164ca0",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe tener un beat legible en una frase y captionable; si no, se descarta."
+  },
+  {
+   "id": "c77d99d08a9c",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "Un panel que pasa los diez puntos es keyframe válido y se entrega como primer frame bloqueado al archivo del modelo de video."
+  },
+  {
+   "id": "599b19492a91",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O; el identity block no aplica a placas ni props."
+  },
+  {
+   "id": "0045a9129f41",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--treatment race existe como cuarto valor y hereda los vetos de fotorreal."
+  },
+  {
+   "id": "8298b6b01303",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Ejemplo: invocación del linter con --prompt, --refs, --case, --platform, --ref-role, --series-lock, --treatment y --overrides."
+  },
+  {
+   "id": "d71bf7a924b3",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El mecanismo 'OVERRIDE: término - razón' se mantiene idéntico: vale solo en el turno actual y con alcance específico."
+  },
+  {
+   "id": "b3e3b67987f6",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El vocabulario nuevo evita términos de una sola palabra con colisiones conocidas (stage, counter, cup) y usa formas compuestas."
+  },
+  {
+   "id": "a21237f6c38b",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El vocabulario prohibido sigue bloqueando y la lista es ahora más larga."
+  },
+  {
+   "id": "74bdc51ca45a",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La capa 1 de redundancia con referencias por categoría P/O/L/PR/S sigue bloqueando igual cuando el rol de la referencia es ff/lf."
+  },
+  {
    "id": "e017264c67b5",
    "alcance": "linter aurora v1.2-fupai",
    "enunciado": "La exención de series_lock no cubre el vocabulario BANNED: solo se eximen P/O/L/PR/S, porque el vocabulario prohibido gana siempre."
   },
   {
-   "id": "fbb94f676649",
-   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), SERIES_LOCK_KEYS",
-   "enunciado": "Especifica las claves del series_lock consideradas por el linter: character, environment, lighting y color_grade."
+   "id": "7e49702354f8",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La prohibición de 'no X' en el negativo solo aplica a Kling (en Seedance 2.5 el formato oficial es 'no X'); el límite de 8 ítems aplica a todas las plataformas."
+  },
+  {
+   "id": "42c75d5f4804",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La salida --json conserva las claves originales y añade case_alias, treatment, ref_role, word_budget_source, negative_policy, series_lock_keys y linter_version, entre otras."
+  },
+  {
+   "id": "2dedbdfb89d3",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Las exenciones de contexto de cámara y de anclas direccionales no cambian."
+  },
+  {
+   "id": "9776a38b7040",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Las secciones requeridas siguen bloqueando, salvo las dispensadas por P12 y los overrides por tratamiento."
+  },
+  {
+   "id": "78e6a6e52ea0",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml y, en su defecto, del caso (video → ff; casos 1/2 → character)."
+  },
+  {
+   "id": "0406da084b93",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Sin --platform el bloque negativo sigue siendo obligatorio (política legacy_required con aviso) para no cambiar el contrato del linter original."
+  },
+  {
+   "id": "48a0a19bf729",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Un alias desconocido de --case sale con exit 2 (error de uso), no con un reporte FAIL."
+  },
+  {
+   "id": "45a3ef7a08ff",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo)",
+   "enunciado": "Explicación: el linter aurora v1.2-fupai es una copia parcheada del original v1.1 (que no se modifica), con vocabulario ampliado, misma CLI y exit codes (0 PASS, 1 FAIL, 2 uso) y nuevas opciones --ref-role, --series-lock y --treatment."
+  },
+  {
+   "id": "b36c7f356f95",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_ALIASES",
+   "enunciado": "Especifica los alias de casos del pipeline aceptados por el linter (T1/T2/PLACA/GENESIS → 1, T3-T5/ANCLA → 2, CLIP/FF/I2V → 3a, FF-LF/TAIL → 3b, MOTION-CONTROL → 3c, DIALOGO → 4)."
+  },
+  {
+   "id": "61a7380c2b2e",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_CONFIGS",
+   "enunciado": "Especifica los presupuestos de palabras de respaldo por caso: génesis y ancla con refs 75-130, I2V (3a/3b/3c) 50-90, video con diálogo 75-130."
+  },
+  {
+   "id": "75154a7f0341",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), FAMILY_PATTERNS",
+   "enunciado": "Especifica las expresiones regulares que identifican cada familia de plataforma (nano-banana, gpt-image, midjourney, flux, ideogram, seedream, kling, veo, seedance, hailuo, sora)."
+  },
+  {
+   "id": "872a27238f7a",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), OVERRIDE_PATTERN",
+   "enunciado": "Especifica la sintaxis de override 'OVERRIDE: término - razón' reconocida por el linter, sin cambios respecto a v1.1."
+  },
+  {
+   "id": "b4f23b84f9fc",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante TREATMENTS",
+   "enunciado": "Especifica los tratamientos admitidos por el linter: fotorreal, ilustracion, animacion y race."
+  },
+  {
+   "id": "ed8dc29c3ada",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante VIDEO_CASES",
+   "enunciado": "Especifica que los casos de video del linter son 3a, 3b, 3c y 4."
+  },
+  {
+   "id": "ba413d6239ad",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P1",
+   "enunciado": "El conteo de palabras deja de ser fallo duro y pasa a advertencia con el presupuesto por plataforma como referencia (p. ej. kling 80-150, gpt-image 150-300, nano-banana 60-120, T1 ~250), usando el presupuesto original del caso solo si la plataforma no está en la tabla."
+  },
+  {
+   "id": "0854f2efd1e8",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P10",
+   "enunciado": "El linter amplía el vocabulario (agua, automotriz, café/interior, clima, música) y las secciones requeridas para más plataformas (seedance 2.5, flux, ideogram, hailuo, seedream, NB2, kling 3.0 caso 4) y reconoce los marcadores de bloque negativo 'Negative field.', '[Negative Prompts]' y 'Constraints:'."
+  },
+  {
+   "id": "c383faced13a",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no cuenta como violación de vocabulario prohibido o de estilo en el linter, aunque sigue siendo mala práctica en NB/GPT que cubre gate_image.py."
+  },
+  {
+   "id": "c6cb11fd6555",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P12",
+   "enunciado": "Si una referencia ya cubre el estilo, la sección 'style' requerida se dispensa y se reporta como advertencia informativa, porque no se debe repetir lo que la referencia define."
+  },
+  {
+   "id": "0557179ffce0",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P2",
+   "enunciado": "El bloque negativo solo es obligatorio si la plataforma tiene campo negativo (el slot Constraints de GPT Image cuenta como tal), y si existe se advierte si usa 'no X' o supera 8 ítems."
   },
   {
    "id": "72c0160ce7f2",
@@ -196,9 +1266,199 @@
    "enunciado": "Los términos que forman parte de una cadena verbatim del series_lock (character, environment, lighting, color_grade) quedan exentos de la capa de redundancia del linter."
   },
   {
+   "id": "39382210e7f9",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P5",
+   "enunciado": "Las micro-acciones corporales (sweat, jaw, knuckles, breath, exhale, swallow, tendon, vein, blink, etc.) quedan exentas de la categoría de persona del linter aunque un vocabulario personalizado las reintroduzca."
+  },
+  {
+   "id": "de13b72640a3",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P6",
+   "enunciado": "'cinematic' y términos como professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera o incredible pasan a vocabulario prohibido, con precedencia de ai-production-director §6.1."
+  },
+  {
+   "id": "801e9ea3d024",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P7",
+   "enunciado": "Los bans de estilo (anime, cartoon, 3D render) solo aplican en tratamiento fotorreal, y 'slow motion' pasa a advertencia en fotorreal, fallo en tratamiento race y queda permitido con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "4ff5f35b273b",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P8",
+   "enunciado": "La opción --sports-broadcast solo aplica a casos de video (3a/3b/3c/4); en casos de imagen 1 y 2 se ignora con advertencia porque los stills no llevan movimiento."
+  },
+  {
+   "id": "db5cb9160457",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P9",
+   "enunciado": "Los casos del pipeline se mapean a los del linter: T1/T2/placa → 1; T3/T4/T5 con referencias → 2; clip I2V → 3a/3b/3c; clip con diálogo → 4."
+  },
+  {
+   "id": "74a6b681ad7e",
+   "alcance": "linter aurora v1.2-fupai, P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no dispara BANNED ni vetos de estilo."
+  },
+  {
+   "id": "f6d52677b411",
+   "alcance": "linter aurora v1.2-fupai, P12",
+   "enunciado": "La sección style se dispensa cuando el estilo está cubierto por referencia, en lugar de vaciar la categoría S, porque lo que define una referencia no se repite."
+  },
+  {
+   "id": "80d153a3d430",
+   "alcance": "linter aurora v1.2-fupai, caso 2 con @img1/Elements/--cref",
+   "enunciado": "Con --ref-role character los descriptores de persona se permiten y el identity block es obligatorio (aviso si hay menos de 3 grupos)."
+  },
+  {
+   "id": "739b1283b3c6",
+   "alcance": "linter aurora v1.2-fupai, casos 3a/3b/3c/4",
+   "enunciado": "Con --ref-role ff/lf los descriptores de persona y vestuario en el prompt principal están prohibidos (FAIL), porque la imagen ya ancla identidad y vestuario."
+  },
+  {
+   "id": "820b4931ef44",
+   "alcance": "linter aurora v1.2-fupai, hook Stop",
+   "enunciado": "Explicación: el hook Stop no está implementado; el linter se invoca a mano y desde el pipeline hasta validar el cableado de caso/plataforma."
+  },
+  {
+   "id": "798cbeca409a",
+   "alcance": "linter aurora v1.2-fupai, hook Stop (no cableado)",
+   "enunciado": "Explicación: diseño propuesto de un hook Stop gate_aurora.py que delegaría en el linter, con resolución de caso/plataforma desde la cabecera, refs del run activo, exit 2 al fallar y anti-bucle de 3 bloqueos."
+  },
+  {
+   "id": "79dca3bed4b2",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los alias de caso ignoran mayúsculas, guiones y guiones bajos, y un alias desconocido termina con código de salida 2."
+  },
+  {
+   "id": "8967b7293fd3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-DIALOGO/DIALOG/DIALOGUE se mapean al caso 4 (diálogo: Kling 3.0 P1-P4, Veo 'Says:', Seedance 2.5 llaves)."
+  },
+  {
+   "id": "c1ca3448fe05",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-FF, CLIP, I2V y CLIP-I2V se mapean al caso 3a (Etapa 6, imagen a video con primer frame)."
+  },
+  {
+   "id": "ac73cbebfd6f",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-FF-LF, CLIP-LF y CLIP-TAIL se mapean al caso 3b (primer y último frame, Kling start/tail o Seedance 2.5 first & last)."
+  },
+  {
+   "id": "58f5c954acc3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-MC, CLIP-MOTION y MOTION-CONTROL se mapean al caso 3c (Kling Motion Control)."
+  },
+  {
+   "id": "0c49b7491702",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos T1, T2, PLACA y GENESIS del pipeline se mapean al caso 1 del linter (Etapa 5, génesis sin referencias)."
+  },
+  {
+   "id": "8d3cb5216fc3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos T3, T4, T5 y ANCLA se mapean al caso 2 del linter (Etapa 5, cuadros con referencias Image N / @img)."
+  },
+  {
+   "id": "974a525545c8",
+   "alcance": "linter aurora v1.2-fupai, parche P10",
+   "enunciado": "El linter añade snapshots para Flux, Ideogram, Seedream, NB2, Seedance, Seedance 2.5, Hailuo y Kling caso 4, con resolución de plataforma por familia y vocabulario ampliado."
+  },
+  {
+   "id": "be9cfc827b9b",
+   "alcance": "linter aurora v1.2-fupai, parche P12",
+   "enunciado": "Si el estilo ya está cubierto por una referencia, la sección style requerida se dispensa y solo se reporta como aviso informativo."
+  },
+  {
+   "id": "514dab59be95",
+   "alcance": "linter aurora v1.2-fupai, parche P2",
+   "enunciado": "El bloque Negative es obligatorio solo en Kling y Seedance 2.5; en GPT Image cuenta el slot Constraints y en el resto no se exige, y si existe no debe usar 'no X' en Kling y debe tener como máximo 8 ítems."
+  },
+  {
+   "id": "b63bca3ae8aa",
+   "alcance": "linter aurora v1.2-fupai, parche P3",
+   "enunciado": "Con referencia de primer/último frame los descriptores de persona y vestuario están prohibidos, pero con referencia de personaje el identity block completo es obligatorio (aviso si faltan 3 o más grupos de rasgos)."
+  },
+  {
    "id": "28038930db4e",
    "alcance": "linter aurora v1.2-fupai, parche P4",
    "enunciado": "Los términos que caen dentro de las cadenas series_lock verbatim quedan exentos del vocabulario de redundancia, y se avisa si una cadena no aparece verbatim."
+  },
+  {
+   "id": "4e34e6581de9",
+   "alcance": "linter aurora v1.2-fupai, parche P5",
+   "enunciado": "Las palabras de micro-acción corporal (sweat, jaw, knuckles, breath, swallow, vein, etc.) quedan exentas del veto de descriptores de persona aunque haya referencia."
+  },
+  {
+   "id": "d3ff3b7ceee6",
+   "alcance": "linter aurora v1.2-fupai, parche P6",
+   "enunciado": "'cinematic' se prohíbe siempre y entra en la lista BANNED junto a professional, high quality, masterpiece, stunning, epic y similares; una mención negada no cuenta."
+  },
+  {
+   "id": "d9e8a6b904f1",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "'slow motion' deja de estar vetado globalmente: es aviso en fotorreal/ilustración/animación, fallo con tratamiento race, y se permite sin aviso con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "1e9305f61040",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "El tratamiento fotorreal (por defecto) veta anime/cartoon/3D render y avisa sobre slow motion; ilustración y animación levantan esos vetos; race mantiene los vetos y convierte slow motion en fallo."
+  },
+  {
+   "id": "23243a8baf39",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "Los términos anime/cartoon/3D render solo se vetan en tratamiento fotorreal o race; en ilustración o animación se levantan esos vetos y se ajusta la sección style."
+  },
+  {
+   "id": "bfda7f865cde",
+   "alcance": "linter aurora v1.2-fupai, parche P8",
+   "enunciado": "El flag --sports-broadcast se ignora con aviso en stills (casos 1 y 2) y sigue exigiendo '60fps' y 'broadcast realism' en los casos de video 3a/3b/3c/4."
+  },
+  {
+   "id": "838d2958a192",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Ejemplo (prueba T14): el prompt GOOD del README pasa y el BAD falla por las mismas violaciones, ya no por longitud."
+  },
+  {
+   "id": "2cd9c1470a32",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Ejemplo (prueba T15): --json sigue produciendo las claves originales."
+  },
+  {
+   "id": "e1ff2f87488d",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Las 18 pruebas del linter se ejecutan con tests/run.sh y deben terminar en exit 0; VERBOSE=1 muestra la salida completa."
+  },
+  {
+   "id": "250b1f8e0f0e",
+   "alcance": "linter aurora v1.2-fupai, pruebas P1",
+   "enunciado": "Ejemplo (prueba T01): un T1 SW30 de ~250 palabras en nano_banana_pro caso 1 pasa con exit 0 y solo aviso de palabras."
+  },
+  {
+   "id": "e03c49107435",
+   "alcance": "linter aurora v1.2-fupai, pruebas P12",
+   "enunciado": "Ejemplo (prueba T16): con referencia de estilo la sección style se dispensa y pasa; sin ella falla."
+  },
+  {
+   "id": "aae3207e5f20",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T02): GPT Image 2 con Constraints y sin Negative en caso 1 pasa con exit 0."
+  },
+  {
+   "id": "e2d96441dba5",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T03): Kling caso 3a sin bloque negativo falla con exit 1."
+  },
+  {
+   "id": "1b421c1ae688",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T13): un negativo de Kling con 'no blur' y 10 ítems pasa con dos avisos R16."
+  },
+  {
+   "id": "cc592af7c172",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T04): caso 2 con --ref-role character pasa con identity block y avisa sin él."
+  },
+  {
+   "id": "2c35f4311101",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T05): caso 3a con --ref-role ff y descriptores de persona falla con exit 1."
   },
   {
    "id": "da080e211bae",
@@ -206,519 +1466,234 @@
    "enunciado": "Ejemplo (prueba T06): 'gym' verbatim en series_lock pasa, y sin series_lock falla por redundancia de L."
   },
   {
-   "id": "2fa01a7c6a34",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R15",
-   "enunciado": "Exige que shots.json sea la fuente de verdad: todo cambio entra ahí primero y se propaga."
+   "id": "d4714e753de8",
+   "alcance": "linter aurora v1.2-fupai, pruebas P5",
+   "enunciado": "Ejemplo (prueba T07): 'her jaw locks, sweat beads' con referencia de persona rol ff pasa con exit 0."
   },
   {
-   "id": "c6b452d4d6d9",
+   "id": "a4e77be67b77",
+   "alcance": "linter aurora v1.2-fupai, pruebas P6",
+   "enunciado": "Ejemplo (prueba T08): 'cinematic' en el prompt falla con exit 1."
+  },
+  {
+   "id": "9a492782dcf2",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T09): 'anime' pasa con tratamiento ilustración y falla en fotorreal."
+  },
+  {
+   "id": "1c0e5dabbf6d",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T10): 'ultra-slow motion' en Kling pasa sin aviso, 'slow motion' falla en race y avisa en fotorreal."
+  },
+  {
+   "id": "50ffa64d4461",
+   "alcance": "linter aurora v1.2-fupai, pruebas P8",
+   "enunciado": "Ejemplo (prueba T11): --sports-broadcast en caso 1 pasa con aviso."
+  },
+  {
+   "id": "6fb210b39e05",
+   "alcance": "linter aurora v1.2-fupai, pruebas P9/P10",
+   "enunciado": "Ejemplo (prueba T12): T1 → caso 1, CLIP-FF → 3a, CLIP-DIALOGO → 4, y un alias desconocido sale con exit 2."
+  },
+  {
+   "id": "dc133f52b4e0",
+   "alcance": "linter aurora v1.2-fupai, referencias que no son de persona",
+   "enunciado": "Con --ref-role location/prop/style los descriptores de persona se permiten, el identity block no aplica y L/PR/S se rigen por sus tags."
+  },
+  {
+   "id": "1ae486009624",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint gate_dramaturgy verifica ausencia de vocabulario prohibido de video e imagen."
+  },
+  {
+   "id": "eacd93b6b9c9",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint gate_image verifica que el prompt empiece con verbo, use lenguaje natural y declare modelo."
+  },
+  {
+   "id": "01e67f73faca",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint validate_prompts verifica series_lock verbatim, sin texto de overlay, tercio del cuerpo, POV, dirección de viaje, manos en contactos y sin marcas."
+  },
+  {
+   "id": "6c3af7d6aa7e",
+   "alcance": "lints de anclas; GPT Image 2",
+   "enunciado": "El lint audit_gi2 revisa 15 columnas, incluidos los 5 efectos ópticos y el framing positivo."
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "lints de anclas; aurora-prompt-linter",
+   "enunciado": "El lint aurora en caso 1 (génesis) o caso 2 (ancla con refs) exige 75-130 palabras, negativo obligatorio y no re-describir categorías cubiertas por refs."
+  },
+  {
+   "id": "1a8b4576afb2",
+   "alcance": "mecanismo de override del linter; turno actual del usuario",
+   "enunciado": "Los overrides solo deben aceptar casos límite si el usuario expresa específicamente la excepción por escrito en el turno actual."
+  },
+  {
+   "id": "cdd2d39ab9dc",
+   "alcance": "megaflujo de spot",
+   "enunciado": "Especifica el megaflujo: brief → clasificación de track → E0 Brand Lock → E1 estrategia → E2 guion → E3 dirección → E4 shot planning → E5 anchors → E6 prompts de video → E7 paquete → post y QA, con gates entre etapas y replanteo a la 3ª falla."
+  },
+  {
+   "id": "d015fe698e89",
+   "alcance": "megaflujo; tracks STANDARD y FILM",
+   "enunciado": "Las ocho etapas se encadenan por gates; la E5 es donde empieza la génesis y los gates 0, 1, 2 y 4 piden OK explícito del usuario en STANDARD y FILM."
+  },
+  {
+   "id": "d3ffe13e9ea9",
+   "alcance": "proceso de aprobación, propuesta de cambios 1-9",
+   "enunciado": "Ejemplo: opción para rechazar el bundle y mantener el linter como herramienta opcional sin regla inviolable."
+  },
+  {
+   "id": "2e6518a545fd",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica cuándo usar el skill produccion-visual-sw30 (todo prompt visual, generación con Nano Banana, Kling, Veo, GPT Image o Higgsfield, gasto de créditos, proyecto SW30) y exige el micro-gate de 3 líneas antes de producir; entrega sin cabecera es inválida."
+  },
+  {
+   "id": "77280eb87f42",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica la cadena de cobertura de reglas: rule_registry.py extrae mecánicamente todos los enunciados normativos, rule_ledger.py exige disposición CHECK o NA con razón para cada regla aplicable y audit_gi2.py verifica los prompts."
+  },
+  {
+   "id": "5b1fd1b3c218",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica las reglas de la pregunta de avance: responderla antes de entregar, no entregar si es NO, prohibido el SÍ complaciente o con matices, leer completos todos los archivos aplicables, verificar reglas con lint o una a una, consultar «cuándo cargar» ante dudas y preguntar solo por dirección creativa."
+  },
+  {
+   "id": "4e5fb54051a4",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica que audit_gi2.py valida 15 columnas: slots, anti-slop, ratio, metadatos fuera, Notes, cámara con 5 efectos ópticos, mood, color, identity-lock, texto de marca, framing positivo, mirada y manos."
+  },
+  {
+   "id": "189eb61cbf47",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige abrir con exactamente 3 líneas (SKILL, RIESGOS, TÉCNICA) antes de cualquier generación que gaste créditos o entrega de prompt visual; sin cabecera la entrega es inválida y se prohíbe generar sin preflight de costo."
+  },
+  {
+   "id": "5a1b6322a824",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige correr rule_ledger.py antes de emitir y no generar archivo de prompts si no cierra en 100% dispuesto."
+  },
+  {
+   "id": "f4e3d244582b",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige no entregar ninguna respuesta mientras la respuesta honesta a «¿utilizaste de forma exhaustiva y correcta todas las reglas del skill aplicables?» no sea SÍ sin matices."
+  },
+  {
+   "id": "c7b14ccc30ed",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige que cuando el usuario detecte un defecto se añada su regla al ledger con su check en el mismo turno."
+  },
+  {
+   "id": "396a6f83bb1e",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige que el lint del builder rompa la compilación ante cualquier desviación de plantilla."
+  },
+  {
+   "id": "a1fcdbb51a00",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
+   "enunciado": "Exige instanciar todo maestro de rostro T1 con los cuatro bloques canónicos; el motor lanza TemplateViolation si se sustituye alguno."
+  },
+  {
+   "id": "d9a1ab59c633",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1-T5",
+   "enunciado": "Exige construir todo prompt visual instanciándolo con template_engine.py build(); el motor rechaza secciones faltantes o no declaradas, texto suelto en lugar de BLOCKS, falta de Notes y metadatos dentro del cuerpo."
+  },
+  {
+   "id": "16fc5f9b6f51",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R14",
+   "enunciado": "Exige validadores y techos de palabras en verde e inspección visual propia al 100% de rostros y manos antes de presentar; si algo falla no se entrega y se dice qué falló en una línea."
+  },
+  {
+   "id": "fd7db5b03413",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), tipos T1-T5",
+   "enunciado": "Exige tres pasos antes de escribir un prompt: catalogar su tipo (T1-T5) y reglas aplicables en RULES_MATRIX, definir las secciones que exige, y ensamblar por sección con bloques nombrados vía P() o E(), nunca redactar de corrido ni parchear texto."
+  },
+  {
+   "id": "f10c3bf35642",
+   "alcance": "prompt-production-protocol; Step 5",
+   "enunciado": "El skill `prompt-production-protocol` debe invocar el linter como ítem crítico en el Step 5, ya que este no se ejecuta por sí solo."
+  },
+  {
+   "id": "513904d46b28",
+   "alcance": "prompt-production-protocol; Step 5",
+   "enunciado": "En el Step 5 se debe ejecutar el checklist del caso, marcar cada ítem como Pass o Fail y revisar y reauditar antes de entregar si falla algún ítem crítico."
+  },
+  {
+   "id": "6b153bcacff8",
+   "alcance": "prompt-production-protocol; Step 5; propuesta del 2026-05-27",
+   "enunciado": "Explicación: la propuesta de cambio mayor al Step 5 añade un gate determinista debido a errores repetidos de redundancia con referencias."
+  },
+  {
+   "id": "0c62b67be4d3",
+   "alcance": "prompt-production-protocol; Step 5b y 5c; obligatorio casos 3a/3b/3c; recomendado casos 1/2/4",
+   "enunciado": "Para casos 3a/3b/3c se debe ejecutar obligatoriamente el linter tras el self-audit, no entregar con FAIL sin override válido, iterar hasta limpiar fallos no exceptuados y reportar visiblemente su resultado; para casos 1/2/4 es recomendado."
+  },
+  {
+   "id": "95fda3ea0ab4",
+   "alcance": "prompt-production-protocol; final del Step 4; linter",
+   "enunciado": "Al final del Step 4, el agente debe ejecutar el linter con el draft, las referencias etiquetadas, el tipo de caso y el mensaje actual del usuario, entregar solo si el resultado es PASS e iterar desde el Step 4 si falla."
+  },
+  {
+   "id": "fa1940a6cee7",
+   "alcance": "resumen de propuestas, cambio 1",
+   "enunciado": "Explicación: la propuesta 1 añade la nueva Regla 28 como cambio crítico en la Sección 14."
+  },
+  {
+   "id": "4766ffef6bbd",
+   "alcance": "resumen de propuestas, cambio 2",
+   "enunciado": "Explicación: la propuesta 2 incorpora el principio de enforcement determinista como cambio mayor en la Sección 1.3."
+  },
+  {
+   "id": "a97f8047b5cf",
+   "alcance": "resumen de propuestas, cambio 3, Sección 4.6",
+   "enunciado": "Explicación: la propuesta 3 añade el linter al paso final de F4 como cambio menor."
+  },
+  {
+   "id": "5c754729875f",
+   "alcance": "resumen de propuestas, cambio 4, Sección 4.7",
+   "enunciado": "Explicación: la propuesta 4 añade el linter al paso final de F5 como cambio menor."
+  },
+  {
+   "id": "a5ede6b16a36",
+   "alcance": "resumen de propuestas, cambio 5, Sección 4.8",
+   "enunciado": "Explicación: la propuesta 5 añade el linter al paso final de F6 como cambio menor."
+  },
+  {
+   "id": "2c6f25f24ab1",
+   "alcance": "resumen de propuestas, cambio 6, Sección 5",
+   "enunciado": "Explicación: la propuesta 6 crea la subsección 5.5 como cambio mayor."
+  },
+  {
+   "id": "9ca0f5bc42bb",
    "alcance": "run.schema.json",
-   "enunciado": "La raíz de run.json no admite campos fuera de version, meta, run_id, created_at, shotkit_version, operator, project, inputs, generators y rounds."
+   "enunciado": "inputs.brand_lock_configured es un booleano opcional, falso cuando el snapshot es una plantilla sin llenar según validate_brand_lock.py --require-configured."
   },
   {
-   "id": "c3f81179412d",
-   "alcance": "run.schema.json",
-   "enunciado": "created_at es obligatorio en ISO-8601 UTC y debe coincidir con el timestamp de run_id."
+   "id": "febb93a554dd",
+   "alcance": "régimen FILM",
+   "enunciado": "El track FILM exige todas las etapas, todos los artefactos y todos los gates."
   },
   {
-   "id": "cc94cf4a8a2c",
-   "alcance": "run.schema.json",
-   "enunciado": "generators[] no admite campos fuera de id, model_version y capabilities_sha256."
+   "id": "ae6216df0aaf",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Antes de pasar el guion a la siguiente etapa se debe verificar metadatos completos, 3-5 key_visuals, nombres consistentes, XML válido, duración 5-10 min, numeración sin huecos, descripciones ricas y sin direcciones de cámara."
   },
   {
-   "id": "86a2ff3a5b9d",
-   "alcance": "run.schema.json",
-   "enunciado": "generators[].id es obligatorio con patrón de minúsculas, dígitos y guiones."
+   "id": "59a313303f71",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "El XML debe estar bien formado: todas las etiquetas cerradas, anidación correcta y caracteres especiales escapados."
   },
   {
-   "id": "5461464224b1",
-   "alcance": "run.schema.json",
-   "enunciado": "inputs es obligatorio y registra cada archivo del run por ruta relativa y por hash."
+   "id": "8546a1f6e874",
+   "alcance": "skill storyboard-architect, paso 8",
+   "enunciado": "Se debe ejecutar tools/validate_brand_lock.py --snapshot para comprobar las dos líneas del snapshot."
   },
   {
-   "id": "b149e8dce517",
-   "alcance": "run.schema.json",
-   "enunciado": "inputs no admite campos fuera de shots_ref, shots_sha256, text_overlays_ref, text_overlays_sha256, brand_lock_ref, brand_lock_sha256, brand_lock_source y brand_lock_configured."
-  },
-  {
-   "id": "b8b5433dd57d",
-   "alcance": "run.schema.json",
-   "enunciado": "inputs.shots_ref es obligatorio y no vacío."
-  },
-  {
-   "id": "d059c73c4bd6",
-   "alcance": "run.schema.json",
-   "enunciado": "inputs.shots_sha256 es obligatorio con 64 hex."
-  },
-  {
-   "id": "f184f5d55209",
-   "alcance": "run.schema.json",
-   "enunciado": "meta es un objeto opcional de paso libre que los skills núcleo ignoran."
-  },
-  {
-   "id": "a514e43664c6",
-   "alcance": "run.schema.json",
-   "enunciado": "project.framework es opcional y no vacío."
-  },
-  {
-   "id": "d1dd59930097",
-   "alcance": "run.schema.json",
-   "enunciado": "rounds[] no admite campos fuera de round, started_at, reason, prompts y post_only_shots."
-  },
-  {
-   "id": "98f99d579ffe",
-   "alcance": "run.schema.json",
-   "enunciado": "rounds[].prompts[] no admite campos fuera de generator, ref, sha256 y shot_ids."
-  },
-  {
-   "id": "d4ff13253324",
-   "alcance": "run.schema.json",
-   "enunciado": "run.json se escribe una vez al inicio del run y nunca se edita: fija cada entrada por hash, y todo lo posterior se direcciona por ronda e id de shot; lo valida validate_provenance.py."
-  },
-  {
-   "id": "4e7474b5eb76",
-   "alcance": "run.schema.json",
-   "enunciado": "run_id es obligatorio con formato timestamp UTC compacto, guion y 8 caracteres hex (ej. 20260730T142300Z-9f2c1ab4)."
-  },
-  {
-   "id": "1656e2dff675",
-   "alcance": "run.schema.json",
-   "enunciado": "shotkit_version es obligatorio con formato semver X.Y.Z."
-  },
-  {
-   "id": "2f03e29c8f6c",
-   "alcance": "shots.schema.json",
-   "enunciado": "El campo meta es un objeto opcional de paso libre que los skills núcleo ignoran."
-  },
-  {
-   "id": "5421b1d317d4",
-   "alcance": "shots.schema.json",
-   "enunciado": "El campo version de shots.json es obligatorio y debe ser 1.0, 1.1 o 1.2 (retrocompatibles)."
-  },
-  {
-   "id": "05cb456932f1",
-   "alcance": "shots.schema.json",
-   "enunciado": "La raíz de shots.json no admite campos fuera de version, meta, project, brand_lock_ref, series_lock y shots."
-  },
-  {
-   "id": "e4c90fe80be4",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[] no admite campos fuera de path, sha256, round, generator, model_version, seed, prompt_ref, prompt_sha256, critique_ref y accepted."
-  },
-  {
-   "id": "27dc1f2164a0",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].accepted es un booleano opcional."
-  },
-  {
-   "id": "c861373c4c10",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].critique_ref es opcional y apunta al critique.json que dio 'accepted'; un frame aceptado sin él es una aprobación sin fuente."
-  },
-  {
-   "id": "04bedb973836",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].generator es opcional y debe coincidir con un id de _capabilities.json."
-  },
-  {
-   "id": "1ae8833edf12",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].model_version es opcional y no vacío."
-  },
-  {
-   "id": "75c764d15a30",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].path es obligatorio, relativo a la raíz del directorio de salida."
-  },
-  {
-   "id": "c232c0e61568",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].prompt_ref es opcional y no vacío."
-  },
-  {
-   "id": "eaf213b99d7a",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].prompt_sha256 es opcional con 64 hex."
-  },
-  {
-   "id": "7c6386e9e47f",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].round es un entero opcional mayor o igual a 1."
-  },
-  {
-   "id": "4f815b995a81",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].seed es opcional: null, entero o texto."
-  },
-  {
-   "id": "42d9a1dc423f",
-   "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].sha256 es opcional con 64 hex; sin él, 'accepted' es solo una afirmación sobre un nombre de archivo."
-  },
-  {
-   "id": "e8bef97287fa",
-   "alcance": "shots.schema.json",
-   "enunciado": "brand_lock_ref es obligatorio y apunta a brand-lock.snapshot.md; el hash real vive en run.json:inputs.brand_lock_sha256."
-  },
-  {
-   "id": "c7d22ee5ffc2",
-   "alcance": "shots.schema.json",
-   "enunciado": "project.framework es opcional y nombra el framework de beats (pain-reframe-promise, hero-trilogy, founder-explainer, etc.)."
-  },
-  {
-   "id": "a10e90de8661",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock es un objeto obligatorio."
-  },
-  {
-   "id": "e17536ce5ea6",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock no admite campos fuera de character, environment, lighting y color_grade."
-  },
-  {
-   "id": "fce1dae225c8",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock.character es obligatorio y no vacío."
-  },
-  {
-   "id": "e850b096edfc",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock.color_grade es obligatorio y no vacío."
-  },
-  {
-   "id": "7f23523d7b6d",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock.environment es obligatorio y no vacío."
-  },
-  {
-   "id": "b31201c45ef2",
-   "alcance": "shots.schema.json",
-   "enunciado": "series_lock.lighting es obligatorio y no vacío."
-  },
-  {
-   "id": "17384786c917",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots es un array obligatorio con al menos un elemento."
-  },
-  {
-   "id": "60c12b2f108f",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots.json es una lista de shots versionada, auditable y agnóstica de generador, de escritura única: el ciclo de QA nunca la modifica, y validate_shots.py verifica las reglas cruzadas."
-  },
-  {
-   "id": "cafa32243f61",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[] no admite campos fuera de id, beat, start, end, framing, angle, motion, depth_of_field, subject, environment_ref, lighting_ref, on_screen_text, vo, rationale y assets."
-  },
-  {
-   "id": "5e77bda1c7c3",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].angle es obligatorio y debe ser eye-level, high, low, overhead o dutch."
-  },
-  {
-   "id": "bc43459f14ce",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].assets es un objeto opcional con los frames del shot, leído por shots-to-html.py y validate_provenance.py, con la convención frames/round-N/{shot_id} como respaldo."
-  },
-  {
-   "id": "0eda76669895",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].assets no admite campos fuera de source y generated."
-  },
-  {
-   "id": "24a9b7f1d9ec",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].assets.generated es un array opcional de frames generados."
-  },
-  {
-   "id": "2b93c6d2e86a",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].assets.source es un array opcional de imágenes aportadas por el usuario que evitan la generación."
-  },
-  {
-   "id": "11b4cb9198aa",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].beat es obligatorio y no vacío."
-  },
-  {
-   "id": "dc40bd780a82",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].depth_of_field es opcional y debe ser shallow, deep o rack."
-  },
-  {
-   "id": "0eac71538d4b",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].end es obligatorio y debe ser mayor que start (lo verifica validate_shots.py)."
-  },
-  {
-   "id": "090df6139af8",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].environment_ref es opcional, por defecto series_lock.environment, y solo se sobrescribe con razón."
-  },
-  {
-   "id": "9ec4623168e5",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].framing es obligatorio y debe ser ECU, CU, MCU, MS, MLS, WS o EWS."
-  },
-  {
-   "id": "fe21a494137c",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].id es obligatorio con patrón shot_ seguido de 2 o 3 dígitos."
-  },
-  {
-   "id": "775b70fe8b2d",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].lighting_ref es opcional, por defecto series_lock.lighting, y solo se sobrescribe con razón."
-  },
-  {
-   "id": "afa3364d518b",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].motion es obligatorio y debe ser static, push, pull, pan-left, pan-right, tilt-up, tilt-down, handheld, orbit, whip o rack."
-  },
-  {
-   "id": "0fd8a04eb14d",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].on_screen_text es opcional: null, un id text_NN o un array de ids únicos de overlays."
-  },
-  {
-   "id": "d7031938d15e",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].rationale es obligatorio y no vacío."
-  },
-  {
-   "id": "f6416c598a65",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].start es un número obligatorio mayor o igual a 0."
-  },
-  {
-   "id": "bae5658bb7d8",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].subject es obligatorio y no vacío."
-  },
-  {
-   "id": "1f5a461694d0",
-   "alcance": "shots.schema.json",
-   "enunciado": "shots[].vo es opcional: null o texto no vacío."
-  },
-  {
-   "id": "ec1564cd46ba",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "El objeto project es obligatorio."
-  },
-  {
-   "id": "d82e9bdb6d7e",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project no admite campos fuera de title, duration_s, aspect y framework."
-  },
-  {
-   "id": "9ff8edce13df",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project.aspect es obligatorio y debe ser 16:9, 9:16, 1:1, 4:5 o 21:9."
-  },
-  {
-   "id": "201e20bdb7ed",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project.duration_s es un número obligatorio."
-  },
-  {
-   "id": "52980383644d",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project.title es obligatorio y no puede estar vacío."
-  },
-  {
-   "id": "a8e17a4c3659",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "Cada ejecución debe producir exactamente run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md en el directorio de salida."
-  },
-  {
-   "id": "3da98410d9b4",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "El storyboard debe ser determinista y accionable por un editor, agencia o desarrollador sin preguntas adicionales."
-  },
-  {
-   "id": "151d946f3eb5",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "La salida del storyboard es una especificación, no un ejercicio de escritura creativa."
-  },
-  {
-   "id": "facee976a534",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "Los storyboards nuevos deben usar version 1.2; 1.0 y 1.1 siguen válidos, pero el array en on_screen_text y el bloque assets con hashes requieren 1.2."
-  },
-  {
-   "id": "e0b158c11b1e",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "Se deben leer los ejemplos para entender la calidad esperada, en especial los rationale; validan limpios y son la referencia de archivo aprobado."
-  },
-  {
-   "id": "ed7f6edb45a8",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "run.json debe escribirse una sola vez al final de la ejecución, con hashes de cada entrada como prueba de procedencia, y nunca editarse."
-  },
-  {
-   "id": "aeae90233769",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "shots.json debe validar contra templates/shots.schema.json con version, project, brand_lock_ref, series_lock y array de shots con sus campos."
-  },
-  {
-   "id": "9c91aa6ee650",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "storyboard.md debe seguir la plantilla templates/storyboard.md.tpl, que debe leerse antes de escribir."
-  },
-  {
-   "id": "764d4d6f94c1",
-   "alcance": "skill storyboard-architect",
-   "enunciado": "text-overlays.json debe validar contra templates/text-overlays.schema.json, que debe leerse antes de escribir."
-  },
-  {
-   "id": "63800cb82e48",
-   "alcance": "skill storyboard-architect, beat-frameworks",
-   "enunciado": "Una estructura de beats custom debe documentarse en storyboard.md con el porqué en una frase y cada beat con nombre, propósito y duración."
-  },
-  {
-   "id": "7b4629be8ccc",
-   "alcance": "skill storyboard-architect, descripción",
-   "enunciado": "Explicación: el skill convierte un brief en storyboard con specs, timing, texto en pantalla y rationale, y produce run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md."
-  },
-  {
-   "id": "3fdf42a4cb8c",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "Ejemplo: dos shots en shots.json que referencian el mismo on_screen_text 'text_02'."
-  },
-  {
-   "id": "594e8d08785f",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "Ejemplo: overlay en text-overlays.json con shot_id como array de los dos shots."
-  },
-  {
-   "id": "55ba8af3306e",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "Explicación: las reglas de composición del texto alimentan el campo position de cada overlay."
-  },
-  {
-   "id": "d373f7f54711",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "La persistencia del texto entre shots debe documentarse en el rationale con el tiempo de lectura que aporta."
-  },
-  {
-   "id": "999be1bc6a60",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "La reserva de espacio para el texto debe anotarse en el rationale del shot."
-  },
-  {
-   "id": "386fbac7dc05",
-   "alcance": "skill storyboard-architect, on-screen-text",
-   "enunciado": "Para apilar texto, ambos shots referencian el mismo id de overlay, con enter.at al inicio del primero y exit.at al final del segundo."
-  },
-  {
-   "id": "f129d1c44b63",
-   "alcance": "skill storyboard-architect, paso 2",
-   "enunciado": "Si ningún framework encaja se puede construir una estructura propia documentando el porqué en el rationale de storyboard.md."
-  },
-  {
-   "id": "7369dc2ca2d3",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo angle admite solo eye-level, high, low, overhead o dutch."
-  },
-  {
-   "id": "7514f5fec8aa",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo beat indica a qué beat sirve el shot."
-  },
-  {
-   "id": "d76296b3c304",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo depth_of_field es opcional y admite shallow, deep o rack."
-  },
-  {
-   "id": "390996b395ff",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo environment_ref referencia el lenguaje del series_lock y por defecto vale series_lock.environment."
-  },
-  {
-   "id": "2f9dc6a30555",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo framing admite solo ECU, CU, MCU, MS, MLS, WS o EWS."
-  },
-  {
-   "id": "7aa56c0ccefd",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo id debe ser secuencial y con ceros a la izquierda (shot_01, shot_02)."
-  },
-  {
-   "id": "516a2d99a5fc",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo lighting_ref referencia el lenguaje del series_lock y por defecto vale series_lock.lighting."
-  },
-  {
-   "id": "2b02ab2cfa1e",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo motion admite los once valores del enum del schema (static, push, pull, pans, tilts, handheld, orbit, whip, rack)."
-  },
-  {
-   "id": "89055c0c78e9",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo on_screen_text es null, un id de overlay o un array de ids si el shot lleva más de un overlay."
-  },
-  {
-   "id": "dac8e07a007a",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo rationale es una frase que explica por qué este shot en este momento."
-  },
-  {
-   "id": "05c9134d6182",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo subject describe de forma estructurada lo que aparece en cuadro."
-  },
-  {
-   "id": "1a8303ff6b52",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "El campo vo contiene la línea de voz en off o null."
-  },
-  {
-   "id": "0f06d9de6489",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "Explicación: 'rack' en motion significa que el rack focus es el movimiento del shot y en depth_of_field que el foco cambia a mitad del shot."
-  },
-  {
-   "id": "c5ae07f81553",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "Los campos de shots.json deben usar exactamente los nombres del schema, que prohíbe propiedades adicionales, y el vocabulario de references/shot-grammar.md."
-  },
-  {
-   "id": "980e01a10a95",
-   "alcance": "skill storyboard-architect, paso 4 shots.json",
-   "enunciado": "Los campos start y end son timestamps en segundos, con decimales permitidos, y end debe ser posterior a start."
-  },
-  {
-   "id": "63894c05fa7c",
-   "alcance": "skill storyboard-architect, paso 5",
-   "enunciado": "Entrada y salida de overlays tienen vocabularios de animación distintos según el schema, y si un shot lleva varios overlays todos sus ids deben listarse en on_screen_text."
-  },
-  {
-   "id": "0ad167b5f07e",
-   "alcance": "skill storyboard-architect, paso 5",
-   "enunciado": "Todo texto en pantalla debe ir como entrada de text-overlays.json con id, shot_id, contenido, fuente, posición, tamaño, peso, color hex de la paleta del brand-lock y animaciones de entrada y salida, nunca incrustado en la descripción visual."
-  },
-  {
-   "id": "55826f3e959f",
-   "alcance": "skill storyboard-architect, paso 6",
-   "enunciado": "Se deben definir anclas de entorno, luz y personaje en series_lock al inicio de shots.json para que los frames generados sean coherentes."
-  },
-  {
-   "id": "22d79d2aff6b",
-   "alcance": "skill storyboard-architect, paso 7",
-   "enunciado": "Cada shot debe llevar un rationale de una frase que justifique beat, encuadre y texto en pantalla; nunca se omite."
-  },
-  {
-   "id": "533be7ddefc9",
-   "alcance": "skill storyboard-architect, paso 9",
-   "enunciado": "run.json se escribe al final con run_id, created_at y el SHA-256 de shots.json, text-overlays.json y brand-lock.snapshot.md tal como quedaron."
-  },
-  {
-   "id": "0d9597261005",
-   "alcance": "skill storyboard-architect, paso 9",
-   "enunciado": "run_id debe ser el timestamp UTC compacto, un guion y 8 caracteres hex; brand_lock_configured es false si el snapshot es la plantilla sin llenar."
+   "id": "c142c135edd1",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "El validador solo advierte en juicios discutibles: copy del overlay repetido en subject, hex crudo en subject, ids desordenados o fuente no declarada en el brand-lock."
   },
   {
    "id": "e46bf2d63726",
@@ -726,109 +1701,154 @@
    "enunciado": "Se debe revisar manualmente que cada rationale diga por qué, que series_lock sea reproducible, que los beats sigan el argumento del brief y que run.json tenga los hashes de lo entregado."
   },
   {
+   "id": "612fe1fbd4a9",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "Se deben ejecutar validate_shots.py, validate_brand_lock.py --snapshot y validate_provenance.py en lugar de revisar a ojo."
+  },
+  {
+   "id": "26766c61b5d3",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "Si el validador falla se debe corregir antes de declarar terminado; validador verde con rationale sin leer no es un storyboard terminado."
+  },
+  {
    "id": "70b9273f8c5e",
    "alcance": "skill storyboard-architect, quality bar",
    "enunciado": "validate_shots.py comprueba schemas, tiempos sin huecos ni solapes que sumen la duración, referencias entre shots y overlays, timing de overlays dentro del shot, colores de la paleta y que brand_lock_ref exista."
   },
   {
-   "id": "606fcf0c17d4",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "Ejemplo: descripción de sujeto correcta ('Founder, mid-thirties, leaning forward at laptop, face partially turned to window light')."
+   "id": "9022f8e50df4",
+   "alcance": "skill storyboard-architect, timing-rules",
+   "enunciado": "Antes de terminar se debe validar suma de duraciones igual al total ±0.1 s, sin shots invertidos ni solapados, inicio en 0 y fin en la duración, overlays dentro de su shot y con tiempo de leer dos veces."
   },
   {
-   "id": "e0ec45ffb76e",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "El estilo de luz no se redefine por shot; se define una vez en series_lock.lighting."
+   "id": "02d36ea161e3",
+   "alcance": "skill storyboard-html-preview, paso 1",
+   "enunciado": "Se debe validar con tools/validate_shots.py antes de renderizar y detenerse si falla."
   },
   {
-   "id": "4ba0e60c1323",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "En shots.json se deben usar exactamente los términos del vocabulario controlado, porque los generadores interpretan el lenguaje suelto de forma inconsistente."
+   "id": "c4006dd88775",
+   "alcance": "skill video, paso 1",
+   "enunciado": "No se puede decidir si un prompt está listo sin correr el dramaturgy check de dramaturgy.md."
   },
   {
-   "id": "11537d28574e",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "La descripción del sujeto debe ser estructurada, no poética: quién/qué, haciendo qué, y nota emocional o compositiva."
+   "id": "078e260e8e47",
+   "alcance": "skill video, paso 5",
+   "enunciado": "Antes de devolver nada se corren el dramaturgy check (§15) y la auditoría de tres detalles (U13) sobre cada shot."
   },
   {
-   "id": "609ba49179d7",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "Una descripción de luz repetida entre shots debe moverse a series_lock y un color repetido entre storyboards al brand_lock."
+   "id": "8a3be90a5127",
+   "alcance": "skill video, paso 5",
+   "enunciado": "Si algún shot falla los checks, se corrige antes de enviar; no se salta este paso."
   },
   {
-   "id": "2adfd5462ea3",
-   "alcance": "skill storyboard-architect, shot-grammar",
-   "enunciado": "brand_lock fija paleta, tipografía y never list para todo el proyecto, series_lock fija personaje, entorno, luz y grade del storyboard, y subject solo lo que cambia en cada shot."
+   "id": "97d58aa36440",
+   "alcance": "storyboard-html-preview, barra de calidad",
+   "enunciado": "Antes de dar por terminado se verifica: abre en cualquier navegador, sin peticiones de red, impresión limpia, móvil 375px sin scroll, marca desde el brand-lock, todos los shots y overlays presentes, footer con brand_lock_ref, fechas de run y render separadas y ningún {{ residual."
   },
   {
-   "id": "633ad4f84ea3",
-   "alcance": "skill storyboard-architect, timing-rules, piezas de 30s",
-   "enunciado": "Un shot de más de 7 segundos en una pieza de 30 segundos debe justificarse en el rationale."
+   "id": "bd1d5349a82a",
+   "alcance": "storyboard-html-preview, barra de calidad",
+   "enunciado": "La mitad mecánica de la checklist se comprueba con python tools/shots-to-html.py --selftest."
   },
   {
-   "id": "3be3317c7d99",
-   "alcance": "storyboard-architect, plantilla storyboard.md",
-   "enunciado": "Especifica la plantilla de storyboard.md: cabecera (duración, aspecto, framework de beats, brand lock, fecha), brief, series lock, shots con beat/subject/texto/VO/rationale, overlays con fuente, posición, color y animaciones, notas de handoff y traza de auditoría contra el snapshot de brand-lock."
+   "id": "fea27ec683bb",
+   "alcance": "storyboard-html-preview, ejemplos y CI",
+   "enunciado": "Los previews de ejemplo sirven para calibrar calidad y son test de regresión: se re-renderizan en CI con timestamps fijados y el build falla si cambian."
   },
   {
-   "id": "0bea9c5c146d",
-   "alcance": "storyboard-html-preview, overlays de texto",
-   "enunciado": "Explicación: overlays es un arreglo porque un shot puede llevar varios overlays; un solo juego de campos dejaba el segundo overlay sin renderizar y sin aviso."
+   "id": "4021fb4265e2",
+   "alcance": "storyboard-html-preview, regla dura 3",
+   "enunciado": "La impresión debe producir un PDF limpio; si el layout se rompe entre páginas, la hoja de impresión está mal."
   },
   {
-   "id": "865552c4b2ee",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "La raíz de text-overlays.json no admite campos fuera de version y overlays."
+   "id": "eb4d3a4a44e7",
+   "alcance": "system prompt v6.0 a v6.1; propuesta del 2026-05-27",
+   "enunciado": "Explicación: la propuesta v6.1 eleva el system prompt v6.0 mediante un cambio mayor que añade una regla inviolable y un mecanismo de override."
   },
   {
-   "id": "0dbe1c661421",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays es un array obligatorio."
+   "id": "af17457fd1d1",
+   "alcance": "system prompt v6.1; antes del Step 6 delivery",
+   "enunciado": "La propuesta de system prompt v6.1 añade la Regla 28 para obligar a llamar al linter antes de entregar en el Step 6."
   },
   {
-   "id": "9fecbf6fc833",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays[] no admite campos fuera de id, shot_id, content, font, size, weight, color, position, enter y exit."
+   "id": "87d6c5f5bc2e",
+   "alcance": "tarjeta de ancla",
+   "enunciado": "Antes de escribir el prompt se llena la tarjeta de ancla de nueve dimensiones; no se genera con campos vacíos."
   },
   {
-   "id": "9bf94847c6d1",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays[].enter no admite campos fuera de at y animation."
+   "id": "03dff5c988e3",
+   "alcance": "todas las etapas del pipeline",
+   "enunciado": "Cada etapa debe declarar sub-skill, entradas, salidas y gate, y corregir cualquier fallo antes de avanzar."
   },
   {
-   "id": "9bf89d22ce13",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays[].exit no admite campos fuera de at y animation."
+   "id": "1b7e31da073f",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige auditar cada plano antes de entregar y verificar que tenga presión ambiental, microacción y ancla sonora o motivo."
   },
   {
-   "id": "1292a7382536",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays[].id es obligatorio con patrón text_ seguido de 2 o 3 dígitos."
+   "id": "15968e1eca68",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige corregir el plano con cero detalles antes de enviar y considerar añadir un segundo si solo tiene uno."
   },
   {
-   "id": "edccaa227f14",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "overlays[].shot_id es obligatorio: un id de shot o un array de al menos 2 shots consecutivos para overlays persistentes."
+   "id": "8698b1dcc020",
+   "alcance": "validate_brand_lock.py; brand-lock",
+   "enunciado": "El validador debe comprobar que el brand-lock incluya secciones e identidades obligatorias, los cinco roles de paleta requeridos y fuentes en el formato entre comillas invertidas que leen las herramientas."
   },
   {
-   "id": "2e67d42b5c0f",
-   "alcance": "text-overlays.schema.json",
-   "enunciado": "text-overlays.json define los textos en pantalla que se componen sobre las imágenes generadas y nunca se integran en los prompts."
+   "id": "614afd1766de",
+   "alcance": "validate_critique.py; archivos de crítica",
+   "enunciado": "El validador debe comprobar una crítica contra critique.schema.json y contra dos invariantes que el esquema no puede expresar."
   },
   {
-   "id": "3d8f40272270",
-   "alcance": "text-overlays.schema.json y run.schema.json",
-   "enunciado": "version es obligatorio y debe ser exactamente '1.0'."
+   "id": "7ef9b30979f4",
+   "alcance": "validate_critique.py; críticas versión 1.0",
+   "enunciado": "Las críticas de versión 1.0 deben aprobar la validación con una advertencia porque contienen veredicto pero no procedencia de los bytes revisados."
   },
   {
-   "id": "685acd3e26f3",
-   "alcance": "track EXPRESS",
-   "enunciado": "En EXPRESS omite la estrategia formal y el guion, usa ai-video-storyboard para el shot list y pasa directamente a image o video para prompts, sin shots.json ni loop de crítica salvo petición del usuario."
+   "id": "12db23331a64",
+   "alcance": "validate_critique.py; veredicto de crítica",
+   "enunciado": "Una crítica debe recibir REJECT si tiene cualquier incidencia blocking o tres o más major, y no puede recibir ACCEPT si tiene una o dos incidencias major."
   },
   {
-   "id": "13b34dad992e",
-   "alcance": "validate_shots.py",
-   "enunciado": "Ejemplo: comandos para validar un directorio de salida o shots.json, todos los ejemplos incluidos y la autoprueba."
+   "id": "4ee70621fdbb",
+   "alcance": "validate_prompts.py",
+   "enunciado": "Ejemplo: comandos para validar un directorio de salida, un archivo de prompts, todos los ejemplos y la autoprueba."
+  },
+  {
+   "id": "c4505ef0b6cc",
+   "alcance": "validate_prompts.py; archivos de prompts del proyecto",
+   "enunciado": "El validador debe comprobar que los prompts generados coincidan con shots.json y la matriz de capacidades en cabeceras, generador, aspecto, límite de palabras, cobertura, bloques duplicados, ausencia de texto en pantalla y presencia literal de environment, lighting y color_grade."
+  },
+  {
+   "id": "ee6c7dbc63ff",
+   "alcance": "validate_prompts.py; prompts con series_lock",
+   "enunciado": "Los anclajes de series_lock deben aparecer sin modificaciones en todos los prompts para preservar la consistencia de la serie."
+  },
+  {
+   "id": "3ff968bdac2c",
+   "alcance": "validate_prompts.py; prompts de planos sin personas",
+   "enunciado": "La ausencia del anclaje de personaje debe ser una advertencia y no un error porque los planos sin personas pueden omitirlo legítimamente."
+  },
+  {
+   "id": "6be98ad998a4",
+   "alcance": "validate_provenance.py; condición de parada del pipeline",
+   "enunciado": "Con --require-accept, el pipeline solo debe terminar con código 0 si la cadena de procedencia está intacta y el último veredicto de cada plano es ACCEPT."
+  },
+  {
+   "id": "29496ae040ff",
+   "alcance": "validate_provenance.py; árbol output del proyecto",
+   "enunciado": "El validador debe detectar hashes desactualizados, frames sin crítica, críticas duplicadas por plano y ronda, rondas saltadas y críticas asociadas a otro run_id."
+  },
+  {
+   "id": "334ba93508a1",
+   "alcance": "validate_provenance.py; árbol output del proyecto",
+   "enunciado": "El validador debe recorrer el árbol de salida y recalcular cada hash registrado para comprobar que cada veredicto siga correspondiendo al archivo revisado."
+  },
+  {
+   "id": "36c204dc02cc",
+   "alcance": "validate_shots.py; shots.json y text-overlays.json",
+   "enunciado": "El validador debe emitir advertencias si se repite el texto del overlay en el sujeto del plano, se usa un hexadecimal directo, los IDs no están en orden cronológico o la fuente no figura en el brand-lock."
   },
   {
    "id": "6f9484783bb3",
@@ -836,14 +1856,54 @@
    "enunciado": "El validador debe comprobar los esquemas y las reglas cruzadas de shots.json y text-overlays.json, incluyendo tiempos continuos, duración total, referencias bidireccionales, accesibilidad, ventanas temporales y colores de la paleta de marca."
   },
   {
-   "id": "d4856cab577a",
+   "id": "fba76141b6ed",
    "alcance": "visual-asset-critic",
-   "enunciado": "Antes de criticar hay que establecer la intención del shot a partir del rationale, subject, framing, angle y motion de shots.json, la intención declarada por el usuario o el beat que sirve."
+   "enunciado": "Alternativamente se valida todo el árbol con tools/validate_provenance.py output/, que recalcula los hashes contra disco."
   },
   {
-   "id": "c040e803179e",
+   "id": "6a9143ec9c3c",
    "alcance": "visual-asset-critic",
-   "enunciado": "Recomienda el ID de plano y shots.json; si faltan, pedir la intención del plano en una frase."
+   "enunciado": "Ejecutar el gate es obligatorio y responsabilidad de quien critica; un ACCEPT con un issue major es un bug."
+  },
+  {
+   "id": "e9cdd2a1135a",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige producir siempre dos artefactos: crítica en markdown y crítica JSON para que el pipeline pueda gatear por veredicto."
+  },
+  {
+   "id": "867323c3c0a9",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Tras escribir la crítica se debe ejecutar el gate con tools/validate_critique.py sobre el JSON."
+  },
+  {
+   "id": "54238b85a6c8",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Cada issue debe llevar una severidad asignada de forma determinista desde la rúbrica de capas, porque el gate opera sobre ella."
+  },
+  {
+   "id": "77b0fe63522d",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Declarar confianza HIGH es un hecho verificable: validate_critique.py rechaza una crítica 1.1 con HIGH si shot_id, brand_lock_ref o prompt_ref son null."
+  },
+  {
+   "id": "9236230a4f73",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El veredicto se deriva de las severidades: cualquier blocking o tres+ major ⇒ REJECT; uno o dos major ⇒ REVISE; solo minor o ninguno ⇒ ACCEPT."
+  },
+  {
+   "id": "90971e84803b",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Explicación: la regla de tres major pasó de discrecional a umbral obligatorio que el validador hace cumplir, alineada con la rúbrica."
+  },
+  {
+   "id": "317914d3ac3d",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Explicación: los hashes impiden que un ACCEPT obsoleto pase el gate unido a un frame regenerado que nadie revisó."
+  },
+  {
+   "id": "d41b50530315",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "validate_critique.py hace cumplir exactamente la tabla de agregación; el umbral numérico sustituyó una regla discrecional contradictoria."
   },
   {
    "id": "831a5a47805c",
@@ -851,94 +1911,49 @@
    "enunciado": "Antes de componer se valida con tools/validate_shots.py output/."
   },
   {
-   "id": "20168a701423",
+   "id": "734fa46d8491",
    "alcance": "visual-prompt-forge",
-   "enunciado": "Explicación: descripción del skill visual-prompt-forge, que genera prompts por modelo desde shots.json y tiene un modo revisión que re-emite solo los shots fallidos."
+   "enunciado": "Explicación: la regla verbatim existe porque un storyboard de siete shots derivó en las siete anclas mientras los demás validadores seguían en verde."
   },
   {
-   "id": "94530db04f40",
+   "id": "fc39e61a0532",
    "alcance": "visual-prompt-forge",
-   "enunciado": "Sin tools/ disponible, se lee el schema de ../storyboard-architect/templates/shots.schema.json y se verifica a mano; si no existe, se pide al usuario en vez de componer de memoria."
+   "enunciado": "La barra de calidad exige ejecutar validate_prompts.py (y copy-prompt.py --list), no revisarla a ojo."
   },
   {
-   "id": "eb8333980445",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "El adaptador lee la seed del proyecto y la aplica a todos los prompts."
+   "id": "eb5304c901fd",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "La regla de anclas verbatim se hace cumplir con python tools/validate_prompts.py output/."
   },
   {
-   "id": "1b43c771c9ec",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "La seed puede documentarse a nivel de proyecto en shots.json (project.seed)."
+   "id": "9bd0a59d670e",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Las reglas duras de visual-prompt-forge son innegociables; violarlas rompe el output aunque el prompt parezca correcto."
   },
   {
-   "id": "e76956e6ee1d",
-   "alcance": "visual-prompt-forge, Lock 7",
-   "enunciado": "Cuando un shot invierte la orientación (contraplano OTS), el rationale debe reconocer el cambio de lado de la luz para mantener la continuidad de escena."
+   "id": "39423d5e8116",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Manualmente se debe verificar un archivo por generador, que en revisión los shots omitidos estén clasificados, parámetros correctos, ronda en run.json con hash y que el prompt describa realmente el shot."
   },
   {
-   "id": "43494d1460da",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "Para activar el modo 2 de Ideogram el shot debe llevar un flag de override explícito en el rationale."
+   "id": "cafbd538dd25",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Si falta el brand-lock o shots.json no valida, se debe detener y avisar; no se forjan prompts con datos incompletos."
   },
   {
-   "id": "605d1fdd3217",
-   "alcance": "visual-prompt-forge, capa 2",
-   "enunciado": "El series lock contiene ancla de personaje, entorno, montaje de luz y grade, idénticos en cada shot."
+   "id": "c032cfbdd294",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "validate_capabilities.py falla si un adaptador anuncia más palabras que su techo o no documenta el aspect_param indicado por el JSON."
   },
   {
-   "id": "35c861586190",
-   "alcance": "visual-prompt-forge, capa 2",
-   "enunciado": "Explicación: el series lock responde a qué permanece igual a lo largo del storyboard."
+   "id": "45389f5d593c",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "validate_prompts.py verifica encabezado, generador real, aspecto, techo de palabras, cobertura de shots, bloques duplicados, ausencia de texto en pantalla, anclas verbatim y lógica de shot (tercio, POV, dirección, lateralidad, marcas)."
   },
   {
-   "id": "93c5d3df3dbc",
-   "alcance": "visual-prompt-forge, capa 2",
-   "enunciado": "La capa 2 es el series lock, tomado de shots.json → series_lock y constante en todos los shots de un storyboard."
-  },
-  {
-   "id": "c79fe326a19e",
-   "alcance": "visual-prompt-forge, capa 3",
-   "enunciado": "Explicación: la capa de shot responde a qué es distinto en este shot concreto."
-  },
-  {
-   "id": "4e6041031ec6",
-   "alcance": "visual-prompt-forge, capa 3",
-   "enunciado": "La capa 3 es la especificación de shot, tomada de shots.json → shots[i] y variable por shot."
-  },
-  {
-   "id": "cbee32f81863",
-   "alcance": "visual-prompt-forge, capa 3",
-   "enunciado": "La especificación de shot contiene encuadre, ángulo, movimiento, sujeto, profundidad de campo y rationale como traza de auditoría."
-  },
-  {
-   "id": "9164f5d563db",
-   "alcance": "visual-prompt-forge, ejemplo WhyStrohm",
-   "enunciado": "Ejemplo: series lock constante para todos los adaptadores (personaje, entorno, luz lateral cálida, grade fílmico con grano)."
-  },
-  {
-   "id": "b569aa02e9c9",
-   "alcance": "visual-prompt-forge, ejemplo WhyStrohm",
-   "enunciado": "Ejemplo: shot_04 de shots.json (reframe, MCU, eye-level, push, DOF corta) donde solo cambia la expresión del fundador."
-  },
-  {
-   "id": "76568be83ac2",
-   "alcance": "visual-prompt-forge, fallo 7",
-   "enunciado": "Explicación: una imagen correcta que no cumple el brief se debe a un subject vago en shots.json, contexto del brief ausente o salida genérica del generador."
-  },
-  {
-   "id": "e0fb08b7e390",
-   "alcance": "visual-prompt-forge, fallo 7",
-   "enunciado": "Para ajustar al brief se precisa el campo subject, se añade al final una frase de intención y, en escenas complejas, una línea de \"qué transmite este shot\"."
-  },
-  {
-   "id": "a5bcb0c75ad4",
-   "alcance": "visual-prompt-forge, operación",
-   "enunciado": "Para cambiar el personaje se edita series_lock en shots.json y se actualizan todos los shots de ese storyboard sin tocar otros."
-  },
-  {
-   "id": "35bde05763df",
-   "alcance": "visual-prompt-forge, operación",
-   "enunciado": "Para cambiar un shot se edita solo su especificación sin afectar a los demás."
+   "id": "749193dd59ad",
+   "alcance": "visual-prompt-forge, fallo 6",
+   "enunciado": "Para corregir una serie dispar se audita cada prompt contra series_lock y brand-lock verbatim, se verifica aspect ratio idéntico y se fija el mismo set de adjetivos de mood."
   }
  ]
 }

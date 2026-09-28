@@ -1,599 +1,1054 @@
 {
  "paso": "agrupar",
  "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
- "tema": "parametros_tecnicos",
- "descripcion_tema": "aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API",
- "ventana": "2 de 2",
+ "tema": "referencias_roles",
+ "descripcion_tema": "imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs",
+ "ventana": "1 de 1",
  "filas": [
   {
-   "id": "526e298917f4",
-   "alcance": "Veo 3",
-   "enunciado": "Las líneas habladas en Veo 3 deben caber en la duración (unas 12-18 palabras para 8s) e indicar la entrega (\"calm, unhurried\")."
+   "id": "837cee442524",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "El linter no inspecciona imágenes y depende de tags correctos, por lo que se debe revisar humanamente el tageo antes de ejecutarlo."
   },
   {
-   "id": "6ed5a45cc8b3",
-   "alcance": "Veo 3 / 3.1",
-   "enunciado": "Especifica el esquema JSON completo de Veo: output, global_style, continuity (personajes, props, luz constante) y scenes con tiempos, plano, acción, entorno, luz y audio."
+   "id": "c7d51f53e8dd",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "Explicación: la versión 1.0 no detecta sinónimos redundantes entre referencias y prompt."
   },
   {
-   "id": "9b758673a9a5",
-   "alcance": "Veo 3 / 3.1",
-   "enunciado": "Limita la duración a 4, 6 u 8 s y el diálogo hablado a 8 s por clip."
+   "id": "f35deb5473bb",
+   "alcance": "Aurora Prompt Linter v1.0; MAIN prompt",
+   "enunciado": "Si existe al menos una referencia para una categoría, se prohíben en el prompt MAIN los descriptores estáticos de esa categoría, mientras que las categorías sin referencia pueden describirse."
   },
   {
-   "id": "a77ffabdc7d5",
-   "alcance": "Veo 3, archivo de salida",
-   "enunciado": "Cada prompt de Veo 3 lleva una cabecera con id de shot y parámetros (duration, ar, generate_audio)."
+   "id": "70f81aa3c5dc",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 1; MAIN prompt",
+   "enunciado": "Si una referencia carga una categoría, está prohibido describir esa categoría en el prompt MAIN."
   },
   {
-   "id": "5c35f58bf9d0",
-   "alcance": "Veo diálogo",
-   "enunciado": "Recortar las líneas de diálogo hasta que quepan en 8 segundos de habla natural."
+   "id": "84b2e9411791",
+   "alcance": "Aurora Prompt Linter v1.0; Step 5 de prompt-production-protocol",
+   "enunciado": "El linter Aurora v1.0 bloquea la entrega de prompts con redundancia respecto a referencias, violaciones estructurales, vocabulario baneado o keywords obligatorias ausentes y es un gate obligatorio del paso 5 de prompt-production-protocol."
   },
   {
-   "id": "f4a8bd87783f",
-   "alcance": "adaptadores Hailuo 02 Pro y Veo 3",
-   "enunciado": "En Hailuo y Veo, start_image es opcional y permite imagen a video desde un still aceptado."
+   "id": "578d96f77852",
+   "alcance": "Aurora Prompt Linter v1.0; caso 2 image-with-refs",
+   "enunciado": "El caso 2 de ancla de imagen con referencias admite un presupuesto de 75 a 130 palabras."
   },
   {
-   "id": "70263ce2c995",
-   "alcance": "adaptadores Hailuo, Kling, Seedance, Seedream y Veo",
-   "enunciado": "En los adaptadores de video y Seedream, aspect_ratio toma por defecto el valor de project.aspect."
+   "id": "f1450745ccf0",
+   "alcance": "Aurora Prompt Linter v1.0; categorías O y P de referencias",
+   "enunciado": "Explicación: la versión 1.0 no admite sub-tags de categoría y una referencia etiquetada cubre toda la categoría, incluso si no muestra todos sus elementos."
   },
   {
-   "id": "4e08121ef3d6",
-   "alcance": "anclas para video",
-   "enunciado": "El ancla se genera en el aspect ratio destino y nunca se recorta después de animar."
+   "id": "3607bb185a78",
+   "alcance": "Aurora Prompt Linter v1.0; etiquetas declaradas de referencias",
+   "enunciado": "El agente debe reverificar las etiquetas de las referencias antes de invocar el linter porque este no inspecciona las imágenes."
   },
   {
-   "id": "89f0cdbbc4d6",
-   "alcance": "anuncio de producto diorama en miniatura",
-   "enunciado": "Para el diorama definir producto, material, superficie y color de acento, y usar GPT Image 2 quality high."
+   "id": "13be9656fad6",
+   "alcance": "Aurora Prompt Linter v1.0; formato refs.yaml",
+   "enunciado": "Los tags de referencias se clasifican como personaje o sujeto, outfit, locación, prop o estilo."
   },
   {
-   "id": "0070bdc9ffcb",
-   "alcance": "board de campaña de bebida",
-   "enunciado": "Para el board de bebida definir producto, marca, modelo, locación, acción, estética, ángulo, superficie, lineup y colores, y usar GPT Image 2 quality high."
+   "id": "7099d73e9c73",
+   "alcance": "Aurora Prompt Linter v1.0; formato refs.yaml; system v6.0 §7",
+   "enunciado": "Cada referencia en refs.yaml debe declarar su archivo, rol y tags de las categorías de contenido que carga."
   },
   {
-   "id": "7e0f07e102e3",
-   "alcance": "brand-lock de ejemplo WhyStrohm",
-   "enunciado": "Ejemplo: aspect ratios de la marca: 9:16 social corto, 16:9 largo y web, 1:1 feed y 4:5 alternativa de Instagram."
+   "id": "9af11d008f1a",
+   "alcance": "Aurora Prompt Linter v1.0; roadmap v1.1",
+   "enunciado": "Explicación: el linter v1.0 no detecta sinónimos entre referencias y prompt; v1.1 prevé una tabla de sinónimos en `vocabularies.yaml`."
   },
   {
-   "id": "aae9df548923",
-   "alcance": "campaña de chocolate de lujo",
-   "enunciado": "Para el chocolate de lujo usar GPT Image 2 quality high por el detalle de fractura y cacao en polvo."
+   "id": "a20c9463e5f9",
+   "alcance": "Aurora Prompt Linter v1.0; v6.0 §5.4",
+   "enunciado": "Explicación: el linter convierte en una regla determinista en código la prohibición de describir en el prompt contenido ya visible en las referencias."
   },
   {
-   "id": "c6595acb53d1",
+   "id": "95e6ada2d33d",
+   "alcance": "Aurora Prompt Linter; MAIN con referencias que cubren S",
+   "enunciado": "La categoría S de estilo se prohíbe en MAIN cuando una referencia ya cubre esa categoría."
+  },
+  {
+   "id": "0fb4c67621e8",
+   "alcance": "Aurora Prompt Linter; especialmente caso 3b y modo sports-broadcast",
+   "enunciado": "Antes de entregar un prompt, se deben etiquetar las referencias, guardar el borrador y el mensaje actual, ejecutar el linter y no entregar hasta obtener estado PASS."
+  },
+  {
+   "id": "e349ee490257",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas L",
+   "enunciado": "Si una referencia carga la categoría L de locación, se prohíbe describir en el prompt principal el suelo, las paredes, las ventanas, la iluminación o el ambiente."
+  },
+  {
+   "id": "fb83f1b76529",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas O",
+   "enunciado": "Si una referencia carga la categoría O de vestuario, se prohíbe describir en el prompt principal las prendas, los colores o los accesorios."
+  },
+  {
+   "id": "c0bc79f39d93",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas P",
+   "enunciado": "Si una referencia carga la categoría P de sujeto, se prohíbe describir en el prompt principal la cara, el cuerpo, la edad, la complexión, el cabello, la expresión o la identidad."
+  },
+  {
+   "id": "823c6bc27e58",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas PR",
+   "enunciado": "Si una referencia carga la categoría PR de utilería, se prohíbe describir en el prompt principal el balón u otro objeto interactuado."
+  },
+  {
+   "id": "b1b066b6bfe0",
+   "alcance": "Aurora Prompt Linter; prompts con referencias",
+   "enunciado": "El Aurora Prompt Linter debe usarse como gate entre el borrador y la entrega para impedir redescribir contenido ya cubierto por referencias."
+  },
+  {
+   "id": "b1dc2e73c21b",
+   "alcance": "Aurora Prompt Linter; regla v6.0 §5.4",
+   "enunciado": "Explicación: el linter existe porque el agente tiende a sobre-describir lo que ya contienen las referencias durante iteraciones rápidas."
+  },
+  {
+   "id": "209f405b4829",
+   "alcance": "Aurora Prompt Linter; roadmap v1.2; refs con cobertura parcial",
+   "enunciado": "Explicación: la versión v1.2 prevé subetiquetas por categoría para referencias con cobertura parcial."
+  },
+  {
+   "id": "b16af3d31845",
+   "alcance": "Brand Lock > Reference materials",
+   "enunciado": "Ejemplo: incluye enlaces a la guía de marca, a una película principal anterior y a un moodboard."
+  },
+  {
+   "id": "adf0d2977b98",
+   "alcance": "Brand Lock > Reference materials",
+   "enunciado": "Permite añadir enlaces opcionales a trabajos previos, moodboards o guías de estilo que definan la marca."
+  },
+  {
+   "id": "6054cbdde3d2",
+   "alcance": "Brand Lock Extractor; entradas",
+   "enunciado": "Acepta al menos una fuente de entrada y mejora la extracción al combinar varias fuentes."
+  },
+  {
+   "id": "165a4a1ba2eb",
+   "alcance": "Brand Lock: Acme SaaS (ejemplo), materiales de referencia",
+   "enunciado": "Explicación: Vercel es referencia de marketing y lenguaje de diseño, Linear de voz y ritmo, y Stripe Press de tipografía y densidad."
+  },
+  {
+   "id": "c83e49e29ec8",
+   "alcance": "Casos 3a/3b/3c, I2V con refs FF/LF",
+   "enunciado": "El Aurora Prompt Linter es obligatorio para los casos 3a, 3b y 3c de imagen a vídeo con referencias de primer y último fotograma."
+  },
+  {
+   "id": "1637b8132ef4",
+   "alcance": "E5.3 image/characters + SW30 R5-R6",
+   "enunciado": "E5.3: los maestros derivados (cuerpo T2, variantes de pose y vestuario) se generan con la génesis canonizada como referencia y herencia mínima."
+  },
+  {
+   "id": "f1c16c73b2e0",
+   "alcance": "E6.3 universal-rules U7, U13",
+   "enunciado": "E6.3: cada prompt de la secuencia repite la identidad completa y el rol explícito de cada referencia."
+  },
+  {
+   "id": "eba3a2513586",
+   "alcance": "Etapa 5, Anchor Images",
+   "enunciado": "La Etapa 5 debe entregar un plan de anchors con referencias de personaje, entorno y keyframes de shots clave, además de prompts finales y críticas por ronda."
+  },
+  {
+   "id": "2127669766f1",
+   "alcance": "Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5, refs.yaml se escribe desde el plan de anchors con role (CHARACTER, LOCATION, PROP, STYLE) y tags (P1, O1, L1, PR1, S1) por referencia."
+  },
+  {
+   "id": "ed18d66b9ace",
+   "alcance": "Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6, refs.yaml lleva la imagen aprobada como role FF (y LF/TAIL si hay tail image) con los tags de lo que esa imagen ya fija."
+  },
+  {
+   "id": "6ef96f125293",
+   "alcance": "GPT Image 2, grupo ensamble",
+   "enunciado": "GPT Image 2 acepta hasta dieciséis referencias con rol nombrado y es el modelo para un ensamble de más de cinco en una sola pasada."
+  },
+  {
+   "id": "b0e5b12c225b",
+   "alcance": "GPT Image 2, multi-imagen hasta 16 refs",
+   "enunciado": "Indexar cada referencia por su rol y no solo por número (base scene, referencia de chaqueta, referencia de luz)."
+  },
+  {
+   "id": "d345cefb6c23",
+   "alcance": "GPT Image 2, style transfer",
+   "enunciado": "En style transfer, nombrar propiedades visuales concretas de la referencia (paleta, bordes, silueta, sombras, planos) y no términos abstractos como \"minimalist\"."
+  },
+  {
+   "id": "e4cc0a0bfbc9",
+   "alcance": "GPT Image 2; antes de redactar prompts",
+   "enunciado": "Tras elegir GPT Image 2 se debe leer `gpt-image.md`, que define la plantilla de cinco slots, calidad, tamaños, edición y roles explícitos de referencias."
+  },
+  {
+   "id": "06e598805cb0",
+   "alcance": "Ideogram v3, Lock 5",
+   "enunciado": "En Ideogram la referencia se pasa con el parámetro omni-reference."
+  },
+  {
+   "id": "4d3ea5075b6d",
+   "alcance": "Kling",
+   "enunciado": "Si baja la calidad al activar Elements o referencias, reducirlas a las esenciales y en clips únicos preferir etiquetas en el prompt."
+  },
+  {
+   "id": "753f3bcda179",
+   "alcance": "Kling",
+   "enunciado": "Si dos personajes similares mezclan rasgos, dar a cada uno su propio element o bloque de identidad etiquetado; nunca compartir una descripción."
+  },
+  {
+   "id": "685b63e45e63",
+   "alcance": "Kling",
+   "enunciado": "Si el rostro cambia entre generaciones, subir 3-4 referencias a la Element Library y activar Bind Elements."
+  },
+  {
+   "id": "9074c4d4898d",
+   "alcance": "Kling 1.x-2.x",
+   "enunciado": "Para consistencia de personaje en Kling, subir 3-4 imágenes de referencia desde distintos ángulos a la Element Library."
+  },
+  {
+   "id": "9226017f6914",
+   "alcance": "Kling 2.6 Pro Motion Control",
+   "enunciado": "Usar Motion Control para copiar movimiento de un video de referencia (danza, artes marciales, andar); el prompt describe solo al sujeto."
+  },
+  {
+   "id": "2011bab107a7",
+   "alcance": "Kling 3.0",
+   "enunciado": "En Kling 3.0 la Element Library sigue funcionando, pero las etiquetas '[Character A: ...]' suelen bastar."
+  },
+  {
+   "id": "309125101b52",
+   "alcance": "Kling 3.0 Omni",
+   "enunciado": "En Elements 3.0 de Omni, definir cada personaje/producto/lugar una vez como element (video 3-8 s o hasta 4 stills, voz opcional), etiquetarlo con @ sin re-describirlo, un element por personaje y usarlos solo cuando la consistencia importe porque degradan la calidad."
+  },
+  {
+   "id": "323152e3ecc0",
+   "alcance": "Kling Element Library",
+   "enunciado": "Imágenes fuente para Elements: 1080p o más, luz pareja sin sombras duras, sin texto ni marcas de agua, fondo limpio, sujeto centrado y buen contraste."
+  },
+  {
+   "id": "41b157d80430",
+   "alcance": "Kling Element Library",
+   "enunciado": "Los ángulos requeridos para la Element Library son frontal, perfil y tres cuartos."
+  },
+  {
+   "id": "c59fbdc64554",
+   "alcance": "Kling i2v",
+   "enunciado": "Activar 'Bind Elements' en imagen a video para fijar rasgos a través de paneos y cambios de luz."
+  },
+  {
+   "id": "dca73ef03dbe",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "Una referencia de física del agua controla solo la física del agua; sus dimensiones ignoradas no deben filtrarse a pose, encuadre, identidad, entorno o color."
+  },
+  {
+   "id": "ab90d448fe06",
+   "alcance": "Mapa del Spot Publicitario, cadena de dependencia, cuadro T3",
+   "enunciado": "Cada herencia lleva su referencia adjunta en ese prompt; el cuadro T3 es donde convergen las seis clases canonizadas y un error en una génesis se propaga a todo lo posterior."
+  },
+  {
+   "id": "8744da58a936",
+   "alcance": "Mapa del Spot Publicitario, taxonomía de génesis",
+   "enunciado": "Un producto con logo o etiqueta real no puede nacer de texto: el logo solo se hereda de un asset aprobado y se trata como flujo con referencia; las demás clases entran al subflujo atómico de génesis."
+  },
+  {
+   "id": "8842c06cea86",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), exclusiones",
+   "enunciado": "Las referencias adjuntas no entran en la génesis; pertenecen a T2 en adelante."
+  },
+  {
+   "id": "c4dc4435c061",
+   "alcance": "Midjourney v7",
+   "enunciado": "El parámetro --cref (referencia de personaje por URL) se usa cuando existe un ancla de personaje y debe emparejarse con --cw."
+  },
+  {
+   "id": "a30e8f18b7d4",
+   "alcance": "Midjourney v7",
+   "enunciado": "El parámetro --cw (0-100) se fija por defecto en 50; 100 exige coincidencia estricta del personaje y 0 solo conserva la ropa."
+  },
+  {
+   "id": "525f0d2ef65f",
+   "alcance": "Midjourney v7",
+   "enunciado": "El parámetro --sref (referencia de estilo por URL) se usa cuando existe un ancla de estilo."
+  },
+  {
+   "id": "e8b08e3d23d6",
+   "alcance": "Midjourney v7, Lock 5",
+   "enunciado": "En Midjourney la referencia de personaje se pasa con --cref {url} --cw 50 (solo rasgos, no ropa)."
+  },
+  {
+   "id": "e5b8f5f075bb",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image)",
+   "enunciado": "El parámetro referenceImages de Nano Banana es un arreglo opcional de imágenes en base64."
+  },
+  {
+   "id": "19b4eb0261dd",
+   "alcance": "Nano Banana NBP/NB2; antes de redactar prompts",
+   "enunciado": "Tras elegir Nano Banana se debe leer `nano-banana.md`, que define su uso de referencias, relaciones de aspecto, thinking mode, JSON y la prohibición de números de cámara."
+  },
+  {
+   "id": "7e5b8d55308d",
+   "alcance": "Nano Banana Pro y NB2, grupo ensamble",
+   "enunciado": "Nano Banana Pro admite hasta cinco referencias de personaje y NB2 hasta cuatro; por encima se usan subgrupos o inserción secuencial."
+  },
+  {
+   "id": "8b27ceb9ada3",
+   "alcance": "Nano Banana Pro, research familia 09",
+   "enunciado": "El presupuesto de referencias de NBP se cuenta en identidades, no en imágenes: 14 imágenes de entrada y 5 identidades, el resto para props, escenario y estilo."
+  },
+  {
+   "id": "227b717c7248",
+   "alcance": "Nano Banana vs GPT Image 2",
+   "enunciado": "Referencias múltiples: hasta 14 indexadas en Nano Banana y hasta 16 indexadas con rol en GPT Image 2."
+  },
+  {
+   "id": "d12331b63569",
+   "alcance": "Nano Banana, GPT Image 2",
+   "enunciado": "Nano Banana admite hasta 14 imágenes de entrada y GPT Image 2 hasta 16; indexar cada una con su rol."
+  },
+  {
+   "id": "63ee93aae699",
+   "alcance": "Nano Banana, Lock 5",
+   "enunciado": "En Nano Banana la referencia se pasa en el arreglo referenceImages."
+  },
+  {
+   "id": "a75d09f73afb",
+   "alcance": "Nano Banana, escalado de modelo",
+   "enunciado": "Pasar de NB2 a NBP cuando se necesita el máximo de referencias por rol (6 objetos + 5 personajes + 3 estilos)."
+  },
+  {
+   "id": "decaf2656e0c",
+   "alcance": "Nano Banana, multi-referencia",
+   "enunciado": "Ejemplo: combinar rostro de Image 1, vestuario de Image 2 y escenario de Image 3 igualando luz y perspectiva."
+  },
+  {
+   "id": "db88861eabed",
+   "alcance": "Nano Banana, multi-referencia",
+   "enunciado": "Limita las referencias de consistencia de personaje a 4 en NB2 y 5 en NBP; NB2 Lite no las admite."
+  },
+  {
+   "id": "1095d57c3bc9",
+   "alcance": "Nano Banana, multi-referencia",
+   "enunciado": "Limita las referencias de estilo a 3 en NBP; NB2 y NB2 Lite no las admiten."
+  },
+  {
+   "id": "2c6819aa5f37",
+   "alcance": "Nano Banana, multi-referencia",
+   "enunciado": "Limita las referencias de objetos de alta fidelidad a 14 en NB2 Lite, 10 en NB2 y 6 en NBP."
+  },
+  {
+   "id": "f9409e0aa457",
+   "alcance": "SYSTEM PROMPT v6.1, Sección 5.5; prompts T2I e I2V",
+   "enunciado": "El linter debe actuar como gate duro para redundancia con referencias, límites de palabras, vocabulario baneado, negative prompt y keywords deportivas, permitiendo solo las exenciones y overrides específicos definidos."
+  },
+  {
+   "id": "506d7a909b59",
+   "alcance": "Seedance / Kling / Veo",
+   "enunciado": "Especifica la sintaxis de bloqueo de personaje por modelo: Seedance @img1 + bloque, Kling 1.x-2.x Element Binding, Kling 3.0 etiquetas [Character A], Veo ingredientes o JSON."
+  },
+  {
+   "id": "ebcf5b92bf8b",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Ejemplo: plantilla @img1 como referencia principal seguida del bloque de identidad completo, sin desnudez, sin gafas y sin personajes extra."
+  },
+  {
+   "id": "a4a7ea82102a",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Especifica que Seedance 2.0 acepta referencias en línea @img1, @img2 para fijar el parecido del protagonista entre planos y clips unidos."
+  },
+  {
+   "id": "7961a918bba7",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Exige que el bloque de identidad completo siga a @img1, repetirlo en cada clip, etiquetar el rol de cada referencia y declarar en prosa el rol de @Video1/@Audio1; limita a 12 archivos en 2.0 y 50 en 2.5."
+  },
+  {
+   "id": "c101b7719dab",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Limita las imágenes por petición a 30 en 2.5 (cada una ≤4K y ≤30 MB) frente a 9 en 2.0."
+  },
+  {
+   "id": "947209454241",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Limita las referencias de audio a 10 clips con total ≤30 s en 2.5 y permite entrada solo de audio."
+  },
+  {
+   "id": "525517558b43",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Limita las referencias de video a 10 clips de 2-30 s con un total ≤30 s en 2.5 (3 clips ≤15 s en 2.0)."
+  },
+  {
+   "id": "ec0338f6661f",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: Subject Profile de un personaje recurrente con apariencia, prop fijo, locaciones, referencia de movimiento y exclusiones."
+  },
+  {
+   "id": "9277e0f8cff0",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: plano secuencia de robo en museo con 17 referencias ligadas por rol, ruta de cámara por diagrama y sonido por beat."
+  },
+  {
+   "id": "d0634de86141",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica la plantilla de roles: @Image define apariencia/ropa/estructura, @Video define movimiento/cámara/ritmo, @Audio define voz/diálogo/ambiente/música."
+  },
+  {
+   "id": "e734733dc702",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que Seedance 2.5 admite 50 referencias multimodales (30 imágenes, 10 videos, 10 audios) con rol asignado por asset si se declara."
+  },
+  {
+   "id": "7b43a97388a4",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que con más de 5 sujetos las hojas multivista deben ser de vista única y que imágenes separadas por vista superan a un collage."
+  },
+  {
+   "id": "e39bf0c09ba4",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige escribir en el prompt el rol de cada material de referencia, sin depender de etiquetas de texto en las imágenes ni dejar que el modelo infiera."
+  },
+  {
+   "id": "dc4c3ca24a41",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige ligar cada estado de un personaje transformado a su rango de tiempo y presupuestar re-rolls porque es la vinculación más inestable."
+  },
+  {
+   "id": "8219c604dd08",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige que la declaración de referencias liste cada asset por orden de subida con su rol (personaje, voz, movimiento, escena)."
+  },
+  {
+   "id": "0e950aa0cded",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige seleccionar las referencias por escena y no todas a la vez."
+  },
+  {
+   "id": "a0bc99fcd67e",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige usar dos slots de imagen separados, cada uno ligado a su rango de tiempo, para un personaje en dos estados, y presupuestar re-rolls."
+  },
+  {
+   "id": "421011dc701e",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige vincular cada sujeto a su referencia individualmente, añadir exclusiones contra contaminación y no re-describir lo que la referencia ya define; prohíbe la forma colectiva 'images 1 through 4'."
+  },
+  {
+   "id": "3df86a7c14f7",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Explicación: en el ejemplo cada referencia tiene rol por escena, la cámara se da como diagrama y el sonido se diseña con marcadores < > y ( )."
+  },
+  {
+   "id": "ab612d42f35a",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Explicación: introduce los rangos oficiales de estabilidad por tipo de entrada."
+  },
+  {
+   "id": "f99819c9c8e2",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Limita la duración del clip de referencia a 5-10 s por sujeto; más largo es inestable."
+  },
+  {
+   "id": "1a3b4f8939d5",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Limita los sujetos en un video/audio de referencia a 1-5 para estabilidad (6-10 inestable)."
+  },
+  {
+   "id": "dd3572afc4e4",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Limita los sujetos entre imágenes de referencia a 1-8 para estabilidad (9-12 inestable)."
+  },
+  {
+   "id": "545ba7fc9759",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Recomienda mencionar con @ el mismo asset varias veces en el prompt porque las menciones repetidas aumentan la precisión."
+  },
+  {
+   "id": "4ac282db6552",
+   "alcance": "Seedance 2.5; motion brief",
+   "enunciado": "En Seedance 2.5 @Image 1 (primer frame) y @Image 2 (último frame) se declaran por separado con mismo ratio; el prompt va por etapas con un cambio de estado cada una, roles de referencias y qué ignorar."
+  },
+  {
+   "id": "6e6e973734d3",
+   "alcance": "Veo 3.1",
+   "enunciado": "Ejemplo: 'The character from reference_1 walks into the location from reference_2 holding the object from reference_3'."
+  },
+  {
+   "id": "bdc49522f20f",
+   "alcance": "Veo 3.1",
+   "enunciado": "Especifica subir varias imágenes de referencia (personaje, lugar, prop) y etiquetarlas en el prompt."
+  },
+  {
+   "id": "112951ecbf99",
+   "alcance": "Veo 3.1",
+   "enunciado": "Especifica usar ingredientes de referencia cuando se necesita un personaje concreto en un lugar concreto con un objeto concreto."
+  },
+  {
+   "id": "de79998068a2",
+   "alcance": "ancla character ref; Kling Elements",
+   "enunciado": "El ancla de character ref es el maestro de identidad: vistas frontal, tres cuartos, perfil y espalda, luz pareja sin sombras duras, fondo limpio, 1080p o más y sin texto."
+  },
+  {
+   "id": "37181626df1c",
+   "alcance": "ancla environment ref",
+   "enunciado": "El ancla de environment ref es una placa de entorno vacía cuyo texto es series_lock.environment verbatim."
+  },
+  {
+   "id": "50a3cd6e68a9",
+   "alcance": "anclas con persona",
+   "enunciado": "Herencia mínima con persona: \"same face and clothes\" más solo los deltas."
+  },
+  {
+   "id": "e9ef702604c2",
+   "alcance": "anclas con referencias",
+   "enunciado": "Todo \"same X\" exige adjuntar ambos referentes en ese mismo prompt."
+  },
+  {
+   "id": "475c5e8a21e3",
+   "alcance": "aurora-prompt-linter v1.2-fupai (hooks del repo), vocabulario P",
+   "enunciado": "Especifica la lista P ampliada (v1.2-fupai) de términos de personaje vetados en el MAIN cuando una referencia ff/lf carga esa categoría, añadiendo roles de dominio (nadador, wakeboarder, piloto, barista, músicos) y retirando sudor y mandíbula."
+  },
+  {
+   "id": "1e2955c62581",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz, consistencia de estilo (preserve, keep) y el slot \"Constraints:\"."
+  },
+  {
+   "id": "663bd1b7dc9e",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento, orientación del personaje y cámara, centrándose en la descripción del sujeto."
+  },
+  {
+   "id": "f963cf9426a4",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 2",
+   "enunciado": "En Nano Banana 2 caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "7077d4bcb711",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia (image N, @img), sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "69f1818f842f",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P5",
+   "enunciado": "Los términos de micro-acción corporal (sudor, mandíbula, nudillos, respiración, tendón, venas, parpadeo) nunca cuentan como re-descripción del personaje aunque haya referencia."
+  },
+  {
+   "id": "c091ec497b2a",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3a",
+   "enunciado": "En Seedance 2.5 caso 3a el MAIN debe contener rol de la referencia (@image, first frame), sujeto-acción, cámara, marcadores de audio y estado final."
+  },
+  {
+   "id": "db4aed3f9ec2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3b",
+   "enunciado": "En Seedance 2.5 caso 3b el MAIN debe declarar por separado las anclas de primer y último frame, sujeto-acción, cámara, transición y estado final."
+  },
+  {
+   "id": "092198635f48",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario L",
+   "enunciado": "Especifica la lista L ampliada de locaciones vetadas en el MAIN cuando hay referencia de locación, con términos de agua, automotriz, café, clima y salas de concierto."
+  },
+  {
+   "id": "4caf7acdd2e5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario O",
+   "enunciado": "Especifica la lista O ampliada de vestuario vetado en el MAIN cuando hay referencia de outfit, con términos de agua, automotriz, café y música/ensamble."
+  },
+  {
+   "id": "1f1236650c36",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario PR",
+   "enunciado": "Especifica la lista PR ampliada de props vetados en el MAIN cuando hay referencia de prop, con términos de agua, automotriz, café e instrumentos musicales."
+  },
+  {
+   "id": "8515c9ca1187",
+   "alcance": "aurora-prompt-linter, GPT Image 1.5 caso 2",
+   "enunciado": "En GPT Image 1.5 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (incluida face strip), preservación facial explícita, sujeto-acción, cámara o lente y luz."
+  },
+  {
+   "id": "5c6da21a90e8",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (image 1, ref), sujeto-acción, cámara o lente, luz y consistencia de estilo (preserve, same style)."
+  },
+  {
+   "id": "65377a8b9e6e",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento (@video, pose ref), orientación del personaje y cámara."
+  },
+  {
+   "id": "ac617cc1938f",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara o lente, luz y ancla de colocación espacial (on the, beside, between...)."
+  },
+  {
+   "id": "58e3356ddbf5",
+   "alcance": "aurora-prompt-linter, vocabulario L",
+   "enunciado": "Especifica la lista L (locación: estudio, gym, muros, suelos, ventanas, skyline, luz ambiente) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de locación los aporta."
+  },
+  {
+   "id": "270c245664cb",
+   "alcance": "aurora-prompt-linter, vocabulario O",
+   "enunciado": "Especifica la lista O (outfit: prendas y calzado) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de vestuario los aporta."
+  },
+  {
+   "id": "07d9700dc6b3",
+   "alcance": "aurora-prompt-linter, vocabulario P",
+   "enunciado": "Especifica la lista P (personaje: complexión, edad, pelo, género, sudor, etc.) cuyos términos quedan vetados en el prompt MAIN cuando una referencia carga esa categoría."
+  },
+  {
+   "id": "8de795317bc6",
+   "alcance": "aurora-prompt-linter, vocabulario PR",
+   "enunciado": "Especifica la lista PR (prop: balón y paneles) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de prop los aporta."
+  },
+  {
+   "id": "108e6010c88c",
+   "alcance": "aurora-prompt-linter, vocabulario S",
+   "enunciado": "Especifica la lista S (estilo: photorealistic, cinematic, editorial, documentary, studio lighting) cuyos términos quedan vetados en el MAIN cuando una referencia de estilo los aporta."
+  },
+  {
+   "id": "ba43ad9b23e0",
    "alcance": "capabilities.schema.json",
-   "enunciado": "generators[].aspect_param es un texto obligatorio no vacío."
+   "enunciado": "generators[].supports_character_ref es un booleano obligatorio."
   },
   {
-   "id": "568578915440",
-   "alcance": "coleccionable chibi",
-   "enunciado": "Para el chibi definir marcadores faciales, paleta en hex, degradado, 3–5 poses y color de base, y usar GPT Image 2 medium (high para close-ups de marketing)."
+   "id": "02d05c0ddfcd",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators[].supports_style_ref es un booleano obligatorio."
   },
   {
-   "id": "13ae4a595622",
-   "alcance": "collage de campaña de 3 paneles",
-   "enunciado": "Para el tríptico usar 1536x1024 o 1024x1536 con GPT Image 2 medium (high si hay texto); asignar orden de paneles, unificar la luz y declarar la consistencia del sujeto."
+   "id": "b58fb87ad5ed",
+   "alcance": "consistencia de identidad con Imagen 1 como referencia",
+   "enunciado": "Para bloquear la identidad se debe indicar que los rasgos faciales se mantengan exactamente iguales a los de la Imagen 1."
   },
   {
-   "id": "6861fb1e448e",
-   "alcance": "cosmética de lujo",
-   "enunciado": "Para cosmética de lujo definir superficie, acabado, material de acento, paleta y temperatura, y usar GPT Image 2 quality high."
+   "id": "87cf90de6494",
+   "alcance": "consistencia de personaje entre escenas",
+   "enunciado": "La consistencia de personaje permite usar hasta 14 imágenes de referencia, de las cuales 6 pueden ser de alta fidelidad, para bloquear la identidad entre escenas."
   },
   {
-   "id": "b3d863b233de",
-   "alcance": "critique.schema.json",
-   "enunciado": "seed es null si el generador no expone semilla, o un entero o texto con la semilla usada."
+   "id": "44911f6fe09c",
+   "alcance": "control estructural con imágenes de entrada",
+   "enunciado": "Explicación: en el control estructural las imágenes de entrada (boceto, wireframe, rejilla) controlan la composición."
   },
   {
-   "id": "020bb97d2d9a",
-   "alcance": "editorial de moda, collage de 3 paneles",
-   "enunciado": "Para el tríptico de moda definir modelo, outfit, detalle, tejido, fondos, grade y temperatura de color, y usar GPT Image 2 quality high."
+   "id": "42b212682319",
+   "alcance": "control estructural con referencias",
+   "enunciado": "Especifica frases de control de precisión: posicionar el texto exactamente donde indica el boceto, seguir la rejilla exactamente, igualar el layout con precisión y conservar las proporciones de la referencia."
   },
   {
-   "id": "939550458969",
-   "alcance": "editorial de moda, grid 2x2",
-   "enunciado": "Para el 2x2 de moda definir modelo, outfit, fondo, color del divisor, stock de película, tratamiento de piel y accesorio, y usar GPT Image 2 quality high."
+   "id": "27c50ab2dd45",
+   "alcance": "control estructural con referencias",
+   "enunciado": "Especifica que las imágenes de referencia pueden controlar dónde van los elementos, qué proporciones usar, cómo fluye el texto y qué áreas reciben énfasis."
   },
   {
-   "id": "eb9bf819648f",
-   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
-   "enunciado": "Ejemplo: los formatos de la marca son Instagram 4:5 y 9:16, y hero web 16:9."
+   "id": "482c87ad14fc",
+   "alcance": "control estructural, assets en rejilla",
+   "enunciado": "Plantilla de asset basado en rejilla: ajustar al tamaño de rejilla, contenido por celda y estilo uniforme entre celdas."
   },
   {
-   "id": "368f78d148fa",
-   "alcance": "ejemplo de marca, TikTok de apertura de cafetería",
-   "enunciado": "Ejemplo: la pieza para TikTok debe durar 30 segundos, tener 6 planos de 5 segundos en formato 9:16, incluir el CTA indicado y transmitir una identidad cálida, analógica y artesanal."
+   "id": "ed5f8a39b857",
+   "alcance": "control estructural, sketch → final",
+   "enunciado": "Explicación: los layouts dibujados a mano se convierten en assets pulidos mediante sketch → final."
   },
   {
-   "id": "6811fc68b008",
-   "alcance": "ejemplo shotkit explainer 90s",
-   "enunciado": "Ejemplo: ficha del proyecto shotkit explainer de 90 s en 16:9 con corte vertical, framework founder-explainer y snapshot del brand-lock fechado."
+   "id": "fe328433d1e2",
+   "alcance": "control estructural, sketch → final",
+   "enunciado": "Plantilla de boceto a final: seguir el boceto exactamente en composición, colocación de elementos y posición del texto, con calidad declarada y texto exacto entre comillas donde se indica."
   },
   {
-   "id": "f8d367d0e3e2",
-   "alcance": "ejemplos WhyStrohm 30s y 60s",
-   "enunciado": "Ejemplo: los storyboards de WhyStrohm usan aspect ratio 9:16."
+   "id": "75ee99b05a87",
+   "alcance": "control estructural, wireframe → mockup",
+   "enunciado": "Plantilla de wireframe a mockup: igualar con precisión la estructura del wireframe, con contenido placeholder o realista y estilo de UI o guía de marca."
   },
   {
-   "id": "c74161ce47f0",
-   "alcance": "entrega de prompts de imagen",
-   "enunciado": "Exige entregar los parámetros solo si no son estándar: aspect ratio si no es 1:1 y resolución si hace falta 2K/4K."
+   "id": "676e3aa7a62c",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 3: con keyframe de inicio o fin en imagen a video no se re-describe la identidad; con referencia de personaje sin start frame, @img, Elements o ancla con refs, el bloque de identidad va completo y verbatim."
   },
   {
-   "id": "ec76d346601e",
-   "alcance": "formato de salida de prompts; modelos nano-banana-2, nano-banana-pro y gpt-image-2",
-   "enunciado": "La respuesta con un prompt debe incluir modelo, calidad solo para gpt-image-2, tamaño o proporción, el prompt listo para copiar y notas sobre supuestos."
+   "id": "4271d8614dc6",
+   "alcance": "edición o generación con persona de IMAGE REFERENCE",
+   "enunciado": "Al usar una persona de una imagen de referencia, se deben conservar exactamente sus rasgos faciales e identidad mientras solo se cambian expresión, pose, ropa o entorno."
   },
   {
-   "id": "4194ece0d20c",
+   "id": "7d1adf29e44a",
+   "alcance": "escenas multipersona",
+   "enunciado": "Para evitar gemelos, vincular cada sujeto a su propia referencia individual y forzar diferenciación."
+  },
+  {
+   "id": "8e0fb00a14db",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2, Kling",
+   "enunciado": "En Kling se usa Element Binding con 3-4 imágenes de referencia (frente, perfil, tres cuartos)."
+  },
+  {
+   "id": "dab34a76196e",
+   "alcance": "generación de activos de marca a partir de un producto de referencia",
+   "enunciado": "Al generar activos de marca desde un producto de referencia, se debe mantener la consistencia de marca y calidad, variar ángulos, luz y contexto, y generar una toma por vez."
+  },
+  {
+   "id": "de5da5ab37b0",
    "alcance": "general",
-   "enunciado": "Ejemplo: los nombres de hardware como GoPro, Fujifilm, cámara desechable, Hasselblad, iPhone o Polaroid evocan estéticas visuales específicas."
+   "enunciado": "Ejemplo: convierte un fotograma animado cargado en una escena ultrarrealista preservando las identidades, estructuras faciales, vestuario y expresiones originales."
   },
   {
-   "id": "72e63b444e74",
+   "id": "e7792c93ad7c",
    "alcance": "general",
-   "enunciado": "Especifica el tipo de cámara para modificar el ADN visual de la imagen."
+   "enunciado": "Ejemplo: genera un evento histórico hiperrealista con estética de Google Maps Street View, distorsión de gran angular, interfaz de Maps, marca de agua y rostros difuminados."
   },
   {
-   "id": "237511c9e7ca",
-   "alcance": "general (generación)",
-   "enunciado": "Los parámetros de entrega como el aspect ratio se fijan como parámetros duros del generador cuando la plataforma los expone, no solo en prosa, y se valida el archivo generado."
+   "id": "274dabee2f51",
+   "alcance": "general",
+   "enunciado": "Ejemplo: usa la imagen de referencia cargada para crear a una persona real junto a una versión gigante 3D animada de sí misma, conservando rostro, ropa y pose idénticos en un estudio gris azulado."
   },
   {
-   "id": "d3b42a5a00a9",
-   "alcance": "grid de variantes de vestuario",
-   "enunciado": "Para el grid de vestuario definir identidad, color de fondo, layout 2x3 o 3x3, pose y outfits, y usar GPT Image 2 medium (high solo si las etiquetas lo requieren)."
+   "id": "06668f066c00",
+   "alcance": "general",
+   "enunciado": "Un producto con logo o etiqueta real no se genera desde texto; requiere flujo con referencia."
   },
   {
-   "id": "46283692fbdd",
-   "alcance": "grid storyboard de 9 celdas",
-   "enunciado": "Para el storyboard de 9 celdas usar 1536x1024 y GPT Image 2 quality high; numerar paneles, dar acciones distintas a cada uno y quality high para timestamps pequeños."
+   "id": "aef46eb2eb8f",
+   "alcance": "general (composición desde imagen fuente)",
+   "enunciado": "Si una imagen se aporta solo para seguir su composición, primero se traduce a especificación abstracta de composición y se compila el prompt sin adjuntarla como referencia salvo petición explícita."
   },
   {
-   "id": "9baeaf95556d",
-   "alcance": "hoja de expresiones",
-   "enunciado": "Para la hoja de expresiones definir descripción facial, estilo artístico, fuente de etiqueta y expresiones extra, y usar GPT Image 2 quality high."
+   "id": "bf3e7025f741",
+   "alcance": "general (imagen fuente solo de composición)",
+   "enunciado": "Si el usuario pide seguir o estudiar la composición de una imagen, se convierte en especificación de composición y se genera sin adjuntar la fuente como referencia salvo petición explícita."
   },
   {
-   "id": "cd690dd5f045",
+   "id": "a7df138adc78",
+   "alcance": "general (imágenes de referencia)",
+   "enunciado": "Una referencia solo controla su rol declarado; los rasgos excluidos de ese rol no deben copiarse a identidad, pose, cámara, encuadre, entorno, color u otras dimensiones fijadas."
+  },
+  {
+   "id": "9c8f51a6af9c",
+   "alcance": "grupo ensamble EN.3",
+   "enunciado": "En ensamble, la inserción es secuencial, un miembro por generación sobre la placa acumulada más su maestro, con \"keep the world and the people already placed untouched\" y posición por ancla."
+  },
+  {
+   "id": "e0397c6f4cd8",
+   "alcance": "grupo ensamble EN.4",
+   "enunciado": "En ensamble, la pasada única con todos los maestros adjuntos y rol nombrado solo cabe si los miembros no exceden las refs de personaje del modelo (GPT Image 2 hasta 16, NB2 4, NBP 5) y se verifica miembro por miembro; es inferencia hasta probarla."
+  },
+  {
+   "id": "9392d83ee275",
+   "alcance": "grupo ensamble EN.7; Kling 3.0, Seedance 2.5, Veo",
+   "enunciado": "En video de ensamble se usa un Element por miembro en Kling 3.0 Omni o una @Image por miembro en Seedance 2.5 con rol individual, y el prompt lleva solo acción y cámara."
+  },
+  {
+   "id": "bfa0f4058b62",
+   "alcance": "génesis clase Animal",
+   "enunciado": "La génesis de animal usa NB2 con grounding para la anatomía de la especie y NBP para física compleja; la consistencia solo se logra con referencias de personaje (NB2 hasta 4, NBP hasta 5) y anatomía y pelaje se auditan como manos y rostros."
+  },
+  {
+   "id": "0686d4811dc6",
+   "alcance": "imagen fuente dada solo como referencia de composición",
+   "enunciado": "Si el usuario da una imagen solo para seguir su composición, se extraen solo hechos espaciales como composition locks, no se adjunta la imagen al generador, no se copia identidad, vestuario, logos ni texturas, y se compone una escena nueva desde los locks y el brief."
+  },
+  {
+   "id": "bc21a757705e",
    "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
-   "enunciado": "El aspect ratio va en los ajustes del generador cuando se admite y debe verificarse en los píxeles de salida; el texto del prompt no lo garantiza."
+   "enunciado": "Cada referencia tiene un solo rol y dimensiones ignoradas explícitas, y no se toma prestada ninguna dimensión ignorada aunque sea saliente en la imagen."
   },
   {
-   "id": "b19254e6683c",
-   "alcance": "ingredientes flotantes",
-   "enunciado": "Para ingredientes flotantes definir degradado, líquido, ingredientes, texturas, inclinación y máximo 6-8 elementos, y usar GPT Image 2 quality high."
+   "id": "a53afb3aa633",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Esta política se usa para imágenes humanas subacuáticas o split-level complejas."
   },
   {
-   "id": "22aa4e5a0346",
-   "alcance": "keyframe LF; Seedance",
-   "enunciado": "El keyframe LF (último frame) debe tener el mismo aspect ratio que el FF y en Seedance se declara por separado."
+   "id": "599b19492a91",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O; el identity block no aplica a placas ni props."
   },
   {
-   "id": "05945a26b60d",
-   "alcance": "keyframes para video",
-   "enunciado": "Generar directamente en el aspect ratio final (p. ej. 9:16) y no recortar tras animar."
+   "id": "74bdc51ca45a",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La capa 1 de redundancia con referencias por categoría P/O/L/PR/S sigue bloqueando igual cuando el rol de la referencia es ff/lf."
   },
   {
-   "id": "500923bb29fe",
-   "alcance": "orden de bloques del still",
-   "enunciado": "El prompt cierra con ratio y nota de que la velocidad se construye en el frame, sin speed-up."
+   "id": "78e6a6e52ea0",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml y, en su defecto, del caso (video → ff; casos 1/2 → character)."
   },
   {
-   "id": "b7adae570a74",
-   "alcance": "patrón Lavender Smartphone Hero Ad, GPT Image 2",
-   "enunciado": "Especifica las variables del hero de smartphone (dispositivo, degradado con hex, acabado, contenido de pantalla, formas de acento, titular, familia de color, inclinación 5-15°, posición) y recomienda GPT Image 2 quality high por el texto, la legibilidad de pantalla y la precisión del dispositivo."
+   "id": "d5b7aef6b5bd",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CHAR_ROLES",
+   "enunciado": "Especifica los nombres aceptados para el rol de referencia de personaje: CHARACTER, CHAR, ELEMENT, IMG, CREF, REF, OMNI, IDENTITY, @IMG."
   },
   {
-   "id": "79953d34be08",
-   "alcance": "prompts de imagen",
-   "enunciado": "Los metadatos Model, Quality y Size van fuera del cuerpo del prompt."
+   "id": "6682aa8abddf",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante REF_ROLES",
+   "enunciado": "Especifica los roles de referencia admitidos por el linter: ff, lf, character, location, prop y style."
   },
   {
-   "id": "d545d1df2993",
-   "alcance": "póster de comida hiperrealista",
-   "enunciado": "Para el póster de comida usar GPT Image 2 quality high por la fidelidad de vapor, condensación y texturas."
+   "id": "c6cb11fd6555",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P12",
+   "enunciado": "Si una referencia ya cubre el estilo, la sección 'style' requerida se dispensa y se reporta como advertencia informativa, porque no se debe repetir lo que la referencia define."
   },
   {
-   "id": "e3586587a268",
-   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
-   "enunciado": "La referencia para impacto congelado es 1/2000 s o más rápido; a 1/250 s el cuerpo se congela y la raqueta se barre como blur parcial legítimo, anclable como \"1/2000 s\" en GPT Image 2 y \"high-speed freeze\" en NBP."
+   "id": "2531bcd20bce",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P3",
+   "enunciado": "La prohibición de descriptores de persona/outfit solo aplica con referencia de rol primer o último frame (i2v); con rol character el identity block es obligatorio y se advierte si faltan 3 o más de pelo, ojos/piel, prenda, accesorio o rasgo distintivo."
   },
   {
-   "id": "0c306f074566",
-   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
-   "enunciado": "Referencia de obturación para el panning look: 1/125-1/250 s en autos, 1/60-1/125 s en motos y 1/30-1/60 s en atletas; el prompt puede anclar el cue con el número."
+   "id": "f6d52677b411",
+   "alcance": "linter aurora v1.2-fupai, P12",
+   "enunciado": "La sección style se dispensa cuando el estilo está cubierto por referencia, en lugar de vaciar la categoría S, porque lo que define una referencia no se repite."
   },
   {
-   "id": "de971cad5404",
-   "alcance": "régimen 02 ruptura de superficie",
-   "enunciado": "Recorrido de costo: variantes a 0.5K, selección y regeneración del ganador a 2K o 4K."
+   "id": "80d153a3d430",
+   "alcance": "linter aurora v1.2-fupai, caso 2 con @img1/Elements/--cref",
+   "enunciado": "Con --ref-role character los descriptores de persona se permiten y el identity block es obligatorio (aviso si hay menos de 3 grupos)."
   },
   {
-   "id": "7e0d9eb2158b",
-   "alcance": "régimen 02 ruptura de superficie",
-   "enunciado": "Se usa GPT Image 2 quality high cuando el detalle de gotas y condensación es el centro del cuadro."
+   "id": "739b1283b3c6",
+   "alcance": "linter aurora v1.2-fupai, casos 3a/3b/3c/4",
+   "enunciado": "Con --ref-role ff/lf los descriptores de persona y vestuario en el prompt principal están prohibidos (FAIL), porque la imagen ya ancla identidad y vestuario."
   },
   {
-   "id": "a5f920191cde",
-   "alcance": "régimen 03 subacuático",
-   "enunciado": "Se usa thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna."
+   "id": "be9cfc827b9b",
+   "alcance": "linter aurora v1.2-fupai, parche P12",
+   "enunciado": "Si el estilo ya está cubierto por una referencia, la sección style requerida se dispensa y solo se reporta como aviso informativo."
   },
   {
-   "id": "956b24d5711c",
-   "alcance": "régimen 04 objeto balístico",
-   "enunciado": "Se usa GPT Image 2 quality high para detalle congelado y legibilidad de texturas finas."
+   "id": "b63bca3ae8aa",
+   "alcance": "linter aurora v1.2-fupai, parche P3",
+   "enunciado": "Con referencia de primer/último frame los descriptores de persona y vestuario están prohibidos, pero con referencia de personaje el identity block completo es obligatorio (aviso si faltan 3 o más grupos de rasgos)."
   },
   {
-   "id": "433dece3a66b",
-   "alcance": "régimen luz y clima, still",
-   "enunciado": "Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo y final en alta resolución."
+   "id": "e03c49107435",
+   "alcance": "linter aurora v1.2-fupai, pruebas P12",
+   "enunciado": "Ejemplo (prueba T16): con referencia de estilo la sección style se dispensa y pasa; sin ella falla."
   },
   {
-   "id": "e5519d1505df",
-   "alcance": "rúbrica de extracción de marca, relaciones de aspecto",
-   "enunciado": "Especifica las relaciones de aspecto de la marca con el valor predeterminado `9:16, 16:9, 1:1, 4:5`, ajustándolas al sesgo de los activos y documentando la evidencia."
+   "id": "2c35f4311101",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T05): caso 3a con --ref-role ff y descriptores de persona falla con exit 1."
   },
   {
-   "id": "dd4fb3675559",
+   "id": "dc133f52b4e0",
+   "alcance": "linter aurora v1.2-fupai, referencias que no son de persona",
+   "enunciado": "Con --ref-role location/prop/style los descriptores de persona se permiten, el identity block no aplica y L/PR/S se rigen por sus tags."
+  },
+  {
+   "id": "7db0ad7afcd6",
+   "alcance": "múltiples referencias, imagen",
+   "enunciado": "Con varias referencias, asignar a cada una su aporte (rostro de Image 1, vestuario de Image 2, escenario de Image 3) y pedir combinarlas."
+  },
+  {
+   "id": "2b6f710939ca",
+   "alcance": "plantillas de composición con referencia",
+   "enunciado": "Especifica usar una referencia de composición para layouts de revista, pósters, plantillas sociales y estructuras de presentación."
+  },
+  {
+   "id": "1b4d4ba26b69",
+   "alcance": "plantillas de composición con referencia",
+   "enunciado": "Plantilla para seguir la composición de una imagen de referencia reemplazando elementos por contenido nuevo y manteniendo proporciones y jerarquía visual."
+  },
+  {
+   "id": "b06a9874b724",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R4",
+   "enunciado": "Exige autocontención: toda comparación «same X» requiere ambos referentes adjuntos en ese mismo prompt."
+  },
+  {
+   "id": "a3108a125bc8",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R5",
+   "enunciado": "Exige herencia mínima: «same face and clothes» más solo los deltas, sin re-describir lo que muestra la referencia."
+  },
+  {
+   "id": "6b153bcacff8",
+   "alcance": "prompt-production-protocol; Step 5; propuesta del 2026-05-27",
+   "enunciado": "Explicación: la propuesta de cambio mayor al Step 5 añade un gate determinista debido a errores repetidos de redundancia con referencias."
+  },
+  {
+   "id": "0217052d8702",
+   "alcance": "prompts de imagen, tipo Style Transfer",
+   "enunciado": "Especifica que el tipo de tarea Style Transfer se usa para transferir un estilo y combina una referencia con contenido nuevo."
+  },
+  {
+   "id": "b84c17dee37a",
+   "alcance": "prueba de clavado; referencias",
+   "enunciado": "Explicación: una referencia parcial de agua fue útil cuando se declararon explícitamente su rol y las dimensiones a ignorar."
+  },
+  {
+   "id": "fa764fb31f04",
+   "alcance": "referencia de estilo, imagen",
+   "enunciado": "Con una referencia de estilo, pedir crear el nuevo contenido en ese estilo exacto igualando colores, texturas y mood."
+  },
+  {
+   "id": "8a60ec4f47bc",
+   "alcance": "referencia de producto, imagen",
+   "enunciado": "Con un producto como referencia, pedir colocarlo en el nuevo contexto igualando luz y perspectiva."
+  },
+  {
+   "id": "cca33b7b1576",
+   "alcance": "referencia de rostro/personaje, imagen",
+   "enunciado": "Con un rostro como referencia, pedir usar ese rostro con rasgos exactamente iguales y declarar solo lo que cambia (expresión, pose, escenario)."
+  },
+  {
+   "id": "d2824a29f8ed",
+   "alcance": "referencias de imagen, diseño",
+   "enunciado": "Para encajar en un diseño existente, adjuntar el layout y pedir seguir exactamente layout y estilo, reemplazando solo el elemento indicado y conservando colores, tipografía y composición."
+  },
+  {
+   "id": "886ff5e3f9cd",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Explicación: reportes de r/aiArt y r/StableDiffusion sobre consistencia de NBP y flujo multi-referencia no pudieron leerse y quedan como leads."
+  },
+  {
+   "id": "c6fdf05aa8e5",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Para una inserción de cuerpo entero hay que adjuntar una hoja lado a lado (rostro en primer plano y cuerpo entero con vestuario), no solo el maestro de rostro."
+  },
+  {
+   "id": "5e8ff1956824",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Prohibido adjuntar del mismo miembro fotos con luz y expresión dispares; empezar con una referencia limpia y escalar solo si el rostro no se sostiene."
+  },
+  {
+   "id": "7c3e7e176614",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Prohibido describir el rostro en texto cuando ya viaja en la referencia, porque compite con la imagen y produce un \"blended stranger\"."
+  },
+  {
+   "id": "32ced481c6d7",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Siempre etiquetar a cada persona por número o nombre visible en su hoja de referencia y usar esa etiqueta en el prompt, nunca descripciones como \"la mujer del fondo\"."
+  },
+  {
+   "id": "c5a977bba17c",
+   "alcance": "roles de ancla",
+   "enunciado": "Explicación: el ancla hero o macro corresponde a producto, objeto ancla o inserto de detalle."
+  },
+  {
+   "id": "eba84ca25b54",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "El maestro de rostro se genera en reposo y seco; el cuadro de esfuerzo se inserta con referencia describiendo solo los deltas (sudor, tensión, boca abierta)."
+  },
+  {
+   "id": "3860c23ac137",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Cada referencia lleva rol explícito e individual; nunca la forma colectiva \"images 2 to 6 define five members\"."
+  },
+  {
+   "id": "0b67f616f864",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Herencia mínima en cada inserción: \"same face and clothes\" más solo los deltas de pose, sin re-describir lo que muestra la referencia."
+  },
+  {
+   "id": "db03106628c3",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Si dos miembros convergen en la misma cara, dar a cada uno su propia referencia y forzar diferenciación de rasgos y ropa."
+  },
+  {
+   "id": "387df8e4b8a2",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Toda comparación \"same X\" exige adjuntar ambos referentes en ese mismo prompt."
+  },
+  {
+   "id": "7d19aff01e9e",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Máximo tres héroes con identidad, cada uno insertado con su referencia y rol explícito, nunca en forma colectiva."
+  },
+  {
+   "id": "67d81e7065a7",
    "alcance": "selección de modelo de imagen",
-   "enunciado": "Para formatos extremos (1:8, 8:1, 4:1) usar Nano Banana, el único que los admite."
+   "enunciado": "Para renders con muchas referencias usar Nano Banana Pro (hasta 14) o GPT Image 2 (hasta 16)."
   },
   {
-   "id": "4f815b995a81",
+   "id": "2b93c6d2e86a",
    "alcance": "shots.schema.json",
-   "enunciado": "assets.generated[].seed es opcional: null, entero o texto."
+   "enunciado": "shots[].assets.source es un array opcional de imágenes aportadas por el usuario que evitan la generación."
   },
   {
-   "id": "9ff8edce13df",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project.aspect es obligatorio y debe ser 16:9, 9:16, 1:1, 4:5 o 21:9."
-  },
-  {
-   "id": "201e20bdb7ed",
-   "alcance": "shots.schema.json y run.schema.json",
-   "enunciado": "project.duration_s es un número obligatorio."
-  },
-  {
-   "id": "3861ac862c26",
+   "id": "fe5facb60b1e",
    "alcance": "skill Image Prompting; Nano Banana y GPT Image 2",
-   "enunciado": "La skill de prompts de imagen debe entregar el nombre del modelo, calidad, tamaño o relación de aspecto y el prompt, sin generar la imagen."
+   "enunciado": "Después del archivo del modelo se debe leer `golden-rules.md` y aplicar verbos iniciales, formulación positiva, colores hexadecimales, texto entre comillas, edición en vez de re-roll, un cambio por iteración y referencias."
   },
   {
-   "id": "5c91b66636ce",
-   "alcance": "skill storyboard-architect, entradas",
-   "enunciado": "El aspect ratio es entrada obligatoria; si falta, se pregunta (16:9, 9:16, 1:1)."
+   "id": "1da958f856d3",
+   "alcance": "tarjeta de ancla D1",
+   "enunciado": "La dimensión D1 (rol del ancla: character ref, environment ref, FF, LF, hero/macro, motif insert) decide qué se fija, qué modelo de video la recibe y si requiere pareja FF/LF con mismo ratio."
   },
   {
-   "id": "c1072203c37a",
-   "alcance": "split antes/después",
-   "enunciado": "Para el antes/después usar 1536x1024 con GPT Image 2 medium (high si hay etiquetas); exigir mismo ángulo en ambos lados, divisor visible y asignar qué lado es antes y cuál después."
+   "id": "54c3b60e26bc",
+   "alcance": "texto e infografías con referencia de layout",
+   "enunciado": "Especifica el flujo sketch-to-image: dibujar un boceto de layout y subirlo con «Use layout from attached image»."
   },
   {
-   "id": "ee76613ce960",
-   "alcance": "storyboard TVC de 9 paneles",
-   "enunciado": "Para el TVC de 9 paneles definir producto, protagonista, escenario, emoción, superficie, tagline y duración, y usar GPT Image 2 quality high."
+   "id": "240f0153a656",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige que cada asset de referencia tenga un rol explícito en el prompt: qué define y qué ignorar."
   },
   {
-   "id": "b08350e49fe9",
-   "alcance": "storyboards y arte secuencial",
-   "enunciado": "Exige indicar que todas las imágenes tengan el mismo aspect ratio declarado."
+   "id": "e5319a3962b7",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige vincular cada sujeto a su referencia individualmente y prohíbe la forma colectiva '@Images 1 through 4 define four characters'."
   },
   {
-   "id": "df53030312b4",
-   "alcance": "storyboards y arte secuencial",
-   "enunciado": "Exige pedir explícitamente el número de imágenes y que se generen de una en una."
+   "id": "28678d090485",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Explicación: los límites y plantillas de referencias por modelo están en los archivos de modelo (seedance-25.md §5 es el más completo)."
   },
   {
-   "id": "eddbaebfba22",
-   "alcance": "storyboards y arte secuencial",
-   "enunciado": "Exige pedir que las imágenes se generen de una en una."
+   "id": "fd132efb7d6b",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Explicación: más assets no dan más control; el control viene de la claridad de roles y los assets sin asignar contaminan el cuadro."
   },
   {
-   "id": "e5b8b1df8aee",
-   "alcance": "storyboards y arte secuencial, story sequence",
-   "enunciado": "Plantilla de secuencia narrativa de N imágenes con personajes, escenario y arco emocional: identidad y vestuario consistentes, ángulos, distancias y expresiones variados, generar una imagen por vez y aspect ratio por imagen."
+   "id": "1eff05e3d3d2",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe re-describir lo que la referencia ya define; nombrar solo los atributos a heredar."
   },
   {
-   "id": "1974d84668a0",
-   "alcance": "tarjeta de ancla D8",
-   "enunciado": "La dimensión D8 (modelo y resolución) fija: grounding fuerza NB2 en arquitectura y especies, rostros se prueban en NB2 y NBP, etiquetas y UI en GPT high, hero photoreal en Flux 2 Pro."
+   "id": "bb70c8d218a0",
+   "alcance": "video, grupo ensamble",
+   "enunciado": "En video, si tres o más personajes se funden, usar un element o referencia individual por miembro, nunca dos personajes con una sola descripción."
   },
   {
-   "id": "92f2e28e2322",
-   "alcance": "tarjeta de personaje anime",
-   "enunciado": "Para la tarjeta anime definir descripción detallada, rasgos faciales, objetos, swatches con hex y stats, y usar GPT Image 2 quality high por la densidad de texto."
+   "id": "def0b67eb217",
+   "alcance": "video, régimen multitud anónima",
+   "enunciado": "Al animar, tres o más personajes solo se sostienen si cada uno tiene su element o referencia; la masa no los tiene y debe seguir sin rostro."
   },
   {
-   "id": "f90e05cbc1f6",
-   "alcance": "turnaround de personaje",
-   "enunciado": "Para el turnaround definir nombre, descripción específica y 3 colores con hex, y usar GPT Image 2 quality high por las líneas y callouts."
-  },
-  {
-   "id": "5f71770edeba",
-   "alcance": "video multiclip",
-   "enunciado": "Especifica divisiones por defecto en clips de 5 s: 10 s=2, 15 s=3, 30 s=6, 45 s=9, 60 s=12."
-  },
-  {
-   "id": "505016adde9b",
+   "id": "92ca06121272",
    "alcance": "vision decomposer (image-to-prompt), skill image",
-   "enunciado": "Exige añadir tras el prompt la cabecera estándar del skill image (Model / Quality / Size)."
+   "enunciado": "Especifica cargar el vision decomposer cuando el usuario pide analizar una imagen y convertirla en prompt (style transfer, referencia de mood, «image to prompt», reverse-engineer)."
   },
   {
-   "id": "7998b2c405d7",
-   "alcance": "visual-asset-critic, critique JSON 1.1",
-   "enunciado": "El campo seed se registra si el generador lo expone; si no, null."
+   "id": "a76f3806c80d",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Especifica cargar vision-decomposer.md cuando se adjunta una imagen para recrear/transferir su estilo, se pide descomponer una referencia, se usan frases como «перенеси стиль» o se extrae ADN cinematográfico para moodboards."
   },
   {
-   "id": "69e8c8f57549",
-   "alcance": "visual-asset-critic, rúbrica de crítica",
-   "enunciado": "Capa Brand Lock, aspect ratio: pass si coincide con project.aspect, soft fail si cabe en un recorte, hard fail si es otro."
+   "id": "6dd5fd7ff14d",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "En Midjourney v7, Ideogram v3 y Nano Banana puede pasarse una imagen de referencia junto al prompt para anclar personaje o estilo."
   },
   {
-   "id": "064966515e21",
-   "alcance": "visual-media",
-   "enunciado": "Douyin: duración óptima 15–60 s, formato 9:16, contenido local."
+   "id": "b6d9bfb80196",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "Flujo de referencia: generar primero el shot héroe más definitorio, usarlo como referencia en todos los siguientes y añadir en cada prompt el ancla de personaje verbatim más la referencia."
   },
   {
-   "id": "cc7a84965680",
-   "alcance": "visual-media",
-   "enunciado": "Explicación: triángulo de exposición; diafragma abierto reduce profundidad, obturador rápido congela y lento produce motion blur, ISO alto añade ruido."
+   "id": "6ce4534a2be9",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "La imagen de referencia es el bloqueo más eficaz de consistencia de personaje en 2026 y debe usarse siempre que la misma persona aparezca en varios shots."
   },
   {
-   "id": "7af1b130c266",
-   "alcance": "visual-media",
-   "enunciado": "Reels: duración óptima 15–90 s, formato 9:16, carácter cuidado y estético."
+   "id": "1851a970dcf4",
+   "alcance": "visual-prompt-forge, Lock 6",
+   "enunciado": "Si el storyboard tiene un estilo visual distintivo se usa una imagen de referencia de estilo (--sref en Midjourney, parámetro de estilo en Ideogram); en Flux el estilo se escribe en el prompt."
   },
   {
-   "id": "9fc939657221",
-   "alcance": "visual-media",
-   "enunciado": "Shorts: duración óptima 15–60 s, formato 9:16, carácter de divulgación y humor."
+   "id": "3b1e26823089",
+   "alcance": "visual-prompt-forge, Lock 6",
+   "enunciado": "Una referencia de estilo constante en todos los shots da continuidad estética aunque cambien personajes o entornos."
   },
   {
-   "id": "b7cbced9640b",
-   "alcance": "visual-media",
-   "enunciado": "TikTok: duración óptima 15–60 s, formato 9:16, carácter de entretenimiento y retos."
+   "id": "86396084ff70",
+   "alcance": "visual-prompt-forge, fallo 2",
+   "enunciado": "Para corregir la deriva de personaje: verificar el ancla verbatim, añadir 1-2 rasgos específicos, usar referencia tras el primer shot bueno, fijar seed y en Midjourney usar --cref con --cw 50."
   },
   {
-   "id": "736b95a77538",
-   "alcance": "visual-prompt-forge",
-   "enunciado": "Por cada shot y generador se compone tomando brand-lock, series_lock y spec del shot, quitando todo on_screen_text, aplicando el adaptador y añadiendo parámetros propios."
-  },
-  {
-   "id": "c032cfbdd294",
-   "alcance": "visual-prompt-forge",
-   "enunciado": "validate_capabilities.py falla si un adaptador anuncia más palabras que su techo o no documenta el aspect_param indicado por el JSON."
-  },
-  {
-   "id": "9e3fa7c7b5d5",
-   "alcance": "visual-prompt-forge _capabilities.json, GPT Image 1.5/2",
-   "enunciado": "GPT Image 1.5/2 usa prompt en párrafo con techo de 300 palabras, sin negativos, parámetro size; tolera más contexto y sirve para composiciones complejas."
-  },
-  {
-   "id": "a9d61d611a10",
-   "alcance": "visual-prompt-forge _capabilities.json, Kling 3.0",
-   "enunciado": "Kling 3.0 es el modelo de movimiento por defecto: techo de 150 palabras, negativos, start/tail frame, clips de 5 o 10 s; escalar a otro solo para lo que no puede hacer."
-  },
-  {
-   "id": "343c8ca29fac",
-   "alcance": "visual-prompt-forge _capabilities.json, Midjourney v7",
-   "enunciado": "Midjourney v7 usa prompt de palabras clave con techo de 100 palabras (recomendado 40-80), no renderiza texto ni movimiento y admite --cref/--sref, negativos y --ar."
-  },
-  {
-   "id": "f13c6db20c3e",
-   "alcance": "visual-prompt-forge _capabilities.json, Nano Banana",
-   "enunciado": "Nano Banana (Gemini 2.5 Flash Image) usa lenguaje natural con techo de 120 palabras, sin negativos, parámetro aspectRatio en camelCase e ignora --ar; es rápido y barato para iterar con referencias."
-  },
-  {
-   "id": "eb8333980445",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "El adaptador lee la seed del proyecto y la aplica a todos los prompts."
-  },
-  {
-   "id": "c84db5c2689a",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "El bloqueo de seed se documenta como mejor esfuerzo, no garantizado, porque Midjourney y algunos modelos de video (Veo, Seedance) manejan seeds distinto o no las usan."
-  },
-  {
-   "id": "2df5b50eb078",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "En generadores con seed (Flux, Seedream, Ideogram, Stable Diffusion) se fija la misma seed para todos los shots del storyboard."
-  },
-  {
-   "id": "1b43c771c9ec",
-   "alcance": "visual-prompt-forge, Lock 4",
-   "enunciado": "La seed puede documentarse a nivel de proyecto en shots.json (project.seed)."
-  },
-  {
-   "id": "91f8ab6ef21f",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux cada oración hace un trabajo, separadas por puntos, sin pesos entre corchetes ni flags --."
-  },
-  {
-   "id": "d4b0c712d0a3",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux no se activa prompt upsampling en trabajo de serie porque la reescritura automática genera shots inconsistentes."
-  },
-  {
-   "id": "3d9b574b9d44",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux, aspect_ratio va como campo de API con valor por defecto de project.aspect."
-  },
-  {
-   "id": "ae4ee374b51b",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux, la seed se fija por storyboard para consistencia de serie."
-  },
-  {
-   "id": "62cd2760dccd",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux, output_format va como campo de API, png por defecto para composición."
-  },
-  {
-   "id": "f9a340f686f8",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux, prompt_upsampling debe ir en false para trabajo en serie porque la reescritura automática rompe la consistencia."
-  },
-  {
-   "id": "a443e619b793",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux, safety_tolerance va como campo de API con valor 2 por defecto."
-  },
-  {
-   "id": "9d399e42a2e8",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En flux.txt los parámetros se documentan en una línea de comentario encima de cada prompt."
-  },
-  {
-   "id": "c987d69e4bc3",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "Los parámetros de Flux se pasan junto al prompt como campos de la API, no dentro del texto."
-  },
-  {
-   "id": "5d3b83207ed4",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "En GPT Image no se incluyen flags --ar ni sintaxis de pesos porque se ignoran."
-  },
-  {
-   "id": "6e957cbed2b4",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "En GPT Image, el modelo por defecto es gpt-image-1.5, o gpt-image-2 si está disponible."
-  },
-  {
-   "id": "d3729c1fd03d",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "En GPT Image, quality high para hero shots y medium para series."
-  },
-  {
-   "id": "84773b786b9e",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "En GPT Image, size por defecto es 1024x1792 para 9:16, 1792x1024 para 16:9 y 1024x1024 para 1:1."
-  },
-  {
-   "id": "80abec3b2c0b",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "En GPT Image, style natural para fotorrealismo y vivid para estilizado."
-  },
-  {
-   "id": "113963d3024b",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "Los parámetros de GPT Image se documentan en una línea de comentario encima del prompt."
-  },
-  {
-   "id": "5b4ba3e98a31",
-   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
-   "enunciado": "Ejemplo: línea de comentario de parámetros de un borrador Hailuo (duration=6s, ar=9:16, optimizer=false)."
-  },
-  {
-   "id": "eaf7538203b6",
-   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
-   "enunciado": "En Hailuo no se activa el prompt optimizer en trabajo de serie."
-  },
-  {
-   "id": "fea678535570",
-   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
-   "enunciado": "En Hailuo, duration es 6 s por defecto; se debe comprobar el techo vigente del tier Pro en fal.ai."
-  },
-  {
-   "id": "9931113d8005",
-   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
-   "enunciado": "En Hailuo, prompt_optimizer va en false para series porque la reescritura rompe la consistencia entre shots."
-  },
-  {
-   "id": "e216ea4ab39e",
-   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
-   "enunciado": "Paso 1 de iteración: bocetar el shot en Hailuo con prompt_optimizer=false."
-  },
-  {
-   "id": "0501bd502756",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram no se olvida la seed; en trabajo de serie se fija a nivel de storyboard."
-  },
-  {
-   "id": "dd15fa3ea757",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram, aspect_ratio es campo de API con valor por defecto de project.aspect."
-  },
-  {
-   "id": "6efa8970ce97",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram, la seed se fija por storyboard."
-  },
-  {
-   "id": "06d3f946d6bf",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram, magic_prompt debe ir OFF en trabajo de serie porque destruye la consistencia."
-  },
-  {
-   "id": "7b1b75a1a16e",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram, model es campo de API con valor V_3 por defecto."
-  },
-  {
-   "id": "beddab6f0630",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "En Ideogram, style_type es DESIGN para pósters y REALISTIC para escenas."
-  },
-  {
-   "id": "7b93d2877baa",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "Los parámetros de Ideogram se documentan en una línea de comentario encima de cada prompt."
-  },
-  {
-   "id": "44f05640a0f6",
-   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
-   "enunciado": "No confiar en magic_prompt de Ideogram, que reescribe y produce shots inconsistentes en serie."
-  },
-  {
-   "id": "b2b4302d7a12",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "En Kling no se describe un movimiento más rápido de lo que permite la duración (un dolly lento en 1 s es jitter)."
-  },
-  {
-   "id": "e91d794f14d2",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "En Kling, cfg_scale es 0.5 por defecto; más bajo es más dinámico y más alto más fiel al prompt."
-  },
-  {
-   "id": "25db2c8d8d8a",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "En Kling, duration es 5 s para shots y 10 s para hero; son las únicas duraciones soportadas."
-  },
-  {
-   "id": "c04e17752232",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "En Kling, start_image es opcional para imagen a video y fija el frame de apertura con un still aceptado."
-  },
-  {
-   "id": "5f67362039eb",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "En Kling, tail_image es opcional y fija el frame final para movimientos controlados."
-  },
-  {
-   "id": "2d4063ac693e",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "Kling admite negative_prompt por serie para suprimir deriva (p. ej., extra fingers, warped face)."
-  },
-  {
-   "id": "461dcfe94d59",
-   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
-   "enunciado": "Los parámetros de Kling se documentan en una línea de comentario encima de cada prompt."
-  },
-  {
-   "id": "60bdd1b6ab30",
-   "alcance": "visual-prompt-forge, adaptador Midjourney v7",
-   "enunciado": "El patrón de Midjourney es una lista de sujeto, acción, composición, entorno, luz, color/mood y estilo, seguida de --ar, --style, --s y extras."
-  },
-  {
-   "id": "da675976f887",
+   "id": "629c578897e9",
    "alcance": "visual-prompt-forge, fallos de consistencia",
-   "enunciado": "Sin bloqueo de seed los rasgos derivan al azar."
+   "enunciado": "Sin imagen de referencia la interpretación del personaje es laxa."
   }
  ]
 }

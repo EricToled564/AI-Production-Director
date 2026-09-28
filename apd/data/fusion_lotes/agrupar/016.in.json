@@ -3,7 +3,7 @@
  "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
  "tema": "critica_qa",
  "descripcion_tema": "crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post",
- "ventana": "1 de 2",
+ "ventana": "1 de 1",
  "filas": [
   {
    "id": "837cee442524",
@@ -1104,6 +1104,191 @@
    "id": "e9987ccd9178",
    "alcance": "visual-asset-critic, rúbrica de crítica",
    "enunciado": "Capa técnica, artefactos de fondo: pass si está limpio, soft fail con rarezas menores, hard fail con texto distorsionado, objetos derretidos o geometría imposible."
+  },
+  {
+   "id": "83ec77e9fd53",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa técnica, manos: pass si son anatómicamente correctas, soft fail con dedos algo raros, hard fail con seis dedos, dedos fusionados o articulaciones erróneas."
+  },
+  {
+   "id": "31d70283774e",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa técnica, ojos: pass si son simétricos y enfocados, soft fail con leve asimetría, hard fail con ojos torcidos o reflejos erróneos."
+  },
+  {
+   "id": "f056159e9292",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa técnica, textura de piel: pass si es natural, soft fail si es algo plástica, hard fail con plástico AI marcado."
+  },
+  {
+   "id": "bbbcb366f1ea",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Cualquier defecto que haga inutilizable el asset equivale a severidad blocking, sin importar la capa."
+  },
+  {
+   "id": "4714b4eca1a9",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "El veredicto se sigue de las severidades y no es un juicio aparte."
+  },
+  {
+   "id": "6d40546f4072",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "En Shot Spec, un soft fail se corrige en post o se acepta; un hard fail exige revisar."
+  },
+  {
+   "id": "687fcd951be8",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Explicación: la rúbrica es la checklist por capas para revisar una imagen generada."
+  },
+  {
+   "id": "0960a583d8db",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los fallos de composición suelen corregirse a nivel de prompt re-generando con lenguaje de composición explícito."
+  },
+  {
+   "id": "b72ed66cbd6b",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los hard fails de continuidad rompen el storyboard y exigen REVISE verificando las anclas verbatim del prompt."
+  },
+  {
+   "id": "b6515bead7eb",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los hard fails técnicos casi siempre exigen re-roll (2 a 3 intentos) porque el prompt probablemente estaba bien."
+  },
+  {
+   "id": "60e24a851e76",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los resultados pass/soft/hard de la rúbrica se traducen a severidad en el JSON únicamente según la tabla de mapeo."
+  },
+  {
+   "id": "b35b3bbf6079",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los soft fails no cambian el veredicto por sí solos, pero tres o más obligan a revisar si alguno es en realidad un hard fail."
+  },
+  {
+   "id": "606253b451e0",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "No se debe criticar lo que la spec no pidió (p. ej., 'podría ser más cinematográfico')."
+  },
+  {
+   "id": "2d5bce946fe0",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Se debe distinguir el fallo del prompt del fallo del generador: si el prompt estaba bien y las manos salieron mal, es re-roll, no cambio de prompt."
+  },
+  {
+   "id": "861a2df6b6ce",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Si hay cualquier severidad blocking, el veredicto es REJECT."
+  },
+  {
+   "id": "3b7c61f13990",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Si hay tres o más severidades major, el veredicto es REJECT."
+  },
+  {
+   "id": "8a5a24d41e2e",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Si hay una o dos severidades major, el veredicto es REVISE."
+  },
+  {
+   "id": "739206ebb081",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Si solo hay severidades minor o ninguna, el veredicto es ACCEPT con notas de post."
+  },
+  {
+   "id": "640c9591432d",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un hard fail con camino claro de corrección equivale a severidad major."
+  },
+  {
+   "id": "b2ba76657152",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un hard fail en Brand Lock da REJECT o REVISE según exista corrección por prompt."
+  },
+  {
+   "id": "8ae2be913527",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un hard fail en Brand Lock o Series Lock sin camino de corrección equivale a severidad blocking."
+  },
+  {
+   "id": "9c326bcdaefd",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un hard fail en Series Lock da REJECT por ruptura de continuidad, o REVISE si hay corrección específica."
+  },
+  {
+   "id": "3a03d7cb84d2",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un soft fail en cualquier capa equivale a severidad minor, normalmente con fix_type post-level."
+  },
+  {
+   "id": "0d63f0e8d67a",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Una vez fijado un REJECT, se listan solo los problemas que lo motivan, sin acumular detalles cosméticos."
+  },
+  {
+   "id": "d41b50530315",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "validate_critique.py hace cumplir exactamente la tabla de agregación; el umbral numérico sustituyó una regla discrecional contradictoria."
+  },
+  {
+   "id": "a5e6df638ea6",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Ejemplo: ../visual-asset-critic/examples/worked-run/ contiene un árbol completo de dos rondas con prompts, frames y críticas."
+  },
+  {
+   "id": "415c43a2e646",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En modo revisión se leen todas las críticas de la ronda más alta en output/critiques/round-{N}/."
+  },
+  {
+   "id": "d6fe2178a9ec",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En modo revisión, con shots.json y critique.json, se re-emiten prompts solo para los shots fallidos con la corrección ya aplicada."
+  },
+  {
+   "id": "2c096133919e",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Explicación: references/failure-modes.md reúne fallos comunes de generación de imagen y sus correcciones en el prompt."
+  },
+  {
+   "id": "baebdeb987a7",
+   "alcance": "visual-prompt-forge, fallo 1",
+   "enunciado": "El \"AI look\" se acepta editorialmente solo si el brief pide contenido estilizado donde el realismo no es el objetivo."
+  },
+  {
+   "id": "1e769c513594",
+   "alcance": "visual-prompt-forge, fallo 3",
+   "enunciado": "El texto horneado solo se acepta si el entregable lo requiere y la salida de Ideogram es retocable."
+  },
+  {
+   "id": "c8ff4f65b7fb",
+   "alcance": "visual-prompt-forge, fallo 4",
+   "enunciado": "La deriva de luz se acepta editorialmente si es tan sutil que el grade la corrige."
+  },
+  {
+   "id": "ac397b13952d",
+   "alcance": "visual-prompt-forge, fallo 5",
+   "enunciado": "Si la imagen es buena pero no deja espacio, se acepta y se reubica el overlay de texto."
+  },
+  {
+   "id": "4d1faefd8e72",
+   "alcance": "visual-prompt-forge, fallo 6",
+   "enunciado": "La sensación dispar se acepta si está bajo el umbral del medio, p. ej. social de cortes rápidos con shots de menos de 2s."
+  },
+  {
+   "id": "76568be83ac2",
+   "alcance": "visual-prompt-forge, fallo 7",
+   "enunciado": "Explicación: una imagen correcta que no cumple el brief se debe a un subject vago en shots.json, contexto del brief ausente o salida genérica del generador."
+  },
+  {
+   "id": "971fa812a626",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "En modo revisión, ante un REJECT se detiene: se listan los shots rechazados con lo que dijo el crítico y se pregunta al usuario cómo proceder (cambiar spec, brand-lock o generador)."
+  },
+  {
+   "id": "b08b9722359b",
+   "alcance": "visual-prompt-forge, modos de fallo",
+   "enunciado": "Explicación: el documento de modos de fallo indica qué corregir a nivel de prompt y qué aceptar como trabajo editorial cuando la imagen no coincide con el storyboard."
   }
  ]
 }

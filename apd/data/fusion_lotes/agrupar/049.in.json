@@ -1,344 +1,589 @@
 {
  "paso": "agrupar",
  "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
- "tema": "piel_rostro_realismo",
- "descripcion_tema": "piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico",
+ "tema": "revision_iteracion",
+ "descripcion_tema": "revisión selectiva, rondas, máximo de intentos, cambio de método, costo",
  "ventana": "1 de 1",
  "filas": [
   {
-   "id": "b75d875052fa",
-   "alcance": "Brand Lock > Never list",
-   "enunciado": "Ejemplo: prohíbe la estética de foto de stock, los rostros inquietantes de IA, la sobresaturación, el tono gritón y los iconos clip-art."
+   "id": "af0339c13ec8",
+   "alcance": "Aurora Prompt Linter v1.0; roadmap v1.1",
+   "enunciado": "Explicación: el linter actual solo indica qué eliminar; v1.1 podría generar automáticamente una versión limpia."
   },
   {
-   "id": "545846092db4",
-   "alcance": "Brand Locks de Acme SaaS y WhyStrohm (ejemplos), lista de prohibiciones",
-   "enunciado": "No usar rostros de IA inquietantes."
+   "id": "c40c29d955c4",
+   "alcance": "E5.8 visual-prompt-forge modo revisión",
+   "enunciado": "E5.8: la revisión selectiva re-emite prompts solo de shots REVISE, se detiene en REJECT y admite máximo 2 rondas."
   },
   {
-   "id": "917c2f06761c",
-   "alcance": "D8; anclas con rostro",
-   "enunciado": "Para rostro humano, maestro o keyframe con cara, probar NB2 y NBP y usar GPT Image 2 quality high para piel e identidad; variantes a 0.5K y ganador a 2K/4K, GPT low → high."
+   "id": "482d6439634a",
+   "alcance": "Etapa 7, checklist maestro; anchors críticos.",
+   "enunciado": "Los anchors críticos deben obtener verdict ACCEPT en la crítica en un máximo de dos rondas."
   },
   {
-   "id": "bc06f6e86fe2",
-   "alcance": "Dimensional Translation › Quality Levels",
-   "enunciado": "Especifica el nivel de calidad como boceto conceptual, presentación profesional, fotorrealismo indistinguible de una foto o render estilizado."
+   "id": "21baa1d284b4",
+   "alcance": "Etapa 7, reglas de trazabilidad; cambios que afecten un shot.",
+   "enunciado": "Si un prompt requiere cambiar encuadre, acción o luz fijados por su shot, se debe actualizar shots.json y regenerar los documentos posteriores, sin permitir contradicciones entre prompt y shot."
   },
   {
-   "id": "e514240c1f84",
-   "alcance": "GPT Image 2, editorial fotorrealista",
-   "enunciado": "Especifica la plantilla editorial fotorrealista: Scene, Subject, Details con textura real e imperfecciones, Use Case de foto real y Constraints sin glamour, retoque ni brillo de estudio."
+   "id": "42d6343173d3",
+   "alcance": "GPT Image 2",
+   "enunciado": "Empezar en quality: low y subir solo si hace falta."
   },
   {
-   "id": "9388c52abf40",
-   "alcance": "Image Editing › Colorization › Photo",
-   "enunciado": "Colorea una fotografía en blanco y negro con colores apropiados para la década indicada y tonos de piel naturales y realistas."
+   "id": "1cc8e7161a2c",
+   "alcance": "GPT Image 2, edición",
+   "enunciado": "En edición: un cambio por iteración, repetir la preserve list en cada iteración, enumerar lo que no debe tocarse y usar mask_image_url opcional para ediciones puntuales."
   },
   {
-   "id": "9efd52cec8ca",
-   "alcance": "Midjourney v7",
-   "enunciado": "Prohíbe usar \"AI\" o \"rendered\" en prompts de Midjourney porque producen resultados estilizados con aspecto generado."
+   "id": "ca942d693475",
+   "alcance": "GPT Image 2, iteración",
+   "enunciado": "Ante deriva, volver a enumerar los invariantes."
   },
   {
-   "id": "b70139617ac6",
-   "alcance": "Nano Banana, escalado de modelo",
-   "enunciado": "NBP es más lento y caro y a veces pierde frente a NB2 en rostros; en series de retrato probar ambos primero."
+   "id": "3a3189b93619",
+   "alcance": "GPT Image 2, iteración",
+   "enunciado": "Empezar la iteración con un prompt base limpio."
   },
   {
-   "id": "7f2423032310",
-   "alcance": "Nano Banana, fallos conocidos",
-   "enunciado": "Manos y rostros aún derivan en Nano Banana (dedos, articulaciones, parecido); corregir con instrucciones anatómicas explícitas, referencias y regeneraciones, y considerar que NBP sostiene peor los rostros que NB2."
+   "id": "8a7ba0664d42",
+   "alcance": "GPT Image 2, iteración",
+   "enunciado": "Hacer un solo cambio por ronda."
   },
   {
-   "id": "829e6b31993e",
+   "id": "63c25e070ee4",
+   "alcance": "GPT Image 2, research familia 08",
+   "enunciado": "Prohibido aprobar a la primera una multitud densa con rostros a distancia en GPT Image 2; generar varias variantes y seleccionar, o usar foto licenciada."
+  },
+  {
+   "id": "e3591da02b52",
+   "alcance": "GPT Image 2, trabajo por lotes",
+   "enunciado": "En GPT Image 2, explorar con quality: low, seleccionar y regenerar la ganadora en medium o high."
+  },
+  {
+   "id": "022187ee071b",
+   "alcance": "Image Editing › Conversational Refinement",
+   "enunciado": "Después de la edición inicial, aplica refinamientos conversacionales puntuales de temperatura, contraste, bordes o detalle en sombras."
+  },
+  {
+   "id": "559f6152b90e",
+   "alcance": "Image Editing; Nano Banana y GPT Image 2",
+   "enunciado": "Realiza un solo cambio de edición por iteración y no intentes modificar todo a la vez."
+  },
+  {
+   "id": "c6977c9e5e94",
+   "alcance": "Integración visual-prompt-forge con video/image smixs",
+   "enunciado": "Visual-prompt-forge controla el flujo de datos y la revisión selectiva, mientras video e image smixs controlan el texto final, por lo que el borrador del forge se reescribe a sintaxis smixs y nunca al revés."
+  },
+  {
+   "id": "658443f56a83",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "Al revisar no se reinterpretan los locks del usuario o proyecto no afectados."
+  },
+  {
+   "id": "6ce3fe71d1c1",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "Explicación: el Learning Registry v3.2 recoge aprendizajes versionados de la prueba de clavado de plataforma de 10 m que no reescriben el extractor canónico y se promueven vía overlay, tests de regresión y ruleset versionado."
+  },
+  {
+   "id": "f46ef1908218",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "Si el resto del asset o prompt pasa, corregir solo los elementos fallidos."
+  },
+  {
+   "id": "9d5e09028961",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2)",
+   "enunciado": "Si el sujeto debe ser fiel a algo real el grounding de NB2 fuerza el modelo, y cada método admite como máximo dos intentos, nunca una tercera vuelta de lo mismo."
+  },
+  {
+   "id": "2894b6e22306",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2) (diagrama)",
+   "enunciado": "Especifica el subflujo de génesis: clase → grounding NB2 o elección de modelo → reglas de oro → secciones por clase → lints → pregunta de avance → micro-gate → preflight de costo → generar barato, seleccionar, regenerar en alta → inspección al 100% → crítica → canonizar con hash, editar hasta 3 veces o cambiar de método."
+  },
+  {
+   "id": "cd043cd32be5",
+   "alcance": "Nano Banana y GPT Image 2, trabajo por lotes",
+   "enunciado": "En ambos modelos, hacer exploración barata primero y final caro después."
+  },
+  {
+   "id": "4e86d2fd321a",
+   "alcance": "Nano Banana, edición",
+   "enunciado": "La Interactions API mantiene el contexto y apila hasta 3 ediciones sin perder el original; si la imagen está al 80%, pedir un cambio puntual y no regenerar."
+  },
+  {
+   "id": "a865df585175",
+   "alcance": "Nano Banana, edición",
+   "enunciado": "Tras generar, refinar iterativamente con peticiones puntuales (más cálido, más contraste, desenfocar fondo, cambiar color del titular)."
+  },
+  {
+   "id": "c522963bcfb4",
+   "alcance": "Nano Banana, flujo de coste",
+   "enunciado": "Explorar variantes a 0.5K flash (o NB2 Lite a 1K), seleccionar y regenerar la ganadora a 2K/4K."
+  },
+  {
+   "id": "17e1280e02fc",
+   "alcance": "Nano Banana, trabajo por lotes",
+   "enunciado": "En Nano Banana, explorar variantes a 0.5K con Flash, seleccionar y regenerar la ganadora a 2K/4K."
+  },
+  {
+   "id": "02b939a8598c",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige añadir el bloque anti-mush siempre que un intento previo produjo mezcla de planos; es el párrafo de mayor palanca."
+  },
+  {
+   "id": "161fe112293b",
    "alcance": "Seedance 2.5",
-   "enunciado": "Especifica describir la mirada/alma como la emoción que cargan los ojos, separada de la geometría facial."
+   "enunciado": "Exige presupuestar re-rolls y extensiones (~500-700 créditos por 30 s a 720p), corregir con edición/extensión/re-shoot antes que regenerar, y bocetar a 480p y terminar a 720p."
   },
   {
-   "id": "5b66ae356a4b",
+   "id": "a0bc99fcd67e",
    "alcance": "Seedance 2.5",
-   "enunciado": "Especifica la fórmula de personaje realista: edad/etnia, piel, 3-4 detalles faciales, mirada, pelo, ropa, complexión/aura."
+   "enunciado": "Exige usar dos slots de imagen separados, cada uno ligado a su rango de tiempo, para un personaje en dos estados, y presupuestar re-rolls."
   },
   {
-   "id": "90a53dd30c76",
-   "alcance": "Seedance 2.5",
-   "enunciado": "Especifica que la fórmula de personaje sirve también para personajes animados cambiando el registro de textura."
+   "id": "57477fcd77b4",
+   "alcance": "Seedance 2.5 Ultra Long / Xiaoyunque",
+   "enunciado": "Exige planificar el ritmo con timestamps o cadena de beats en Ultra Long porque cada segmento hereda ~3 s del anterior y los errores se propagan; el re-shoot de segmento es la corrección más barata."
   },
   {
-   "id": "4d51f91ea6e9",
-   "alcance": "Seedance 2.5",
-   "enunciado": "Especifica que los humanos realistas (poros, microactuación, lip-sync en 11 idiomas) son fortaleza de 2.5 y no aplica la cautela de rostros de 2.0."
+   "id": "12bcda9cbdea",
+   "alcance": "capas 5–6; prompts",
+   "enunciado": "La sub-skill visual-prompt-forge debe convertir shots.json en borradores de prompts mediante adaptadores y revisar desde critique.json, con autoridad sobre la estructura shots-a-prompts y su loop de revisión."
   },
   {
-   "id": "80dfcaf81e5b",
-   "alcance": "Seedance 2.5",
-   "enunciado": "Exige 'retaining real fine pores and skin texture' y lenguaje de producción en vez de 'hyperrealistic 8k' contra la piel plástica."
+   "id": "adab66a2e331",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].fix es obligatorio y no vacío."
   },
   {
-   "id": "446b57dc7ef8",
-   "alcance": "Seedance 2.5",
-   "enunciado": "Exige 3-4 detalles faciales concretos (forma de ojos, arco superciliar, puente nasal, labios, mandíbula)."
+   "id": "f4ad86e1c9f9",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].fix_type es obligatorio y debe ser prompt-level, post-level o re-roll."
   },
   {
-   "id": "fbd0a3b5e0bc",
-   "alcance": "Seedance 2.5",
-   "enunciado": "Exige añadir siempre el sufijo 'retaining real fine pores and skin texture' como corrección oficial de la piel plástica."
+   "id": "c6d25b70f0d6",
+   "alcance": "critique.schema.json",
+   "enunciado": "round es null o un entero desde 1; la ronda 1 es la primera pasada de generación."
   },
   {
-   "id": "680c5665051e",
-   "alcance": "anclas con persona; bloques SW30",
-   "enunciado": "Con persona se usan los bloques nombrados light_hard, skin_doc, usecase_doc, clean_doc, idlock, contact_* y autocontain_*."
+   "id": "10a8c88caaa7",
+   "alcance": "edición de imágenes",
+   "enunciado": "Especifica la edición iterativa: «Leave everything else exactly the same, but change [X]» o anotar la imagen descargada y subirla de nuevo como referencia."
   },
   {
-   "id": "4edc399784f1",
-   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 1",
-   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, sin números de lente."
+   "id": "3e0982c0b0d7",
+   "alcance": "flujo con linter",
+   "enunciado": "Explicación: con linter, el agente reescribe tras un FAIL antes de mostrar la entrega al usuario, evitando turnos adicionales para este."
   },
   {
-   "id": "0071353ecbdb",
-   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 1",
-   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, luz y detalles de textura (piel, tela, asimetría, poros)."
+   "id": "99658e765a16",
+   "alcance": "flujo sin linter",
+   "enunciado": "Explicación: sin linter, entregar un error y corregirlo en el turno siguiente cuesta aproximadamente tres o cuatro turnos por iteración."
   },
   {
-   "id": "7bf212579e40",
-   "alcance": "editorial de moda, grid 2x2, GPT Image 2",
-   "enunciado": "Especifica la plantilla 2x2 de moda: headshot con butterfly light, tres cuartos con clave lateral, perfil a contraluz y momento cándido; piel con poros sin suavizado, persona idéntica, sin cambios de maquillaje ni texto."
+   "id": "9f423323180a",
+   "alcance": "gate de Etapa 5, Anchor Images",
+   "enunciado": "Cada anchor crítico debe obtener crítica ACCEPT en un máximo de dos rondas de revisión sobre los shots reprobados, y una tercera falla obliga a replantear el shot en vez del prompt."
   },
   {
-   "id": "a848e1652ea7",
-   "alcance": "general",
-   "enunciado": "Describe de qué están hechos físicamente los sujetos en lugar de limitarte a nombrarlos."
+   "id": "dab34a76196e",
+   "alcance": "generación de activos de marca a partir de un producto de referencia",
+   "enunciado": "Al generar activos de marca desde un producto de referencia, se debe mantener la consistencia de marca y calidad, variar ángulos, luz y contexto, y generar una toma por vez."
   },
   {
-   "id": "de5da5ab37b0",
-   "alcance": "general",
-   "enunciado": "Ejemplo: convierte un fotograma animado cargado en una escena ultrarrealista preservando las identidades, estructuras faciales, vestuario y expresiones originales."
+   "id": "3fce56de2c8a",
+   "alcance": "imágenes aceptadas",
+   "enunciado": "Los cambios locales pedidos sobre una imagen ya aceptada se hacen con edición, no con re-roll, preservando píxeles y locks aprobados fuera del delta."
   },
   {
-   "id": "875f9c4f3dac",
-   "alcance": "general",
-   "enunciado": "Ejemplo: en vez de «piel», especifica «piel curtida y dañada por el sol con líneas de expresión profundas»."
+   "id": "937db7c2042a",
+   "alcance": "imágenes aceptadas",
+   "enunciado": "Una vez aceptada una imagen, los cambios locales se hacen con edición quirúrgica preservando píxeles y locks fuera del delta, sin re-rollear la escena."
   },
   {
-   "id": "7241e706d9b4",
-   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
-   "enunciado": "Sin rostro, o rostro fragmentado hasta la inutilidad (silueta o reflejo)."
+   "id": "3e6142b5d64e",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Los locks del usuario o del proyecto se mantienen verbatim entre revisiones."
   },
   {
-   "id": "f3c1222bf95d",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige describir en el slot de rasgos una cara irregular (caballete, cicatriz, ojos hundidos, asimetrías), porque la cara simétrica se lee como maniquí."
+   "id": "23b95bf900c6",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Prohibido inferir densidad de público: \"audience present\" no implica gradas llenas; si luego se fija \"stands full\", actualizar solo esa propiedad."
   },
   {
-   "id": "3f2b37c02ef5",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige el bloque clean_doc antibelleza: no beauty retouching, no skin smoothing, no even complexion, no soft fill light."
+   "id": "71181702a11b",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Si el resultado existente es fuerte, revisar con deltas pequeños sin reescribir agua, luz, entorno, sujeto o pose que ya pasan."
   },
   {
-   "id": "7699e90f06ea",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige el bloque light_hard en la sección de luz del maestro de rostro (luz dura rasante sin relleno) y prohíbe la luz suave de softbox en rostros por producir look plástico."
+   "id": "0bbe042f109f",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Si el usuario dio una pose o técnica de dominio reconocida, se preserva la etiqueta de dominio sin expandirla por defecto en anatomía especulativa."
   },
   {
-   "id": "38954d8baa54",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige el bloque skin_doc con defectos de piel concretos (rojeces, descamación, sudor, pigmento desigual, pelos de barba, labios agrietados), no «imperfecciones sutiles»."
+   "id": "8ba4140fa1a3",
+   "alcance": "iteración de imagen, general",
+   "enunciado": "Si la imagen está correcta en un 80%, pedir un cambio concreto (p. ej. luz de atardecer, texto neón azul, mover el gráfico al tercio derecho) en vez de regenerarla."
   },
   {
-   "id": "86590ed7fe0d",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige el bloque usecase_doc de fotografía documental Kodak Tri-X y prohíbe Kodak Portra en rostros porque suaviza la piel."
+   "id": "d8678a4e0284",
+   "alcance": "migración a GPT Image 2",
+   "enunciado": "Tras migrar, revisar calidad, latencia y tasa de reintentos y reajustar."
   },
   {
-   "id": "a1fcdbb51a00",
-   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
-   "enunciado": "Exige instanciar todo maestro de rostro T1 con los cuatro bloques canónicos; el motor lanza TemplateViolation si se sustituye alguno."
+   "id": "af853a15200b",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige ante un cambio identificar el bloque al que pertenece, editarlo una vez, recompilar y auditar."
   },
   {
-   "id": "dfc613d4d7e0",
+   "id": "c7b14ccc30ed",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige que cuando el usuario detecte un defecto se añada su regla al ledger con su check en el mismo turno."
+  },
+  {
+   "id": "4d06b82d68bb",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Prohíbe editar el texto de un brief individual (parchear), causa raíz de los ciclos de reescritura."
+  },
+  {
+   "id": "e6a6f22673fa",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R12",
+   "enunciado": "Exige editar y no re-tirar cuando el resultado es ≥80% correcto, con hasta 3 ediciones apiladas."
+  },
+  {
+   "id": "6755aee61fec",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R13",
+   "enunciado": "Limita a 2 intentos por método; a la segunda falla, cambiar de método con causa declarada o detenerse y consultar."
+  },
+  {
+   "id": "7c50ba4f04e0",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R17",
+   "enunciado": "Exige entregar en unidades chicas con OK de dirección, entregar el delta y no el paquete, y aplicar toda regla nueva de dirección a todos los prompts."
+  },
+  {
+   "id": "a83c23471e32",
    "alcance": "prompts de imagen, modo Cinematic Verbose",
-   "enunciado": "Ejemplo: versión Cinematic Verbose del retrato de barista con desgaste, micro-texturas, partículas, sombras de contacto, speculars, reflejos y cues de movimiento añadidos."
+   "enunciado": "Especifica usar Cinematic Verbose para el visual final de una campaña, no para iteraciones."
   },
   {
-   "id": "18a56adce731",
-   "alcance": "prompts de imagen, tipo Photorealistic",
-   "enunciado": "Ejemplo: prompt fotorrealista de retrato de pescador curtido en muelle al amanecer, estilo documental, con fondo de puerto brumoso desenfocado."
+   "id": "7a35d00eb717",
+   "alcance": "refinamiento de imagen, general",
+   "enunciado": "Ejemplo: tras generar, refinar conversacionalmente con peticiones puntuales (cambiar color del titular a #3b82f6, sombra al texto, más contraste, desenfocar fondo)."
   },
   {
-   "id": "6ba593a1407c",
-   "alcance": "prompts de video, rostros",
-   "enunciado": "Ejemplo: lenguaje de producción para rostros naturales: 'Shot on 50mm, natural skin texture, motivated lighting, documentary feel'."
-  },
-  {
-   "id": "bd5377f5fe3c",
-   "alcance": "prompts de video, rostros",
-   "enunciado": "Prohíbe palabras de estilo como 'hyperrealistic 8k masterpiece' porque producen rostros con look de arte IA; usar lenguaje de producción."
-  },
-  {
-   "id": "ba9c2938b202",
-   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
-   "enunciado": "Criterio del crítico: si la piel es cálida sin práctico visible, el agua debe virar a aqua/cian y los rayos a rojizo; piel cálida con agua azul pura y rayos blancos es incoherente."
-  },
-  {
-   "id": "03e072e5eb4b",
-   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
-   "enunciado": "En subacuático hay que pedir una sola fuente de luz consistente y textura de piel natural, evitando piel lisa, burbujas aleatorias y dirección de luz incoherente."
-  },
-  {
-   "id": "1dc939079a1b",
+   "id": "aa08a8cb1640",
    "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
-   "enunciado": "Bajo luz dura la cara debe mostrar sombra pronunciada en un lado; una cara plana bajo sol intenso delata la IA."
+   "enunciado": "No insistir más de dos o tres regeneraciones sobre un sprint de cuerpo entero con anatomía rota; cambiar a plano cerrado de rostro, mano o pie."
   },
   {
-   "id": "2420d28b6603",
-   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
-   "enunciado": "El sudor se pide como \"sharp sweat highlights\" o gotas congeladas en el aire bajo luz dura única, nunca como piel mojada."
+   "id": "a72dfebf3051",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Prohibido corregir dos regiones en la misma instrucción; cambiar una región por vez para no redibujar lo que estaba bien."
   },
   {
-   "id": "ec7fbafda095",
-   "alcance": "retrato a contraluz en hora dorada, GPT Image 2",
-   "enunciado": "Especifica la plantilla de contraluz dorado: sol detrás del sujeto a 5-10°, rim dorado, rostro iluminado por rebote más frío, bokeh cálido, 1-2 flares sutiles, sombra larga, piel con poros; rostro expuesto (no silueta), sin equipo, texto ni viñeta."
+   "id": "09c9fbf70132",
+   "alcance": "revisiones de assets",
+   "enunciado": "Al corregir un fallo localizado en un asset aceptado o fuerte, se cambian solo los elementos fallidos sin reescribir ni reinterpretar los locks no afectados."
   },
   {
-   "id": "88eafac62c73",
-   "alcance": "régimen 01 agua en superficie",
-   "enunciado": "Con el rostro fragmentado por spray, gafas o casco, convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua."
+   "id": "8b26508fdf5d",
+   "alcance": "revisiones de brief/prompt",
+   "enunciado": "Un cambio de campo recompila solo los bloques afectados sin reabrir decisiones previas; un cambio dramático (sexo, origen, franja de edad o >50% de un bloque) exige re-aprobar la redacción de esos bloques, y la auditoría determinista siempre se repite."
   },
   {
-   "id": "280bc670cfee",
-   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
-   "enunciado": "La piel y el neopreno mojados deben devolver speculares duros; sin ellos el cuerpo se lee seco y falso."
+   "id": "13b88717b622",
+   "alcance": "revisiones de prompt",
+   "enunciado": "En una revisión, todo lock del usuario o del proyecto se hereda verbatim salvo que el usuario lo cambie explícitamente."
   },
   {
-   "id": "c0d1c70d9184",
-   "alcance": "régimen 01 agua en superficie, checklist del crítico",
-   "enunciado": "El crítico verifica sin HDR sobrecocido y sin rostro pedido a través del spray."
+   "id": "b417c1b50d25",
+   "alcance": "revisiones de prompt",
+   "enunciado": "Las revisiones no reescriben libremente el prompt: se re-renderiza el mismo Prompt AST inmutable contra el brief actualizado; cambios de AST, modelo, parámetros o template no autorizados son drift bloqueante."
   },
   {
-   "id": "77e5a091dbdc",
-   "alcance": "régimen 03 subacuático [A PRUEBA]",
-   "enunciado": "La piel bajo el agua se describe con su viraje real, cálida solo bajo la linterna; skin_doc aplica en textura, no en color."
+   "id": "dd07399aa45b",
+   "alcance": "revisiones de prompt aprobado",
+   "enunciado": "Tras aprobar un prompt, toda revisión debe partir de un delta autorizado explícito contra el hash exacto del brief previo; no se permiten cambios implícitos."
   },
   {
-   "id": "41d52389a865",
-   "alcance": "régimen 03 subacuático, fallo conocido [A PRUEBA]",
-   "enunciado": "Piel rosada y labios rojos a diez metros son imposibles sin práctico: declarar el viraje o añadir la linterna como fuente."
+   "id": "8569db7f6a57",
+   "alcance": "revisión de imágenes aceptadas",
+   "enunciado": "Fondo/multitud y estructuras visibles a cámara deben tratarse como deltas pequeños independientes y no como motivo para re-rollear una solución aceptada de sujeto y agua."
   },
   {
-   "id": "1f859a1d9d91",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Checklist del crítico: piel documental bajo luz dura y sudor como speculares."
+   "id": "3af60ba5b737",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds es un array opcional que se amplía una vez por ronda de revisión con los prompts producidos; frames y críticas viven en disco bajo frames/round-N y critiques/round-N."
   },
   {
-   "id": "b8ecccfe119b",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "El sudor se describe como puntos speculares discretos bajo luz dura, no como piel mojada uniforme."
+   "id": "ac1c4a178644",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].post_only_shots es opcional y lista los shots cuyos problemas pendientes son solo de post, para que la obligación de composición quede registrada."
   },
   {
-   "id": "fa78d9645f72",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Explicación: en el régimen cuerpo en esfuerzo el cuerpo es el objeto que cambia de estado y el rostro suele verse, así que aplica íntegro el template de piel documental de SW30 más la ley de los tres detalles."
+   "id": "f0f0a1093e64",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].prompts es un array obligatorio con al menos un elemento."
   },
   {
-   "id": "a27194a924a5",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Explicación: la cara irregular y asimétrica se lee real; la simétrica se lee maniquí, más aún bajo esfuerzo."
+   "id": "d07b6b21e4de",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].prompts[].shot_ids es opcional: una pasada completa lista todos los shots y una revisión solo los re-emitidos."
   },
   {
-   "id": "78b34163dcf2",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "La piel documental se describe con defectos concretos (rojeces, sudor, pigmento desigual, labios agrietados), nunca con \"imperfecciones sutiles\"."
+   "id": "fadcd3187a8a",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].reason es opcional: la ronda 1 es 'initial' y las siguientes citan las críticas que las dispararon."
   },
   {
-   "id": "88042a98eaa3",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Los rostros llevan luz dura rasante sin relleno; la luz suave de softbox está prohibida en rostros porque produce look plástico."
+   "id": "b1f572e5a17c",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].round es un entero obligatorio mayor o igual a 1."
   },
   {
-   "id": "9b22ee2193e3",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Para rostros probar NB2 y NBP, porque NBP a veces sostiene peor los rostros."
+   "id": "de971cad5404",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Recorrido de costo: variantes a 0.5K, selección y regeneración del ganador a 2K o 4K."
   },
   {
-   "id": "34ee02538d4c",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Si la piel sale plástica bajo esfuerzo, volver a light_hard y skin_doc (luz demasiado suave o stock equivocado)."
-  },
-  {
-   "id": "86417c7aa3b2",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Usar GPT Image 2 quality high para piel, identidad y textura de tela."
-  },
-  {
-   "id": "25bc0cfc6b98",
-   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
-   "enunciado": "Usar stock documental de reportaje; Portra está prohibido en rostros porque suaviza la piel."
-  },
-  {
-   "id": "b49a4e4596c6",
+   "id": "6c2e5e437937",
    "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
-   "enunciado": "Rostros con luz dura y piel documental en tratamiento documental o narrativo; en comercial, clean lighting pareja, pero la misma para todos."
+   "enunciado": "Lo aprobado se canoniza y se edita desde ahí; si un miembro falla se rehace solo su inserción, nunca el grupo entero."
   },
   {
-   "id": "25fa84c2fcae",
-   "alcance": "régimen luz y clima, lluvia con persona",
-   "enunciado": "Con lluvia hay que declarar piel y ropa mojadas con speculares y pelo pegado, o el sujeto se lee seco (regla a prueba)."
-  },
-  {
-   "id": "158d0336a72a",
+   "id": "433dece3a66b",
    "alcance": "régimen luz y clima, still",
-   "enunciado": "Las personas bajo el fenómeno se leen a contraluz como silueta con rim y un glint, sin rasgos."
+   "enunciado": "Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo y final en alta resolución."
   },
   {
-   "id": "d481eb98963d",
-   "alcance": "tratamiento documental",
-   "enunciado": "Tratamiento documental: 35mm handheld eye-level, luz dura rasante sin relleno, paleta desaturada, Kodak Tri-X con grano y rostros irregulares; prohíbe softbox, Portra en rostros, retoque y relleno suave."
+   "id": "26e9a9c5328c",
+   "alcance": "selección de track por revisiones esperadas",
+   "enunciado": "Limita las revisiones esperadas a cero o una en EXPRESS, una o dos rondas en STANDARD y rondas formales en FILM."
   },
   {
-   "id": "bb2f4c5851ba",
-   "alcance": "vision decomposer (image-to-prompt), skill image",
-   "enunciado": "Exige extraer del sujeto: ropa precisa (época, estilo, materiales), edad, textura de piel, maquillaje y microexpresiones."
+   "id": "9bca6c6baaae",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Explicación: al dividir o insertar escenas se puede renumerar todo o usar numeración fraccional (2A)."
   },
   {
-   "id": "31d70283774e",
+   "id": "8a3be90a5127",
+   "alcance": "skill video, paso 5",
+   "enunciado": "Si algún shot falla los checks, se corrige antes de enviar; no se salta este paso."
+  },
+  {
+   "id": "6db9098c783b",
+   "alcance": "skill video, salida D",
+   "enunciado": "Formato D: auditoría de prompt con qué funciona, qué rompe, dirección faltante, riesgos de continuidad, desajustes de modelo y versión reescrita."
+  },
+  {
+   "id": "a52c68b090f2",
+   "alcance": "todo brief",
+   "enunciado": "En todo brief se permiten máximo 2 intentos por método; a la segunda falla se cambia de método declarando la causa."
+  },
+  {
+   "id": "29496ae040ff",
+   "alcance": "validate_provenance.py; árbol output del proyecto",
+   "enunciado": "El validador debe detectar hashes desactualizados, frames sin crítica, críticas duplicadas por plano y ronda, rondas saltadas y críticas asociadas a otro run_id."
+  },
+  {
+   "id": "144b6068ee89",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Cuando ningún cambio de prompt ayuda porque el generador dio una mala muestra, se exige re-roll con presupuesto de 2 a 3 intentos."
+  },
+  {
+   "id": "e8fad963c886",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Ejemplo: crítica REVISE con puntos que funcionan, fallos (pelo, seis dedos, encuadre MS vs MCU), plan de revisión y confianza HIGH."
+  },
+  {
+   "id": "a8a1b3b45f64",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Especifica las secciones del markdown: veredicto ACCEPT/REVISE/REJECT, qué funciona (2-4), qué no (2-5, con capa citada), plan de revisión por tipo de arreglo y confianza."
+  },
+  {
+   "id": "198d4dc00d9f",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Las correcciones de prompt deben ser específicas (qué texto añadir o cambiar y dónde), no un genérico 'cambia el prompt'."
+  },
+  {
+   "id": "6c1b4468c0f9",
+   "alcance": "visual-asset-critic",
+   "enunciado": "No se debe revisar automáticamente: el usuario elige el siguiente paso."
+  },
+  {
+   "id": "489c34d8feda",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Todo problema detectado debe mapearse a una corrección; la corrección a nivel de prompt debe especificar el cambio exacto y re-generar."
+  },
+  {
+   "id": "62e7087976cb",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Tras un REJECT no se ofrece modo revisión; se explica qué lo bloqueó y qué decisión requiere (spec, brand-lock o generador)."
+  },
+  {
+   "id": "963a79a6b286",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Tras un veredicto REVISE se debe ofrecer redactar el prompt revisado vía visual-prompt-forge en modo revisión."
+  },
+  {
+   "id": "e613acf67714",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "What's not working y Revision plan se fusionan en issues[], cada issue con su capa/nota y su fix_type/fix."
+  },
+  {
+   "id": "0960a583d8db",
    "alcance": "visual-asset-critic, rúbrica de crítica",
-   "enunciado": "Capa técnica, ojos: pass si son simétricos y enfocados, soft fail con leve asimetría, hard fail con ojos torcidos o reflejos erróneos."
+   "enunciado": "Los fallos de composición suelen corregirse a nivel de prompt re-generando con lenguaje de composición explícito."
   },
   {
-   "id": "f056159e9292",
+   "id": "b6515bead7eb",
    "alcance": "visual-asset-critic, rúbrica de crítica",
-   "enunciado": "Capa técnica, textura de piel: pass si es natural, soft fail si es algo plástica, hard fail con plástico AI marcado."
+   "enunciado": "Los hard fails técnicos casi siempre exigen re-roll (2 a 3 intentos) porque el prompt probablemente estaba bien."
   },
   {
-   "id": "0fe36e1186f2",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux no se omite la línea final fotorrealista 'no AI artifacts' porque reduce el look AI de forma medible."
+   "id": "2d5bce946fe0",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Se debe distinguir el fallo del prompt del fallo del generador: si el prompt estaba bien y las manos salieron mal, es re-roll, no cambio de prompt."
   },
   {
-   "id": "ae960708ebbb",
-   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
-   "enunciado": "En Flux se debe incluir en cada prompt la línea final 'Photorealistic, natural skin texture, no AI artifacts' porque reduce el look AI."
+   "id": "ec8149c9afc4",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Cada ronda escribe su propio directorio (round-1, round-2…) para no sobrescribir los prompts que produjeron frames anteriores."
   },
   {
-   "id": "ad6536a63487",
-   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
-   "enunciado": "GPT Image tiene un look AI real; la línea 'natural skin texture, no AI rendering artifacts' ayuda pero no basta, y para fotorrealismo puro Flux es mejor."
+   "id": "a5e6df638ea6",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Ejemplo: ../visual-asset-critic/examples/worked-run/ contiene un árbol completo de dos rondas con prompts, frames y críticas."
   },
   {
-   "id": "baebdeb987a7",
-   "alcance": "visual-prompt-forge, fallo 1",
-   "enunciado": "El \"AI look\" se acepta editorialmente solo si el brief pide contenido estilizado donde el realismo no es el objetivo."
+   "id": "a7b50f2fdeb0",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "El modo revisión se activa cuando el usuario pide aplicar la crítica, revisar los shots fallidos o entrega un árbol con critiques/."
   },
   {
-   "id": "112c1405d835",
-   "alcance": "visual-prompt-forge, fallo 1",
-   "enunciado": "Explicación: el \"AI look\" (piel plástica, saturación excesiva, ojos simétricos, manos mal, composición de stock, luz pareja) lo causan adjetivos genéricos, muletillas de SD, falta de especificaciones fotográficas y no aplicar la never list."
+   "id": "415c43a2e646",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En modo revisión se leen todas las críticas de la ronda más alta en output/critiques/round-{N}/."
   },
   {
-   "id": "89ce31f736f8",
-   "alcance": "visual-prompt-forge, fallo 1",
-   "enunciado": "Para corregir el \"AI look\" se añaden lente y apertura, stock de película o cámara, la línea \"natural skin texture, no AI rendering artifacts\", la never list de marca y se usan Flux 2 Pro o Midjourney v7 para héroes."
+   "id": "24543d53d0c4",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En modo revisión se omiten los shots con verdict ACCEPT."
+  },
+  {
+   "id": "d6fe2178a9ec",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En modo revisión, con shots.json y critique.json, se re-emiten prompts solo para los shots fallidos con la corrección ya aplicada."
+  },
+  {
+   "id": "ff43235b3b9c",
+   "alcance": "visual-prompt-forge _capabilities.json, Hailuo 02 Pro",
+   "enunciado": "Hailuo 02 Pro es el tier borrador barato para bloquear movimiento, encuadre y timing, y el ganador se regenera en Kling, Veo o Seedance; techo de 120 palabras."
+  },
+  {
+   "id": "f44fff6130dc",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo no se sobrepule el borrador: las palabras van a movimiento y encuadre, y el detalle fotográfico al re-roll final."
+  },
+  {
+   "id": "c7db651c97d1",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Hailuo 02 Pro se usa para iterar barato y encontrar el shot, y el elegido se re-genera en Kling, Veo o Seedance; su salida es borrador, no asset final."
+  },
+  {
+   "id": "e216ea4ab39e",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 1 de iteración: bocetar el shot en Hailuo con prompt_optimizer=false."
+  },
+  {
+   "id": "8d005672eb69",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 2 de iteración: fijar el movimiento, encuadre y timing que mejor funcionen."
+  },
+  {
+   "id": "e059c615c07c",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 3 de iteración: re-generar el elegido en el modelo final adecuado: Kling para movimiento, Veo para diálogo, Seedance para multi-shot."
+  },
+  {
+   "id": "bc5905dce41e",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 4 de iteración: arrastrar el prompt exacto al modelo final cambiando solo parámetros, gracias a la anatomía compartida de cinco capas."
+  },
+  {
+   "id": "dc4a4f07eb14",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "Hay que aceptar y presupuestar re-rolls; los bloqueos reducen la tasa de fallo pero no la eliminan."
+  },
+  {
+   "id": "ad7ba9059473",
+   "alcance": "visual-prompt-forge, fallo 2",
+   "enunciado": "Si la consistencia de personaje es imposible de bloquear se aceptan re-rolls presupuestados, típicamente 2-3× por shot problemático."
+  },
+  {
+   "id": "2e923c288fa9",
+   "alcance": "visual-prompt-forge, fallo 7",
+   "enunciado": "Si la generación está cerca, se retoca en lugar de gastar créditos persiguiendo la perfección en prompt."
+  },
+  {
+   "id": "92829af6bbe1",
+   "alcance": "visual-prompt-forge, general",
+   "enunciado": "La generación es una etapa del pipeline y no debe intentar ser el pipeline entero."
+  },
+  {
+   "id": "bd5599a67dfe",
+   "alcance": "visual-prompt-forge, iteración",
+   "enunciado": "Se deja de iterar un prompt tras 5+ re-rolls sin mejora (cambiar shot o generador), al retocar palabras sueltas sin avance (pasar a imagen-a-imagen o post) o cuando la imagen está al 80% y el resto es editorial."
+  },
+  {
+   "id": "af9e1fa061b0",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "Al aplicar un fix se hace la edición más estrecha posible y se dejan byte-idénticas las demás capas; reescribir lo que la crítica no pidió es deriva."
+  },
+  {
+   "id": "ee6042a51f7b",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "Con el mismo shots.json, brand-lock y crítica, la revisión debe producir el mismo prompt revisado, sin marcas de hora ni orden aleatorio."
+  },
+  {
+   "id": "38cd30bcd8e4",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "En la revisión se reaplica la anatomía de cinco capas y el mismo adaptador de la corrida original."
+  },
+  {
+   "id": "f0297f46c4ad",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "En los shots REVISE se ramifica por fix_type: prompt-level se recompone con el fix; re-roll se re-emite idéntico anotado para tomar 2-3 muestras; post-level no se re-emite."
+  },
+  {
+   "id": "971fa812a626",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "En modo revisión, ante un REJECT se detiene: se listan los shots rechazados con lo que dijo el crítico y se pregunta al usuario cómo proceder (cambiar spec, brand-lock o generador)."
+  },
+  {
+   "id": "98058168fdff",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "La revisión se escribe en output/prompts/round-{N+1}/revised-{generator}.txt solo con los shots revisados, anotando cada cambio y su issue, y se añade la ronda a run.json."
+  },
+  {
+   "id": "4d5f8d53f96a",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "Tras revisar se informa qué shots se revisaron, cuáles solo requieren post, cuáles se rechazaron y cuáles ya eran ACCEPT; luego se re-genera y se vuelve a criticar."
+  },
+  {
+   "id": "8f4d6df0df19",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "Un shot con todos sus issues post-level no recibe prompt nuevo y su id se registra en post_only_shots de la nueva ronda en run.json, no solo en el chat."
+  },
+  {
+   "id": "b08b9722359b",
+   "alcance": "visual-prompt-forge, modos de fallo",
+   "enunciado": "Explicación: el documento de modos de fallo indica qué corregir a nivel de prompt y qué aceptar como trabajo editorial cuando la imagen no coincide con el storyboard."
+  },
+  {
+   "id": "35bde05763df",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar un shot se edita solo su especificación sin afectar a los demás."
   }
  ]
 }
