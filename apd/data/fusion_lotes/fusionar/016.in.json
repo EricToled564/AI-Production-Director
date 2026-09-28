@@ -1,0 +1,1102 @@
+{
+ "paso": "fusionar",
+ "instrucciones": "Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:\n- Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.\n- No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal\n  como aparecen. Escribe en español; los términos y frases de prompt que deben ir en inglés se dejan en inglés.\n- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado. El alcance lo\n  dicen el documento y el encabezado de cada miembro (campo ubicaciones): consérvalo en el texto fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"texto\": \"registro fusionado\", \"cobertura\": [{\"id\": \"...\", \"elementos\": [\"cada exigencia del\nmiembro y dónde quedó en el texto\"]}]}\nDevuelve JSON {\"fusiones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0560.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Midjourney: usar --sref con imagen de estilo cuando existe ancla de estilo.",
+   "miembros": [
+    {
+     "id": "1851a970dcf4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 6. Style references"
+      }
+     ],
+     "texto": "[Consistency Locks › Lock 6. Style references] When the storyboard has a distinctive visual style (specific film stock, specific lighting school, specific color theory), use a style reference image:\n- Midjourney: `--sref {url}`\n- Ideogram: style reference parameter\n- Flux: not directly supported; bake style language into prompt instead"
+    },
+    {
+     "id": "525f0d2ef65f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+      }
+     ],
+     "texto": "[Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)] Param: `--sref` · Values: image URL · Default to use: use when style anchor exists · Notes: Style reference"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0561.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Aurora parcheado: --ref-role location/prop/style no altera P/O ni aplica identity block; solo avisa si hay tags P/O.",
+   "miembros": [
+    {
+     "id": "599b19492a91",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 10. **`--ref-role location/prop/style` no altera P/O** y solo avisa si los refs traen tags\n    P/O. Alternativa descartada: tratar esos roles como `character`. Se descartó porque el\n    identity block de U7 no tiene sentido para una placa o un prop."
+    },
+    {
+     "id": "dc133f52b4e0",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] `--ref-role`: `location` / `prop` / `style` · Descriptores P/O en MAIN: permitidos (WARN si además hay tags P/O) · Identity block: no aplica · Cuándo: refs que no son de persona; L/PR/S se rigen por sus tags"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0562.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Etiqueta [A PRUEBA]: inferencia sin fuente textual, prioridad 4, nunca bloquea.",
+   "miembros": [
+    {
+     "id": "6083c9df0a1e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[A PRUEBA]` · Significado: Inferencia desde reglas vecinas o física; sin fuente textual · Prioridad en la base: 4, nunca bloquea"
+    },
+    {
+     "id": "d003cedaa0a9",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen] [A PRUEBA] inferencia; prioridad 4, nunca bloquea"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0563.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Etiqueta [CAMPO: url]: inferencia confirmada en foros/tutoriales, sin ejercicio propio.",
+   "miembros": [
+    {
+     "id": "72afba5b3a9d",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen] [CAMPO: url] confirmada en foros o tutoriales, sin ejercicio propio"
+    },
+    {
+     "id": "ac1ab09cfe80",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[CAMPO: url]` · Significado: Inferencia confirmada por casos de uso reales, foros o tutoriales; todavía sin ejercicio propio · Prioridad en la base: 4, se muestra como recomendada"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0564.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Etiqueta [CANONICA fecha]: ejercicio real hecho y template registrado.",
+   "miembros": [
+    {
+     "id": "839a72690d18",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen] [CANONICA fecha] ejercicio real hecho y template registrado"
+    },
+    {
+     "id": "b07822ecf676",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[CANONICA 2026-MM-DD]` · Significado: Ejercicio real hecho, template registrado en el archivo · Prioridad en la base: 1 dentro de su familia"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0565.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Etiqueta [FUENTE: skill/archivo §sección]: textual en un skill instalado, prioridad del skill.",
+   "miembros": [
+    {
+     "id": "0656117870c9",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen] [FUENTE: skill/archivo §sección] textual en un skill instalado; prioridad del skill"
+    },
+    {
+     "id": "88eee8b78a31",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[FUENTE: skill/archivo.md §sección]` · Significado: La regla está textual o casi textual en un skill instalado · Prioridad en la base: la del skill"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0566.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Etiqueta [REFUTADA: url]: contradicha por el campo, se conserva para no volver a inferirla.",
+   "miembros": [
+    {
+     "id": "151d0f1f3ffe",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Etiquetas de origen] [REFUTADA: url] contradicha por evidencia; se conserva para no volver a inferirla"
+    },
+    {
+     "id": "44544303883a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen] Etiqueta: `[REFUTADA: url]` · Significado: La investigación de campo la contradijo; se conserva para no volver a inferirla · Prioridad en la base: no se sirve"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0567.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 01 agua en superficie cubre wakeboarding, surf, jet ski, remo.",
+   "miembros": [
+    {
+     "id": "47113676d0c8",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 01 · Familia: Agua en superficie · Cubre: wakeboarding, surf, jet ski, remo · Tipo de acción D2: C, B · Estado: Borrador con etiquetas; investigación de campo en curso"
+    },
+    {
+     "id": "96ccbd198f5d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 01 · Archivo: `01-agua-superficie.md` · Cubre: wakeboarding, surf, jet ski, remo, esquí acuático"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0568.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 02 ruptura de superficie cubre clavado, nadador emergiendo, split-level.",
+   "miembros": [
+    {
+     "id": "26b0746746e7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 02 · Archivo: `02-agua-ruptura.md` · Cubre: clavado entrando, nadador emergiendo, salto de ballena, split-level"
+    },
+    {
+     "id": "fa52867e0459",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 02 · Familia: Ruptura de superficie · Cubre: clavado entrando, nadador emergiendo, split-level · Tipo de acción D2: B · Estado: Borrador con etiquetas; investigación de campo en curso"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0569.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 03 subacuático cubre buceador en cenote, apnea, nado bajo el agua.",
+   "miembros": [
+    {
+     "id": "2f8c839bf2ed",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 03 · Familia: Subacuático · Cubre: buceador en cenote, apnea, fauna · Tipo de acción D2: A, C, B · Estado: Borrador con etiquetas; investigación de campo en curso"
+    },
+    {
+     "id": "5f95282c6724",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 03 · Archivo: `03-subacuatico.md` · Cubre: buceador en cenote, nadador bajo el agua, apnea"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0570.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 04 objeto balístico cubre pelota de tenis, balón, gota, flecha.",
+   "miembros": [
+    {
+     "id": "20a19ca42e59",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 04 · Archivo: `04-objeto-balistico.md` · Cubre: pelota de tenis, balón, gota, flecha, chispa"
+    },
+    {
+     "id": "82de17d96a7d",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 04 · Familia: Objeto balístico · Cubre: pelota de tenis, balón, gota, flecha · Tipo de acción D2: B, C · Estado: Borrador con etiquetas; investigación de campo en curso"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0571.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 05 vehículo cubre auto, moto, bici, tren, dron y extiende race-and-speed.",
+   "miembros": [
+    {
+     "id": "641a98b19e0e",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 05 · Familia: Vehículo · Cubre: auto, moto, bici, tren, dron; extiende race-and-speed · Tipo de acción D2: C · Estado: Borrador con etiquetas; investigación de campo en curso"
+    },
+    {
+     "id": "70fb8b034221",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 05 · Archivo: `05-vehiculo.md` · Cubre: auto de carreras, moto, bici, tren, dron; extiende race-and-speed"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0572.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 06 cuerpo en esfuerzo cubre corredor en la cinta, salto, golpe.",
+   "miembros": [
+    {
+     "id": "25be38b9daad",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 06 · Familia: Cuerpo en esfuerzo · Cubre: corredor rompiendo la cinta, salto, golpe · Tipo de acción D2: B, C · Estado: Borrador con etiquetas; investigación de campo en curso"
+    },
+    {
+     "id": "723bfb8c466b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 06 · Archivo: `06-cuerpo-en-esfuerzo.md` · Cubre: corredor rompiendo la cinta, salto, golpe, levantamiento"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0573.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 07 luz y clima cubre rayo, amanecer, lluvia, polvo, niebla.",
+   "miembros": [
+    {
+     "id": "8d73f7c0e0c9",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 07 · Archivo: `07-luz-y-clima.md` · Cubre: rayo, amanecer, lluvia, polvo, niebla, nieve"
+    },
+    {
+     "id": "d5e934b24828",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 07 · Familia: Luz y clima · Cubre: rayo, amanecer, lluvia, niebla, polvo · Tipo de acción D2: D · Estado: Borrador con etiquetas; investigación de campo en curso"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0574.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 08 multitud anónima cubre estadio, manifestación, calle llena.",
+   "miembros": [
+    {
+     "id": "54f5834dcdd0",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 08 · Familia: Multitud anónima · Cubre: estadio, manifestación, calle llena · Tipo de acción D2: F, C · Estado: Borrador con etiquetas; investigación de campo en curso"
+    },
+    {
+     "id": "a944b783ed7a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 08 · Archivo: `08-multitud-anonima.md` · Cubre: estadio, manifestación, calle llena, público"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0575.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Familia 09 grupo ensamble cubre quinteto, K-pop, equipo titular.",
+   "miembros": [
+    {
+     "id": "a27e997415ce",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+      }
+     ],
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas › Archivos] #: 09 · Archivo: `09-grupo-ensamble.md` · Cubre: quinteto, grupo de K-pop, equipo titular, familia"
+    },
+    {
+     "id": "ea04644bcc71",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] #: 09 · Familia: Grupo ensamble · Cubre: quinteto, K-pop, equipo titular · Tipo de acción D2: A, E, B · Estado: Borrador con etiquetas; investigación de campo en curso"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0576.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Si el sujeto cruza la superficie del agua, cargar además 02-agua-ruptura.md; desde el régimen 01 y desde el 03.",
+   "miembros": [
+    {
+     "id": "52ea4d664836",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 1. Cuándo cargar"
+      }
+     ],
+     "texto": "[Agua en superficie › 1. Cuándo cargar] - Si el sujeto cruza la superficie hacia adentro o hacia afuera, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+    },
+    {
+     "id": "9a3422b77fda",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 1. Cuándo cargar"
+      }
+     ],
+     "texto": "[Subacuático › 1. Cuándo cargar] - Si el cuadro incluye la superficie desde abajo, este archivo manda; si la cruza, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0577.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Nueve familias de régimen físico con esqueleto de nueve secciones y cada regla con etiqueta de origen (decisión 7).",
+   "miembros": [
+    {
+     "id": "6a03dcb6707c",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "encabezado": "Decisiones de dirección — 2026-09-25"
+      }
+     ],
+     "texto": "[Decisiones de dirección — 2026-09-25] #: 7 · Decisión: Familias de régimen físico · Opción elegida: Nueve familias con esqueleto de nueve secciones: agua en superficie, ruptura de superficie, subacuático, objeto balístico, vehículo, cuerpo en esfuerzo, luz y clima, multitud anónima, grupo ensamble · Consecuencia operativa: Cada regla etiquetada FUENTE o A PRUEBA"
+    },
+    {
+     "id": "f4dd9dcd3a0e",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan] Los huecos detectados se cierran con nueve familias por régimen físico, no por caso. Cada familia es un archivo en el repo, .claude/rules/regimenes/, con el mismo esqueleto de nueve secciones, y cada regla lleva etiqueta de origen. Decisiones 1, 7 y 8 del 2026-09-25."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0578.1",
+   "relacion": "misma_regla",
+   "regla_comun": "La dimensión caso de la base se amplía con LUGAR, EDIF, ANIMAL y OBJ además de T1-T5 y PROD.",
+   "miembros": [
+    {
+     "id": "012c16c075c6",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí] Consecuencia para la base de reglas: la dimensión tarea usa los códigos de subproceso E0.1 a POST.2, y la dimensión caso se amplía con LUGAR, EDIF, ANIMAL y OBJ además de T1 a T5 y PROD. Un brief de génesis de landmark filtra por E5.2 + EDIF y trae consigo las reglas de grounding; un brief de rostro filtra por E5.2 + T1 y trae el template de SW30."
+    },
+    {
+     "id": "6bf2d54e2024",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase] Hueco detectado en la base de reglas. La taxonomía de casos actual solo tiene T1 y T2 para personas y PROD para todo lo que no es persona. Lugar genérico, edificación o landmark, animal y objeto no tienen código propio, y las reglas de grounding, que cambian el modelo obligatorio, quedan mezcladas con las de producto. La dimensión caso de la base debe ampliarse con LUGAR, EDIF, ANIMAL y OBJ antes de clasificar."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0579.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Forge, modo revisión: re-emitir prompts solo de los shots fallidos; los ACCEPT se omiten.",
+   "miembros": [
+    {
+     "id": "24543d53d0c4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow] 2. Skip any with `verdict: ACCEPT`. Those are done."
+    },
+    {
+     "id": "d6fe2178a9ec",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop)"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Revision mode (closing the QA loop)] This is what `visual-asset-critic`'s structured output is for. When the user hands you `shots.json` plus one or more `critique.json` files (the machine-readable verdict the critic writes), don't re-forge the whole storyboard, re-emit prompts for **only the shots that failed**, with the fix already applied."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0580.1",
+   "relacion": "misma_regla",
+   "regla_comun": "El ritmo de montaje es escalonado (largo, más corto, más corto, pausa, impacto), no uniforme.",
+   "miembros": [
+    {
+     "id": "1e04bc9bd329",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 12. Rhythm ladder"
+      }
+     ],
+     "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder] Drama rhythm is not uniform. It is stepped."
+    },
+    {
+     "id": "5181961fc660",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 3. Editing rhythm"
+      }
+     ],
+     "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 3. Editing rhythm] Not random mincing. A rhythmic staircase.\nlong - shorter - shorter - pause - impact"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0582.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Transiciones delegables: 'choose the most suitable from [natural cut / occlusion mask / match cut]'; vocabulario general de video y Seedance 2.5.",
+   "miembros": [
+    {
+     "id": "cdfd4771e92b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions"
+      }
+     ],
+     "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] - Transitions can be **delegated**: \"From [natural cut / occlusion mask / ink-wash / match cut], choose the one that best fits the style of this film.\""
+    },
+    {
+     "id": "fe07cbc1c294",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/camera-lighting-vocabulary.md",
+       "encabezado": "Camera, lighting, color, sound vocabulary › 11. Transition vocabulary"
+      }
+     ],
+     "texto": "[Camera, lighting, color, sound vocabulary › 11. Transition vocabulary] Rules of use. Name the transition and the exact moment it fires. One transition type per cut. When the choice is open, delegate: \"choose the most suitable from [natural cut / occlusion mask / match cut] for the style of this film.\""
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0583.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Hero photoreal sin rostro: Flux 2 Pro o Midjourney v7 vía forge; en D8 de anclas y en el régimen 05 vehículo.",
+   "miembros": [
+    {
+     "id": "221ccec74412",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación] Situación: Hero photoreal sin rostro, cuando la calidad de piel no es el problema · Modelo: Flux 2 Pro o Midjourney v7 vía adaptador de forge · Por qué según la fuente: failure-modes F1: usar Flux 2 Pro o MJ v7 para hero shots en lugar de modelos baratos · Resolución y costo: Seed lock a nivel storyboard donde el modelo lo soporte"
+    },
+    {
+     "id": "471ee1a77387",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 6. Modelo recomendado] - Flux 2 Pro o Midjourney v7 vía adaptador de forge para el hero photoreal sin rostro. [FUENTE: visual-prompt-forge/references/failure-modes.md F1]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0584.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Generación barata masiva o exploración: Nano Banana 2 Lite o gpt-image-1-mini.",
+   "miembros": [
+    {
+     "id": "9924342e5b4e",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Дешёвая массовая генерация · Модель: **Nano Banana 2 Lite** или **gpt-image-1-mini**"
+    },
+    {
+     "id": "efb67434b561",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación] Situación: Serie de muchas variantes o exploración · Modelo: NB2 Lite o gpt-image-1-mini · Por qué según la fuente: Reconocimiento barato, final caro · Resolución y costo: Lite solo 1K"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0585.1",
+   "relacion": "misma_regla",
+   "regla_comun": "gpt-image-1-mini solo para batches baratos/exploratorios de bajo riesgo.",
+   "miembros": [
+    {
+     "id": "196241ce7d2a",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image"
+      }
+     ],
+     "texto": "[GPT Image 2 — Specific Rules › Migration from Older GPT-Image] - `gpt-image-1-mini` — только если главное снизить цену batch'а на низкорисковых задачах."
+    },
+    {
+     "id": "199550f68a8f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: gpt-image-1-mini · Цена: дешёвый · Заметки: Высокообъёмная exploratory-генерация"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0586.1",
+   "relacion": "misma_regla",
+   "regla_comun": "NB2 Lite (gemini-3.1-flash-lite-image): ~$0.034, ~4 s, solo 1K; para borradores y batches masivos.",
+   "miembros": [
+    {
+     "id": "c79557184927",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)] Модель: Nano Banana 2 Lite · Цена: ~$0.034/img · Заметки: Только 1K, ~4 сек. Черновики и массовые батчи"
+    },
+    {
+     "id": "e890a2ef7bcb",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules"
+      }
+     ],
+     "texto": "[Nano Banana — Specific Rules] Тир: **NB2 Lite** · Model ID: `gemini-3.1-flash-lite-image` · Роль: Самая быстрая и дешёвая ($0.034, ~4 сек), только 1K. Черновики, массовые батчи"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0587.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Seedream para el pase de preview del storyboard: render barato de todos los shots para validar composición antes del final.",
+   "miembros": [
+    {
+     "id": "04d2cb934664",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+      }
+     ],
+     "texto": "[Adapter: Seedream (4.5 / 4.0)] For storyboard work, Seedream is useful for the storyboard preview pass: render every shot quickly to validate composition before committing to higher-cost generation for finals."
+    },
+    {
+     "id": "2c1e53c3d03d",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › When Seedream is the right choice"
+      }
+     ],
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › When Seedream is the right choice] - **Storyboard preview pass**, render all shots quickly at low cost to validate composition before final pass"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0588.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Flux (adapter de forge) es el líder en fotorrealismo.",
+   "miembros": [
+    {
+     "id": "7c51cc112fa0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Adapters] File: `adapters/flux.md` · Generator: Flux 2 / Flux 1.1 Pro · Strength: Photorealism"
+    },
+    {
+     "id": "fcb3740f8d65",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+      }
+     ],
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)] Flux rewards natural-language prompts that read like a competent photographer briefing themselves. It interprets full sentences accurately and handles spatial relationships better than Midjourney. It's the photorealism leader as of Q2 2026, choose Flux over Midjourney when the brief calls for \"looks like a real photograph\" rather than \"looks designed.\""
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0589.1",
+   "relacion": "misma_regla",
+   "regla_comun": "GPT Image (adapter de forge): precisión de prompt, razonamiento espacial y composición compleja.",
+   "miembros": [
+    {
+     "id": "62061e628a1b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Adapters] File: `adapters/gpt-image.md` · Generator: GPT Image 1.5 / 2 · Strength: Prompt accuracy, spatial reasoning"
+    },
+    {
+     "id": "d982040950c8",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "encabezado": "Adapter: GPT Image (1.5 / 2)"
+      }
+     ],
+     "texto": "[Adapter: GPT Image (1.5 / 2)] GPT Image rewards paragraph-form prompts with explicit spatial reasoning and complex composition descriptions. It interprets relational language (\"to the left of\", \"behind\", \"in the foreground\") more accurately than any other generator. Choose GPT Image when the brief requires precise scene composition, multiple objects, or accurate text rendering."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0590.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Nano Banana (adapter de forge): fidelidad de edición, inpainting y variaciones.",
+   "miembros": [
+    {
+     "id": "3bcde755323c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+      }
+     ],
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image)] Google's Nano Banana model (`gemini-2.5-flash-image`) is the edit-and-iterate champion. Where other generators are best for first-frame creation, Nano Banana excels at variations, inpainting, and reference-based modification. The 2026 production pattern is to generate hero frames in Midjourney or Flux, then use Nano Banana for variants."
+    },
+    {
+     "id": "8d2c30ca935b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Adapters] File: `adapters/nano-banana.md` · Generator: Gemini 2.5 Flash Image · Strength: Edit fidelity, inpainting"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0591.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Nano Banana en storyboard: generar el hero en MJ/Flux y usar NB para muchas variantes de un mismo concepto.",
+   "miembros": [
+    {
+     "id": "25092b4d1d7f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+      }
+     ],
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow] The pattern Nano Banana enables, and the reason it's worth including in storyboard work:\n1. Generate hero shot in Midjourney or Flux (one prompt → one image)\n2. Feed that image to Nano Banana with variation prompts\n3. Get 4–8 variants of the same shot for editorial selection\n4. Composite text on the chosen variant"
+    },
+    {
+     "id": "b020514fae80",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+      }
+     ],
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image)] For storyboard work, Nano Banana is the right choice when you need **many variations of a single concept** or you're feeding generated images back through for refinement."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0592.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Skill image, paso 1: decidir el modelo (Nano Banana o GPT Image 2) antes de escribir el prompt, confirmando el nombrado o eligiéndolo por la tabla de models.md.",
+   "miembros": [
+    {
+     "id": "61142c6f1bcf",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)"
+      }
+     ],
+     "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)] If the user named a model — confirm and proceed. If not — pick using the table in `models.md`, then state your choice in the output header."
+    },
+    {
+     "id": "9411145139ed",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)"
+      }
+     ],
+     "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)] Decide: Nano Banana (NB2 or NBP) or GPT Image 2. The choice changes the prompt syntax fundamentally — natural-language paragraphs vs. labeled 5-slot template, quality settings, which features exist (image grounding only on NB, EXACT TEXT discipline only on GPT Image, etc.)."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0593.1",
+   "relacion": "misma_regla",
+   "regla_comun": "run_id = timestamp UTC compacto + guion + 8 hex (patrón ^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$).",
+   "miembros": [
+    {
+     "id": "0d9597261005",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 9. Write run.json"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 9. Write run.json] `run_id` is the compact UTC timestamp, a dash, then 8 hex characters, e.g.\n`20260730T142300Z-9f2c1ab4`. The hex suffix is what keeps two operators starting a run\nin the same second from colliding. Set `brand_lock_configured: false` when the snapshot\nis an unfilled template."
+    },
+    {
+     "id": "4e7474b5eb76",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/run.schema.json",
+       "encabezado": "run.schema.json › run_id"
+      }
+     ],
+     "texto": "[run.schema.json › run_id] run_id: type=\"string\"; pattern=\"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\"; description=\"UTC compact timestamp, a dash, then 8 hex characters. Example: 20260730T142300Z-9f2c1ab4. The hex suffix distinguishes two runs started in the same second by different operators.\"; requerido"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0594.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots[].environment_ref por defecto 'series_lock.environment'; override solo con razón.",
+   "miembros": [
+    {
+     "id": "090df6139af8",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].environment_ref"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].environment_ref] shots[].environment_ref: type=\"string\"; description=\"Default 'series_lock.environment'. Override only with reason.\"; opcional"
+    },
+    {
+     "id": "390996b395ff",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `environment_ref`, references series-lock language, default `series_lock.environment`"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0595.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots[].on_screen_text: null, un id de overlay o un array de ids.",
+   "miembros": [
+    {
+     "id": "0fd8a04eb14d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].on_screen_text"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].on_screen_text] shots[].on_screen_text: description=\"Overlay id, array of overlay ids for a shot carrying several, or null. Added the array form in 1.2: text-overlays.json has always allowed many overlays per shot, and a single string could not represent that.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}, {\"type\": \"array\", \"minItems\": 1, \"uniqueItems\": true, \"items\": {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}}]; opcional"
+    },
+    {
+     "id": "89055c0c78e9",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `on_screen_text`, null, one text-overlay id, OR an array of ids when a shot carries\n  more than one overlay"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0596.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Cada shot lleva un rationale de una frase (por qué este shot en este momento).",
+   "miembros": [
+    {
+     "id": "22d79d2aff6b",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 7. Write rationale"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 7. Write rationale] Every shot has a one-sentence rationale. Why this beat. Why this framing. Why this on-screen text. This is the audit trail. Do not skip it."
+    },
+    {
+     "id": "dac8e07a007a",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `rationale`, one sentence explaining *why this shot at this moment*"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0597.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots[].subject estructurado, no poético: quién/qué, haciendo qué, nota.",
+   "miembros": [
+    {
+     "id": "05c9134d6182",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `subject`, what's in frame, structured"
+    },
+    {
+     "id": "11537d28574e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › Subject description"
+      }
+     ],
+     "texto": "[Shot Grammar › Subject description] Structured, not poetic. Pattern:\n[who/what], [doing what], [emotional or compositional note]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0598.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "generators[].id con patrón ^[a-z0-9][a-z0-9-]*$; en run.schema y en capabilities.schema (donde además debe coincidir con el adapter).",
+   "miembros": [
+    {
+     "id": "86a2ff3a5b9d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/run.schema.json",
+       "encabezado": "run.schema.json › generators[].id"
+      }
+     ],
+     "texto": "[run.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; requerido"
+    },
+    {
+     "id": "9df1a1b16279",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+       "encabezado": "capabilities.schema.json › generators[].id"
+      }
+     ],
+     "texto": "[capabilities.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; description=\"Must match an adapter .md filename (without extension).\"; requerido"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0599.1",
+   "relacion": "misma_regla",
+   "regla_comun": "validate_shots.py verifica esquema y reglas cruzadas de shots.json/text-overlays.json (tiempos, huecos, solapes, referencias de overlays, colores en paleta).",
+   "miembros": [
+    {
+     "id": "6f9484783bb3",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      }
+     ],
+     "texto": "[Tools › Project checks › `validate_shots.py`] Validates `shots.json` and `text-overlays.json` as instances, plus every cross-field and\ncross-file rule JSON Schema cannot express: `end` after `start`, no gaps or overlaps, span\nmatching `project.duration_s`, overlay references resolving in both directions, every overlay\nreachable from some shot, overlay timing inside its shot window, and every overlay color\npresent in the brand-lock palette."
+    },
+    {
+     "id": "70b9273f8c5e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Quality bar"
+      }
+     ],
+     "texto": "[Storyboard Architect › Quality bar] `validate_shots.py` checks every mechanical rule that used to live here as a checkbox,\nbecause a checkbox is a rule enforced by remembering to look:\n- shots.json and text-overlays.json validate against their schemas\n- `end` is after `start`, no duplicate ids, no gaps, no overlaps, and the covered span\n  matches `project.duration_s` within 0.1s\n- every `on_screen_text` resolves to an overlay, every `overlay.shot_id` resolves to a\n  shot, and every overlay is reachable from at least one shot\n- every overlay's timing sits inside its shot window, and exit is after enter\n- every overlay color appears in the brand-lock palette\n- `brand_lock_ref` resolves on disk"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0600.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Storyboard Architect: usar el vocabulario controlado de shot-grammar.md y los nombres exactos de campo en shots.json.",
+   "miembros": [
+    {
+     "id": "4ba0e60c1323",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar"
+      }
+     ],
+     "texto": "[Shot Grammar] Controlled vocabulary. Use these exact terms in `shots.json`. Generators interpret loose language inconsistently, locked vocabulary survives translation."
+    },
+    {
+     "id": "c5ae07f81553",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] Read `references/shot-grammar.md` for controlled vocabulary. The field names below are\nthe schema's field names. `templates/shots.schema.json` sets `additionalProperties:\nfalse`, so a near-miss like `environment` instead of `environment_ref` is a validation\nfailure, not a synonym."
+    }
+   ]
+  }
+ ]
+}
