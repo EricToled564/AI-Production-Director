@@ -1,0 +1,559 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "ritmo_montaje",
+ "descripcion_tema": "ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "2aaab06535c0",
+   "alcance": "AI Video Storyboard Generator, Brand Story de 60 s",
+   "enunciado": "Ejemplo: para una historia de marca de 60 segundos, usa entre diez y doce planos de ritmo atmosférico y tomas más sostenidas."
+  },
+  {
+   "id": "369796eba68c",
+   "alcance": "AI Video Storyboard Generator, TikTok Hook de 15 s",
+   "enunciado": "Ejemplo: para un TikTok Hook de 15 segundos, usa tres planos con cortes rápidos y una sola idea."
+  },
+  {
+   "id": "6f659bc8394b",
+   "alcance": "Brand Lock > Motion language",
+   "enunciado": "Define en un párrafo cómo se comporta el movimiento en el contenido de la marca."
+  },
+  {
+   "id": "d78b38ce1479",
+   "alcance": "Brand Lock > Motion language",
+   "enunciado": "Ejemplo: usa movimientos de cámara mínimos y deliberados, planos estáticos o push-in lentos, cortes en acción y texto sin rebotes ni oscilaciones."
+  },
+  {
+   "id": "7a3da1a6dc8e",
+   "alcance": "Brand Lock de Acme SaaS (ejemplo), lenguaje de movimiento",
+   "enunciado": "Limitar el movimiento a fundidos sutiles de UI de 200 ms, cortes en beats lógicos, animaciones lineales de datos y push-in lentos en planos hero, sin rebotes, cámara en mano, whip pans ni transiciones salvo corte directo."
+  },
+  {
+   "id": "f5a87d7a6970",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, lenguaje de movimiento",
+   "enunciado": "Usar movimiento mínimo y pausado, planos estáticos o push-ins lentos, cortes sobre acción y tipografía fija, sin cortes rápidos, whip pans ni texto que rebote."
+  },
+  {
+   "id": "22101f9544cf",
+   "alcance": "E3.4 dramaturgy §9-§12",
+   "enunciado": "E3.4: se definen presión ambiental, evolución de color y escalera de ritmo, con una sola presión ambiental por escena."
+  },
+  {
+   "id": "ff4013f709f3",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica la fórmula de corte en Seedance: tipo de transición + restricciones básicas + lógica del corte."
+  },
+  {
+   "id": "4ee187e1bff9",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige añadir siempre 'prohibit rigid cutting, prohibit objects appearing out of thin air' en toda transición."
+  },
+  {
+   "id": "f8c6cdcbc4d5",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige condicionar en orden los efectos que no deben aparecer antes de tiempo, indicando el momento y el disparador."
+  },
+  {
+   "id": "cdfd4771e92b",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Permite delegar la elección de transición al modelo entre una lista de opciones acordes al estilo."
+  },
+  {
+   "id": "32fce6eecf44",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería, postproducción",
+   "enunciado": "Se deben usar disolvencias de 0,3-0,4 s entre los planos 1→2, 2→3 y 4→5, y cortes duros entre 3→4 y 5→6."
+  },
+  {
+   "id": "ab710b2cc6af",
+   "alcance": "anuncios con producto",
+   "enunciado": "Patrón Drama de producto comercial: setup lifestyle, revelación del producto, textura macro, reacción humana, momento de uso, hero shot."
+  },
+  {
+   "id": "43b2aa470e49",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: lenguaje de movimiento estático por defecto, solo push o pull lentos, cortes en acción, type-on para énfasis y transiciones de corte duro o disolvencia de 6 frames."
+  },
+  {
+   "id": "c025796d7b5f",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: movimiento mínimo con estático por defecto, solo push/pull lentos, cortes en acción y transiciones de corte duro o disolvencia de 6 frames, sin wipes ni zooms."
+  },
+  {
+   "id": "7fad2bb01f64",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "En tipografía cinética (patrón Content Spiral) el ritmo acelera hacia dentro, cada zoom 1.5-2x más rápido que el anterior, y el regreso a la frase general es corte duro."
+  },
+  {
+   "id": "fa499e797088",
+   "alcance": "capa 3; dirección",
+   "enunciado": "La capa dramatúrgica de video debe aportar fórmula de escena, ley de tres detalles, regla de seis de Murch, blocking y ritmo, con autoridad sobre dramaturgia y lenguaje de cámara."
+  },
+  {
+   "id": "08177c2f600f",
+   "alcance": "carreras",
+   "enunciado": "Boardear primero el sonido: duración de panel ligada a las RPM, colapso de ámbares, arruga del slick como única expansión temporal, panel íntimo en el pico, sin música y sonido adelantado 2-3 frames."
+  },
+  {
+   "id": "7ad46b91fab7",
+   "alcance": "carreras",
+   "enunciado": "Ley 4: el corte va ligado al beat: volumen de audio = número de planos, silencio = un panel sostenido, estallido = ráfaga de micropaneles."
+  },
+  {
+   "id": "6f2375c12efb",
+   "alcance": "carreras",
+   "enunciado": "Rotar entre las cinco familias de plano a lo largo de 30 s; la velocidad se lee por cambio de perspectiva, no por tomas largas."
+  },
+  {
+   "id": "3ef02bdb30a9",
+   "alcance": "carreras 30 s",
+   "enunciado": "Estructura de 30 s en cinco fases (ritual, staging, launch, contest, release) con ~20-26 paneles y cortes que se aceleran hacia el verde."
+  },
+  {
+   "id": "2f9b0cf08157",
+   "alcance": "carreras 30 s",
+   "enunciado": "Fase Launch 0:11-0:19: ráfaga de 6-9 keyframes de 8 a 4 frames con POV bajo, J-cut y un speed-ramp en la arruga."
+  },
+  {
+   "id": "916cdb6dded3",
+   "alcance": "carreras 30 s",
+   "enunciado": "Planificar el board como escalera descendente de duraciones rota solo por el panel sostenido previo a la salida y el posterior a la meta; la salida siempre en ráfaga de 6-9 paneles y ráfagas separadas por un panel quieto."
+  },
+  {
+   "id": "5c84bb9396e2",
+   "alcance": "carreras drag",
+   "enunciado": "La carrera se boardea como liturgia: un keyframe ancla por beat en orden, cortes que se acortan hacia el verde, y la reacción asignada a la máquina (aguja, slick, morro) en vez de un rostro."
+  },
+  {
+   "id": "3b276855c58f",
+   "alcance": "carreras drag",
+   "enunciado": "Para un anuncio usar el árbol Sportsman con tres ámbares secuenciales (tres keyframes) y cortar en el último ámbar, no en el verde, para leer anticipación."
+  },
+  {
+   "id": "6b73f204291a",
+   "alcance": "carreras drag",
+   "enunciado": "Receta de luz: el Christmas Tree como único key y reloj de la escena en tres etapas (azules, ámbares, verde) con match cut de formas redondas."
+  },
+  {
+   "id": "9571f26cb040",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Nunca escribir 'motion': escribir el artefacto que deja el movimiento, y nunca boardear un panel neutro sin vector hacia adelante."
+  },
+  {
+   "id": "4019e72307dc",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §1",
+   "enunciado": "Ritmo de montaje: cuánto vive cada shot, dónde cae la pausa y dónde muerde el corte."
+  },
+  {
+   "id": "9a54a87bcb34",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §10 capa 3",
+   "enunciado": "Ejemplo: montaje de 8-10 s con 4 s gran plano, 2 s medio, 1 s ojos, 0,5 s macro, 0,33 s mano, 0,25 s detalle, 2 s silencio y 1 s decisión."
+  },
+  {
+   "id": "5181961fc660",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §10 capa 3",
+   "enunciado": "El ritmo de montaje es una escalera: largo, más corto, más corto, pausa, impacto; no un picado aleatorio."
+  },
+  {
+   "id": "364b4c6d88f3",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §10 capa 3",
+   "enunciado": "La pausa antes del impacto importa más que la velocidad de los cortes; sin ella la velocidad es picadora visual."
+  },
+  {
+   "id": "0d4eafb1b07b",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Campo Duración: 0,5 s, 1 s, 3 s."
+  },
+  {
+   "id": "c9816ddefd7c",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Campo Tipo de corte: match cut, smash cut, corte en acción, J-cut o L-cut."
+  },
+  {
+   "id": "f0f0a591c85f",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12",
+   "enunciado": "Siempre se inserta al menos una pausa antes del corte más grande."
+  },
+  {
+   "id": "2058fdb4f3ed",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12 ansiedad",
+   "enunciado": "Ejemplo: construcción de ansiedad 2, 1, 1, 0,5, 0,5, 0,3 s, pausa, 1 s."
+  },
+  {
+   "id": "153cedf93bf6",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12 comercial",
+   "enunciado": "Ejemplo: arco de producto comercial 3, 2, 1,5, 1, 0,5 s (macro de producto) y 2 s (hero shot)."
+  },
+  {
+   "id": "1e04bc9bd329",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12 escalera de ritmo",
+   "enunciado": "El ritmo dramático no es uniforme, es escalonado."
+  },
+  {
+   "id": "4c8013c1b860",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12 impacto",
+   "enunciado": "Ejemplo: escena de impacto con pausa, 0,2 s de flash y 2 s de desenlace quieto."
+  },
+  {
+   "id": "9a084e6c802f",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §12 slow-burn",
+   "enunciado": "Ejemplo: escalera de drama lento 4, 4, 3, 2, 1 s, pausa, 2 s."
+  },
+  {
+   "id": "b956bde2a4ad",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §14 ejemplo culpa 30 s, capa 1",
+   "enunciado": "Ejemplo: aceleración 22-26 s, cortes cerrados de dedo, pantalla, ojo, respiración y reflejo en la ventana."
+  },
+  {
+   "id": "620a0746318f",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §14 ejemplo culpa 30 s, capa 3",
+   "enunciado": "Ejemplo: ritmo de los 10 s finales: 2 s dedo sobre Eliminar, 1 s rostro, 0,5 s pulgar, 0,5 s confirmación, 1 s ojos, 0,5 s toque, 3 s silencio y negro, 1,5 s reflejo."
+  },
+  {
+   "id": "35a01bb940b2",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Cortar por dinámica sin servir antes a emoción e historia produce un anuncio de TikTok sin sustancia."
+  },
+  {
+   "id": "780c5fe563dd",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 1 de Murch (51%): el corte honra la verdad emocional del momento."
+  },
+  {
+   "id": "9ab1a5c733ae",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 2 de Murch (23%): el corte avanza la historia o revela personaje."
+  },
+  {
+   "id": "dbc85ce7a572",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 3 de Murch (10%): el corte cae en un beat rítmico de la escena."
+  },
+  {
+   "id": "9bef5e08749b",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 4 de Murch (7%): el nuevo shot recibe naturalmente la mirada del espectador en el corte."
+  },
+  {
+   "id": "1ef882f739ef",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 5 de Murch (5%): el corte respeta el eje de dirección en pantalla."
+  },
+  {
+   "id": "607b92e422a6",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4",
+   "enunciado": "Criterio 6 de Murch (4%): el corte respeta la geometría real del lugar."
+  },
+  {
+   "id": "1e94ec70b4e8",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §4 Murch",
+   "enunciado": "Explicación: la regla de seis de Walter Murch ordena por prioridad dónde cortar, pesando cada criterio más que todos los inferiores juntos."
+  },
+  {
+   "id": "848281bb62ab",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §8",
+   "enunciado": "Antes de una secuencia de cortes rápidos se esboza la geografía en una frase (dirección del héroe, entrada de la amenaza, salida)."
+  },
+  {
+   "id": "68b423fc5dca",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §8",
+   "enunciado": "El montaje rápido debe seguir siendo legible sobre un mapa geométrico claro; whip-pans y cortes aleatorios sin geografía destruyen el drama."
+  },
+  {
+   "id": "9445d61c124d",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §8 claridad espacial",
+   "enunciado": "Aun en el caos, el espectador debe saber la geografía de la escena (principio de Spielberg)."
+  },
+  {
+   "id": "1723b3bf851c",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2 fallo toma continua",
+   "enunciado": "Si sale una toma continua en vez de montaje, se exige secuencia multi-shot con cortes duros visibles y ángulo y encuadre distintos por beat."
+  },
+  {
+   "id": "e2bde158b7cd",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2 montaje desordenado",
+   "enunciado": "Si el montaje rápido sale con cortes aleatorios, se exige acción legible por corte, cada corte con un detalle distinto y función visible."
+  },
+  {
+   "id": "c27e4cf6f1ae",
+   "alcance": "general, video",
+   "enunciado": "Ajustar estilo y ritmo a la gramática visual propia de cada género."
+  },
+  {
+   "id": "a470808acfcc",
+   "alcance": "género acción",
+   "enunciado": "Acción: claridad espacial ante todo, geografía establecida, dirección clara, inserts de impacto, wides entre close-ups y continuidad de mirada."
+  },
+  {
+   "id": "adf199219dc5",
+   "alcance": "género tragedia doméstica",
+   "enunciado": "Tragedia doméstica: ritmo de construcción lenta con planos de reacción más largos."
+  },
+  {
+   "id": "3e4d3130e095",
+   "alcance": "género videoclip",
+   "enunciado": "Videoclip: gestos repetidos, match cuts, fragmentos de performance, loops, secciones por color, cambios de lente agresivos, ritmo rápido marcado por el beat."
+  },
+  {
+   "id": "409b2ebf3b91",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3",
+   "enunciado": "El beat de desenlace o salida lleva 1-2 paneles sostenidos ~2 s y termina en consecuencia, no en explicación."
+  },
+  {
+   "id": "2715d9794fe2",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3",
+   "enunciado": "En un beat de contienda sostenida se alternan racimos de fragmentos con un detalle sostenido; nunca dos ráfagas seguidas."
+  },
+  {
+   "id": "1dc253c03621",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3",
+   "enunciado": "Un beat de lanzamiento o impacto se representa como micro-ráfaga de 3 a 9 paneles de 8 a 4 frames."
+  },
+  {
+   "id": "8da944f22af3",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3",
+   "enunciado": "Un beat de presión creciente lleva paneles sueltos escalonados, cada uno más cerrado y más corto."
+  },
+  {
+   "id": "31a9c3fe34ba",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3",
+   "enunciado": "Un beat de ritual o quietud lleva un solo panel héroe sostenido 1,5-2,5 s, sin subdividir."
+  },
+  {
+   "id": "a90ad78903b9",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3 escalera de densidad",
+   "enunciado": "La cantidad de paneles por beat sigue la sonoridad del audio: silencio un panel sostenido, golpe una ráfaga."
+  },
+  {
+   "id": "cc3da0bea732",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §3 regla de asignación",
+   "enunciado": "Un spot de 30 s lleva ~18-26 paneles en escalera descendente de duración, rota solo por una pausa previa al lanzamiento y un hold final."
+  },
+  {
+   "id": "7a9068b7bcb7",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §4",
+   "enunciado": "Especifica el streak-frame: todo el panel rayado con una sola forma legible sobreviviendo, como transición de látigo."
+  },
+  {
+   "id": "9e99b3b374e6",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §6 eje central",
+   "enunciado": "Se construye un panel simétrico de 'respiración' en el eje central y en el siguiente se rompe la simetría con el héroe adelantado; el par se usa una sola vez, en el lanzamiento."
+  },
+  {
+   "id": "90b696af3f95",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §8 tablero de ejemplo spot de carrera 30 s",
+   "enunciado": "Explicación: el panel sostenido previo es el más largo, el lanzamiento se expande en micro-ráfaga de 6-9 paneles, la arruga es el único tiempo expandido, ninguna ráfaga toca otra y se termina en consecuencia sostenida ~2 s."
+  },
+  {
+   "id": "31a240132816",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe justificar su lugar en la densidad: beat sostenido un panel, golpe una ráfaga; el tablero se lee como tacómetro acelerando en mudo."
+  },
+  {
+   "id": "461333ea35a5",
+   "alcance": "modo director",
+   "enunciado": "Referencia Edgar Wright: montaje guiado por sonido con match cuts en eventos sonoros."
+  },
+  {
+   "id": "28f819833c7e",
+   "alcance": "modo editor",
+   "enunciado": "Cada corte debe tener una función de plano clara."
+  },
+  {
+   "id": "df8a13aa8af1",
+   "alcance": "modo editor",
+   "enunciado": "Cerrar progresivamente el encuadre: wide, medium, close."
+  },
+  {
+   "id": "2f89daf08388",
+   "alcance": "modo editor",
+   "enunciado": "Contrastar velocidad y pausa."
+  },
+  {
+   "id": "ef537ffabd07",
+   "alcance": "modo editor",
+   "enunciado": "Densidad de beats por 5 s: drama emocional 3-4, narrativa estándar 4-7, montaje rápido 6-9."
+  },
+  {
+   "id": "61756e3ccc80",
+   "alcance": "modo editor",
+   "enunciado": "El montaje dinámico se construye con estructura, no con velocidad; cortes rápidos aleatorios producen sopa visual."
+  },
+  {
+   "id": "cd1192b23f97",
+   "alcance": "modo editor",
+   "enunciado": "Incluir un momento de silencio o quietud antes de un impacto mayor."
+  },
+  {
+   "id": "40a30b9dfdbd",
+   "alcance": "modo editor",
+   "enunciado": "Los cortes deben estar motivados por un evento sonoro, un beat de acción o un cambio emocional."
+  },
+  {
+   "id": "609e1323ec13",
+   "alcance": "modo editor",
+   "enunciado": "Usar transiciones guiadas por sonido."
+  },
+  {
+   "id": "6b4ca51263c5",
+   "alcance": "modo editor",
+   "enunciado": "Usar ángulos de cámara distintos en cada corte."
+  },
+  {
+   "id": "176ba6d3c18b",
+   "alcance": "montaje de video",
+   "enunciado": "Explicación: el patrón Ansiedad sirve para presión psicológica, conflicto interno o malas noticias inminentes."
+  },
+  {
+   "id": "3466c644e859",
+   "alcance": "montaje de video",
+   "enunciado": "Explicación: el patrón Catástrofe sirve para desastres cómicos o dramáticos; fallas de objetos pequeños rinden más que explosiones."
+  },
+  {
+   "id": "cc002bd5a66f",
+   "alcance": "montaje de video",
+   "enunciado": "Explicación: los patrones de montaje son estructuras prearmadas para tipos de escena comunes; elegir uno y rellenarlo."
+  },
+  {
+   "id": "f58e564658da",
+   "alcance": "montaje de video",
+   "enunciado": "Patrón Ansiedad: rostro, objeto, mano, rostro, objeto más cerca, cue sonoro, quietud súbita."
+  },
+  {
+   "id": "f6b22f4c7413",
+   "alcance": "montaje de video",
+   "enunciado": "Patrón Catástrofe: anticipación, inestabilidad del objeto, reacción, caída, impacto, silencio, colapso emocional."
+  },
+  {
+   "id": "9ad6a00fa4f7",
+   "alcance": "montaje de video",
+   "enunciado": "Patrón Descubrimiento: POV, espacio vacío, mano que busca, objeto oculto, rack focus, reacción emocional."
+  },
+  {
+   "id": "6a69dc928cb0",
+   "alcance": "montaje de video",
+   "enunciado": "Patrón Escalada para tensión o revelación: wide, medium, close-up, macro, close-up de reacción, impacto."
+  },
+  {
+   "id": "b25c3c596141",
+   "alcance": "prompts de video",
+   "enunciado": "Densidad de beats por 5 s: drama emocional 3-4, narrativa estándar 4-7, montaje rápido o videoclip 6-9."
+  },
+  {
+   "id": "78db9f93db29",
+   "alcance": "rúbrica de extracción de marca, lenguaje de movimiento",
+   "enunciado": "Define en un único párrafo coherente el movimiento de cámara, estilo de corte, animación de texto y ritmo a partir del motion existente, o usa un valor conservador coherente con la voz y marca `needs confirmation` si no existe."
+  },
+  {
+   "id": "11c93bcab15b",
+   "alcance": "secuencias de montaje (video)",
+   "enunciado": "En un montaje la secuencia puede comprimirse o repetirse, pero deben usarse etiquetas de función para mantener legible la estructura."
+  },
+  {
+   "id": "2a9a4595e79e",
+   "alcance": "skill screenwriter",
+   "enunciado": "Explicación: transiciones comunes FADE IN, CUT TO, SMASH CUT TO, DISSOLVE TO y FADE OUT y su uso."
+  },
+  {
+   "id": "bec17c43b0e1",
+   "alcance": "skill screenwriter",
+   "enunciado": "Las transiciones deben usarse con moderación, solo para un efecto narrativo específico, porque la mayoría quedan implícitas."
+  },
+  {
+   "id": "49bd00b8acb3",
+   "alcance": "skill screenwriter, cortometraje",
+   "enunciado": "Cada escena debe cambiar el estado emocional."
+  },
+  {
+   "id": "8b98a873a74d",
+   "alcance": "skill screenwriter, cortometraje",
+   "enunciado": "El cortometraje debe enganchar al público en los primeros 10-15 segundos."
+  },
+  {
+   "id": "0d128ea82a38",
+   "alcance": "skill screenwriter, cortometraje",
+   "enunciado": "La tensión debe escalar escena a escena elevando lo que está en juego."
+  },
+  {
+   "id": "51063a9857f4",
+   "alcance": "skill screenwriter, cortometraje",
+   "enunciado": "Se debe alternar planos abiertos y cerrados, acción y quietud, para dar variedad visual."
+  },
+  {
+   "id": "574ec2649c50",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Dividir la acción en párrafos cortos sugiere varios planos o setups de cámara."
+  },
+  {
+   "id": "5a5b89ea675f",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Se debe alternar el nivel de energía visual entre escenas quietas, dinámicas y de tempo medio."
+  },
+  {
+   "id": "345b1edffa38",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Se debe alternar escenas largas y cortas para dar ritmo; ejemplo de patrón 60s/30s/45s/30s/90s."
+  },
+  {
+   "id": "b77caf363d1f",
+   "alcance": "skill storyboard-architect, beat-frameworks",
+   "enunciado": "En Content Spiral cada zoom debe ser 1.5-2x más rápido que el anterior, acelerando hacia dentro."
+  },
+  {
+   "id": "76a0e842c2f7",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "El texto en pantalla se justifica como puntuación de beat sobre un golpe musical."
+  },
+  {
+   "id": "5e159b211107",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El whip es un paneo rápido como transición en cortes de beat de contenido rápido."
+  },
+  {
+   "id": "246b7a80f54f",
+   "alcance": "skill storyboard-architect, timing-rules",
+   "enunciado": "Explicación: curva de energía natural de 30 s: hook 0-2, build 2-12, apex 12-20, release 20-26 y CTA 26-30."
+  },
+  {
+   "id": "d8a80ea889ac",
+   "alcance": "skill video, modo editor",
+   "enunciado": "Activar el modo editor cuando el usuario pide montaje, ritmo, dinamismo, cortes o cuántos planos por 5 segundos."
+  },
+  {
+   "id": "9d321bed0dad",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige construir tensión a lo largo de las primeras N imágenes."
+  },
+  {
+   "id": "7c46cd8d5583",
+   "alcance": "taxonomía de funciones de plano (video)",
+   "enunciado": "Especifica la secuencia típica de funciones en una escena completa: Establish, Power, Pressure, Detail, Reaction, Shift, Impact, Aftermath, Exit."
+  },
+  {
+   "id": "6fdbc98bfcb8",
+   "alcance": "videoclip",
+   "enunciado": "Patrón Loop de videoclip: gesto A, corte, gesto A desde nuevo ángulo, transformación, repetición del gesto A, liberación."
+  },
+  {
+   "id": "e96cc4dc9e2a",
+   "alcance": "visual-media",
+   "enunciado": "Explicación: principios de edición: corte en movimiento, corte en reposo, regla de 180 grados y J-cut/L-cut."
+  },
+  {
+   "id": "fe07cbc1c294",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §11 reglas de uso",
+   "enunciado": "Se nombra la transición y el momento exacto en que ocurre, un solo tipo por corte, y si la elección está abierta se delega entre opciones listadas."
+  },
+  {
+   "id": "73cf1510661a",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §11 transiciones (Seedance 2.5 las respeta)",
+   "enunciado": "Especifica el vocabulario de transiciones: corte natural, fundido, disolvencia, flash blanco/negro, cortinilla, máscara de oclusión, match cut, corte en acción/whip, relevo de movimiento, zoom-through y disolvencia de tinta."
+  },
+  {
+   "id": "2d983f1a84cf",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §8 sonido",
+   "enunciado": "Aunque el modelo no genere audio, describir el sonido ayuda a estructurar el ritmo."
+  }
+ ]
+}

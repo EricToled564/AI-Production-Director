@@ -1,0 +1,1109 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "validacion_gates",
+ "descripcion_tema": "validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos",
+ "ventana": "2 de 3",
+ "filas": [
+  {
+   "id": "475c5e8a21e3",
+   "alcance": "aurora-prompt-linter v1.2-fupai (hooks del repo), vocabulario P",
+   "enunciado": "Especifica la lista P ampliada (v1.2-fupai) de términos de personaje vetados en el MAIN cuando una referencia ff/lf carga esa categoría, añadiendo roles de dominio (nadador, wakeboarder, piloto, barista, músicos) y retirando sudor y mandíbula."
+  },
+  {
+   "id": "01432b8a6b8a",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "enunciado": "Explicación: la copia existe porque el linter original, calibrado para un flujo anterior, bloquea prompts que los skills actuales exigen y deja pasar palabras que prohíben; cada parche cita su fuente."
+  },
+  {
+   "id": "566f2deb2904",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "enunciado": "Explicación: la copia parcheada v1.2-fupai del linter aurora amplía el vocabulario y resuelve contradicciones a favor de la fuente, sin tocar el original, con la misma interfaz y exit codes más las opciones --ref-role, --series-lock y --treatment."
+  },
+  {
+   "id": "c2d1193f4be2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, BANNED",
+   "enunciado": "Prohíbe siempre en el MAIN los términos vacíos (cinematic, professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, incredible, gorgeous, dreamy, plastic skin, soft glow, etc.); una mención negada no cuenta."
+  },
+  {
+   "id": "8caa623dd5ff",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Flux caso 1",
+   "enunciado": "En Flux caso 1 el MAIN debe contener sujeto, acción o pose, entorno, luz, especificación fotográfica (shot on, mm, f/, DOF) y cierre fotorreal."
+  },
+  {
+   "id": "63a4afcd983d",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 1",
+   "enunciado": "En GPT Image 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, cámara, luz, anti-estilo y los slots \"Use case:\" y \"Constraints:\" del formato de 5 slots."
+  },
+  {
+   "id": "1e2955c62581",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz, consistencia de estilo (preserve, keep) y el slot \"Constraints:\"."
+  },
+  {
+   "id": "2b8faa1d4388",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Hailuo caso 3a",
+   "enunciado": "En Hailuo caso 3a el MAIN debe contener frase de cámara, sujeto-acción, cambio de luz y mood."
+  },
+  {
+   "id": "061dcf08e53b",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Ideogram caso 1",
+   "enunciado": "En Ideogram caso 1 (modo compuesto) el MAIN debe contener sujeto, entorno, luz y composición con espacio negativo."
+  },
+  {
+   "id": "96b39d99ba52",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3a",
+   "enunciado": "En Kling 3.0 caso 3a el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo realista y anti-morphing (incluido \"preserve\")."
+  },
+  {
+   "id": "9984b52109d3",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3b",
+   "enunciado": "En Kling 3.0 caso 3b el MAIN debe contener escena o movimiento, transición FF→LF (tail image, last frame), cámara, estilo y anti-morphing."
+  },
+  {
+   "id": "663bd1b7dc9e",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento, orientación del personaje y cámara, centrándose en la descripción del sujeto."
+  },
+  {
+   "id": "2e4beae856ab",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 4",
+   "enunciado": "En Kling 3.0 caso 4 (diálogo) el MAIN debe contener etiquetas de personaje, lista de shots, diálogo entre comillas, etiqueta de voz, enlace temporal y línea de audio."
+  },
+  {
+   "id": "25a0fef32203",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Midjourney caso 1",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener sujeto, estilo, composición, luz, relación de aspecto y parámetro de calidad."
+  },
+  {
+   "id": "d4fd413a5bba",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 1",
+   "enunciado": "En Nano Banana 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, igual que NBP en lenguaje natural."
+  },
+  {
+   "id": "f963cf9426a4",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 2",
+   "enunciado": "En Nano Banana 2 caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "4edc399784f1",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 1",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, sin números de lente."
+  },
+  {
+   "id": "7077d4bcb711",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia (image N, @img), sujeto-acción, cámara, luz y ancla de colocación espacial."
+  },
+  {
+   "id": "5adda93a80aa",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P1",
+   "enunciado": "Define rangos de palabras recomendados y techos por plataforma (Midjourney 40-80, Flux 80-150, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70, Kling 80-150 o 20-40 en I2V, Veo 80-150 o 50-100 en I2V, etc.) como referencia que nunca bloquea."
+  },
+  {
+   "id": "dd48d0564bc0",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P2",
+   "enunciado": "Define por plataforma si el bloque negativo es obligatorio: requerido en Kling y Seedance 2.5; opcional (framing positivo) en Seedance, GPT Image, Nano Banana, Veo, Midjourney, Flux, Ideogram, Seedream y Hailuo."
+  },
+  {
+   "id": "ee39bbfd73f5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Define los grupos de rasgos del bloque de identidad: pelo, ojos y piel, prenda, accesorio y rasgo distintivo, cada uno con sus palabras clave."
+  },
+  {
+   "id": "6044e30c4de1",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Exige que el bloque de identidad contenga al menos 3 grupos de rasgos."
+  },
+  {
+   "id": "69f1818f842f",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P5",
+   "enunciado": "Los términos de micro-acción corporal (sudor, mandíbula, nudillos, respiración, tendón, venas, parpadeo) nunca cuentan como re-descripción del personaje aunque haya referencia."
+  },
+  {
+   "id": "f37166faf0f2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Especifica los términos de cámara lenta (slow motion, slowmo, slow-mo) que dan WARN en fotorreal y FAIL en tratamiento race."
+  },
+  {
+   "id": "47d827f37126",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Los términos de cámara lenta con prefijo \"ultra-\" quedan exentos del veto."
+  },
+  {
+   "id": "e256ca71614d",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamiento fotorreal/race",
+   "enunciado": "Veta términos de estilo no fotográfico (anime, cartoon, 3D render, CGI, cel shading, pixar-style, claymation, ilustración vectorial) solo con tratamiento fotorreal o race; en ilustración o animación son legítimos."
+  },
+  {
+   "id": "503aaba8a724",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamientos ilustración/animación",
+   "enunciado": "En tratamientos de ilustración y animación se reemplazan los patrones de estilo y detalle por vocabulario propio y se eliminan las secciones anti-estilo y cierre fotorreal."
+  },
+  {
+   "id": "c091ec497b2a",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3a",
+   "enunciado": "En Seedance 2.5 caso 3a el MAIN debe contener rol de la referencia (@image, first frame), sujeto-acción, cámara, marcadores de audio y estado final."
+  },
+  {
+   "id": "db4aed3f9ec2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3b",
+   "enunciado": "En Seedance 2.5 caso 3b el MAIN debe declarar por separado las anclas de primer y último frame, sujeto-acción, cámara, transición y estado final."
+  },
+  {
+   "id": "5b6701ceae11",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 4",
+   "enunciado": "En Seedance 2.5 caso 4 el MAIN debe contener marcadores de diálogo con llaves, refuerzo del idioma del diálogo, sujeto-acción, cámara y estado final."
+  },
+  {
+   "id": "ded49c910223",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance caso 3a",
+   "enunciado": "En Seedance caso 3a el MAIN debe contener sujeto-acción, cámara y audio en el cuerpo del prompt."
+  },
+  {
+   "id": "17bdfde9b359",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedream caso 1",
+   "enunciado": "En Seedream caso 1 el MAIN debe contener sujeto, encuadre, entorno, luz y estilo fotorreal."
+  },
+  {
+   "id": "96f1f3840ba7",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3a",
+   "enunciado": "En Veo 3.1 caso 3a el MAIN debe contener sujeto-acción, timing, cámara, estilo o \"maintain the subject\" y una pista de física."
+  },
+  {
+   "id": "f2287b490734",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3b",
+   "enunciado": "En Veo 3.1 caso 3b el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing o \"maintain the subject\"."
+  },
+  {
+   "id": "b8288490f388",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 4",
+   "enunciado": "En Veo 3.1 caso 4 el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio (incluidas etiquetas SFX)."
+  },
+  {
+   "id": "fa1780da9ec9",
+   "alcance": "aurora-prompt-linter v1.2-fupai, casos de video 3a/3b/3c/4",
+   "enunciado": "Exige \"60fps\" y \"broadcast realism\" en casos de video con estética de transmisión deportiva."
+  },
+  {
+   "id": "b8296d816a42",
+   "alcance": "aurora-prompt-linter v1.2-fupai, parche P1",
+   "enunciado": "El conteo de palabras nunca bloquea: da WARN con el presupuesto por plataforma y el techo de _capabilities.json en lugar del HARD FAIL original por encima de 130/90 palabras."
+  },
+  {
+   "id": "092198635f48",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario L",
+   "enunciado": "Especifica la lista L ampliada de locaciones vetadas en el MAIN cuando hay referencia de locación, con términos de agua, automotriz, café, clima y salas de concierto."
+  },
+  {
+   "id": "4caf7acdd2e5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario O",
+   "enunciado": "Especifica la lista O ampliada de vestuario vetado en el MAIN cuando hay referencia de outfit, con términos de agua, automotriz, café y música/ensamble."
+  },
+  {
+   "id": "1f1236650c36",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario PR",
+   "enunciado": "Especifica la lista PR ampliada de props vetados en el MAIN cuando hay referencia de prop, con términos de agua, automotriz, café e instrumentos musicales."
+  },
+  {
+   "id": "2576da1d98b2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario S",
+   "enunciado": "Especifica la lista S de estilo (photorealistic, editorial, documentary, studio lighting) vetada en el MAIN con referencia de estilo; \"cinematic\" sale de esta lista y pasa a BANNED."
+  },
+  {
+   "id": "8515c9ca1187",
+   "alcance": "aurora-prompt-linter, GPT Image 1.5 caso 2",
+   "enunciado": "En GPT Image 1.5 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (incluida face strip), preservación facial explícita, sujeto-acción, cámara o lente y luz."
+  },
+  {
+   "id": "11db95b506b8",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 1",
+   "enunciado": "En GPT Image 2 caso 1 (génesis texto-a-imagen) el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, cámara o lente, luz y anti-estilo, detectadas por palabras clave."
+  },
+  {
+   "id": "5c6da21a90e8",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 2",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (image 1, ref), sujeto-acción, cámara o lente, luz y consistencia de estilo (preserve, same style)."
+  },
+  {
+   "id": "f8eba1973bf3",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3a",
+   "enunciado": "En Kling 3.0 caso 3a (I2V solo primer frame) el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo y cláusula anti-morphing."
+  },
+  {
+   "id": "3ab59a9aefae",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3b",
+   "enunciado": "En Kling 3.0 caso 3b (I2V primer y último frame) el MAIN debe contener escena o movimiento, transición FF→LF, cámara, estilo y anti-morphing."
+  },
+  {
+   "id": "65377a8b9e6e",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento (@video, pose ref), orientación del personaje y cámara."
+  },
+  {
+   "id": "49eea291584e",
+   "alcance": "aurora-prompt-linter, Midjourney caso 1",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener secciones de sujeto, estilo, composición, luz, relación de aspecto y calidad (--v/--style/--q/--stylize)."
+  },
+  {
+   "id": "0071353ecbdb",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 1",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, luz y detalles de textura (piel, tela, asimetría, poros)."
+  },
+  {
+   "id": "ac617cc1938f",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 2",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara o lente, luz y ancla de colocación espacial (on the, beside, between...)."
+  },
+  {
+   "id": "f0d939d13274",
+   "alcance": "aurora-prompt-linter, Sora 2 caso 4",
+   "enunciado": "En Sora 2 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio."
+  },
+  {
+   "id": "dbc1e6d487bf",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3a",
+   "enunciado": "En Veo 3.1 caso 3a (I2V solo primer frame) el MAIN debe contener sujeto-acción, timing o beat, cámara, estilo y una pista de física (gravedad, momento, trayectoria)."
+  },
+  {
+   "id": "64600a82d2d2",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3b",
+   "enunciado": "En Veo 3.1 caso 3b (I2V primer y último frame) el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing."
+  },
+  {
+   "id": "607dab0950cb",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 4",
+   "enunciado": "En Veo 3.1 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo entre comillas, tono o acento, timing y especificaciones de audio."
+  },
+  {
+   "id": "62bc70593cd4",
+   "alcance": "aurora-prompt-linter, casos 3a-3c sports broadcast",
+   "enunciado": "Exige incluir \"60fps\" y \"broadcast realism\" en los casos 3a/3b/3c con estética de transmisión deportiva."
+  },
+  {
+   "id": "93053b069658",
+   "alcance": "aurora-prompt-linter, todas las plataformas",
+   "enunciado": "Prohíbe siempre en el prompt MAIN, en todas las plataformas, términos como slow motion, dreamy, cartoon, anime, 3D render, perfume ad, plastic skin, dreamlike y soft glow (permitidos solo en el negative)."
+  },
+  {
+   "id": "759912407824",
+   "alcance": "aurora-prompt-linter, todos los casos",
+   "enunciado": "Exige un negative prompt en todos los casos."
+  },
+  {
+   "id": "58e3356ddbf5",
+   "alcance": "aurora-prompt-linter, vocabulario L",
+   "enunciado": "Especifica la lista L (locación: estudio, gym, muros, suelos, ventanas, skyline, luz ambiente) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de locación los aporta."
+  },
+  {
+   "id": "270c245664cb",
+   "alcance": "aurora-prompt-linter, vocabulario O",
+   "enunciado": "Especifica la lista O (outfit: prendas y calzado) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de vestuario los aporta."
+  },
+  {
+   "id": "07d9700dc6b3",
+   "alcance": "aurora-prompt-linter, vocabulario P",
+   "enunciado": "Especifica la lista P (personaje: complexión, edad, pelo, género, sudor, etc.) cuyos términos quedan vetados en el prompt MAIN cuando una referencia carga esa categoría."
+  },
+  {
+   "id": "8de795317bc6",
+   "alcance": "aurora-prompt-linter, vocabulario PR",
+   "enunciado": "Especifica la lista PR (prop: balón y paneles) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de prop los aporta."
+  },
+  {
+   "id": "108e6010c88c",
+   "alcance": "aurora-prompt-linter, vocabulario S",
+   "enunciado": "Especifica la lista S (estilo: photorealistic, cinematic, editorial, documentary, studio lighting) cuyos términos quedan vetados en el MAIN cuando una referencia de estilo los aporta."
+  },
+  {
+   "id": "1c1173279dc6",
+   "alcance": "brand-pack y snapshot de brand-lock",
+   "enunciado": "Un brand-pack puede ser una plantilla sin completar, pero un snapshot debe incluir las cabeceras de fecha de captura y fuente, preferiblemente con fecha y hora UTC completas."
+  },
+  {
+   "id": "e978e017bb4b",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Antes de enviar el board, correr los checklists de animatic-keyframes.md §9, dramaturgy.md §15 y universal-rules.md §13, sin saltar el chequeo de tres detalles."
+  },
+  {
+   "id": "80a57e4c07a3",
+   "alcance": "casos 1/2/3a/3b/3c/4, final del Step 4 drafting",
+   "enunciado": "Antes de entregar cualquier prompt de los casos 1, 2, 3a, 3b, 3c o 4, debe ejecutarse el linter determinista y no entregarse si falla salvo overrides explícitos, vigentes solo en el turno actual y con alcance específico."
+  },
+  {
+   "id": "0c6546d7cf31",
+   "alcance": "chequeos de proyecto; directorio output",
+   "enunciado": "Los chequeos de proyecto deben ejecutarse sobre el directorio de salida del proyecto y no sobre el repositorio."
+  },
+  {
+   "id": "64d151f0931c",
+   "alcance": "compilación de prompts",
+   "enunciado": "La compilación del prompt se bloquea mientras haya un campo requerido del caso sin resolver; se resuelve desde fuente autorizada o preguntando al usuario."
+  },
+  {
+   "id": "735f59b64da7",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].severity es obligatorio (minor, major, blocking): un blocking fuerza REJECT, uno o dos major limitan a REVISE y tres o más major fuerzan REJECT, según validate_critique.py."
+  },
+  {
+   "id": "fd82a9054cd5",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 2: en el linter aurora el conteo de palabras nunca bloquea (solo advierte); siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas."
+  },
+  {
+   "id": "7dcf30bd73bf",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 8: las inferencias entran como [A PRUEBA], se confirman o refutan con investigación de campo y un ejercicio real, y nunca bloquean un gate hasta ser canónicas."
+  },
+  {
+   "id": "b05ff5c9adcb",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica el checklist de diapositiva: una idea por slide, máximo 5 puntos, título 44-54 pt y texto 18-24 pt, 3-4 colores con alto contraste, suficiente espacio en blanco y visuales en alta resolución de estilo único."
+  },
+  {
+   "id": "91ebade7496c",
+   "alcance": "dramaturgia (dramaturgy.md, skill video)",
+   "enunciado": "Todo prompt construido por el skill debe pasar el dramaturgy check antes de enviarse al usuario."
+  },
+  {
+   "id": "6db06fa6ae20",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §1",
+   "enunciado": "Antes de escribir un prompt se nombra cada elemento de la fórmula en una frase; si no se puede, la escena no está lista."
+  },
+  {
+   "id": "421db64518cd",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Si una tarjeta tiene campos vacíos, se llenan o se descarta el shot."
+  },
+  {
+   "id": "4c636ff18836",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 1: ¿está completa la fórmula de escena (deseo, obstáculo, geometría, mirada, ritmo)?"
+  },
+  {
+   "id": "6f0e6e25f0f7",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 2: ¿cada shot pasa el check de tres detalles?"
+  },
+  {
+   "id": "451d3fc20094",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 3: ¿cada shot cumple uno de los tres trabajos?"
+  },
+  {
+   "id": "35509efe9d5a",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 4: ¿cada movimiento de cámara tiene razón motivada?"
+  },
+  {
+   "id": "8737a153b919",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 5: ¿es legible la geometría espacial?"
+  },
+  {
+   "id": "22e09ce37541",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 6: ¿están nombradas las cinco anclas?"
+  },
+  {
+   "id": "4df1539f150e",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Si alguna respuesta es no se corrige antes de enviar; el check de tres detalles es el más violado."
+  },
+  {
+   "id": "8a86cfa78f58",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15 check",
+   "enunciado": "Antes de devolver el prompt final se corre el check dramatúrgico de seis puntos."
+  },
+  {
+   "id": "5f83accc40d0",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §1",
+   "enunciado": "Si falta algún punto de la checklist de continuidad se corrige antes de enviar."
+  },
+  {
+   "id": "a73dd79c5344",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §1 checklist de continuidad",
+   "enunciado": "Antes de enviar un prompt se verifica continuidad: mismo personaje y ropa nombrada, lógica de locación, progresión de estado del objeto, sin personajes, texto ni logos no deseados, sin acción mano-objeto imposible, sin cámara ni luz vagas, sin apilar directores, sin contradicciones, paleta concreta e imagen final explícita."
+  },
+  {
+   "id": "3e0982c0b0d7",
+   "alcance": "flujo con linter",
+   "enunciado": "Explicación: con linter, el agente reescribe tras un FAIL antes de mostrar la entrega al usuario, evitando turnos adicionales para este."
+  },
+  {
+   "id": "e868cd7b18bb",
+   "alcance": "flujo de anclas",
+   "enunciado": "Ninguna ancla se genera sin sus dependencias canonizadas ni sin tarjeta completa; el flujo tiene doce pasos y cinco gates."
+  },
+  {
+   "id": "e043e90fc907",
+   "alcance": "flujo de anclas cinematográficas",
+   "enunciado": "Especifica el flujo completo del ancla: inventario, tarjeta D1-D9, plan de dependencias, ruta por tipo de acción, bloques, lints, pregunta de avance, micro-gate, generación barata a alta, crítica, canonización o edición/cambio de método, y motion brief."
+  },
+  {
+   "id": "6484d36273e1",
+   "alcance": "gate de Etapa 1 antes de Etapa 2",
+   "enunciado": "El usuario debe seleccionar un único concepto antes de escribir cualquier línea de guion."
+  },
+  {
+   "id": "66f6bff88fe9",
+   "alcance": "gate de Etapa 2, Screenwriting",
+   "enunciado": "Cada escena debe cumplir deseo, obstáculo, geometría, mirada y ritmo, y además cambiar emoción, avanzar acción o subir presión; si no cumple ninguna función, se elimina antes del shot list."
+  },
+  {
+   "id": "43fc0a6f264c",
+   "alcance": "gate de Etapa 3, Cinematic Direction",
+   "enunciado": "La dirección cinematográfica no debe usar vocabulario prohibido y debe justificar por escrito la razón dramática de cada decisión de cámara."
+  },
+  {
+   "id": "94848598b3a4",
+   "alcance": "gate de Etapa 4, Shot Planning",
+   "enunciado": "El gate de Shot Planning exige validate_shots.py sin errores, six-point dramaturgy check y tres detalles por shot; todo shot sin detalles se elimina como filler."
+  },
+  {
+   "id": "560b31e5f50d",
+   "alcance": "gate final; si aurora-prompt-linter está instalada",
+   "enunciado": "Si está instalada, aurora-prompt-linter debe validar determinísticamente todos los prompts visuales antes de la entrega y puede vetarlos de forma final."
+  },
+  {
+   "id": "63321bb005de",
+   "alcance": "general",
+   "enunciado": "Cuando una regla puede codificarse se codifica, pero un límite de longitud es dirección y no bloqueo."
+  },
+  {
+   "id": "aac55562e41a",
+   "alcance": "general (QA de assets generados)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks mecánicos de semánticos; edad, nacionalidad o etnia no son certificables visualmente."
+  },
+  {
+   "id": "f114c9b37133",
+   "alcance": "general (QA)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks deterministas de semánticos y marcando como no verificables visualmente los hechos que lo sean."
+  },
+  {
+   "id": "e23f10f32234",
+   "alcance": "general (longitud de prompts)",
+   "enunciado": "La longitud del prompt es aspiracional: fuera de rango solo avisa y bloquea exigiendo regenerar solo si supera 2× el máximo."
+  },
+  {
+   "id": "a62bb815a42a",
+   "alcance": "herramientas del repositorio",
+   "enunciado": "Explicación: las utilidades de Python mantienen la integridad del repositorio, validan resultados de proyectos y generan previsualizaciones sin invocar Claude."
+  },
+  {
+   "id": "de3ba87a8c0a",
+   "alcance": "herramientas del repositorio, CI",
+   "enunciado": "Una ejecución local exitosa de `./tools/check.sh` equivale a una ejecución exitosa en CI."
+  },
+  {
+   "id": "79755afa932c",
+   "alcance": "herramientas del repositorio, `validate_capabilities.py`",
+   "enunciado": "Ejecuta `validate_capabilities.py` y su prueba interna con `python tools/validate_capabilities.py` y `python tools/validate_capabilities.py --selftest`."
+  },
+  {
+   "id": "6620e88f5882",
+   "alcance": "herramientas del repositorio, `validate_capabilities.py`",
+   "enunciado": "`validate_capabilities.py` debe validar la matriz de capacidades contra su esquema y contra los adaptadores, comprobando cobertura, límites de palabras, parámetro de aspecto, notas y vigencia de 120 días."
+  },
+  {
+   "id": "21ba992a9997",
+   "alcance": "herramientas del repositorio, `validate_schemas.py`",
+   "enunciado": "Ejecuta el validador de esquemas con `python tools/validate_schemas.py`."
+  },
+  {
+   "id": "cb26b39504ac",
+   "alcance": "herramientas del repositorio, `validate_schemas.py`",
+   "enunciado": "`validate_schemas.py` debe verificar que cada archivo `*.schema.json` sea un JSON Schema válido Draft 2020-12 e incluya `$id`, `title` y `description`."
+  },
+  {
+   "id": "5d12986ffd45",
+   "alcance": "herramientas del repositorio, `validate_skills.py`",
+   "enunciado": "Ejecuta el validador de skills con `python tools/validate_skills.py`."
+  },
+  {
+   "id": "08f64ef83f4f",
+   "alcance": "herramientas del repositorio, `validate_skills.py`",
+   "enunciado": "`validate_skills.py` debe comprobar que cada `SKILL.md` en `skills/` tenga frontmatter YAML obligatorio, un `name` coincidente con su directorio y una `description` sustantiva."
+  },
+  {
+   "id": "b224fe9944e7",
+   "alcance": "herramientas del repositorio, ejecución de comprobaciones",
+   "enunciado": "Ejecuta todas las comprobaciones con `./tools/check.sh`, usa `--quiet` para salida resumida y configura `PYTHON` para elegir la versión de Python."
+  },
+  {
+   "id": "877fd94a0fd2",
+   "alcance": "herramientas del repositorio, validación de esquemas e instancias",
+   "enunciado": "`validate_schemas.py` valida esquemas y no instancias; las instancias deben validarse con `validate_shots.py`."
+  },
+  {
+   "id": "0c9f5233f049",
+   "alcance": "herramientas del repositorio, validadores",
+   "enunciado": "Cada validador debe incluir `--selftest` con fixtures fallidos y fallar si deja de detectar los errores previstos."
+  },
+  {
+   "id": "277487626c14",
+   "alcance": "keyframes de Nano Banana para video",
+   "enunciado": "Los stills pueden ir a Veo 3.1, Kling 3.0, Seedance 2.0/2.5 o Gemini Omni Flash, pero solo los aprobados tras un gate de revisión del lote."
+  },
+  {
+   "id": "7c923e46a0bd",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §2 tarjeta",
+   "enunciado": "Cada keyframe exige una tarjeta de still con todos los campos llenos antes de generar, incluidos cámara implícita, emoción vía objeto y movimiento como still."
+  },
+  {
+   "id": "0e9d1c129e6b",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "Antes de enviar cada panel se corre la checklist y se descarta el panel si falla."
+  },
+  {
+   "id": "bc7a633d6d67",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe llevar emoción vía objeto congelada en un nudillo, aguja, pedal, humo o sudor; sin cambio de estado ni emoción se descarta."
+  },
+  {
+   "id": "90a4af3119d1",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe tener nombrada una etiqueta de función; sin etiqueta se descarta."
+  },
+  {
+   "id": "54e595164ca0",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe tener un beat legible en una frase y captionable; si no, se descarta."
+  },
+  {
+   "id": "c77d99d08a9c",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "Un panel que pasa los diez puntos es keyframe válido y se entrega como primer frame bloqueado al archivo del modelo de video."
+  },
+  {
+   "id": "599b19492a91",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O; el identity block no aplica a placas ni props."
+  },
+  {
+   "id": "0045a9129f41",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--treatment race existe como cuarto valor y hereda los vetos de fotorreal."
+  },
+  {
+   "id": "8298b6b01303",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Ejemplo: invocación del linter con --prompt, --refs, --case, --platform, --ref-role, --series-lock, --treatment y --overrides."
+  },
+  {
+   "id": "d71bf7a924b3",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El mecanismo 'OVERRIDE: término - razón' se mantiene idéntico: vale solo en el turno actual y con alcance específico."
+  },
+  {
+   "id": "b3e3b67987f6",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El vocabulario nuevo evita términos de una sola palabra con colisiones conocidas (stage, counter, cup) y usa formas compuestas."
+  },
+  {
+   "id": "a21237f6c38b",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El vocabulario prohibido sigue bloqueando y la lista es ahora más larga."
+  },
+  {
+   "id": "74bdc51ca45a",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La capa 1 de redundancia con referencias por categoría P/O/L/PR/S sigue bloqueando igual cuando el rol de la referencia es ff/lf."
+  },
+  {
+   "id": "e017264c67b5",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La exención de series_lock no cubre el vocabulario BANNED: solo se eximen P/O/L/PR/S, porque el vocabulario prohibido gana siempre."
+  },
+  {
+   "id": "7e49702354f8",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La prohibición de 'no X' en el negativo solo aplica a Kling (en Seedance 2.5 el formato oficial es 'no X'); el límite de 8 ítems aplica a todas las plataformas."
+  },
+  {
+   "id": "42c75d5f4804",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La salida --json conserva las claves originales y añade case_alias, treatment, ref_role, word_budget_source, negative_policy, series_lock_keys y linter_version, entre otras."
+  },
+  {
+   "id": "2dedbdfb89d3",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Las exenciones de contexto de cámara y de anclas direccionales no cambian."
+  },
+  {
+   "id": "9776a38b7040",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Las secciones requeridas siguen bloqueando, salvo las dispensadas por P12 y los overrides por tratamiento."
+  },
+  {
+   "id": "78e6a6e52ea0",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml y, en su defecto, del caso (video → ff; casos 1/2 → character)."
+  },
+  {
+   "id": "0406da084b93",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Sin --platform el bloque negativo sigue siendo obligatorio (política legacy_required con aviso) para no cambiar el contrato del linter original."
+  },
+  {
+   "id": "48a0a19bf729",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "Un alias desconocido de --case sale con exit 2 (error de uso), no con un reporte FAIL."
+  },
+  {
+   "id": "45a3ef7a08ff",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo)",
+   "enunciado": "Explicación: el linter aurora v1.2-fupai es una copia parcheada del original v1.1 (que no se modifica), con vocabulario ampliado, misma CLI y exit codes (0 PASS, 1 FAIL, 2 uso) y nuevas opciones --ref-role, --series-lock y --treatment."
+  },
+  {
+   "id": "b36c7f356f95",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_ALIASES",
+   "enunciado": "Especifica los alias de casos del pipeline aceptados por el linter (T1/T2/PLACA/GENESIS → 1, T3-T5/ANCLA → 2, CLIP/FF/I2V → 3a, FF-LF/TAIL → 3b, MOTION-CONTROL → 3c, DIALOGO → 4)."
+  },
+  {
+   "id": "61a7380c2b2e",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_CONFIGS",
+   "enunciado": "Especifica los presupuestos de palabras de respaldo por caso: génesis y ancla con refs 75-130, I2V (3a/3b/3c) 50-90, video con diálogo 75-130."
+  },
+  {
+   "id": "75154a7f0341",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), FAMILY_PATTERNS",
+   "enunciado": "Especifica las expresiones regulares que identifican cada familia de plataforma (nano-banana, gpt-image, midjourney, flux, ideogram, seedream, kling, veo, seedance, hailuo, sora)."
+  },
+  {
+   "id": "872a27238f7a",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), OVERRIDE_PATTERN",
+   "enunciado": "Especifica la sintaxis de override 'OVERRIDE: término - razón' reconocida por el linter, sin cambios respecto a v1.1."
+  },
+  {
+   "id": "b4f23b84f9fc",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante TREATMENTS",
+   "enunciado": "Especifica los tratamientos admitidos por el linter: fotorreal, ilustracion, animacion y race."
+  },
+  {
+   "id": "ed8dc29c3ada",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), constante VIDEO_CASES",
+   "enunciado": "Especifica que los casos de video del linter son 3a, 3b, 3c y 4."
+  },
+  {
+   "id": "ba413d6239ad",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P1",
+   "enunciado": "El conteo de palabras deja de ser fallo duro y pasa a advertencia con el presupuesto por plataforma como referencia (p. ej. kling 80-150, gpt-image 150-300, nano-banana 60-120, T1 ~250), usando el presupuesto original del caso solo si la plataforma no está en la tabla."
+  },
+  {
+   "id": "0854f2efd1e8",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P10",
+   "enunciado": "El linter amplía el vocabulario (agua, automotriz, café/interior, clima, música) y las secciones requeridas para más plataformas (seedance 2.5, flux, ideogram, hailuo, seedream, NB2, kling 3.0 caso 4) y reconoce los marcadores de bloque negativo 'Negative field.', '[Negative Prompts]' y 'Constraints:'."
+  },
+  {
+   "id": "c383faced13a",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no cuenta como violación de vocabulario prohibido o de estilo en el linter, aunque sigue siendo mala práctica en NB/GPT que cubre gate_image.py."
+  },
+  {
+   "id": "c6cb11fd6555",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P12",
+   "enunciado": "Si una referencia ya cubre el estilo, la sección 'style' requerida se dispensa y se reporta como advertencia informativa, porque no se debe repetir lo que la referencia define."
+  },
+  {
+   "id": "0557179ffce0",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P2",
+   "enunciado": "El bloque negativo solo es obligatorio si la plataforma tiene campo negativo (el slot Constraints de GPT Image cuenta como tal), y si existe se advierte si usa 'no X' o supera 8 ítems."
+  },
+  {
+   "id": "72c0160ce7f2",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P4",
+   "enunciado": "Los términos que forman parte de una cadena verbatim del series_lock (character, environment, lighting, color_grade) quedan exentos de la capa de redundancia del linter."
+  },
+  {
+   "id": "39382210e7f9",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P5",
+   "enunciado": "Las micro-acciones corporales (sweat, jaw, knuckles, breath, exhale, swallow, tendon, vein, blink, etc.) quedan exentas de la categoría de persona del linter aunque un vocabulario personalizado las reintroduzca."
+  },
+  {
+   "id": "de13b72640a3",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P6",
+   "enunciado": "'cinematic' y términos como professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera o incredible pasan a vocabulario prohibido, con precedencia de ai-production-director §6.1."
+  },
+  {
+   "id": "801e9ea3d024",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P7",
+   "enunciado": "Los bans de estilo (anime, cartoon, 3D render) solo aplican en tratamiento fotorreal, y 'slow motion' pasa a advertencia en fotorreal, fallo en tratamiento race y queda permitido con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "4ff5f35b273b",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P8",
+   "enunciado": "La opción --sports-broadcast solo aplica a casos de video (3a/3b/3c/4); en casos de imagen 1 y 2 se ignora con advertencia porque los stills no llevan movimiento."
+  },
+  {
+   "id": "db5cb9160457",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P9",
+   "enunciado": "Los casos del pipeline se mapean a los del linter: T1/T2/placa → 1; T3/T4/T5 con referencias → 2; clip I2V → 3a/3b/3c; clip con diálogo → 4."
+  },
+  {
+   "id": "74a6b681ad7e",
+   "alcance": "linter aurora v1.2-fupai, P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no dispara BANNED ni vetos de estilo."
+  },
+  {
+   "id": "f6d52677b411",
+   "alcance": "linter aurora v1.2-fupai, P12",
+   "enunciado": "La sección style se dispensa cuando el estilo está cubierto por referencia, en lugar de vaciar la categoría S, porque lo que define una referencia no se repite."
+  },
+  {
+   "id": "80d153a3d430",
+   "alcance": "linter aurora v1.2-fupai, caso 2 con @img1/Elements/--cref",
+   "enunciado": "Con --ref-role character los descriptores de persona se permiten y el identity block es obligatorio (aviso si hay menos de 3 grupos)."
+  },
+  {
+   "id": "739b1283b3c6",
+   "alcance": "linter aurora v1.2-fupai, casos 3a/3b/3c/4",
+   "enunciado": "Con --ref-role ff/lf los descriptores de persona y vestuario en el prompt principal están prohibidos (FAIL), porque la imagen ya ancla identidad y vestuario."
+  },
+  {
+   "id": "820b4931ef44",
+   "alcance": "linter aurora v1.2-fupai, hook Stop",
+   "enunciado": "Explicación: el hook Stop no está implementado; el linter se invoca a mano y desde el pipeline hasta validar el cableado de caso/plataforma."
+  },
+  {
+   "id": "798cbeca409a",
+   "alcance": "linter aurora v1.2-fupai, hook Stop (no cableado)",
+   "enunciado": "Explicación: diseño propuesto de un hook Stop gate_aurora.py que delegaría en el linter, con resolución de caso/plataforma desde la cabecera, refs del run activo, exit 2 al fallar y anti-bucle de 3 bloqueos."
+  },
+  {
+   "id": "79dca3bed4b2",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los alias de caso ignoran mayúsculas, guiones y guiones bajos, y un alias desconocido termina con código de salida 2."
+  },
+  {
+   "id": "8967b7293fd3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-DIALOGO/DIALOG/DIALOGUE se mapean al caso 4 (diálogo: Kling 3.0 P1-P4, Veo 'Says:', Seedance 2.5 llaves)."
+  },
+  {
+   "id": "c1ca3448fe05",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-FF, CLIP, I2V y CLIP-I2V se mapean al caso 3a (Etapa 6, imagen a video con primer frame)."
+  },
+  {
+   "id": "ac73cbebfd6f",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-FF-LF, CLIP-LF y CLIP-TAIL se mapean al caso 3b (primer y último frame, Kling start/tail o Seedance 2.5 first & last)."
+  },
+  {
+   "id": "58f5c954acc3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos CLIP-MC, CLIP-MOTION y MOTION-CONTROL se mapean al caso 3c (Kling Motion Control)."
+  },
+  {
+   "id": "0c49b7491702",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos T1, T2, PLACA y GENESIS del pipeline se mapean al caso 1 del linter (Etapa 5, génesis sin referencias)."
+  },
+  {
+   "id": "8d3cb5216fc3",
+   "alcance": "linter aurora v1.2-fupai, mapeo de casos P9",
+   "enunciado": "Los casos T3, T4, T5 y ANCLA se mapean al caso 2 del linter (Etapa 5, cuadros con referencias Image N / @img)."
+  },
+  {
+   "id": "974a525545c8",
+   "alcance": "linter aurora v1.2-fupai, parche P10",
+   "enunciado": "El linter añade snapshots para Flux, Ideogram, Seedream, NB2, Seedance, Seedance 2.5, Hailuo y Kling caso 4, con resolución de plataforma por familia y vocabulario ampliado."
+  },
+  {
+   "id": "be9cfc827b9b",
+   "alcance": "linter aurora v1.2-fupai, parche P12",
+   "enunciado": "Si el estilo ya está cubierto por una referencia, la sección style requerida se dispensa y solo se reporta como aviso informativo."
+  },
+  {
+   "id": "514dab59be95",
+   "alcance": "linter aurora v1.2-fupai, parche P2",
+   "enunciado": "El bloque Negative es obligatorio solo en Kling y Seedance 2.5; en GPT Image cuenta el slot Constraints y en el resto no se exige, y si existe no debe usar 'no X' en Kling y debe tener como máximo 8 ítems."
+  },
+  {
+   "id": "b63bca3ae8aa",
+   "alcance": "linter aurora v1.2-fupai, parche P3",
+   "enunciado": "Con referencia de primer/último frame los descriptores de persona y vestuario están prohibidos, pero con referencia de personaje el identity block completo es obligatorio (aviso si faltan 3 o más grupos de rasgos)."
+  },
+  {
+   "id": "28038930db4e",
+   "alcance": "linter aurora v1.2-fupai, parche P4",
+   "enunciado": "Los términos que caen dentro de las cadenas series_lock verbatim quedan exentos del vocabulario de redundancia, y se avisa si una cadena no aparece verbatim."
+  },
+  {
+   "id": "4e34e6581de9",
+   "alcance": "linter aurora v1.2-fupai, parche P5",
+   "enunciado": "Las palabras de micro-acción corporal (sweat, jaw, knuckles, breath, swallow, vein, etc.) quedan exentas del veto de descriptores de persona aunque haya referencia."
+  },
+  {
+   "id": "d3ff3b7ceee6",
+   "alcance": "linter aurora v1.2-fupai, parche P6",
+   "enunciado": "'cinematic' se prohíbe siempre y entra en la lista BANNED junto a professional, high quality, masterpiece, stunning, epic y similares; una mención negada no cuenta."
+  },
+  {
+   "id": "d9e8a6b904f1",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "'slow motion' deja de estar vetado globalmente: es aviso en fotorreal/ilustración/animación, fallo con tratamiento race, y se permite sin aviso con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "1e9305f61040",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "El tratamiento fotorreal (por defecto) veta anime/cartoon/3D render y avisa sobre slow motion; ilustración y animación levantan esos vetos; race mantiene los vetos y convierte slow motion en fallo."
+  },
+  {
+   "id": "23243a8baf39",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "Los términos anime/cartoon/3D render solo se vetan en tratamiento fotorreal o race; en ilustración o animación se levantan esos vetos y se ajusta la sección style."
+  },
+  {
+   "id": "bfda7f865cde",
+   "alcance": "linter aurora v1.2-fupai, parche P8",
+   "enunciado": "El flag --sports-broadcast se ignora con aviso en stills (casos 1 y 2) y sigue exigiendo '60fps' y 'broadcast realism' en los casos de video 3a/3b/3c/4."
+  },
+  {
+   "id": "838d2958a192",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Ejemplo (prueba T14): el prompt GOOD del README pasa y el BAD falla por las mismas violaciones, ya no por longitud."
+  },
+  {
+   "id": "2cd9c1470a32",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Ejemplo (prueba T15): --json sigue produciendo las claves originales."
+  },
+  {
+   "id": "e1ff2f87488d",
+   "alcance": "linter aurora v1.2-fupai, pruebas",
+   "enunciado": "Las 18 pruebas del linter se ejecutan con tests/run.sh y deben terminar en exit 0; VERBOSE=1 muestra la salida completa."
+  },
+  {
+   "id": "250b1f8e0f0e",
+   "alcance": "linter aurora v1.2-fupai, pruebas P1",
+   "enunciado": "Ejemplo (prueba T01): un T1 SW30 de ~250 palabras en nano_banana_pro caso 1 pasa con exit 0 y solo aviso de palabras."
+  },
+  {
+   "id": "e03c49107435",
+   "alcance": "linter aurora v1.2-fupai, pruebas P12",
+   "enunciado": "Ejemplo (prueba T16): con referencia de estilo la sección style se dispensa y pasa; sin ella falla."
+  },
+  {
+   "id": "aae3207e5f20",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T02): GPT Image 2 con Constraints y sin Negative en caso 1 pasa con exit 0."
+  },
+  {
+   "id": "e2d96441dba5",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T03): Kling caso 3a sin bloque negativo falla con exit 1."
+  },
+  {
+   "id": "1b421c1ae688",
+   "alcance": "linter aurora v1.2-fupai, pruebas P2",
+   "enunciado": "Ejemplo (prueba T13): un negativo de Kling con 'no blur' y 10 ítems pasa con dos avisos R16."
+  },
+  {
+   "id": "cc592af7c172",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T04): caso 2 con --ref-role character pasa con identity block y avisa sin él."
+  },
+  {
+   "id": "2c35f4311101",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T05): caso 3a con --ref-role ff y descriptores de persona falla con exit 1."
+  },
+  {
+   "id": "da080e211bae",
+   "alcance": "linter aurora v1.2-fupai, pruebas P4",
+   "enunciado": "Ejemplo (prueba T06): 'gym' verbatim en series_lock pasa, y sin series_lock falla por redundancia de L."
+  },
+  {
+   "id": "d4714e753de8",
+   "alcance": "linter aurora v1.2-fupai, pruebas P5",
+   "enunciado": "Ejemplo (prueba T07): 'her jaw locks, sweat beads' con referencia de persona rol ff pasa con exit 0."
+  },
+  {
+   "id": "a4e77be67b77",
+   "alcance": "linter aurora v1.2-fupai, pruebas P6",
+   "enunciado": "Ejemplo (prueba T08): 'cinematic' en el prompt falla con exit 1."
+  },
+  {
+   "id": "9a492782dcf2",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T09): 'anime' pasa con tratamiento ilustración y falla en fotorreal."
+  },
+  {
+   "id": "1c0e5dabbf6d",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T10): 'ultra-slow motion' en Kling pasa sin aviso, 'slow motion' falla en race y avisa en fotorreal."
+  },
+  {
+   "id": "50ffa64d4461",
+   "alcance": "linter aurora v1.2-fupai, pruebas P8",
+   "enunciado": "Ejemplo (prueba T11): --sports-broadcast en caso 1 pasa con aviso."
+  },
+  {
+   "id": "6fb210b39e05",
+   "alcance": "linter aurora v1.2-fupai, pruebas P9/P10",
+   "enunciado": "Ejemplo (prueba T12): T1 → caso 1, CLIP-FF → 3a, CLIP-DIALOGO → 4, y un alias desconocido sale con exit 2."
+  },
+  {
+   "id": "dc133f52b4e0",
+   "alcance": "linter aurora v1.2-fupai, referencias que no son de persona",
+   "enunciado": "Con --ref-role location/prop/style los descriptores de persona se permiten, el identity block no aplica y L/PR/S se rigen por sus tags."
+  },
+  {
+   "id": "1ae486009624",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint gate_dramaturgy verifica ausencia de vocabulario prohibido de video e imagen."
+  },
+  {
+   "id": "eacd93b6b9c9",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint gate_image verifica que el prompt empiece con verbo, use lenguaje natural y declare modelo."
+  },
+  {
+   "id": "01e67f73faca",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint validate_prompts verifica series_lock verbatim, sin texto de overlay, tercio del cuerpo, POV, dirección de viaje, manos en contactos y sin marcas."
+  },
+  {
+   "id": "6c3af7d6aa7e",
+   "alcance": "lints de anclas; GPT Image 2",
+   "enunciado": "El lint audit_gi2 revisa 15 columnas, incluidos los 5 efectos ópticos y el framing positivo."
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "lints de anclas; aurora-prompt-linter",
+   "enunciado": "El lint aurora en caso 1 (génesis) o caso 2 (ancla con refs) exige 75-130 palabras, negativo obligatorio y no re-describir categorías cubiertas por refs."
+  },
+  {
+   "id": "1a8b4576afb2",
+   "alcance": "mecanismo de override del linter; turno actual del usuario",
+   "enunciado": "Los overrides solo deben aceptar casos límite si el usuario expresa específicamente la excepción por escrito en el turno actual."
+  },
+  {
+   "id": "cdd2d39ab9dc",
+   "alcance": "megaflujo de spot",
+   "enunciado": "Especifica el megaflujo: brief → clasificación de track → E0 Brand Lock → E1 estrategia → E2 guion → E3 dirección → E4 shot planning → E5 anchors → E6 prompts de video → E7 paquete → post y QA, con gates entre etapas y replanteo a la 3ª falla."
+  },
+  {
+   "id": "d015fe698e89",
+   "alcance": "megaflujo; tracks STANDARD y FILM",
+   "enunciado": "Las ocho etapas se encadenan por gates; la E5 es donde empieza la génesis y los gates 0, 1, 2 y 4 piden OK explícito del usuario en STANDARD y FILM."
+  },
+  {
+   "id": "d3ffe13e9ea9",
+   "alcance": "proceso de aprobación, propuesta de cambios 1-9",
+   "enunciado": "Ejemplo: opción para rechazar el bundle y mantener el linter como herramienta opcional sin regla inviolable."
+  },
+  {
+   "id": "2e6518a545fd",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica cuándo usar el skill produccion-visual-sw30 (todo prompt visual, generación con Nano Banana, Kling, Veo, GPT Image o Higgsfield, gasto de créditos, proyecto SW30) y exige el micro-gate de 3 líneas antes de producir; entrega sin cabecera es inválida."
+  },
+  {
+   "id": "77280eb87f42",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica la cadena de cobertura de reglas: rule_registry.py extrae mecánicamente todos los enunciados normativos, rule_ledger.py exige disposición CHECK o NA con razón para cada regla aplicable y audit_gi2.py verifica los prompts."
+  },
+  {
+   "id": "5b1fd1b3c218",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica las reglas de la pregunta de avance: responderla antes de entregar, no entregar si es NO, prohibido el SÍ complaciente o con matices, leer completos todos los archivos aplicables, verificar reglas con lint o una a una, consultar «cuándo cargar» ante dudas y preguntar solo por dirección creativa."
+  },
+  {
+   "id": "4e5fb54051a4",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Especifica que audit_gi2.py valida 15 columnas: slots, anti-slop, ratio, metadatos fuera, Notes, cámara con 5 efectos ópticos, mood, color, identity-lock, texto de marca, framing positivo, mirada y manos."
+  },
+  {
+   "id": "189eb61cbf47",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige abrir con exactamente 3 líneas (SKILL, RIESGOS, TÉCNICA) antes de cualquier generación que gaste créditos o entrega de prompt visual; sin cabecera la entrega es inválida y se prohíbe generar sin preflight de costo."
+  },
+  {
+   "id": "5a1b6322a824",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige correr rule_ledger.py antes de emitir y no generar archivo de prompts si no cierra en 100% dispuesto."
+  },
+  {
+   "id": "f4e3d244582b",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige no entregar ninguna respuesta mientras la respuesta honesta a «¿utilizaste de forma exhaustiva y correcta todas las reglas del skill aplicables?» no sea SÍ sin matices."
+  },
+  {
+   "id": "c7b14ccc30ed",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige que cuando el usuario detecte un defecto se añada su regla al ledger con su check en el mismo turno."
+  },
+  {
+   "id": "396a6f83bb1e",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30)",
+   "enunciado": "Exige que el lint del builder rompa la compilación ante cualquier desviación de plantilla."
+  },
+  {
+   "id": "a1fcdbb51a00",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
+   "enunciado": "Exige instanciar todo maestro de rostro T1 con los cuatro bloques canónicos; el motor lanza TemplateViolation si se sustituye alguno."
+  },
+  {
+   "id": "d9a1ab59c633",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1-T5",
+   "enunciado": "Exige construir todo prompt visual instanciándolo con template_engine.py build(); el motor rechaza secciones faltantes o no declaradas, texto suelto en lugar de BLOCKS, falta de Notes y metadatos dentro del cuerpo."
+  },
+  {
+   "id": "16fc5f9b6f51",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R14",
+   "enunciado": "Exige validadores y techos de palabras en verde e inspección visual propia al 100% de rostros y manos antes de presentar; si algo falla no se entrega y se dice qué falló en una línea."
+  },
+  {
+   "id": "fd7db5b03413",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), tipos T1-T5",
+   "enunciado": "Exige tres pasos antes de escribir un prompt: catalogar su tipo (T1-T5) y reglas aplicables en RULES_MATRIX, definir las secciones que exige, y ensamblar por sección con bloques nombrados vía P() o E(), nunca redactar de corrido ni parchear texto."
+  },
+  {
+   "id": "f10c3bf35642",
+   "alcance": "prompt-production-protocol; Step 5",
+   "enunciado": "El skill `prompt-production-protocol` debe invocar el linter como ítem crítico en el Step 5, ya que este no se ejecuta por sí solo."
+  },
+  {
+   "id": "513904d46b28",
+   "alcance": "prompt-production-protocol; Step 5",
+   "enunciado": "En el Step 5 se debe ejecutar el checklist del caso, marcar cada ítem como Pass o Fail y revisar y reauditar antes de entregar si falla algún ítem crítico."
+  },
+  {
+   "id": "6b153bcacff8",
+   "alcance": "prompt-production-protocol; Step 5; propuesta del 2026-05-27",
+   "enunciado": "Explicación: la propuesta de cambio mayor al Step 5 añade un gate determinista debido a errores repetidos de redundancia con referencias."
+  },
+  {
+   "id": "0c62b67be4d3",
+   "alcance": "prompt-production-protocol; Step 5b y 5c; obligatorio casos 3a/3b/3c; recomendado casos 1/2/4",
+   "enunciado": "Para casos 3a/3b/3c se debe ejecutar obligatoriamente el linter tras el self-audit, no entregar con FAIL sin override válido, iterar hasta limpiar fallos no exceptuados y reportar visiblemente su resultado; para casos 1/2/4 es recomendado."
+  },
+  {
+   "id": "95fda3ea0ab4",
+   "alcance": "prompt-production-protocol; final del Step 4; linter",
+   "enunciado": "Al final del Step 4, el agente debe ejecutar el linter con el draft, las referencias etiquetadas, el tipo de caso y el mensaje actual del usuario, entregar solo si el resultado es PASS e iterar desde el Step 4 si falla."
+  },
+  {
+   "id": "fa1940a6cee7",
+   "alcance": "resumen de propuestas, cambio 1",
+   "enunciado": "Explicación: la propuesta 1 añade la nueva Regla 28 como cambio crítico en la Sección 14."
+  },
+  {
+   "id": "4766ffef6bbd",
+   "alcance": "resumen de propuestas, cambio 2",
+   "enunciado": "Explicación: la propuesta 2 incorpora el principio de enforcement determinista como cambio mayor en la Sección 1.3."
+  },
+  {
+   "id": "a97f8047b5cf",
+   "alcance": "resumen de propuestas, cambio 3, Sección 4.6",
+   "enunciado": "Explicación: la propuesta 3 añade el linter al paso final de F4 como cambio menor."
+  },
+  {
+   "id": "5c754729875f",
+   "alcance": "resumen de propuestas, cambio 4, Sección 4.7",
+   "enunciado": "Explicación: la propuesta 4 añade el linter al paso final de F5 como cambio menor."
+  }
+ ]
+}

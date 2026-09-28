@@ -1,0 +1,624 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "velocidad_vehiculo",
+ "descripcion_tema": "cues de velocidad, rim barrido, carreras, vehículos, anti-fake",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "fdc950dc306c",
+   "alcance": "D9; tipo de acción C",
+   "enunciado": "Para movimiento continuo (tipo C) el ángulo por defecto es altura de parachoques o más baja con rig montable; el plano alto solo como proof shot lejano."
+  },
+  {
+   "id": "7673328effd4",
+   "alcance": "Etapa 6, prompts de video",
+   "enunciado": "En spots de velocidad se usa --treatment race y --sports-broadcast solo si aplica la Regla 26."
+  },
+  {
+   "id": "cbd3ad0134d1",
+   "alcance": "Kling, animación de vehículo",
+   "enunciado": "Al animar en Kling, la acción rápida se genera lenta y se acelera en post para evitar morphing."
+  },
+  {
+   "id": "641a98b19e0e",
+   "alcance": "Paso 8 del flujo de anclas; familias de régimen",
+   "enunciado": "Explicación: la familia 05 Vehículo cubre auto, moto, bici, tren y dron extendiendo race-and-speed (tipo C), en borrador con investigación de campo."
+  },
+  {
+   "id": "f37166faf0f2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Especifica los términos de cámara lenta (slow motion, slowmo, slow-mo) que dan WARN en fotorreal y FAIL en tratamiento race."
+  },
+  {
+   "id": "12963a6482f3",
+   "alcance": "carreras",
+   "enunciado": "Alternar paneles de compresión de larga focal con paneles bajos y anchos, nunca toda la pieza con una lente, y nombrar explícitamente el blur de fondo con sujeto nítido porque los modelos sobreestabilizan."
+  },
+  {
+   "id": "8c3f0393ee99",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: barrera Armco o muro rozando el lado cercano y estriado sugiere proximidad más velocidad."
+  },
+  {
+   "id": "77ad05d0624a",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: comisarios o público en la periferia, borrosos y fragmentados, sugieren escala y peligro."
+  },
+  {
+   "id": "7a9c61f463ce",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: cono o bloque de cronometraje cerca del borde, alargado y barrido, sugiere prisa a nivel de carril."
+  },
+  {
+   "id": "6fbf26d826ef",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: humo de neumático o spray atravesado por contraluz sugiere fuerza y movimiento de aire."
+  },
+  {
+   "id": "85f3225e1bcc",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: raya de carril o chevron en la parte baja del cuadro, barrida hacia abajo, sugiere velocidad sobre el suelo."
+  },
+  {
+   "id": "8ec0108153fc",
+   "alcance": "carreras",
+   "enunciado": "Ejemplo: árbol, farola o gradería pasando como varilla de luz sugiere ritmo de carretera abierta."
+  },
+  {
+   "id": "a474400ce5f6",
+   "alcance": "carreras",
+   "enunciado": "Etiqueta proof-of-speed: la fuerza es real (squat, arruga del slick, llama de escape, asfalto estriado); tag Power/Pressure."
+  },
+  {
+   "id": "3c604459f8d2",
+   "alcance": "carreras",
+   "enunciado": "Explicación: el archivo de carreras se apoya en dramaturgy.md, universal-rules.md y role-modes.md y se combina con los de cámara, géneros y modelos de video."
+  },
+  {
+   "id": "7abcd0278b2d",
+   "alcance": "carreras",
+   "enunciado": "Explicación: el guardia anti-fake lista paneles de carrera que destruyen la credibilidad; además correr el checklist de animatic-keyframes.md §9."
+  },
+  {
+   "id": "31cddc17e586",
+   "alcance": "carreras",
+   "enunciado": "Explicación: la auditoría completa de lo que mata la velocidad está en la sección 10."
+  },
+  {
+   "id": "c6afd01555b0",
+   "alcance": "carreras",
+   "enunciado": "Explicación: los paneles prohibidos se consolidan en la sección 10."
+  },
+  {
+   "id": "f38230893f1d",
+   "alcance": "carreras",
+   "enunciado": "Explicación: race-and-speed.md especializa animatic-keyframes.md para carreras y no repite su método general, solo añade la gramática de carrera."
+  },
+  {
+   "id": "c2a75dff456b",
+   "alcance": "carreras",
+   "enunciado": "Explicación: se presentan cuatro escuelas comprimidas, cada una con una regla transferible."
+  },
+  {
+   "id": "d3cfceec6acd",
+   "alcance": "carreras",
+   "enunciado": "Familia 1 hostess-tray de perfil: montaje lateral junto a la puerta con mano en volante o rueda trasera y asfalto estriado."
+  },
+  {
+   "id": "0c4deaaddfb8",
+   "alcance": "carreras",
+   "enunciado": "Familia 2 POV bajo de capó/parachoques: asfalto bajo el morro, conos y marcas creciendo rápido, raya de carril estroboscópica."
+  },
+  {
+   "id": "71239ba51988",
+   "alcance": "carreras",
+   "enunciado": "Familia 3 cabina con montaje rígido: tablero, aguja y manos vibrando, espejo trémulo; nunca perfectamente estable."
+  },
+  {
+   "id": "28ebf55520ea",
+   "alcance": "carreras",
+   "enunciado": "Familia 4 tracking paralelo o joust: auto cámara al lado o de frente desplazado, carril rival en cuadro, luces como estrías."
+  },
+  {
+   "id": "b0096f28076c",
+   "alcance": "carreras",
+   "enunciado": "Familia 5 proof shot lejano: lente larga fija, dos autos pequeños cruzando gran espacio con estela de humo."
+  },
+  {
+   "id": "5e0b5f04467c",
+   "alcance": "carreras",
+   "enunciado": "Ley 1: velocidad auténtica construida en la composición estática, con física visible (squat, nariz levantada, rim barrido), nunca CGI limpio ni rampas de post."
+  },
+  {
+   "id": "7ad46b91fab7",
+   "alcance": "carreras",
+   "enunciado": "Ley 4: el corte va ligado al beat: volumen de audio = número de planos, silencio = un panel sostenido, estallido = ráfaga de micropaneles."
+  },
+  {
+   "id": "fa7fde9fedfb",
+   "alcance": "carreras",
+   "enunciado": "Ley 5: paleta fría combativa con rojo solo como acento de peligro y sin lavado ámbar cálido."
+  },
+  {
+   "id": "12960caf4696",
+   "alcance": "carreras",
+   "enunciado": "Ley 6: cada insert debe poder etiquetarse con una función de carrera (setup, commitment, mistake, recovery, proof-of-speed, result) o se elimina."
+  },
+  {
+   "id": "9588dec4b81b",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe aire alrededor del auto en un beat de velocidad; llenar el borde cercano con barrera, rival o muro."
+  },
+  {
+   "id": "c98454480281",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe beats del ritual fuera de orden u omitidos."
+  },
+  {
+   "id": "f8987a0b43ba",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe el god-angle alto y limpio en beats de acción; bajar a la altura del parachoques."
+  },
+  {
+   "id": "b52a65f6214d",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe el grade cálido acogedor: paleta fría, rojo solo como acento y ámbar ≤15%."
+  },
+  {
+   "id": "f30877024e4a",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe el rim nítido en un auto en marcha; barrer los rayos en disco."
+  },
+  {
+   "id": "aa330cb212b8",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe paneles de larga focal sin textura de carretera ni objeto de referencia pasando."
+  },
+  {
+   "id": "7f7d9adcf253",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe paneles fetiche estáticos, anatomía en reposo, detalles sin caption, boards solo de proof-of-speed, desorden decorativo y lavados cálidos sin función."
+  },
+  {
+   "id": "cc9733258e27",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe paneles que solo funcionan acelerados; construir la velocidad en la composición estática."
+  },
+  {
+   "id": "a9317cb7c05a",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe pases de belleza de carrocería brillante; mostrar transmisión de fuerza."
+  },
+  {
+   "id": "5c5702ec5f57",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe una cabina perfectamente estable; mostrar vibración e inclinar 1-3°."
+  },
+  {
+   "id": "6f2375c12efb",
+   "alcance": "carreras",
+   "enunciado": "Rotar entre las cinco familias de plano a lo largo de 30 s; la velocidad se lee por cambio de perspectiva, no por tomas largas."
+  },
+  {
+   "id": "33988ddcfbf7",
+   "alcance": "carreras",
+   "enunciado": "Seis leyes gobiernan cada panel de carrera; romper una convierte el spot en comercial de autos."
+  },
+  {
+   "id": "65d43c5dc90b",
+   "alcance": "carreras",
+   "enunciado": "Si la cámara implícita no podría montarse físicamente en el auto, el panel se lee como render: bajarla a la altura del parachoques y atornillarla."
+  },
+  {
+   "id": "3b7d08414586",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 1 entrada al water box: slick delantero en agua quieta con bombillas reflejadas, dusk azul acero, quietud tensa."
+  },
+  {
+   "id": "305797dc7b88",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 10 adelantamiento: tracking paralelo o joust con asfalto estriado y carril rival en cuadro."
+  },
+  {
+   "id": "c0e5e6231538",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 11 meta: slicks deformados, autos a centímetros cruzando la línea, un morro adelante."
+  },
+  {
+   "id": "b086e2458456",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 12 paracaídas/aftermath: paracaídas abriéndose, humo en los faros o mano soltando el volante."
+  },
+  {
+   "id": "e2d634905ab9",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 2 burnout: muro de humo a ras de suelo a contraluz cian duro, fuerza apenas contenida."
+  },
+  {
+   "id": "d3f14269f190",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 3 retroceso: el auto rueda hacia atrás en su propio humo con las luces traseras sangrando rojo, amenaza deliberada."
+  },
+  {
+   "id": "ba0044d29613",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 4 pre-stage: neumático avanzando con la bombilla azul superior como ancla y la línea del haz como spine gráfico."
+  },
+  {
+   "id": "c1c260a0cdd7",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 5 stage: segunda bombilla azul, neumático en la línea y nudillos blanqueando en primer plano, punto de no retorno."
+  },
+  {
+   "id": "331acaa60dd5",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 6 cuenta ámbar: el Tree como cronómetro con tres ámbares secuenciales, única luz cálida narrativa."
+  },
+  {
+   "id": "a5f60dd250f6",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 7 verde/salida: ambos autos en squat con ruedas delanteras levantándose y asfalto estriado, destello verde."
+  },
+  {
+   "id": "f001a70b5f99",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 8 arruga del slick: macro del flanco trasero plegándose como detalle héroe, luz lateral dura."
+  },
+  {
+   "id": "64c3615b61d2",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 9 cambio/llama: mano golpeando la palanca o escape escupiendo llama como chispa cálida en cuadro frío."
+  },
+  {
+   "id": "3608bafb3f72",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo: poste del Christmas Tree nítido en primer plano con el auto barrido sugiere referencia de salida y cronómetro."
+  },
+  {
+   "id": "5c84bb9396e2",
+   "alcance": "carreras drag",
+   "enunciado": "La carrera se boardea como liturgia: un keyframe ancla por beat en orden, cortes que se acortan hacia el verde, y la reacción asignada a la máquina (aguja, slick, morro) en vez de un rostro."
+  },
+  {
+   "id": "3b276855c58f",
+   "alcance": "carreras drag",
+   "enunciado": "Para un anuncio usar el árbol Sportsman con tres ámbares secuenciales (tres keyframes) y cortar en el último ámbar, no en el verde, para leer anticipación."
+  },
+  {
+   "id": "59cd2097d463",
+   "alcance": "carreras drift",
+   "enunciado": "En drift, sustituir la cuenta atrás por el ritual continuo de ángulo, con el contravolante como ancla física visible, la proximidad al muro como peligro y la transición con humo diagonal."
+  },
+  {
+   "id": "3571a0bc178a",
+   "alcance": "carreras sin rostro",
+   "enunciado": "Ley 2: con rostros prohibidos, la emoción vive en detalles (nudillo, aguja, pedal, humo, sudor), sin emociones nombradas."
+  },
+  {
+   "id": "e41dd10f98ce",
+   "alcance": "carreras, animatic",
+   "enunciado": "Explicación: gramática de spots de carreras sin rostro cuyo entregable son keyframes fijos que deben leerse como velocidad letal; la velocidad es un hecho fotográfico, no efecto de post."
+  },
+  {
+   "id": "124ce8df65d6",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Cada panel responde una pregunta al primer vistazo y premia una segunda mirada: un punto focal, una emoción, tres capas de profundidad y cero objetos muertos."
+  },
+  {
+   "id": "d807b97830c8",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Colocar la referencia de primer plano cerca de la lente y cruzando el borde, con un objeto cercano nítido para medir el barrido."
+  },
+  {
+   "id": "e4b4947accb3",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Joust en still: casi de frente con el auto desplazado y un cono enorme borroso en el borde opuesto; reservarlo para el adelantamiento climático; tag Impact."
+  },
+  {
+   "id": "eeff785b1c51",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Low macro en still: a nivel de parachoques rozando el asfalto con curvatura fisheye, o ECU bajo luz lateral dura y fría; tag Impact/POV/Detail."
+  },
+  {
+   "id": "9571f26cb040",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Nunca escribir 'motion': escribir el artefacto que deja el movimiento, y nunca boardear un panel neutro sin vector hacia adelante."
+  },
+  {
+   "id": "d3d8b98d3137",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Un frame se lee rápido solo si coexisten al menos 3 de 5 cues de velocidad; si un panel no nombra tres, bajar la cámara o meter una barrera en primer plano."
+  },
+  {
+   "id": "981ebae5265a",
+   "alcance": "crítica; tipo de acción C",
+   "enunciado": "Check del crítico para tipo C: al menos 3 cues contados, rim barrido, asfalto con textura y rig montable."
+  },
+  {
+   "id": "05f4c51d0193",
+   "alcance": "género carreras",
+   "enunciado": "Carrera/velocidad: velocidad auténtica, detalle sin rostro como emoción, paleta fría combativa, cámara baja, corte ligado al beat; cargar race-and-speed.md y animatic-keyframes.md."
+  },
+  {
+   "id": "f4a0e0ed3f28",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §4 presupuesto de velocidad",
+   "enunciado": "Un still vende velocidad solo si reúne al menos tres de cinco señales: cámara a altura de parachoques o menos, asfalto barrido abajo, referencia cercana pasando el borde, héroe nítido contra fondo barrido y señal de vibración."
+  },
+  {
+   "id": "5d66e7406dea",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §5 tabla",
+   "enunciado": "Esfuerzo de la máquina se sustituye por aguja del tacómetro en rojo, flanco del slick arrugado o llama de escape."
+  },
+  {
+   "id": "5f9758385509",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "El panel debe tener al menos una de las seis señales de movimiento congelado o una pausa deliberada, y los paneles rápidos al menos tres de las cinco señales de velocidad."
+  },
+  {
+   "id": "0045a9129f41",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "--treatment race existe como cuarto valor y hereda los vetos de fotorreal."
+  },
+  {
+   "id": "d9e8a6b904f1",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "'slow motion' deja de estar vetado globalmente: es aviso en fotorreal/ilustración/animación, fallo con tratamiento race, y se permite sin aviso con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "601c503d1bbc",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Ejemplo: frase de campo para bici y moto \"camera panning at the rider's speed, the spokes blurred into a wheel-shaped smear\" con pedal cercano o carenado nítidos."
+  },
+  {
+   "id": "a43cf3274f6b",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "El rig POV debe nombrarse por lo que muestra: chest mount con manillar, manos y horquilla en cuadro; helmet o chin mount sigue la mirada con la bici fuera de cuadro."
+  },
+  {
+   "id": "dbe6239c3fa8",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "En hélices el objetivo por defecto es un arco de 1/6 a 1/4 de barrido, no necesariamente el disco completo."
+  },
+  {
+   "id": "da3820ba2262",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "En la frenada la carrocería debe mostrar el cabeceo como cue de física."
+  },
+  {
+   "id": "31805379999a",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "En moto hay que declarar la postura del piloto según la fase: tumbado en recta, erguido en la frenada, descolgado en la curva."
+  },
+  {
+   "id": "2967825721da",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "En moto la cámara siempre baja a la altura del piloto; desde arriba la moto se ve pequeña y el piloto mira lejos de cámara."
+  },
+  {
+   "id": "e14570a64d76",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Prohibido aceptar rayos o palas curvados en forma de hoz, artefacto de rolling shutter."
+  },
+  {
+   "id": "0c306f074566",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Referencia de obturación para el panning look: 1/125-1/250 s en autos, 1/60-1/125 s en motos y 1/30-1/60 s en atletas; el prompt puede anclar el cue con el número."
+  },
+  {
+   "id": "1080e6944428",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Si el rim no se puede barrer debe ocultarse, porque las ruedas congeladas hacen que el vehículo parezca aparcado."
+  },
+  {
+   "id": "f6b6092641d9",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "El cue por defecto es sujeto nítido contra superficie de agua barrida en el sentido del viaje, con el spray en blur parcial."
+  },
+  {
+   "id": "6bd5a66dd391",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "El ángulo por defecto es low a ras del agua, con la superficie barriendo el tercio inferior; el ángulo alto y limpio mata la velocidad."
+  },
+  {
+   "id": "13761c1bc236",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Explicación: el régimen especializa los keyframes para sujetos sobre el agua, donde el agua es suelo, fondo barrido y fuente de partículas y la velocidad se lee en la superficie, aplicando race-and-speed con el agua como asfalto."
+  },
+  {
+   "id": "5c17bbffc02d",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "La estela y el spray deben salir del punto de contacto y apuntar en sentido contrario a la dirección de viaje declarada; si no coinciden, el modelo obedece la señal más fuerte."
+  },
+  {
+   "id": "5896f326eaa5",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Un still de superficie solo se considera rápido si reúne al menos tres de cinco cues: cámara a ras del agua, agua barriendo el borde inferior, referencia cercana pasando el borde, sujeto nítido contra fondo barrido, y vibración o spray en la lente."
+  },
+  {
+   "id": "f81eb71dde4d",
+   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
+   "enunciado": "Las gotas sobre la lente o la carcasa son la cue de vibración de este medio y se nombran como tal."
+  },
+  {
+   "id": "3b768d8ca5f9",
+   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
+   "enunciado": "Toda cuerda de remolque se dibuja tensa y recta desde el mango hasta fuera de cuadro; una cuerda con comba desmiente la velocidad."
+  },
+  {
+   "id": "14f89de19cc8",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica al menos tres cues de velocidad presentes y nombrables."
+  },
+  {
+   "id": "b78f9107877b",
+   "alcance": "régimen 01 agua en superficie, vehículos acuáticos",
+   "enunciado": "Con motor o vehículo acuático se leen antes race-and-speed §3 y §10, cuyo presupuesto de velocidad y anti-fake aplican íntegros."
+  },
+  {
+   "id": "68b5d1bba1b6",
+   "alcance": "régimen 05 vehículo en movimiento",
+   "enunciado": "Explicación: race-and-speed.md es la autoridad para vehículos a velocidad y este régimen solo añade lo que cambia cuando no es un auto de carreras en pista."
+  },
+  {
+   "id": "d8651f79b878",
+   "alcance": "régimen 05 vehículo en movimiento",
+   "enunciado": "La física debe estar en el still (squat, nariz levantada, neumático arrugado, rim barrido), nunca confiada a acelerar el panel en post."
+  },
+  {
+   "id": "2f58bd690ec3",
+   "alcance": "régimen 05 vehículo en movimiento",
+   "enunciado": "Los rayos de una rueda en movimiento siempre van barridos en disco; un rim nítido en un vehículo en marcha es el fallo más delator."
+  },
+  {
+   "id": "99ef10a15d14",
+   "alcance": "régimen 05 vehículo en movimiento",
+   "enunciado": "Para cualquier vehículo a velocidad se carga race-and-speed.md completo antes que este archivo."
+  },
+  {
+   "id": "2719069f1c4e",
+   "alcance": "régimen 05 vehículo en movimiento",
+   "enunciado": "Un still vende velocidad solo con al menos tres de cinco cues: cámara a la altura del parachoques o más baja, asfalto barriendo el borde inferior, referencia cercana pasando, héroe nítido contra fondo barrido y vibración mecánica."
+  },
+  {
+   "id": "4dc1a5be8f5b",
+   "alcance": "régimen 05 vehículo en movimiento, enrutamiento [A PRUEBA]",
+   "enunciado": "Este régimen se carga después y solo para las extensiones: moto, bicicleta, tren, lancha, dron y avión ligero."
+  },
+  {
+   "id": "718c3b822c8b",
+   "alcance": "régimen 05 vehículo en movimiento, moto [A PRUEBA]",
+   "enunciado": "En moto la física visible es el ángulo de inclinación y el borde del neumático trabajando, con rodilla o codo cerca del suelo y el cuerpo descolgado hacia el interior de la curva."
+  },
+  {
+   "id": "1f6f8064395b",
+   "alcance": "régimen vehículo en movimiento (moto, bici, tren, lancha, dron, avión ligero), still",
+   "enunciado": "Checklist del crítico: inclinación y borde de neumático en moto, cadencia barrida en bici y discos en hélices (a prueba)."
+  },
+  {
+   "id": "f2c47423df87",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: deben estar presentes tres de los cinco cues de velocidad."
+  },
+  {
+   "id": "51b76f4e8582",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: rim barrido y física visible en el chasis."
+  },
+  {
+   "id": "d65b83eb4dbc",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El blur diferencial debe nombrarse explícitamente porque los modelos estabilizan de más: fondo barrido, sujeto con obturación rápida y rayos barridos en disco."
+  },
+  {
+   "id": "e9b5fb2064fe",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El cue congelado por defecto es héroe nítido y mundo barrido en el eje de viaje, con una referencia cercana alargada en varilla de luz."
+  },
+  {
+   "id": "67b41371490f",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El dutch solo se usa en el único beat de pérdida de tracción."
+  },
+  {
+   "id": "19b814ce777c",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El piloto va sin rostro o con rostro fragmentado por casco, visera y reflejos; la emoción se expresa en nudillos, pedal y aguja."
+  },
+  {
+   "id": "d0442da0a244",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El ángulo por defecto es low a la altura del parachoques; el god-angle alto y limpio está prohibido porque mata la velocidad."
+  },
+  {
+   "id": "e661c1de0ba4",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Hay que alternar paneles bajos y anchos con paneles de compresión de larga focal; nunca toda la secuencia con una sola lente."
+  },
+  {
+   "id": "5cc052cfa0c0",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Hay que rotar entre las cinco familias de plano: perfil hostess-tray, POV bajo de capó, cabina con vibración, tracking paralelo o joust y proof shot lejano."
+  },
+  {
+   "id": "6463a785839a",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "La cámara debe ir donde un rig real puede atornillarse (parachoques, capó, hostess-tray, eje, cabina hard-mount); si no, se lee render."
+  },
+  {
+   "id": "4ea4ab18f85b",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "La luz debe ser specular y no ambiental: un specular duro en metal o goma por panel."
+  },
+  {
+   "id": "22b0f8ed1e46",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Si el rim sale nítido, hay que pedir explícitamente los rayos barridos en disco."
+  },
+  {
+   "id": "2171b623c820",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Si hay aire alrededor del vehículo en un beat de velocidad, acercar barrera, rival o pared al borde del cuadro."
+  },
+  {
+   "id": "892c88d13727",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Toda consecuencia física declarada exige declarar también su causa (neumáticos que levantan cortinas de agua, gravilla frenada en el borde de ataque)."
+  },
+  {
+   "id": "69157b62312b",
+   "alcance": "régimen vehículo, bici y moto",
+   "enunciado": "En bici y moto el rig cercano es la cámara de casco o el chest mount, con POV de manillar y manos en primer plano duro (regla a prueba)."
+  },
+  {
+   "id": "180728d1fc8e",
+   "alcance": "régimen vehículo, bicicleta",
+   "enunciado": "En bicicleta la velocidad debe leerse en la cadencia barrida de las piernas y la cadena, con el cuerpo tenso sobre el manillar y el sudor como specular (regla a prueba)."
+  },
+  {
+   "id": "b918ee4c3511",
+   "alcance": "régimen vehículo, dron",
+   "enunciado": "Si las palas de dron salen nítidas, pedir discos translúcidos (regla a prueba)."
+  },
+  {
+   "id": "1539081451cb",
+   "alcance": "régimen vehículo, dron o hélice",
+   "enunciado": "En dron o hélice las palas deben dibujarse como discos translúcidos, nunca como palas nítidas (regla a prueba)."
+  },
+  {
+   "id": "d976276376d7",
+   "alcance": "régimen vehículo, moto en curva",
+   "enunciado": "Si la moto sale vertical en curva, declarar el ángulo de inclinación y el lado de la rodilla (regla a prueba)."
+  },
+  {
+   "id": "2c1b28ca2e36",
+   "alcance": "régimen vehículo, plano de cabina",
+   "enunciado": "Si la cabina sale perfectamente estable, añadir espejo trémulo, aguja doblada y horizonte 1 a 3 grados fuera."
+  },
+  {
+   "id": "40e2b8e92dbc",
+   "alcance": "régimen vehículo, spot comercial fuera de registro race",
+   "enunciado": "Fuera del registro race, un spot comercial de vehículo puede usar paleta cálida si se declara el tratamiento comercial en la tarjeta, y entonces no aplica el ban de ámbar (regla a prueba)."
+  },
+  {
+   "id": "32bd7c058346",
+   "alcance": "régimen vehículo, tren o metro",
+   "enunciado": "En tren o metro la velocidad se transmite por compresión de larga focal y andén o postes barridos, sin deformar el vehículo."
+  },
+  {
+   "id": "d7b71bab41f6",
+   "alcance": "skill video, paso 4",
+   "enunciado": "Para carreras, drift, persecución o montaje de velocidad se carga race-and-speed.md, leyendo antes animatic-keyframes.md."
+  },
+  {
+   "id": "a96dc5c43eec",
+   "alcance": "tipo de acción C",
+   "enunciado": "Para movimiento continuo (tipo C): héroe nítido y fondo barrido con al menos 3 de 5 cues de velocidad y rig montable; ángulo alto limpio, cabina estable o rim nítido lo matan."
+  },
+  {
+   "id": "330480949bcc",
+   "alcance": "tratamiento race/kinetic",
+   "enunciado": "Tratamiento race/kinetic: altura de parachoques 24mm con rigs montados, specular y contraluz al humo, paleta cold combative con ámbar ≤15%, sin rostro; prohíbe ángulo de belleza, cabina estable, rim nítido y grade cálido."
+  }
+ ]
+}

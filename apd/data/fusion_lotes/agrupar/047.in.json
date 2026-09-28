@@ -1,0 +1,599 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "parametros_tecnicos",
+ "descripcion_tema": "aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API",
+ "ventana": "2 de 2",
+ "filas": [
+  {
+   "id": "526e298917f4",
+   "alcance": "Veo 3",
+   "enunciado": "Las líneas habladas en Veo 3 deben caber en la duración (unas 12-18 palabras para 8s) e indicar la entrega (\"calm, unhurried\")."
+  },
+  {
+   "id": "6ed5a45cc8b3",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica el esquema JSON completo de Veo: output, global_style, continuity (personajes, props, luz constante) y scenes con tiempos, plano, acción, entorno, luz y audio."
+  },
+  {
+   "id": "9b758673a9a5",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Limita la duración a 4, 6 u 8 s y el diálogo hablado a 8 s por clip."
+  },
+  {
+   "id": "a77ffabdc7d5",
+   "alcance": "Veo 3, archivo de salida",
+   "enunciado": "Cada prompt de Veo 3 lleva una cabecera con id de shot y parámetros (duration, ar, generate_audio)."
+  },
+  {
+   "id": "5c35f58bf9d0",
+   "alcance": "Veo diálogo",
+   "enunciado": "Recortar las líneas de diálogo hasta que quepan en 8 segundos de habla natural."
+  },
+  {
+   "id": "f4a8bd87783f",
+   "alcance": "adaptadores Hailuo 02 Pro y Veo 3",
+   "enunciado": "En Hailuo y Veo, start_image es opcional y permite imagen a video desde un still aceptado."
+  },
+  {
+   "id": "70263ce2c995",
+   "alcance": "adaptadores Hailuo, Kling, Seedance, Seedream y Veo",
+   "enunciado": "En los adaptadores de video y Seedream, aspect_ratio toma por defecto el valor de project.aspect."
+  },
+  {
+   "id": "4e08121ef3d6",
+   "alcance": "anclas para video",
+   "enunciado": "El ancla se genera en el aspect ratio destino y nunca se recorta después de animar."
+  },
+  {
+   "id": "89f0cdbbc4d6",
+   "alcance": "anuncio de producto diorama en miniatura",
+   "enunciado": "Para el diorama definir producto, material, superficie y color de acento, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "0070bdc9ffcb",
+   "alcance": "board de campaña de bebida",
+   "enunciado": "Para el board de bebida definir producto, marca, modelo, locación, acción, estética, ángulo, superficie, lineup y colores, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "7e0f07e102e3",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: aspect ratios de la marca: 9:16 social corto, 16:9 largo y web, 1:1 feed y 4:5 alternativa de Instagram."
+  },
+  {
+   "id": "aae9df548923",
+   "alcance": "campaña de chocolate de lujo",
+   "enunciado": "Para el chocolate de lujo usar GPT Image 2 quality high por el detalle de fractura y cacao en polvo."
+  },
+  {
+   "id": "c6595acb53d1",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators[].aspect_param es un texto obligatorio no vacío."
+  },
+  {
+   "id": "568578915440",
+   "alcance": "coleccionable chibi",
+   "enunciado": "Para el chibi definir marcadores faciales, paleta en hex, degradado, 3–5 poses y color de base, y usar GPT Image 2 medium (high para close-ups de marketing)."
+  },
+  {
+   "id": "13ae4a595622",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Para el tríptico usar 1536x1024 o 1024x1536 con GPT Image 2 medium (high si hay texto); asignar orden de paneles, unificar la luz y declarar la consistencia del sujeto."
+  },
+  {
+   "id": "6861fb1e448e",
+   "alcance": "cosmética de lujo",
+   "enunciado": "Para cosmética de lujo definir superficie, acabado, material de acento, paleta y temperatura, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "b3d863b233de",
+   "alcance": "critique.schema.json",
+   "enunciado": "seed es null si el generador no expone semilla, o un entero o texto con la semilla usada."
+  },
+  {
+   "id": "020bb97d2d9a",
+   "alcance": "editorial de moda, collage de 3 paneles",
+   "enunciado": "Para el tríptico de moda definir modelo, outfit, detalle, tejido, fondos, grade y temperatura de color, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "939550458969",
+   "alcance": "editorial de moda, grid 2x2",
+   "enunciado": "Para el 2x2 de moda definir modelo, outfit, fondo, color del divisor, stock de película, tratamiento de piel y accesorio, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "eb9bf819648f",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: los formatos de la marca son Instagram 4:5 y 9:16, y hero web 16:9."
+  },
+  {
+   "id": "368f78d148fa",
+   "alcance": "ejemplo de marca, TikTok de apertura de cafetería",
+   "enunciado": "Ejemplo: la pieza para TikTok debe durar 30 segundos, tener 6 planos de 5 segundos en formato 9:16, incluir el CTA indicado y transmitir una identidad cálida, analógica y artesanal."
+  },
+  {
+   "id": "6811fc68b008",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: ficha del proyecto shotkit explainer de 90 s en 16:9 con corte vertical, framework founder-explainer y snapshot del brand-lock fechado."
+  },
+  {
+   "id": "f8d367d0e3e2",
+   "alcance": "ejemplos WhyStrohm 30s y 60s",
+   "enunciado": "Ejemplo: los storyboards de WhyStrohm usan aspect ratio 9:16."
+  },
+  {
+   "id": "c74161ce47f0",
+   "alcance": "entrega de prompts de imagen",
+   "enunciado": "Exige entregar los parámetros solo si no son estándar: aspect ratio si no es 1:1 y resolución si hace falta 2K/4K."
+  },
+  {
+   "id": "ec76d346601e",
+   "alcance": "formato de salida de prompts; modelos nano-banana-2, nano-banana-pro y gpt-image-2",
+   "enunciado": "La respuesta con un prompt debe incluir modelo, calidad solo para gpt-image-2, tamaño o proporción, el prompt listo para copiar y notas sobre supuestos."
+  },
+  {
+   "id": "4194ece0d20c",
+   "alcance": "general",
+   "enunciado": "Ejemplo: los nombres de hardware como GoPro, Fujifilm, cámara desechable, Hasselblad, iPhone o Polaroid evocan estéticas visuales específicas."
+  },
+  {
+   "id": "72e63b444e74",
+   "alcance": "general",
+   "enunciado": "Especifica el tipo de cámara para modificar el ADN visual de la imagen."
+  },
+  {
+   "id": "237511c9e7ca",
+   "alcance": "general (generación)",
+   "enunciado": "Los parámetros de entrega como el aspect ratio se fijan como parámetros duros del generador cuando la plataforma los expone, no solo en prosa, y se valida el archivo generado."
+  },
+  {
+   "id": "d3b42a5a00a9",
+   "alcance": "grid de variantes de vestuario",
+   "enunciado": "Para el grid de vestuario definir identidad, color de fondo, layout 2x3 o 3x3, pose y outfits, y usar GPT Image 2 medium (high solo si las etiquetas lo requieren)."
+  },
+  {
+   "id": "46283692fbdd",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Para el storyboard de 9 celdas usar 1536x1024 y GPT Image 2 quality high; numerar paneles, dar acciones distintas a cada uno y quality high para timestamps pequeños."
+  },
+  {
+   "id": "9baeaf95556d",
+   "alcance": "hoja de expresiones",
+   "enunciado": "Para la hoja de expresiones definir descripción facial, estilo artístico, fuente de etiqueta y expresiones extra, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "cd690dd5f045",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "El aspect ratio va en los ajustes del generador cuando se admite y debe verificarse en los píxeles de salida; el texto del prompt no lo garantiza."
+  },
+  {
+   "id": "b19254e6683c",
+   "alcance": "ingredientes flotantes",
+   "enunciado": "Para ingredientes flotantes definir degradado, líquido, ingredientes, texturas, inclinación y máximo 6-8 elementos, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "22aa4e5a0346",
+   "alcance": "keyframe LF; Seedance",
+   "enunciado": "El keyframe LF (último frame) debe tener el mismo aspect ratio que el FF y en Seedance se declara por separado."
+  },
+  {
+   "id": "05945a26b60d",
+   "alcance": "keyframes para video",
+   "enunciado": "Generar directamente en el aspect ratio final (p. ej. 9:16) y no recortar tras animar."
+  },
+  {
+   "id": "500923bb29fe",
+   "alcance": "orden de bloques del still",
+   "enunciado": "El prompt cierra con ratio y nota de que la velocidad se construye en el frame, sin speed-up."
+  },
+  {
+   "id": "b7adae570a74",
+   "alcance": "patrón Lavender Smartphone Hero Ad, GPT Image 2",
+   "enunciado": "Especifica las variables del hero de smartphone (dispositivo, degradado con hex, acabado, contenido de pantalla, formas de acento, titular, familia de color, inclinación 5-15°, posición) y recomienda GPT Image 2 quality high por el texto, la legibilidad de pantalla y la precisión del dispositivo."
+  },
+  {
+   "id": "79953d34be08",
+   "alcance": "prompts de imagen",
+   "enunciado": "Los metadatos Model, Quality y Size van fuera del cuerpo del prompt."
+  },
+  {
+   "id": "d545d1df2993",
+   "alcance": "póster de comida hiperrealista",
+   "enunciado": "Para el póster de comida usar GPT Image 2 quality high por la fidelidad de vapor, condensación y texturas."
+  },
+  {
+   "id": "e3586587a268",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "La referencia para impacto congelado es 1/2000 s o más rápido; a 1/250 s el cuerpo se congela y la raqueta se barre como blur parcial legítimo, anclable como \"1/2000 s\" en GPT Image 2 y \"high-speed freeze\" en NBP."
+  },
+  {
+   "id": "0c306f074566",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Referencia de obturación para el panning look: 1/125-1/250 s en autos, 1/60-1/125 s en motos y 1/30-1/60 s en atletas; el prompt puede anclar el cue con el número."
+  },
+  {
+   "id": "de971cad5404",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Recorrido de costo: variantes a 0.5K, selección y regeneración del ganador a 2K o 4K."
+  },
+  {
+   "id": "7e0d9eb2158b",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Se usa GPT Image 2 quality high cuando el detalle de gotas y condensación es el centro del cuadro."
+  },
+  {
+   "id": "a5f920191cde",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Se usa thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna."
+  },
+  {
+   "id": "956b24d5711c",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Se usa GPT Image 2 quality high para detalle congelado y legibilidad de texturas finas."
+  },
+  {
+   "id": "433dece3a66b",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo y final en alta resolución."
+  },
+  {
+   "id": "e5519d1505df",
+   "alcance": "rúbrica de extracción de marca, relaciones de aspecto",
+   "enunciado": "Especifica las relaciones de aspecto de la marca con el valor predeterminado `9:16, 16:9, 1:1, 4:5`, ajustándolas al sesgo de los activos y documentando la evidencia."
+  },
+  {
+   "id": "dd4fb3675559",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para formatos extremos (1:8, 8:1, 4:1) usar Nano Banana, el único que los admite."
+  },
+  {
+   "id": "4f815b995a81",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].seed es opcional: null, entero o texto."
+  },
+  {
+   "id": "9ff8edce13df",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project.aspect es obligatorio y debe ser 16:9, 9:16, 1:1, 4:5 o 21:9."
+  },
+  {
+   "id": "201e20bdb7ed",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project.duration_s es un número obligatorio."
+  },
+  {
+   "id": "3861ac862c26",
+   "alcance": "skill Image Prompting; Nano Banana y GPT Image 2",
+   "enunciado": "La skill de prompts de imagen debe entregar el nombre del modelo, calidad, tamaño o relación de aspecto y el prompt, sin generar la imagen."
+  },
+  {
+   "id": "5c91b66636ce",
+   "alcance": "skill storyboard-architect, entradas",
+   "enunciado": "El aspect ratio es entrada obligatoria; si falta, se pregunta (16:9, 9:16, 1:1)."
+  },
+  {
+   "id": "c1072203c37a",
+   "alcance": "split antes/después",
+   "enunciado": "Para el antes/después usar 1536x1024 con GPT Image 2 medium (high si hay etiquetas); exigir mismo ángulo en ambos lados, divisor visible y asignar qué lado es antes y cuál después."
+  },
+  {
+   "id": "ee76613ce960",
+   "alcance": "storyboard TVC de 9 paneles",
+   "enunciado": "Para el TVC de 9 paneles definir producto, protagonista, escenario, emoción, superficie, tagline y duración, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "b08350e49fe9",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige indicar que todas las imágenes tengan el mismo aspect ratio declarado."
+  },
+  {
+   "id": "df53030312b4",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige pedir explícitamente el número de imágenes y que se generen de una en una."
+  },
+  {
+   "id": "eddbaebfba22",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige pedir que las imágenes se generen de una en una."
+  },
+  {
+   "id": "e5b8b1df8aee",
+   "alcance": "storyboards y arte secuencial, story sequence",
+   "enunciado": "Plantilla de secuencia narrativa de N imágenes con personajes, escenario y arco emocional: identidad y vestuario consistentes, ángulos, distancias y expresiones variados, generar una imagen por vez y aspect ratio por imagen."
+  },
+  {
+   "id": "1974d84668a0",
+   "alcance": "tarjeta de ancla D8",
+   "enunciado": "La dimensión D8 (modelo y resolución) fija: grounding fuerza NB2 en arquitectura y especies, rostros se prueban en NB2 y NBP, etiquetas y UI en GPT high, hero photoreal en Flux 2 Pro."
+  },
+  {
+   "id": "92f2e28e2322",
+   "alcance": "tarjeta de personaje anime",
+   "enunciado": "Para la tarjeta anime definir descripción detallada, rasgos faciales, objetos, swatches con hex y stats, y usar GPT Image 2 quality high por la densidad de texto."
+  },
+  {
+   "id": "f90e05cbc1f6",
+   "alcance": "turnaround de personaje",
+   "enunciado": "Para el turnaround definir nombre, descripción específica y 3 colores con hex, y usar GPT Image 2 quality high por las líneas y callouts."
+  },
+  {
+   "id": "5f71770edeba",
+   "alcance": "video multiclip",
+   "enunciado": "Especifica divisiones por defecto en clips de 5 s: 10 s=2, 15 s=3, 30 s=6, 45 s=9, 60 s=12."
+  },
+  {
+   "id": "505016adde9b",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige añadir tras el prompt la cabecera estándar del skill image (Model / Quality / Size)."
+  },
+  {
+   "id": "7998b2c405d7",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El campo seed se registra si el generador lo expone; si no, null."
+  },
+  {
+   "id": "69e8c8f57549",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, aspect ratio: pass si coincide con project.aspect, soft fail si cabe en un recorte, hard fail si es otro."
+  },
+  {
+   "id": "064966515e21",
+   "alcance": "visual-media",
+   "enunciado": "Douyin: duración óptima 15–60 s, formato 9:16, contenido local."
+  },
+  {
+   "id": "cc7a84965680",
+   "alcance": "visual-media",
+   "enunciado": "Explicación: triángulo de exposición; diafragma abierto reduce profundidad, obturador rápido congela y lento produce motion blur, ISO alto añade ruido."
+  },
+  {
+   "id": "7af1b130c266",
+   "alcance": "visual-media",
+   "enunciado": "Reels: duración óptima 15–90 s, formato 9:16, carácter cuidado y estético."
+  },
+  {
+   "id": "9fc939657221",
+   "alcance": "visual-media",
+   "enunciado": "Shorts: duración óptima 15–60 s, formato 9:16, carácter de divulgación y humor."
+  },
+  {
+   "id": "b7cbced9640b",
+   "alcance": "visual-media",
+   "enunciado": "TikTok: duración óptima 15–60 s, formato 9:16, carácter de entretenimiento y retos."
+  },
+  {
+   "id": "736b95a77538",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Por cada shot y generador se compone tomando brand-lock, series_lock y spec del shot, quitando todo on_screen_text, aplicando el adaptador y añadiendo parámetros propios."
+  },
+  {
+   "id": "c032cfbdd294",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "validate_capabilities.py falla si un adaptador anuncia más palabras que su techo o no documenta el aspect_param indicado por el JSON."
+  },
+  {
+   "id": "9e3fa7c7b5d5",
+   "alcance": "visual-prompt-forge _capabilities.json, GPT Image 1.5/2",
+   "enunciado": "GPT Image 1.5/2 usa prompt en párrafo con techo de 300 palabras, sin negativos, parámetro size; tolera más contexto y sirve para composiciones complejas."
+  },
+  {
+   "id": "a9d61d611a10",
+   "alcance": "visual-prompt-forge _capabilities.json, Kling 3.0",
+   "enunciado": "Kling 3.0 es el modelo de movimiento por defecto: techo de 150 palabras, negativos, start/tail frame, clips de 5 o 10 s; escalar a otro solo para lo que no puede hacer."
+  },
+  {
+   "id": "343c8ca29fac",
+   "alcance": "visual-prompt-forge _capabilities.json, Midjourney v7",
+   "enunciado": "Midjourney v7 usa prompt de palabras clave con techo de 100 palabras (recomendado 40-80), no renderiza texto ni movimiento y admite --cref/--sref, negativos y --ar."
+  },
+  {
+   "id": "f13c6db20c3e",
+   "alcance": "visual-prompt-forge _capabilities.json, Nano Banana",
+   "enunciado": "Nano Banana (Gemini 2.5 Flash Image) usa lenguaje natural con techo de 120 palabras, sin negativos, parámetro aspectRatio en camelCase e ignora --ar; es rápido y barato para iterar con referencias."
+  },
+  {
+   "id": "eb8333980445",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "El adaptador lee la seed del proyecto y la aplica a todos los prompts."
+  },
+  {
+   "id": "c84db5c2689a",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "El bloqueo de seed se documenta como mejor esfuerzo, no garantizado, porque Midjourney y algunos modelos de video (Veo, Seedance) manejan seeds distinto o no las usan."
+  },
+  {
+   "id": "2df5b50eb078",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "En generadores con seed (Flux, Seedream, Ideogram, Stable Diffusion) se fija la misma seed para todos los shots del storyboard."
+  },
+  {
+   "id": "1b43c771c9ec",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "La seed puede documentarse a nivel de proyecto en shots.json (project.seed)."
+  },
+  {
+   "id": "91f8ab6ef21f",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux cada oración hace un trabajo, separadas por puntos, sin pesos entre corchetes ni flags --."
+  },
+  {
+   "id": "d4b0c712d0a3",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux no se activa prompt upsampling en trabajo de serie porque la reescritura automática genera shots inconsistentes."
+  },
+  {
+   "id": "3d9b574b9d44",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, aspect_ratio va como campo de API con valor por defecto de project.aspect."
+  },
+  {
+   "id": "ae4ee374b51b",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, la seed se fija por storyboard para consistencia de serie."
+  },
+  {
+   "id": "62cd2760dccd",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, output_format va como campo de API, png por defecto para composición."
+  },
+  {
+   "id": "f9a340f686f8",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, prompt_upsampling debe ir en false para trabajo en serie porque la reescritura automática rompe la consistencia."
+  },
+  {
+   "id": "a443e619b793",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, safety_tolerance va como campo de API con valor 2 por defecto."
+  },
+  {
+   "id": "9d399e42a2e8",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En flux.txt los parámetros se documentan en una línea de comentario encima de cada prompt."
+  },
+  {
+   "id": "c987d69e4bc3",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Los parámetros de Flux se pasan junto al prompt como campos de la API, no dentro del texto."
+  },
+  {
+   "id": "5d3b83207ed4",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image no se incluyen flags --ar ni sintaxis de pesos porque se ignoran."
+  },
+  {
+   "id": "6e957cbed2b4",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image, el modelo por defecto es gpt-image-1.5, o gpt-image-2 si está disponible."
+  },
+  {
+   "id": "d3729c1fd03d",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image, quality high para hero shots y medium para series."
+  },
+  {
+   "id": "84773b786b9e",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image, size por defecto es 1024x1792 para 9:16, 1792x1024 para 16:9 y 1024x1024 para 1:1."
+  },
+  {
+   "id": "80abec3b2c0b",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image, style natural para fotorrealismo y vivid para estilizado."
+  },
+  {
+   "id": "113963d3024b",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "Los parámetros de GPT Image se documentan en una línea de comentario encima del prompt."
+  },
+  {
+   "id": "5b4ba3e98a31",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Ejemplo: línea de comentario de parámetros de un borrador Hailuo (duration=6s, ar=9:16, optimizer=false)."
+  },
+  {
+   "id": "eaf7538203b6",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo no se activa el prompt optimizer en trabajo de serie."
+  },
+  {
+   "id": "fea678535570",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo, duration es 6 s por defecto; se debe comprobar el techo vigente del tier Pro en fal.ai."
+  },
+  {
+   "id": "9931113d8005",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo, prompt_optimizer va en false para series porque la reescritura rompe la consistencia entre shots."
+  },
+  {
+   "id": "e216ea4ab39e",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 1 de iteración: bocetar el shot en Hailuo con prompt_optimizer=false."
+  },
+  {
+   "id": "0501bd502756",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram no se olvida la seed; en trabajo de serie se fija a nivel de storyboard."
+  },
+  {
+   "id": "dd15fa3ea757",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, aspect_ratio es campo de API con valor por defecto de project.aspect."
+  },
+  {
+   "id": "6efa8970ce97",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, la seed se fija por storyboard."
+  },
+  {
+   "id": "06d3f946d6bf",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, magic_prompt debe ir OFF en trabajo de serie porque destruye la consistencia."
+  },
+  {
+   "id": "7b1b75a1a16e",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, model es campo de API con valor V_3 por defecto."
+  },
+  {
+   "id": "beddab6f0630",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, style_type es DESIGN para pósters y REALISTIC para escenas."
+  },
+  {
+   "id": "7b93d2877baa",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "Los parámetros de Ideogram se documentan en una línea de comentario encima de cada prompt."
+  },
+  {
+   "id": "44f05640a0f6",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No confiar en magic_prompt de Ideogram, que reescribe y produce shots inconsistentes en serie."
+  },
+  {
+   "id": "b2b4302d7a12",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling no se describe un movimiento más rápido de lo que permite la duración (un dolly lento en 1 s es jitter)."
+  },
+  {
+   "id": "e91d794f14d2",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, cfg_scale es 0.5 por defecto; más bajo es más dinámico y más alto más fiel al prompt."
+  },
+  {
+   "id": "25db2c8d8d8a",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, duration es 5 s para shots y 10 s para hero; son las únicas duraciones soportadas."
+  },
+  {
+   "id": "c04e17752232",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, start_image es opcional para imagen a video y fija el frame de apertura con un still aceptado."
+  },
+  {
+   "id": "5f67362039eb",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, tail_image es opcional y fija el frame final para movimientos controlados."
+  },
+  {
+   "id": "2d4063ac693e",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Kling admite negative_prompt por serie para suprimir deriva (p. ej., extra fingers, warped face)."
+  },
+  {
+   "id": "461dcfe94d59",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Los parámetros de Kling se documentan en una línea de comentario encima de cada prompt."
+  },
+  {
+   "id": "60bdd1b6ab30",
+   "alcance": "visual-prompt-forge, adaptador Midjourney v7",
+   "enunciado": "El patrón de Midjourney es una lista de sujeto, acción, composición, entorno, luz, color/mood y estilo, seguida de --ar, --style, --s y extras."
+  },
+  {
+   "id": "da675976f887",
+   "alcance": "visual-prompt-forge, fallos de consistencia",
+   "enunciado": "Sin bloqueo de seed los rasgos derivan al azar."
+  }
+ ]
+}

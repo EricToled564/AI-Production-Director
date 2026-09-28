@@ -1,0 +1,819 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "layout_grafico",
+ "descripcion_tema": "slides, infografías, grids, multi-panel, bento, layouts",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "92fc05c196ca",
+   "alcance": "Brand Lock > Palette",
+   "enunciado": "Especifica el color Rule para bordes, divisores e interfaz sutil."
+  },
+  {
+   "id": "149b70a04070",
+   "alcance": "Brand Lock Extractor; fuente imágenes",
+   "enunciado": "Para capturas o archivos de imagen, léelos para muestrear la paleta y extraer el mood y el layout."
+  },
+  {
+   "id": "b2a8f143b5b2",
+   "alcance": "Brand Lock de Acme SaaS (ejemplo), lista de prohibiciones",
+   "enunciado": "No usar esquinas redondeadas de más de 8 px."
+  },
+  {
+   "id": "a9564a15fe2a",
+   "alcance": "GPT Image 2, infografía",
+   "enunciado": "Especifica la plantilla de infografía/diagrama: título, flujo de contenido, formato visual, etiquetas legibles, jerarquía clara, quality high y 1536×1024."
+  },
+  {
+   "id": "a9ac67864a42",
+   "alcance": "Nano Banana",
+   "enunciado": "El modo Thinking de Nano Banana resuelve infografías complejas con lógica espacial."
+  },
+  {
+   "id": "b35e0fe4b099",
+   "alcance": "Nano Banana 2, proporciones extremas",
+   "enunciado": "Ejemplo: tira cómica horizontal de 4 paneles a 4:1 con personaje consistente y giro final."
+  },
+  {
+   "id": "1cffdd1b1f87",
+   "alcance": "Nano Banana, infografías",
+   "enunciado": "Verificar siempre las cifras de infografías de Nano Banana porque pueden contener datos erróneos; el grounding ayuda pero no garantiza."
+  },
+  {
+   "id": "02ebe484cd61",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige, al usar una rejilla de storyboard como entrada (≤15 paneles), declarar el orden de lectura y excluir su estilo, etiquetas y personajes provisionales."
+  },
+  {
+   "id": "6bb4f1ccc9e8",
+   "alcance": "board de campaña de bebida",
+   "enunciado": "Usar el board de campaña de bebida de alta moda para combinar estilo de vida y producto: modelo, producto héroe y lineup."
+  },
+  {
+   "id": "8b8b01e31760",
+   "alcance": "board de campaña de bebida, GPT Image 2",
+   "enunciado": "Especifica la plantilla del board de bebida: tríptico 45/30/25%, panel lifestyle, beauty shot con condensación y etiqueta legible, lineup de variantes; sin tipografía, modelo sin mirar el producto, luz coherente y condensación física."
+  },
+  {
+   "id": "db539042f137",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Especifica la plantilla del tríptico de campaña: héroe amplio, detalle de producto y acción con leve blur en extremidades, misma luz y modelo, producto visible en cada panel."
+  },
+  {
+   "id": "26896c95b33d",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Especifica las variables del tríptico: orientación, marca, producto, modelo, detalle del close-up e instrucción tipográfica opcional."
+  },
+  {
+   "id": "13ae4a595622",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Para el tríptico usar 1536x1024 o 1024x1536 con GPT Image 2 medium (high si hay texto); asignar orden de paneles, unificar la luz y declarar la consistencia del sujeto."
+  },
+  {
+   "id": "0673f2ed89fc",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Usar el collage de 3 paneles para campaña: plano héroe, detalle y acción en tríptico horizontal o vertical."
+  },
+  {
+   "id": "26b0e714d502",
+   "alcance": "composiciones multipanel",
+   "enunciado": "En multipanel: más paneles implica menos detalle por panel; declarar consistencia repitiendo marcadores de identidad, dimensiones del grid, bordes, orden de lectura, y usar GPT Image 2 high con texto, NBP sin texto y NB2 o GPT low para exploración."
+  },
+  {
+   "id": "ae0c460d2442",
+   "alcance": "composiciones multipanel",
+   "enunciado": "Explicación: las composiciones multipanel producen una sola imagen con todos los paneles, a diferencia de los storyboards que generan una imagen por cuadro."
+  },
+  {
+   "id": "eec800413a13",
+   "alcance": "composiciones multipanel",
+   "enunciado": "Numerar y describir explícitamente cada panel; peticiones vagas como \"show multiple angles\" producen grids inconsistentes."
+  },
+  {
+   "id": "42b212682319",
+   "alcance": "control estructural con referencias",
+   "enunciado": "Especifica frases de control de precisión: posicionar el texto exactamente donde indica el boceto, seguir la rejilla exactamente, igualar el layout con precisión y conservar las proporciones de la referencia."
+  },
+  {
+   "id": "27c50ab2dd45",
+   "alcance": "control estructural con referencias",
+   "enunciado": "Especifica que las imágenes de referencia pueden controlar dónde van los elementos, qué proporciones usar, cómo fluye el texto y qué áreas reciben énfasis."
+  },
+  {
+   "id": "37c7b90dc4e8",
+   "alcance": "control estructural, assets en rejilla",
+   "enunciado": "Explicación: los assets en rejilla sirven para sprite sheets de juegos, contenido de pantallas LED y gráficos basados en tiles."
+  },
+  {
+   "id": "482c87ad14fc",
+   "alcance": "control estructural, assets en rejilla",
+   "enunciado": "Plantilla de asset basado en rejilla: ajustar al tamaño de rejilla, contenido por celda y estilo uniforme entre celdas."
+  },
+  {
+   "id": "ab817db86cab",
+   "alcance": "control estructural, pixel art",
+   "enunciado": "Plantilla de pixel art ajustado a una rejilla de tamaño dado, con colores de alto contraste y estilo retro o moderno."
+  },
+  {
+   "id": "ed5f8a39b857",
+   "alcance": "control estructural, sketch → final",
+   "enunciado": "Explicación: los layouts dibujados a mano se convierten en assets pulidos mediante sketch → final."
+  },
+  {
+   "id": "fe328433d1e2",
+   "alcance": "control estructural, sketch → final",
+   "enunciado": "Plantilla de boceto a final: seguir el boceto exactamente en composición, colocación de elementos y posición del texto, con calidad declarada y texto exacto entre comillas donde se indica."
+  },
+  {
+   "id": "70d57a1b8ffc",
+   "alcance": "control estructural, wireframe → mockup",
+   "enunciado": "Explicación: los diseños UI/UX pueden generarse a partir de wireframes toscos."
+  },
+  {
+   "id": "75ee99b05a87",
+   "alcance": "control estructural, wireframe → mockup",
+   "enunciado": "Plantilla de wireframe a mockup: igualar con precisión la estructura del wireframe, con contenido placeholder o realista y estilo de UI o guía de marca."
+  },
+  {
+   "id": "6d505b307e53",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica efectos atmosféricos para slides: neblina de degradado sutil, niebla blanca a ras del suelo, viñeta suave en los bordes y textura de ruido para sensación premium."
+  },
+  {
+   "id": "b05ff5c9adcb",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica el checklist de diapositiva: una idea por slide, máximo 5 puntos, título 44-54 pt y texto 18-24 pt, 3-4 colores con alto contraste, suficiente espacio en blanco y visuales en alta resolución de estilo único."
+  },
+  {
+   "id": "658b27a416b6",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica el vocabulario de peso tipográfico (thin a extra bold) y de posición («upper third», «left aligned 10% margin», «centered») para prompts de slides."
+  },
+  {
+   "id": "20d3877ea4e5",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica la jerarquía tipográfica de slides en el prompt: héroe muy grande dominando el tercio superior, primario grande, secundario 3-5 veces menor que el héroe y pie mínimo."
+  },
+  {
+   "id": "b8e68c9f3117",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica la paleta clara de slides: off-white #fafafa/#f8f9fa, gris cálido #f5f5f4 y texto #1a1a1a/#374151."
+  },
+  {
+   "id": "1e30284201c8",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica la paleta oscura de slides: casi negro #0a0a0a/#121212, tonos profundos #0d3d2d/#1a2a3a y texto #ffffff/#e0e0e0."
+  },
+  {
+   "id": "05226808d2d0",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica la tipografía de diapositivas: título 44-54 pt bold, subtítulo 28-36 pt medium, texto 18-24 pt regular (mínimo 18), sans-serif principal (Inter, Helvetica, Roboto) y serif solo como acento."
+  },
+  {
+   "id": "eacc9aa594a7",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica los colores de datos en slides: positivo #22c55e, negativo #dc2626 y resaltado #3b82f6."
+  },
+  {
+   "id": "e745fc8e21df",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Especifica que los layouts asimétricos (2/3 + 1/3) son más dinámicos que los centrados."
+  },
+  {
+   "id": "350d0bf819e5",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige dividir en dos diapositivas cuando el contenido queda apretado."
+  },
+  {
+   "id": "d9bae4ccdd43",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige que el contenido de la diapositiva tenga aire (espacio en blanco suficiente)."
+  },
+  {
+   "id": "b6f5edf200b4",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige un contraste mínimo de 4.5:1 en las diapositivas."
+  },
+  {
+   "id": "75f6bc8b5374",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige un solo estilo visual por presentación: fotos, ilustraciones o gráfica mínima, no mezclados."
+  },
+  {
+   "id": "6369c4d775f6",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige un único fondo neutro (blanco, negro o gris) en las diapositivas."
+  },
+  {
+   "id": "96918e28918b",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige una sola idea por diapositiva sin combinar conceptos no relacionados, porque la audiencia recuerda 65% de lo visual frente a 10% de lo oído."
+  },
+  {
+   "id": "3894178f1869",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige usar en la diapositiva título más lista o título más párrafo, nunca ambos."
+  },
+  {
+   "id": "a8915ecb47ab",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Exige usar solo imágenes en alta resolución y que cada imagen refuerce la idea de la diapositiva."
+  },
+  {
+   "id": "67c7d1527c28",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Explicación: la sección Presentation Slides cubre visuales profesionales de diapositivas para decks y pitches."
+  },
+  {
+   "id": "5a81d183dcef",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Explicación: los sistemas de layout son reglas universales de maquetación que funcionan con cualquier estilo visual."
+  },
+  {
+   "id": "5dc9aaf14359",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Explicación: mezclar estilos visuales en una presentación produce caos visual."
+  },
+  {
+   "id": "38cf3c9126d2",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Limita a un máximo de 5 puntos por diapositiva."
+  },
+  {
+   "id": "4fc41e079926",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Limita cada bloque de texto de diapositiva a 15-20 palabras."
+  },
+  {
+   "id": "1e01855ab530",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Limita la paleta de diapositivas a 3-4 colores como máximo (uno principal más 2-3 acentos)."
+  },
+  {
+   "id": "c78f5c23d0aa",
+   "alcance": "diapositivas de presentación",
+   "enunciado": "Prohíbe el blanco puro #fff sobre negro en diapositivas; usar #f5f5f5."
+  },
+  {
+   "id": "4c5da12a05a8",
+   "alcance": "diapositivas de presentación, bento grid",
+   "enunciado": "Especifica las reglas del bento grid: contenedor con límites de módulo explícitos, contenido importante en bloques grandes, máximo 9 bloques, gaps uniformes (16 px) y contenido relacionado agrupado en un bloque."
+  },
+  {
+   "id": "a8cfd60d7ec7",
+   "alcance": "diapositivas de presentación, bento grid",
+   "enunciado": "Especifica los tamaños de bloque del bento (anchos/planos para hero, estrechos/altos para listas, cuadrados para iconos) y las rejillas de referencia de 3, 6 y 9 bloques."
+  },
+  {
+   "id": "11c80016c645",
+   "alcance": "diapositivas de presentación, bento grid",
+   "enunciado": "Explicación: el bento grid es un sistema modular de bloques de distintos tamaños."
+  },
+  {
+   "id": "1ccf0e8e18c0",
+   "alcance": "diapositivas de presentación, bento grid",
+   "enunciado": "Plantilla de prompt para bento grid: número de bloques, bloque héroe, medianos y pequeños, con gaps uniformes."
+  },
+  {
+   "id": "87a1d0e2f88b",
+   "alcance": "diapositivas de presentación, brutalismo",
+   "enunciado": "Exige en el estilo brutalista mantener navegación y jerarquía claras, priorizar legibilidad sobre expresión y aplicar selectivamente colores vivos o tipografías enormes, no ambos."
+  },
+  {
+   "id": "189efe8c7fc7",
+   "alcance": "diapositivas de presentación, brutalismo",
+   "enunciado": "Explicación: el estilo brutalista usa estética cruda, tipografías enormes y colores vivos."
+  },
+  {
+   "id": "40f15796b85c",
+   "alcance": "diapositivas de presentación, brutalismo",
+   "enunciado": "Limita el estilo brutalista a portafolios artísticos, moda y startups, prohibiéndolo en e-commerce, corporativos, educación y fintech; incluye plantilla de prompt con tipografía masiva, alto contraste y jerarquía clara."
+  },
+  {
+   "id": "b55f9232b2bc",
+   "alcance": "diapositivas de presentación, espacio negativo",
+   "enunciado": "Especifica que el espacio negativo debe estructurar y dirigir la atención, no crear vacío decorativo, y que por Gestalt los elementos separados se leen como distintos y los cercanos como relacionados."
+  },
+  {
+   "id": "cbd248b678a9",
+   "alcance": "diapositivas de presentación, espacio negativo",
+   "enunciado": "Explicación: el espacio negativo es una herramienta de foco."
+  },
+  {
+   "id": "77fece2048e7",
+   "alcance": "diapositivas de presentación, espacio negativo",
+   "enunciado": "Limita el layout de espacio negativo generoso a marcas premium, presentaciones minimalistas y hero sections, prohibiéndolo en portales de noticias, dashboards y versiones móviles; incluye plantilla de prompt con punto focal y espacio que guía al CTA."
+  },
+  {
+   "id": "6b1b2986c20a",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Ejemplo: prompt de slide SaaS futurista con fondo negro y aurora, bento de 6 bloques con tarjetas de vidrio, esfera iridiscente, donut 3D y tipografía blanca, formato 16:9."
+  },
+  {
+   "id": "ea2e3308c7f7",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Especifica el estilo de gráficos SaaS: donuts 3D brillantes, barras de progreso en cápsula y números flotantes con glow neón."
+  },
+  {
+   "id": "4798e0113342",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Especifica el lenguaje visual Futuristic/SaaS: ánimo premium e inmersivo, luz volumétrica con reflejos ray-traced y oclusión ambiental, base negro vacío o blanco cerámico y acentos de degradado aurora."
+  },
+  {
+   "id": "51a0e94ecc9b",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Especifica la composición por tipo de slide SaaS: portada con gran objeto 3D de vidrio, título y fondo aurora; contenido en bento con iconos 3D; datos en split screen con gráfico 3D brillante a la derecha."
+  },
+  {
+   "id": "5088cf361b01",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Especifica las tarjetas glassmorphism: vidrio esmerilado con blur, bordes blancos finos, sombra suave difusa y espacio interno generoso."
+  },
+  {
+   "id": "e6ce9d51b1f1",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Especifica los anclajes visuales 3D del estilo SaaS: artefactos abstractos (cápsulas, esferas, escudos, cintas de Möbius, ondas) en metal pulido, acrílico iridiscente, vidrio o silicona, con aspecto de coleccionable caro."
+  },
+  {
+   "id": "60b67c6bd9ad",
+   "alcance": "diapositivas de presentación, estilo Futuristic/SaaS",
+   "enunciado": "Explicación: el estilo Futuristic/SaaS combina minimalismo de Apple Keynote, glassmorphism y objetos 3D."
+  },
+  {
+   "id": "99f412350d14",
+   "alcance": "diapositivas de presentación, rejilla asimétrica",
+   "enunciado": "Especifica las reglas de la rejilla asimétrica: partir de una rejilla base y romperla a propósito, equilibrar un elemento grande con varios pequeños, usar la regla de tercios y destacar lo clave por tamaño y posición."
+  },
+  {
+   "id": "d1d048696917",
+   "alcance": "diapositivas de presentación, rejilla asimétrica",
+   "enunciado": "Explicación: la rejilla asimétrica produce composiciones dinámicas con equilibrio visual."
+  },
+  {
+   "id": "faf5964d4995",
+   "alcance": "diapositivas de presentación, rejilla asimétrica",
+   "enunciado": "Limita la rejilla asimétrica a presentaciones creativas, portafolios, moda y startups, prohibiéndola en bancos, portales gubernamentales, B2B con muchos datos y público mayor; incluye plantilla de prompt 60% izquierda y 2-3 elementos apilados a la derecha."
+  },
+  {
+   "id": "32ef26462617",
+   "alcance": "diapositivas de presentación, slide Comparison",
+   "enunciado": "Plantilla de diapositiva de comparación clara: fondo off-white #fafafa-#f0efed, layout dividido opción A/opción B con barra de acento #3b82f6 en el lado derecho, formato 16:9."
+  },
+  {
+   "id": "0c4b197badde",
+   "alcance": "diapositivas de presentación, slide Data Visualization",
+   "enunciado": "Plantilla de diapositiva de datos: fondo oscuro degradado, número héroe en color de acento al centro, flecha de tendencia verde/roja, 3-4 métricas secundarias y gráfico, formato 16:9."
+  },
+  {
+   "id": "27b0abe92fec",
+   "alcance": "diapositivas de presentación, slide Hero Title",
+   "enunciado": "Plantilla de diapositiva de título oscura: degradado a #0a0a0a, niebla sutil abajo, título extra bold blanco muy grande en el tercio superior, subtítulo fino 5 veces menor, formato 16:9."
+  },
+  {
+   "id": "edc645198cb0",
+   "alcance": "diapositivas de presentación, slide Insight/Problem",
+   "enunciado": "Plantilla de diapositiva de insight: fondo off-white limpio, mensaje clave en negrita centrado, contexto menor debajo y barra de acento con dato, formato 16:9."
+  },
+  {
+   "id": "8b020c8051fd",
+   "alcance": "diapositivas de presentación, slide Process/Timeline",
+   "enunciado": "Plantilla de diapositiva de proceso: flujo horizontal o vertical de etapas con icono, etiqueta y descripción, conectores en flecha del color de acento, formato 16:9."
+  },
+  {
+   "id": "9e64b7aab83a",
+   "alcance": "diapositivas de presentación, split screen",
+   "enunciado": "Especifica las proporciones del split screen: 50/50 para elementos equivalentes, 60/40 para acentuar un lado y 70/30 para héroe claro más apoyo."
+  },
+  {
+   "id": "a481dcfabf46",
+   "alcance": "diapositivas de presentación, split screen",
+   "enunciado": "Explicación: el split screen es una composición de dos columnas."
+  },
+  {
+   "id": "cdd8e1f60057",
+   "alcance": "diapositivas de presentación, split screen",
+   "enunciado": "Plantilla de prompt para split screen con ratio, contenido izquierdo y derecho y tipo de divisor (nítido, degradado o ninguno)."
+  },
+  {
+   "id": "34aff8d6be13",
+   "alcance": "editorial de moda, collage de 3 paneles",
+   "enunciado": "Usar el collage de 3 paneles de moda para imágenes héroe de campaña: pose héroe, detalle y movimiento en tríptico."
+  },
+  {
+   "id": "1d10163a6ec0",
+   "alcance": "editorial de moda, collage de 3 paneles, GPT Image 2",
+   "enunciado": "Especifica la plantilla del tríptico de moda: panel héroe de cuerpo entero, detalle de textura de tela con luz rasante y paso en contrapicado con caída natural; misma persona y outfit, piel constante, sin texto, logos ni equipo, como una sola sesión."
+  },
+  {
+   "id": "fa0b6646fae1",
+   "alcance": "editorial de moda, grid 2x2",
+   "enunciado": "Usar el grid 2x2 de retrato editorial para pruebas de modelo, comp cards o portafolio: cuatro ángulos de la misma persona."
+  },
+  {
+   "id": "a7226e2c5e4f",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: entorno de dashboard de operador con lienzo crema, JetBrains Mono, Inter y un solo acento coral por beat."
+  },
+  {
+   "id": "958af7128adc",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: shot_02 de reencuadre con cinco capas apiladas que entran con escalonamiento de 6 frames como diagrama de la arquitectura."
+  },
+  {
+   "id": "ce742b76293f",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: shot_03 de prueba con panel dividido donde entra el brief y se arma el árbol de archivos de salida."
+  },
+  {
+   "id": "2ef1ca15b4cc",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: shot_05 muestra una tarjeta de shot compilando a siete sintaxis de prompt de generadores a la vez para probar el agnosticismo de modelo."
+  },
+  {
+   "id": "35f2e0c29dcb",
+   "alcance": "general",
+   "enunciado": "Ejemplo: aplana una escena 3D en una representación técnica 2D con vistas de planta, alzado o sección, anotaciones y línea precisa."
+  },
+  {
+   "id": "7d2c15124668",
+   "alcance": "general",
+   "enunciado": "Ejemplo: convierte un plano de planta 2D en un tablero de diseño con una vista interior gran angular principal y tres renders secundarios, definiendo estilo, materiales, luz natural suave y acabado fotorrealista."
+  },
+  {
+   "id": "c8cf32c2fffe",
+   "alcance": "general",
+   "enunciado": "Especifica conversiones bidireccionales entre 2D y 3D, como planos de planta a renders o memes a modelos 3D."
+  },
+  {
+   "id": "3c6eef295173",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Especifica la plantilla del grid 4x3 sin bordes: 12 paneles independientes con bordes que se tocan, tema, estilo, arco de mood, identidad constante y sin texto."
+  },
+  {
+   "id": "15971cae21bf",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Especifica las variables del grid 4x3: sujeto, tema, descripción de cada uno de los 12 paneles, estilo y arco de mood."
+  },
+  {
+   "id": "10f3527340f7",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Para el grid 4x3 usar 1536x1024 y Nano Banana Pro; declarar \"no white lines, no black borders, no gaps\", descripciones breves y distintas por panel y consistencia explícita del sujeto."
+  },
+  {
+   "id": "9f7e392a2c5e",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Usar el grid 4x3 sin bordes para 12 paneles que cuentan una historia o estados de ánimo en mosaico continuo."
+  },
+  {
+   "id": "f955ff45b2fd",
+   "alcance": "grid de variantes de vestuario",
+   "enunciado": "Usar el grid de variantes de vestuario para mostrar un personaje con varios outfits (moda, skins de juego, vestuario)."
+  },
+  {
+   "id": "d4e776bfc884",
+   "alcance": "grid de variantes de vestuario, GPT Image 2",
+   "enunciado": "Especifica la plantilla del grid de vestuario: fondo neutro, misma pose en cada celda, solo cambia la ropa, nombre del outfit bajo cada celda, identidad corporal y facial idéntica."
+  },
+  {
+   "id": "c2734c377e5c",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Especifica la plantilla 2x2: misma persona y vestuario en los cuatro paneles, cada cuadrante con ángulo definido, luz consistente, piel realista sin aerógrafo y sin texto."
+  },
+  {
+   "id": "dc8f71afb6be",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Especifica las variables del grid 2x2: descripción del sujeto, fondo y estilo de luz."
+  },
+  {
+   "id": "60ca89f7ba28",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Para el grid 2x2 usar 1024x1024 o 1024x1536 con GPT Image 2 medium o NBP; indicar \"same person\" en cada panel, asignar ángulo por cuadrante y evitar cortes de escala muy dispares."
+  },
+  {
+   "id": "26f3f6282c0e",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Usar el grid editorial 2x2 para mostrar a la misma persona en 4 ángulos o cortes en una imagen (editorial o casting)."
+  },
+  {
+   "id": "f0101a29311f",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Especifica las variables de la plantilla de 9 celdas: producto, duración, timestamps t1–t8, descripción de cada escena e idioma."
+  },
+  {
+   "id": "46283692fbdd",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Para el storyboard de 9 celdas usar 1536x1024 y GPT Image 2 quality high; numerar paneles, dar acciones distintas a cada uno y quality high para timestamps pequeños."
+  },
+  {
+   "id": "d349802f9a7a",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Para una variante centrada en producto remitir a patterns/ecommerce.md (storyboard TVC de 9 paneles)."
+  },
+  {
+   "id": "09db91fc8c95",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Usar el grid 3x3 para desglosar un TVC o comercial: una imagen con 9 paneles con título de escena y timestamp."
+  },
+  {
+   "id": "550199f5b36d",
+   "alcance": "grid storyboard de 9 celdas, GPT Image 2",
+   "enunciado": "Especifica la plantilla de 5 slots del storyboard de 9 celdas: grid 3x3 oscuro, cada panel con descripción, número, título y timestamp legible, sin celdas fusionadas."
+  },
+  {
+   "id": "be978af2f403",
+   "alcance": "hoja de expresiones",
+   "enunciado": "Usar la hoja de expresiones para un grid de 6–9 expresiones del mismo personaje con ángulo y estilo constantes y etiqueta bajo cada rostro."
+  },
+  {
+   "id": "b8b50a0436ed",
+   "alcance": "hoja de expresiones, GPT Image 2",
+   "enunciado": "Especifica la plantilla de hoja de expresiones: grid 3x3 o 3x2, misma cabeza a tres cuartos, cada celda con expresión descrita por señales faciales y etiqueta, identidad y estilo idénticos, sin gestos de mano."
+  },
+  {
+   "id": "c4d3a0df4edc",
+   "alcance": "infografías",
+   "enunciado": "Ejemplo: infografía de línea de tiempo del Antiguo Egipto con textura de papiro, iconos jeroglíficos, paleta oro/arena y hoja de ruta en S."
+  },
+  {
+   "id": "658b2e336c8e",
+   "alcance": "infografías",
+   "enunciado": "Ejemplo: infografía de matriz comparativa de planetas interiores y exteriores en estilo kawaii vectorial pastel."
+  },
+  {
+   "id": "311045a047f0",
+   "alcance": "infografías",
+   "enunciado": "Ejemplo: infografía educativa del ciclo del agua para primaria en estilo claymation con diagrama circular de flechas en sentido horario."
+  },
+  {
+   "id": "2c596c18e07e",
+   "alcance": "infografías",
+   "enunciado": "Ejemplo: infografía iceberg de cultura superficial vs profunda en estilo recorte de papel (punta 10%, sumergido 90%)."
+  },
+  {
+   "id": "5cb7cb27a951",
+   "alcance": "infografías",
+   "enunciado": "Especifica estilos visuales educativos para infografías: recorte de papel, claymation, kawaii vectorial, acuarela de cuento, pizarra y pixel art 8-bit."
+  },
+  {
+   "id": "7f8ab9b50a32",
+   "alcance": "infografías",
+   "enunciado": "Especifica estilos visuales especializados para infografías: mapa de metro, manual IKEA sin palabras, knolling cenital a 90° y origami."
+  },
+  {
+   "id": "dce72ca06995",
+   "alcance": "infografías",
+   "enunciado": "Especifica estilos visuales estilizados para infografías: cyberpunk neón, novela gráfica, póster científico vintage, pop art Warhol y Corporate Memphis."
+  },
+  {
+   "id": "ef78861b23e8",
+   "alcance": "infografías",
+   "enunciado": "Especifica estilos visuales técnicos para infografías: isométrico 3D, blueprint, cuaderno Da Vinci, wireframe UI/UX y dashboard."
+  },
+  {
+   "id": "272890d0b3c1",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts de comparación para infografías: split screen versus, matriz de comparación, antes/después y diagrama de Venn."
+  },
+  {
+   "id": "791b0e09888a",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts de rejilla para infografías: bento, tabla periódica, tira cómica y rompecabezas."
+  },
+  {
+   "id": "8ec9a066faf3",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts espaciales para infografías: mapa isométrico, corte transversal, llamadas anatómicas y vista explosionada."
+  },
+  {
+   "id": "2ee7da8e1345",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts jerárquicos para infografías: pirámide, embudo e iceberg (10% visible, 90% oculto)."
+  },
+  {
+   "id": "347577dc3df7",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts lineales para infografías: línea de tiempo horizontal, flujo paso a paso y hoja de ruta sinuosa."
+  },
+  {
+   "id": "c9dcb63ecc7e",
+   "alcance": "infografías",
+   "enunciado": "Especifica layouts radiales o conectados para infografías: hub and spoke, árbol ramificado y círculos concéntricos."
+  },
+  {
+   "id": "696b64a50937",
+   "alcance": "infografías",
+   "enunciado": "Plantilla de infografía educativa: tema, audiencia, contenido concreto, título entre comillas, estilo visual, tipo de layout y aspect ratio."
+  },
+  {
+   "id": "48f4ecc98a8b",
+   "alcance": "patrón App Store Screenshot",
+   "enunciado": "Explicación: el patrón App Store Screenshot sirve para crear capturas de ficha de App Store o Google Play con marco de dispositivo, UI de la app, titular de función y fondo degradado."
+  },
+  {
+   "id": "937d9eed9a07",
+   "alcance": "patrón App Store Screenshot, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para captura de App Store: bisel de dispositivo realista con barra de estado, titular de 2-3 palabras por línea sin solapar el dispositivo, sombra difusa del color del degradado, UI realista y coherente; solo degradado de fondo y un único dispositivo."
+  },
+  {
+   "id": "4e6f19d19560",
+   "alcance": "patrón City Across Two Centuries (time-split)",
+   "enunciado": "Explicación: el patrón City Across Two Centuries sirve para campañas urbanas, aniversarios o exposiciones: una misma vista de ciudad dividida por el centro entre una mitad histórica y otra moderna."
+  },
+  {
+   "id": "54075fd21e43",
+   "alcance": "patrón Dashboard Design Mockup",
+   "enunciado": "Explicación: el patrón Dashboard Design Mockup sirve para maquetas realistas de dashboards analíticos en tema oscuro o claro con visualizaciones, tarjetas KPI y navegación lateral."
+  },
+  {
+   "id": "04914ebd4a8c",
+   "alcance": "patrón Dashboard Design Mockup, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para mockup de dashboard: sidebar, barra superior, fila de KPIs con tendencias, dos gráficos con colores declarados, widget secundario, jerarquía visual y datos plausibles sin lorem ipsum; ejes y etiquetas correctos, sin solapamientos y tema aplicado de forma consistente."
+  },
+  {
+   "id": "f3cab60a965d",
+   "alcance": "patrón Dashboard Design Mockup, Nano Banana",
+   "enunciado": "Versión en prosa para Nano Banana del mockup de dashboard: sidebar, KPIs con flechas de tendencia, dos gráficos, widget secundario, datos plausibles y jerarquía visual, formato 16:9."
+  },
+  {
+   "id": "7cbb466542b0",
+   "alcance": "patrón Emerald Street Fashion Poster",
+   "enunciado": "Explicación: el patrón Emerald Street Fashion Poster sirve para lanzamientos de moda, eventos o portadas donde tipografía grande y figura de moda urbana comparten peso visual sobre un campo de color saturado."
+  },
+  {
+   "id": "d5ee5e40bfdf",
+   "alcance": "patrón Fitness Boxing Campaign Collage",
+   "enunciado": "Explicación: el patrón Fitness Boxing Campaign Collage sirve para campañas deportivas: collage dinámico de 3 paneles con acción, detalle y atmósfera en torno al boxeo."
+  },
+  {
+   "id": "7854bd165ec8",
+   "alcance": "patrón Fitness Boxing Campaign Collage, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para collage de boxeo en 3 paneles (entorno 35%, acción 40%, detalle 25%): mismo atleta en todos, panel central en el pico de esfuerzo con luz dura direccional y sudor, grano uniforme en todos los paneles, sin texto, logos ni patrocinadores."
+  },
+  {
+   "id": "72a254628aaa",
+   "alcance": "patrón Instagram Story Ad 9:16",
+   "enunciado": "Explicación: el patrón Instagram Story Ad (9:16) sirve para anuncios verticales con producto héroe, titular fuerte y zona de CTA swipe-up abajo."
+  },
+  {
+   "id": "facded6acae7",
+   "alcance": "patrón Instagram Story Ad 9:16, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para Instagram Story 9:16: producto en los dos tercios superiores, paneles glassmorphism laterales, titular y subtexto, 15% inferior reservado para CTA; texto legible en móvil, nada en el 5% inferior (zona de UI del sistema), producto como foco y máximo 3 elementos de acento."
+  },
+  {
+   "id": "24bb0bf45d5d",
+   "alcance": "patrón Personal Color Analysis Board",
+   "enunciado": "Explicación: el patrón Personal Color Analysis Board sirve para crear, a partir de un retrato, un gráfico de análisis de color con clasificación estacional, comparación de prendas y recomendaciones de accesorios."
+  },
+  {
+   "id": "f35c35a93441",
+   "alcance": "patrón Personal Color Analysis Board, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para tablero de análisis de color personal en tres secciones (retrato y estación con cuadrícula de muestras, comparación favorece/no favorece, recomendaciones); misma persona en todos los paneles, muestras de color plano, etiquetas de 1-3 palabras y sin párrafos."
+  },
+  {
+   "id": "fbf91b68d0b6",
+   "alcance": "patrón Personal Color Analysis Board, Nano Banana",
+   "enunciado": "Versión en prosa para Nano Banana del tablero de análisis de color personal con retrato, estación, muestras, comparación y recomendaciones, layout editorial limpio, formato 3:4."
+  },
+  {
+   "id": "5a87b31d4d8f",
+   "alcance": "patrón Social Media Feed Post 1:1",
+   "enunciado": "Explicación: el patrón Social Media Feed Post (1:1) sirve para posts cuadrados de Instagram o Facebook: tarjetas de cita, anuncios de función o destacados de producto con layout centrado."
+  },
+  {
+   "id": "1250c97a43d4",
+   "alcance": "patrón Social Media Feed Post 1:1, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para post cuadrado 1:1: texto principal centrado con márgenes ≥10%, elemento de apoyo, franja de marca con logo, paleta restringida; todo el texto legible a 320 px, máximo dos tamaños tipográficos y contraste WCAG AA."
+  },
+  {
+   "id": "2b6f710939ca",
+   "alcance": "plantillas de composición con referencia",
+   "enunciado": "Especifica usar una referencia de composición para layouts de revista, pósters, plantillas sociales y estructuras de presentación."
+  },
+  {
+   "id": "17c21c5c3678",
+   "alcance": "prompts de imagen, tipo Sequential",
+   "enunciado": "Especifica que el tipo de tarea Sequential se usa para cómics y storyboards, y sus elementos clave son paneles, transiciones y narrativa."
+  },
+  {
+   "id": "4d2f20f0b393",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Especifica la plantilla del póster de 12 paneles: título arriba, cada panel con escena y caption, lectura izquierda-derecha arriba-abajo, diseño de personaje idéntico, escenas distintas y quality high."
+  },
+  {
+   "id": "ebd81a3e2c44",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Especifica las variables del póster de 12 paneles: título, diseño del personaje, escenas y captions de cada panel, estilo artístico e idioma."
+  },
+  {
+   "id": "b30d70cfd602",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Para el póster de 12 paneles usar 1024x1536 con GPT Image 2 high; repetir los rasgos del personaje, numerar escenas, captions de menos de 5 palabras y un solo estilo artístico."
+  },
+  {
+   "id": "96aeae749ddb",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Usar el póster de storyboard de 12 paneles (3x4) para una narrativa completa en una imagen, para animación o preproducción de video."
+  },
+  {
+   "id": "ffc383a04f6d",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Especifica la plantilla de 6 cuadros en grid 3x2: cenital, contrapicado, plano amplio de aislamiento, close-up holandés, cuadro de movimiento con blur en extremidades y cierre en plano medio; misma persona, vestuario y luz, sin texto."
+  },
+  {
+   "id": "062806e6e632",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Especifica las variables de la secuencia de 6 cuadros: sujeto, vestuario, locación, acción del cuadro de movimiento, estilo fotográfico y luz."
+  },
+  {
+   "id": "76161ee52504",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Para la secuencia de 6 cuadros usar 1536x1024 con GPT Image 2 medium o NBP; nombrar cada cuadro, anclar cada ángulo a su posición y especificar dónde va el blur de movimiento."
+  },
+  {
+   "id": "b13dd87a46e2",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Usar la secuencia cinematográfica de 6 cuadros para editorial de moda o estilo film: varios ángulos de la misma escena en una imagen."
+  },
+  {
+   "id": "a022f7a6f7b8",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para storyboards y cómics secuenciales usar Nano Banana (proporciones extremas y thinking)."
+  },
+  {
+   "id": "bf6b6144ea97",
+   "alcance": "skill Image Prompting; tareas de texto, edición, personajes, slides, storyboard, análisis visual, multipanel y verticales",
+   "enunciado": "Después de leer el archivo del modelo se deben cargar únicamente las referencias adicionales que correspondan al tipo de tarea solicitado."
+  },
+  {
+   "id": "42de3639bf53",
+   "alcance": "split antes/después",
+   "enunciado": "Especifica la plantilla antes/después: imagen dividida con línea central visible, mismo ángulo, encuadre, fondo y dirección de luz en ambas mitades; solo cambia el estado del sujeto."
+  },
+  {
+   "id": "3fd9d58229da",
+   "alcance": "split antes/después",
+   "enunciado": "Especifica las variables del antes/después: sujeto, estados antes y después, estilo del divisor, estilo de transición y caso de uso."
+  },
+  {
+   "id": "c1072203c37a",
+   "alcance": "split antes/después",
+   "enunciado": "Para el antes/después usar 1536x1024 con GPT Image 2 medium (high si hay etiquetas); exigir mismo ángulo en ambos lados, divisor visible y asignar qué lado es antes y cuál después."
+  },
+  {
+   "id": "d6c4544455b3",
+   "alcance": "split antes/después",
+   "enunciado": "Usar el split antes/después para transformaciones de producto, makeovers, comparaciones temporales o renovaciones."
+  },
+  {
+   "id": "2fcbf8429815",
+   "alcance": "sprite sheets",
+   "enunciado": "Plantilla de sprite sheet de un personaje haciendo una acción en rejilla 3x3 o 4x4, animación cuadro a cuadro, formato cuadrado y siguiendo exactamente la rejilla de referencia."
+  },
+  {
+   "id": "ee76613ce960",
+   "alcance": "storyboard TVC de 9 paneles",
+   "enunciado": "Para el TVC de 9 paneles definir producto, protagonista, escenario, emoción, superficie, tagline y duración, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "3a8e268ed492",
+   "alcance": "storyboard TVC de 9 paneles",
+   "enunciado": "Para la variante oscura con timestamps del storyboard de 9 paneles remitir a multi-panel.md."
+  },
+  {
+   "id": "92fd417b8eb9",
+   "alcance": "storyboard TVC de 9 paneles, GPT Image 2",
+   "enunciado": "Especifica la plantilla del TVC de 9 paneles: grid 3x3 blanco, arco de establecimiento a pack shot con tagline, identidad constante, sin numeración, luz uniforme en paneles 1-7 y de estudio en 8-9."
+  },
+  {
+   "id": "d764a89936b8",
+   "alcance": "storyboard TVC de 9 paneles, e-commerce",
+   "enunciado": "Usar el grid TVC de 9 paneles para presentar el desglose de un comercial de producto en una imagen (pitch, presentación, aprobación)."
+  },
+  {
+   "id": "8b956f0f0005",
+   "alcance": "storyboards y arte secuencial (skill image)",
+   "enunciado": "Explicación: la sección Storyboards & Sequential Art cubre secuencias narrativas de una pasada y concept art consistentes entre cuadros."
+  },
+  {
+   "id": "75496662455a",
+   "alcance": "tarjeta de personaje anime",
+   "enunciado": "Usar la tarjeta de personaje estilo anime para una referencia completa con retrato, cuerpo entero, objetos clave y paleta en layout de concept art."
+  },
+  {
+   "id": "e451adaedff6",
+   "alcance": "tarjeta de personaje anime, GPT Image 2",
+   "enunciado": "Especifica la plantilla de tarjeta anime: secciones separadas con cuerpo entero, busto a tres cuartos, objetos con etiqueta, swatches con hex y bloque de stats; estilo unificado, mismo personaje y texto legible."
+  },
+  {
+   "id": "54c3b60e26bc",
+   "alcance": "texto e infografías con referencia de layout",
+   "enunciado": "Especifica el flujo sketch-to-image: dibujar un boceto de layout y subirlo con «Use layout from attached image»."
+  },
+  {
+   "id": "e7ac4e337b9b",
+   "alcance": "turnaround de personaje",
+   "enunciado": "Usar la hoja turnaround de 3 vistas (frente, lado, espalda) en lienzo blanco con callouts de color y líneas de altura para preproducción de juego o animación."
+  }
+ ]
+}

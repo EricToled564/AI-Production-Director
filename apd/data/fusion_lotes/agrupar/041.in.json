@@ -1,0 +1,704 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "marca_brandlock",
+ "descripcion_tema": "brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores",
+ "ventana": "2 de 2",
+ "filas": [
+  {
+   "id": "017ac47f54ea",
+   "alcance": "Brand packs, creación",
+   "enunciado": "Todos los campos del brand pack deben completarse sin dejar placeholders."
+  },
+  {
+   "id": "e5513d1eedd2",
+   "alcance": "Brand packs, datos estructurados",
+   "enunciado": "Cada color del brand pack debe expresarse como valor hexadecimal y cada tipografía debe identificarse por nombre."
+  },
+  {
+   "id": "fff56dc337b3",
+   "alcance": "Brand packs, ejemplos",
+   "enunciado": "Ejemplo: los brand packs de referencia `whystrohm.md` y `examples/saas-clean.md` muestran el nivel de especificidad requerido para producción."
+  },
+  {
+   "id": "39f1d8953720",
+   "alcance": "Brand packs, redacción",
+   "enunciado": "El brand pack debe describir la marca con atributos específicos y distintivos, no con adjetivos genéricos."
+  },
+  {
+   "id": "cb16169e7c83",
+   "alcance": "Brand packs, redacción",
+   "enunciado": "El brand pack debe incluir una lista de prohibiciones exclusiva, priorizándola sobre la lista de elementos permitidos."
+  },
+  {
+   "id": "e0787784eb73",
+   "alcance": "Brand packs, versionado",
+   "enunciado": "Toda revisión de brand pack que cambie materialmente el look o la voz debe incrementar el campo `Version:` y documentar el cambio."
+  },
+  {
+   "id": "ee92c685c322",
+   "alcance": "Brand packs, versiones",
+   "enunciado": "Explicación: se añadirán más brand packs de ejemplo en la versión 2.0.0."
+  },
+  {
+   "id": "adf1f8b3c37f",
+   "alcance": "Contribuciones de ejemplos de brand packs",
+   "enunciado": "Para proponer ejemplos nuevos de brand pack se debe abrir primero un issue con la plantilla `brand-pack-request` antes de enviar un PR."
+  },
+  {
+   "id": "36729c7f5bc5",
+   "alcance": "E0",
+   "enunciado": "La etapa E0 Brand Lock se ejecuta solo si hay marca o cliente."
+  },
+  {
+   "id": "b69a76c88045",
+   "alcance": "E0.1 brand-lock-extractor",
+   "enunciado": "E0.1: brand-lock-extractor reúne fuentes (URL, PDF, screenshots o descripción) y hace una sola pregunta si falta todo."
+  },
+  {
+   "id": "663220518004",
+   "alcance": "E0.2 brand-lock-extractor",
+   "enunciado": "E0.2: se extraen las 9 secciones del brand-lock con la rúbrica, sin inventar nunca un hex."
+  },
+  {
+   "id": "777a8e10cc96",
+   "alcance": "E0.3 brand-lock-extractor",
+   "enunciado": "E0.3: cada valor del brand-lock lleva confianza extracted, inferred o needs confirmation, siempre con fuente."
+  },
+  {
+   "id": "1879b07ebfeb",
+   "alcance": "E0.4 brand-lock-extractor",
+   "enunciado": "E0.4: se escribe brand-lock.md con notas de extracción desde el template y se valida con validate_brand_lock.py."
+  },
+  {
+   "id": "94560559192e",
+   "alcance": "E4.1 storyboard-architect",
+   "enunciado": "E4.1: se lee el brand-lock y se elige un beat framework (Pain-reframe-promise, Hero Trilogy, etc.)."
+  },
+  {
+   "id": "8481d9b6307e",
+   "alcance": "Ejecuciones de storyboard",
+   "enunciado": "Cada ejecución de storyboard debe guardar una instantánea del brand pack usado para que las piezas previas conserven su estado de marca y su trazabilidad."
+  },
+  {
+   "id": "179a70241f42",
+   "alcance": "Etapa 0, proyectos con o sin marca formal",
+   "enunciado": "El usuario debe confirmar los valores estimados del Brand Lock y, si no existe marca formal, se debe usar como sustituto ligero el Visual Theme de la Etapa 3."
+  },
+  {
+   "id": "26b4446fccd9",
+   "alcance": "Etapa 0, solo proyectos con marca o cliente",
+   "enunciado": "La Etapa 0 de Brand Lock usa la skill brand-lock-extractor y recibe sitio web, brand book, capturas o descripción."
+  },
+  {
+   "id": "8cf97028a3ad",
+   "alcance": "Etapa 0, solo proyectos con marca o cliente",
+   "enunciado": "La Etapa 0 debe entregar un archivo brand-lock.md con nueve secciones y cada valor acompañado de fuente y confianza."
+  },
+  {
+   "id": "611615a7d6d3",
+   "alcance": "Etapa 1 — Lectura del brief",
+   "enunciado": "Antes de idear, se deben extraer y documentar del brief el problema de negocio, la audiencia y su fricción, una single-minded proposition de una frase, el tono de marca y las restricciones duras, forzando la elección de un mensaje si hay varios."
+  },
+  {
+   "id": "05881a1ba3ac",
+   "alcance": "Extracción masiva de brand packs",
+   "enunciado": "Para la extracción masiva o programática desde múltiples URL se debe usar media-tsunami, que genera `brand-lock.md` en el mismo formato."
+  },
+  {
+   "id": "8406a2e0bb71",
+   "alcance": "Image Editing › Localization › Cultural adaptation",
+   "enunciado": "Localiza un anuncio para el mercado objetivo cambiando el fondo y traduciendo el texto, pero conservando los elementos de marca y la composición principal."
+  },
+  {
+   "id": "cb516a70ab40",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "enunciado": "La génesis recibe como entrada del brand-lock la paleta, la never list y el grade."
+  },
+  {
+   "id": "c54f349197b3",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Exige frases declarativas cortas y eliminar los adjetivos innecesarios antes de los sustantivos."
+  },
+  {
+   "id": "980c6ad8001c",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Exige priorizar datos concretos de origen, finca, región o fecha de tueste sobre palabras vagas de calidad."
+  },
+  {
+   "id": "0a8706bb7ae9",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Prohíbe usar las palabras «artisanal», «curated» y «elevated» en la voz de marca."
+  },
+  {
+   "id": "bab782ac8443",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Prohíbe usar palabras promocionales como «best», «premium» y «game-changing»."
+  },
+  {
+   "id": "cfca5f37a9e5",
+   "alcance": "Northwind Coffee Roasters, notas de extracción",
+   "enunciado": "Explicación: el arquetipo, los adjetivos de ánimo y la dirección de color pueden inferirse de la evidencia, indicando el razonamiento y la ausencia de material graduado."
+  },
+  {
+   "id": "f04a559cd933",
+   "alcance": "Northwind Coffee Roasters, notas de extracción",
+   "enunciado": "Explicación: las notas de extracción registran fecha de actualización, responsable y versión."
+  },
+  {
+   "id": "a3ce2671f7ed",
+   "alcance": "Northwind Coffee Roasters, notas de extracción",
+   "enunciado": "Explicación: los valores estimados sin evidencia suficiente, como color de regla, pesos tipográficos y lenguaje de movimiento, deben marcarse para confirmación."
+  },
+  {
+   "id": "f821fda80051",
+   "alcance": "Northwind Coffee Roasters, notas de extracción",
+   "enunciado": "Explicación: los valores extraídos directamente de activos deben registrarse como «extracted» e incluir paleta, tipografías, lista de prohibiciones y formatos."
+  },
+  {
+   "id": "b1268f1bf843",
+   "alcance": "Pipeline de storyboard",
+   "enunciado": "La habilidad debe leer el brand pack, guardarlo en la salida como `brand-lock.snapshot.md` y aplicarlo durante todo el pipeline."
+  },
+  {
+   "id": "364f6097637c",
+   "alcance": "Plantilla de Brand Lock",
+   "enunciado": "Los placeholders del brand lock deben reemplazarse y el bloque de instrucciones debe eliminarse al terminar."
+  },
+  {
+   "id": "2db76124dd0c",
+   "alcance": "Plantilla de Brand Lock, sección Identity",
+   "enunciado": "El brand lock debe especificar la marca, su descripción de una línea, arquetipo y postura de voz."
+  },
+  {
+   "id": "84fbaef8e3a6",
+   "alcance": "Solicitudes de storyboard",
+   "enunciado": "Las solicitudes de storyboard deben referenciar el archivo de brand pack que se usará como brand lock."
+  },
+  {
+   "id": "9705ab88273b",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: acento cálido coral #D94F3A para énfasis y puntos en beats de firma."
+  },
+  {
+   "id": "26044f14870f",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: acento frío lavanda #C9BBE0 para realces secundarios."
+  },
+  {
+   "id": "a03a5b3ae754",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: adjetivos de mood operator, considered, deterministic, confident y defense-grade."
+  },
+  {
+   "id": "431cd2845d24",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: color apagado #7A7580 para texto secundario y subtítulos."
+  },
+  {
+   "id": "0946435b252b",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: color de filete #E8E1D4 para bordes, divisores y fondos de tarjeta."
+  },
+  {
+   "id": "c2a70a903b7d",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: color de fondo crema #F5F0E8 como lienzo principal."
+  },
+  {
+   "id": "c62152b9cf2c",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: color tinta #2A2A32 casi negro para texto y elementos oscuros."
+  },
+  {
+   "id": "d8be44f48abd",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: identidad de marca de WhyStrohm con descripción, arquetipo Operator y postura de voz calmada."
+  },
+  {
+   "id": "bbbe888e8a03",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: reglas de voz sin em dashes, emojis, exclamaciones ni hype, con números específicos, presente y vocabulario 'operator'/'infrastructure'."
+  },
+  {
+   "id": "a60f84efef03",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: tipografía Inter Black 900 para display, Inter Medium 500 para cuerpo y JetBrains Mono para código."
+  },
+  {
+   "id": "53c72cb9f041",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Se usan dos fuentes en producción y la mono solo para contenido técnico."
+  },
+  {
+   "id": "8bff6c2686ed",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíbe sobresaturar el fondo crema."
+  },
+  {
+   "id": "0457141c1024",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíbe usar el coral como color de relleno; solo como acento o puntos de firma."
+  },
+  {
+   "id": "7f73ee3f5016",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíbe usar modo oscuro por defecto; la marca es un híbrido en modo claro."
+  },
+  {
+   "id": "ae76d101e6b2",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben clip-art y sets de iconos genéricos."
+  },
+  {
+   "id": "3999058dc1bf",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben em dashes en el copy; solo puntos, comas y punto y coma."
+  },
+  {
+   "id": "c6fcfde9e2fa",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben emojis en el copy de cuerpo."
+  },
+  {
+   "id": "67c7f4bf7bd0",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben las rayas largas (em dashes) en el copy."
+  },
+  {
+   "id": "b064947c9bde",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben signos de exclamación en titulares."
+  },
+  {
+   "id": "05eacbe444d2",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben viñetas en copy narrativo."
+  },
+  {
+   "id": "8cf7e3076d08",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se debe preferir el presente al futuro en el copy."
+  },
+  {
+   "id": "dc8d9e13c46d",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se deben preferir 'operator', 'infrastructure' y 'system' sobre 'creator', 'agency' y 'service'."
+  },
+  {
+   "id": "24bff38fedaa",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se deben preferir números específicos a afirmaciones vagas ('48 hours' en vez de 'fast')."
+  },
+  {
+   "id": "fd738c50b75a",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se prohíben emojis en el copy de cuerpo."
+  },
+  {
+   "id": "9bf2a5537f04",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se prohíben signos de exclamación en titulares."
+  },
+  {
+   "id": "50a6479cce7c",
+   "alcance": "brand-lock-extractor, plantilla brand-lock.md",
+   "enunciado": "Especifica la plantilla de brand-lock.md: identidad, paleta hex por rol (solo esos hex permitidos), tipografía con la fuente en backticks, adjetivos de mood, never list, aspect ratios, dirección de grade, lenguaje de movimiento, reglas de voz, notas de extracción (inferido / por confirmar) y metadatos de versión."
+  },
+  {
+   "id": "1c1173279dc6",
+   "alcance": "brand-pack y snapshot de brand-lock",
+   "enunciado": "Un brand-pack puede ser una plantilla sin completar, pero un snapshot debe incluir las cabeceras de fecha de captura y fuente, preferiblemente con fecha y hora UTC completas."
+  },
+  {
+   "id": "e2c808a05170",
+   "alcance": "capa 0; marca",
+   "enunciado": "La sub-skill brand-lock-extractor debe generar un brand-lock.md de nueve secciones a partir de assets reales y tiene autoridad sobre los parámetros de marca."
+  },
+  {
+   "id": "408a326b89c5",
+   "alcance": "critique.schema.json",
+   "enunciado": "brand_lock_ref es la ruta del brand-lock contra el que se juzgó; si es null la confianza queda limitada a MEDIUM."
+  },
+  {
+   "id": "09644b2c7953",
+   "alcance": "ejemplo de Acme SaaS",
+   "enunciado": "Explicación: presenta una referencia de Brand Lock para marcas B2B SaaS con una paleta sobria y un único acento."
+  },
+  {
+   "id": "c73f64be7a98",
+   "alcance": "ejemplo de Acme SaaS > Identity",
+   "enunciado": "Ejemplo: define a Acme SaaS como una plataforma B2B de reducción de churn con arquetipo Sabio y voz segura, basada en datos y entre pares."
+  },
+  {
+   "id": "05bb2e2d65e3",
+   "alcance": "ejemplo de Acme SaaS > Palette",
+   "enunciado": "Ejemplo: asigna el blanco puro #FFFFFF como fondo y lienzo principal de Acme SaaS."
+  },
+  {
+   "id": "fefb7ee9c0b7",
+   "alcance": "ejemplo de entrada de extracción de marca",
+   "enunciado": "Ejemplo: el usuario entrega una URL y una hoja de marca, a partir de las cuales se produce un archivo brand-lock.md."
+  },
+  {
+   "id": "bd7a04369b23",
+   "alcance": "ejemplo de fuente web para Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: el CSS del sitio define los colores #F4EFE6, #2B2018, #C5562B y #8A8076, y las fuentes Tiempos Headline y Söhne."
+  },
+  {
+   "id": "24c74aef4fa8",
+   "alcance": "ejemplo de fuente web para Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: el sitio de Northwind presenta café de lotes pequeños, tostado y enviado el mismo día, con origen identificable y sin posicionamiento de estilo de vida."
+  },
+  {
+   "id": "111ca21e12d5",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: la fotografía de marca es mate, de bajo contraste y luz natural de ventana, con granos, manos y bolsas kraft, y excluye el producto brillante sobre fondo blanco."
+  },
+  {
+   "id": "1feceaf44c4c",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: la marca excluye sonrisas de stock, latte art decorativo, signos de exclamación y la palabra «artisanal»."
+  },
+  {
+   "id": "d17611f49dc1",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: la marca usa solo un logotipo denominativo marrón espresso sobre crema papel y no usa icono."
+  },
+  {
+   "id": "368f78d148fa",
+   "alcance": "ejemplo de marca, TikTok de apertura de cafetería",
+   "enunciado": "Ejemplo: la pieza para TikTok debe durar 30 segundos, tener 6 planos de 5 segundos en formato 9:16, incluir el CTA indicado y transmitir una identidad cálida, analógica y artesanal."
+  },
+  {
+   "id": "2b4df44bd61a",
+   "alcance": "ejemplo de marca, tema visual aplicado a cada plano",
+   "enunciado": "Ejemplo: todos los planos deben usar la paleta de espresso oscuro #3B2416, crema #F5E6D3, ámbar apagado #D4A574, verde salvia suave #8FA88C y café negro #1A1210."
+  },
+  {
+   "id": "dab34a76196e",
+   "alcance": "generación de activos de marca a partir de un producto de referencia",
+   "enunciado": "Al generar activos de marca desde un producto de referencia, se debe mantener la consistencia de marca y calidad, variar ángulos, luz y contexto, y generar una toma por vez."
+  },
+  {
+   "id": "671ec80db9b1",
+   "alcance": "módulos internos `_shotkit.py` y `_template.py`",
+   "enunciado": "Los módulos internos no son puntos de entrada y las herramientas deben importarlos para compartir hashing, rutas, brand-lock y plantillas sin discrepancias."
+  },
+  {
+   "id": "ad1224782095",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R10",
+   "enunciado": "Exige que los logos solo se hereden de asset aprobado o de la descripción canónica del brand-lock y que los cuerpos nunca tapen logo ni lettering en frames congelados."
+  },
+  {
+   "id": "9ca0f5bc42bb",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.brand_lock_configured es un booleano opcional, falso cuando el snapshot es una plantilla sin llenar según validate_brand_lock.py --require-configured."
+  },
+  {
+   "id": "42f02c32ca08",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.brand_lock_ref es obligatorio y no vacío."
+  },
+  {
+   "id": "5bcfbe1cd981",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.brand_lock_sha256 es obligatorio con 64 hex."
+  },
+  {
+   "id": "514785653462",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.brand_lock_source es obligatorio e indica de dónde se copió el snapshot; 'template default' registra un run sin configurar."
+  },
+  {
+   "id": "da59cdb1ee9e",
+   "alcance": "rúbrica de extracción de marca",
+   "enunciado": "Explicación: la rúbrica indica dónde encontrar las señales de cada sección del brand lock, cómo interpretarlas y cómo asignar su confianza."
+  },
+  {
+   "id": "c3e55442f27b",
+   "alcance": "rúbrica de extracción de marca, adjetivos de ánimo",
+   "enunciado": "Define de tres a cinco adjetivos de ánimo específicos, preferiblemente con cláusulas de contraste, a partir del texto y las imágenes en conjunto."
+  },
+  {
+   "id": "8cdf93bd220d",
+   "alcance": "rúbrica de extracción de marca, adjetivos de ánimo",
+   "enunciado": "Rechaza adjetivos genéricos, usa contrastes específicos sustentados en texto o imágenes y marca `needs confirmation` si los activos no permiten mayor precisión."
+  },
+  {
+   "id": "db76c52c9759",
+   "alcance": "rúbrica de extracción de marca, dirección de color",
+   "enunciado": "Redacta una frase de dirección de gradación basada en calidez, contraste y saturación de la fotografía existente, o en la paleta con `needs confirmation` si no hay fotografía."
+  },
+  {
+   "id": "574d5410a375",
+   "alcance": "rúbrica de extracción de marca, identidad",
+   "enunciado": "Exige determinar la postura de voz a partir de longitud de frase, puntuación y elección léxica, y citar una oración representativa."
+  },
+  {
+   "id": "4100d79ae1e4",
+   "alcance": "rúbrica de extracción de marca, identidad",
+   "enunciado": "Exige extraer el nombre de marca de fuentes identificables, formular una descripción concreta desde el hero y about, y asignar un arquetipo inferido según cómo la marca plantea el problema."
+  },
+  {
+   "id": "78db9f93db29",
+   "alcance": "rúbrica de extracción de marca, lenguaje de movimiento",
+   "enunciado": "Define en un único párrafo coherente el movimiento de cámara, estilo de corte, animación de texto y ritmo a partir del motion existente, o usa un valor conservador coherente con la voz y marca `needs confirmation` si no existe."
+  },
+  {
+   "id": "6dfe4f3aa29d",
+   "alcance": "rúbrica de extracción de marca, never list",
+   "enunciado": "Busca ausencias reiteradas en imagen, texto, color y layout para convertirlas en restricciones de la lista `never`."
+  },
+  {
+   "id": "43c41df6b604",
+   "alcance": "rúbrica de extracción de marca, never list",
+   "enunciado": "Convierte cada restricción observada en una línea `never` específica, reúne al menos cinco y nunca entregues una lista vacía."
+  },
+  {
+   "id": "52b3964dd7f6",
+   "alcance": "rúbrica de extracción de marca, never list",
+   "enunciado": "Infiere la lista de elementos que la marca nunca usa a partir de ausencias y consistencias entre los activos."
+  },
+  {
+   "id": "d8f6b62e5cd6",
+   "alcance": "rúbrica de extracción de marca, niveles de confianza",
+   "enunciado": "Exige etiquetar cada valor como «extracted», «inferred» o «needs confirmation» según provenga directamente de un activo, se razone desde evidencia o sea una estimación que debe verificarse."
+  },
+  {
+   "id": "8f94394f2ff0",
+   "alcance": "rúbrica de extracción de marca, paleta",
+   "enunciado": "Exige obtener los valores hex del libro de marca o del CSS cuando sea posible y marcar para confirmación los colores muestreados de capturas por posibles variaciones de compresión."
+  },
+  {
+   "id": "e45de7441a2b",
+   "alcance": "rúbrica de extracción de marca, paleta",
+   "enunciado": "Limita la paleta a una tabla de hasta ocho colores #RRGGBB definidos por función, como fondo, tinta, acento, apagado y regla."
+  },
+  {
+   "id": "3ae313fdcfcd",
+   "alcance": "rúbrica de extracción de marca, paleta",
+   "enunciado": "Prohíbe inventar valores hex; si no pueden leerse o muestrearse, exige estimarlos, marcarlos como «needs confirmation» e indicar qué función debe verificarse."
+  },
+  {
+   "id": "374db3f7cdc6",
+   "alcance": "rúbrica de extracción de marca, reglas de voz",
+   "enunciado": "Extrae del copy reglas de voz aplicables y verificables para VO y texto en pantalla, evitando formulaciones aspiracionales."
+  },
+  {
+   "id": "e5519d1505df",
+   "alcance": "rúbrica de extracción de marca, relaciones de aspecto",
+   "enunciado": "Especifica las relaciones de aspecto de la marca con el valor predeterminado `9:16, 16:9, 1:1, 4:5`, ajustándolas al sesgo de los activos y documentando la evidencia."
+  },
+  {
+   "id": "eca890c19371",
+   "alcance": "rúbrica de extracción de marca, tipografía",
+   "enunciado": "Exige especificar fuente de display, fuente de cuerpo y fuente monoespaciada opcional, cada una con su peso numérico o nominal preciso."
+  },
+  {
+   "id": "d37f1b594abf",
+   "alcance": "rúbrica de extracción de marca, tipografía",
+   "enunciado": "Explicación: el libro de marca puede nombrar directamente las tipografías."
+  },
+  {
+   "id": "012709a2109c",
+   "alcance": "rúbrica de extracción de marca, tipografía",
+   "enunciado": "Limita la tipografía a dos fuentes, o a tres únicamente si una es monoespaciada para código o datos."
+  },
+  {
+   "id": "7504669923c7",
+   "alcance": "rúbrica de extracción de marca, tipografía en capturas",
+   "enunciado": "Identifica tipografías en capturas solo si hay confianza y, de lo contrario, marca `needs confirmation` sin inventar un nombre plausible."
+  },
+  {
+   "id": "e50d57e40c0f",
+   "alcance": "rúbrica de extracción de marca, tipografía web",
+   "enunciado": "Exige identificar en el sitio las fuentes mediante declaraciones font-family, archivos cargados y valores font-weight."
+  },
+  {
+   "id": "5e3a615bb254",
+   "alcance": "selección de track por cliente, marca o régimen de autor",
+   "enunciado": "Clasifica como EXPRESS los proyectos sin cliente o marca formal y como STANDARD o FILM los que sí la tengan, admitiendo también pieza de autor en FILM."
+  },
+  {
+   "id": "e8bef97287fa",
+   "alcance": "shots.schema.json",
+   "enunciado": "brand_lock_ref es obligatorio y apunta a brand-lock.snapshot.md; el hash real vive en run.json:inputs.brand_lock_sha256."
+  },
+  {
+   "id": "c1a90b85aace",
+   "alcance": "sistemas de identidad de marca con referencia de logo",
+   "enunciado": "Plantilla de sistema de identidad de marca a partir de un logo: generar una por vez 10 aplicaciones (refinamiento, tarjeta, membrete, valla, packaging, banner, avatar, icono de app, señalética, merchandising) en 16:9 manteniendo consistencia de marca."
+  },
+  {
+   "id": "c2624fb3d305",
+   "alcance": "skill storyboard-architect, entradas",
+   "enunciado": "El brand-lock es opcional; si falta, se usa brand-packs/_template.md y se señala la carencia."
+  },
+  {
+   "id": "ce131d98fbc6",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Cada fuente de overlay debe estar definida en la tipografía del brand-lock, con máximo dos fuentes por proyecto (display y cuerpo)."
+  },
+  {
+   "id": "3108617db0f8",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "El color de cada overlay debe ser un hex de la paleta del brand-lock; si se quiere otro color se cambia el estilo o la composición, nunca se añade a la paleta."
+  },
+  {
+   "id": "c9e542a653fc",
+   "alcance": "skill storyboard-architect, paso 1",
+   "enunciado": "Si hay brand-lock se debe leer primero y extraer paleta hex, tipografía, mood, never list, lenguaje de movimiento, tono de voz y aspect ratios preferidos."
+  },
+  {
+   "id": "b3ac8f964969",
+   "alcance": "skill storyboard-architect, paso 1",
+   "enunciado": "Sin brand-lock se debe copiar la plantilla como brand-lock.snapshot.md con la nota de UNCONFIGURED recomendando un brand-lock real."
+  },
+  {
+   "id": "9b22c0f13277",
+   "alcance": "skill storyboard-architect, paso 8",
+   "enunciado": "Se debe copiar el brand-lock como brand-lock.snapshot.md con dos comentarios al inicio: fecha del snapshot y fuente."
+  },
+  {
+   "id": "609ba49179d7",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "Una descripción de luz repetida entre shots debe moverse a series_lock y un color repetido entre storyboards al brand_lock."
+  },
+  {
+   "id": "2adfd5462ea3",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "brand_lock fija paleta, tipografía y never list para todo el proyecto, series_lock fija personaje, entorno, luz y grade del storyboard, y subject solo lo que cambia en cada shot."
+  },
+  {
+   "id": "a6ea320d8a98",
+   "alcance": "skill storyboard-html-preview, paso 2",
+   "enunciado": "Del snapshot del brand-lock se extraen paleta hex, fuentes display y cuerpo, y voz o mood para el HTML."
+  },
+  {
+   "id": "cdc9e49df251",
+   "alcance": "skill storyboard-html-preview, paso 2",
+   "enunciado": "El preview debe sentirse de la marca con branding discreto, no estridente."
+  },
+  {
+   "id": "fffcda800967",
+   "alcance": "storyboard-html-preview, marcas de tiempo",
+   "enunciado": "Si el brand-lock en disco ya no coincide con el hash registrado en run.json, se debe advertir en la página."
+  },
+  {
+   "id": "af15b78f0741",
+   "alcance": "storyboard-html-preview, regla dura 4",
+   "enunciado": "Los colores de marca se usan como acentos sutiles, no como fondos completos."
+  },
+  {
+   "id": "c987b8d0dcb0",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].color es obligatorio en hex de 6 dígitos y debe venir de la paleta del brand-lock."
+  },
+  {
+   "id": "42345bc0954b",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].font es obligatorio y debe referenciar una fuente definida en la tipografía del brand-lock."
+  },
+  {
+   "id": "1ec799ae0633",
+   "alcance": "validate_brand_lock.py",
+   "enunciado": "Ejemplo: comandos para validar un brand-pack, exigir su configuración, validar snapshots, recorrer todos los snapshots y ejecutar la autoprueba."
+  },
+  {
+   "id": "8698b1dcc020",
+   "alcance": "validate_brand_lock.py; brand-lock",
+   "enunciado": "El validador debe comprobar que el brand-lock incluya secciones e identidades obligatorias, los cinco roles de paleta requeridos y fuentes en el formato entre comillas invertidas que leen las herramientas."
+  },
+  {
+   "id": "36c204dc02cc",
+   "alcance": "validate_shots.py; shots.json y text-overlays.json",
+   "enunciado": "El validador debe emitir advertencias si se repite el texto del overlay en el sujeto del plano, se usa un hexadecimal directo, los IDs no están en orden cronológico o la fuente no figura en el brand-lock."
+  },
+  {
+   "id": "36497a03f677",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Recomienda brand-lock.snapshot.md; si falta, criticar solo por méritos técnicos."
+  },
+  {
+   "id": "d7864655091f",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Los campos brand_lock_ref y brand_lock_sha256 identifican el snapshot de brand-lock usado y su SHA-256."
+  },
+  {
+   "id": "705609d21072",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, mood: pass si se lee el mood de marca, soft fail si es adyacente, hard fail si es otro mood."
+  },
+  {
+   "id": "3c039d2e7b56",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, never list: pass si no aparece nada de la lista, soft fail si aparece un ítem suave, hard fail con varias violaciones."
+  },
+  {
+   "id": "c411ef569ed7",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, paleta: pass si los colores vienen de la paleta, soft fail si están cerca, hard fail si no están en la paleta."
+  },
+  {
+   "id": "b2ba76657152",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Un hard fail en Brand Lock da REJECT o REVISE según exista corrección por prompt."
+  },
+  {
+   "id": "5a021d498cdc",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Los colores de marca no se escriben en la prosa del sujeto del shot; vienen del grade de series_lock y la paleta del brand-lock, y duplicarlos sobresatura."
+  },
+  {
+   "id": "77e5fd8c0c25",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Todo prompt se compone de cinco capas: Brand Lock, Series Lock, Shot Spec, Text Layer (nunca en el prompt) y adaptador del generador."
+  },
+  {
+   "id": "b4c3f506509e",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "El patrón del modo 2 de Ideogram añade el texto exacto entre comillas con posición, estilo tipográfico y color hex o nombrado del brand-lock."
+  },
+  {
+   "id": "64c9f1b10a5f",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "enunciado": "Explicación: la misma intención se expresa con distinta sintaxis por modelo, con los mismos anclajes de brand-lock y series-lock en todos."
+  },
+  {
+   "id": "b8b67b57f61c",
+   "alcance": "visual-prompt-forge, capa 1",
+   "enunciado": "El brand lock contiene paleta hex, tipografía, 3-5 descriptores de mood, never list, relaciones de aspecto y dirección de grade."
+  },
+  {
+   "id": "0cd71a579f79",
+   "alcance": "visual-prompt-forge, capa 1",
+   "enunciado": "Explicación: el brand lock responde a cómo se ve y siente siempre la marca."
+  },
+  {
+   "id": "ac4fdba134e5",
+   "alcance": "visual-prompt-forge, capa 1",
+   "enunciado": "La capa 1 es el brand lock del proyecto, tomado de brand-lock.snapshot.md referenciado en shots.json y constante en todos los storyboards y shots."
+  },
+  {
+   "id": "48c9afe07aa0",
+   "alcance": "visual-prompt-forge, capa 4",
+   "enunciado": "Explicación: el texto va en capa aparte por editabilidad, porque ningún generador iguala la tipografía profesional, porque el texto animado requiere herramientas de motion y porque solo el compuesto usa las fuentes y colores exactos de marca."
+  },
+  {
+   "id": "a3ffffd8d5ec",
+   "alcance": "visual-prompt-forge, ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: mood de marca \"calm, considered, operator (not creator), confident without volume\"."
+  },
+  {
+   "id": "89ce31f736f8",
+   "alcance": "visual-prompt-forge, fallo 1",
+   "enunciado": "Para corregir el \"AI look\" se añaden lente y apertura, stock de película o cámara, la línea \"natural skin texture, no AI rendering artifacts\", la never list de marca y se usan Flux 2 Pro o Midjourney v7 para héroes."
+  },
+  {
+   "id": "25f1da3bb27d",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar el color de marca se edita brand-lock.md y se actualizan todos los prompts de todos los storyboards sin buscar y reemplazar."
+  }
+ ]
+}

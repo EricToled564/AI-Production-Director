@@ -1,0 +1,1109 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "consistencia_identidad",
+ "descripcion_tema": "identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "f1450745ccf0",
+   "alcance": "Aurora Prompt Linter v1.0; categorías O y P de referencias",
+   "enunciado": "Explicación: la versión 1.0 no admite sub-tags de categoría y una referencia etiquetada cubre toda la categoría, incluso si no muestra todos sus elementos."
+  },
+  {
+   "id": "c0bc79f39d93",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas P",
+   "enunciado": "Si una referencia carga la categoría P de sujeto, se prohíbe describir en el prompt principal la cara, el cuerpo, la edad, la complexión, el cabello, la expresión o la identidad."
+  },
+  {
+   "id": "133369c77abf",
+   "alcance": "E4.5 storyboard-architect",
+   "enunciado": "E4.5: el series lock (character, environment, lighting, color_grade) define qué génesis hacen falta, como mínimo personaje y entorno."
+  },
+  {
+   "id": "f1c16c73b2e0",
+   "alcance": "E6.3 universal-rules U7, U13",
+   "enunciado": "E6.3: cada prompt de la secuencia repite la identidad completa y el rol explícito de cada referencia."
+  },
+  {
+   "id": "173a865c1b94",
+   "alcance": "GPT Image 2, edición",
+   "enunciado": "GPT Image 2 preserva la identidad en ediciones (ropa, clima, fondo) sin que deriven rostro, pose ni geometría, usando la lógica change/preserve como contrato."
+  },
+  {
+   "id": "a2709972052f",
+   "alcance": "GPT Image 2, grupo ensamble",
+   "enunciado": "La sola pasada con todos los maestros adjuntos es inferencia sin probar: dieciséis referencias aceptadas no garantizan dieciséis identidades, así que se verifica miembro por miembro (regla a prueba)."
+  },
+  {
+   "id": "f20647d177a0",
+   "alcance": "Image Editing › Object Removal",
+   "enunciado": "Elimina el objeto indicado, rellena su lugar con un reemplazo lógico que coincida con el entorno y conserva exactamente los elementos especificados."
+  },
+  {
+   "id": "3e5a93b09019",
+   "alcance": "Image Editing › Seasonal/Weather",
+   "enunciado": "Transforma la escena a la estación o clima indicados manteniendo exactamente la arquitectura y ajustando nieve, hojas, reflejos y cielo."
+  },
+  {
+   "id": "020880a58016",
+   "alcance": "Image Editing; Nano Banana y GPT Image 2",
+   "enunciado": "Para editar imágenes, usa instrucciones conversacionales sin máscaras en Nano Banana y la estructura Change / Preserve / Constraints en GPT Image 2, repitiendo la lista de preservación en cada iteración y usando máscara opcional para ediciones puntuales."
+  },
+  {
+   "id": "753f3bcda179",
+   "alcance": "Kling",
+   "enunciado": "Si dos personajes similares mezclan rasgos, dar a cada uno su propio element o bloque de identidad etiquetado; nunca compartir una descripción."
+  },
+  {
+   "id": "685b63e45e63",
+   "alcance": "Kling",
+   "enunciado": "Si el rostro cambia entre generaciones, subir 3-4 referencias a la Element Library y activar Bind Elements."
+  },
+  {
+   "id": "9074c4d4898d",
+   "alcance": "Kling 1.x-2.x",
+   "enunciado": "Para consistencia de personaje en Kling, subir 3-4 imágenes de referencia desde distintos ángulos a la Element Library."
+  },
+  {
+   "id": "d8d9918d3d26",
+   "alcance": "Kling 3.0",
+   "enunciado": "Dentro de las descripciones de shot, referirse a los personajes como 'Character A'/'Character B' en vez de re-describirlos en cada shot."
+  },
+  {
+   "id": "2011bab107a7",
+   "alcance": "Kling 3.0",
+   "enunciado": "En Kling 3.0 la Element Library sigue funcionando, pero las etiquetas '[Character A: ...]' suelen bastar."
+  },
+  {
+   "id": "5dd99adf9b19",
+   "alcance": "Kling 3.0",
+   "enunciado": "Explicación: en Kling 3.0 los personajes se etiquetan con tags '[Character A: ...]' en el prompt, además de referencias."
+  },
+  {
+   "id": "d5198a62bd58",
+   "alcance": "Kling 3.0",
+   "enunciado": "Presentar cada personaje y objeto clave al inicio del prompt con identificadores únicos que se mantengan en todos los shots."
+  },
+  {
+   "id": "309125101b52",
+   "alcance": "Kling 3.0 Omni",
+   "enunciado": "En Elements 3.0 de Omni, definir cada personaje/producto/lugar una vez como element (video 3-8 s o hasta 4 stills, voz opcional), etiquetarlo con @ sin re-describirlo, un element por personaje y usarlos solo cuando la consistencia importe porque degradan la calidad."
+  },
+  {
+   "id": "b2d3d337f622",
+   "alcance": "Kling 3.0 diálogo",
+   "enunciado": "P1: usar identificadores únicos por personaje en el diálogo, no 'he says'."
+  },
+  {
+   "id": "c59fbdc64554",
+   "alcance": "Kling i2v",
+   "enunciado": "Activar 'Bind Elements' en imagen a video para fijar rasgos a través de paneos y cambios de luz."
+  },
+  {
+   "id": "658443f56a83",
+   "alcance": "Learning Registry v3.2 (revisión de imágenes de producción)",
+   "enunciado": "Al revisar no se reinterpretan los locks del usuario o proyecto no afectados."
+  },
+  {
+   "id": "78900aa6b3c1",
+   "alcance": "Mapa del Spot Publicitario, génesis de todas las clases",
+   "enunciado": "La génesis fija solo la parte del sujeto que lleva la identidad y todo lo que la extiende es un paso posterior con la génesis adjunta: rostro T1 → cuerpo T2 → cuadros T3/T4; en animal cabeza y pelaje primero; en producto hero shot frontal primero."
+  },
+  {
+   "id": "c4dc4435c061",
+   "alcance": "Midjourney v7",
+   "enunciado": "El parámetro --cref (referencia de personaje por URL) se usa cuando existe un ancla de personaje y debe emparejarse con --cw."
+  },
+  {
+   "id": "db88861eabed",
+   "alcance": "Nano Banana, multi-referencia",
+   "enunciado": "Limita las referencias de consistencia de personaje a 4 en NB2 y 5 en NBP; NB2 Lite no las admite."
+  },
+  {
+   "id": "44a4fe70ca7c",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica los 11 bloques del esqueleto de producción: bloqueo de personaje, duración/género/montaje, historia, estilo visual, cámara, montaje, audio, timeline por plano, luz, composición con imagen final y specs de salida."
+  },
+  {
+   "id": "96004d991e18",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige colocar al inicio del prompt el bloque anti-mush (cortes visibles, sin toma continua, ángulos distintos, misma apariencia del personaje) cuando el modelo funde planos o para prevenirlo."
+  },
+  {
+   "id": "04011b224f58",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige repetir el bloque de identidad completo en cada frontera de plano dentro del prompt contra la deriva de personaje."
+  },
+  {
+   "id": "0211be742da7",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige repetir verbatim el bloqueo de personaje y el estilo visual en cada clip porque Seedance no tiene memoria entre generaciones."
+  },
+  {
+   "id": "506d7a909b59",
+   "alcance": "Seedance / Kling / Veo",
+   "enunciado": "Especifica la sintaxis de bloqueo de personaje por modelo: Seedance @img1 + bloque, Kling 1.x-2.x Element Binding, Kling 3.0 etiquetas [Character A], Veo ingredientes o JSON."
+  },
+  {
+   "id": "ebcf5b92bf8b",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Ejemplo: plantilla @img1 como referencia principal seguida del bloque de identidad completo, sin desnudez, sin gafas y sin personajes extra."
+  },
+  {
+   "id": "a4a7ea82102a",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Especifica que Seedance 2.0 acepta referencias en línea @img1, @img2 para fijar el parecido del protagonista entre planos y clips unidos."
+  },
+  {
+   "id": "7961a918bba7",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Exige que el bloque de identidad completo siga a @img1, repetirlo en cada clip, etiquetar el rol de cada referencia y declarar en prosa el rol de @Video1/@Audio1; limita a 12 archivos en 2.0 y 50 en 2.5."
+  },
+  {
+   "id": "67bf3d307d05",
+   "alcance": "Seedance 2.0, multi-shot",
+   "enunciado": "El prompt multi-shot de Seedance enumera \"Shot 1/2/3\" con cámara y acción, seguido del ancla de personaje verbatim, entorno y luz de series_lock y grade de marca."
+  },
+  {
+   "id": "2ee8ddd1a969",
+   "alcance": "Seedance 2.0, multi-shot",
+   "enunciado": "Prohíbe variar el ancla de personaje entre cortes; se declara una vez para toda la secuencia, verbatim."
+  },
+  {
+   "id": "ec0338f6661f",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: Subject Profile de un personaje recurrente con apariencia, prop fijo, locaciones, referencia de movimiento y exclusiones."
+  },
+  {
+   "id": "7b43a97388a4",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que con más de 5 sujetos las hojas multivista deben ser de vista única y que imágenes separadas por vista superan a un collage."
+  },
+  {
+   "id": "23dce50e7b5d",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que las extensiones mantienen look, estilo y timbre de voz sin volver a subir referencias."
+  },
+  {
+   "id": "dc4c3ca24a41",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige ligar cada estado de un personaje transformado a su rango de tiempo y presupuestar re-rolls porque es la vinculación más inestable."
+  },
+  {
+   "id": "a0bc99fcd67e",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige usar dos slots de imagen separados, cada uno ligado a su rango de tiempo, para un personaje en dos estados, y presupuestar re-rolls."
+  },
+  {
+   "id": "421011dc701e",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige vincular cada sujeto a su referencia individualmente, añadir exclusiones contra contaminación y no re-describir lo que la referencia ya define; prohíbe la forma colectiva 'images 1 through 4'."
+  },
+  {
+   "id": "fc486f5d9d51",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige, contra gemelos o rostros fusionados en escenas multipersona, vinculación por sujeto y diferenciación explícita de ropa, pelo y rasgos, sin clones de fondo."
+  },
+  {
+   "id": "ac6468a9f9f2",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige, en metraje filmado, enumerar todo lo que se conserva antes de pedir cualquier cambio; cuanto más larga la lista, menos deriva."
+  },
+  {
+   "id": "9275c043161a",
+   "alcance": "Seedream 4.5/4.0, series",
+   "enunciado": "Para compensar la débil consistencia de personaje de Seedream se fija la seed por storyboard, se repite verbatim el ancla de personaje, no se varía el lenguaje de luz y se presupuestan re-rolls."
+  },
+  {
+   "id": "870abee99278",
+   "alcance": "Seedream 4.5/4.0, series",
+   "enunciado": "Prohíbe omitir el bloqueo de seed en trabajo de serie con Seedream; sin él se rompe la consistencia de personaje."
+  },
+  {
+   "id": "3a8de7810965",
+   "alcance": "Surgical Image Edit Template v3.2",
+   "enunciado": "En la edición quirúrgica hay que preservar exactamente locks de sujeto, identidad y pose, composición, cámara, luz, color, entorno, física y aspect ratio salvo cambio explícito."
+  },
+  {
+   "id": "9928d583a238",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica usar JSON cuando se necesita continuidad estricta de personaje entre planos."
+  },
+  {
+   "id": "4bb7b711f46b",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige pasar a JSON y fijar el personaje en el bloque de continuidad si el color del personaje cambia al añadir palabras de tono."
+  },
+  {
+   "id": "4c6511c17691",
+   "alcance": "Veo 3.1, imagen a video",
+   "enunciado": "Prohíbe re-describir elementos estáticos, exige describir solo movimiento, cámara, cambio de luz y audio, y añadir 'maintain the subject from the first frame'."
+  },
+  {
+   "id": "50a3cd6e68a9",
+   "alcance": "anclas con persona",
+   "enunciado": "Herencia mínima con persona: \"same face and clothes\" más solo los deltas."
+  },
+  {
+   "id": "6a90abecd105",
+   "alcance": "anclas para video",
+   "enunciado": "La cara y el vestuario los fija el still; el video repite el identity block."
+  },
+  {
+   "id": "ee39bbfd73f5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Define los grupos de rasgos del bloque de identidad: pelo, ojos y piel, prenda, accesorio y rasgo distintivo, cada uno con sus palabras clave."
+  },
+  {
+   "id": "6044e30c4de1",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "enunciado": "Exige que el bloque de identidad contenga al menos 3 grupos de rasgos."
+  },
+  {
+   "id": "8515c9ca1187",
+   "alcance": "aurora-prompt-linter, GPT Image 1.5 caso 2",
+   "enunciado": "En GPT Image 1.5 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (incluida face strip), preservación facial explícita, sujeto-acción, cámara o lente y luz."
+  },
+  {
+   "id": "4358bf65f772",
+   "alcance": "cambio de accesorios de personaje",
+   "enunciado": "Se puede añadir un accesorio a un personaje siempre que se mantenga su identidad."
+  },
+  {
+   "id": "fe60fab978a7",
+   "alcance": "cambio de entorno de personaje",
+   "enunciado": "Se puede situar a la misma persona en un entorno nuevo conservando su identidad."
+  },
+  {
+   "id": "7515b1bf5276",
+   "alcance": "cambio de fondo de personaje",
+   "enunciado": "Al cambiar el fondo por otra escena se debe mantener la iluminación sobre el rostro."
+  },
+  {
+   "id": "20731eab2817",
+   "alcance": "cambio de localización de personaje",
+   "enunciado": "Se puede trasladar a una persona a otra localización siempre que se conserve su identidad."
+  },
+  {
+   "id": "64dca900549c",
+   "alcance": "cambio de vestuario de personaje",
+   "enunciado": "Al cambiar a vestimenta formal de negocios se debe conservar el rostro de la persona."
+  },
+  {
+   "id": "9896a126b44d",
+   "alcance": "cambio de vestuario de personaje",
+   "enunciado": "Se puede cambiar el atuendo de una persona siempre que se conserve su identidad."
+  },
+  {
+   "id": "2edae02c9271",
+   "alcance": "capa 5; anchors",
+   "enunciado": "La sub-skill image debe aportar sintaxis por modelo de imagen, character sheets y keyframes, con autoridad sobre la sintaxis final de los prompts de imagen."
+  },
+  {
+   "id": "c9b14d8f4c98",
+   "alcance": "coleccionable chibi, GPT Image 2",
+   "enunciado": "Especifica la plantilla chibi: fondo en degradado, luz de producto con rim, proporción cabeza-cuerpo 1:2, vinilo mate, rasgos y outfit reconocibles simplificados, base circular, proporciones uniformes y sin texto."
+  },
+  {
+   "id": "db539042f137",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Especifica la plantilla del tríptico de campaña: héroe amplio, detalle de producto y acción con leve blur en extremidades, misma luz y modelo, producto visible en cada panel."
+  },
+  {
+   "id": "26b0e714d502",
+   "alcance": "composiciones multipanel",
+   "enunciado": "En multipanel: más paneles implica menos detalle por panel; declarar consistencia repitiendo marcadores de identidad, dimensiones del grid, bordes, orden de lectura, y usar GPT Image 2 high con texto, NBP sin texto y NB2 o GPT low para exploración."
+  },
+  {
+   "id": "b58fb87ad5ed",
+   "alcance": "consistencia de identidad con Imagen 1 como referencia",
+   "enunciado": "Para bloquear la identidad se debe indicar que los rasgos faciales se mantengan exactamente iguales a los de la Imagen 1."
+  },
+  {
+   "id": "87cf90de6494",
+   "alcance": "consistencia de personaje entre escenas",
+   "enunciado": "La consistencia de personaje permite usar hasta 14 imágenes de referencia, de las cuales 6 pueden ser de alta fidelidad, para bloquear la identidad entre escenas."
+  },
+  {
+   "id": "04faf7b772ae",
+   "alcance": "control de expresión de un personaje con identidad bloqueada",
+   "enunciado": "La expresión puede modificarse mientras se mantiene la identidad del personaje."
+  },
+  {
+   "id": "8170c8d7f1ce",
+   "alcance": "control de pose y acción de personaje",
+   "enunciado": "La pose o acción del personaje debe especificarse de forma concreta, por ejemplo señalando, con brazos cruzados, caminando o sentado e inclinado hacia delante."
+  },
+  {
+   "id": "676e3aa7a62c",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 3: con keyframe de inicio o fin en imagen a video no se re-describe la identidad; con referencia de personaje sin start frame, @img, Elements o ancla con refs, el bloque de identidad va completo y verbatim."
+  },
+  {
+   "id": "1ea1e450628f",
+   "alcance": "ediciones de imagen; obligatorio en gpt-image-2 y recomendado en Nano Banana",
+   "enunciado": "Las solicitudes de edición deben incluir cambio concreto, lista explícita de elementos a preservar y restricciones, obligatoriamente para gpt-image-2 y recomendadamente para Nano Banana."
+  },
+  {
+   "id": "4271d8614dc6",
+   "alcance": "edición o generación con persona de IMAGE REFERENCE",
+   "enunciado": "Al usar una persona de una imagen de referencia, se deben conservar exactamente sus rasgos faciales e identidad mientras solo se cambian expresión, pose, ropa o entorno."
+  },
+  {
+   "id": "1d10163a6ec0",
+   "alcance": "editorial de moda, collage de 3 paneles, GPT Image 2",
+   "enunciado": "Especifica la plantilla del tríptico de moda: panel héroe de cuerpo entero, detalle de textura de tela con luz rasante y paso en contrapicado con caída natural; misma persona y outfit, piel constante, sin texto, logos ni equipo, como una sola sesión."
+  },
+  {
+   "id": "7bf212579e40",
+   "alcance": "editorial de moda, grid 2x2, GPT Image 2",
+   "enunciado": "Especifica la plantilla 2x2 de moda: headshot con butterfly light, tres cuartos con clave lateral, perfil a contraluz y momento cándido; piel con poros sin suavizado, persona idéntica, sin cambios de maquillaje ni texto."
+  },
+  {
+   "id": "ec0d07886fe6",
+   "alcance": "ejemplo WhyStrohm explainer 60s",
+   "enunciado": "Ejemplo: ancla de personaje: fundador hablando a cámara con postura calmada y autoritaria."
+  },
+  {
+   "id": "91a75b34661b",
+   "alcance": "ejemplo WhyStrohm explainer 60s",
+   "enunciado": "Ejemplo: entorno de oficina minimalista al final de la tarde."
+  },
+  {
+   "id": "57e3551962c5",
+   "alcance": "ejemplo WhyStrohm pitch 30s",
+   "enunciado": "Ejemplo: ancla de personaje del series lock: fundador de mediana edad, pelo entrecano, suéter navy, postura calmada, trabajando en laptop."
+  },
+  {
+   "id": "ccaeef630465",
+   "alcance": "ejemplo WhyStrohm pitch 30s",
+   "enunciado": "Ejemplo: entorno del series lock: oficina minimalista con paredes blancas, escritorio de roble y una planta."
+  },
+  {
+   "id": "56c53f8226ee",
+   "alcance": "ejemplo de marca, cafetería, plano 3, 10-15 s",
+   "enunciado": "Ejemplo: el plano 3 muestra a una barista identificada con plano medio corto y ángulo ligeramente bajo, iluminación de ventana y práctica cálida, que levanta la mirada y sonríe durante 5 segundos en vertical 9:16."
+  },
+  {
+   "id": "dbfdac1d6b97",
+   "alcance": "escenas multipersona",
+   "enunciado": "Exige movimientos no sincronizados, ropa, peinado y rasgos distintos y prohibir clones idénticos en el fondo."
+  },
+  {
+   "id": "058d5bbc3ad3",
+   "alcance": "escenas multipersona",
+   "enunciado": "Explicación: en escenas con varias personas los personajes convergen en rostros casi idénticos o los extras clonan al héroe."
+  },
+  {
+   "id": "7d1adf29e44a",
+   "alcance": "escenas multipersona",
+   "enunciado": "Para evitar gemelos, vincular cada sujeto a su propia referencia individual y forzar diferenciación."
+  },
+  {
+   "id": "a73dd79c5344",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §1 checklist de continuidad",
+   "enunciado": "Antes de enviar un prompt se verifica continuidad: mismo personaje y ropa nombrada, lógica de locación, progresión de estado del objeto, sin personajes, texto ni logos no deseados, sin acción mano-objeto imposible, sin cámara ni luz vagas, sin apilar directores, sin contradicciones, paleta concreta e imagen final explícita."
+  },
+  {
+   "id": "9165ef6c1528",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2 fallo de rostro",
+   "enunciado": "Si el rostro cambia entre shots, se exige preservar el personaje exacto (forma de cara, ojos, pelo, ropa, expresión) repitiendo el bloque de identidad completo."
+  },
+  {
+   "id": "8e0fb00a14db",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2, Kling",
+   "enunciado": "En Kling se usa Element Binding con 3-4 imágenes de referencia (frente, perfil, tres cuartos)."
+  },
+  {
+   "id": "de5da5ab37b0",
+   "alcance": "general",
+   "enunciado": "Ejemplo: convierte un fotograma animado cargado en una escena ultrarrealista preservando las identidades, estructuras faciales, vestuario y expresiones originales."
+  },
+  {
+   "id": "274dabee2f51",
+   "alcance": "general",
+   "enunciado": "Ejemplo: usa la imagen de referencia cargada para crear a una persona real junto a una versión gigante 3D animada de sí misma, conservando rostro, ropa y pose idénticos en un estudio gris azulado."
+  },
+  {
+   "id": "e3fa12343e38",
+   "alcance": "general",
+   "enunciado": "La génesis fija solo la parte del sujeto que lleva la identidad y lo demás se genera después con esa génesis como referencia; siempre rostro T1 antes que cuerpo T2."
+  },
+  {
+   "id": "d799131fad93",
+   "alcance": "general (entre tareas)",
+   "enunciado": "Prohíbe arrastrar demografía, nacionalidad, etnia, género, vestuario, marca u otros locks de una tarea previa a una nueva salvo herencia explícita; el material actual solo informa las dimensiones pedidas."
+  },
+  {
+   "id": "64ab798ea095",
+   "alcance": "general (entre tareas)",
+   "enunciado": "Prohíbe que una tarea nueva herede demografía, nacionalidad, etnia, género, vestuario, marca u otros locks de una tarea previa salvo herencia explícita en el brief actual."
+  },
+  {
+   "id": "10f3527340f7",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Para el grid 4x3 usar 1536x1024 y Nano Banana Pro; declarar \"no white lines, no black borders, no gaps\", descripciones breves y distintas por panel y consistencia explícita del sujeto."
+  },
+  {
+   "id": "d4e776bfc884",
+   "alcance": "grid de variantes de vestuario, GPT Image 2",
+   "enunciado": "Especifica la plantilla del grid de vestuario: fondo neutro, misma pose en cada celda, solo cambia la ropa, nombre del outfit bajo cada celda, identidad corporal y facial idéntica."
+  },
+  {
+   "id": "c2734c377e5c",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Especifica la plantilla 2x2: misma persona y vestuario en los cuatro paneles, cada cuadrante con ángulo definido, luz consistente, piel realista sin aerógrafo y sin texto."
+  },
+  {
+   "id": "60ca89f7ba28",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Para el grid 2x2 usar 1024x1024 o 1024x1536 con GPT Image 2 medium o NBP; indicar \"same person\" en cada panel, asignar ángulo por cuadrante y evitar cortes de escala muy dispares."
+  },
+  {
+   "id": "6621856f464b",
+   "alcance": "grupo ensamble EN.5",
+   "enunciado": "En formación o coreografía de ensamble, se permiten poses iguales pero las identidades deben distinguirse al zoom (pelo, cara, estatura, vestuario); un miembro indistinguible es un clon."
+  },
+  {
+   "id": "c2969d674a1b",
+   "alcance": "grupo ensamble EN.6",
+   "enunciado": "En ensamble, el crítico corre la capa de identidad por cada miembro contra su maestro y verifica lateralidad de manos e instrumentos; un rostro sin maestro es REJECT."
+  },
+  {
+   "id": "960110d30ef5",
+   "alcance": "génesis clase Persona (T1, T2)",
+   "enunciado": "La génesis de persona exige dos pasos: rostro T1 sin referencia canonizado con hash y luego cuerpo entero T2 con el rostro como Image 1 y 'keep facial features exactly the same', nunca cuerpo entero de un tiro; probar NB2 y NBP en rostros, GPT Image 2 high para piel, sin grounding."
+  },
+  {
+   "id": "851022c129d6",
+   "alcance": "historias de varias imágenes con múltiples personajes",
+   "enunciado": "En una historia multiparte se deben mantener constantes la ropa y los rasgos de cada personaje, variar ángulos, expresiones y distancias, y mostrar solo una instancia de cada personaje por imagen."
+  },
+  {
+   "id": "b8b50a0436ed",
+   "alcance": "hoja de expresiones, GPT Image 2",
+   "enunciado": "Especifica la plantilla de hoja de expresiones: grid 3x3 o 3x2, misma cabeza a tres cuartos, cada celda con expresión descrita por señales faciales y etiqueta, identidad y estilo idénticos, sin gestos de mano."
+  },
+  {
+   "id": "3e6142b5d64e",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Los locks del usuario o del proyecto se mantienen verbatim entre revisiones."
+  },
+  {
+   "id": "4a2eb9b21114",
+   "alcance": "keyframes para video",
+   "enunciado": "Aprobar un único cuadro de referencia del personaje (character sheet / hero frame) al que remitan todos los prompts de video posteriores."
+  },
+  {
+   "id": "2531bcd20bce",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P3",
+   "enunciado": "La prohibición de descriptores de persona/outfit solo aplica con referencia de rol primer o último frame (i2v); con rol character el identity block es obligatorio y se advierte si faltan 3 o más de pelo, ojos/piel, prenda, accesorio o rasgo distintivo."
+  },
+  {
+   "id": "80d153a3d430",
+   "alcance": "linter aurora v1.2-fupai, caso 2 con @img1/Elements/--cref",
+   "enunciado": "Con --ref-role character los descriptores de persona se permiten y el identity block es obligatorio (aviso si hay menos de 3 grupos)."
+  },
+  {
+   "id": "b63bca3ae8aa",
+   "alcance": "linter aurora v1.2-fupai, parche P3",
+   "enunciado": "Con referencia de primer/último frame los descriptores de persona y vestuario están prohibidos, pero con referencia de personaje el identity block completo es obligatorio (aviso si faltan 3 o más grupos de rasgos)."
+  },
+  {
+   "id": "cc592af7c172",
+   "alcance": "linter aurora v1.2-fupai, pruebas P3",
+   "enunciado": "Ejemplo (prueba T04): caso 2 con --ref-role character pasa con identity block y avisa sin él."
+  },
+  {
+   "id": "01e67f73faca",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint validate_prompts verifica series_lock verbatim, sin texto de overlay, tercio del cuerpo, POV, dirección de viaje, manos en contactos y sin marcas."
+  },
+  {
+   "id": "5f300b9c5e53",
+   "alcance": "miniaturas virales con persona de Imagen 1",
+   "enunciado": "Ejemplo: una miniatura viral usa a la persona de la Imagen 1 con identidad conservada, expresión intensa, composición persona-objeto, flecha, titular destacado y fondo desenfocado de alto contraste."
+  },
+  {
+   "id": "7f5a7992a574",
+   "alcance": "orden de bloques del still",
+   "enunciado": "El bloque de regla de rostro declara: sin rostro, rostro fragmentado o maestro canonizado adjunto."
+  },
+  {
+   "id": "1b562a92af99",
+   "alcance": "patrón Fitness Boxing Campaign Collage, GPT Image 2",
+   "enunciado": "Especifica las variables del collage de boxeo (atleta, gimnasio, atmósfera, acción, equipo, expresión, detalle, tratamiento de color, lienzo hex, divisores) y recomienda GPT Image 2 por la consistencia de identidad entre paneles y el detalle de sudor y textura."
+  },
+  {
+   "id": "7854bd165ec8",
+   "alcance": "patrón Fitness Boxing Campaign Collage, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para collage de boxeo en 3 paneles (entorno 35%, acción 40%, detalle 25%): mismo atleta en todos, panel central en el pico de esfuerzo con luz dura direccional y sudor, grano uniforme en todos los paneles, sin texto, logos ni patrocinadores."
+  },
+  {
+   "id": "f35c35a93441",
+   "alcance": "patrón Personal Color Analysis Board, GPT Image 2 (5 slots)",
+   "enunciado": "Plantilla de 5 slots para tablero de análisis de color personal en tres secciones (retrato y estación con cuadrícula de muestras, comparación favorece/no favorece, recomendaciones); misma persona en todos los paneles, muestras de color plano, etiquetas de 1-3 palabras y sin párrafos."
+  },
+  {
+   "id": "b06a9874b724",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R4",
+   "enunciado": "Exige autocontención: toda comparación «same X» requiere ambos referentes adjuntos en ese mismo prompt."
+  },
+  {
+   "id": "a3108a125bc8",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R5",
+   "enunciado": "Exige herencia mínima: «same face and clothes» más solo los deltas, sin re-describir lo que muestra la referencia."
+  },
+  {
+   "id": "0fa1fd776c0a",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R6",
+   "enunciado": "Exige que el swap de identidad sea la última operación y vaya sola: «Replace X with Y — same position, same pose, same scale»."
+  },
+  {
+   "id": "4d2f20f0b393",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Especifica la plantilla del póster de 12 paneles: título arriba, cada panel con escena y caption, lectura izquierda-derecha arriba-abajo, diseño de personaje idéntico, escenas distintas y quality high."
+  },
+  {
+   "id": "b30d70cfd602",
+   "alcance": "póster storyboard de 12 paneles",
+   "enunciado": "Para el póster de 12 paneles usar 1024x1536 con GPT Image 2 high; repetir los rasgos del personaje, numerar escenas, captions de menos de 5 palabras y un solo estilo artístico."
+  },
+  {
+   "id": "cca33b7b1576",
+   "alcance": "referencia de rostro/personaje, imagen",
+   "enunciado": "Con un rostro como referencia, pedir usar ese rostro con rasgos exactamente iguales y declarar solo lo que cambia (expresión, pose, escenario)."
+  },
+  {
+   "id": "6a52c99c2c0e",
+   "alcance": "research de campo, familia 08 multitud anónima (regla candidata)",
+   "enunciado": "El crítico debe buscar rostros de la masa que compartan estructura ósea y proporciones, no solo clones evidentes."
+  },
+  {
+   "id": "be05a203b661",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "En secuencias largas hay que re-anclar al maestro original por capítulos en vez de encadenar sobre la última salida."
+  },
+  {
+   "id": "c6fdf05aa8e5",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Para una inserción de cuerpo entero hay que adjuntar una hoja lado a lado (rostro en primer plano y cuerpo entero con vestuario), no solo el maestro de rostro."
+  },
+  {
+   "id": "5e8ff1956824",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Prohibido adjuntar del mismo miembro fotos con luz y expresión dispares; empezar con una referencia limpia y escalar solo si el rostro no se sostiene."
+  },
+  {
+   "id": "7c3e7e176614",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Prohibido describir el rostro en texto cuando ya viaja en la referencia, porque compite con la imagen y produce un \"blended stranger\"."
+  },
+  {
+   "id": "ad4fa1e31d14",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Tras cada inserción el crítico debe re-verificar a todos los miembros ya colocados, no solo al nuevo."
+  },
+  {
+   "id": "f1e37e0ce154",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Cuando importa la identidad del rider, la cara se fija en el maestro T1 y el cuadro de acción se inserta con referencia; nunca identidad y spray en la misma génesis."
+  },
+  {
+   "id": "c9afd1e87019",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Si la cara del rider es identidad de campaña, el maestro de rostro se genera aparte con el template T1 probando NB2 y NBP, porque NBP a veces sostiene peor los rostros."
+  },
+  {
+   "id": "76e1c473e0bc",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "En la entrada la identidad la sostienen gorro, gafas, traje y silueta, que se fijan en el identity block del maestro y se repiten."
+  },
+  {
+   "id": "c91ac720a854",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Con máscara y regulador la identidad la sostienen traje, aletas, color del tanque y silueta, que van verbatim en el identity block."
+  },
+  {
+   "id": "c07090972440",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "El apneísta sin máscara usa el maestro T1 seco y el cuadro sumergido se inserta con referencia, declarando el viraje de color como cambio de luz y no de identidad."
+  },
+  {
+   "id": "30c2a9633050",
+   "alcance": "régimen 03 subacuático, checklist del crítico",
+   "enunciado": "El crítico verifica identidad sostenida por equipo y silueta, verbatim entre cuadros."
+  },
+  {
+   "id": "eba84ca25b54",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "El maestro de rostro se genera en reposo y seco; el cuadro de esfuerzo se inserta con referencia describiendo solo los deltas (sudor, tensión, boca abierta)."
+  },
+  {
+   "id": "d97330565cb6",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: cada rostro legible corresponde a un maestro canonizado (N rostros, N coincidencias)."
+  },
+  {
+   "id": "9a8d8b160cb7",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: ningún clon, identidades distinguibles al zoom aunque la pose sea igual."
+  },
+  {
+   "id": "3eef5cb43ea9",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "El crítico corre la capa de identidad una vez por miembro contra su maestro; un rostro sin maestro es REJECT, no REVISE."
+  },
+  {
+   "id": "0b67f616f864",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Herencia mínima en cada inserción: \"same face and clothes\" más solo los deltas de pose, sin re-describir lo que muestra la referencia."
+  },
+  {
+   "id": "a86ce4529c20",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Instrumentos y props de cada miembro son objetos ancla canonizados y heredados con lateralidad correcta (violín en hombro izquierdo, arco en mano derecha salvo zurdo declarado) (regla a prueba)."
+  },
+  {
+   "id": "8768d9ec23fa",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Se permiten poses iguales, pero las identidades deben distinguirse al zoom; dos miembros indistinguibles son clones."
+  },
+  {
+   "id": "db03106628c3",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Si dos miembros convergen en la misma cara, dar a cada uno su propia referencia y forzar diferenciación de rasgos y ropa."
+  },
+  {
+   "id": "387df8e4b8a2",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Toda comparación \"same X\" exige adjuntar ambos referentes en ese mismo prompt."
+  },
+  {
+   "id": "94e49c14219b",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Los extras no deben clonar al héroe ni entre sí: ropa, pelo y rasgos distintos, movimientos no sincronizados y \"no identical clones in the background\"."
+  },
+  {
+   "id": "eae69143d986",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Si hay clones del héroe entre los extras, forzar diferenciación de ropa y pelo y pedir \"no identical clones in the background\"."
+  },
+  {
+   "id": "1f193ca1ff11",
+   "alcance": "régimen vehículo, piloto con identidad de campaña",
+   "enunciado": "Si el piloto o ciclista es identidad de campaña, su rostro se fija en un maestro T1 fuera del vehículo y el cuadro de acción hereda casco, traje y número como bloque de identidad."
+  },
+  {
+   "id": "ffc383a04f6d",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Especifica la plantilla de 6 cuadros en grid 3x2: cenital, contrapicado, plano amplio de aislamiento, close-up holandés, cuadro de movimiento con blur en extremidades y cierre en plano medio; misma persona, vestuario y luz, sin texto."
+  },
+  {
+   "id": "8c8ccf93452c",
+   "alcance": "series de concept art",
+   "enunciado": "Plantilla de serie de concept art de personajes, entornos o props con estilo y tono, exigiendo lenguaje de diseño consistente y generar una pieza por vez."
+  },
+  {
+   "id": "fce1dae225c8",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.character es obligatorio y no vacío."
+  },
+  {
+   "id": "f9634467c42e",
+   "alcance": "skill screenwriter",
+   "enunciado": "Ejemplo: presentación detallada de un personaje en su primera aparición con edad, rasgos y vestuario."
+  },
+  {
+   "id": "2644f4a55e98",
+   "alcance": "skill screenwriter",
+   "enunciado": "El nombre del personaje va en mayúsculas solo en su primera aparición, con edad, rasgos físicos clave y vestuario suficientes para la consistencia visual sin exceso de detalle."
+  },
+  {
+   "id": "409c7d7ed20a",
+   "alcance": "skill screenwriter",
+   "enunciado": "Exige formato estándar de la industria, líneas de acción ricas en lo visual, diálogo solo cuando es narrativamente esencial y descripciones de personaje consistentes."
+  },
+  {
+   "id": "ca3c4c2319e1",
+   "alcance": "skill screenwriter",
+   "enunciado": "Se prohíbe usar nombres inconsistentes para un mismo personaje."
+  },
+  {
+   "id": "d2e1651e171d",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Ejemplo: presentaciones de MAYA, COMMANDER REED y THE STRANGER con edad, rasgos y vestuario."
+  },
+  {
+   "id": "2116e47e6d11",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "En la primera aparición se debe fijar la identidad visual completa del personaje: nombre, edad si aplica, rasgo físico definitorio y vestuario principal."
+  },
+  {
+   "id": "83c0d35b1326",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Por cada personaje se debe rastrear nombre y alias, edad, identificadores físicos, vestuario principal y gestos o forma de moverse."
+  },
+  {
+   "id": "9b5adf490988",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Se prohíbe re-describir la apariencia del personaje o cambiar su forma de nombrarlo tras la primera aparición."
+  },
+  {
+   "id": "2f261df73e83",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Tras la primera aparición se debe usar solo el nombre del personaje, añadiendo únicamente detalles relevantes para la acción."
+  },
+  {
+   "id": "cd75212b5403",
+   "alcance": "skill screenwriter, integración con pipeline",
+   "enunciado": "Se debe usar el mismo nombre de cada personaje en todo el guion para el pipeline."
+  },
+  {
+   "id": "390996b395ff",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo environment_ref referencia el lenguaje del series_lock y por defecto vale series_lock.environment."
+  },
+  {
+   "id": "55826f3e959f",
+   "alcance": "skill storyboard-architect, paso 6",
+   "enunciado": "Se deben definir anclas de entorno, luz y personaje en series_lock al inicio de shots.json para que los frames generados sean coherentes."
+  },
+  {
+   "id": "e0ec45ffb76e",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El estilo de luz no se redefine por shot; se define una vez en series_lock.lighting."
+  },
+  {
+   "id": "2adfd5462ea3",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "brand_lock fija paleta, tipografía y never list para todo el proyecto, series_lock fija personaje, entorno, luz y grade del storyboard, y subject solo lo que cambia en cada shot."
+  },
+  {
+   "id": "a8dad25f862b",
+   "alcance": "skill video, salida B multiclip",
+   "enunciado": "Formato B: secuencia de prompts autocontenidos que repiten completo el bloque de identidad, estilo y continuidad."
+  },
+  {
+   "id": "92fd417b8eb9",
+   "alcance": "storyboard TVC de 9 paneles, GPT Image 2",
+   "enunciado": "Especifica la plantilla del TVC de 9 paneles: grid 3x3 blanco, arco de establecimiento a pack shot con tagline, identidad constante, sin numeración, luz uniforme en paneles 1-7 y de estudio en 8-9."
+  },
+  {
+   "id": "b823d97ecbc5",
+   "alcance": "storyboards comerciales",
+   "enunciado": "Plantilla de storyboard comercial de N partes con personajes, producto, arco emocional y plano final elegante con producto o logo; identidad y vestuario consistentes, ángulos variados, una imagen por vez, 16:9."
+  },
+  {
+   "id": "3ae2ed68b5c6",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Especifica que los personajes pueden mostrarse desde distintos ángulos y distancias a lo largo de la secuencia."
+  },
+  {
+   "id": "21177f129959",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige indicar en el prompt que el vestuario es el mismo en todas las imágenes."
+  },
+  {
+   "id": "a701e33267a3",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige indicar en el prompt que la identidad debe mantenerse consistente en toda la secuencia."
+  },
+  {
+   "id": "eddbaebfba22",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige pedir que las imágenes se generen de una en una."
+  },
+  {
+   "id": "2c77c7bf09d7",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Exige que expresiones y poses varíen entre las imágenes de la secuencia."
+  },
+  {
+   "id": "9df499911231",
+   "alcance": "storyboards y arte secuencial",
+   "enunciado": "Limita a una sola aparición de cada personaje por imagen."
+  },
+  {
+   "id": "8b956f0f0005",
+   "alcance": "storyboards y arte secuencial (skill image)",
+   "enunciado": "Explicación: la sección Storyboards & Sequential Art cubre secuencias narrativas de una pasada y concept art consistentes entre cuadros."
+  },
+  {
+   "id": "e5b8b1df8aee",
+   "alcance": "storyboards y arte secuencial, story sequence",
+   "enunciado": "Plantilla de secuencia narrativa de N imágenes con personajes, escenario y arco emocional: identidad y vestuario consistentes, ángulos, distancias y expresiones variados, generar una imagen por vez y aspect ratio por imagen."
+  },
+  {
+   "id": "e451adaedff6",
+   "alcance": "tarjeta de personaje anime, GPT Image 2",
+   "enunciado": "Especifica la plantilla de tarjeta anime: secciones separadas con cuerpo entero, busto a tres cuartos, objetos con etiqueta, swatches con hex y bloque de stats; estilo unificado, mismo personaje y texto legible."
+  },
+  {
+   "id": "5855eca90af9",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige anclar la identidad al inicio de cada prompt y repetir el bloque de identidad completo en cada clip de una secuencia."
+  },
+  {
+   "id": "8f7237f4d4f3",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige que el bloque de identidad incluya forma de cara, color de ojos, tono de piel, pelo, vello facial, ropa exacta y accesorios distintivos."
+  },
+  {
+   "id": "e5319a3962b7",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige vincular cada sujeto a su referencia individualmente y prohíbe la forma colectiva '@Images 1 through 4 define four characters'."
+  },
+  {
+   "id": "4a17ae90cedf",
+   "alcance": "todos los modelos de video; motion brief",
+   "enunciado": "En todo modelo el motion brief lleva preserve-cues, roles start/tail, movimiento puro, imagen final nombrada, negativos sin \"no X\" y ≤8 ítems, y repite el identity block en cada clip."
+  },
+  {
+   "id": "3316203ef13e",
+   "alcance": "turnaround de personaje, GPT Image 2",
+   "enunciado": "Especifica la plantilla del turnaround: fondo blanco sin sombras, líneas de altura, tres vistas con proporciones idénticas alineadas, callouts de color con hex, pose neutra, sin props ni fondos."
+  },
+  {
+   "id": "ee6c7dbc63ff",
+   "alcance": "validate_prompts.py; prompts con series_lock",
+   "enunciado": "Los anclajes de series_lock deben aparecer sin modificaciones en todos los prompts para preservar la consistencia de la serie."
+  },
+  {
+   "id": "3ff968bdac2c",
+   "alcance": "validate_prompts.py; prompts de planos sin personas",
+   "enunciado": "La ausencia del anclaje de personaje debe ser una advertencia y no un error porque los planos sin personas pueden omitirlo legítimamente."
+  },
+  {
+   "id": "a311fc838cdb",
+   "alcance": "video multiclip",
+   "enunciado": "El bloque repetido incluye identidad, prendas nombradas, lugar, estilo visual, lenguaje de cámara, lógica de luz, reglas de continuidad y paleta concreta."
+  },
+  {
+   "id": "bb70c8d218a0",
+   "alcance": "video, grupo ensamble",
+   "enunciado": "En video, si tres o más personajes se funden, usar un element o referencia individual por miembro, nunca dos personajes con una sola descripción."
+  },
+  {
+   "id": "def0b67eb217",
+   "alcance": "video, régimen multitud anónima",
+   "enunciado": "Al animar, tres o más personajes solo se sostienen si cada uno tiene su element o referencia; la masa no los tiene y debe seguir sin rostro."
+  },
+  {
+   "id": "887fd135701b",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, personaje: pass si se ven todos los rasgos del ancla, soft fail si uno menor falla, hard fail si es otra persona (edad, raza, complexión)."
+  },
+  {
+   "id": "d59f805e9582",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, personaje: pass si es la misma persona y look, soft fail con leve deriva, hard fail si es claramente otra persona."
+  },
+  {
+   "id": "b72ed66cbd6b",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Los hard fails de continuidad rompen el storyboard y exigen REVISE verificando las anclas verbatim del prompt."
+  },
+  {
+   "id": "33950443060a",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "El ancla character es advertencia y no error porque un shot sin persona puede omitirla; si hay persona, también va verbatim."
+  },
+  {
+   "id": "ae1964456b17",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "En las anclas verbatim solo se permite capitalizar la primera letra; no se reordena, omite, sustituye por sinónimos ni añade adjetivos."
+  },
+  {
+   "id": "734fa46d8491",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Explicación: la regla verbatim existe porque un storyboard de siete shots derivó en las siete anclas mientras los demás validadores seguían en verde."
+  },
+  {
+   "id": "c7f9d0ab386d",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Explicación: references/consistency-locks.md explica cómo series_lock evita la deriva entre shots."
+  },
+  {
+   "id": "a54b47c3400e",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Las anclas environment, lighting y color_grade de series_lock deben entrar verbatim en cada prompt para mantener la consistencia entre shots."
+  },
+  {
+   "id": "d588cb99fcfc",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Verbatim significa la cadena completa sin editar; reformularla en prosa más natural es deriva que rompe la coincidencia entre frames."
+  },
+  {
+   "id": "937368c961b7",
+   "alcance": "visual-prompt-forge, Lock 1",
+   "enunciado": "El personaje se describe una vez en series_lock.character y esa cadena exacta aparece verbatim en cada prompt, sin paráfrasis, sinónimos ni mejoras."
+  },
+  {
+   "id": "997e779fcaa8",
+   "alcance": "visual-prompt-forge, Lock 1",
+   "enunciado": "Incluso variaciones pequeñas en el ancla de personaje se acumulan; hay que bloquear la cadena y repetirla verbatim."
+  },
+  {
+   "id": "821ae0b36dc4",
+   "alcance": "visual-prompt-forge, Lock 1 (ejemplo)",
+   "enunciado": "Ejemplo: descripciones del personaje parafraseadas de forma distinta en cada shot (incorrecto)."
+  },
+  {
+   "id": "5fe32d1f4455",
+   "alcance": "visual-prompt-forge, Lock 1 (ejemplo)",
+   "enunciado": "Ejemplo: la misma cadena de ancla de personaje repetida idéntica en shot_01, shot_02 y shot_07 (correcto)."
+  },
+  {
+   "id": "8ee38464c7b3",
+   "alcance": "visual-prompt-forge, Lock 2",
+   "enunciado": "La cadena series_lock.environment debe ser idéntica en cada prompt de shot; el sujeto del shot describe lo que cambia dentro del entorno, no el entorno."
+  },
+  {
+   "id": "6dd5fd7ff14d",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "En Midjourney v7, Ideogram v3 y Nano Banana puede pasarse una imagen de referencia junto al prompt para anclar personaje o estilo."
+  },
+  {
+   "id": "b6d9bfb80196",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "Flujo de referencia: generar primero el shot héroe más definitorio, usarlo como referencia en todos los siguientes y añadir en cada prompt el ancla de personaje verbatim más la referencia."
+  },
+  {
+   "id": "6ce4534a2be9",
+   "alcance": "visual-prompt-forge, Lock 5",
+   "enunciado": "La imagen de referencia es el bloqueo más eficaz de consistencia de personaje en 2026 y debe usarse siempre que la misma persona aparezca en varios shots."
+  },
+  {
+   "id": "d4b0c712d0a3",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux no se activa prompt upsampling en trabajo de serie porque la reescritura automática genera shots inconsistentes."
+  },
+  {
+   "id": "ae4ee374b51b",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, la seed se fija por storyboard para consistencia de serie."
+  },
+  {
+   "id": "f9a340f686f8",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, prompt_upsampling debe ir en false para trabajo en serie porque la reescritura automática rompe la consistencia."
+  },
+  {
+   "id": "9d4b34e7e837",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "El patrón de GPT Image usa párrafo de sujeto con ancla de personaje verbatim, párrafo de entorno de series_lock y párrafo técnico que cierra con 'natural skin texture, no AI rendering artifacts' si es fotorreal."
+  },
+  {
+   "id": "eaf7538203b6",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo no se activa el prompt optimizer en trabajo de serie."
+  },
+  {
+   "id": "9931113d8005",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo, prompt_optimizer va en false para series porque la reescritura rompe la consistencia entre shots."
+  },
+  {
+   "id": "0501bd502756",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram no se olvida la seed; en trabajo de serie se fija a nivel de storyboard."
+  },
+  {
+   "id": "6efa8970ce97",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, la seed se fija por storyboard."
+  },
+  {
+   "id": "06d3f946d6bf",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "En Ideogram, magic_prompt debe ir OFF en trabajo de serie porque destruye la consistencia."
+  },
+  {
+   "id": "44f05640a0f6",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No confiar en magic_prompt de Ideogram, que reescribe y produce shots inconsistentes en serie."
+  },
+  {
+   "id": "fde240236353",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No usar Ideogram en trabajo de serie donde importa la consistencia; Midjourney con --cref o Flux con seed fija lo resuelven mejor."
+  },
+  {
+   "id": "7550d8063544",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling se repite verbatim el ancla de personaje de series_lock en cada prompt."
+  },
+  {
+   "id": "83b91f4073c9",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "No se debe esperar coincidencia perfecta del personaje entre clips de Kling; hay que presupuestar limpieza editorial."
+  },
+  {
+   "id": "605d1fdd3217",
+   "alcance": "visual-prompt-forge, capa 2",
+   "enunciado": "El series lock contiene ancla de personaje, entorno, montaje de luz y grade, idénticos en cada shot."
+  },
+  {
+   "id": "4a5dbba7be57",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "Explicación: el documento reúne las técnicas de consistencia que funcionan en 2026."
+  },
+  {
+   "id": "a1f1665a6428",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "Explicación: los generadores no tienen estado y sin bloqueos de consistencia los shots de un storyboard parecen producciones distintas."
+  },
+  {
+   "id": "dc4a4f07eb14",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "Hay que aceptar y presupuestar re-rolls; los bloqueos reducen la tasa de fallo pero no la eliminan."
+  },
+  {
+   "id": "87440c3c2c18",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "Los fallos de consistencia no se arreglan del todo en edición; deben bloquearse a nivel de prompt."
+  },
+  {
+   "id": "b5e25ff08ad2",
+   "alcance": "visual-prompt-forge, consistencia de serie",
+   "enunciado": "No funcionan para la consistencia: pedir \"consistent character\"/\"same person\", numerar shots en el prompt, párrafos largos del personaje (más de 4-5 rasgos se pierden) ni pedir \"exactly the same\"."
+  },
+  {
+   "id": "589b9003804a",
+   "alcance": "visual-prompt-forge, fallo 2",
+   "enunciado": "Explicación: la deriva de personaje entre shots la causan el ancla parafraseada, la falta de referencia, la seed no fijada o pocos rasgos descritos."
+  },
+  {
+   "id": "86396084ff70",
+   "alcance": "visual-prompt-forge, fallo 2",
+   "enunciado": "Para corregir la deriva de personaje: verificar el ancla verbatim, añadir 1-2 rasgos específicos, usar referencia tras el primer shot bueno, fijar seed y en Midjourney usar --cref con --cw 50."
+  },
+  {
+   "id": "ad7ba9059473",
+   "alcance": "visual-prompt-forge, fallo 2",
+   "enunciado": "Si la consistencia de personaje es imposible de bloquear se aceptan re-rolls presupuestados, típicamente 2-3× por shot problemático."
+  },
+  {
+   "id": "57c89258775d",
+   "alcance": "visual-prompt-forge, fallos de consistencia",
+   "enunciado": "Sin bloqueo de personaje aparece una persona distinta en cada shot."
+  },
+  {
+   "id": "da675976f887",
+   "alcance": "visual-prompt-forge, fallos de consistencia",
+   "enunciado": "Sin bloqueo de seed los rasgos derivan al azar."
+  },
+  {
+   "id": "629c578897e9",
+   "alcance": "visual-prompt-forge, fallos de consistencia",
+   "enunciado": "Sin imagen de referencia la interpretación del personaje es laxa."
+  },
+  {
+   "id": "a5bcb0c75ad4",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar el personaje se edita series_lock en shots.json y se actualizan todos los shots de ese storyboard sin tocar otros."
+  }
+ ]
+}

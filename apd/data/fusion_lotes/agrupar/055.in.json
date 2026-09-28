@@ -1,0 +1,1084 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "seleccion_modelo",
+ "descripcion_tema": "qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "917c2f06761c",
+   "alcance": "D8; anclas con rostro",
+   "enunciado": "Para rostro humano, maestro o keyframe con cara, probar NB2 y NBP y usar GPT Image 2 quality high para piel e identidad; variantes a 0.5K y ganador a 2K/4K, GPT low → high."
+  },
+  {
+   "id": "00d2e7e9c024",
+   "alcance": "D8; escenas complejas",
+   "enunciado": "Para escenas complejas de 5+ elementos o física de fluidos, usar NBP con prompt en JSON; validar en 1K y final en 2K."
+  },
+  {
+   "id": "efb67434b561",
+   "alcance": "D8; exploración de variantes",
+   "enunciado": "Para series de muchas variantes o exploración, usar NB2 Lite o gpt-image-1-mini (Lite solo 1K): reconocimiento barato, final caro."
+  },
+  {
+   "id": "221ccec74412",
+   "alcance": "D8; hero photoreal sin rostro",
+   "enunciado": "Para hero photoreal sin rostro, usar Flux 2 Pro o Midjourney v7 vía adaptador de forge, con seed lock a nivel storyboard donde se soporte."
+  },
+  {
+   "id": "de31cf83d8a8",
+   "alcance": "D8; lugares y especies reales",
+   "enunciado": "Para arquitectura real, landmark o especie animal o vegetal, usar NB2 con Image Grounding, con thinking_level high si hay razonamiento espacial."
+  },
+  {
+   "id": "19e8e2be2eee",
+   "alcance": "D8; texto legible en imagen",
+   "enunciado": "Para etiquetas de producto, UI o texto pequeño legible, usar GPT Image 2 quality high, solo el final en high."
+  },
+  {
+   "id": "9ffc2ce60520",
+   "alcance": "Etapa 1, Creative Strategy, Matriz de selección.",
+   "enunciado": "La matriz de selección debe incluir las columnas Concepto, Fuerza del insight, Distintividad versus categoría, Fit de marca, Claridad de la proposición, Viabilidad AI y Riesgo."
+  },
+  {
+   "id": "cf2f2d03ae13",
+   "alcance": "Etapa 4, Shot Planning; regímenes STANDARD, FILM y EXPRESS",
+   "enunciado": "La Etapa 4 usa storyboard-architect en STANDARD y FILM, o ai-video-storyboard en EXPRESS."
+  },
+  {
+   "id": "7c51cc112fa0",
+   "alcance": "Flux 2 / Flux 1.1 Pro",
+   "enunciado": "El adaptador de Flux 2 / 1.1 Pro se usa por su fotorrealismo."
+  },
+  {
+   "id": "62061e628a1b",
+   "alcance": "GPT Image 1.5 / 2",
+   "enunciado": "El adaptador de GPT Image 1.5/2 se usa por precisión de prompt y razonamiento espacial."
+  },
+  {
+   "id": "c31b2c22fa98",
+   "alcance": "GPT Image 2",
+   "enunciado": "GPT Image 2 en high es más caro; para texto pequeño, assets sensibles de marca y fotorrealismo."
+  },
+  {
+   "id": "0d38e3423507",
+   "alcance": "GPT Image 2",
+   "enunciado": "GPT Image 2 en low es barato; para casos sensibles a latencia y previews."
+  },
+  {
+   "id": "dec9263049a9",
+   "alcance": "GPT Image 2",
+   "enunciado": "GPT Image 2 en medium tiene coste medio y es el default de GPT Image."
+  },
+  {
+   "id": "2b1e0d9a7db1",
+   "alcance": "GPT Image 2",
+   "enunciado": "GPT Image 2 no admite proporciones extremas como 1:8 u 8:1; usar Nano Banana."
+  },
+  {
+   "id": "d0688a3dd0e8",
+   "alcance": "GPT Image 2 vs Nano Banana",
+   "enunciado": "Las anclas de época y culturales funcionan mejor en GPT Image 2; en Nano Banana el resultado es menos predecible porque depende de descripciones explícitas."
+  },
+  {
+   "id": "6ef96f125293",
+   "alcance": "GPT Image 2, grupo ensamble",
+   "enunciado": "GPT Image 2 acepta hasta dieciséis referencias con rol nombrado y es el modelo para un ensamble de más de cinco en una sola pasada."
+  },
+  {
+   "id": "8ae337b52253",
+   "alcance": "Golden Rules; Nano Banana y GPT Image 2",
+   "enunciado": "Explicación: los principios universales se aplican a las familias Nano Banana y GPT Image 2, mientras que las reglas específicas deben consultarse por modelo."
+  },
+  {
+   "id": "919568f29cea",
+   "alcance": "Hailuo 02 Pro",
+   "enunciado": "Hailuo 02 Pro se usa para iterar video con presupuesto bajo."
+  },
+  {
+   "id": "ba7e4c1a375c",
+   "alcance": "Ideogram v3",
+   "enunciado": "El adaptador de Ideogram v3 se usa para texto en imagen, solo como override."
+  },
+  {
+   "id": "020880a58016",
+   "alcance": "Image Editing; Nano Banana y GPT Image 2",
+   "enunciado": "Para editar imágenes, usa instrucciones conversacionales sin máscaras en Nano Banana y la estructura Change / Preserve / Constraints en GPT Image 2, repitiendo la lista de preservación en cada iteración y usando máscara opcional para ediciones puntuales."
+  },
+  {
+   "id": "a1e972494c0c",
+   "alcance": "Kling",
+   "enunciado": "Explicación: Kling es fuerte en física realista, animación de personajes y consistencia por referencias; ideal para clips sociales y personajes recurrentes."
+  },
+  {
+   "id": "82e312430a91",
+   "alcance": "Kling",
+   "enunciado": "Para clip único sin diálogo, menor de 10 s, con referencias o Motion Brush, las versiones antiguas de Kling sirven y son más baratas."
+  },
+  {
+   "id": "a1f7f029d4eb",
+   "alcance": "Kling",
+   "enunciado": "Usar Kling 3.0 en vez de versiones anteriores para diálogo multishot, narrativa continua de 10-15 s, lip-sync, multipersonaje con voces distintas o i2v con texto legible."
+  },
+  {
+   "id": "8a72bb3cdf7e",
+   "alcance": "Kling 3.0",
+   "enunciado": "Dentro de Kling 3.0: Turbo para cabezas parlantes con presupuesto, Omni para trabajo con muchas referencias, edición o 4K, y base 3.0 para lo demás."
+  },
+  {
+   "id": "2854205c8590",
+   "alcance": "Kling 3.0",
+   "enunciado": "Kling 3.0 es el generador de video por defecto por mejor movimiento de cámara por dólar."
+  },
+  {
+   "id": "95f06b465ea3",
+   "alcance": "Kling 3.0 Turbo",
+   "enunciado": "Explicación: Kling 3.0 Turbo (junio 2026) incluye audio en el costo base, mejor lip-sync, 3-15 s, pero limitado a 1080p."
+  },
+  {
+   "id": "0d93e62b9564",
+   "alcance": "Mapa del Spot Publicitario, taxonomía de génesis (diagrama)",
+   "enunciado": "Especifica el flujo de génesis: clasificar el sujeto en persona, lugar, edificación, animal, producto u objeto, aplicar el modelo y patrón de cada clase, y detener la génesis si un producto o logo de marca carece de foto real para entrar por flujo con referencia."
+  },
+  {
+   "id": "9d5e09028961",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2)",
+   "enunciado": "Si el sujeto debe ser fiel a algo real el grounding de NB2 fuerza el modelo, y cada método admite como máximo dos intentos, nunca una tercera vuelta de lo mismo."
+  },
+  {
+   "id": "6c1e97b3a658",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Persona",
+   "enunciado": "En génesis de persona el template T1 es obligatorio, el grounding es inútil y se prueban NB2 y NBP."
+  },
+  {
+   "id": "15249a817e6a",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clase Producto",
+   "enunciado": "En génesis de producto las etiquetas se hacen con GPT Image 2 quality high y el logo nunca se genera desde texto."
+  },
+  {
+   "id": "322c4f20bd2a",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), clases Edificación y Animal",
+   "enunciado": "En génesis de edificación y animal se usa grounding de NB2 y se verifica el resultado contra la realidad."
+  },
+  {
+   "id": "dc1439b830e6",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "enunciado": "La génesis recibe como entrada el modelo destino y el presupuesto de créditos."
+  },
+  {
+   "id": "d23bc75bc787",
+   "alcance": "Midjourney v7+",
+   "enunciado": "El adaptador de Midjourney v7+ se usa por su fuerza estética y cinematográfica."
+  },
+  {
+   "id": "b370d13b2ee2",
+   "alcance": "Nano Banana",
+   "enunciado": "Limita el image grounding (búsqueda de lugares reales) y los aspect ratios extremos (1:8, 8:1, 4:1) a Nano Banana."
+  },
+  {
+   "id": "8d2c30ca935b",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image)",
+   "enunciado": "El adaptador de Nano Banana (Gemini 2.5 Flash Image) se usa por fidelidad de edición e inpainting."
+  },
+  {
+   "id": "3bcde755323c",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image)",
+   "enunciado": "Explicación: Nano Banana (gemini-2.5-flash-image) es el modelo más fuerte para editar e iterar; el patrón 2026 es generar héroes en Midjourney o Flux y usar Nano Banana para variantes."
+  },
+  {
+   "id": "b020514fae80",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image)",
+   "enunciado": "Nano Banana es la elección para storyboards cuando se necesitan muchas variaciones de un mismo concepto o se reintroducen imágenes generadas para refinarlas."
+  },
+  {
+   "id": "25092b4d1d7f",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image), storyboard",
+   "enunciado": "Explicación: flujo de variantes: generar el héroe en Midjourney o Flux, pasarlo a Nano Banana con prompts de variación, obtener 4-8 variantes para selección editorial y componer el texto sobre la elegida."
+  },
+  {
+   "id": "bfa0c0c280c6",
+   "alcance": "Nano Banana 2",
+   "enunciado": "NB2 Flash (gemini-3.1-flash-image) es el caballo de batalla por defecto, con funciones Pro (texto, 4K, grounding, consistencia) a velocidad Flash."
+  },
+  {
+   "id": "3308672701e8",
+   "alcance": "Nano Banana 2",
+   "enunciado": "NB2 cuesta unos $0.04 por imagen y gana en precio y velocidad."
+  },
+  {
+   "id": "53e02aa14cc4",
+   "alcance": "Nano Banana 2",
+   "enunciado": "Nano Banana 2 (Flash) cuesta ~$0.04/img y es el default para la mayoría de tareas."
+  },
+  {
+   "id": "e890a2ef7bcb",
+   "alcance": "Nano Banana 2 Lite",
+   "enunciado": "NB2 Lite (gemini-3.1-flash-lite-image) es el más rápido y barato ($0.034, ~4 s, solo 1K); para borradores y lotes."
+  },
+  {
+   "id": "c79557184927",
+   "alcance": "Nano Banana 2 Lite",
+   "enunciado": "Nano Banana 2 Lite cuesta ~$0.034/img, solo 1K y ~4 s; para borradores y lotes masivos."
+  },
+  {
+   "id": "879866eb1cfe",
+   "alcance": "Nano Banana 2 vs GPT Image 2",
+   "enunciado": "NB2 busca imágenes reales en internet antes de generar (arquitectura, especies), cosa que GPT Image 2 no hace."
+  },
+  {
+   "id": "0df3e2055ab6",
+   "alcance": "Nano Banana Pro",
+   "enunciado": "NBP (gemini-3-pro-image) es el nivel superior para escenas complejas multicapa con máximo razonamiento y control."
+  },
+  {
+   "id": "981f29cb0553",
+   "alcance": "Nano Banana Pro",
+   "enunciado": "Nano Banana Pro cuesta ~$0.15/img; para escenas complejas y hasta 14 referencias."
+  },
+  {
+   "id": "4f432dfeb25e",
+   "alcance": "Nano Banana Pro, régimen multitud anónima",
+   "enunciado": "Usar Nano Banana Pro con prompt en JSON cuando hay cinco o más elementos que coordinar."
+  },
+  {
+   "id": "f082966c4e32",
+   "alcance": "Nano Banana Pro; clavado/anatomía acuática extrema",
+   "enunciado": "Recomienda Nano Banana Pro como candidato por defecto para imágenes split-level subacuáticas con humano en clavado olímpico o anatomía acuática extrema, salvo lock del usuario o evidencia nueva."
+  },
+  {
+   "id": "94b92c6a6f6b",
+   "alcance": "Nano Banana Pro; clavado/split-level subacuático",
+   "enunciado": "Para anatomía humana subacuática split-level compleja, en especial clavado olímpico/plataforma, Nano Banana Pro es el candidato por defecto, salvo lock explícito de modelo del usuario o evidencia posterior."
+  },
+  {
+   "id": "2161937d21d0",
+   "alcance": "Nano Banana y GPT Image 2",
+   "enunciado": "Ambos modelos rinden igual en retratos fotorrealistas, producto sobre fondo neutro, pósters minimalistas y fotografía editorial."
+  },
+  {
+   "id": "cd043cd32be5",
+   "alcance": "Nano Banana y GPT Image 2, trabajo por lotes",
+   "enunciado": "En ambos modelos, hacer exploración barata primero y final caro después."
+  },
+  {
+   "id": "b70139617ac6",
+   "alcance": "Nano Banana, escalado de modelo",
+   "enunciado": "NBP es más lento y caro y a veces pierde frente a NB2 en rostros; en series de retrato probar ambos primero."
+  },
+  {
+   "id": "6fded89f1271",
+   "alcance": "Nano Banana, escalado de modelo",
+   "enunciado": "Pasar de NB2 a NBP cuando NB2 no resuelve un prompt complejo multicapa."
+  },
+  {
+   "id": "a75d09f73afb",
+   "alcance": "Nano Banana, escalado de modelo",
+   "enunciado": "Pasar de NB2 a NBP cuando se necesita el máximo de referencias por rol (6 objetos + 5 personajes + 3 estilos)."
+  },
+  {
+   "id": "bfeeb29f777b",
+   "alcance": "Nano Banana, escalado de modelo",
+   "enunciado": "Pasar de NB2 a NBP para fotorrealismo con trabajo muy fino de materiales y luz."
+  },
+  {
+   "id": "17e1280e02fc",
+   "alcance": "Nano Banana, trabajo por lotes",
+   "enunciado": "En Nano Banana, explorar variantes a 0.5K con Flash, seleccionar y regenerar la ganadora a 2K/4K."
+  },
+  {
+   "id": "176160e30710",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica la elección dentro de la familia: 2.5 para arcos de 15-30 s, kits de referencias y edición; 1.5 Pro para drama con personas en pipeline 2.0; 2.0 para escenas y producto; 2.0 Mini para borradores."
+  },
+  {
+   "id": "bd1b6bde05ae",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Seedance 2.0 se usa cuando varios beats consecutivos comparten sujeto y deben sentirse una toma continua (multi-shot en una generación); para un shot aislado el valor por defecto es Kling."
+  },
+  {
+   "id": "446259fe48a3",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Seedance 2.0 se usa para secuencias de video multi-shot."
+  },
+  {
+   "id": "ee4be0b655cb",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Un solo beat de un solo frame se genera en modo shot único (o con Kling)."
+  },
+  {
+   "id": "b20594c0a1e7",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Exige enrutar el drama con rostros a Seedance 2.5, 1.5 Pro, Kling o Veo porque 2.0 filtra rostros, y usar solo referencias propias o sintéticas."
+  },
+  {
+   "id": "26248d2a4fab",
+   "alcance": "Seedance 2.0, video de multitud",
+   "enunciado": "Seedance 2.0 filtra rostros humanos agresivamente, lo que ayuda en video de multitud siempre que los héroes vayan por referencia en otro modelo (2.5, 1.5 Pro, Kling o Veo)."
+  },
+  {
+   "id": "161fe112293b",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige presupuestar re-rolls y extensiones (~500-700 créditos por 30 s a 720p), corregir con edición/extensión/re-shoot antes que regenerar, y bocetar a 480p y terminar a 720p."
+  },
+  {
+   "id": "08da59cee9a1",
+   "alcance": "Seedance 2.5 vs Minimax H3",
+   "enunciado": "Especifica elegir 2.5 para precisión de timestamps, coreografía densa, kits de referencias y edición, y Minimax H3/Kling/Veo cuando pesa más la coherencia cinematográfica."
+  },
+  {
+   "id": "b38345fda62d",
+   "alcance": "Seedream 4.5",
+   "enunciado": "El adaptador de Seedream 4.5 se usa para alto volumen a bajo costo."
+  },
+  {
+   "id": "58538c2ebfe1",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream es adecuado para contenido provisional que se sustituirá cuando el brand-lock esté cerrado."
+  },
+  {
+   "id": "77354d1f9579",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream es adecuado para contenido social de alto volumen (50+ imágenes al día) cuando el listón de calidad lo permite."
+  },
+  {
+   "id": "2c1e53c3d03d",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream es adecuado para el pase de previsualización del storyboard, validando composición a bajo costo antes del final."
+  },
+  {
+   "id": "b91f2c41e6c3",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream es adecuado para exploración de conceptos antes de elegir el generador final."
+  },
+  {
+   "id": "d78df38e69af",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream no debe usarse para diseños con mucho texto; usar Ideogram o GPT Image."
+  },
+  {
+   "id": "a20b817d717e",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream no debe usarse para héroes ni entregables finales; Flux 2 Pro o Midjourney v7 rinden notablemente mejor."
+  },
+  {
+   "id": "bfcbe191bb22",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream no debe usarse para piezas cinematográficas de mood; usar Midjourney."
+  },
+  {
+   "id": "7d39c6766de7",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream no debe usarse para product shots fotorrealistas; Flux es claramente mejor en fidelidad de producto."
+  },
+  {
+   "id": "e9641c428a4f",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream se elige para alto volumen y bajo costo (5-10× más barato, calidad inferior a Flux 2 Pro y Midjourney v7) en variaciones o iteración de conceptos, no para héroes ni finales."
+  },
+  {
+   "id": "04d2cb934664",
+   "alcance": "Seedream 4.5/4.0, storyboard",
+   "enunciado": "Seedream sirve para el pase de previsualización del storyboard: renderizar todos los shots rápido para validar composición antes de la generación final cara."
+  },
+  {
+   "id": "361234855295",
+   "alcance": "Storyboard y shot cards frente a prompts finales; modelos sin archivo smixs",
+   "enunciado": "Los artefactos intermedios pueden usar prompts independientes del modelo, pero todo prompt final debe adoptar la sintaxis del modelo destino indicada por smixs o, si falta ese archivo, por el adaptador de visual-prompt-forge."
+  },
+  {
+   "id": "9b675cae31d5",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería, postproducción",
+   "enunciado": "Se deben generar los seis planos con una herramienta de vídeo con IA."
+  },
+  {
+   "id": "12571be4a39e",
+   "alcance": "Veo",
+   "enunciado": "Especifica que Veo es el único generador mayor con audio nativo sincronizado y lip-sync; ideal para pulido comercial, narrativa con diálogo y audio cinematográfico."
+  },
+  {
+   "id": "57272bb2aeb6",
+   "alcance": "Veo 3",
+   "enunciado": "Prohíbe usar Veo 3 para B-roll silencioso; se paga un motor de audio apagado y debe usarse Kling."
+  },
+  {
+   "id": "d4563d5b0aba",
+   "alcance": "Veo 3",
+   "enunciado": "Veo 3 se reserva para shots que necesitan diálogo hablado, lipsync o audio nativo (es el único con audio sincronizado y el más caro); para B-roll silencioso el valor por defecto es Kling."
+  },
+  {
+   "id": "7dd4418a7eb5",
+   "alcance": "Veo 3",
+   "enunciado": "Veo 3 se usa para video con diálogo, lip-sync y audio nativo."
+  },
+  {
+   "id": "89f0cdbbc4d6",
+   "alcance": "anuncio de producto diorama en miniatura",
+   "enunciado": "Para el diorama definir producto, material, superficie y color de acento, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "0070bdc9ffcb",
+   "alcance": "board de campaña de bebida",
+   "enunciado": "Para el board de bebida definir producto, marca, modelo, locación, acción, estética, ángulo, superficie, lineup y colores, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "aae9df548923",
+   "alcance": "campaña de chocolate de lujo",
+   "enunciado": "Para el chocolate de lujo usar GPT Image 2 quality high por el detalle de fractura y cacao en polvo."
+  },
+  {
+   "id": "5f9cfc631282",
+   "alcance": "campaña retro de patinaje",
+   "enunciado": "Para el patinaje retro definir modelo, outfit, locación, stock, paleta en hex, color de carril, fondo y aspect ratio, y usar NB2 por el movimiento natural y el grano analógico."
+  },
+  {
+   "id": "568578915440",
+   "alcance": "coleccionable chibi",
+   "enunciado": "Para el chibi definir marcadores faciales, paleta en hex, degradado, 3–5 poses y color de base, y usar GPT Image 2 medium (high para close-ups de marketing)."
+  },
+  {
+   "id": "26b0e714d502",
+   "alcance": "composiciones multipanel",
+   "enunciado": "En multipanel: más paneles implica menos detalle por panel; declarar consistencia repitiendo marcadores de identidad, dimensiones del grid, bordes, orden de lectura, y usar GPT Image 2 high con texto, NBP sin texto y NB2 o GPT low para exploración."
+  },
+  {
+   "id": "6861fb1e448e",
+   "alcance": "cosmética de lujo",
+   "enunciado": "Para cosmética de lujo definir superficie, acabado, material de acento, paleta y temperatura, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "020bb97d2d9a",
+   "alcance": "editorial de moda, collage de 3 paneles",
+   "enunciado": "Para el tríptico de moda definir modelo, outfit, detalle, tejido, fondos, grade y temperatura de color, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "939550458969",
+   "alcance": "editorial de moda, grid 2x2",
+   "enunciado": "Para el 2x2 de moda definir modelo, outfit, fondo, color del divisor, stock de película, tratamiento de piel y accesorio, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "9838e3fb57e2",
+   "alcance": "editorial sportswear con blobs 3D",
+   "enunciado": "Para el editorial de blobs definir entorno, suelo, color de blobs, outfit, pose, detalle de tela y paleta, y usar NBP por el razonamiento espacial de reflejos y colocación."
+  },
+  {
+   "id": "ec76d346601e",
+   "alcance": "formato de salida de prompts; modelos nano-banana-2, nano-banana-pro y gpt-image-2",
+   "enunciado": "La respuesta con un prompt debe incluir modelo, calidad solo para gpt-image-2, tamaño o proporción, el prompt listo para copiar y notas sobre supuestos."
+  },
+  {
+   "id": "199550f68a8f",
+   "alcance": "gpt-image-1-mini",
+   "enunciado": "gpt-image-1-mini es barato; para generación exploratoria de alto volumen."
+  },
+  {
+   "id": "10f3527340f7",
+   "alcance": "grid 4x3 sin bordes",
+   "enunciado": "Para el grid 4x3 usar 1536x1024 y Nano Banana Pro; declarar \"no white lines, no black borders, no gaps\", descripciones breves y distintas por panel y consistencia explícita del sujeto."
+  },
+  {
+   "id": "d3b42a5a00a9",
+   "alcance": "grid de variantes de vestuario",
+   "enunciado": "Para el grid de vestuario definir identidad, color de fondo, layout 2x3 o 3x3, pose y outfits, y usar GPT Image 2 medium (high solo si las etiquetas lo requieren)."
+  },
+  {
+   "id": "60ca89f7ba28",
+   "alcance": "grid editorial de retrato 2x2",
+   "enunciado": "Para el grid 2x2 usar 1024x1024 o 1024x1536 con GPT Image 2 medium o NBP; indicar \"same person\" en cada panel, asignar ángulo por cuadrante y evitar cortes de escala muy dispares."
+  },
+  {
+   "id": "46283692fbdd",
+   "alcance": "grid storyboard de 9 celdas",
+   "enunciado": "Para el storyboard de 9 celdas usar 1536x1024 y GPT Image 2 quality high; numerar paneles, dar acciones distintas a cada uno y quality high para timestamps pequeños."
+  },
+  {
+   "id": "bfa0f4058b62",
+   "alcance": "génesis clase Animal",
+   "enunciado": "La génesis de animal usa NB2 con grounding para la anatomía de la especie y NBP para física compleja; la consistencia solo se logra con referencias de personaje (NB2 hasta 4, NBP hasta 5) y anatomía y pelaje se auditan como manos y rostros."
+  },
+  {
+   "id": "9571ccce35da",
+   "alcance": "génesis clase Edificación/landmark",
+   "enunciado": "La génesis de edificación o landmark usa NB2 con grounding cuando la arquitectura debe ser fiel, GPT Image 2 solo para época y cultura, verifica contra el lugar real y usa thinking_level high si combina grounding y razonamiento espacial."
+  },
+  {
+   "id": "960110d30ef5",
+   "alcance": "génesis clase Persona (T1, T2)",
+   "enunciado": "La génesis de persona exige dos pasos: rostro T1 sin referencia canonizado con hash y luego cuerpo entero T2 con el rostro como Image 1 y 'keep facial features exactly the same', nunca cuerpo entero de un tiro; probar NB2 y NBP en rostros, GPT Image 2 high para piel, sin grounding."
+  },
+  {
+   "id": "ebbe78fefcaf",
+   "alcance": "génesis clase Producto",
+   "enunciado": "La génesis de producto usa GPT Image 2 quality high para etiquetas, materiales y condensación y NBP para distorsión física; logos y lettering solo se heredan de asset aprobado o se componen en post, y ningún cuerpo tapa un logo."
+  },
+  {
+   "id": "9baeaf95556d",
+   "alcance": "hoja de expresiones",
+   "enunciado": "Para la hoja de expresiones definir descripción facial, estilo artístico, fuente de etiqueta y expresiones extra, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "7e358ee8a227",
+   "alcance": "ilustración naturalista de alimento",
+   "enunciado": "Para la lámina naturalista definir alimento, detalles internos, elemento de detalle, papel, técnica, etiqueta y tinta, y usar NB2."
+  },
+  {
+   "id": "b19254e6683c",
+   "alcance": "ingredientes flotantes",
+   "enunciado": "Para ingredientes flotantes definir degradado, líquido, ingredientes, texturas, inclinación y máximo 6-8 elementos, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "07d0860614a3",
+   "alcance": "mapa gastronómico ilustrado",
+   "enunciado": "Para el mapa gastronómico definir ciudad, área, hitos, 6-10 platos, estilo de calles, colores, título y aspect ratio, y usar NB2 por el grounding de hitos reales."
+  },
+  {
+   "id": "196241ce7d2a",
+   "alcance": "modelos de imagen OpenAI",
+   "enunciado": "Usar gpt-image-1-mini solo para abaratar lotes de tareas de bajo riesgo."
+  },
+  {
+   "id": "3b1099aff265",
+   "alcance": "modelos de imagen OpenAI",
+   "enunciado": "Usar gpt-image-2 como modelo de producción por defecto; gpt-image-1.5 y gpt-image-1 solo para migración y gpt-image-1-mini como opción económica."
+  },
+  {
+   "id": "28f8514c2c2f",
+   "alcance": "patrón App Store Screenshot, GPT Image 2",
+   "enunciado": "Especifica las variables de la captura de App Store (dispositivo, app, contenido de pantalla, sistema de UI, titular, tipografía, posición, degradado hex) y recomienda GPT Image 2 quality high por la precisión del bisel, el texto pequeño de UI y el titular."
+  },
+  {
+   "id": "7b254203c51a",
+   "alcance": "patrón City Across Two Centuries, NBP",
+   "enunciado": "Especifica las variables de la ciudad en dos épocas (vista, eras, detalles, paletas, atmósferas y cielos por mitad) y recomienda NBP por su razonamiento espacial para el morphing arquitectónico y la consistencia de perspectiva."
+  },
+  {
+   "id": "43e9ed37e235",
+   "alcance": "patrón Convenience Store Neon Portrait, GPT Image 2",
+   "enunciado": "Especifica las variables del retrato neón de tienda de conveniencia (tipo de tienda, color fluorescente, letrero y color neón con hex, pose, ropa, sensación de cámara) y recomienda GPT Image 2 con quality high por el render preciso de doble luz de color sobre la piel."
+  },
+  {
+   "id": "a3b01cd5ed96",
+   "alcance": "patrón Dashboard Design Mockup, GPT Image 2",
+   "enunciado": "Especifica las variables del dashboard (tema, sistema de diseño, dominio de datos, colores hex, ítems de navegación, 3-5 KPIs, tipos de gráfico) y recomienda GPT Image 2 quality high por el texto denso, los gráficos precisos y los elementos pequeños de UI."
+  },
+  {
+   "id": "b11653f4c01c",
+   "alcance": "patrón Dreamy Underwater Surreal Portrait, NBP",
+   "enunciado": "Especifica las variables del retrato subacuático (color del agua hex, pose, estado de ojos, ropa, número y tipo de peces, patrón de luz, fuente de burbujas, tinte, paleta, tipo de plano) y recomienda NBP por la física compleja de pelo, tela, transparencia y cáusticas."
+  },
+  {
+   "id": "e4e9eea23797",
+   "alcance": "patrón Emerald Street Fashion Poster, GPT Image 2",
+   "enunciado": "Especifica las variables del póster de moda urbana (color de fondo hex, modelo, outfit, pose, título, tipografía, colores, texturas de tela, acentos gráficos) y recomienda GPT Image 2 quality high por el render tipográfico y la superposición figura-texto."
+  },
+  {
+   "id": "1b562a92af99",
+   "alcance": "patrón Fitness Boxing Campaign Collage, GPT Image 2",
+   "enunciado": "Especifica las variables del collage de boxeo (atleta, gimnasio, atmósfera, acción, equipo, expresión, detalle, tratamiento de color, lienzo hex, divisores) y recomienda GPT Image 2 por la consistencia de identidad entre paneles y el detalle de sudor y textura."
+  },
+  {
+   "id": "9854f2b3b6d6",
+   "alcance": "patrón Instagram Story Ad 9:16, GPT Image 2",
+   "enunciado": "Especifica las variables del Story Ad (producto, degradado hex, titular, tipografía, subtexto, CTA, acentos) y recomienda GPT Image 2 quality high por la legibilidad del titular y los efectos de transparencia glassmorphism."
+  },
+  {
+   "id": "6a7cf16cd3dc",
+   "alcance": "patrón Japanese Negative Film Rooftop Portrait, NB2",
+   "enunciado": "Especifica las variables del retrato en azotea con película negativa (azotea, pose, skyline, cielo, viraje de color, ropa, detalle de viento, posición en tercios, aspect ratio) y recomienda NB2 por su emulación de grano analógico y atmósfera."
+  },
+  {
+   "id": "b7adae570a74",
+   "alcance": "patrón Lavender Smartphone Hero Ad, GPT Image 2",
+   "enunciado": "Especifica las variables del hero de smartphone (dispositivo, degradado con hex, acabado, contenido de pantalla, formas de acento, titular, familia de color, inclinación 5-15°, posición) y recomienda GPT Image 2 quality high por el texto, la legibilidad de pantalla y la precisión del dispositivo."
+  },
+  {
+   "id": "60a5adb73103",
+   "alcance": "patrón Monochrome Glitch Profile Portrait, GPT Image 2",
+   "enunciado": "Especifica las variables del retrato glitch (dirección, pelo, 2-3 posiciones de glitch, color de acento hex, 3-5 líneas máximas) y recomienda GPT Image 2 por el render mono de alto contraste y la colocación controlada del glitch."
+  },
+  {
+   "id": "81cd01d1e613",
+   "alcance": "patrón Peacock Botanical Vintage Art Print, NB2",
+   "enunciado": "Especifica las variables del print de pavo real (variante, ángulo, colores de ojos hex, base, botánica, fauna, fondo, estilo de impresión, marcas, borde, paleta) y recomienda NB2 por el image grounding para anatomía de pavo real y especies botánicas precisas."
+  },
+  {
+   "id": "262a7312c451",
+   "alcance": "patrón Personal Color Analysis Board, GPT Image 2",
+   "enunciado": "Especifica las variables del tablero de color (descripción del sujeto, estación, 12 colores hex, colores favorecedor/desfavorecedor, etiquetas, 4-6 recomendaciones) y recomienda GPT Image 2 quality high por la precisión cromática de las muestras y las etiquetas pequeñas."
+  },
+  {
+   "id": "76a8ce46add7",
+   "alcance": "patrón Social Media Feed Post 1:1, GPT Image 2",
+   "enunciado": "Especifica las variables del post 1:1 (tipo de post, texto, tipografía, colores hex, marca, paleta, elemento de apoyo) y recomienda GPT Image 2 quality high porque el layout es de mucho texto y la legibilidad a tamaño pequeño es crítica."
+  },
+  {
+   "id": "d545d1df2993",
+   "alcance": "póster de comida hiperrealista",
+   "enunciado": "Para el póster de comida usar GPT Image 2 quality high por la fidelidad de vapor, condensación y texturas."
+  },
+  {
+   "id": "475b1e957da4",
+   "alcance": "póster de producto inflable",
+   "enunciado": "Para el póster inflable definir producto, color de fondo, esquema de color y objetos acompañantes, y usar NBP por el razonamiento espacial de la deformación física."
+  },
+  {
+   "id": "977e43863fdd",
+   "alcance": "póster streetwear",
+   "enunciado": "Para el póster streetwear definir titular, subtítulo, colores, fuente, outfit, posición, luz y grano, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "450e00ee4a40",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "Explicación: un A/B fechado da a Nano Banana Pro ventaja en piel y gotas y a GPT Image 2 en tipografía, en tensión con la regla de usar GPT Image 2 para piel; requiere prueba propia."
+  },
+  {
+   "id": "78dce620da36",
+   "alcance": "retrato a contraluz en hora dorada",
+   "enunciado": "Para el contraluz dorado definir calle, persona, expresión, superficie de rebote, detalle de ropa, suelo y grade, y usar GPT Image 2 por el control de exposición y piel."
+  },
+  {
+   "id": "8034af8e51c3",
+   "alcance": "ruteo de modelo; imagen de clavado olímpico split-level",
+   "enunciado": "Prefiere nano-banana-pro para imagen acuática de clavado olímpico con humano, composición split-level y riesgo de anatomía; el lock explícito del usuario gana."
+  },
+  {
+   "id": "e37fc3b083ad",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Para física de agua, spray y tela mojada se usa Nano Banana Pro."
+  },
+  {
+   "id": "c5be9c1e66dd",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Para una bahía o lago reconocible se usa NB2 con image grounding."
+  },
+  {
+   "id": "c9afd1e87019",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Si la cara del rider es identidad de campaña, el maestro de rostro se genera aparte con el template T1 probando NB2 y NBP, porque NBP a veces sostiene peor los rostros."
+  },
+  {
+   "id": "5dc293f55d51",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Para la física del agua (corona, gotas, refracción, tela mojada) se usa Nano Banana Pro."
+  },
+  {
+   "id": "de971cad5404",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Recorrido de costo: variantes a 0.5K, selección y regeneración del ganador a 2K o 4K."
+  },
+  {
+   "id": "7e0d9eb2158b",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Se usa GPT Image 2 quality high cuando el detalle de gotas y condensación es el centro del cuadro."
+  },
+  {
+   "id": "ec0a0c3b1a54",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "Si el sujeto es una especie animal real, se usa NB2 con image grounding para la anatomía correcta."
+  },
+  {
+   "id": "a9e9f04519ee",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Para física de luz, partículas y tela flotante se usa Nano Banana Pro."
+  },
+  {
+   "id": "b377cf0077e5",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Se usa NB2 con image grounding cuando cenote, arrecife o especie deben ser fieles a la realidad."
+  },
+  {
+   "id": "a5f920191cde",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Se usa thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna."
+  },
+  {
+   "id": "956b24d5711c",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Se usa GPT Image 2 quality high para detalle congelado y legibilidad de texturas finas."
+  },
+  {
+   "id": "686007b49962",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Se usa Nano Banana Pro cuando la deformación física es el centro, por su razonamiento espacial."
+  },
+  {
+   "id": "9b22ee2193e3",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Para rostros probar NB2 y NBP, porque NBP a veces sostiene peor los rostros."
+  },
+  {
+   "id": "86417c7aa3b2",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Usar GPT Image 2 quality high para piel, identidad y textura de tela."
+  },
+  {
+   "id": "be943e1e2ccc",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Usar GPT Image 2 quality high para identidad y para partituras, logos de instrumento o UI, sin texto generado."
+  },
+  {
+   "id": "fb821f4e118c",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Usar GPT Image 2 para anclas de época y cultura bajo el clima, no para geometría exacta."
+  },
+  {
+   "id": "2f0a7234182e",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Usar NB2 con image grounding cuando el fenómeno cae sobre un lugar real reconocible."
+  },
+  {
+   "id": "fdbd9542185b",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Usar Nano Banana Pro para la física de luz, partículas y atmósfera."
+  },
+  {
+   "id": "3fbf1fe5f814",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Para un estadio o plaza real reconocible, usar NB2 con image grounding para la placa."
+  },
+  {
+   "id": "b50ad28b68dc",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Usar GPT Image 2 quality high si el héroe tiene objetos con detalle fino, sin texto en pancartas."
+  },
+  {
+   "id": "471ee1a77387",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Usar Flux 2 Pro o Midjourney v7 vía el adaptador de forge para el hero fotorrealista sin rostro."
+  },
+  {
+   "id": "141d388885e6",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Usar Nano Banana Pro para escenas complejas con física y materiales, y GPT Image 2 quality high cuando hay etiquetas, patrocinadores o pantallas legibles."
+  },
+  {
+   "id": "76161ee52504",
+   "alcance": "secuencia cinematográfica de 6 cuadros",
+   "enunciado": "Para la secuencia de 6 cuadros usar 1536x1024 con GPT Image 2 medium o NBP; nombrar cada cuadro, anclar cada ángulo a su posición y especificar dónde va el blur de movimiento."
+  },
+  {
+   "id": "667d46d4fd86",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Explicación: Nano Banana y GPT Image 2 piensan distinto, así que el modelo elegido cambia la estructura del prompt."
+  },
+  {
+   "id": "ef05dc915614",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para edición precisa con preservación (try-on, swap, clima) usar GPT Image 2, que preserva mejor la identidad."
+  },
+  {
+   "id": "bc694bf2338e",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para escenas complejas con física o composición usar Nano Banana Pro."
+  },
+  {
+   "id": "dd4fb3675559",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para formatos extremos (1:8, 8:1, 4:1) usar Nano Banana, el único que los admite."
+  },
+  {
+   "id": "263558a27717",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para fotorrealismo con tipografía fina o UI usar GPT Image 2."
+  },
+  {
+   "id": "9924342e5b4e",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para generación masiva barata usar Nano Banana 2 Lite o gpt-image-1-mini."
+  },
+  {
+   "id": "cfa9b77f7b63",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para impresos de marca o pósters con texto exacto usar GPT Image 2."
+  },
+  {
+   "id": "1c9872453052",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para lugares u objetos reales con grounding usar Nano Banana (NB2/NBP)."
+  },
+  {
+   "id": "67d81e7065a7",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para renders con muchas referencias usar Nano Banana Pro (hasta 14) o GPT Image 2 (hasta 16)."
+  },
+  {
+   "id": "41cb14321fee",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para storyboards centrados en tipografía usar GPT Image 2."
+  },
+  {
+   "id": "a022f7a6f7b8",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para storyboards y cómics secuenciales usar Nano Banana (proporciones extremas y thinking)."
+  },
+  {
+   "id": "0892105975b8",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para style transfer sin imágenes de referencia usar GPT Image 2, que responde a objetivos visuales concretos."
+  },
+  {
+   "id": "6431dc73c9dc",
+   "alcance": "selección de modelo de imagen",
+   "enunciado": "Para texto pequeño y denso en cuadro usar GPT Image 2 con quality: high."
+  },
+  {
+   "id": "9411145139ed",
+   "alcance": "skill Image Prompting; Nano Banana NBP/NB2 y GPT Image 2",
+   "enunciado": "Antes de escribir un prompt se debe leer `models.md` para elegir entre Nano Banana y GPT Image 2 según su sintaxis, calidad y capacidades."
+  },
+  {
+   "id": "f38bc6c45dbf",
+   "alcance": "skill Image Prompting; Nano Banana NBP/NB2 y GPT Image 2",
+   "enunciado": "La skill de prompts de imagen debe usarse para tareas de imagen con Nano Banana o GPT Image 2 y no para video, 3D, audio ni tareas ajenas a imagen."
+  },
+  {
+   "id": "0fe11ef3b408",
+   "alcance": "skill Image Prompting; Nano Banana y GPT Image 2",
+   "enunciado": "No se debe omitir el archivo específico del modelo antes de redactar un prompt."
+  },
+  {
+   "id": "61142c6f1bcf",
+   "alcance": "skill Image Prompting; selección entre Nano Banana y GPT Image 2",
+   "enunciado": "Si el usuario nombra un modelo debe confirmarse y, si no lo hace, debe elegirse con `models.md` e indicarse la elección en el encabezado de salida."
+  },
+  {
+   "id": "2fa19f01279b",
+   "alcance": "skill storyboard-architect, entradas",
+   "enunciado": "El generador destino de los prompts es opcional; si falta, se anota como 'to be specified'."
+  },
+  {
+   "id": "abc010a9625f",
+   "alcance": "skill video, paso 3",
+   "enunciado": "Para comparación detallada se lee solo el archivo del modelo elegido; no cargar los tres."
+  },
+  {
+   "id": "ed1fb95b8a40",
+   "alcance": "skill video, paso 3",
+   "enunciado": "Paso 3: elegir el modelo con el selector corto y leer un solo archivo de modelo."
+  },
+  {
+   "id": "2a554f938aea",
+   "alcance": "skill video, paso 3 Kling",
+   "enunciado": "Señales de Kling (Element Binding, Motion Brush, campo de negativo, Kling 3.0 multi-shot con etiquetas [Character A], lip-sync, Turbo, Omni) obligan a leer kling.md."
+  },
+  {
+   "id": "9ab950bb7f92",
+   "alcance": "skill video, paso 3 Seedance",
+   "enunciado": "Señales de Seedance (ByteDance, multi-shot en un clip, --resolution, --duration, --camerafixed, 'Cut to', @img1) obligan a leer seedance.md."
+  },
+  {
+   "id": "0ca1e742b0b0",
+   "alcance": "skill video, paso 3 Seedance 2.5",
+   "enunciado": "Trabajo de producción con Seedance 2.5 (30 s en una pasada, kits de 50 referencias, edición, extensión, Ultra Long, blockout 3D, @Image N, marcadores {} de diálogo) obliga a leer seedance.md y seedance-25.md."
+  },
+  {
+   "id": "900b71bbcfe1",
+   "alcance": "skill video, paso 3 Veo",
+   "enunciado": "Señales de Veo (video de Google, diálogo/lip-sync, prompts JSON, SFX sincronizado, pulido comercial con VO) obligan a leer veo.md."
+  },
+  {
+   "id": "21862ec4de56",
+   "alcance": "skill video, paso 3 selector por defecto",
+   "enunciado": "Ruteo por defecto sin pista de modelo: montaje narrativo a Seedance o Kling 3.0 con diálogo; diálogo/pulido a Veo o Kling 3.0; consistencia en clips sociales a Kling 2.6 Pro o 3.0; 15-30 s, kits grandes, edición o largo a Seedance 2.5; rostros a Seedance 2.5, Kling o Veo (en 2.0 usar 1.5 Pro)."
+  },
+  {
+   "id": "1bd0ea8cbe58",
+   "alcance": "solicitudes de imagen concreta; skill Image Prompting",
+   "enunciado": "Las solicitudes que requieren una imagen concreta deben continuar con esta skill de prompts de imagen."
+  },
+  {
+   "id": "b39401a48734",
+   "alcance": "solicitudes de video, Seedance, Kling, Veo e imagen a video",
+   "enunciado": "Las tareas de movimiento, clips, montaje o imagen a video deben dirigirse a la skill de video."
+  },
+  {
+   "id": "ee76613ce960",
+   "alcance": "storyboard TVC de 9 paneles",
+   "enunciado": "Para el TVC de 9 paneles definir producto, protagonista, escenario, emoción, superficie, tagline y duración, y usar GPT Image 2 quality high."
+  },
+  {
+   "id": "1974d84668a0",
+   "alcance": "tarjeta de ancla D8",
+   "enunciado": "La dimensión D8 (modelo y resolución) fija: grounding fuerza NB2 en arquitectura y especies, rostros se prueban en NB2 y NBP, etiquetas y UI en GPT high, hero photoreal en Flux 2 Pro."
+  },
+  {
+   "id": "f90e05cbc1f6",
+   "alcance": "turnaround de personaje",
+   "enunciado": "Para el turnaround definir nombre, descripción específica y 3 colores con hex, y usar GPT Image 2 quality high por las líneas y callouts."
+  },
+  {
+   "id": "5592ef3002bd",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Cada generador de imagen premia un estilo de prompt distinto, por lo que el prompt debe adaptarse al modelo (corto para Midjourney, natural para Flux, párrafo para GPT Image, consciente de texto para Ideogram)."
+  },
+  {
+   "id": "8db2bc905f60",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Para cada generador objetivo se lee su archivo de adaptador (midjourney, flux, ideogram, gpt-image, nano-banana, seedream, kling, veo, seedance, hailuo)."
+  },
+  {
+   "id": "ff43235b3b9c",
+   "alcance": "visual-prompt-forge _capabilities.json, Hailuo 02 Pro",
+   "enunciado": "Hailuo 02 Pro es el tier borrador barato para bloquear movimiento, encuadre y timing, y el ganador se regenera en Kling, Veo o Seedance; techo de 120 palabras."
+  },
+  {
+   "id": "7b39a781f09e",
+   "alcance": "visual-prompt-forge _capabilities.json, Ideogram v3",
+   "enunciado": "Ideogram v3 usa lenguaje natural con techo de 120 palabras y es la excepción para texto integrado si un shot lo necesita; por defecto el texto se compone después."
+  },
+  {
+   "id": "a9d61d611a10",
+   "alcance": "visual-prompt-forge _capabilities.json, Kling 3.0",
+   "enunciado": "Kling 3.0 es el modelo de movimiento por defecto: techo de 150 palabras, negativos, start/tail frame, clips de 5 o 10 s; escalar a otro solo para lo que no puede hacer."
+  },
+  {
+   "id": "f13c6db20c3e",
+   "alcance": "visual-prompt-forge _capabilities.json, Nano Banana",
+   "enunciado": "Nano Banana (Gemini 2.5 Flash Image) usa lenguaje natural con techo de 120 palabras, sin negativos, parámetro aspectRatio en camelCase e ignora --ar; es rápido y barato para iterar con referencias."
+  },
+  {
+   "id": "8fc97da4b65b",
+   "alcance": "visual-prompt-forge _capabilities.json, Seedance 2.0",
+   "enunciado": "Seedance 2.0 se usa para secuencias multishot en una generación con consistencia de sujeto, hasta ~4 cortes; techo de 150 palabras y sin negativos."
+  },
+  {
+   "id": "9c777c0c2ee7",
+   "alcance": "visual-prompt-forge _capabilities.json, Veo 3",
+   "enunciado": "Veo 3 se usa para diálogo y lip-sync con audio nativo sincronizado; techo de 150 palabras, sin negativos, ~8 s, el más caro; las líneas habladas van en el prompt y el texto en pantalla no."
+  },
+  {
+   "id": "14be2396cad1",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Flux 1.1 Pro se usa para trabajo en serie equilibrado, con costo relativo ~0.6×."
+  },
+  {
+   "id": "e6fd64670a35",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Flux 2 Pro se usa para hero shots y assets finales, con costo relativo 1× (el más alto)."
+  },
+  {
+   "id": "5c72dcc3b1b7",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Flux Dev se usa autoalojado a escala, con costo por imagen ~0 más GPU."
+  },
+  {
+   "id": "bb7c4267b5dc",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Flux Schnell se usa para iteración rápida y borradores, con costo relativo ~0.1×."
+  },
+  {
+   "id": "fcb3740f8d65",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Flux requiere prompts en lenguaje natural tipo briefing fotográfico y se elige sobre Midjourney cuando se busca apariencia de fotografía real."
+  },
+  {
+   "id": "a88de685414d",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Por defecto se usa Flux 2 Pro para previews de storyboard; flux.txt sirve para cualquier variante con la misma sintaxis."
+  },
+  {
+   "id": "6e957cbed2b4",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image, el modelo por defecto es gpt-image-1.5, o gpt-image-2 si está disponible."
+  },
+  {
+   "id": "e420a7ed68af",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "Explicación: GPT Image es exclusivo de OpenAI (endpoint images.generate), cuesta ~0.04–0.08 USD por imagen y tiene acceso por UI desde ChatGPT Plus."
+  },
+  {
+   "id": "d982040950c8",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "GPT Image requiere prompts en párrafos con razonamiento espacial explícito y se elige para composición precisa, múltiples objetos o texto correcto."
+  },
+  {
+   "id": "ad6536a63487",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "GPT Image tiene un look AI real; la línea 'natural skin texture, no AI rendering artifacts' ayuda pero no basta, y para fotorrealismo puro Flux es mejor."
+  },
+  {
+   "id": "c7db651c97d1",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Hailuo 02 Pro se usa para iterar barato y encontrar el shot, y el elegido se re-genera en Kling, Veo o Seedance; su salida es borrador, no asset final."
+  },
+  {
+   "id": "8eaf27940699",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "No se entregan borradores de Hailuo como finales; el elegido se re-genera en un modelo final."
+  },
+  {
+   "id": "e059c615c07c",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 3 de iteración: re-generar el elegido en el modelo final adecuado: Kling para movimiento, Veo para diálogo, Seedance para multi-shot."
+  },
+  {
+   "id": "4c80447132ae",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "Elegir Ideogram cuando el brief no necesita texto en imagen es elegir la herramienta equivocada."
+  },
+  {
+   "id": "3b4acffdd205",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "Ideogram se usa solo cuando el texto en imagen es el entregable (pósters, tiles, señalética, packaging); para lo demás se usa Flux o Midjourney y el texto se compone aparte."
+  },
+  {
+   "id": "fde240236353",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No usar Ideogram en trabajo de serie donde importa la consistencia; Midjourney con --cref o Flux con seed fija lo resuelven mejor."
+  },
+  {
+   "id": "abaa60d41055",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No usar Ideogram para escenas fotorrealistas con personas; Flux es mejor."
+  },
+  {
+   "id": "516d2045abeb",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No usar Ideogram para fotografía de producto; Flux 2 Pro es mejor."
+  },
+  {
+   "id": "5f645f691353",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "No usar Ideogram para mood o estética cinematográfica; Midjourney es mejor."
+  },
+  {
+   "id": "d0e06392b593",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Kling 3.0 es el modelo de video por defecto (mejor realismo de cámara por dólar e imagen a video); se escala a Veo, Seedance o Hailuo solo si el shot lo requiere."
+  },
+  {
+   "id": "9c7f44cb1e2d",
+   "alcance": "visual-prompt-forge, adaptadores de video",
+   "enunciado": "Los adaptadores de movimiento veo (diálogo), seedance (multi-shot) y hailuo (iteración barata) siguen la misma anatomía de cinco capas que Kling y se eligen por necesidad."
+  },
+  {
+   "id": "d8c8a348aba6",
+   "alcance": "visual-prompt-forge, capa 5",
+   "enunciado": "La capa 5 es el adaptador del generador, tomado de adapters/{generator}.md y variable según el generador destino."
+  },
+  {
+   "id": "a06517acf37e",
+   "alcance": "visual-prompt-forge, ejemplo multi-adaptador",
+   "enunciado": "Explicación: ejemplo de calibración que renderiza un mismo shot del pitch de WhyStrohm con todos los adaptadores (seis de stills y Kling para video)."
+  },
+  {
+   "id": "89ce31f736f8",
+   "alcance": "visual-prompt-forge, fallo 1",
+   "enunciado": "Para corregir el \"AI look\" se añaden lente y apertura, stock de película o cámara, la línea \"natural skin texture, no AI rendering artifacts\", la never list de marca y se usan Flux 2 Pro o Midjourney v7 para héroes."
+  },
+  {
+   "id": "cd838e8f10c0",
+   "alcance": "visual-prompt-forge, fallo 3",
+   "enunciado": "No se pone texto en el prompt sino que se compone desde text-overlays.json; si debe ir en la imagen se usa Ideogram v3 con override explícito, un solo texto por prompt y fuentes simples."
+  },
+  {
+   "id": "6cf101120126",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar de generador se cambia el adaptador, con los mismos datos de shot y sin editar brand-lock ni series_lock."
+  },
+  {
+   "id": "372b347b8a2a",
+   "alcance": "visual-prompt-forge, salida por adaptador",
+   "enunciado": "Especifica que cada adaptador tiene su archivo de prompt (midjourney, flux, ideogram, gpt-image, nano-banana, seedream, kling)."
+  }
+ ]
+}
