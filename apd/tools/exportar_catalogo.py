@@ -55,35 +55,35 @@ def main():
     ap.add_argument("--db", default=str(APD / "data/rules.sqlite"))
     ap.add_argument("--xlsx", required=True)
     ap.add_argument("--sin-duplicados", action="store_true",
-                    help="una fila por regla: cada grupo de duplicados sale como su registro fusionado y verificado")
+                    help="quita los duplicados eliminados en la depuración; cada original conservado recibe las ubicaciones de los que contiene")
     a = ap.parse_args()
     con = sqlite3.connect(a.db)
     regs = con.execute("select id, orden, texto from registros order by orden").fetchall()
+    contexto = dict(con.execute("select id, contexto from registros"))
     fuentes: dict[str, list] = {}
     for rid, arch, li, lf, sec, par, tot in con.execute(
             "select registro_id, archivo, linea_ini, linea_fin, seccion, parrafo, parrafos_en_documento from registros_fuente"):
         fuentes.setdefault(rid, []).append((arch, li, lf, sec, par, tot))
-    fusiones = []
+    eliminados = []
     if a.sin_duplicados:
-        fusiones = con.execute("select grupo, texto, miembros, verificado from registros_fusion order by grupo").fetchall()
-        malos = [g for g, _, _, v in fusiones if v != 1]
+        filas = con.execute("select grupo, conservar, eliminar, verificado from registros_depuracion order by grupo").fetchall()
+        malos = [g for g, _, _, v in filas if v != 1]
         if malos:
-            raise SystemExit(f"{len(malos)} fusiones sin verificar: {malos[:5]}")
-        orden = {rid: o for rid, o, _ in regs}
+            raise SystemExit(f"{len(malos)} grupos sin chequeo literal aprobado: {malos[:5]}")
         texto_de = {rid: t for rid, _, t in regs}
-        absorbidos = set()
-        nuevas = []
-        for g, t, miembros, _ in fusiones:
-            ids = json.loads(miembros)
-            absorbidos.update(ids)
-            fuentes[g] = [f for i in ids for f in fuentes.get(i, [])]
-            nuevas.append((g, min(orden[i] for i in ids), t))
-        regs = sorted([r for r in regs if r[0] not in absorbidos] + nuevas, key=lambda r: r[1])
-
+        for g, cons, elim, _ in filas:
+            for e in json.loads(elim):
+                eliminados.append((g, e, json.loads(cons)))
+                # la ubicación del duplicado eliminado pasa al original conservado que lo contiene
+                destino = (e.get("contenido_en") or json.loads(cons))[0]
+                fuentes[destino] = fuentes.get(destino, []) + fuentes.get(e["id"], [])
+        fuera = {e["id"] for _, e, _ in eliminados}
+        regs = [r for r in regs if r[0] not in fuera]
     wb = Workbook()
     ws = wb.active
     ws.title = "Registros"
-    cab = ["Registro (regla o punto de sintaxis completo)"] + [c for c, _ in CATALOGO] + UBICACION
+    cab = ["Registro (copia literal de la fuente)"] + [c for c, _ in CATALOGO] + UBICACION + \
+        ["Contexto literal (encabezado de tabla o de bloque)"]
     ws.append(cab)
     for rid, orden, texto in regs:
         fs = fuentes.get(rid, [])
@@ -91,7 +91,7 @@ def main():
         sec = " | ".join(f[3] or "" for f in fs)
         par = " | ".join(f"{f[4]} de {f[5]}" for f in fs)
         lin = " | ".join((f"{f[1]}–{f[2]}" if f[1] and f[2] != f[1] else str(f[1])) if f[1] else "objeto JSON/Python" for f in fs)
-        ws.append([texto] + [""] * len(CATALOGO) + [doc, sec, par, lin, rid])
+        ws.append([texto] + [""] * len(CATALOGO) + [doc, sec, par, lin, rid, contexto.get(rid) or ""])
     bold = Font(bold=True)
     fill_cat = PatternFill("solid", fgColor="FFF2CC")
     fill_ubi = PatternFill("solid", fgColor="DDEBF7")
@@ -113,21 +113,21 @@ def main():
     ws.freeze_panes = "B2"
     ws.auto_filter.ref = f"A1:{get_column_letter(len(cab))}{ws.max_row}"
 
-    if fusiones:
-        wd = wb.create_sheet("Fusiones")
-        wd.append(["Grupo", "Registro fusionado", "ID original", "Texto original", "Documento", "Página / sección", "Líneas"])
-        for g, t, miembros, _ in fusiones:
-            for i in json.loads(miembros):
-                for f in fuentes.get(i, [])[:1] or [("", "", "", "", "", "")]:
-                    wd.append([g, t, i, texto_de[i], " | ".join(x[0] for x in fuentes.get(i, [])),
-                               " | ".join(x[3] or "" for x in fuentes.get(i, [])), f"{f[1]}–{f[2]}" if f[1] else ""])
-        for col, w in zip("ABCDEFG", (12, 70, 14, 70, 40, 40, 12)):
+    if eliminados:
+        wd = wb.create_sheet("Duplicados eliminados")
+        wd.append(["Grupo", "ID eliminado", "Texto eliminado (literal)", "Contenido en (ID conservado)",
+                   "Texto conservado (literal)", "Razón"])
+        for g, e, cons in eliminados:
+            dest = e.get("contenido_en") or cons
+            wd.append([g, e["id"], texto_de[e["id"]], ", ".join(dest), "\n\n".join(texto_de[x] for x in dest),
+                       e.get("razon", "")])
+        for col, w in zip("ABCDEFG", (12, 14, 70, 16, 70, 50)):
             wd.column_dimensions[col].width = w
         for row in wd.iter_rows(min_row=2):
             for c in row:
                 c.alignment = Alignment(wrap_text=True, vertical="top")
         wd.freeze_panes = "A2"
-        wd.auto_filter.ref = f"A1:G{wd.max_row}"
+        wd.auto_filter.ref = f"A1:F{wd.max_row}"
 
     wc = wb.create_sheet("Taxonomía")
     wc.append(["Faceta (TAXONOMIA.md, decisión 10)", "Valores aprobados"])
@@ -171,7 +171,7 @@ def main():
     wf.column_dimensions["A"].width = 80
     wf.column_dimensions["B"].width = 90
     wb.save(a.xlsx)
-    print(f"{len(regs)} registros · {len(fusiones)} fusiones · {len(CATALOGO)} columnas de catálogo · {a.xlsx}")
+    print(f"{len(regs)} registros · {len(eliminados)} duplicados eliminados · {len(CATALOGO)} columnas de catálogo · {a.xlsx}")
 
 
 if __name__ == "__main__":

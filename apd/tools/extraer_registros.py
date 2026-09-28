@@ -58,13 +58,13 @@ class Doc:
         self.unidades: list[dict] = []
         self.excl: dict[int, str] = {}  # línea 1-based -> motivo
 
-    def unidad(self, tipo, ini, fin, seccion, texto, lead=None):
+    def unidad(self, tipo, ini, fin, seccion, texto, lead=None, contexto=None, lineas=None):
         cuerpo = texto.strip("\n")
         if lead:
             cuerpo = f"{lead.strip()}\n{cuerpo}"
-        pref = f"[{seccion}] " if seccion else ""
+        # "contenido" provisional; consolidar() lo reemplaza por la copia literal de las líneas de origen
         self.unidades.append({"tipo": tipo, "ini": ini, "fin": fin, "seccion": seccion,
-                              "texto": pref + cuerpo, "contenido": cuerpo})
+                              "texto": cuerpo, "contenido": cuerpo, "contexto": contexto, "lineas": lineas})
 
     def excluir(self, ini, fin, motivo):
         for n in range(ini, fin + 1):
@@ -349,12 +349,13 @@ def emitir(doc: Doc, b: dict, lead: str | None):
                     continue
                 h = cab[c_i] if c_i < len(cab) and cab[c_i] else f"col{c_i + 1}"
                 partes.append(f"{h}: {c}")
-            doc.unidad("fila_tabla", ln, ln, b["sec"], " · ".join(partes), lead)
+            doc.unidad("fila_tabla", ln, ln, b["sec"], " · ".join(partes), lead,
+                       contexto="\n".join(doc.lineas[b["ini"] - 1:b["ini"] + 1]))
         if not b["filas"]:
             doc.unidad("tabla_plantilla", b["ini"], b["ini"] + 1, b["sec"],
                        "Tabla a llenar con columnas: " + " · ".join(c for c in cab if c), lead)
         else:
-            doc.excluir(b["ini"], b["ini"] + 1, "encabezado de tabla: repetido dentro de cada fila")
+            doc.excluir(b["ini"], b["ini"] + 1, "encabezado de tabla: va literal en la columna contexto de cada fila")
     elif t == "lista":
         items = b["items"]
         simples = all(not it["sub"] and "\n" not in it["txt"] for it in items)
@@ -393,7 +394,8 @@ def parse_yaml_toplevel(doc: Doc):
                         f_ = subs[a_ + 1] if a_ + 1 < len(subs) else fin
                         sub = L[j].split(":")[0].strip()
                         cuerpo = "\n".join(L[ini - 1:cab_fin]) + "\n" + "\n".join(L[j:f_])
-                        doc.unidad("yaml", ini if a_ == 0 else j + 1, f_, f"{doc.ruta} › {clave} › {sub}", cuerpo)
+                        doc.unidad("yaml", ini if a_ == 0 else j + 1, f_, f"{doc.ruta} › {clave} › {sub}", cuerpo,
+                                   contexto=None if a_ == 0 else "\n".join(L[ini - 1:cab_fin]))
                     clave, ini = (m.group(1), idx + 1) if m else (None, None)
                     if pend_coment and clave:
                         ini = pend_coment[0]
@@ -434,43 +436,138 @@ def json_units_capabilities(doc: Doc, data: dict):
     meta = {k: v for k, v in data.items() if k != "generators"}
     lineas_meta = [i + 1 for i, t in enumerate(L) if i + 1 not in usados and t.strip() and t.strip() not in ("{", "}", "[", "]", "],", '"generators": [')]
     doc.unidad("json", min(lineas_meta), max(lineas_meta) if lineas_meta else 0, "_capabilities.json › meta",
-               json.dumps(meta, ensure_ascii=False))
+               json.dumps(meta, ensure_ascii=False), lineas=lineas_meta)
     for i, t in enumerate(L, 1):
         if t.strip() in ("{", "}", "[", "]", "],", '"generators": [') and i not in usados:
             doc.excluir(i, i, "llave/corchete de estructura JSON")
 
 
+def json_spans(texto: str) -> dict[tuple, tuple[int, int]]:
+    """Ruta (claves e índices) -> (línea_ini, línea_fin) 1-based de cada valor JSON, leyendo el texto crudo."""
+    spans: dict[tuple, tuple[int, int]] = {}
+    pos = 0
+    n = len(texto)
+
+    def linea(o):
+        return texto.count("\n", 0, o) + 1
+
+    def ws():
+        nonlocal pos
+        while pos < n and texto[pos] in " \t\r\n":
+            pos += 1
+
+    def cadena():
+        nonlocal pos
+        ini = pos
+        pos += 1
+        while texto[pos] != '"':
+            pos += 2 if texto[pos] == "\\" else 1
+        pos += 1
+        return json.loads(texto[ini:pos])
+
+    def valor(ruta, ini_linea=None):
+        nonlocal pos
+        ws()
+        ini = pos
+        ch = texto[pos]
+        if ch == "{":
+            pos += 1
+            ws()
+            if texto[pos] == "}":
+                pos += 1
+            else:
+                while True:
+                    ws()
+                    k_ini = pos
+                    k = cadena()
+                    ws()
+                    pos += 1  # ':'
+                    valor(ruta + (k,), linea(k_ini))
+                    ws()
+                    if texto[pos] == ",":
+                        pos += 1
+                        continue
+                    pos += 1  # '}'
+                    break
+        elif ch == "[":
+            pos += 1
+            ws()
+            if texto[pos] == "]":
+                pos += 1
+            else:
+                idx = 0
+                while True:
+                    valor(ruta + (idx,))
+                    idx += 1
+                    ws()
+                    if texto[pos] == ",":
+                        pos += 1
+                        continue
+                    pos += 1
+                    break
+        elif ch == '"':
+            cadena()
+        else:
+            while pos < n and texto[pos] not in ",}]\n \t\r":
+                pos += 1
+        spans[ruta] = (ini_linea or linea(ini), linea(pos - 1))
+
+    valor(())
+    return spans
+
+
+ESTRUCTURA = re.compile(r"^\s*[\[\]{},]*\s*$")
+
+
+def lineas_propias(L, span, hijos):
+    """Líneas del span que no pertenecen a ningún hijo ni son solo llaves o corchetes."""
+    tapadas = {x for a, b in hijos for x in range(a, b + 1)}
+    return [x for x in range(span[0], span[1] + 1) if x not in tapadas and not ESTRUCTURA.match(L[x - 1])]
+
+
 def json_units_schema(doc: Doc, data: dict, nombre: str):
-    def walk(nodo, ruta, requeridos):
-        if not isinstance(nodo, dict):
-            return
-        props = nodo.get("properties", {})
-        req = set(nodo.get("required", []))
-        for k, v in props.items():
-            p = f"{ruta}.{k}" if ruta else k
-            info = []
-            for clave in ("type", "enum", "const", "pattern", "format", "minimum", "maximum", "minLength", "maxLength",
-                          "minItems", "maxItems", "default", "description"):
-                if isinstance(v, dict) and clave in v:
-                    info.append(f"{clave}={json.dumps(v[clave], ensure_ascii=False)}")
-            if isinstance(v, dict) and "oneOf" in v:
-                info.append("oneOf=" + json.dumps(v["oneOf"], ensure_ascii=False)[:2000])
-            info.append("requerido" if k in req else "opcional")
-            doc.unidad("esquema", 0, 0, f"{nombre} › {p}", f"{p}: " + "; ".join(info))
-            if isinstance(v, dict):
-                walk(v, p, req)
-                if isinstance(v.get("items"), dict):
-                    walk(v["items"], p + "[]", req)
-        for dk, dv in nodo.get("$defs", {}).items():
-            walk(dv, f"$defs.{dk}", set())
-        extra = nodo.get("additionalProperties")
-        if extra is False and props:
-            doc.unidad("esquema", 0, 0, f"{nombre} › {ruta or '(raíz)'}",
-                       f"{ruta or '(raíz)'}: additionalProperties=false (ningún campo fuera de: {', '.join(props)})")
-    top = [f"{k}={json.dumps(data[k], ensure_ascii=False)}" for k in ("title", "description") if k in data]
-    if top:
-        doc.unidad("esquema", 0, 0, f"{nombre} › (raíz)", "; ".join(top))
-    walk(data, "", set(data.get("required", [])))
+    """Un registro por propiedad con sus propias líneas literales (sin las de sus sub-propiedades) y uno para la raíz."""
+    L = doc.lineas
+    sp = json_spans("\n".join(L))
+    props = [r for r in sp if len(r) >= 2 and r[-2] == "properties"]
+
+    def hijos_de(r):
+        return [sp[q] for q in props if len(q) > len(r) and q[:len(r)] == r]
+
+    usadas = set()
+    for r in sorted(props, key=lambda q: sp[q]):
+        lin = lineas_propias(L, sp[r], hijos_de(r))
+        if not lin:
+            continue
+        usadas.update(lin)
+        ruta = ".".join(str(x) for x in r if x not in ("properties",)).replace(".items.", "[].")
+        doc.unidad("esquema", lin[0], lin[-1], f"{nombre} › {ruta}", "", lineas=lin)
+    raiz = [x for x in lineas_propias(L, sp[()], [sp[q] for q in props]) if x not in usadas]
+    if raiz:
+        doc.unidad("esquema", raiz[0], raiz[-1], f"{nombre} › (raíz)", "", lineas=raiz)
+    for x, t in enumerate(L, 1):
+        if ESTRUCTURA.match(t) and t.strip():
+            doc.excluir(x, x, "llave/corchete de estructura JSON")
+
+
+def json_units_array(doc: Doc, clave: str, id_campo, nombre: str, tipo: str):
+    """Un registro por elemento del arreglo `clave`, con sus líneas literales."""
+    L = doc.lineas
+    sp = json_spans("\n".join(L))
+    data = json.loads("\n".join(L))
+    usadas = set()
+    for i_, item in enumerate(data.get(clave, [])):
+        a, b = sp[(clave, i_)]
+        lin = [x for x in range(a, b + 1) if not ESTRUCTURA.match(L[x - 1])]
+        usadas.update(range(a, b + 1))
+        ident = id_campo(item)
+        doc.unidad(tipo, lin[0], lin[-1], f"{nombre} › {ident}", "", lineas=lin)
+    resto = [x for x in range(1, len(L) + 1) if x not in usadas and not ESTRUCTURA.match(L[x - 1])]
+    if resto:
+        doc.unidad(tipo, resto[0], resto[-1], f"{nombre} › (cabecera)", "", lineas=resto)
+    for x, t in enumerate(L, 1):
+        if ESTRUCTURA.match(t) and t.strip():
+            doc.excluir(x, x, "llave/corchete de estructura JSON")
 
 
 # ---------------------------------------------------------------- HTML (flujos del usuario) y linter parcheado
@@ -617,9 +714,11 @@ class _HTMLSeg(HTMLParser):
                     self.tabla["cab"] = f["celdas"]
                 else:
                     cab = self.tabla["cab"]
-                    partes = [f"{cab[i]}: {c}" if i < len(cab) and cab[i] else c for i, c in enumerate(f["celdas"]) if c]
-                    if partes:
-                        self.doc.unidad("fila_tabla", f["ini"], ln, self.sec(), " · ".join(partes))
+                    celdas = [c for c in f["celdas"] if c]
+                    if celdas:
+                        # texto visible literal de cada celda, una por línea; los encabezados van en contexto
+                        self.doc.unidad("fila_tabla", f["ini"], ln, self.sec(), "\n".join(celdas),
+                                        contexto=" | ".join(cab) if cab else None)
                 self.tabla["fila"] = None
             elif tag == "thead":
                 self.tabla["en_thead"] = False
@@ -692,8 +791,9 @@ class _HTMLSeg(HTMLParser):
                 continue
             et = " ".join(sv["elabels"][i]) if i < len(sv["elabels"]) else ""
             conex.append(f"{par[0]} → {par[1]}" + (f" [{et}]" if et else ""))
-        txt = "Diagrama de flujo. Pasos: " + " | ".join(pasos) + ". Conexiones: " + "; ".join(conex)
-        self.doc.unidad("diagrama", sv["ini"], ln, self.sec(), txt)
+        textos = [t for k in dict.fromkeys(sv["orden"]) for t in sv["nodos"][k]]
+        self.doc.unidad("diagrama", sv["ini"], ln, self.sec(), "\n".join(textos),
+                        contexto="Conexiones del diagrama (ids de nodo del SVG): " + "; ".join(conex))
         self.svg = None
 
 
@@ -829,31 +929,24 @@ def construir():
         elif tipo == "schema":
             json_units_schema(d, json.loads(texto), p.name)
         elif tipo == "learnings":
-            for r in json.loads(texto).get("rules", []):
-                rr, md = r.get("rule", {}), r.get("metadata", {})
-                d.unidad("aprendizaje", 0, 0, f"{p.name} › {rr.get('id')}",
-                         f"{rr.get('text')} (efecto={md.get('effect')}, prioridad={md.get('priority')}; "
-                         f"{md.get('classification_provenance', {}).get('notes', '')})")
+            json_units_array(d, "rules", lambda r: (r.get("rule") or {}).get("id"), p.name, "aprendizaje")
         elif tipo == "routing":
-            for r in json.loads(texto).get("routes", []):
-                d.unidad("ruteo", 0, 0, f"{p.name} › {r.get('id')}",
-                         f"Preferir {json.dumps(r.get('preferred'), ensure_ascii=False)} cuando "
-                         f"{json.dumps(r.get('when'), ensure_ascii=False)}; {r.get('override_policy')}; "
-                         f"confianza {r.get('confidence')}. Evidencia: {r.get('evidence')}")
+            json_units_array(d, "routes", lambda r: r.get("id"), p.name, "ruteo")
         elif tipo == "policies":
-            for r in json.loads(texto).get("policies", []):
-                d.unidad("politica", 0, 0, f"{p.name} › {r.get('id')}",
-                         f"{r.get('conflict_key')}: gana la regla {r.get('winner_rule_id')}. {r.get('reason')}")
+            json_units_array(d, "policies", lambda r: r.get("id"), p.name, "politica")
         elif tipo == "politicas":
-            spec = importlib.util.spec_from_file_location("politicas_src", p)
-            mod = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(mod)
-            for nombre in dir(mod):
-                v = getattr(mod, nombre)
-                if isinstance(v, dict) and str(v.get("id", "")).startswith("U-"):
-                    extra_t = "".join(f" {k}: {v[k]}." for k in ("dramatico_si", "factor_bloqueo", "compatible_con") if k in v)
-                    d.unidad("politica_usuario", 0, 0, f"politicas.py › {v['id']}",
-                             f"{v['regla']}{extra_t} (instrucción literal del usuario, {v.get('fecha')}: «{v.get('instruccion')}»)")
+            import ast
+            arbol = ast.parse(texto)
+            for nodo in arbol.body:
+                if isinstance(nodo, (ast.Assign, ast.AnnAssign)) and isinstance(nodo.value, ast.Dict):
+                    claves = {k.value: v for k, v in zip(nodo.value.keys, nodo.value.values) if isinstance(k, ast.Constant)}
+                    ident = claves.get("id")
+                    if isinstance(ident, ast.Constant) and str(ident.value).startswith("U-"):
+                        d.unidad("politica_usuario", nodo.lineno, nodo.end_lineno, f"politicas.py › {ident.value}", "")
+            cub = {x for u in d.unidades for x in range(u["ini"], u["fin"] + 1)}
+            for n_, t in enumerate(lineas, 1):
+                if t.strip() and n_ not in cub:
+                    d.excluir(n_, n_, "código de politicas.py: solo los diccionarios U-… son reglas del usuario")
         docs.append(d)
     return docs
 
@@ -945,6 +1038,18 @@ def verificar(docs, db_path: Path):
     return problemas, n_reglas, n_sx
 
 
+def literal(d: Doc, u: dict) -> str:
+    """Texto del registro = copia exacta de sus líneas de origen. En HTML, el texto visible del elemento
+    (sin etiquetas); en diagramas SVG, los textos de los nodos, uno por línea."""
+    if d.ruta.endswith(".html"):
+        return u["texto"]
+    if u.get("lineas"):
+        return "\n".join(d.lineas[x - 1] for x in u["lineas"])
+    if not u["ini"]:
+        raise SystemExit(f"registro sin líneas de origen: {d.ruta} {u['seccion']}")
+    return "\n".join(d.lineas[u["ini"] - 1:u["fin"]])
+
+
 def consolidar(docs):
     """Une duplicados exactos (copias idénticas en varios archivos) conservando todas las fuentes."""
     registros: dict[str, dict] = {}
@@ -953,22 +1058,23 @@ def consolidar(docs):
         for pos, k in enumerate(orden, 1):
             d.unidades[k]["parrafo"] = pos
         for u in d.unidades:
-            # la misma regla escrita igual en varios documentos es UN registro con varias ubicaciones
-            clave = norm(u["contenido"])
+            u["contenido"] = literal(d, u)
+            # la misma regla escrita EXACTAMENTE igual en varios documentos es UN registro con varias ubicaciones
+            # (clave = texto literal; si solo difiere en espacios o sangría son registros distintos, cada uno literal)
+            clave = u["contenido"]
             rid = hashlib.sha1(clave.encode()).hexdigest()[:12]
             f = {"archivo": d.ruta, "linea_ini": u["ini"], "linea_fin": u["fin"], "seccion": u["seccion"],
-                 "parrafo": u["parrafo"], "total": len(d.unidades)}
+                 "parrafo": u["parrafo"], "total": len(d.unidades), "lineas": u.get("lineas")}
             if rid in registros:
                 registros[rid]["fuentes"].append(f)
                 if u["seccion"] and u["seccion"] not in registros[rid]["secciones"]:
                     registros[rid]["secciones"].append(u["seccion"])
             else:
                 registros[rid] = {"id": rid, "contenido": u["contenido"], "tipo": u["tipo"], "fuentes": [f],
-                                  "secciones": [u["seccion"]] if u["seccion"] else []}
+                                  "secciones": [u["seccion"]] if u["seccion"] else [], "contexto": u.get("contexto")}
     out = []
     for r in registros.values():
-        pref = f"[{' | '.join(r['secciones'])}] " if r["secciones"] else ""
-        r["texto"] = pref + r["contenido"]
+        r["texto"] = r["contenido"]  # sin prefijo: el encabezado va en registros_fuente.seccion
         r["palabras"] = palabras(r["texto"])
         out.append(r)
     return out
@@ -981,22 +1087,64 @@ def guardar(registros, docs, db_path: Path):
         DROP TABLE IF EXISTS registros_fuente;
         DROP TABLE IF EXISTS registros_exclusion;
         CREATE TABLE registros (id TEXT PRIMARY KEY, orden INTEGER NOT NULL, texto TEXT NOT NULL,
-                                tipo TEXT NOT NULL, palabras INTEGER NOT NULL);
+                                tipo TEXT NOT NULL, palabras INTEGER NOT NULL, contexto TEXT);
         CREATE TABLE registros_fuente (registro_id TEXT NOT NULL REFERENCES registros(id), archivo TEXT NOT NULL,
                                        linea_ini INTEGER, linea_fin INTEGER, seccion TEXT,
-                                       parrafo INTEGER, parrafos_en_documento INTEGER);
+                                       parrafo INTEGER, parrafos_en_documento INTEGER, lineas TEXT);
         CREATE TABLE registros_exclusion (archivo TEXT NOT NULL, linea INTEGER NOT NULL, texto TEXT, motivo TEXT NOT NULL);
     """)
     for n_, r in enumerate(registros, 1):
-        con.execute("insert into registros values (?,?,?,?,?)", (r["id"], n_, r["texto"], r["tipo"], r["palabras"]))
+        con.execute("insert into registros values (?,?,?,?,?,?)",
+                    (r["id"], n_, r["texto"], r["tipo"], r["palabras"], r.get("contexto")))
         for f in r["fuentes"]:
-            con.execute("insert into registros_fuente values (?,?,?,?,?,?,?)",
-                        (r["id"], f["archivo"], f["linea_ini"], f["linea_fin"], f["seccion"], f["parrafo"], f["total"]))
+            con.execute("insert into registros_fuente values (?,?,?,?,?,?,?,?)",
+                        (r["id"], f["archivo"], f["linea_ini"], f["linea_fin"], f["seccion"], f["parrafo"], f["total"],
+                         json.dumps(f["lineas"]) if f.get("lineas") else None))
     for d in docs:
         for ln_, mot in sorted(d.excl.items()):
             con.execute("insert into registros_exclusion values (?,?,?,?)", (d.ruta, ln_, d.lineas[ln_ - 1].strip(), mot))
     con.commit()
     con.close()
+
+
+ZIP_ORIGEN = APD / "originales/AI_Production_Director_v3.4.0_COMPLETE.zip"
+
+
+def verificar_literal(registros):
+    """Cada registro debe ser copia literal de cada una de sus ubicaciones. Las fuentes de skills/ y pkg/ se leen
+    directamente del zip entregado, no de la copia extraída. En HTML se compara con el texto visible del elemento."""
+    import html as _html
+    import zipfile
+    z = zipfile.ZipFile(ZIP_ORIGEN)
+    nombres = set(z.namelist())
+    cache: dict[str, list[str]] = {}
+
+    def lineas_de(arch):
+        if arch not in cache:
+            raiz = "AI_Production_Director_v3.4.0_COMPLETE/"
+            n_ = raiz + arch if arch.startswith("skills/") else raiz + arch[4:] if arch.startswith("pkg/") else None
+            if n_ and n_ in nombres:
+                t = z.read(n_).decode("utf-8", errors="replace")
+            else:
+                t = (APD.parent / arch).read_text(encoding="utf-8", errors="replace")
+            ls = t.split("\n")
+            cache[arch] = ls[:-1] if ls and ls[-1] == "" else ls
+        return cache[arch]
+
+    malos = []
+    for r in registros:
+        for f in r["fuentes"]:
+            L = lineas_de(f["archivo"])
+            if f["archivo"].endswith(".html"):
+                visible = re.sub(r"\s+", " ", _html.unescape(re.sub(r"<[^>]+>", "", "\n".join(L[f["linea_ini"] - 1:f["linea_fin"]]))))
+                ok = all(re.sub(r"\s+", " ", x).strip() in visible for x in r["texto"].split("\n") if x.strip())
+            elif f.get("lineas"):
+                ok = r["texto"] == "\n".join(L[x - 1] for x in f["lineas"])
+            else:
+                ok = r["texto"] == "\n".join(L[f["linea_ini"] - 1:f["linea_fin"]])
+            if not ok:
+                malos.append(f"{f['archivo']}:{f['linea_ini']}-{f['linea_fin']} {r['texto'][:60]!r}")
+    return malos
 
 
 def main():
@@ -1007,6 +1155,9 @@ def main():
     docs = construir()
     problemas, n_reglas, n_sx = verificar(docs, Path(a.db))
     registros = consolidar(docs)
+    no_literales = verificar_literal(registros)
+    if no_literales:
+        problemas.append(("registros que no son copia literal de su fuente", no_literales))
     n_unid = sum(len(d.unidades) for d in docs)
     print(f"fuentes: {len(docs)} · unidades: {n_unid} · registros únicos: {len(registros)} · "
           f"líneas excluidas con motivo: {sum(len(d.excl) for d in docs)}")
