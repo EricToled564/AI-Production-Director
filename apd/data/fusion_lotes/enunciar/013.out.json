@@ -1,0 +1,1526 @@
+{
+ "registros": [
+  {
+   "id": "d4856cab577a",
+   "enunciado": "Antes de criticar hay que establecer la intención del shot a partir del rationale, subject, framing, angle y motion de shots.json, la intención declarada por el usuario o el beat que sirve.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "df8ee096d06d",
+   "enunciado": "Si la intención del shot no puede formularse en una frase, se debe preguntar en lugar de criticar a ciegas.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "4dce21a34e68",
+   "enunciado": "La crítica debe revisar la imagen por capas: Brand Lock, Series Lock, Shot Spec, composición, técnica y continuidad, según la rúbrica completa.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "5aaf13ce00b1",
+   "enunciado": "Cada capa de la crítica se califica como pass, soft fail o hard fail, y el veredicto agrega esas calificaciones.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "489c34d8feda",
+   "enunciado": "Todo problema detectado debe mapearse a una corrección; la corrección a nivel de prompt debe especificar el cambio exacto y re-generar.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "cd8b7f653c91",
+   "enunciado": "Una corrección a nivel de post indica qué ajustar en composición o grade sin re-generar (p. ej., subir calidez +5).",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "144b6068ee89",
+   "enunciado": "Cuando ningún cambio de prompt ayuda porque el generador dio una mala muestra, se exige re-roll con presupuesto de 2 a 3 intentos.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "6ee3ddc7f531",
+   "enunciado": "El veredicto ACCEPT corresponde cuando todas las capas pasan o fallan suavemente de forma corregible en post.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "569bdaa255d4",
+   "enunciado": "El veredicto REVISE corresponde cuando una o dos capas fallan duro con un camino de corrección claro.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "24a5d0557ecf",
+   "enunciado": "El veredicto REJECT corresponde cuando fallan tres o más capas o una capa crítica (Brand Lock, Series Lock) falla duro sin corrección clara.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "e8ef7322320c",
+   "enunciado": "La crítica debe declarar honestamente su nivel de incertidumbre.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "522b2f2c5bfd",
+   "enunciado": "La confianza HIGH solo procede cuando están disponibles la referencia de storyboard, el brand-lock y el prompt.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "78cbf39d8deb",
+   "enunciado": "La confianza MEDIUM procede cuando faltan algunas referencias pero la intención central es clara.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "7ed756cc62df",
+   "enunciado": "La confianza LOW procede cuando solo se tiene la imagen y la intención es inferida.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "77b0fe63522d",
+   "enunciado": "Declarar confianza HIGH es un hecho verificable: validate_critique.py rechaza una crítica 1.1 con HIGH si shot_id, brand_lock_ref o prompt_ref son null.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "b2f1aa5e3ece",
+   "enunciado": "Además del markdown, la crítica debe escribirse como output/critiques/round-{N}/{shot_id}.critique.json conforme al schema 1.1.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "ab2cd1848462",
+   "enunciado": "El JSON de crítica debe mapear sección por sección el markdown de la crítica.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "083f7f3cd91c",
+   "enunciado": "La sección ## Verdict del markdown se mapea al campo verdict (ACCEPT/REVISE/REJECT).",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "d58f8299ff74",
+   "enunciado": "Los bullets de ## What's working se mapean a working[], una cadena por bullet.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "e613acf67714",
+   "enunciado": "What's not working y Revision plan se fusionan en issues[], cada issue con su capa/nota y su fix_type/fix.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "992c42b92193",
+   "enunciado": "La sección ## Confidence se mapea al campo confidence (HIGH/MEDIUM/LOW).",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "90d7e8c2f612",
+   "enunciado": "En la versión 1.1 toda la procedencia es obligatoria: el veredicto debe nombrar y hashear los bytes evaluados.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "c27a5fbed98b",
+   "enunciado": "Los campos run_id y round se toman de run.json y del directorio de ronda en que se escribe.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "7b694259d49f",
+   "enunciado": "El campo created_at debe ser un instante UTC con formato YYYY-MM-DDThh:mm:ssZ.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "eb49581a8a70",
+   "enunciado": "El campo shot_id lleva el shot, o null si es una imagen suelta sin storyboard.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "ab061f026cb9",
+   "enunciado": "Los campos image_ref e image_sha256 identifican el frame revisado y su SHA-256.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "8772e614fcb2",
+   "enunciado": "Los campos prompt_ref y prompt_sha256 identifican el archivo de prompt de origen y su SHA-256.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "d7864655091f",
+   "enunciado": "Los campos brand_lock_ref y brand_lock_sha256 identifican el snapshot de brand-lock usado y su SHA-256.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "e3878e887b41",
+   "enunciado": "Los campos generator y model_version registran el id del generador en _capabilities.json y su versión de modelo.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "7998b2c405d7",
+   "enunciado": "El campo seed se registra si el generador lo expone; si no, null.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "0894093e180a",
+   "enunciado": "Ejemplo: comando shasum -a 256 para hashear frame, prompt y snapshot de brand-lock.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "2cf79bbda78a",
+   "enunciado": "Todos los campos de procedencia son obligatorios y anulables: si falta un insumo se escribe null (p. ej., prompt_ref: null y bajar confianza a MEDIUM), nunca se omite la clave.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "317914d3ac3d",
+   "enunciado": "Explicación: los hashes impiden que un ACCEPT obsoleto pase el gate unido a un frame regenerado que nadie revisó.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "trazabilidad_procedencia",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "54238b85a6c8",
+   "enunciado": "Cada issue debe llevar una severidad asignada de forma determinista desde la rúbrica de capas, porque el gate opera sobre ella.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "d81c3fe48049",
+   "enunciado": "Severidad minor: soft fail corregible en post, con fix_type post-level.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "7f56df9a6712",
+   "enunciado": "Severidad major: hard fail con camino claro de corrección por cambio de prompt o re-roll.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "1282cd0e42c6",
+   "enunciado": "Severidad blocking: hard fail en capa crítica (Brand Lock/Series Lock) sin corrección clara, o defecto que inutiliza el asset.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "9236230a4f73",
+   "enunciado": "El veredicto se deriva de las severidades: cualquier blocking o tres+ major ⇒ REJECT; uno o dos major ⇒ REVISE; solo minor o ninguno ⇒ ACCEPT.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "90971e84803b",
+   "enunciado": "Explicación: la regla de tres major pasó de discrecional a umbral obligatorio que el validador hace cumplir, alineada con la rúbrica.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "57e1db91c372",
+   "enunciado": "El veredicto del markdown debe elegirse con la misma regla derivada de severidades.",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "867323c3c0a9",
+   "enunciado": "Tras escribir la crítica se debe ejecutar el gate con tools/validate_critique.py sobre el JSON.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "fba76141b6ed",
+   "enunciado": "Alternativamente se valida todo el árbol con tools/validate_provenance.py output/, que recalcula los hashes contra disco.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "validacion_gates",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "6a9143ec9c3c",
+   "enunciado": "Ejecutar el gate es obligatorio y responsabilidad de quien critica; un ACCEPT con un issue major es un bug.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "validacion_gates",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "b26078bec3bf",
+   "enunciado": "Ejemplo: examples/critique.accept.json y critique.revise.json muestran la versión 1.0 sin procedencia; examples/worked-run/critiques/ muestra la 1.1 con hashes.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "7a77afdb0142",
+   "enunciado": "Se prohíbe la crítica basada en sensaciones: cada observación debe referirse a algo concreto de la imagen.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "198d4dc00d9f",
+   "enunciado": "Las correcciones de prompt deben ser específicas (qué texto añadir o cambiar y dónde), no un genérico 'cambia el prompt'.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "2f5b911b5291",
+   "enunciado": "No se debe criticar lo que no se pidió; sugerir mejoras fuera del brief es scope creep.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "1f747dd0ff92",
+   "enunciado": "Los fallos conocidos del generador (manos, reflejos oculares, joyería) deben presentarse como tales y resolverse con re-roll o post, no con otro prompt.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "b0f70ec11e49",
+   "enunciado": "En caso de duda, si la imagen está ~80% bien y el resto se corrige en post, se da ACCEPT con notas de post.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "de90057166cd",
+   "enunciado": "Explicación: remite a references/critique-rubric.md como rúbrica completa por capas.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "e8fad963c886",
+   "enunciado": "Ejemplo: crítica REVISE con puntos que funcionan, fallos (pelo, seis dedos, encuadre MS vs MCU), plan de revisión y confianza HIGH.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "963a79a6b286",
+   "enunciado": "Tras un veredicto REVISE se debe ofrecer redactar el prompt revisado vía visual-prompt-forge en modo revisión.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "revision_iteracion",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "62e7087976cb",
+   "enunciado": "Tras un REJECT no se ofrece modo revisión; se explica qué lo bloqueó y qué decisión requiere (spec, brand-lock o generador).",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "6c1b4468c0f9",
+   "enunciado": "No se debe revisar automáticamente: el usuario elige el siguiente paso.",
+   "alcance": "visual-asset-critic",
+   "temas": [
+    "conducta_agente",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "687fcd951be8",
+   "enunciado": "Explicación: la rúbrica es la checklist por capas para revisar una imagen generada.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "c411ef569ed7",
+   "enunciado": "Capa Brand Lock, paleta: pass si los colores vienen de la paleta, soft fail si están cerca, hard fail si no están en la paleta.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "705609d21072",
+   "enunciado": "Capa Brand Lock, mood: pass si se lee el mood de marca, soft fail si es adyacente, hard fail si es otro mood.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "3c039d2e7b56",
+   "enunciado": "Capa Brand Lock, never list: pass si no aparece nada de la lista, soft fail si aparece un ítem suave, hard fail con varias violaciones.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "69e8c8f57549",
+   "enunciado": "Capa Brand Lock, aspect ratio: pass si coincide con project.aspect, soft fail si cabe en un recorte, hard fail si es otro.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "b2ba76657152",
+   "enunciado": "Un hard fail en Brand Lock da REJECT o REVISE según exista corrección por prompt.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "887fd135701b",
+   "enunciado": "Capa Series Lock, personaje: pass si se ven todos los rasgos del ancla, soft fail si uno menor falla, hard fail si es otra persona (edad, raza, complexión).",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "8a437ec421f2",
+   "enunciado": "Capa Series Lock, entorno: pass si coincide con series_lock, soft fail con ligera deriva, hard fail si es otro entorno.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "66bf0a8bc33c",
+   "enunciado": "Capa Series Lock, dirección de luz: pass si coincide, soft fail con ángulo ligeramente distinto, hard fail si viene de la dirección equivocada.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "luz"
+   ]
+  },
+  {
+   "id": "6059a0293fdc",
+   "enunciado": "Capa Series Lock, grade: pass si coincide, soft fail con ligera deriva tonal, hard fail si es otro grade.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "9c326bcdaefd",
+   "enunciado": "Un hard fail en Series Lock da REJECT por ruptura de continuidad, o REVISE si hay corrección específica.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "ddae3f8a1f62",
+   "enunciado": "Capa Shot Spec, encuadre: pass si coincide con la spec, soft fail si está a un paso (MS vs MCU), hard fail si está a dos o más.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "encuadre_lente_dof"
+   ]
+  },
+  {
+   "id": "c301b51a50c0",
+   "enunciado": "Capa Shot Spec, ángulo: pass si coincide, soft fail con leve variación, hard fail con ángulo equivocado (low cuando era eye-level).",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "angulo_camara"
+   ]
+  },
+  {
+   "id": "2be9719d9edb",
+   "enunciado": "Capa Shot Spec, acción del sujeto: pass si coincide con subject, soft fail si es similar, hard fail si es una acción distinta.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "f028856783b1",
+   "enunciado": "Capa Shot Spec, profundidad de campo: pass si coincide, soft fail con leve variación, hard fail si es profunda cuando se pidió reducida.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "encuadre_lente_dof"
+   ]
+  },
+  {
+   "id": "6d40546f4072",
+   "enunciado": "En Shot Spec, un soft fail se corrige en post o se acepta; un hard fail exige revisar.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "de8bc8dd2e7a",
+   "enunciado": "Capa composición, espacio negativo para texto: pass si está reservado según spec, soft fail si es justo, hard fail si no cabe el overlay.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "texto_en_pantalla",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "349dd2b1982e",
+   "enunciado": "Capa composición, colocación del sujeto: pass si coincide con el rationale, soft fail si está algo desplazado, hard fail si tapa el área destinada al texto.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "f03ed09825fd",
+   "enunciado": "Capa composición, mirada: pass si mira donde se pretende, soft fail con leve desvío, hard fail si mira al lado equivocado.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "dramaturgia_escena"
+   ]
+  },
+  {
+   "id": "7e1d2d506cd0",
+   "enunciado": "Capa composición, aire sobre la cabeza: pass si es apropiado, soft fail si es algo justo u holgado, hard fail si corta en la línea del pelo o sobra enormemente.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "0960a583d8db",
+   "enunciado": "Los fallos de composición suelen corregirse a nivel de prompt re-generando con lenguaje de composición explícito.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "composicion_frame",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "83ec77e9fd53",
+   "enunciado": "Capa técnica, manos: pass si son anatómicamente correctas, soft fail con dedos algo raros, hard fail con seis dedos, dedos fusionados o articulaciones erróneas.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "anatomia_manos"
+   ]
+  },
+  {
+   "id": "31d70283774e",
+   "enunciado": "Capa técnica, ojos: pass si son simétricos y enfocados, soft fail con leve asimetría, hard fail con ojos torcidos o reflejos erróneos.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "f056159e9292",
+   "enunciado": "Capa técnica, textura de piel: pass si es natural, soft fail si es algo plástica, hard fail con plástico AI marcado.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "c3df486a8c66",
+   "enunciado": "Capa técnica, anatomía: pass si es correcta, soft fail con rarezas menores, hard fail con errores mayores.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "anatomia_manos"
+   ]
+  },
+  {
+   "id": "e9987ccd9178",
+   "enunciado": "Capa técnica, artefactos de fondo: pass si está limpio, soft fail con rarezas menores, hard fail con texto distorsionado, objetos derretidos o geometría imposible.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "b6515bead7eb",
+   "enunciado": "Los hard fails técnicos casi siempre exigen re-roll (2 a 3 intentos) porque el prompt probablemente estaba bien.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "d59f805e9582",
+   "enunciado": "Capa continuidad, personaje: pass si es la misma persona y look, soft fail con leve deriva, hard fail si es claramente otra persona.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "consistencia_identidad",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "fd5e14ef2e35",
+   "enunciado": "Capa continuidad, luz: pass si mantiene dirección y hora, soft fail con cambio sutil, hard fail si la dirección se invierte o salta la hora del día.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip",
+    "luz"
+   ]
+  },
+  {
+   "id": "e2fa81ebb5ee",
+   "enunciado": "Capa continuidad, entorno: pass si es el mismo espacio, soft fail con leve deriva, hard fail si es otro espacio.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "4d49c027a240",
+   "enunciado": "Capa continuidad, grade: pass si es idéntico, soft fail con cambio sutil, hard fail si es visiblemente distinto.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "b72ed66cbd6b",
+   "enunciado": "Los hard fails de continuidad rompen el storyboard y exigen REVISE verificando las anclas verbatim del prompt.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "60e24a851e76",
+   "enunciado": "Los resultados pass/soft/hard de la rúbrica se traducen a severidad en el JSON únicamente según la tabla de mapeo.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "3a03d7cb84d2",
+   "enunciado": "Un soft fail en cualquier capa equivale a severidad minor, normalmente con fix_type post-level.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "640c9591432d",
+   "enunciado": "Un hard fail con camino claro de corrección equivale a severidad major.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "8ae2be913527",
+   "enunciado": "Un hard fail en Brand Lock o Series Lock sin camino de corrección equivale a severidad blocking.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "bbbcb366f1ea",
+   "enunciado": "Cualquier defecto que haga inutilizable el asset equivale a severidad blocking, sin importar la capa.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "4714b4eca1a9",
+   "enunciado": "El veredicto se sigue de las severidades y no es un juicio aparte.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "861a2df6b6ce",
+   "enunciado": "Si hay cualquier severidad blocking, el veredicto es REJECT.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "3b7c61f13990",
+   "enunciado": "Si hay tres o más severidades major, el veredicto es REJECT.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "8a5a24d41e2e",
+   "enunciado": "Si hay una o dos severidades major, el veredicto es REVISE.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "739206ebb081",
+   "enunciado": "Si solo hay severidades minor o ninguna, el veredicto es ACCEPT con notas de post.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "d41b50530315",
+   "enunciado": "validate_critique.py hace cumplir exactamente la tabla de agregación; el umbral numérico sustituyó una regla discrecional contradictoria.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "validacion_gates",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "b35b3bbf6079",
+   "enunciado": "Los soft fails no cambian el veredicto por sí solos, pero tres o más obligan a revisar si alguno es en realidad un hard fail.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "606253b451e0",
+   "enunciado": "No se debe criticar lo que la spec no pidió (p. ej., 'podría ser más cinematográfico').",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "0d63f0e8d67a",
+   "enunciado": "Una vez fijado un REJECT, se listan solo los problemas que lo motivan, sin acumular detalles cosméticos.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "5d5b81b7f080",
+   "enunciado": "Cada observación debe ser específica (p. ej., key light a la derecha de cámara vs izquierda en series_lock).",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "luz"
+   ]
+  },
+  {
+   "id": "1d54dcf4a519",
+   "enunciado": "Cada issue debe etiquetarse con la capa a la que pertenece.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "2d5bce946fe0",
+   "enunciado": "Se debe distinguir el fallo del prompt del fallo del generador: si el prompt estaba bien y las manos salieron mal, es re-roll, no cambio de prompt.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "f83b266252bf",
+   "enunciado": "Explicación: descripción del skill visual-media, que cubre fotografía, video, animación, edición y color, y se activa ante esos temas pero no ante tareas de código.",
+   "alcance": "visual-media",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "2022b5b460b3",
+   "enunciado": "Explicación: propósito del skill, contar historias con lenguaje visual y crear imágenes memorables.",
+   "alcance": "visual-media",
+   "temas": [
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "3ff3edbf4d67",
+   "enunciado": "Explicación: el skill aplica a composición fotográfica, producción de video, formato corto, animación y postproducción.",
+   "alcance": "visual-media",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "cc7a84965680",
+   "enunciado": "Explicación: triángulo de exposición; diafragma abierto reduce profundidad, obturador rápido congela y lento produce motion blur, ISO alto añade ruido.",
+   "alcance": "visual-media",
+   "temas": [
+    "encuadre_lente_dof",
+    "movimiento_congelado_blur",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "7e3f6c1cff37",
+   "enunciado": "Explicación: reglas de composición básicas: tercios, líneas guía, encuadre dentro del encuadre, simetría/asimetría y espacio negativo.",
+   "alcance": "visual-media",
+   "temas": [
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "6a2a1a9f362a",
+   "enunciado": "La luz frontal es plana y con pocas sombras; se usa para registro o foto de documento.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "2a37ef5b2d2d",
+   "enunciado": "La luz lateral da volumen y sombras; se usa en retrato y arquitectura.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "77a6c6ea6515",
+   "enunciado": "El contraluz produce silueta y halo; se usa para atmósfera o pieza artística.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "70d6a7acc73a",
+   "enunciado": "La luz cenital produce sombras duras; se recomienda evitar el mediodía.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "eebcf0bb7292",
+   "enunciado": "La hora dorada da luz cálida y suave para paisaje y retrato.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "5984fccd47fc",
+   "enunciado": "La hora azul da luz fría y enigmática para ciudad y nocturnas.",
+   "alcance": "visual-media",
+   "temas": [
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "e7f3bcabc0c4",
+   "enunciado": "Explicación: flujo de producción en tres etapas: preproducción (30%), rodaje (20%) y postproducción (50%) con sus tareas.",
+   "alcance": "visual-media",
+   "temas": [
+    "flujo_pipeline",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "a3ad04449d87",
+   "enunciado": "El push in da énfasis y acercamiento; se usa para revelar el punto clave.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "fbaf05c16c7b",
+   "enunciado": "El pull out revela el conjunto; se usa en cierres y transiciones.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "023282f20ac4",
+   "enunciado": "El pan es desplazamiento horizontal; se usa para seguir o presentar el entorno.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "cc35ca8814a6",
+   "enunciado": "El tilt es desplazamiento vertical; se usa para mostrar altura.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "8c3869b5fc10",
+   "enunciado": "El track acompaña al sujeto; se usa en caminatas y persecuciones.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "3be5c11cd2bb",
+   "enunciado": "La órbita es un giro de 360° alrededor del sujeto; se usa para momentos dramáticos.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "99b24dbae023",
+   "enunciado": "La cámara en mano aporta inmediatez y presencia; se usa en documental y tensión.",
+   "alcance": "visual-media",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "1b4263be3173",
+   "enunciado": "Explicación: tipos de plano y su uso: general establece, entero muestra cuerpo y acción, medio para diálogo, primer plano para emoción, primerísimo para detalle.",
+   "alcance": "visual-media",
+   "temas": [
+    "encuadre_lente_dof",
+    "funcion_de_plano"
+   ]
+  },
+  {
+   "id": "b7cbced9640b",
+   "enunciado": "TikTok: duración óptima 15–60 s, formato 9:16, carácter de entretenimiento y retos.",
+   "alcance": "visual-media",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "7af1b130c266",
+   "enunciado": "Reels: duración óptima 15–90 s, formato 9:16, carácter cuidado y estético.",
+   "alcance": "visual-media",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "9fc939657221",
+   "enunciado": "Shorts: duración óptima 15–60 s, formato 9:16, carácter de divulgación y humor.",
+   "alcance": "visual-media",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "064966515e21",
+   "enunciado": "Douyin: duración óptima 15–60 s, formato 9:16, contenido local.",
+   "alcance": "visual-media",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "f82c8a2e4398",
+   "enunciado": "Un video corto se estructura con hook en 0–3 s, contenido acelerado por bloques hasta ~50 s y CTA en los últimos 5 s; los primeros 3 segundos son decisivos.",
+   "alcance": "visual-media",
+   "temas": [
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "028607870036",
+   "enunciado": "Explicación: los 12 principios de animación de Disney (squash & stretch, anticipación, staging, arcos, timing, exageración, etc.).",
+   "alcance": "visual-media",
+   "temas": [
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "5f7abbac7265",
+   "enunciado": "Explicación: flujo de producción de animación: concepto, guion, storyboard, diseño (personajes, escenarios, paleta), animación, post y entrega.",
+   "alcance": "visual-media",
+   "temas": [
+    "animacion_ilustracion",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "e96cc4dc9e2a",
+   "enunciado": "Explicación: principios de edición: corte en movimiento, corte en reposo, regla de 180 grados y J-cut/L-cut.",
+   "alcance": "visual-media",
+   "temas": [
+    "ritmo_montaje",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "47532f269dc6",
+   "enunciado": "En colorización, la exposición controla el brillo general (p. ej., levantar una toma subexpuesta).",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "655fb899b845",
+   "enunciado": "En colorización, el contraste controla la distancia entre luces y sombras para ganar volumen.",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "4c99709721fb",
+   "enunciado": "En colorización, la temperatura ajusta frío/cálido; cálido para calidez emocional.",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "27997945ce73",
+   "enunciado": "En colorización, el tinte ajusta verde/magenta, útil para corregir tonos de piel.",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "a5944adf11bf",
+   "enunciado": "En colorización, la saturación controla la intensidad de color; desaturar da look cinematográfico.",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "933dd449cd38",
+   "enunciado": "En colorización, las curvas permiten ajuste fino; una curva en S aumenta el contraste.",
+   "alcance": "visual-media",
+   "temas": [
+    "color_grade_paleta",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "3bf8ca823419",
+   "enunciado": "Explicación: equipo de captura recomendado: cámaras Sony A7, Canon R, Fujifilm; celulares iPhone Pro, Pixel; estabilizadores DJI RS, Zhiyun.",
+   "alcance": "visual-media",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "21fe26cd15dd",
+   "enunciado": "Explicación: software de edición profesional recomendado: Premiere Pro, DaVinci Resolve, Final Cut.",
+   "alcance": "visual-media",
+   "temas": [
+    "postproduccion",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "9ba49c8fdb98",
+   "enunciado": "Explicación: software de edición ligero recomendado: CapCut, iMovie, Filmora.",
+   "alcance": "visual-media",
+   "temas": [
+    "postproduccion",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "bc64dbf5c295",
+   "enunciado": "Explicación: software de VFX recomendado: After Effects, Motion.",
+   "alcance": "visual-media",
+   "temas": [
+    "postproduccion",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "272c0e71e2ef",
+   "enunciado": "Explicación: herramientas de animación recomendadas en 2D, 3D y motion (Toon Boom, Blender, After Effects, Lottie, etc.).",
+   "alcance": "visual-media",
+   "temas": [
+    "animacion_ilustracion",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "ea483a5d11e0",
+   "enunciado": "Explicación: recursos de formación recomendados (StudioBinder, Peter McKinnon, Corridor Crew, The Animator's Survival Kit).",
+   "alcance": "visual-media",
+   "temas": [
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "20168a701423",
+   "enunciado": "Explicación: descripción del skill visual-prompt-forge, que genera prompts por modelo desde shots.json y tiene un modo revisión que re-emite solo los shots fallidos.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "5592ef3002bd",
+   "enunciado": "Cada generador de imagen premia un estilo de prompt distinto, por lo que el prompt debe adaptarse al modelo (corto para Midjourney, natural para Flux, párrafo para GPT Image, consciente de texto para Ideogram).",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "5a4fbc91e86d",
+   "enunciado": "El mismo shot debe reescribirse con la sintaxis propia de cada generador.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "2e7df3aa03a5",
+   "enunciado": "El skill se activa cuando se entrega shots.json pidiendo prompts, se nombra un generador concreto, se piden prompts de generación para un storyboard o el mismo shot para varios generadores.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "19c978f54aa6",
+   "enunciado": "Si no existe shots.json, primero se usa storyboard-architect y luego se encadena visual-prompt-forge.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "76d89c3e65dc",
+   "enunciado": "Se produce un archivo de prompts por generador objetivo dentro de output/prompts/round-N/.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "entrega_paquete",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "ec8149c9afc4",
+   "enunciado": "Cada ronda escribe su propio directorio (round-1, round-2…) para no sobrescribir los prompts que produjeron frames anteriores.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "d99156d94cd7",
+   "enunciado": "Cada archivo es texto plano con un prompt por shot, separados por línea en blanco y un comentario # shot_NN.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "77e5fd8c0c25",
+   "enunciado": "Todo prompt se compone de cinco capas: Brand Lock, Series Lock, Shot Spec, Text Layer (nunca en el prompt) y adaptador del generador.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen",
+    "texto_en_pantalla",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "4dff4f9bb137",
+   "enunciado": "Las cuatro primeras capas salen de shots.json y el brand-lock; el skill aplica la quinta, el adaptador.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "508714fff2af",
+   "enunciado": "Se requieren shots.json, brand-lock.snapshot.md y generadores objetivo; si no se especifican los generadores, hay que preguntar.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "831a5a47805c",
+   "enunciado": "Antes de componer se valida con tools/validate_shots.py output/.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "validacion_gates",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "cafbd538dd25",
+   "enunciado": "Si falta el brand-lock o shots.json no valida, se debe detener y avisar; no se forjan prompts con datos incompletos.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "validacion_gates",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "94530db04f40",
+   "enunciado": "Sin tools/ disponible, se lee el schema de ../storyboard-architect/templates/shots.schema.json y se verifica a mano; si no existe, se pide al usuario en vez de componer de memoria.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "shots_json_schema",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "8db2bc905f60",
+   "enunciado": "Para cada generador objetivo se lee su archivo de adaptador (midjourney, flux, ideogram, gpt-image, nano-banana, seedream, kling, veo, seedance, hailuo).",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "seleccion_modelo",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "69e5f6c4ec9a",
+   "enunciado": "Es obligatorio leer el adaptador antes de escribir prompts para ese generador; no se adivina desde el entrenamiento.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "conducta_agente",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "9e79702e6357",
+   "enunciado": "adapters/_capabilities.json es la única fuente de verdad de límites por generador y debe respetarse; no se pide movimiento a un generador solo de stills.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "capacidades_modelo",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "b026c8414d37",
+   "enunciado": "max_prompt_words es un techo; el rango del adaptador .md es el objetivo recomendado y, si hay contradicción real, prevalece el JSON.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "longitud_prompt",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "c032cfbdd294",
+   "enunciado": "validate_capabilities.py falla si un adaptador anuncia más palabras que su techo o no documenta el aspect_param indicado por el JSON.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "validacion_gates",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "736b95a77538",
+   "enunciado": "Por cada shot y generador se compone tomando brand-lock, series_lock y spec del shot, quitando todo on_screen_text, aplicando el adaptador y añadiendo parámetros propios.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen",
+    "texto_en_pantalla",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "c73cf86443ea",
+   "enunciado": "Los archivos de salida llevan un encabezado de comentarios (storyboard, generador, modelo, aspecto, brand-lock, run, ronda) y cada shot con su comentario y prompt.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "entrega_paquete",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "dbfe4bb36c87",
+   "enunciado": "Las líneas # son comentarios y solo se copia el cuerpo del prompt; copy-prompt.py trata el comentario con nombre de shot como encabezado de bloque.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "herramientas_codigo",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "9092841ee47a",
+   "enunciado": "El encabezado registra run y ronda, no una marca de hora, para mantener el determinismo entre corridas idénticas.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "a74a14e0e8e1",
+   "enunciado": "Tras escribir los archivos se añade a rounds de run.json una entrada con número de ronda, started_at, reason y, por archivo, generador, ruta, SHA-256 e ids de shots.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "6dd1261dbe56",
+   "enunciado": "Ejemplo: comando shasum -a 256 sobre los .txt de la ronda.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "f33cae58fa09",
+   "enunciado": "El array rounds es la única parte modificable de run.json; el resto quedó fijado por el architect.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "bdda0885fe05",
+   "enunciado": "Al entregar se indica dónde están los archivos y se ofrece QA de los renders con visual-asset-critic.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "ad987d0f66f5",
+   "enunciado": "Ejemplo: uso de tools/copy-prompt.py para copiar al portapapeles un archivo o un shot concreto.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "041bd710a1e6",
+   "enunciado": "El helper de copiado es opcional; los .txt pueden leerse y copiarse a mano.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "d6fe2178a9ec",
+   "enunciado": "En modo revisión, con shots.json y critique.json, se re-emiten prompts solo para los shots fallidos con la corrección ya aplicada.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "a7b50f2fdeb0",
+   "enunciado": "El modo revisión se activa cuando el usuario pide aplicar la crítica, revisar los shots fallidos o entrega un árbol con critiques/.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "415c43a2e646",
+   "enunciado": "En modo revisión se leen todas las críticas de la ronda más alta en output/critiques/round-{N}/.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "24543d53d0c4",
+   "enunciado": "En modo revisión se omiten los shots con verdict ACCEPT.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "revision_iteracion"
+   ]
+  }
+ ]
+}
