@@ -1,0 +1,1126 @@
+{
+ "paso": "verificar",
+ "instrucciones": "Verifica una fusión. Recibes los registros originales y el texto fusionado. Para cada original,\nlista las exigencias, límites, valores, excepciones y alcances que contiene y di si están en el fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"completo\": true|false, \"faltan\": [{\"id\": \"...\", \"elemento\": \"...\"}], \"agregado_sin_fuente\": [\"...\"]}\nDevuelve JSON {\"verificaciones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0371.1",
+   "originales": [
+    {
+     "id": "020880a58016",
+     "texto": "[Image Editing] Универсальные паттерны. Логика edit'а различается по моделям:\n- **Nano Banana:** conversational, без масок. «Keep X same, change Y». Хорошо понимает физику и материалы.\n- **GPT Image 2:** двухколоночная логика **Change / Preserve / Constraints**. Preserve list повторять каждую итерацию, иначе drift. Опционально `mask_image_url` для точечных edit'ов. Лучшая identity preservation. См. [gpt-image.md](gpt-image.md#editing--двухколоночная-логика).",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/editing.md",
+       "encabezado": "Image Editing"
+      }
+     ]
+    },
+    {
+     "id": "2a73eb67f4cd",
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Edit · Nano Banana: «Keep X same, change Y» · GPT Image 2: «Change: X / Preserve: Y / Constraints: Z» — повторять preserve каждую итерацию",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Lógica de edit por modelo (image/editing.md y models.md › diferencias de sintaxis): Nano Banana: conversacional, sin máscaras, «Keep X same, change Y»; entiende bien física y materiales. GPT Image 2: lógica de dos columnas «Change: X / Preserve: Y / Constraints: Z»; repetir la lista Preserve en cada iteración, si no hay drift; opcionalmente `mask_image_url` para edits puntuales; mejor identity preservation (ver gpt-image.md#editing)."
+  },
+  {
+   "grupo": "DUP-0372.1",
+   "originales": [
+    {
+     "id": "5a6a98513fb3",
+     "texto": "[Nano Banana — Specific Rules › Editing у Nano Banana] Conversational, без масок:\nRemove [OBJECT] from this image.\nFill with [LOGICAL REPLACEMENT] matching surroundings.\nKeep [PRESERVED ELEMENTS] exactly the same.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+      }
+     ]
+    },
+    {
+     "id": "f20647d177a0",
+     "texto": "[Image Editing › Object Removal] Remove [OBJECT] from this image.\nFill with [LOGICAL REPLACEMENT] matching surroundings.\nKeep [PRESERVED ELEMENTS] exactly the same.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/editing.md",
+       "encabezado": "Image Editing › Object Removal"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Plantilla de eliminación de objeto (image/editing.md › Object Removal, patrón universal; nano-banana.md › Editing, conversacional sin máscaras en Nano Banana): \"Remove [OBJECT] from this image. Fill with [LOGICAL REPLACEMENT] matching surroundings. Keep [PRESERVED ELEMENTS] exactly the same.\""
+  },
+  {
+   "grupo": "DUP-0373.1.1",
+   "originales": [
+    {
+     "id": "022187ee071b",
+     "texto": "[Image Editing › Conversational Refinement] After initial edit:\n\"Make it warmer\"; \"Increase contrast\"; \"Soften the edges\"; \"Add more detail to shadows\"",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/editing.md",
+       "encabezado": "Image Editing › Conversational Refinement"
+      }
+     ]
+    },
+    {
+     "id": "a865df585175",
+     "texto": "[Nano Banana — Specific Rules › Editing у Nano Banana] После генерации добавляй итеративно:\n«Make it warmer»; «Increase contrast»; «Soften background, add blur»; «Change headline color to #3b82f6»",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Refinamiento conversacional (image/editing.md › Conversational Refinement, universal; nano-banana.md › Editing): después del edit o generación inicial, refinar de forma iterativa con órdenes cortas: \"Make it warmer\"; \"Increase contrast\"; \"Soften the edges\"; \"Add more detail to shadows\"; en Nano Banana también «Soften background, add blur» y «Change headline color to #3b82f6»."
+  },
+  {
+   "grupo": "DUP-0374.1",
+   "originales": [
+    {
+     "id": "bb9914673b46",
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow] When generating prompts for Nano Banana in `nano-banana.txt`, include both:\n- The text-to-image prompt (for first-pass generation)\n- A modification template comment showing how to use the result for variants:",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+      }
+     ]
+    },
+    {
+     "id": "effa01d8e31e",
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow] # shot_01, text-to-image prompt:\n{prompt}\n\n# shot_01, variant template (after generating once):\n# Reference: [the generated image]. Modify the image to {your change}.\n# Preserve {anchors}. Change {target}.",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Adapter Nano Banana (Gemini 2.5 Flash Image) de visual-prompt-forge › Variant-generation workflow: al generar prompts en `nano-banana.txt`, incluir ambos: el prompt text-to-image (primera pasada) y un comentario con la plantilla de modificación para variantes. Formato: \"# shot_01, text-to-image prompt:\" seguido de {prompt}; luego \"# shot_01, variant template (after generating once):\" / \"# Reference: [the generated image]. Modify the image to {your change}.\" / \"# Preserve {anchors}. Change {target}.\""
+  },
+  {
+   "grupo": "DUP-0375.1",
+   "originales": [
+    {
+     "id": "173a865c1b94",
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в] - **Identity preservation в edit.** Меняешь одежду / погоду / фон — лицо, поза, геометрия не плывут. Двухколоночная логика (change / preserve) работает как контракт.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в"
+      }
+     ]
+    },
+    {
+     "id": "ef05dc915614",
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › TL;DR] Задача: Точное editing с preservation (try-on, swap, weather) · Модель: **GPT Image 2** (в editing у него лучшая identity-preservation)",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Selección de modelo (image/models.md, TL;DR y \"GPT Image 2 gana en\"): para editing preciso con preservación (try-on, swap, clima/weather, cambio de ropa o fondo) usar GPT Image 2, que tiene la mejor identity preservation en edit: rostro, pose y geometría no se desplazan; la lógica de dos columnas (change / preserve) funciona como contrato."
+  },
+  {
+   "grupo": "DUP-0376.1",
+   "originales": [
+    {
+     "id": "9bf2a5537f04",
+     "texto": "[Brand Lock: WhyStrohm › Voice rules] - no exclamation points in headlines",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    },
+    {
+     "id": "b064947c9bde",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never use exclamation points in headlines",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand Lock WhyStrohm (Voice rules del snapshot shotkit-explainer y Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run): nunca signos de exclamación en titulares (\"no exclamation points in headlines\")."
+  },
+  {
+   "grupo": "DUP-0377.1",
+   "originales": [
+    {
+     "id": "c6fcfde9e2fa",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never use emojis in body copy",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    },
+    {
+     "id": "fd738c50b75a",
+     "texto": "[Brand Lock: WhyStrohm › Voice rules] - no emojis in body copy",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand Lock WhyStrohm (Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run; Voice rules de shotkit-explainer): nunca emojis en el body copy (\"no emojis in body copy\")."
+  },
+  {
+   "grupo": "DUP-0378.1",
+   "originales": [
+    {
+     "id": "05f95d9ea461",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never use hype words (\"game-changing\", \"revolutionary\", \"next-level\", \"comprehensive\")",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    },
+    {
+     "id": "7515b5d281b6",
+     "texto": "[Brand Lock: WhyStrohm › Voice rules] - no hype words (\"game-changing\", \"revolutionary\", \"comprehensive\", \"next-level\", \"leverage\")",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand Lock WhyStrohm (Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run; Voice rules de shotkit-explainer): nunca hype words: \"game-changing\", \"revolutionary\", \"next-level\", \"comprehensive\" y, en Voice rules, también \"leverage\"."
+  },
+  {
+   "grupo": "DUP-0379.1",
+   "originales": [
+    {
+     "id": "a94dde7186a0",
+     "texto": "[Brand Lock: Northwind Coffee Roasters › Aspect ratios] Default: 4:5 and 9:16 for social, 16:9 for the web hero.",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+       "encabezado": "Brand Lock: Northwind Coffee Roasters › Aspect ratios"
+      }
+     ]
+    },
+    {
+     "id": "eb9bf819648f",
+     "texto": "[Example input: what the user handed over › Source 2: one-page brand sheet (read)] - Formats noted: Instagram (4:5 and 9:16), website hero (16:9).",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+       "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand Lock Northwind Coffee Roasters (brand-lock.md › Aspect ratios; input-brief.md, brand sheet de una página): aspect ratios por defecto 4:5 y 9:16 para social (Instagram) y 16:9 para el hero de la web."
+  },
+  {
+   "grupo": "DUP-0380.1",
+   "originales": [
+    {
+     "id": "84ded1042bf4",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Voice rules] - prefer present-tense",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      }
+     ]
+    },
+    {
+     "id": "8cf7e3076d08",
+     "texto": "[Brand Lock: WhyStrohm › Voice rules] - prefer present-tense over future-tense",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Voice rules de los brand locks Acme SaaS (Example, saas-clean.md) y WhyStrohm (snapshot shotkit-explainer): preferir el presente (present-tense) sobre el futuro (future-tense)."
+  },
+  {
+   "grupo": "DUP-0381.1",
+   "originales": [
+    {
+     "id": "24bff38fedaa",
+     "texto": "[Brand Lock: WhyStrohm › Voice rules] - prefer specific numbers over vague claims (\"48 hours\" not \"fast\", \"30 minutes a week\" not \"a little time\")",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    },
+    {
+     "id": "38d15d23fa48",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Voice rules] - prefer specific numbers (\"40% reduction in 90 days\" not \"significant improvement\")",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Voice rules de los brand locks WhyStrohm (snapshot shotkit-explainer) y Acme SaaS (Example): preferir números específicos sobre claims vagos: \"48 hours\" not \"fast\", \"30 minutes a week\" not \"a little time\" (WhyStrohm); \"40% reduction in 90 days\" not \"significant improvement\" (Acme SaaS)."
+  },
+  {
+   "grupo": "DUP-0382.1",
+   "originales": [
+    {
+     "id": "4f1cd93ec7d8",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Never list] - never default to dark mode in primary marketing",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+      }
+     ]
+    },
+    {
+     "id": "7f73ee3f5016",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never default to dark mode, light mode hybrid is the brand",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Never list de los brand locks: nunca usar dark mode por defecto. Acme SaaS (Example): nunca por defecto en el marketing primario. WhyStrohm (snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run): nunca por defecto, la marca es un híbrido light mode (\"light mode hybrid is the brand\")."
+  },
+  {
+   "grupo": "DUP-0383.1",
+   "originales": [
+    {
+     "id": "0a8e9bbfe379",
+     "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] A face does four jobs: internal state, where it looks, the cost, the decision. Banned, those jobs redistribute — **decision → anatomy mid-action; internal state → an object crossing a threshold; looking/rivalry → space.** The mechanism, the EMOTION→OBJECT substitution table and the state-change cheat-sheet are owned by `animatic-keyframes.md` §5; do not duplicate them. Two filters before you draw: name the **verb** on any hand/foot panel (grip / latch / shift / preload / release — no verb, no panel), and board only the **after** state of any object threshold (Honda *Cog*). Pick ONE hero object and board it three times at rising intensity — beats twelve unrelated inserts (`dramaturgy.md` §13).",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system"
+      }
+     ]
+    },
+    {
+     "id": "de68ce7d43e9",
+     "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] A face does four jobs: shows the feeling, shows where it looks, shows the cost, shows the decision. Faces banned, redistribute: **decision → anatomy mid-action; internal state → an object crossing a threshold; looking/rivalry → space** (§6 and `dramaturgy.md` §2). Assign one job per panel and tag it. The emotion must already be frozen *inside the object* — a still cannot let motion blur do the emotional work for it.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Emoción sin rostro (video/animatic-keyframes.md §5, que es dueño del mecanismo; race-and-speed.md §4 race captioning system): un rostro hace cuatro trabajos: estado interno/sentimiento, hacia dónde mira, el costo y la decisión. Si los rostros están prohibidos, esos trabajos se redistribuyen: decisión → anatomía a mitad de acción; estado interno → un objeto cruzando un umbral; mirada/rivalidad → espacio (§6 y `dramaturgy.md` §2). Asignar un trabajo por panel y etiquetarlo. La emoción debe quedar ya congelada dentro del objeto: un still no puede dejar que el motion blur haga el trabajo emocional. En race, no duplicar el mecanismo, la tabla EMOTION→OBJECT ni el cheat-sheet de cambio de estado (son de `animatic-keyframes.md` §5); dos filtros antes de dibujar: nombrar el verbo en todo panel de mano o pie (grip / latch / shift / preload / release — sin verbo, no hay panel) y boardear solo el estado posterior (after) de cualquier umbral de objeto (Honda *Cog*). Elegir UN objeto héroe y boardearlo tres veces con intensidad creciente, que supera a doce inserts sin relación (`dramaturgy.md` §13)."
+  },
+  {
+   "grupo": "DUP-0384.1",
+   "originales": [
+    {
+     "id": "948de291040f",
+     "texto": "[Adapter: Midjourney (v7) › Composition mapping] shot_grammar: `MCU eye-level` · Midjourney phrase: `medium close-up, eye level`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+      }
+     ]
+    },
+    {
+     "id": "ae12ae6d23bc",
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping] shot_grammar: `MCU eye-level` · Flux phrasing: `Medium close-up framing, camera at eye level.`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `MCU eye-level` se traduce en Midjourney (v7) como `medium close-up, eye level` y en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Medium close-up framing, camera at eye level.`"
+  },
+  {
+   "grupo": "DUP-0385.1",
+   "originales": [
+    {
+     "id": "0c18d3b38da7",
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping] shot_grammar: `WS overhead` · Flux phrasing: `Wide overhead shot, looking straight down.`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+      }
+     ]
+    },
+    {
+     "id": "ef30f9c0e07c",
+     "texto": "[Adapter: Midjourney (v7) › Composition mapping] shot_grammar: `WS overhead` · Midjourney phrase: `wide shot, overhead view, top-down`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `WS overhead` se traduce en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Wide overhead shot, looking straight down.` y en Midjourney (v7) como `wide shot, overhead view, top-down`."
+  },
+  {
+   "grupo": "DUP-0386.1",
+   "originales": [
+    {
+     "id": "068ebe9717f5",
+     "texto": "[Adapter: Midjourney (v7) › Composition mapping] shot_grammar: `deep DOF` · Midjourney phrase: `deep focus, everything sharp, f/8`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+      }
+     ]
+    },
+    {
+     "id": "efa721247213",
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping] shot_grammar: `deep DOF` · Flux phrasing: `Shot at f/8, everything in sharp focus front to back.`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `deep DOF` se traduce en Midjourney (v7) como `deep focus, everything sharp, f/8` y en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Shot at f/8, everything in sharp focus front to back.`"
+  },
+  {
+   "grupo": "DUP-0387.1",
+   "originales": [
+    {
+     "id": "2bc4538b04d6",
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping] shot_grammar: `shallow DOF` · Flux phrasing: `Shot at f/1.8 with shallow depth of field, background softly out of focus.`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+      }
+     ]
+    },
+    {
+     "id": "c84b2bef06d5",
+     "texto": "[Adapter: Midjourney (v7) › Composition mapping] shot_grammar: `shallow DOF` · Midjourney phrase: `shallow depth of field, f/1.8, bokeh background`",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `shallow DOF` se traduce en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Shot at f/1.8 with shallow depth of field, background softly out of focus.` y en Midjourney (v7) como `shallow depth of field, f/1.8, bokeh background`."
+  },
+  {
+   "grupo": "DUP-0388.1",
+   "originales": [
+    {
+     "id": "8fe4d109cc0b",
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping] Translate shot grammar into descriptive language:",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+      }
+     ]
+    },
+    {
+     "id": "de8b71d3a2c1",
+     "texto": "[Adapter: Midjourney (v7) › Composition mapping] Translate shot grammar into Midjourney-friendly phrases:",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Composition mapping de los adapters de visual-prompt-forge: traducir el shot grammar al lenguaje del generador: en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) a lenguaje descriptivo; en Midjourney (v7) a frases Midjourney-friendly."
+  },
+  {
+   "grupo": "DUP-0389.1",
+   "originales": [
+    {
+     "id": "d76296b3c304",
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `depth_of_field`, optional, shallow / deep / rack",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ]
+    },
+    {
+     "id": "dc40bd780a82",
+     "texto": "[shots.schema.json › shots[].depth_of_field] shots[].depth_of_field: type=\"string\"; enum=[\"shallow\", \"deep\", \"rack\"]; description=\"Focus behaviour. 'rack' means focus shifts mid-shot.\"; opcional",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].depth_of_field"
+      }
+     ]
+    }
+   ],
+   "fusionado": "shots.json (storyboard-architect Step 4 y shots.schema.json): `shots[].depth_of_field` es opcional, tipo string, enum `shallow` / `deep` / `rack`; describe el comportamiento del foco (\"Focus behaviour\"), y `rack` significa que el foco cambia a mitad del shot."
+  },
+  {
+   "grupo": "DUP-0390.1",
+   "originales": [
+    {
+     "id": "2f9dc6a30555",
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `framing`, ECU / CU / MCU / MS / MLS / WS / EWS",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ]
+    },
+    {
+     "id": "9ec4623168e5",
+     "texto": "[shots.schema.json › shots[].framing] shots[].framing: type=\"string\"; enum=[\"ECU\", \"CU\", \"MCU\", \"MS\", \"MLS\", \"WS\", \"EWS\"]; requerido",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].framing"
+      }
+     ]
+    }
+   ],
+   "fusionado": "shots.json (storyboard-architect Step 4 y shots.schema.json): `shots[].framing` es requerido, tipo string, enum ECU / CU / MCU / MS / MLS / WS / EWS."
+  },
+  {
+   "grupo": "DUP-0391.1",
+   "originales": [
+    {
+     "id": "0f06d9de6489",
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] Note on `rack`: as a `motion` value it means the rack focus is the shot's movement; as a\n`depth_of_field` value it means focus shifts mid-shot. Same word, two fields, two\nmeanings.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ]
+    },
+    {
+     "id": "ffdaefa3cfd7",
+     "texto": "[Shot Grammar › Depth of field] Code: `rack` · Effect: Focus shifts mid-shot",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › Depth of field"
+      }
+     ]
+    }
+   ],
+   "fusionado": "`rack` (storyboard-architect Step 4 y shot-grammar.md › Depth of field): como valor de `depth_of_field` significa que el foco cambia a mitad del shot (\"Focus shifts mid-shot\"); como valor de `motion` significa que el rack focus es el movimiento del shot. Misma palabra, dos campos, dos significados."
+  },
+  {
+   "grupo": "DUP-0392.1",
+   "originales": [
+    {
+     "id": "4e526575fa2f",
+     "texto": "[Grupo ensamble › 5. Cámara, ángulo y rig montable] - Lente 35mm a 50mm a distancia suficiente para no deformar a los extremos; con larga focal los miembros del fondo se comprimen contra los del frente y se tapan. [FUENTE: video/references/camera-lighting-vocabulary.md §3]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "encabezado": "Grupo ensamble › 5. Cámara, ángulo y rig montable"
+      }
+     ]
+    },
+    {
+     "id": "79b2bbd009c8",
+     "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - Lente: 35mm a 50mm desde el borde para no deformar el cuerpo; macro solo para el detalle de las manos rompiendo la superficie. [FUENTE: video/references/camera-lighting-vocabulary.md §3]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Lente 35mm a 50mm para no deformar cuerpos (regímenes 09-grupo-ensamble §5 y 02-agua-ruptura §5). Grupo ensamble: a distancia suficiente para no deformar a los extremos; con larga focal los miembros del fondo se comprimen contra los del frente y se tapan. Ruptura de superficie: desde el borde para no deformar el cuerpo; macro solo para el detalle de las manos rompiendo la superficie. [FUENTE: video/references/camera-lighting-vocabulary.md §3]"
+  },
+  {
+   "grupo": "DUP-0393.1",
+   "originales": [
+    {
+     "id": "23c2fa648b53",
+     "texto": "[Universal rules — apply to every video model › 7. U6. Precise lens language] State the lens. \"Shot on 50mm\" works across all major models. Quick map:\n24mm. wide, immersive, exaggerated space; 35mm. natural documentary; 50mm. intimate, human perspective; 85mm. portrait, compressed background; 100mm macro. texture, detail; anamorphic 40mm. cinematic widescreen",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "encabezado": "Universal rules — apply to every video model › 7. U6. Precise lens language"
+      }
+     ]
+    },
+    {
+     "id": "9b656f49fbac",
+     "texto": "[Camera, lighting, color, sound vocabulary › 3. Lens language] 24mm. Wide, immersive, exaggerated proximity.; 35mm. Natural documentary.; 50mm. Intimate, human perspective.; 85mm. Portrait, compressed background.; 100mm macro. Texture, detail.; anamorphic 40mm. Cinematic widescreen.; shallow depth of field.; deep focus.; compressed telephoto background.; distorted wide-angle proximity.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/camera-lighting-vocabulary.md",
+       "encabezado": "Camera, lighting, color, sound vocabulary › 3. Lens language"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Lenguaje de lente preciso (video/universal-rules.md U6, aplica a todo modelo de video; camera-lighting-vocabulary.md §3): declarar la lente; \"Shot on 50mm\" funciona en todos los modelos principales. Mapa rápido: 24mm, wide, inmersivo, espacio/proximidad exagerados; 35mm, documental natural; 50mm, íntimo, perspectiva humana; 85mm, retrato, fondo comprimido; 100mm macro, textura, detalle; anamorphic 40mm, cinematic widescreen. Vocabulario adicional: shallow depth of field; deep focus; compressed telephoto background; distorted wide-angle proximity."
+  },
+  {
+   "grupo": "DUP-0394.1",
+   "originales": [
+    {
+     "id": "912bc75c856b",
+     "texto": "[Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)] - [ ] Créditos en 00-README.md: atribución *Serge Shima — github.com/smixs/visual-skills* si se usó la capa smixs; licencias de sub-skills anotadas",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+      }
+     ]
+    },
+    {
+     "id": "c969c79e1989",
+     "texto": "[AI Production Director › 6. Reglas de resolución de conflictos › 6.5 Atribución] Todo entregable que use la capa smixs conserva la línea: *Serge Shima — github.com/smixs/visual-skills* (CC BY 4.0, obligatorio, incluye derivados generados por agentes). Colócala en los créditos del production package, no en cada prompt.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.5 Atribución"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Atribución (ai-production-director §6.5 y checklist maestro de la Etapa 7 en production-package.md §4): todo entregable que use la capa smixs conserva la línea *Serge Shima — github.com/smixs/visual-skills* (CC BY 4.0, obligatoria, incluye derivados generados por agentes). Se coloca en los créditos del production package, en 00-README.md, no en cada prompt. El gate de la Etapa 7 verifica esos créditos y que las licencias de las sub-skills estén anotadas."
+  },
+  {
+   "grupo": "DUP-0395.1",
+   "originales": [
+    {
+     "id": "4021fb4265e2",
+     "texto": "[Storyboard HTML Preview › Hard rules › Rule 3. Print must work] Hit Cmd-P. The result should be a clean PDF. If layout breaks across page boundaries, the print stylesheet is broken.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Hard rules › Rule 3. Print must work"
+      }
+     ]
+    },
+    {
+     "id": "c1ad45e9bd0c",
+     "texto": "[Storyboard HTML Preview › Workflow › Step 6. Print stylesheet] The user should be able to hit Cmd-P / Ctrl-P and get a clean PDF.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Workflow › Step 6. Print stylesheet"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard HTML Preview (Hard rules › Rule 3 \"Print must work\" y Workflow › Step 6 Print stylesheet): el usuario debe poder pulsar Cmd-P / Ctrl-P y obtener un PDF limpio. Si el layout se rompe entre los límites de página, el print stylesheet está roto."
+  },
+  {
+   "grupo": "DUP-0396.1",
+   "originales": [
+    {
+     "id": "1d04a41d0b1a",
+     "texto": "[Tools › Rendering › `shots-to-html.py`] The page shows two dates, deliberately: the **run** date from `run.json`, and the **render**\ndate. A single \"Generated\" date meant re-rendering a preview restamped the run as today.",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      }
+     ]
+    },
+    {
+     "id": "317b8ec08191",
+     "texto": "[Storyboard HTML Preview › Two timestamps, not one] \"Run\" is when the storyboard was produced, read from `run.json`. \"Rendered\" is when the page\nwas written. They are separate lines in the footer and they must stay separate.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Two timestamps, not one"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard HTML Preview (SKILL.md › Two timestamps, not one; tools/README.md de `shots-to-html.py` en brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge): la página muestra deliberadamente dos fechas: \"Run\", cuando se produjo el storyboard, leída de `run.json`, y \"Rendered\", cuando se escribió la página. Van en líneas separadas del footer y deben seguir separadas. Motivo: una sola fecha \"Generated\" hacía que re-renderizar un preview reestampara el run como de hoy."
+  },
+  {
+   "grupo": "DUP-0397.1",
+   "originales": [
+    {
+     "id": "a0cb7c853c06",
+     "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] **Escape everything.** Subjects, rationales, VO lines, and overlay copy are model-generated\nprose that lands in both text and attribute contexts. One angle bracket in a rationale, or\none quote in an overlay font name, breaks the page a client is reading.\n`tools/shots-to-html.py` escapes every substitution by default and reserves raw output for\nthe inlined CSS alone.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+      }
+     ]
+    },
+    {
+     "id": "d6f066edd610",
+     "texto": "[Tools › Rendering › `shots-to-html.py`] Everything interpolated is HTML-escaped. Shot subjects and rationales are model-generated\nprose, and one angle bracket used to be enough to break the page.",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Rendering › `shots-to-html.py`"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard HTML Preview (Step 4 y tools/README.md de `shots-to-html.py` en brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge): \"Escape everything.\" Todo lo interpolado se escapa como HTML. Subjects, rationales, líneas de VO y copy de overlays son prosa generada por modelo que cae en contextos de texto y de atributo; un solo angle bracket en un rationale, o una comilla en el nombre de fuente de un overlay, rompe la página que está leyendo un cliente (antes bastaba un angle bracket para romperla). `tools/shots-to-html.py` escapa cada sustitución por defecto y reserva la salida raw solo para el CSS inlined."
+  },
+  {
+   "grupo": "DUP-0398.1",
+   "originales": [
+    {
+     "id": "45be7bbaa098",
+     "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] If no frames exist, render styled placeholder cards showing the framing, subject, and shot\nspec. These are still useful for stakeholder review at the storyboard stage.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+      }
+     ]
+    },
+    {
+     "id": "e47df183b4d7",
+     "texto": "[Storyboard HTML Preview › What you produce] If no frames exist yet, the HTML uses styled placeholder cards with the shot spec, still\nuseful for review and handoff.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › What you produce"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard HTML Preview (Step 4 y What you produce): si todavía no existen frames, el HTML renderiza tarjetas placeholder estilizadas que muestran el framing, el subject y la spec del shot; siguen siendo útiles para la revisión de stakeholders en la etapa de storyboard y para el handoff."
+  },
+  {
+   "grupo": "DUP-0399.1",
+   "originales": [
+    {
+     "id": "af15b78f0741",
+     "texto": "[Storyboard HTML Preview › Hard rules › Rule 4. Brand-aware but quiet] Use brand colors as accents, not as full backgrounds. The reviewer's job is to read the storyboard, not admire the design. Subtle.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Hard rules › Rule 4. Brand-aware but quiet"
+      }
+     ]
+    },
+    {
+     "id": "cdc9e49df251",
+     "texto": "[Storyboard HTML Preview › Workflow › Step 2. Extract brand parameters] The HTML preview should *feel* like the brand without going overboard. Quiet branding, not loud.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-html-preview/SKILL.md",
+       "encabezado": "Storyboard HTML Preview › Workflow › Step 2. Extract brand parameters"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard HTML Preview (Hard rules › Rule 4 \"Brand-aware but quiet\" y Step 2 Extract brand parameters): el preview debe sentirse como la marca sin excederse: branding discreto, no ruidoso. Usar los colores de marca como acentos, no como fondos completos; el trabajo del revisor es leer el storyboard, no admirar el diseño. Sutil."
+  },
+  {
+   "grupo": "DUP-0400.1",
+   "originales": [
+    {
+     "id": "a7daf2e98d07",
+     "texto": "[Etapa 7 — Final AI Video Production Package › 1. Estructura del paquete] production-package/\n├── 00-README.md                  # Índice, track usado, resumen de decisiones, créditos\n├── 01-strategy/\n│   ├── brief.md                  # Brief original o su reconstrucción\n│   ├── territories.md            # Territorios explorados (STANDARD/FILM)\n│   ├── concept-cards.md          # Todas las cards + matriz + concepto seleccionado marcado\n│   └── narrative-direction.md\n├── 02-script/\n│   ├── treatment.md              # Solo FILM\n│   └── script.md                 # Escenas XML-tagged de screenwriter\n├── 03-direction/\n│   └── cinematic-direction.md    # Blocking, cámara, luz, color, 5 anclas, por escena\n├── 04-shots/\n│   ├── storyboard.md\n│   ├── shots.json                # FUENTE DE VERDAD\n│   ├── text-overlays.json\n│   ├── run.json\n│   └── brand-lock.snapshot.md\n├── 05-anchors/\n│   ├── anchor-plan.md            # Qué refs se necesitan y para qué shots\n│   ├── prompts/round-N/          # Prompts de imagen por modelo, por ronda\n│   ├── frames/round-N/           # Renders aprobados/evaluados\n│   └── critiques/round-N/        # critique.json por shot evaluado\n├── 06-video-prompts/\n│   ├── prompts/                  # Un archivo por shot: shot_NN.<modelo>.txt\n│   └── continuity-notes.md       # Bloques de continuidad entre clips\n├── 07-delivery/\n│   ├── preview.html              # storyboard-html-preview, single-file\n│   └── post-production.md        # Checklist de post (ver §3)\n└── brand-lock.md                 # Si existió Etapa 0",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 1. Estructura del paquete"
+      }
+     ]
+    },
+    {
+     "id": "b30d2a38dc92",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E7.1 · Subproceso: Ensamblar el árbol del paquete · Skill con autoridad: production-package.md §1 · Entra: Todos los artefactos · Sale: production-package/ 00 a 07 · Gate o herramienta: Estructura exacta de la spec",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 7 — Final AI Video Production Package (production-package.md §1; subproceso E7.1 \"Ensamblar el árbol del paquete\" del Mapa del Spot, con autoridad production-package.md §1): con todos los artefactos como entrada, ensamblar production-package/ 00 a 07 con la estructura exacta de la spec (ese es el gate): 00-README.md (índice, track usado, resumen de decisiones, créditos); 01-strategy/ con brief.md (brief original o su reconstrucción), territories.md (territorios explorados, STANDARD/FILM), concept-cards.md (todas las cards + matriz + concepto seleccionado marcado) y narrative-direction.md; 02-script/ con treatment.md (solo FILM) y script.md (escenas XML-tagged de screenwriter); 03-direction/cinematic-direction.md (blocking, cámara, luz, color, 5 anclas, por escena); 04-shots/ con storyboard.md, shots.json (FUENTE DE VERDAD), text-overlays.json, run.json y brand-lock.snapshot.md; 05-anchors/ con anchor-plan.md (qué refs se necesitan y para qué shots), prompts/round-N/ (prompts de imagen por modelo, por ronda), frames/round-N/ (renders aprobados/evaluados) y critiques/round-N/ (critique.json por shot evaluado); 06-video-prompts/ con prompts/ (un archivo por shot: shot_NN.<modelo>.txt) y continuity-notes.md (bloques de continuidad entre clips); 07-delivery/ con preview.html (storyboard-html-preview, single-file) y post-production.md (checklist de post, ver §3); y brand-lock.md si existió Etapa 0."
+  },
+  {
+   "grupo": "DUP-0401.1",
+   "originales": [
+    {
+     "id": "086cba25eebb",
+     "texto": "[Etapa 7 — Final AI Video Production Package › 3. Checklist de post-producción (07-delivery/post-production.md)] Adaptar al proyecto, con specs concretos — no placeholders:\n- [ ] Generar los N shots en [modelo(s)] con los prompts de 06-video-prompts/\n- [ ] Verificar cada clip contra su shot card (encuadre, acción, luz) antes de editar\n- [ ] Ensamblar en [NLE] siguiendo el orden y duraciones de shots.json\n- [ ] Aplicar grade de consistencia: [referencia de color del brand-lock o Visual Theme]\n- [ ] Transiciones: [tipo y duración definidos en dirección, no \"al gusto\"]\n- [ ] Audio: [música género/BPM/posición de beats + VO + ambientes según dirección de audio por shot]\n- [ ] Overlays de texto según text-overlays.json (tipografía del brand-lock)\n- [ ] Export: [resolución, aspect ratio, fps, códec, loudness según plataforma destino]\n- [ ] QA final contra los 5 anclas: ¿la pieza terminada conserva emoción, motivo, objeto, quiebre e imagen final?",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 3. Checklist de post-producción (07-delivery/post-production.md)"
+      }
+     ]
+    },
+    {
+     "id": "38faff99b4e4",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E7.3 · Subproceso: Checklist de post-producción · Skill con autoridad: production-package.md §3 · Entra: Dirección de audio, grade, plataforma · Sale: post-production.md con specs concretos · Gate o herramienta: Sin placeholders",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 7 — checklist de post-producción (production-package.md §3, `07-delivery/post-production.md`; subproceso E7.3 del Mapa del Spot, con autoridad production-package.md §3): con entrada dirección de audio, grade y plataforma, sale post-production.md adaptado al proyecto con specs concretos; gate: sin placeholders. Ítems: generar los N shots en [modelo(s)] con los prompts de 06-video-prompts/; verificar cada clip contra su shot card (encuadre, acción, luz) antes de editar; ensamblar en [NLE] siguiendo el orden y duraciones de shots.json; aplicar grade de consistencia: [referencia de color del brand-lock o Visual Theme]; transiciones: [tipo y duración definidos en dirección, no \"al gusto\"]; audio: [música género/BPM/posición de beats + VO + ambientes según dirección de audio por shot]; overlays de texto según text-overlays.json (tipografía del brand-lock); export: [resolución, aspect ratio, fps, códec, loudness según plataforma destino]; QA final contra los 5 anclas: ¿la pieza terminada conserva emoción, motivo, objeto, quiebre e imagen final?"
+  },
+  {
+   "grupo": "DUP-0403.1",
+   "originales": [
+    {
+     "id": "c8a61af934e4",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E1.2 · Subproceso: Territorios creativos · Skill con autoridad: creative-strategy.md · Entra: SMP · Sale: 3 a 4 territorios distintos · Gate o herramienta: Prueba de distancia: mismo primer plano = mismo territorio",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    },
+    {
+     "id": "cf4bacfc4d6c",
+     "texto": "[Etapa 1 — Creative Strategy › 2. Territorios creativos] Un territorio es un espacio conceptual desde el cual se puede contar la proposición — no una idea todavía. Explora 3–4 territorios genuinamente distintos entre sí. Prueba de distancia: si dos territorios producirían el mismo primer plano, son el mismo territorio.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "encabezado": "Etapa 1 — Creative Strategy › 2. Territorios creativos"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 1 — territorios creativos (creative-strategy.md §2; subproceso E1.2 del Mapa del Spot, con autoridad creative-strategy.md): a partir de la SMP, explorar 3–4 territorios genuinamente distintos entre sí. Un territorio es un espacio conceptual desde el cual se puede contar la proposición, no una idea todavía. Gate, prueba de distancia: si dos territorios producirían el mismo primer plano, son el mismo territorio."
+  },
+  {
+   "grupo": "DUP-0404.1",
+   "originales": [
+    {
+     "id": "58b1d6696c0d",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E1.3 · Subproceso: Concept cards · Skill con autoridad: creative-strategy.md · Entra: Territorios fuertes · Sale: 2 a 3 cards en STANDARD, 3 a 5 en FILM, con complejidad AI · Gate o herramienta: Formato obligatorio de 8 campos",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    },
+    {
+     "id": "5e9305819c9a",
+     "texto": "[Etapa 1 — Creative Strategy › 3. Big ideas y concept cards] De los territorios más fuertes, baja 3–5 conceptos (FILM) o 2–3 (STANDARD). Cada concepto es UNA película posible, no una variación de la anterior. Formato obligatorio:\n## Concept Card [N] — [Nombre]\n**Territorio de origen:** [cuál]\n**Logline:** [la película en 1–2 frases: quién quiere qué, qué lo impide, qué vemos]\n**Insight:** [la verdad humana sobre la que se para — algo que la audiencia reconoce como cierto]\n**Arco en 3 beats:** [apertura → quiebre → resolución, una línea cada uno]\n**Imagen final:** [el último frame, concreto — es lo que el espectador se lleva]\n**Por qué vende la proposición:** [mecánica explícita: cómo este concepto instala la single-minded proposition]\n**Riesgo principal:** [producción, tono, o percepción — y su mitigación en una línea]\n**Complejidad de generación AI:** [Baja/Media/Alta — nº de personajes con continuidad, entornos, física difícil, diálogo lip-sync]",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "encabezado": "Etapa 1 — Creative Strategy › 3. Big ideas y concept cards"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 1 — big ideas y concept cards (creative-strategy.md §3; subproceso E1.3 del Mapa del Spot, con autoridad creative-strategy.md): de los territorios más fuertes, bajar 3–5 conceptos en FILM o 2–3 en STANDARD, con complejidad AI. Cada concepto es UNA película posible, no una variación de la anterior. Gate: formato obligatorio de 8 campos: \"## Concept Card [N] — [Nombre]\"; **Territorio de origen:** [cuál]; **Logline:** [la película en 1–2 frases: quién quiere qué, qué lo impide, qué vemos]; **Insight:** [la verdad humana sobre la que se para — algo que la audiencia reconoce como cierto]; **Arco en 3 beats:** [apertura → quiebre → resolución, una línea cada uno]; **Imagen final:** [el último frame, concreto — es lo que el espectador se lleva]; **Por qué vende la proposición:** [mecánica explícita: cómo este concepto instala la single-minded proposition]; **Riesgo principal:** [producción, tono, o percepción — y su mitigación en una línea]; **Complejidad de generación AI:** [Baja/Media/Alta — nº de personajes con continuidad, entornos, física difícil, diálogo lip-sync]."
+  },
+  {
+   "grupo": "DUP-0405.1",
+   "originales": [
+    {
+     "id": "4ace3a98dca5",
+     "texto": "[AI Production Director › 9. Referencias de este skill] - `references/creative-strategy.md` — Protocolo completo de la Etapa 1: territorios, big ideas, concept cards, matriz de selección, dirección narrativa. Léelo SIEMPRE al ejecutar la Etapa 1.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 9. Referencias de este skill"
+      }
+     ]
+    },
+    {
+     "id": "84a297f92657",
+     "texto": "[AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy] - **Módulo:** `references/creative-strategy.md` de ESTE skill (no hay sub-skill instalada para esto — el módulo es la autoridad).",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 1 — Creative Strategy (ai-production-director §3 y §9 Referencias): el módulo es `references/creative-strategy.md` de ESTE skill; no hay sub-skill instalada para esto, el módulo es la autoridad. Contiene el protocolo completo de la Etapa 1: territorios, big ideas, concept cards, matriz de selección y dirección narrativa. Léelo SIEMPRE al ejecutar la Etapa 1."
+  },
+  {
+   "grupo": "DUP-0406.1",
+   "originales": [
+    {
+     "id": "7deabf21dd2b",
+     "texto": "[GPT Image 2 — Specific Rules › Структура промпта — 5 slots] GPT Image 2 сильнее всего реагирует на разделение по секциям. Пиши лейблами, не сплошным текстом.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots"
+      }
+     ]
+    },
+    {
+     "id": "983004d1ab20",
+     "texto": "[GPT Image 2 — Specific Rules › Iteration Strategy] - Для длинных промптов — labeled sections, не одна простыня.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+      }
+     ]
+    }
+   ],
+   "fusionado": "GPT Image 2 (image/gpt-image.md › Estructura del prompt — 5 slots e Iteration Strategy): GPT Image 2 reacciona con más fuerza a la separación por secciones. Escribir con etiquetas (labeled sections), no con texto corrido; en prompts largos, secciones etiquetadas, no una sola sábana de texto."
+  },
+  {
+   "grupo": "DUP-0407.1",
+   "originales": [
+    {
+     "id": "bf69ef1a0320",
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Стиль промпта · Nano Banana: Натуральный язык, 1-2 параграфа · GPT Image 2: 5-slot с лейблами секций",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+      }
+     ]
+    },
+    {
+     "id": "d91d6979de61",
+     "texto": "[Nano Banana — Specific Rules › Стиль промпта] Натуральный язык, 1-2 параграфа. Структура свободная, но порядок помогает:\n**Subject + Action + Location/context + Composition + Style**",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules › Стиль промпта"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Estilo de prompt en Nano Banana (image/nano-banana.md y models.md › diferencias de sintaxis): lenguaje natural, 1–2 párrafos; la estructura es libre, pero el orden ayuda: **Subject + Action + Location/context + Composition + Style**. En contraste, GPT Image 2 usa 5 slots con etiquetas de sección."
+  },
+  {
+   "grupo": "DUP-0409.1",
+   "originales": [
+    {
+     "id": "957a6e03aee3",
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › Syntax pattern] Comma-separated, no full sentences.",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Syntax pattern"
+      }
+     ]
+    },
+    {
+     "id": "dced400d91b9",
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid] - **Don't write paragraphs**. Seedream wants comma-separated phrases",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Adapter Seedream (4.5 / 4.0) de visual-prompt-forge (Syntax pattern y Pitfalls to avoid): sintaxis comma-separated, sin oraciones completas. No escribir párrafos: Seedream quiere frases separadas por comas."
+  },
+  {
+   "grupo": "DUP-0410.1",
+   "originales": [
+    {
+     "id": "085a78a536b9",
+     "texto": "[Adapter: Midjourney (v7) › Composition pattern] {framing} of {subject character_anchor}, {action}, {compositional note}, {environment from series_lock}, {lighting from series_lock}, {color_grade}, cinematic photography, {brand mood adjectives} --ar {aspect} --style raw --s 50",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Composition pattern"
+      }
+     ]
+    },
+    {
+     "id": "60bdd1b6ab30",
+     "texto": "[Adapter: Midjourney (v7) › Syntax pattern] {subject}, {action}, {composition}, {environment}, {lighting}, {color/mood}, {style modifiers} --ar {ratio} --style {style} --s {stylize} {extras}",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Syntax pattern"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Adapter Midjourney (v7) de visual-prompt-forge: patrón de sintaxis `{subject}, {action}, {composition}, {environment}, {lighting}, {color/mood}, {style modifiers} --ar {ratio} --style {style} --s {stylize} {extras}`; patrón de composición concreto: `{framing} of {subject character_anchor}, {action}, {compositional note}, {environment from series_lock}, {lighting from series_lock}, {color_grade}, cinematic photography, {brand mood adjectives} --ar {aspect} --style raw --s 50`."
+  },
+  {
+   "grupo": "DUP-0411.1",
+   "originales": [
+    {
+     "id": "11db95b506b8",
+     "texto": "[skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  gpt_image_2__1:\n    subject:        [woman, man, person, subject, character, animal, dog, cat, building, object, group]\n    action_or_pose: [standing, sitting, holding, walking, looking, running, leaning, resting, posing]\n    environment:   [studio, gym, room, street, outdoor, indoor, landscape, forest, urban, beach, field]\n    style:         [photorealistic, documentary, editorial, cinematic, candid, journalistic, naturalistic]\n    camera_or_lens: [lens, mm, telephoto, wide angle, close-up, medium shot, full body, framing, shot]\n    lighting:      [light, lighting, sunlight, daylight, tungsten, golden hour, soft light, backlit, rim light]\n    anti_style:    [not illustration, not render, no stylization, no cartoon, no anime, photoreal]",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1"
+      }
+     ]
+    },
+    {
+     "id": "63a4afcd983d",
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  gpt_image_2__1:   # gpt-image.md \"5 slots\": Scene / Subject / Important Details / Use Case / Constraints\n    subject:        [woman, man, person, subject, character, animal, dog, cat, building, object, group, product]\n    action_or_pose: [standing, sitting, holding, walking, looking, running, leaning, resting, posing, locking, frozen, mid-]\n    environment:    [studio, gym, room, street, outdoor, indoor, landscape, forest, urban, beach, field, scene:, storefront, pool, track, café, cafe, hall]\n    style:          [photorealistic, documentary, editorial, candid, journalistic, naturalistic, reportage, photograph]\n    camera_or_lens: [lens, mm, telephoto, wide angle, close-up, medium shot, full body, framing, shot, feel]\n    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, soft light, backlit, rim light]\n    anti_style:     [not illustration, not render, no stylization, no cartoon, no anime, photoreal, real photo, looks like a real]\n    use_case:       [\"use case:\", \"use-case:\", \"usecase:\"]\n    constraints_slot: [\"constraints:\"]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Linter aurora, REQUIRED_SECTIONS_BY_PLATFORM_CASE `gpt_image_2__1` (Caso 1 — Génesis text-to-image). Skill instalada (skills/aurora-prompt-linter/scripts/vocabularies.yaml): subject [woman, man, person, subject, character, animal, dog, cat, building, object, group]; action_or_pose [standing, sitting, holding, walking, looking, running, leaning, resting, posing]; environment [studio, gym, room, street, outdoor, indoor, landscape, forest, urban, beach, field]; style [photorealistic, documentary, editorial, cinematic, candid, journalistic, naturalistic]; camera_or_lens [lens, mm, telephoto, wide angle, close-up, medium shot, full body, framing, shot]; lighting [light, lighting, sunlight, daylight, tungsten, golden hour, soft light, backlit, rim light]; anti_style [not illustration, not render, no stylization, no cartoon, no anime, photoreal]. Copia parcheada del repo (.claude/hooks/aurora/vocabularies.yaml), alineada con los \"5 slots\" de gpt-image.md (Scene / Subject / Important Details / Use Case / Constraints), con vocabulario ampliado: subject añade product; action_or_pose añade locking, frozen, mid-; environment añade scene:, storefront, pool, track, café, cafe, hall; style quita cinematic y añade reportage, photograph; camera_or_lens añade feel; lighting igual; anti_style añade real photo, looks like a real; y exige dos secciones nuevas: use_case [\"use case:\", \"use-case:\", \"usecase:\"] y constraints_slot [\"constraints:\"]."
+  },
+  {
+   "grupo": "DUP-0412.1",
+   "originales": [
+    {
+     "id": "25a0fef32203",
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  midjourney__1:\n    subject:        [woman, man, person, subject, character, animal, object]\n    style:          [photorealistic, editorial, candid, documentary, photography, --style]\n    composition:    [composition, framing, rule of thirds, centered, off-center, shot, negative space]\n    lighting:       [lighting, sunlight, daylight, tungsten, golden hour, soft light, side-light, rim light]\n    aspect_ratio:   [\"--ar\", aspect ratio, 16:9, 9:16, 3:2, 2:3, 1:1]\n    quality:        [\"--v\", \"--style\", \"--q\", \"--stylize\", \"--s \"]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+      }
+     ]
+    },
+    {
+     "id": "49eea291584e",
+     "texto": "[skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  midjourney__1:\n    subject:        [woman, man, person, subject, character, animal, object]\n    style:          [photorealistic, cinematic, editorial, candid, documentary, --style]\n    composition:    [composition, framing, rule of thirds, centered, off-center, shot]\n    lighting:       [lighting, sunlight, daylight, tungsten, golden hour, soft light]\n    aspect_ratio:   [\"--ar\", aspect ratio, 16:9, 9:16, 3:2, 2:3, 1:1]\n    quality:        [\"--v\", \"--style\", \"--q\", \"--stylize\"]",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Linter aurora, REQUIRED_SECTIONS_BY_PLATFORM_CASE `midjourney__1` (Caso 1 — Génesis text-to-image). Skill instalada (skills/aurora-prompt-linter/scripts/vocabularies.yaml): subject [woman, man, person, subject, character, animal, object]; style [photorealistic, cinematic, editorial, candid, documentary, --style]; composition [composition, framing, rule of thirds, centered, off-center, shot]; lighting [lighting, sunlight, daylight, tungsten, golden hour, soft light]; aspect_ratio [\"--ar\", aspect ratio, 16:9, 9:16, 3:2, 2:3, 1:1]; quality [\"--v\", \"--style\", \"--q\", \"--stylize\"]. Copia parcheada del repo (.claude/hooks/aurora/vocabularies.yaml): subject igual; style quita cinematic y añade photography [photorealistic, editorial, candid, documentary, photography, --style]; composition añade negative space; lighting añade side-light, rim light; aspect_ratio igual; quality añade \"--s \"."
+  }
+ ]
+}

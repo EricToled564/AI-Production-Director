@@ -1,0 +1,246 @@
+{
+ "paso": "verificar",
+ "instrucciones": "Verifica una fusión. Recibes los registros originales y el texto fusionado. Para cada original,\nlista las exigencias, límites, valores, excepciones y alcances que contiene y di si están en el fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"completo\": true|false, \"faltan\": [{\"id\": \"...\", \"elemento\": \"...\"}], \"agregado_sin_fuente\": [\"...\"]}\nDevuelve JSON {\"verificaciones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0617.1",
+   "originales": [
+    {
+     "id": "612fe1fbd4a9",
+     "texto": "[Storyboard Architect › Quality bar] Run the validator. Do not eyeball this list.\npython tools/validate_shots.py output/\npython tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md\npython tools/validate_provenance.py output/",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Quality bar"
+      }
+     ]
+    },
+    {
+     "id": "fc39e61a0532",
+     "texto": "[Visual Prompt Forge › Quality bar] Run the validator. Do not eyeball this list.\npython tools/validate_prompts.py output/\npython tools/copy-prompt.py output/prompts/round-1/flux.txt --list",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Quality bar"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Quality bar: correr el validador, no revisar la lista a ojo (\"Run the validator. Do not eyeball this list.\"). En Storyboard Architect: `python tools/validate_shots.py output/`, `python tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md`, `python tools/validate_provenance.py output/`. En Visual Prompt Forge: `python tools/validate_prompts.py output/` y `python tools/copy-prompt.py output/prompts/round-1/flux.txt --list`."
+  },
+  {
+   "grupo": "DUP-0618.1",
+   "originales": [
+    {
+     "id": "36c204dc02cc",
+     "texto": "[Tools › Project checks › `validate_shots.py`] Warnings cover the judgement calls: overlay copy repeated in a shot subject, a raw hex in a\nsubject, shot ids out of chronological order, a font the brand-lock does not declare.",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      }
+     ]
+    },
+    {
+     "id": "c142c135edd1",
+     "texto": "[Storyboard Architect › Quality bar] It warns, rather than fails, on judgement calls worth a second look: overlay copy\nrepeated inside a shot subject, a raw hex in a subject, shot ids out of chronological\norder, an overlay font the brand-lock does not declare.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Quality bar"
+      }
+     ]
+    }
+   ],
+   "fusionado": "`validate_shots.py` (Project checks en los tools/README de brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge; y Storyboard Architect › Quality bar) avisa, en lugar de fallar, en los juicios que merecen una segunda mirada: copy de overlay repetido dentro del subject de un shot, un hex crudo en un subject, ids de shot fuera de orden cronológico, una fuente (de overlay) que el brand-lock no declara."
+  },
+  {
+   "grupo": "DUP-0619.1",
+   "originales": [
+    {
+     "id": "6620e88f5882",
+     "texto": "[Tools › Repo checks › `validate_capabilities.py`] Checks the generator capability matrix\n(`skills/visual-prompt-forge/adapters/_capabilities.json`) against\n`capabilities.schema.json`, then checks it against the adapter prose that defers to it:\n- every generator id has an adapter `.md` and every adapter `.md` has an entry\n- no adapter advertises more words than its own `max_prompt_words` ceiling\n- every adapter documents the `aspect_param` the matrix says to send\n- no `notes` field cites a word count above its own ceiling\n- warns when the matrix or an entry is past its 120-day freshness window",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      }
+     ]
+    },
+    {
+     "id": "c032cfbdd294",
+     "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] That rule is now enforced rather than trusted. `tools/validate_capabilities.py` fails the\nbuild when an adapter advertises more words than its ceiling, or when an adapter never\ndocuments the `aspect_param` the JSON tells you to send. The second check exists because\nnano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects\n`aspectRatio`; the precedence rule meant the wrong one won, silently, on every prompt.",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ]
+    }
+   ],
+   "fusionado": "`validate_capabilities.py` (Repo checks en los tools/README de brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge; Visual Prompt Forge Step 2. Pick the adapters): valida la matriz de capacidades de generadores (`skills/visual-prompt-forge/adapters/_capabilities.json`) contra `capabilities.schema.json` y luego contra la prosa de los adapters que la delegan: todo id de generador tiene su `.md` de adapter y todo `.md` tiene entrada; ningún adapter anuncia más palabras que su propio techo `max_prompt_words`; todo adapter documenta el `aspect_param` que la matriz dice enviar; ningún campo `notes` cita un conteo de palabras por encima de su techo; avisa cuando la matriz o una entrada supera su ventana de frescura de 120 días. Falla el build si un adapter anuncia más palabras que su techo o nunca documenta el `aspect_param`: la regla se hace cumplir en vez de confiarse. El segundo chequeo existe porque la entrada de nano-banana en la matriz decía `aspect_ratio` mientras su adapter decía que la API espera `aspectRatio`; la regla de precedencia hizo que ganara el incorrecto, en silencio, en cada prompt."
+  },
+  {
+   "grupo": "DUP-0621.1",
+   "originales": [
+    {
+     "id": "4e5fb54051a4",
+     "texto": "[Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)] - `audit_gi2.py` valida 15 columnas: slots · anti-slop · ratio estándar · metadatos fuera del prompt ·\n  Notes · cámara con los 5 efectos ópticos (compresión, bokeh/wash, viñeta, halación, grano) · mood ·\n  color · identity-lock · texto de marca · framing positivo · mirada · manos.",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)"
+      }
+     ]
+    },
+    {
+     "id": "6c3af7d6aa7e",
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance] audit_gi2: 15 columnas incluidos los 5 efectos ópticos y framing positivo",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Verificación mecánica (no depende de criterio) de Producción visual SW30 › Arquitectura por secciones, aplicada también en los lints del Paso 6 del Flujo de Anclas Cinematográficas antes de la pregunta de avance: `audit_gi2.py` valida 15 columnas: slots · anti-slop · ratio estándar · metadatos fuera del prompt · Notes · cámara con los 5 efectos ópticos (compresión, bokeh/wash, viñeta, halación, grano) · mood · color · identity-lock · texto de marca · framing positivo · mirada · manos."
+  },
+  {
+   "grupo": "DUP-0622.1",
+   "originales": [
+    {
+     "id": "5f83accc40d0",
+     "texto": "[Fixes, checklist, and cross-model skeletons › 1. Continuity checklist] If any item is missing, fix before sending.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+      }
+     ]
+    },
+    {
+     "id": "a73dd79c5344",
+     "texto": "[Fixes, checklist, and cross-model skeletons › 1. Continuity checklist] Before sending a prompt to the user, verify.\nSame character across shots (face, body, hair).; Same clothes across shots, exactly named.; Consistent location logic.; Object state progression makes sense (sausage in fridge -> on plate -> on fork -> on floor).; No unwanted extra characters.; No unwanted text or subtitles.; No unwanted logos.; Consistent age / body / face.; No impossible hand-object action.; No vague camera instructions (\"cinematic camera\").; No vague lighting instructions (\"beautiful light\").; No random stacking of director references.; No contradictions.; Palette is defined with concrete colors.; Final image is explicitly stated.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Continuity checklist de video (fixes-and-skeletons §1): antes de enviar un prompt al usuario, verificar: mismo personaje entre shots (cara, cuerpo, pelo); misma ropa entre shots, nombrada exactamente; lógica de locación consistente; la progresión de estado de objetos tiene sentido (sausage in fridge -> on plate -> on fork -> on floor); sin personajes extra no deseados; sin texto ni subtítulos no deseados; sin logos no deseados; edad / cuerpo / cara consistentes; sin acción mano-objeto imposible; sin instrucciones de cámara vagas (\"cinematic camera\"); sin instrucciones de luz vagas (\"beautiful light\"); sin apilamiento aleatorio de referencias de directores; sin contradicciones; paleta definida con colores concretos; imagen final declarada explícitamente. Si falta cualquier ítem, corregir antes de enviar."
+  },
+  {
+   "grupo": "DUP-0623.1",
+   "originales": [
+    {
+     "id": "5cc052cfa0c0",
+     "texto": "[Vehículo en movimiento › 5. Cámara, ángulo y rig montable] - Rotar entre las cinco familias de plano: perfil hostess-tray, POV bajo de capó, cabina con vibración, tracking paralelo o joust, proof shot lejano. [FUENTE: video/references/race-and-speed.md §5]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+      }
+     ]
+    },
+    {
+     "id": "6f2375c12efb",
+     "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] Rotate among all five across the 30s — speed reads through *changing perspective*, not long takes. Each family has one job and a default composition.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Rotar entre las cinco familias de plano de carrera (race-and-speed §5; régimen 05 vehículo §5 Cámara, ángulo y rig montable, [FUENTE: video/references/race-and-speed.md §5]): perfil hostess-tray, POV bajo de capó, cabina con vibración, tracking paralelo o joust, proof shot lejano. Rotar entre las cinco a lo largo de los 30s: la velocidad se lee por el cambio de perspectiva, no por tomas largas. Cada familia tiene un trabajo y una composición por defecto."
+  },
+  {
+   "grupo": "DUP-0624.1",
+   "originales": [
+    {
+     "id": "e4f23fca8e4e",
+     "texto": "[AI Production Director › 6. Reglas de resolución de conflictos › 6.1 Vocabulario] El vocabulario prohibido de `video`/dramaturgy (+ `aurora-prompt-linter` si está) **gana siempre**: \"cinematic\", \"epic\", \"stunning\", \"masterpiece\", \"beautiful lighting\", \"professional\", \"high quality\", emociones nombradas sin cuerpo. Esto **anula explícitamente** la regla de `ai-video-storyboard` de cerrar cada prompt con \"cinematic 1080p, synchronized audio\". En su lugar: la resolución, aspect ratio, duración y si el modelo genera audio se especifican como parámetros técnicos concretos según el archivo del modelo destino.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.1 Vocabulario"
+      }
+     ]
+    },
+    {
+     "id": "f69e1c358d9c",
+     "texto": "[conflict-policies.v3.1.json › POLICY_VIDEO_FINAL_VOCAB_001] video.final_prompt.vocabulary_closing: gana la regla 2bdbd8488f44. AI Production Director §6.1 explicitly states that video/dramaturgy prohibited vocabulary always wins and explicitly nullifies the AI Video Storyboard closing phrase.",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/conflict-policies.v3.1.json",
+       "encabezado": "conflict-policies.v3.1.json › POLICY_VIDEO_FINAL_VOCAB_001"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Resolución de conflictos de vocabulario (AI Production Director §6.1; política POLICY_VIDEO_FINAL_VOCAB_001 de conflict-policies.v3.1.json, video.final_prompt.vocabulary_closing: gana la regla 2bdbd8488f44): el vocabulario prohibido de `video`/dramaturgy (+ `aurora-prompt-linter` si está) gana siempre: \"cinematic\", \"epic\", \"stunning\", \"masterpiece\", \"beautiful lighting\", \"professional\", \"high quality\", emociones nombradas sin cuerpo. Esto anula explícitamente la regla de `ai-video-storyboard` de cerrar cada prompt con \"cinematic 1080p, synchronized audio\". En su lugar, la resolución, el aspect ratio, la duración y si el modelo genera audio se especifican como parámetros técnicos concretos según el archivo del modelo destino."
+  },
+  {
+   "grupo": "DUP-0625.1",
+   "originales": [
+    {
+     "id": "081e51dea244",
+     "texto": "[RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)] 7. **Nunca** usar adjetivos decorativos como sustituto de una instrucción funcional (\"beautiful\" no hace nada). `[CAMPO: https://pixverse.ai/en/blog/gpt-image-2-review-and-prompt-guide]` (Q23). Coincide con `image/references/gpt-image.md:36`.",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/research/01-agua-superficie.md",
+       "encabezado": "RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+      }
+     ]
+    },
+    {
+     "id": "bf28e16ae7ca",
+     "texto": "[GPT Image 2 — Specific Rules › Anti-Slop Rules] ❌ Не пиши: мудовый язык, в котором тонут функциональные требования · ✅ Пиши: прямое заявление: «image must contain a transit kiosk»",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Nunca usar adjetivos decorativos ni lenguaje de mood como sustituto de una instrucción funcional (GPT Image 2 › Anti-Slop Rules; hallazgo candidato 7 de la investigación de campo de la familia 01 Agua en superficie, [CAMPO: https://pixverse.ai/en/blog/gpt-image-2-review-and-prompt-guide] (Q23), que coincide con `image/references/gpt-image.md:36`): el lenguaje de mood ahoga los requisitos funcionales y \"beautiful\" no hace nada; escribir una declaración directa: «image must contain a transit kiosk»."
+  }
+ ]
+}
