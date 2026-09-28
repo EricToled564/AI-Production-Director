@@ -1,0 +1,92 @@
+{
+ "paso": "fusionar",
+ "instrucciones": "Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:\n- Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.\n- No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal\n  como aparecen. Escribe en español; los términos y frases de prompt que deben ir en inglés se dejan en inglés.\n- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado. El alcance lo\n  dicen el documento y el encabezado de cada miembro (campo ubicaciones): consérvalo en el texto fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"texto\": \"registro fusionado\", \"cobertura\": [{\"id\": \"...\", \"elementos\": [\"cada exigencia del\nmiembro y dónde quedó en el texto\"]}]}\nDevuelve JSON {\"fusiones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0614.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Aurora parcheado P10: snapshots nuevos para flux, ideogram, seedream, nano_banana_2, seedance, hailuo, kling 3.0 caso 4 y vocabulario L/PR/O ampliado.",
+   "miembros": [
+    {
+     "id": "0854f2efd1e8",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "[aurora prompt_linter.py (parcheado en el repo) › docstring] P10 Vocabulario ampliado (L/PR/O para agua, automotriz, café/interior, clima,\n    música) y snapshots de secciones para seedance_2.5, flux, ideogram, hailuo,\n    seedream, nano_banana_2, kling 3.0 caso 4. Fuente: adaptadores de forge y\n    archivos de modelo de `video` (kling.md §3, seedance-25.md §3-§7, veo.md §10).\n    Reconoce también `Negative field.`, `[Negative Prompts]` y `Constraints:`."
+    },
+    {
+     "id": "974a525545c8",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 12 · Contradicción detectada: **Plataformas omitidas.** Snapshots solo para gpt_image_2, midjourney, nano_banana_pro, kling_3.0, veo_3.1, sora_2. Forge produce prompts para flux, ideogram, seedream, hailuo, seedance; el pipeline usa nano_banana_2 y seedance_2.5. Sin snapshot, el linter opera en \"honor system\". · Parche en esta copia: P10 — snapshots nuevos: `flux__1`, `ideogram__1`, `seedream__1`, `nano_banana_2__1/__2`, `seedance__3a`, `seedance_2.5__3a/__3b/__4`, `hailuo__3a`, `kling_3.0__4`. Resolución por familia (`--platform kling` → `kling_3.0`, `seedance_2.5` → su propio snapshot). Reconoce `Negative field.`, `[Negative Prompts]`, `Constraints:`. Vocabulario L/PR/O ampliado a agua, automotriz, café/interior, clima y música. · Fuente que lo sustenta: forge `adapters/*.md` (patrón de composición de cada uno); `kling.md` §3 (protocolo P1–P4 y `Shot N (t)`); `seedance-25.md` §3–§7, §16; `seedance.md` §13–§14; `veo.md` §10; `image/models.md` (NB2 mismo estilo que NBP)."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "0854f2efd1e8",
+     "elemento": "número 3.0"
+    },
+    {
+     "id": "0854f2efd1e8",
+     "elemento": "número 4"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0619.1",
+   "relacion": "misma_regla",
+   "regla_comun": "validate_capabilities.py falla si un adapter anuncia más palabras que su techo o no documenta el aspect_param de la matriz.",
+   "miembros": [
+    {
+     "id": "6620e88f5882",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      }
+     ],
+     "texto": "[Tools › Repo checks › `validate_capabilities.py`] Checks the generator capability matrix\n(`skills/visual-prompt-forge/adapters/_capabilities.json`) against\n`capabilities.schema.json`, then checks it against the adapter prose that defers to it:\n- every generator id has an adapter `.md` and every adapter `.md` has an entry\n- no adapter advertises more words than its own `max_prompt_words` ceiling\n- every adapter documents the `aspect_param` the matrix says to send\n- no `notes` field cites a word count above its own ceiling\n- warns when the matrix or an entry is past its 120-day freshness window"
+    },
+    {
+     "id": "c032cfbdd294",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Workflow › Step 2. Pick the adapters] That rule is now enforced rather than trusted. `tools/validate_capabilities.py` fails the\nbuild when an adapter advertises more words than its ceiling, or when an adapter never\ndocuments the `aspect_param` the JSON tells you to send. The second check exists because\nnano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects\n`aspectRatio`; the precedence rule meant the wrong one won, silently, on every prompt."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "c032cfbdd294",
+     "elemento": "cita literal: tools/validate_capabilities.py"
+    }
+   ]
+  }
+ ]
+}

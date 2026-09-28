@@ -532,6 +532,47 @@ def cmd_importar(a):
         sys.exit(1)
 
 
+NUM = __import__("re").compile(r"(?<![\w.])\d+(?:[.,]\d+)?(?:%|s|mm|px|K)?")
+CITA = __import__("re").compile(r'"([^"\n]{3,120})"|`([^`\n]{2,120})`')
+
+
+def literales_faltantes(original: str, fusionado: str) -> list[str]:
+    """Números y citas literales ("...", `...`) del original que no aparecen tal cual en el fusionado."""
+    cuerpo = original.split("] ", 1)[1] if original.startswith("[") else original
+    fu = fusionado.replace("\u201c", '"').replace("\u201d", '"')
+    fu_num = set(NUM.findall(fu))
+    faltan = []
+    for n in sorted(set(NUM.findall(cuerpo))):
+        if n not in fu_num:
+            faltan.append(f"número {n}")
+    for a, b in CITA.findall(cuerpo):
+        q = (a or b).strip()
+        if q.strip(".") and q.lower() not in fu.lower():
+            faltan.append(f"cita literal: {q}")
+    return faltan
+
+
+def cmd_literal(_a):
+    """Chequeo mecánico (sin modelo): cada número y cada cita literal de cada original debe estar en su fusión.
+    Las fusiones que fallan quedan verificado = 0 con la lista, y 'lotes fusionar' las reenvía."""
+    c = con()
+    texto = dict(c.execute("select id, texto from registros"))
+    malos = 0
+    for g, tx, miembros, ver, faltan in c.execute(
+            "select grupo, texto, miembros, verificado, faltan from registros_fusion").fetchall():
+        lit = [{"id": i, "elemento": e} for i in json.loads(miembros) for e in literales_faltantes(texto[i], tx)]
+        if lit:
+            malos += 1
+            previos = json.loads(faltan) if faltan and faltan != "[]" and ver == 0 else []
+            c.execute("update registros_fusion set verificado = 0, faltan = ? where grupo = ?",
+                      (json.dumps(previos + lit, ensure_ascii=False), g))
+    c.commit()
+    total = c.execute("select count(*) from registros_fusion").fetchone()[0]
+    print(f"chequeo literal: {total - malos}/{total} fusiones conservan todos los números y citas literales")
+    if malos:
+        sys.exit(1)
+
+
 def cmd_estado(_a):
     c = con()
     for q in ("select count(*) from registros", "select count(*) from registros_enunciado",
@@ -542,7 +583,7 @@ def cmd_estado(_a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar"])
+    ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar", "literal"])
     ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "confirmar", "fusionar", "verificar"])
     a = ap.parse_args()
     if a.accion in ("lotes", "importar"):
@@ -551,7 +592,8 @@ def main():
         {"lotes": cmd_lotes, "importar": cmd_importar}[a.accion](a)
         return
     a.paso = a.accion
-    {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado}[a.accion](a)
+    {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado,
+     "literal": cmd_literal}[a.accion](a)
 
 
 if __name__ == "__main__":
