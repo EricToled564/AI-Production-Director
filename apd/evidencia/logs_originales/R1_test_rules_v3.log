@@ -1,0 +1,106 @@
+# cwd: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/repo
+# env: FUPAI_SKILLS_ROOT=/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkg TMPDIR=/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/tmp
+# cmd: bash tests/test_rules_v3.sh
+# date: 2026-09-28T03:11:42Z
+
+aviso: sin intérprete con fastembed+numpy; embed omitido, ranking sólo BM25
+
+=== 1. build (13 skills + regímenes + fixture) ===
+  [32mPASS[0m  build sale 0                                               0
+      reglas: 1451 · casos: 22 · tareas: 50 · etapas desde /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/repo/app/build_app.py
+      import-app: 852 reglas en clasificacion_v2_app.json · 850 importadas (2388 filas regla_caso) · 2 huérfanas (tabla importacion_huerfana)
+        huérfana 1eff4afae0c5 · id_no_en_registro · video/references/universal-rules.md:9 · The non-negotiable. Details intensify emotion (Details Law)
+        huérfana d85e439effb2 · id_no_en_registro · video/references/kling.md:7 · **Kling 3.0 — multi-shot, native audio, 15s (read first if user is on 3.0)**
+      fts: 1405 reglas indexadas (unicode61 remove_diacritics 2)
+  [32mPASS[0m  reglas en la base                                          1405
+  [32mPASS[0m  13 skills + regimenes registrados                          14
+  [32mPASS[0m  22 casos                                                   22
+  [32mPASS[0m  50 tareas (45 subprocesos + 5 sueltas)                     50
+  [32mPASS[0m  reglas_fts tiene todas las reglas                          1405
+  [32mPASS[0m  descartes registrados (índices, cabeceras, sin etiqueta)  1
+
+=== 2. importación de la clasificación v2 (852 reglas) ===
+  [32mPASS[0m  852/852 contabilizadas (importadas + huérfanas visibles)  852
+  [32mPASS[0m  huérfanas: sólo las 2 líneas de índice excluidas por diseño 2
+  [32mPASS[0m  huérfanas con razón id_no_en_registro                    2
+  [32mPASS[0m  origen conservado: archivo/regla/auditoria presentes       3
+
+=== 3. fixture de régimen (tests/fixtures/regimenes) ===
+  [32mPASS[0m  reglas del fixture extraídas                              7
+  [32mPASS[0m  estado A_PRUEBA                                            3
+  [32mPASS[0m  estado CAMPO                                               1
+  [32mPASS[0m  estado CANONICA (prioridad 1)                              1
+  [32mPASS[0m  estado REFUTADA (prioridad 5)                              1
+  [32mPASS[0m  FUENTE -> CANONICA_SKILL con fuente guardada               1
+  [32mPASS[0m  línea sin etiqueta descartada y contada                   1
+  [32mPASS[0m  línea de índice descartada y contada                     1
+  [32mPASS[0m  cabecera de tabla descartada y contada                     1
+  [32mPASS[0m  faceta heredada del frontmatter (d2=C_movimiento, origen archivo) 1
+  [32mPASS[0m  prefijo {d9: high} sobrescribe d9 (origen manual)          high
+  [32mPASS[0m  casos del frontmatter aplicados (T3, OBJ)                  2
+  [32mPASS[0m  tareas del frontmatter aplicadas (E5.2, E6.2), origen directa 2
+  [32mPASS[0m  id calculado sin etiqueta ni prefijo coincide              d410ba024d8c
+
+=== 4. derive + check ===
+  [32mPASS[0m  derive sale 0                                              0
+      derive: +1082 regla_caso (ruta) · +15375 regla_tarea · +935 regla_faceta
+  [32mPASS[0m  check sale 0 (0 reglas sin caso NI tarea)                  0
+  [32mPASS[0m  v_sin_caso_ni_tarea vacía                                 0
+  [32mPASS[0m  toda regla tiene tarea                                     1405
+  [32mPASS[0m  kling.md -> d8 kling por ruta                              1
+  [32mPASS[0m  race-and-speed.md -> d4 race + d2 C_movimiento             2
+  [32mPASS[0m  ecommerce.md -> PROD                                       1
+  [32mPASS[0m  v_sin_faceta reporta por skill (nada se calla)             1
+      v_sin_faceta por skill y por lo que falta:
+        ai-production-director     caso facetas               4
+        ai-production-director     facetas                   27
+        aurora-prompt-linter       facetas                   10
+        brand-lock-extractor       facetas                   71
+        image                      facetas                    5
+        produccion-visual-sw30     caso                       4
+        produccion-visual-sw30     caso facetas               2
+        produccion-visual-sw30     facetas                   16
+        screenwriter               facetas                   39
+        storyboard-architect       facetas                    2
+        storyboard-html-preview    facetas                   24
+        visual-prompt-forge        facetas                    2
+        total en v_sin_faceta: 206
+
+=== 5. embed ===
+  SKIP  embed (sin fastembed)
+
+=== 5b. classify + auditoría (capas 2 y 3, decisión 9) ===
+  SKIP  classify + auditoría (sin fastembed: classify necesita embeddings y prototipos)
+
+=== 6. tres briefs ===
+  [32mPASS[0m  brief 1 sale 0                                             0
+      brief: maestro de rostro T1 para Nano Banana Pro, documental
+      facetas: caso=T1 · d8=nano-banana-pro · d4=documental · d1=character_ref
+      total del filtro: 185 · incluidas: 185 · fuera por presupuesto: 0 · sin faceta: 185 · ranking BM25
+  [32mPASS[0m  brief 1: caso T1 y d8 nano-banana-pro detectados, resultado no vacío 0
+  [32mPASS[0m  brief 2 sale 0                                             0
+      brief: clip Kling 3.0 de un auto de carreras, keyframe de inicio
+      facetas: caso=CLIP,OBJ · d8=kling · d4=race · d1=keyframe_ff
+      total del filtro: 301 · incluidas: 207 · fuera por presupuesto: 94 · sin faceta: 301 · ranking BM25
+  [32mPASS[0m  brief 2: caso CLIP y d8 kling detectados, resultado no vacío 0
+  [32mPASS[0m  brief 3 sale 0                                             0
+      brief: dos personas conversando en un café, cuadro con referencias, GPT Image 2
+      facetas: caso=T4 · d8=gpt-image-2 · d3=2_sin_contacto
+      total del filtro: 197 · incluidas: 197 · fuera por presupuesto: 0 · sin faceta: 197 · ranking BM25
+  [32mPASS[0m  brief 3: caso T4 y d8 gpt-image-2 detectados, resultado no vacío 0
+  [32mPASS[0m  consultas registradas en briefs                            3
+  [32mPASS[0m  brief_regla con filas                                      683
+
+=== 7. stats ===
+  [32mPASS[0m  stats sale 0                                               0
+      reglas            1405
+      con caso          1395
+      con tarea         1405
+      con faceta d1-d9  1203
+      con embedding     0
+      en v_sin_faceta   206   (falta caso, tarea o facetas)
+      sin caso ni tarea 0
+      descartes         160   huérfanas de importación: 2
+
+PASS 42 · FAIL 0
+# EXIT: 0
