@@ -21,6 +21,8 @@ from functools import lru_cache
 from . import auditoria as A
 from . import compilador as C
 from . import conflictos as CF
+from . import politicas as POL
+from . import plantilla_brief as PB
 from . import flujos as FL
 from . import fuentes as F
 from . import ledger as L
@@ -83,21 +85,14 @@ def spec_de_entrega(spec: dict, ent: dict) -> dict:
 
 def nuevo(brief: dict, nombre: str | None = None) -> str:
     spec = S.analizar_determinista(brief)
-    if llm.proveedor().disponible():
-        spec["modelo_spec"] = _spec_modelo(brief, spec)
+    # plantilla de brief: el modelo (si hay) y la app infieren cámara, luz, lugar, ángulo… sin preguntar al usuario
+    spec, spec["plantilla_info"] = PB.completar(spec, brief, llm.proveedor().disponible())
     estado = {"brief": brief, "brief_hash": F.sha256_text(F.canon_json(brief)), "spec": spec,
               "decisiones_humanas": {}, "aprobaciones": {}, "semantica": {}, "auditorias": {}, "etapas": {},
               "excepciones": {}, "historial_feedback": []}
     estado = recalcular(estado)
-    return ST.crear_proyecto(nombre or (brief.get("titulo") or brief.get("texto", "")[:60]), estado)
-
-
-def _spec_modelo(brief, spec):
-    try:
-        r = llm.proveedor().completar(RV.SIS_SPEC, json.dumps(brief, ensure_ascii=False))
-        return {"propuesta": llm.extraer_json(r["texto"]), "uso": r["uso"]}
-    except Exception as ex:
-        return {"error": str(ex)[:300]}
+    # persistible: sin esto la versión 1 guardaba los resúmenes del ledger pero no las 1,398 decisiones
+    return ST.crear_proyecto(nombre or (brief.get("titulo") or brief.get("texto", "")[:60]), persistible(estado))
 
 
 def recalcular(estado: dict, previo: dict | None = None) -> dict:
@@ -201,6 +196,10 @@ def _heredar_revision(previo, ent, se, perfil, ck, dec, estado):
     if ph and not ph.get("confirmada"):  # herencia previa sin confirmar: sus cambios de contexto siguen pendientes
         cambiados = sorted(set(cambiados) | set(ph.get("campos_cambiados") or []))
     conf = (estado.get("herencias_confirmadas") or {}).get(ck)
+    if not conf:  # U-2026-09-28-CAMBIO-QUIRURGICO: las decisiones de niveles anteriores quedan fijas, no se re-revisan
+        conf = {"autor": POL.CAMBIO_QUIRURGICO["id"], "fecha": ST.ahora(),
+                "nota": "niveles anteriores fijos (director): la clasificación de reglas se hereda; cambiaron "
+                        + (", ".join(cambiados) or "sólo la clave del perfil")}
     if not cambiados and not conf:  # contexto idéntico: la revisión sigue valiendo tal cual
         conf = {"autor": "app", "nota": "contexto del brief idéntico; sólo cambió la clave del perfil o una decisión de conflicto "
                                         "(que se aplica encima de la revisión)", "fecha": ST.ahora()}
@@ -277,15 +276,61 @@ def nueva_version(pid: str, mutar, autor: str, nota: str) -> dict:
     est.pop("diferencias", None)
     mutar(est)
     est = recalcular(est, previo=prev)
-    # auditorías, semántica y aprobaciones sólo sobreviven si el texto no cambió
+    # U-2026-09-28-CAMBIO-QUIRURGICO: la auditoría determinista se repite siempre; la revisión semántica y la aprobación
+    # de redacción se heredan en un cambio menor y sólo se reabren en lo que tocó un cambio dramático
+    cambios = {}
     for eid, info in est["entregas"].items():
         h = (info.get("compilado") or {}).get("hash")
+        pinfo = (prev["entregas"].get(eid) or {})
+        ph = (pinfo.get("compilado") or {}).get("hash")
+        cambio = None
+        if h and ph and h != ph:
+            cambio = POL.clasificar_cambio(_campos_entrega(prev["spec"], eid), _campos_entrega(est["spec"], eid),
+                                           {b["id"]: b.get("texto") for b in pinfo["compilado"]["bloques"]},
+                                           {b["id"]: b.get("texto") for b in info["compilado"]["bloques"]})
+            cambios[eid] = cambio
         for campo in ("auditorias", "semantica", "aprobaciones"):
             x = est[campo].get(eid)
-            if x and x.get("texto_hash") != h:
+            if not x or x.get("texto_hash") == h:
+                continue
+            heredable = cambio and x.get("texto_hash") == ph and not x.get("invalidada")
+            if campo == "semantica" and heredable:
+                est[campo][eid] = _heredar_semantica(x, h, ph, cambio, info["compilado"], n + 1)
+            elif campo == "aprobaciones" and heredable and cambio["tipo"] == "menor":
+                est[campo][eid] = dict(x, texto_hash=h, heredada={"de": ph, "version": n + 1, "bloques": cambio["bloques"],
+                                                                  "politica": cambio["politica"]})
+            else:
                 est[campo][eid] = dict(x, invalidada=True, invalidada_en=n + 1)
+    if est.get("diferencias") is not None:
+        est["diferencias"]["cambios"] = cambios
     nn = guardar(pid, est, autor, nota)
     return {"version": nn, "diferencias": est.get("diferencias")}
+
+
+def _campos_entrega(spec: dict, eid: str) -> dict:
+    ent = next((x for x in spec["entregas"] if x["id"] == eid), None) or {"campos": {}}
+    out = {k: v.get("valor") for k, v in spec["comunes"].items()}
+    out.update({k: v.get("valor") for k, v in ent["campos"].items()})
+    return out
+
+
+def _heredar_semantica(x: dict, h: str, ph: str, cambio: dict, comp: dict, version: int) -> dict:
+    """Pasa la revisión semántica al texto nuevo. Pendientes: los NO_CUMPLE abiertos del bloque cambiado (la corrección
+    se verifica) y, si el cambio es dramático, todas las reglas que satisfacen los bloques cambiados."""
+    cambiados = set(cambio["bloques"])
+    en_cambio = lambda v: any(b in str((v or {}).get("bloque", "")) for b in cambiados)
+    ver = dict(x.get("veredictos") or {})
+    pend = {k for k in x.get("no_cumple_abiertos", []) if en_cambio(ver.get(k))}
+    if cambio["tipo"] == "dramatico":
+        pend |= {r for b in comp["bloques"] if b["id"] in cambiados for r in b.get("satisface", [])}
+    for k in pend:
+        ver.pop(k, None)
+    return dict(x, texto_hash=h, veredictos=ver, completo=not pend, pendientes=sorted(pend),
+                no_cumple_abiertos=[k for k in x.get("no_cumple_abiertos", []) if k not in pend],
+                heredada={"de": ph, "version": version, "tipo": cambio["tipo"], "bloques": cambio["bloques"],
+                          "motivos": cambio["motivos"], "politica": cambio["politica"]},
+                resumen=(x.get("resumen", "") + f" · heredada ({cambio['tipo']}, bloques {', '.join(cambio['bloques'])})"
+                         + (f" · {len(pend)} reglas pendientes de revisar" if pend else "")))
 
 
 def comparar(a: dict, b: dict) -> dict:
@@ -422,7 +467,7 @@ def revisar_con_modelo(pid, en_hilo=True) -> str:
                 ck = clave_revision(se, perfil, clave)
                 prov = llm.proveedor()
                 r = RV.revisar_ledger(reg, se, perfil, ent, dec, f"{ck}:{prov.nombre}:{prov.modelo}", pid,
-                                      progreso=lambda p, c=clave: _trabajos[tid]["progreso"].append({"perfil": c, **p}))
+                                      progreso=lambda p, c=clave: _trabajos[tid]["progreso"].append({"perfil": c, **p}), excluir=excluidas_por_medio(perfil))
                 res[clave] = r
                 if r["completo"]:
                     ST.ledger_put(ck, reg.version, "modelo", {k: v for k, v in dec.items() if v.get("capa") == "modelo"})
@@ -765,6 +810,11 @@ def exportar(pid, como_aprobado: bool) -> tuple[bytes, dict]:
 
 # --------------------------------------------------------------------------- revisor externo (sin clave de API)
 
+def excluidas_por_medio(perfil: dict) -> frozenset:
+    reg, cl = registro(), L.Clasif(registro(), complemento())
+    return frozenset(k for k, r in reg.reglas.items() if L.fuera_de_medio(r, cl, perfil))
+
+
 def exportar_lotes_decision(pid) -> dict:
     n, e = cargar(pid)
     reg = registro()
@@ -773,7 +823,7 @@ def exportar_lotes_decision(pid) -> dict:
         ent = next(x for x in e["spec"]["entregas"] if e["entregas"][x["id"]]["perfil"] == clave)
         se = spec_de_entrega(e["spec"], ent)
         perfil = L.perfil_de(se, e["plan"], ent)
-        lotes = RV.construir_lotes(reg, se, perfil, ent, led["decisiones"])
+        lotes = RV.construir_lotes(reg, se, perfil, ent, led["decisiones"], excluir=excluidas_por_medio(perfil))
         out["perfiles"][clave] = {"etiqueta": led["etiqueta"], "lotes": [{"indice": i, "ids": g, "usuario": m} for i, (g, m) in enumerate(lotes)]}
     return out
 
@@ -789,7 +839,7 @@ def importar_lotes_decision(pid, clave: str, respuestas: dict, revisor: str) -> 
     se = spec_de_entrega(e["spec"], ent)
     perfil = L.perfil_de(se, e["plan"], ent)
     dec = copy.deepcopy(led["decisiones"])
-    lotes = RV.construir_lotes(reg, se, perfil, ent, dec)
+    lotes = RV.construir_lotes(reg, se, perfil, ent, dec, excluir=excluidas_por_medio(perfil))
     inf = RV.aplicar_respuestas(reg, se, perfil, dec, lotes, {int(k): v for k, v in respuestas.items()}, f"externo:{revisor}")
     if inf["completo"]:
         ST.ledger_put(clave_revision(se, perfil, clave), reg.version, "modelo",
@@ -806,6 +856,9 @@ def exportar_lotes_semantica(pid, eid, lote_n=40) -> dict:
     comp = info["compilado"]
     dec = e["_ledgers_completos"][info["perfil"]]["decisiones"]
     aplic = sorted(k for k, v in dec.items() if v["estado"] == "APLICA")
+    sem = e["semantica"].get(eid) or {}
+    if sem.get("texto_hash") == comp["hash"] and sem.get("pendientes"):
+        aplic = sorted(set(aplic) & set(sem["pendientes"]))  # cambio quirúrgico: sólo lo que tocó el cambio
     mapa = [{"bloque": b["id"], "slot": b["slot"], "texto": b.get("texto")} for b in comp["bloques"]]
     reg = registro()
     return {"proyecto": pid, "entrega": eid, "texto_hash": comp["hash"], "sistema": RV.SIS_SEMANTICA, "texto": comp["texto"],
@@ -822,6 +875,10 @@ def importar_semantica(pid, eid, texto_hash: str, veredictos: list[dict], reviso
         raise ValueError("la revisión corresponde a otro texto (hash distinto)")
     dec = e["_ledgers_completos"][e["entregas"][eid]["perfil"]]["decisiones"]
     aplic = {k for k, v in dec.items() if v["estado"] == "APLICA"}
+    previa = e["semantica"].get(eid) or {}
+    parcial = previa.get("texto_hash") == texto_hash and bool(previa.get("pendientes"))
+    if parcial:
+        aplic &= set(previa["pendientes"])
     ids = [str(v.get("id")) for v in veredictos]
     faltan, sobran = sorted(aplic - set(ids)), sorted(set(ids) - aplic)
     dup = sorted({i for i in ids if ids.count(i) > 1})
@@ -829,8 +886,12 @@ def importar_semantica(pid, eid, texto_hash: str, veredictos: list[dict], reviso
     if faltan or sobran or dup or malos:
         return {"ok": False, "faltan": faltan, "inventados": sobran, "duplicados": dup, "invalidos": len(malos)}
     vv = {v["id"]: v for v in veredictos}
-    nc = [k for k, v in vv.items() if v["veredicto"] == "NO_CUMPLE"]
+    if parcial:  # se fusiona con lo heredado: sólo se revisó lo que tocó el cambio
+        vv = {**(previa.get("veredictos") or {}), **vv}
+    nc = [k for k, v in vv.items() if v["veredicto"] == "NO_CUMPLE" and k not in (previa.get("disputados") or {} if parcial else {})]
     e["semantica"][eid] = {"revisor": f"externo:{revisor}", "texto_hash": texto_hash, "completo": True, "veredictos": vv,
+                           "pendientes": [], "heredada": previa.get("heredada") if parcial else None,
+                           "disputados": (previa.get("disputados") or {}) if parcial else {},
                            "no_cumple_abiertos": nc, "cuestionadas": [k for k, v in vv.items() if v["veredicto"] == "NO_APLICA_REALMENTE"],
                            "resumen": f"{len(vv)} reglas revisadas por {revisor} · {len(nc)} NO_CUMPLE", "fecha": ST.ahora()}
     ST.reemplazar_version(pid, n, persistible(e))
@@ -860,7 +921,7 @@ def disputar_semantica(pid, eid, rid: str, autoridad: str, razon: str, autor: st
     sem.setdefault("disputados", {})[rid] = {"autoridad": autoridad, "razon": razon, "autor": autor, "fecha": ST.ahora(),
                                              "veredicto_revisor": sem["veredictos"][rid]}
     nd = len(sem["disputados"])
-    sem["resumen"] = re.sub(r"( · \d+ disputados con autoridad)?$", f" · {nd} disputados con autoridad", sem.get("resumen", ""))
+    sem["resumen"] = re.sub(r" · \d+ disputados con autoridad", "", sem.get("resumen", "")) + f" · {nd} disputados con autoridad"
     ST.reemplazar_version(pid, n, persistible(e))
     ST.evento(pid, "semantica_disputada", {"entrega": eid, "regla": rid, "autoridad": autoridad, "autor": autor})
     return {"ok": True, "abiertos": sem["no_cumple_abiertos"]}

@@ -65,7 +65,10 @@ class TestAdaptadores(unittest.TestCase):
         self.assertEqual(t["estado"], "COMPLETO", t.get("error"))
         n, e = P.cargar(pid)
         led = next(iter(e["_ledgers_completos"].values()))
-        self.assertEqual(sum(1 for d in led["decisiones"].values() if d["capa"] == "modelo"), 1398)
+        # nivel 0 fijo: las reglas del otro medio no se re-revisan (U-2026-09-28-CAMBIO-QUIRURGICO)
+        n_medio = 1398 - len(P.excluidas_por_medio(led["perfil"] | {"tareas": set(led["perfil"]["tareas"])}))
+        self.assertEqual(sum(1 for d in led["decisiones"].values() if d["capa"] == "modelo"), n_medio)
+        self.assertEqual(sum(1 for d in led["decisiones"].values() if d["capa"] == "determinista" and d.get("campos") == ["medio"]), 1398 - n_medio)
         self.assertTrue(led["revision_modelo"] if "revision_modelo" in led else e["ledgers"][next(iter(e["ledgers"]))]["revision_modelo"])
         # consumo y tiempo reales del procesamiento completo, expuestos (no sólo la estimación)
         uso = next(iter(t["resultado"].values()))["uso"]
@@ -83,7 +86,7 @@ class TestAdaptadores(unittest.TestCase):
         finally:
             os.environ.pop("OPENAI_API_KEY")
             os.environ.pop("OPENAI_BASE_URL")
-        self.assertEqual(len(vistos), 24)  # 1,398 ids / 60 por lote
+        self.assertEqual(len(vistos), 19)  # 1,104 ids de imagen / 60 por lote (las 294 de video quedan fijas)
         h = {k.lower(): v for k, v in vistos[0]["headers"].items()}
         self.assertEqual(h["authorization"], "Bearer sk-prueba-local")
         self.assertEqual(vistos[0]["body"]["text"]["format"]["type"], "json_object")

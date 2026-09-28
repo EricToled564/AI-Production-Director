@@ -57,11 +57,19 @@ CATALOGO = [
         "a": ["7ba769efe2d7", "c0bc3ce2b122", "ed3f4a2ab62f", "f75cfcf75330", "4a2eeac6c89d"], "b": [],
         "b_fuente": "image/references/gpt-image.md:5-15 (5 slots) · flujo-anclas.html D1/D7 · DECISIONES.md #2 ('los templates de SW30 "
                     "y los prompts de 5 slots de GPT Image pasan': ambos formatos existen, no dice cuál manda)",
-        "autoridad": "Sin autoridad que lo resuelva: DECISIONES #2 admite ambos formatos y no fija cuál es obligatorio; la revisión "
-                     "semántica independiente lo señaló como NO_CUMPLE (E5) y como NO_EVALUABLE (E1–E4). Decisión del director. "
-                     "Límite: la app no construye todavía vía template_engine.build(); si gana A, la entrega queda bloqueada.",
+        "autoridad": "apd/politicas.py U-2026-09-28-MOTOR (Eric, 2026-09-28, vale para todo brief): manda la compilación por bloques en el "
+                     "formato documentado del modelo destino (5 slots en GPT Image); template_engine de SW30 no es obligatorio",
         "aplica_si": lambda p: p["medio"] != "VIDEO",
-        "resolver": lambda p: None,
+        "resolver": lambda p: ("b", "U-2026-09-28-MOTOR (director, todo brief): compilación por bloques en el formato del modelo destino"),
+    },
+    {
+        "id": "CF-REROLL-SW30",
+        "descripcion": "visual-asset-critic presupuesta 2–3 re-rolls ante un fallo técnico vs SW30 'Máximo 2 intentos por método … "
+                       "Nunca tercera vuelta de lo mismo'.",
+        "a": ["1e898f2c0308", "7eac9caa0ac8", "87d7e03eed3d"], "b": ["f9fee85351f3"],
+        "autoridad": "apd/politicas.py U-2026-09-28-REROLL (Eric, 2026-09-28, vale para todo brief): máximo 2 intentos por método; "
+                     "a la 2ª falla, cambio de método con causa declarada",
+        "resolver": lambda p: ("b", "U-2026-09-28-REROLL (director, todo brief): máximo 2 intentos por método (SW30)"),
     },
     {
         "id": "CF-IDENTIDAD-ROL",

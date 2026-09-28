@@ -1,4 +1,4 @@
-"""Exporta el proyecto demo: zip borrador (el demo no es liberable: quedan decisiones del director), un .txt por
+"""Exporta el proyecto demo: zip borrador (hasta que una persona apruebe la redacción), un .txt por
 prompt con su sha256, la auditoría de cada entrega y un resumen de estado. Uso:
     APD_DB=apd/demo/demo.sqlite python3 apd/tools/exportar_demo.py <pid>"""
 

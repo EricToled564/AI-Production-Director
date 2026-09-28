@@ -136,6 +136,7 @@ class TestEvidenciaYConflictos(unittest.TestCase):
 
     def test_conflicto_se_resuelve_por_autoridad_o_por_decision_registrada(self):
         pid = P.nuevo({"texto": util.BRIEF_QUINTETO}, "conflicto")
+        P.cambiar_campos(pid, [{"ruta": "comunes.tratamiento", "valor": None}])  # tratamiento sin decidir
         n, e = P.cargar(pid)
         cf = {c["id"]: c for led in e["ledgers"].values() for c in led["conflictos"]}
         self.assertIn("CF-LUZ-T1", cf)
@@ -184,6 +185,122 @@ class TestPlantillasYCampos(unittest.TestCase):
             self.assertEqual(img["comunes"][k]["estado"], "NO_APLICA")
             self.assertTrue(img["comunes"][k]["motivo"])
 
+
+
+class TestCambioQuirurgico(unittest.TestCase):
+    """U-2026-09-28-CAMBIO-QUIRURGICO: nivel 0 (medio) fijo, nivel 1 (perfil) re-revisa sólo reglas del medio, nivel 2
+    (campo) toca sólo el bloque; un cambio menor hereda semántica y aprobación, uno dramático reabre sólo lo cambiado."""
+
+    def _liberado(self):
+        pid = util.proyecto_quinteto("quirurgico")
+        util.resolver_como_humano(pid)
+        util.liberar(pid, "E2")
+        return pid
+
+    def test_cambio_menor_hereda_semantica_y_aprobacion(self):
+        pid = self._liberado()
+        n, e = P.cargar(pid)
+        edad = e["spec"]["entregas"][1]["campos"]["edad"]["valor"]
+        r = P.cambiar_campos(pid, [{"ruta": "E2.edad", "valor": edad + 1}])
+        self.assertEqual(r["diferencias"]["cambios"]["E2"]["tipo"], "menor")
+        self.assertEqual(r["diferencias"]["bloques_regenerados"]["E2"], ["subject"])
+        n, e = P.cargar(pid)
+        self.assertTrue(e["semantica"]["E2"]["completo"])
+        self.assertEqual(e["semantica"]["E2"]["texto_hash"], e["entregas"]["E2"]["compilado"]["hash"])
+        self.assertEqual(e["aprobaciones"]["E2"]["texto_hash"], e["entregas"]["E2"]["compilado"]["hash"])
+        P.auditar(pid, originales=False)  # la auditoría mecánica sí se repite
+        n, e = P.cargar(pid)
+        self.assertTrue(P.liberacion(e, "E2")["liberable"], P.liberacion(e, "E2")["bloqueos"])
+
+    def test_cambio_dramatico_reabre_solo_lo_cambiado(self):
+        pid = self._liberado()
+        x0 = P.exportar_lotes_semantica(pid, "E2")  # revisión por regla completa del texto original
+        todos = [i for l in x0["lotes"] for i in l["ids"]]
+        P.importar_semantica(pid, "E2", x0["texto_hash"], [{"id": i, "veredicto": "CUMPLE", "bloque": "details"} for i in todos], "prueba")
+        r = P.cambiar_campos(pid, [{"ruta": "E2.sexo", "valor": "man"}, {"ruta": "E2.edad", "valor": 65}])
+        c = r["diferencias"]["cambios"]["E2"]
+        self.assertEqual(c["tipo"], "dramatico")
+        n, e = P.cargar(pid)
+        sem = e["semantica"]["E2"]
+        self.assertFalse(sem["completo"])
+        self.assertTrue(sem["pendientes"])
+        self.assertTrue(e["aprobaciones"]["E2"].get("invalidada"))
+        x = P.exportar_lotes_semantica(pid, "E2")
+        ids = [i for l in x["lotes"] for i in l["ids"]]
+        self.assertEqual(sorted(ids), sorted(sem["pendientes"]))  # sólo lo que tocó el cambio
+        vs = [{"id": i, "veredicto": "CUMPLE", "bloque": "subject", "evidencia": "revisado"} for i in ids]
+        self.assertTrue(P.importar_semantica(pid, "E2", x["texto_hash"], vs, "prueba")["ok"])
+        n, e = P.cargar(pid)
+        self.assertTrue(e["semantica"]["E2"]["completo"])
+        self.assertGreater(len(e["semantica"]["E2"]["veredictos"]), len(ids))  # lo heredado se conserva
+
+    def test_nivel_0_otro_medio_no_se_re_revisa(self):
+        pid = util.proyecto_quinteto("nivel0")
+        lotes = P.exportar_lotes_decision(pid)
+        ids = {i for per in lotes["perfiles"].values() for l in per["lotes"] for i in l["ids"]}
+        reg = P.registro()
+        self.assertFalse(any(reg.reglas[i]["medio"] == "VIDEO" for i in ids))
+        self.assertEqual(len(ids), 1398 - sum(1 for r in reg.reglas.values() if r["medio"] == "VIDEO"))
+
+
+class TestPlantillaBrief(unittest.TestCase):
+    """Plantilla de brief: bloques = facetas de la base + bloques del prompt; cámara, luz, lugar y ángulo nunca se
+    preguntan, se infieren; lo que dijo el usuario gana a cualquier inferencia; con modelo, el modelo la llena."""
+
+    def test_camara_luz_lugar_angulo_nunca_se_preguntan(self):
+        from apd import plantilla_brief as PB
+        for texto in (util.BRIEF_QUINTETO, "Una mujer leyendo en un café junto a la ventana, luz de tarde, GPT Image 2.",
+                      "Foto de producto: botella de perfume de vidrio sobre mármol blanco, sin persona.",
+                      "Retrato de cuerpo entero de una bailarina de flamenco para GPT Image 2."):
+            pid = P.nuevo({"texto": texto}, "plantilla")
+            n, e = P.cargar(pid)
+            preguntas = {a["campo"] for a in e["spec"]["ambiguedades"]}
+            self.assertFalse(preguntas & PB.NUNCA_PREGUNTAR, (texto, preguntas & PB.NUNCA_PREGUNTAR))
+            c = e["spec"]["comunes"]
+            for k in ("camara", "luz", "angulo", "encuadre"):
+                self.assertEqual(c[k]["estado"], "LOCKED", (texto, k))
+
+    def test_lo_que_dijo_el_usuario_gana(self):
+        pid = P.nuevo({"texto": "Una mujer leyendo en un café junto a la ventana, luz de tarde, GPT Image 2."}, "usuario-gana")
+        n, e = P.cargar(pid)
+        c = e["spec"]["comunes"]
+        self.assertEqual(c["luz"]["origen"], "brief")
+        self.assertIn("afternoon", c["luz"]["valor"])
+        self.assertEqual(c["fondo"]["valor"], "a café interior")
+        self.assertEqual(c["camara"]["origen"], "inferido_app")
+
+    def test_bloques_alineados_con_facetas_y_prompt(self):
+        from apd import plantilla_brief as PB
+        from apd.flujos import rules_v3
+        dims = set(rules_v3().FACETAS)
+        for b in PB.BLOQUES:
+            self.assertTrue(b["faceta"] in dims | {"caso", "medio", None}, b)
+        pid = util.proyecto_quinteto("plantilla-slots")
+        n, e = P.cargar(pid)
+        filas = {f["bloque"]: f for f in PB.vista(e["spec"], "gpt-image-2")}
+        slot = lambda b, k: next(x["slot"] for x in filas[b]["campos"] if x["campo"] == k)
+        self.assertIn("Important Details:", slot("luz", "luz"))
+        self.assertIn("Scene:", slot("lugar", "fondo"))
+
+    def test_con_modelo_la_plantilla_la_llena_el_modelo(self):
+        from apd import llm
+        def fn(sistema, usuario):
+            self.assertIn("PLANTILLA DE BRIEF", sistema)
+            return json.dumps({"comunes": {"sujeto": {"valor": "a young woman reading a paperback", "origen": "inferido",
+                                                      "porque": "el brief dice 'una mujer leyendo'"},
+                                           "fondo": {"valor": "a small corner café with a wooden table", "origen": "inferido",
+                                                     "porque": "el brief dice 'en un café'"}}, "entregas": []})
+        llm.fijar(llm.Falso(fn))
+        try:
+            pid = P.nuevo({"texto": "Una mujer leyendo en un café, GPT Image 2."}, "plantilla-modelo")
+        finally:
+            llm.fijar(None)
+        n, e = P.cargar(pid)
+        c = e["spec"]["comunes"]
+        self.assertEqual(c["sujeto"]["origen"], "inferido_modelo")
+        self.assertIn("el brief dice", c["sujeto"]["fuente"])
+        self.assertEqual(c["fondo"]["origen"], "brief")  # lo LOCKED del brief no lo pisa el modelo
+        self.assertTrue(e["spec"]["plantilla_info"]["modelo"]["campos"])
 
 if __name__ == "__main__":
     unittest.main()
