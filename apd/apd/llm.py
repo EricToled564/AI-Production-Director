@@ -77,7 +77,8 @@ class OpenAI(Proveedor):
     def completar(self, sistema, usuario, imagenes=None, json_mode=True):
         contenido = [{"type": "input_image", "image_url": f"data:{im['media_type']};base64,{im['data']}", "detail": "high"}
                      for im in (imagenes or [])]
-        contenido.append({"type": "input_text", "text": usuario})
+        # Responses API con text.format json_object exige la palabra "json" en el input (no basta en instructions): HTTP 400.
+        contenido.append({"type": "input_text", "text": usuario + ("\n\nResponde sólo con JSON válido." if json_mode else "")})
         body = {"model": self.modelo, "instructions": sistema,
                 "input": [{"role": "user", "content": contenido}], "max_output_tokens": 32000,
                 "prompt_cache_key": "apd-reglas"}

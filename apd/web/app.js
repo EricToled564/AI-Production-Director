@@ -108,6 +108,8 @@ function vPlan() {
   const amb = p.spec.ambiguedades || [];
   $('#main').innerHTML = cab('Plan', `Recorrido <b>${esc(pl.recorrido)}${pl.subtipo ? ' · ' + esc(pl.subtipo) : ''}${pl.track ? ' · track ' + esc(pl.track) : ''}</b> — ${esc(pl.motivo)}`) + `
   ${p.plantilla ? `<div class="card"><h3>Brief en plantilla</h3>
+    ${p.plantilla_info?.modelo?.error ? `<div class="err small">El modelo no pudo rellenar la plantilla; se usaron las reglas deterministas. Motivo: <span class="mono small">${esc(p.plantilla_info.modelo.error)}</span></div>`
+      : p.plantilla_info?.modelo ? `<p class="small">${pill('modelo', 'ok')} rellenó ${(p.plantilla_info.modelo.campos || []).length} campos.</p>` : ''}
     <p class="small mute">Bloques alineados con las facetas de la base de reglas y con los bloques del prompt. Cámara, luz, lugar y ángulo no se preguntan: se infieren de lo que diste y se pueden editar en Especificación. Nivel 0 = medio, 1 = tipo de pieza (cambiarlo re-revisa sólo reglas de ese medio), 2 = contenido de un bloque (cambio quirúrgico).</p>
     <table><tr><th>Nivel</th><th>Bloque</th><th>Valor</th><th>Origen</th><th>Va al prompt en</th></tr>
     ${p.plantilla.map(f => f.campos.map((c, i) => `<tr><td>${i ? '' : f.nivel}</td><td>${i ? '' : `<b>${esc(f.nombre)}</b>${f.faceta ? ` <span class="small mute mono">${esc(f.faceta)}</span>` : ''}`}<br><span class="small mono">${esc(c.campo)}</span></td>

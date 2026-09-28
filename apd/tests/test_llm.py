@@ -31,6 +31,17 @@ class Imitador(BaseHTTPRequestHandler):
         VISTO.append({"ruta": self.path, "headers": dict(self.headers), "body": body})
         if self.path.endswith("/responses"):
             texto = body["input"][0]["content"][-1]["text"]
+            if (body.get("text") or {}).get("format", {}).get("type") == "json_object" and "json" not in json.dumps(body["input"]).lower():
+                # regla real de la Responses API (HTTP 400 visto con gpt-5.6-terra el 2026-09-28)
+                err = json.dumps({"error": {"message": "Response input messages must contain the word 'json' in some form "
+                                            "to use 'text.format' of type 'json_object'.", "type": "invalid_request_error",
+                                            "param": "input", "code": None}}).encode()
+                self.send_response(400)
+                self.send_header("content-type", "application/json")
+                self.send_header("content-length", str(len(err)))
+                self.end_headers()
+                self.wfile.write(err)
+                return
             out = {"output": [{"type": "message", "content": [{"type": "output_text", "text": decisiones_para(texto)}]}],
                    "usage": {"input_tokens": 1000, "output_tokens": 200}}
         else:
@@ -90,6 +101,9 @@ class TestAdaptadores(unittest.TestCase):
         h = {k.lower(): v for k, v in vistos[0]["headers"].items()}
         self.assertEqual(h["authorization"], "Bearer sk-prueba-local")
         self.assertEqual(vistos[0]["body"]["text"]["format"]["type"], "json_object")
+        # OpenAI devuelve 400 si json_object se usa sin la palabra "json" en los mensajes de input
+        for v in vistos:
+            self.assertIn("json", v["body"]["input"][0]["content"][-1]["text"].lower())
         self.assertIn("instructions", vistos[0]["body"])
         self.assertNotIn("reasoning", vistos[0]["body"])  # sin OPENAI_REASONING_EFFORT: default del modelo
 

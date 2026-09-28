@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 
 from . import spec as S
 
@@ -176,6 +177,7 @@ def completar(spec: dict, brief: dict, con_modelo: bool) -> tuple[dict, dict]:
             info["modelo"] = {"campos": [c["ruta"] for c in cambios], "uso": uso}
         except Exception as ex:
             info["modelo"] = {"error": f"{type(ex).__name__}: {ex}"[:300]}
+            print(f"plantilla: el modelo falló, se usan las reglas deterministas — {info['modelo']['error']}", file=sys.stderr, flush=True)
     props = [dict(p, origen=f"propuesta_{p['clase']}_inferida") for p in proponer(spec)
              if p["ruta"].startswith("comunes.") and p["ruta"].split(".", 1)[1] in NUNCA_PREGUNTAR | {"modelo", "tratamiento", "calidad", "restricciones", "formato"}]
     spec, _ = S.aplicar_cambios(spec, props, "app")
