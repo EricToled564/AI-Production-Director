@@ -1,0 +1,1170 @@
+{
+ "paso": "verificar",
+ "instrucciones": "Verifica una fusión. Recibes los registros originales y el texto fusionado. Para cada original,\nlista las exigencias, límites, valores, excepciones y alcances que contiene y di si están en el fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"completo\": true|false, \"faltan\": [{\"id\": \"...\", \"elemento\": \"...\"}], \"agregado_sin_fuente\": [\"...\"]}\nDevuelve JSON {\"verificaciones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0149.1",
+   "originales": [
+    {
+     "id": "201cf9426486",
+     "texto": "[Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir] Dirección de luz: window-left se queda window-left en todos los clips.",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+      }
+     ]
+    },
+    {
+     "id": "95efd39f8204",
+     "texto": "[Adapter: Kling 3.0 (motion-aware video) › Continuity across shots] - Do not flip lighting direction between consecutive shots (window-left stays window-left).",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+      }
+     ]
+    },
+    {
+     "id": "e9d4ecf4104c",
+     "texto": "[Consistency Locks › Lock 7. Lighting direction continuity] A subtle one that breaks scenes when violated. If `series_lock.lighting` says \"soft natural side-light, large window LEFT\", then every shot's lighting must respect that direction.",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 7. Lighting direction continuity"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Continuidad de dirección de luz (consistency-locks Lock 7): una regla sutil que rompe escenas cuando se viola; si `series_lock.lighting` dice \"soft natural side-light, large window LEFT\", la iluminación de cada shot debe respetar esa dirección. En el adaptador Kling 3.0 (continuidad entre shots): no invertir la dirección de luz entre shots consecutivos (window-left stays window-left). En el flujo de anclas es algo que el video hereda del ancla y ya no se puede corregir: window-left se queda window-left en todos los clips."
+  },
+  {
+   "grupo": "DUP-0150.1",
+   "originales": [
+    {
+     "id": "2cf79bbda78a",
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Every one of those fields is required, and every one is nullable. That combination is\ndeliberate: `null` records that an input genuinely was not available, while a missing field\nrecords nothing at all. If you did not have the prompt, write `prompt_ref: null` and drop\nyour confidence to MEDIUM. Do not omit the key.",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ]
+    },
+    {
+     "id": "711051986f03",
+     "texto": "[critique.schema.json › (raíz)] title=\"Critique\"; description=\"Machine-readable verdict for one generated frame reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Version 1.1 adds run provenance: the frame, prompt, and brand-lock are identified by content hash as well as by path, so a verdict can be proven to describe the bytes that were actually reviewed. Every provenance field is required at 1.1 and explicitly nullable, so an absent input is a recorded decision rather than an omission.\"",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "encabezado": "critique.schema.json › (raíz)"
+      }
+     ]
+    },
+    {
+     "id": "90d7e8c2f612",
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] **Provenance, all of it required at 1.1.** A verdict is a claim about specific bytes. Name\nthem, and hash them:",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Visual asset critic, Step 6 (critique JSON, schema «Critique» v1.1: veredicto legible por máquina de un frame generado revisado contra su shot spec y su brand-lock, hermano estructurado de la crítica en markdown): procedencia, toda obligatoria en 1.1. Un veredicto es una afirmación sobre bytes concretos: nombrarlos y hashearlos; la versión 1.1 añade procedencia de la corrida: el frame, el prompt y el brand-lock se identifican por hash de contenido además de por ruta, para probar que el veredicto describe los bytes realmente revisados. Cada campo de procedencia es obligatorio y explícitamente anulable, a propósito: `null` registra que un input genuinamente no estaba disponible (una decisión registrada), mientras que un campo ausente no registra nada (una omisión). Si no se tuvo el prompt, escribir `prompt_ref: null` y bajar la confianza a MEDIUM. No omitir la clave."
+  },
+  {
+   "grupo": "DUP-0151.1.1",
+   "originales": [
+    {
+     "id": "66f6bff88fe9",
+     "texto": "[AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting] - **Gate:** cada escena pasa la fórmula de escena de `video`/dramaturgy (deseo + obstáculo + geometría + mirada + ritmo) y la three-jobs rule: cada escena cambia emoción, avanza acción o sube presión. Escena que no hace ninguna de las tres se corta aquí, no en el shot list.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+      }
+     ]
+    },
+    {
+     "id": "93f51cb8d66b",
+     "texto": "[Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)] - [ ] Cada escena del script pasa fórmula de escena + three-jobs rule",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Gate de la Etapa 2 (Screenwriting) del AI Production Director, repetido en el checklist maestro del pipeline (gate de la Etapa 7): cada escena del script pasa la fórmula de escena de `video`/dramaturgy (deseo + obstáculo + geometría + mirada + ritmo) y la three-jobs rule: cada escena cambia emoción, avanza acción o sube presión. La escena que no hace ninguna de las tres se corta aquí, en la Etapa 2, no en el shot list."
+  },
+  {
+   "grupo": "DUP-0152.1",
+   "originales": [
+    {
+     "id": "8a86cfa78f58",
+     "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] Run this six-point check before returning the final prompt to the user.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+      }
+     ]
+    },
+    {
+     "id": "91ebade7496c",
+     "texto": "[Dramaturgy, detail, montage] This is the mandatory layer. A beautiful frame without dramaturgy is wallpaper. Every prompt built by this skill must pass the dramaturgy check before it is sent to the user.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage"
+      }
+     ]
+    },
+    {
+     "id": "c4006dd88775",
+     "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)] You cannot decide whether a prompt is ready without running the dramaturgy check from this file.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Skill video: dramaturgy.md es la capa obligatoria; un cuadro bello sin dramaturgia es papel tapiz (wallpaper). Todo prompt construido por el skill debe pasar el dramaturgy check antes de enviarse al usuario: correr el chequeo de seis puntos (dramaturgy §15) antes de devolver el prompt final. Por eso dramaturgy.md se lee siempre primero (Step 1 del orden de lectura obligatorio): no se puede decidir si un prompt está listo sin correr ese chequeo."
+  },
+  {
+   "grupo": "DUP-0153.1",
+   "originales": [
+    {
+     "id": "9a3a7f63b5b4",
+     "texto": "[Role modes › 4. Shot function taxonomy] - **Power.** Who controls the scene right now. Staging reveals the hierarchy before dialogue does.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/role-modes.md",
+       "encabezado": "Role modes › 4. Shot function taxonomy"
+      }
+     ]
+    },
+    {
+     "id": "d4b7a43f3c7c",
+     "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Power.** Who controls the scene right now.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Función de shot Power (taxonomía de funciones de shot en role-modes §4; Layer 2 del método de storyboard de tres capas en dramaturgy §10): quién controla la escena ahora. El staging revela la jerarquía antes que el diálogo."
+  },
+  {
+   "grupo": "DUP-0154.1.1",
+   "originales": [
+    {
+     "id": "4ef655c77ada",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E5.9 · Subproceso: Canonizar · Skill con autoridad: produccion-visual-sw30 R11 · Entra: Render ACCEPT · Sale: Asset con hash, referencia para lo siguiente · Gate o herramienta: Lo caro nunca se regenera",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    },
+    {
+     "id": "8cdc7af00241",
+     "texto": "[Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS] 11. Lo aprobado se canoniza con hash y se EDITA desde ahí; lo caro nunca se regenera.",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ]
+    }
+   ],
+   "fusionado": "SW30 R11: lo aprobado se canoniza con hash y se EDITA desde ahí; lo caro nunca se regenera. En el mapa del spot es el subproceso E5.9 Canonizar (skill con autoridad: produccion-visual-sw30 R11; entra: render ACCEPT; sale: asset con hash, referencia para lo siguiente; gate: lo caro nunca se regenera)."
+  },
+  {
+   "grupo": "DUP-0155.1.1",
+   "originales": [
+    {
+     "id": "d79b8ba902f8",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Voice rules] - no exclamation points",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      }
+     ]
+    },
+    {
+     "id": "e5508c5b6dd2",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Never list | Brand Lock: Northwind Coffee Roasters › Never list] - never use exclamation points",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+      },
+      {
+       "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+       "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+      }
+     ]
+    },
+    {
+     "id": "fea3ea382233",
+     "texto": "[Brand Lock: Northwind Coffee Roasters › Voice rules] - no exclamation points, anywhere",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+       "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand locks de ejemplo de brand-lock-extractor: nunca usar signos de exclamación. En Acme SaaS (Example, brand-packs/examples/saas-clean.md): en Voice rules, \"no exclamation points\", y en la Never list, \"never use exclamation points\". En Northwind Coffee Roasters (examples/brand-lock.md): en Voice rules, \"no exclamation points, anywhere\", y en la Never list, \"never use exclamation points\"."
+  },
+  {
+   "grupo": "DUP-0156.1.1",
+   "originales": [
+    {
+     "id": "3999058dc1bf",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never use em dashes in copy (only periods, commas, semicolons)",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    },
+    {
+     "id": "67c7f4bf7bd0",
+     "texto": "[Brand Lock: WhyStrohm › Never list] - never use em dashes in copy",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ]
+    },
+    {
+     "id": "d59a24773263",
+     "texto": "[Brand Lock: Acme SaaS (Example) › Voice rules | Brand Lock: WhyStrohm › Voice rules] - no em dashes",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Brand locks de ejemplo: nunca usar em dashes en el copy. En WhyStrohm, Never list: \"never use em dashes in copy\" (en los snapshots de storyboard-architect 30s-pain-proof-promise y 60s-founder-explainer y en el worked-run de visual-asset-critic), y en el snapshot de shotkit-explainer \"never use em dashes in copy (only periods, commas, semicolons)\", es decir, solo puntos, comas y punto y coma. En Voice rules de Acme SaaS (Example, brand-lock-extractor saas-clean.md) y de WhyStrohm (shotkit-explainer): \"no em dashes\"."
+  },
+  {
+   "grupo": "DUP-0157.1",
+   "originales": [
+    {
+     "id": "a3ef910bd415",
+     "texto": "[Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva] Movimiento descrito: un still es un instante congelado; el movimiento se prompt como su residuo físico.",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva"
+      }
+     ]
+    },
+    {
+     "id": "b1b6cba926b6",
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 3 · dimensión D2: Seis tipos de acción y cómo se congela cada uno] Un still no puede mostrar movimiento ni emoción: prompt el residuo físico que cada uno deja. Los cuatro ejemplos del brief están cubiertos: el auto de carreras es tipo C, la clavadista entrando al agua es tipo B, el rayo es tipo D, las dos personas en el café son tipo E.",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensión D2: Seis tipos de acción y cómo se congela cada uno"
+      }
+     ]
+    },
+    {
+     "id": "e3dd1c8d73b4",
+     "texto": "[Keyframes for an animatic (opornye kadry) › 1. What an animatic keyframe must do] A panel that carries a beat, a function, an emotion, and an implied motion earns its place. A panel missing any of the four is a *fantik* — wrapper without candy (`dramaturgy.md` §3). The discipline of this whole file is: **you cannot prompt \"motion\" or \"emotion\" into a still — you prompt the physical consequence each leaves behind.**",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 1. What an animatic keyframe must do"
+      }
+     ]
+    }
+   ],
+   "fusionado": "No se puede promptear \"motion\" ni \"emotion\" en un still: un still es un instante congelado, así que se promptea la consecuencia física, el residuo, que cada uno deja (animatic-keyframes §1). Un panel que carga un beat, una función, una emoción y un movimiento implícito se gana su lugar; al que le falta cualquiera de los cuatro es un *fantik*, envoltorio sin caramelo (dramaturgy §3). En el flujo de anclas: el movimiento descrito es algo que un ancla nunca lleva, se promptea como su residuo físico; y en la dimensión D2 (seis tipos de acción) los cuatro ejemplos del brief quedan cubiertos: el auto de carreras es tipo C, la clavadista entrando al agua es tipo B, el rayo es tipo D, las dos personas en el café son tipo E."
+  },
+  {
+   "grupo": "DUP-0158.1.1",
+   "originales": [
+    {
+     "id": "19b814ce777c",
+     "texto": "[Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen] - Sin rostro, o rostro fragmentado por casco, visera y reflejos; la emoción va en nudillos, pedal y aguja. [FUENTE: video/references/race-and-speed.md §4]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+      }
+     ]
+    },
+    {
+     "id": "3571a0bc178a",
+     "texto": "[Race, speed and faceless kinetic montage › 1. Core laws (the non-negotiables)] 2. **Detail is the emotion.** Faces banned, feeling renders only on a knuckle, a needle, a pedal, smoke, or a sweat bead (`dramaturgy.md` §2; the full substitution method is `animatic-keyframes.md` §5). A hand mid-grip is the no-face equivalent of a close-up on the eyes. No abstract \"motion\", no named feeling.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 1. Core laws (the non-negotiables)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "El detalle es la emoción (race-and-speed §1, ley no negociable 2): rostros prohibidos; el sentimiento se renderiza solo en un nudillo, una aguja, un pedal, humo o una gota de sudor (dramaturgy §2; el método completo de sustitución es animatic-keyframes §5). Una mano a mitad de agarre es el equivalente sin rostro de un primer plano a los ojos. Nada de \"motion\" abstracto ni sentimiento nombrado. En el régimen vehículo: sin rostro, o rostro fragmentado por casco, visera y reflejos; la emoción va en nudillos, pedal y aguja."
+  },
+  {
+   "grupo": "DUP-0159.1",
+   "originales": [
+    {
+     "id": "12963a6482f3",
+     "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] **Long-lens compression** — the second speed register and the antidote to \"only blur sells speed\". Frankenheimer's 1000mm stacked distant cars onto the hero so closing distance reads as collapse. Pair compression panels with low-wide panels in the cut; never board the whole spot on one lens. In `seedance.md`/`veo.md` syntax name \"motion blur, fast-shutter look on background, sharp subject\" explicitly — models default to over-clean stabilization (the prompt skeleton is `animatic-keyframes.md` §7).",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 3. Selling speed in a single frame"
+      }
+     ]
+    },
+    {
+     "id": "e661c1de0ba4",
+     "texto": "[Vehículo en movimiento › 3. Cue de movimiento congelado por defecto] - Alternar registros: paneles bajos y anchos con paneles de compresión de larga focal; nunca toda la secuencia con una sola lente. [FUENTE: video/references/race-and-speed.md §3]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 3. Cue de movimiento congelado por defecto"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Compresión de larga focal (race-and-speed §3): el segundo registro de velocidad y el antídoto contra \"only blur sells speed\"; el 1000mm de Frankenheimer apilaba autos lejanos sobre el héroe para que la distancia que se cierra se lea como colapso. Alternar en el corte paneles de compresión con paneles bajos y anchos; nunca boardear todo el spot (en el régimen vehículo, toda la secuencia) con una sola lente. En la sintaxis de `seedance.md`/`veo.md` nombrar explícitamente \"motion blur, fast-shutter look on background, sharp subject\": los modelos tienden por defecto a una estabilización demasiado limpia (el esqueleto de prompt está en animatic-keyframes §7)."
+  },
+  {
+   "grupo": "DUP-0161.1",
+   "originales": [
+    {
+     "id": "611615a7d6d3",
+     "texto": "[Etapa 1 — Creative Strategy › 1. Lectura del brief] Antes de idear, extrae del brief y deja por escrito:\n- **Problema de negocio** (qué debe cambiar en el mundo real si el video funciona)\n- **Audiencia** (quién, en qué momento, con qué fricción — no demografía vacía)\n- **Single-minded proposition**: la única cosa que el video debe dejar instalada. Una frase. Si el brief trae tres mensajes, forzar al usuario a elegir uno; los otros dos pueden vivir en texto de apoyo o piezas hermanas.\n- **Tono de marca** (del brand-lock si existe)\n- **Restricciones duras** (legales, de plataforma, de presupuesto de generación)",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "encabezado": "Etapa 1 — Creative Strategy › 1. Lectura del brief"
+      }
+     ]
+    },
+    {
+     "id": "aaecfa78aaab",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E1.1 · Subproceso: Lectura del brief · Skill con autoridad: creative-strategy.md · Entra: Brief + brand-lock · Sale: Problema, audiencia, single-minded proposition en una frase, tono, restricciones · Gate o herramienta: Sin SMP en una frase, la etapa no continúa",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    },
+    {
+     "id": "ab4d191447d1",
+     "texto": "[Etapa 1 — Creative Strategy › 1. Lectura del brief] Si el single-minded proposition no se puede escribir en una frase, la Etapa 1 no puede continuar. Resuélvelo con el usuario primero.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "encabezado": "Etapa 1 — Creative Strategy › 1. Lectura del brief"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Etapa 1 (Creative Strategy), lectura del brief (subproceso E1.1 del mapa del spot; skill con autoridad creative-strategy.md; entra: brief + brand-lock): antes de idear, extraer del brief y dejar por escrito: problema de negocio (qué debe cambiar en el mundo real si el video funciona); audiencia (quién, en qué momento, con qué fricción, no demografía vacía); single-minded proposition, la única cosa que el video debe dejar instalada, en una frase: si el brief trae tres mensajes, forzar al usuario a elegir uno, y los otros dos pueden vivir en texto de apoyo o piezas hermanas; tono de marca (del brand-lock si existe); restricciones duras (legales, de plataforma, de presupuesto de generación). Gate: si el single-minded proposition no se puede escribir en una frase, la Etapa 1 no puede continuar; resolverlo con el usuario primero."
+  },
+  {
+   "grupo": "DUP-0162.1",
+   "originales": [
+    {
+     "id": "925b30169db9",
+     "texto": "[AI Production Director › 2. Selección de track] - **STANDARD**: pipeline completo pero Etapa 1 comprimida (2–3 conceptos en vez de 5, sin documento de territorios) y Etapa 2 comprimida (script directo, sin treatment separado).",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 2. Selección de track"
+      }
+     ]
+    },
+    {
+     "id": "cb0ae43b78c4",
+     "texto": "[Etapa 1 — Creative Strategy] Profundidad por track: FILM ejecuta todo. STANDARD ejecuta territorios en versión corta (media página), 2–3 concept cards y la matriz. EXPRESS no ejecuta esta etapa.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "encabezado": "Etapa 1 — Creative Strategy"
+      }
+     ]
+    },
+    {
+     "id": "e442e5c5889a",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E1 · Subproceso: Creative Strategy · comprimida en STANDARD",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Profundidad de la Etapa 1 (Creative Strategy) por track: FILM la ejecuta completa; EXPRESS no la ejecuta; STANDARD la ejecuta comprimida (en el mapa del spot, E1 «Creative Strategy · comprimida en STANDARD»). Según SKILL.md (selección de track), STANDARD es el pipeline completo pero con la Etapa 1 comprimida (2–3 conceptos en vez de 5, sin documento de territorios) y la Etapa 2 comprimida (script directo, sin treatment separado). Según creative-strategy.md, STANDARD ejecuta los territorios en versión corta (media página), 2–3 concept cards y la matriz."
+  },
+  {
+   "grupo": "DUP-0163.1",
+   "originales": [
+    {
+     "id": "00d2e7e9c024",
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación] Situación: Escena compleja de 5 o más elementos, física de fluidos, distorsión · Modelo: NBP, con JSON para 5+ elementos · Por qué según la fuente: Máximo reasoning y control; física de agua, pelo, tela · Resolución y costo: NBP 0.15 por imagen; validar en 1K, final en 2K",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ]
+    },
+    {
+     "id": "4f432dfeb25e",
+     "texto": "[Multitud anónima › 6. Modelo recomendado] - Nano Banana Pro con prompt en JSON cuando hay cinco o más elementos que coordinar: masa, héroe, prácticos, escenario, clima. [FUENTE: image/references/nano-banana.md]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "encabezado": "Multitud anónima › 6. Modelo recomendado"
+      }
+     ]
+    },
+    {
+     "id": "6b8a8f149195",
+     "texto": "[Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта] Аспект: Сложные сцены · Nano Banana: JSON для 5+ элементов · GPT Image 2: 5-slot template со секциями",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Escenas complejas de 5 o más elementos: en Nano Banana, prompt JSON para 5+ elementos; en GPT Image 2, en cambio, la plantilla de 5 slots con secciones (image/models.md, diferencias de sintaxis). En la dimensión D8 del ancla (modelo y resolución): para una escena compleja de 5 o más elementos, física de fluidos o distorsión, NBP con JSON para 5+ elementos, porque da máximo reasoning y control y maneja física de agua, pelo y tela; resolución y costo: NBP 0.15 por imagen, validar en 1K y final en 2K. En el régimen multitud anónima: Nano Banana Pro con prompt en JSON cuando hay cinco o más elementos que coordinar: masa, héroe, prácticos, escenario, clima."
+  },
+  {
+   "grupo": "DUP-0164.1",
+   "originales": [
+    {
+     "id": "96ddb7200eff",
+     "texto": "[Golden Rules › 5. Be Specific] Element: Material · Vague: \"shiny\" · Specific: \"brushed steel with matte finish\"",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "encabezado": "Golden Rules › 5. Be Specific"
+      }
+     ]
+    },
+    {
+     "id": "a848e1652ea7",
+     "texto": "[Creative Direction › Materiality & Texture] Define physical makeup of subjects. Don't just say the thing — describe what it's MADE of.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/creative-direction.md",
+       "encabezado": "Creative Direction › Materiality & Texture"
+      }
+     ]
+    },
+    {
+     "id": "baa92c0df16c",
+     "texto": "[RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)] 7. El objeto **siempre** se describe con sus componentes físicos concretos (número de costuras, material, dónde apoya), no como categoría; \"a ball\" es el equivalente del \"an instrument\" que produce saxofones comestibles. [CAMPO: https://elements.envato.com/learn/ai-image-fails] — (C-23) `[QUOTED]`",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/research/04-objeto-balistico.md",
+       "encabezado": "RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Materialidad (creative-direction, Materiality & Texture): definir la composición física de los sujetos; no decir solo la cosa, describir de qué está HECHA. Ser específico (golden-rules §5): para el material, no \"shiny\" (vago) sino \"brushed steel with matte finish\" (específico). En el régimen objeto balístico (hallazgo de campo 7, [CAMPO: https://elements.envato.com/learn/ai-image-fails], cita C-23): el objeto siempre se describe con sus componentes físicos concretos (número de costuras, material, dónde apoya), no como categoría; \"a ball\" es el equivalente del \"an instrument\" que produce saxofones comestibles."
+  },
+  {
+   "grupo": "DUP-0165.1.1",
+   "originales": [
+    {
+     "id": "0071353ecbdb",
+     "texto": "[skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  nano_banana_pro__1:\n    subject:        [woman, man, person, subject, character, animal]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing]\n    environment:    [studio, gym, room, outdoor, indoor]\n    style:          [photorealistic, documentary, editorial, candid]\n    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour]\n    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores]\n\n  # ====== Caso 2 — Imagen Ancla ======",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+      }
+     ]
+    },
+    {
+     "id": "4edc399784f1",
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  nano_banana_pro__1:   # nano-banana.md: Subject + Action + Location/context + Composition + Style; sin números de lente\n    subject:        [woman, man, person, subject, character, animal, product]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]\n    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]\n    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]\n    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]\n    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+      }
+     ]
+    },
+    {
+     "id": "d4fd413a5bba",
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__1] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  nano_banana_2__1:     # models.md: mismo estilo de prompt que NBP (natural language, 1-2 párrafos)\n    subject:        [woman, man, person, subject, character, animal, product]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]\n    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]\n    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]\n    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]\n    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__1"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Linter aurora, REQUIRED_SECTIONS_BY_PLATFORM_CASE, Caso 1 (génesis text-to-image, variante __1): secciones requeridas `subject`, `action_or_pose`, `environment`, `style`, `lighting` y `details`. En la copia original del skill (skills/aurora-prompt-linter/scripts/vocabularies.yaml), `nano_banana_pro__1`: subject [woman, man, person, subject, character, animal]; action_or_pose [standing, sitting, holding, walking, leaning, posing]; environment [studio, gym, room, outdoor, indoor]; style [photorealistic, documentary, editorial, candid]; lighting [light, lighting, sunlight, tungsten, soft, golden hour]; details [skin texture, fabric, fine detail, asymmetry, natural flaws, pores]. En la copia parcheada del repo (.claude/hooks/aurora/vocabularies.yaml), idénticas para `nano_banana_pro__1` (anotada: nano-banana.md, Subject + Action + Location/context + Composition + Style, sin números de lente) y para `nano_banana_2__1` (anotada: models.md, mismo estilo de prompt que NBP, natural language, 1-2 párrafos), con vocabulario ampliado: subject añade product; action_or_pose añade frozen, mid-, looking; environment añade pool, track, café, cafe, street, hall, kitchen; style añade reportage, photograph; lighting añade hard light, rim; details añade texture."
+  },
+  {
+   "grupo": "DUP-0166.1",
+   "originales": [
+    {
+     "id": "410cc5a63b79",
+     "texto": "[Prompt Framework › Parameterized Templates › Как использовать] 1. **Заменяй только то, что меняется** — остальное берётся из дефолтов",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/prompt-framework.md",
+       "encabezado": "Prompt Framework › Parameterized Templates › Как использовать"
+      }
+     ]
+    },
+    {
+     "id": "5c61d940718e",
+     "texto": "[Prompt Framework › Parameterized Templates › Как использовать] 2. **Структура стабильна** — порядок слотов одинаковый для всех вариаций, модель получает консистентный формат",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/prompt-framework.md",
+       "encabezado": "Prompt Framework › Parameterized Templates › Как использовать"
+      }
+     ]
+    },
+    {
+     "id": "6d82ca9ff94a",
+     "texto": "[Prompt Framework › Parameterized Templates] Паттерн `{variable}` для переиспользуемых промптов. Структура промпта остаётся стабильной — меняется только то, что нужно.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/prompt-framework.md",
+       "encabezado": "Prompt Framework › Parameterized Templates"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Plantillas parametrizadas de imagen (prompt-framework, Parameterized Templates): patrón `{variable}` para prompts reutilizables. La estructura del prompt se mantiene estable: el orden de slots es igual en todas las variaciones, así el modelo recibe un formato consistente; sustituir solo lo que cambia, y el resto se toma de los defaults."
+  },
+  {
+   "grupo": "DUP-0167.1",
+   "originales": [
+    {
+     "id": "52acd7c0613b",
+     "texto": "[Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Seedance] Subject. [identity block].\nMotion. [one clear present-tense action].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time, props].\nLighting. [source, direction, quality, color].\nStyle. [realism level, genre reference].\nAudio. [ambient, SFX]. (1.5+ only)\nContinuity. [what must remain constant].\n\n--resolution 1080p --duration 5 --camerafixed false",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Seedance"
+      }
+     ]
+    },
+    {
+     "id": "66a6c4e70f75",
+     "texto": "[Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)] For a single non-dramatic shot or a quick test, the original 6-step skeleton still works:\nSubject. [identity block with face, hair, clothing, distinguishing features].\nMotion. [one clear present-tense action for the scene].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time of day, props, weather].\nLighting. [dominant source, direction, quality, color].\nStyle. [realism level, genre reference, palette].\nAudio. [ambient, SFX, silence moments]. (1.5+ only)\nContinuity. [what must remain constant across shots].\n\n--resolution 1080p --duration 5 --camerafixed false",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Esqueleto Seedance de un solo clip (fixes-and-skeletons §3, esqueleto cross-model; seedance §16, «older single-clip skeleton», el esqueleto original de 6 pasos que sigue sirviendo para un solo shot no dramático o una prueba rápida):\nSubject. [identity block con rostro, pelo, ropa y rasgos distintivos].\nMotion. [una acción clara en presente para la escena].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time of day, props, weather].\nLighting. [dominant source, direction, quality, color].\nStyle. [realism level, genre reference, palette].\nAudio. [ambient, SFX, silence moments]. (solo 1.5+)\nContinuity. [lo que debe permanecer constante entre shots].\n\n--resolution 1080p --duration 5 --camerafixed false"
+  },
+  {
+   "grupo": "DUP-0168.1",
+   "originales": [
+    {
+     "id": "2f459be68334",
+     "texto": "[Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)] For 1.6, 2.1 Pro, 2.5 Turbo Pro, 2.6 Pro:\nSubject (with specific details)\n+ Subject Movement (one clean verb phrase)\n+ Scene (3-5 elements max)\n+ Camera Language\n+ Lighting\n+ Atmosphere",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+      }
+     ]
+    },
+    {
+     "id": "591359dac4a3",
+     "texto": "[Kling reference (Kuaishou) › 12. Skeleton › Text-to-video (1.x – 2.x)] [Subject with identity anchor]. [Subject movement in one clean verb phrase]. Scene. [3-5 environment elements]. Camera. [one movement + lens]. Lighting. [source + quality]. Atmosphere. [mood].\n\nNegative field. blurry, distorted hands, extra fingers, melted face, watermark, subtitles, jitter.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Text-to-video (1.x – 2.x)"
+      }
+     ]
+    },
+    {
+     "id": "7aa2c7148322",
+     "texto": "[Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling text-to-video] [Subject with identity anchor]. [Subject movement]. Scene. [3-5 environment elements]. Camera. [one movement + lens]. Lighting. [source + quality]. Atmosphere. [mood].\n\nNegative field. blurry, distorted hands, extra fingers, melted face, watermark, subtitles, jitter.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling text-to-video"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Kling 1.x – 2.x (1.6, 2.1 Pro, 2.5 Turbo Pro, 2.6 Pro), fórmula de prompt (kling §4): Subject (con detalles específicos) + Subject Movement (una frase verbal limpia) + Scene (3-5 elementos máx.) + Camera Language + Lighting + Atmosphere. Esqueleto text-to-video (kling §12 y fixes-and-skeletons §3): \"[Subject with identity anchor]. [Subject movement in one clean verb phrase]. Scene. [3-5 environment elements]. Camera. [one movement + lens]. Lighting. [source + quality]. Atmosphere. [mood].\" Negative field: \"blurry, distorted hands, extra fingers, melted face, watermark, subtitles, jitter.\""
+  },
+  {
+   "grupo": "DUP-0169.1",
+   "originales": [
+    {
+     "id": "64c8f0450ef5",
+     "texto": "[Veo reference (Google) › 3. Prompt structure and length] [Subject / Action]\n+ [Environment / Setting]\n+ [Camera / Shot Type / Lens]\n+ [Lighting / Atmosphere]\n+ [Style / Quality]\n+ [Audio]\n+ [Duration]",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+      }
+     ]
+    },
+    {
+     "id": "8a799fdd5db1",
+     "texto": "[Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Veo prose] [Subject performing action] in [environment]. [Camera framing + lens + movement]. [Lighting direction + color]. [Style + mood + palette].\n\nAudio: [ambient, SFX, music texture].\nSays: [character] says, \"[dialogue, max 8s of speech].\"\nSFX: [punctual sound events].\n\nDuration: [4 / 6 / 8] seconds.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Veo prose"
+      }
+     ]
+    },
+    {
+     "id": "d053dd38ad63",
+     "texto": "[Veo reference (Google) › 10. Skeleton › Prose version] [Subject performing action] in [environment]. [Camera framing + lens + movement]. [Lighting direction + color temperature]. [Style + mood + palette].\n\nAudio: [ambient sounds, SFX, music texture].\nSays: [character] says, \"[dialogue, max 8 seconds of speech].\"\nSFX: [punctual sound events].\n\nDuration: [4 / 6 / 8] seconds.",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "encabezado": "Veo reference (Google) › 10. Skeleton › Prose version"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Veo, estructura de prompt (veo §3): [Subject / Action] + [Environment / Setting] + [Camera / Shot Type / Lens] + [Lighting / Atmosphere] + [Style / Quality] + [Audio] + [Duration]. Esqueleto en prosa (veo §10 y fixes-and-skeletons §3): \"[Subject performing action] in [environment]. [Camera framing + lens + movement]. [Lighting direction + color temperature]. [Style + mood + palette].\" Luego \"Audio: [ambient sounds, SFX, music texture].\"; \"Says: [character] says, \"[dialogue, max 8 seconds of speech].\"\" (máximo 8 s de habla); \"SFX: [punctual sound events].\"; \"Duration: [4 / 6 / 8] seconds.\""
+  },
+  {
+   "grupo": "DUP-0170.1",
+   "originales": [
+    {
+     "id": "20ae6661b2b5",
+     "texto": "[AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts] - **Skills:** `visual-prompt-forge` estructura el prompt de movimiento desde shots.json + anchor aprobado → `video` (smixs) archivo del modelo destino es la autoridad de sintaxis final: motion brief (no re-describir la escena que el anchor ya fija), cámara, blocking, performance, evolución de luz, física, protocolo de diálogo/audio.",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+      }
+     ]
+    },
+    {
+     "id": "6754b4cb668e",
+     "texto": "[Nano Banana — Specific Rules › Кейфреймы для видео] - **Хэндофф в видеомодель — motion brief, не пересказ.** Движение камеры, движение субъекта, движение фона, длительность, framing lock, запрещённые изменения. Видео-промпт не переописывает то, что уже есть в кадре.",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+      }
+     ]
+    },
+    {
+     "id": "84fa9a5d67c3",
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E6.2 · Subproceso: Reescritura a sintaxis del modelo · Skill con autoridad: video/kling.md, veo.md o seedance.md · Entra: Borrador · Sale: Motion brief: cámara, blocking, performance, luz, física, audio · Gate o herramienta: No re-describir lo que el anchor ya fija; SW30 R16",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Handoff de keyframe/anchor a video: el prompt de video es un motion brief, no un recuento; no re-describe lo que el anchor ya fija en el cuadro. En el AI Production Director, Etapa 6 (Video Prompts): `visual-prompt-forge` estructura el prompt de movimiento desde shots.json + anchor aprobado, y el archivo del modelo destino del skill `video` (smixs) es la autoridad de sintaxis final: motion brief (sin re-describir la escena que el anchor ya fija), cámara, blocking, performance, evolución de luz, física, protocolo de diálogo/audio. En el mapa del spot es el subproceso E6.2, Reescritura a sintaxis del modelo (autoridad: video/kling.md, veo.md o seedance.md; entra: borrador; sale: motion brief con cámara, blocking, performance, luz, física, audio; gate: no re-describir lo que el anchor ya fija, SW30 R16). En Nano Banana (keyframes para video), el motion brief lleva: movimiento de cámara, movimiento del sujeto, movimiento del fondo, duración, framing lock y cambios prohibidos."
+  },
+  {
+   "grupo": "DUP-0171.1",
+   "originales": [
+    {
+     "id": "02d51675a553",
+     "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Una sola línea de superficie; refracción presente en lo sumergido. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+      }
+     ]
+    },
+    {
+     "id": "08e577ecfc1d",
+     "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - Dos superficies de agua o un horizonte de agua duplicado: el prompt mezcló vista de superficie y vista sumergida; declarar una sola línea de agua y desde qué lado mira la cámara. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+      }
+     ]
+    },
+    {
+     "id": "7a1583fe43f9",
+     "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 7. La línea de superficie es una sola: si el encuadre es split-level, hay exactamente un menisco que cruza el cuadro, con el aire nítido arriba y el agua con su propia atmósfera abajo. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Régimen ruptura de superficie (a prueba): la línea de superficie es una sola; si el encuadre es split-level, hay exactamente un menisco que cruza el cuadro, con el aire nítido arriba y el agua con su propia atmósfera abajo (ley §2.7). Fallo conocido: dos superficies de agua o un horizonte de agua duplicado, porque el prompt mezcló vista de superficie y vista sumergida; corrección: declarar una sola línea de agua y desde qué lado mira la cámara. Checklist del crítico: una sola línea de superficie; refracción presente en lo sumergido."
+  },
+  {
+   "grupo": "DUP-0172.1",
+   "originales": [
+    {
+     "id": "2b42ded79923",
+     "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Burbujas verticales; racimo reciente si hay cambio de estado. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 9. Checklist del crítico"
+      }
+     ]
+    },
+    {
+     "id": "630f084a7818",
+     "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 4. Las burbujas suben verticales y son la brújula del cuadro: indican dónde está arriba y, en racimo desde el regulador, marcan una exhalación reciente, es decir un cambio de estado. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ]
+    },
+    {
+     "id": "73c6c71c33af",
+     "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Burbujas que van de lado o hacia abajo: el modelo perdió la vertical; declarar \"bubbles rising straight up toward the surface\". [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Régimen subacuático (a prueba): las burbujas suben verticales y son la brújula del cuadro: indican dónde está arriba y, en racimo desde el regulador, marcan una exhalación reciente, es decir un cambio de estado. Fallo conocido: burbujas que van de lado o hacia abajo, el modelo perdió la vertical; declarar \"bubbles rising straight up toward the surface\". Checklist del crítico: burbujas verticales; racimo reciente si hay cambio de estado."
+  },
+  {
+   "grupo": "DUP-0173.1",
+   "originales": [
+    {
+     "id": "46296856c0e0",
+     "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Pelo y tela flotando. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 9. Checklist del crítico"
+      }
+     ]
+    },
+    {
+     "id": "89762eac7717",
+     "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 6. El pelo y la tela flotan y se separan del cuerpo; una melena pegada a la cabeza o una camiseta caída se leen como aire. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ]
+    },
+    {
+     "id": "ecfc9d749ed1",
+     "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Pelo y tela pegados al cuerpo: pedir flotación explícita. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Régimen subacuático (a prueba): el pelo y la tela flotan y se separan del cuerpo; una melena pegada a la cabeza o una camiseta caída se leen como aire. Fallo conocido: pelo y tela pegados al cuerpo; corrección: pedir flotación explícita. Checklist del crítico: pelo y tela flotando."
+  },
+  {
+   "grupo": "DUP-0174.1",
+   "originales": [
+    {
+     "id": "31d69dbb2a68",
+     "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Sombra de contacto única. [A PRUEBA]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 9. Checklist del crítico"
+      }
+     ]
+    },
+    {
+     "id": "84c2d329d9ff",
+     "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 5. La sombra de contacto ancla el objeto al mundo: sin sombra de contacto o con sombra doble, el objeto se lee compuesto. [FUENTE: image/references/prompt-framework.md]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ]
+    },
+    {
+     "id": "d6df3ef47bd0",
+     "texto": "[Objeto balístico › 4. Luz en este medio] - Sombra de contacto suave y definida donde el objeto toca, oclusión ambiental en el punto de deformación. [FUENTE: image/references/prompt-framework.md]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 4. Luz en este medio"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Régimen objeto balístico: la sombra de contacto ancla el objeto al mundo; sin sombra de contacto o con sombra doble, el objeto se lee compuesto (ley §2.5, fuente image/references/prompt-framework.md). En la luz del medio: sombra de contacto suave y definida donde el objeto toca, con oclusión ambiental en el punto de deformación. Checklist del crítico (a prueba): sombra de contacto única."
+  },
+  {
+   "grupo": "DUP-0175.1",
+   "originales": [
+    {
+     "id": "05beff888842",
+     "texto": "[Grupo ensamble › 2. Leyes físicas que el still debe evidenciar] 2. Cada miembro tiene génesis propia en dos pasos, rostro T1 sin referencia y cuerpo T2 con el rostro adjunto, canonizada con hash antes de cualquier cuadro de grupo. [FUENTE: produccion-visual-sw30/SKILL.md R11]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "encabezado": "Grupo ensamble › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ]
+    },
+    {
+     "id": "36bbc4dbacc9",
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame] Paso: EN.1 · Qué se hace: Génesis por miembro: rostro T1, después cuerpo T2 con su vestuario, su prop o instrumento propio. Cada uno canonizado con hash · Regla que lo sostiene: SW30 R1 un trabajo por generación · R5 herencia mínima · R11 canonizar · Límite duro: N miembros = N génesis de rostro + N de cuerpo. El plan de anchors lo cuenta antes de gastar",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+      }
+     ]
+    },
+    {
+     "id": "a64ad0e00c6c",
+     "texto": "[Grupo ensamble] De tres a ocho personas y todas deben reconocerse en el mismo frame. Cada miembro es un héroe con\ngénesis propia, vestuario propio y, si toca, instrumento propio. El costo se cuenta antes: N miembros\nson N génesis de rostro, N de cuerpo y N inserciones. Es lo contrario de la multitud anónima.",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "encabezado": "Grupo ensamble"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Grupo ensamble: de tres a ocho personas y todas deben reconocerse en el mismo frame; es lo contrario de la multitud anónima. Cada miembro es un héroe con génesis propia, vestuario propio y, si toca, instrumento o prop propio. La génesis es por miembro y en dos pasos: rostro T1 sin referencia, después cuerpo T2 con el rostro adjunto, con su vestuario y su prop o instrumento; cada uno canonizado con hash antes de cualquier cuadro de grupo (paso EN.1 del flujo de anclas; sostenido por SW30 R1 un trabajo por generación, R5 herencia mínima, R11 canonizar). El costo se cuenta antes (límite duro): N miembros son N génesis de rostro, N de cuerpo y N inserciones, y el plan de anchors lo cuenta antes de gastar."
+  },
+  {
+   "grupo": "DUP-0176.1",
+   "originales": [
+    {
+     "id": "13b415d5895c",
+     "texto": "[Screenwriter Skill › Best Practices › For Pipeline Integration] - **Parseable format:** Maintain strict XML structure",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+      }
+     ]
+    },
+    {
+     "id": "59a313303f71",
+     "texto": "[Pipeline Integration Guide › Output Format Validation › XML Well-Formedness] Ensure valid XML structure:\nAll opening tags have closing tags; Proper nesting (no overlapping tags); Special characters escaped (&lt; &gt; &amp;)",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "encabezado": "Pipeline Integration Guide › Output Format Validation › XML Well-Formedness"
+      }
+     ]
+    },
+    {
+     "id": "bac4a403a35b",
+     "texto": "[Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown] - Format for easy pipeline parsing",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Screenwriter, integración con el pipeline: la salida es markdown con etiquetas XML formateado para un parseo fácil del pipeline (Core Workflow paso 4) y mantiene una estructura XML estricta (formato parseable). Validación de buena formación XML (pipeline-integration): toda etiqueta de apertura tiene su cierre; anidamiento correcto (sin etiquetas solapadas); caracteres especiales escapados (&lt; &gt; &amp;)."
+  },
+  {
+   "grupo": "DUP-0177.1",
+   "originales": [
+    {
+     "id": "7dcf30bd73bf",
+     "texto": "[Decisiones de dirección — 2026-09-25] #: 8 · Decisión: Cómo entran las inferencias · Opción elegida: Con etiqueta `[A PRUEBA]`; investigación de campo en foros y tutoriales para confirmar o refutar cada una; un ejercicio real por caso; se canonizan según el resultado · Consecuencia operativa: Nunca bloquean un gate hasta ser canónicas",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "encabezado": "Decisiones de dirección — 2026-09-25"
+      }
+     ]
+    },
+    {
+     "id": "c1bce1e322b4",
+     "texto": "[Familias de régimen físico — reglas para anclas cinematográficas] Decisiones que gobiernan esta carpeta (sesión 2026-09-25):\n1. Viven en el repo. `rule_registry.py` las lee además de los skills instalados.\n2. Toda regla lleva una etiqueta de origen al final de la línea. Sin etiqueta, la regla no entra a la base.\n3. Las inferencias entran con `[A PRUEBA]`, prioridad 4, y nunca bloquean un gate hasta canonizarse.\n4. Canonización en tres pasos: investigación de campo en foros y tutoriales → un ejercicio real por\n   familia → etiqueta `[CANONICA fecha]` con el template que funcionó.",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/README.md",
+       "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Inferencias en las familias de régimen físico (decisión 8 de DECISIONES.md, 2026-09-25, y decisiones que gobiernan la carpeta regimenes/): las reglas viven en el repo y `rule_registry.py` las lee además de los skills instalados; toda regla lleva una etiqueta de origen al final de la línea y sin etiqueta no entra a la base. Las inferencias entran con la etiqueta `[A PRUEBA]`, prioridad 4, y nunca bloquean un gate hasta ser canónicas. Canonización en tres pasos: investigación de campo en foros y tutoriales para confirmar o refutar cada una → un ejercicio real por caso (por familia) → se canonizan según el resultado con la etiqueta `[CANONICA fecha]` y el template que funcionó."
+  },
+  {
+   "grupo": "DUP-0178.1.1",
+   "originales": [
+    {
+     "id": "05945a26b60d",
+     "texto": "[Nano Banana — Specific Rules › Кейфреймы для видео] - **Aspect ratio сразу целевой.** Кампании нужен вертикальный ролик — генери 9:16, а не кропай после анимации (тихая точка отказа).",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+      }
+     ]
+    },
+    {
+     "id": "4e08121ef3d6",
+     "texto": "[Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir] Aspect ratio: se genera en el ratio destino, nunca se recorta después de animar.",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+      }
+     ]
+    }
+   ],
+   "fusionado": "El keyframe o ancla se genera directamente en el aspect ratio destino; nunca se recorta después de animar. En Nano Banana (keyframes para video): si la campaña necesita un video vertical, generar 9:16 y no recortar después de la animación, que es un punto de falla silencioso. En el flujo de anclas es algo que el video hereda del ancla y ya no se puede corregir."
+  },
+  {
+   "grupo": "DUP-0179.1",
+   "originales": [
+    {
+     "id": "2ca711475874",
+     "texto": "[Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters] Parameter: `start_image` · Default: optional · Notes: Image-to-video reference for the opening frame",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+      }
+     ]
+    },
+    {
+     "id": "c04e17752232",
+     "texto": "[Adapter: Kling 3.0 (motion-aware video) › Parameters] Parameter: `start_image` · Default: optional · Notes: Image-to-video. Pass an accepted still from `shots.json` assets to lock the opening frame",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+      }
+     ]
+    },
+    {
+     "id": "f4a8bd87783f",
+     "texto": "[Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters | Adapter: Veo 3 (motion-aware video, native audio) › Parameters] Parameter: `start_image` · Default: optional · Notes: Image-to-video from an accepted still",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Parámetro `start_image` (default: opcional) en los adaptadores de video de visual-prompt-forge: en Seedance 2.0, referencia image-to-video para el frame de apertura; en Kling 3.0, image-to-video pasando un still aceptado de los assets de `shots.json` para fijar el frame de apertura; en Hailuo 02 Pro y Veo 3, image-to-video desde un still aceptado."
+  },
+  {
+   "grupo": "DUP-0180.1",
+   "originales": [
+    {
+     "id": "15249a817e6a",
+     "texto": "[Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que cambia por clase] Producto: etiquetas en GPT Image 2 high, logo nunca de texto",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que cambia por clase"
+      }
+     ]
+    },
+    {
+     "id": "ad1224782095",
+     "texto": "[Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS] 10. Logos solo heredados de asset aprobado o descripción canónica del brand-lock; los\n    cuerpos nunca tapan logo ni lettering en frames congelados.",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ]
+    },
+    {
+     "id": "ebbe78fefcaf",
+     "texto": "[Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase] Clase: Producto · Subclases: Packaging, comida, bebida, cosmético, device · Categoría aurora: PR · Caso en la base hoy: PROD · Modelo según la fuente: GPT Image 2 quality high para etiquetas, materiales y condensación; NBP para distorsión física creíble · Grounding: No relevante · Reglas propias: Logos y lettering solo heredados de asset aprobado (SW30 R10); sin marcas en frame, se componen en post (forge R6). Los cuerpos nunca tapan un logo · Qué siembra: Hero shot, inserto macro, producto en manos del sujeto",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+      }
+     ]
+    }
+   ],
+   "fusionado": "SW30 R10: los logos solo se heredan de un asset aprobado o de la descripción canónica del brand-lock; los cuerpos nunca tapan logo ni lettering en frames congelados. Aplicado a la clase de génesis Producto del mapa del spot (subclases: packaging, comida, bebida, cosmético, device; categoría aurora PR; caso en la base: PROD; modelo según la fuente: GPT Image 2 quality high para etiquetas, materiales y condensación, NBP para distorsión física creíble; grounding no relevante): logos y lettering solo heredados de asset aprobado (SW30 R10); sin marcas en frame, se componen en post (forge R6); los cuerpos nunca tapan un logo; siembra el hero shot, el inserto macro y el producto en manos del sujeto. En el subflujo atómico de génesis sin referencias, lo que cambia para Producto: etiquetas en GPT Image 2 high, logo nunca desde texto."
+  },
+  {
+   "grupo": "DUP-0181.1",
+   "originales": [
+    {
+     "id": "22d96a59d9f5",
+     "texto": "[Cuerpo en el pico de esfuerzo › 6. Modelo recomendado] - Prompt de unas 250 palabras cuando hay rostro, con los bloques light_hard, skin_doc, usecase_doc y clean_doc; un slot de más de 300 palabras compite consigo mismo. [FUENTE: produccion-visual-sw30/SKILL.md template T1]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 6. Modelo recomendado"
+      }
+     ]
+    },
+    {
+     "id": "7e341d9895f7",
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima] Alrededor de 250 palabras; un slot de 300+ compite consigo mismo",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+      }
+     ]
+    },
+    {
+     "id": "dd6528ce5dc7",
+     "texto": "[Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código] Longitud: el prompt completo se mantiene alrededor de 250 palabras. Un slot de 300+ palabras compite\nconsigo mismo — causa documentada de artefactos en gpt-image-2.",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Longitud del prompt con rostro (template canónico T1 de maestro de rostro de SW30, obligatorio y aplicado por código): el prompt completo se mantiene alrededor de 250 palabras; un slot de 300+ palabras compite consigo mismo, causa documentada de artefactos en gpt-image-2. En el ancla cinematográfica con persona (flujo-anclas paso 6, bloques SW30 encima): alrededor de 250 palabras, un slot de 300+ compite consigo mismo. En el régimen cuerpo en esfuerzo: prompt de unas 250 palabras cuando hay rostro, con los bloques light_hard, skin_doc, usecase_doc y clean_doc; un slot de más de 300 palabras compite consigo mismo."
+  },
+  {
+   "grupo": "DUP-0182.1",
+   "originales": [
+    {
+     "id": "26c488990cc3",
+     "texto": "[Shot Grammar › Lighting style (referenced from series_lock)] The series_lock string flows into every prompt automatically.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+      }
+     ]
+    },
+    {
+     "id": "609ba49179d7",
+     "texto": "[Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`] If you find yourself repeating the same lighting description across shots, it belongs in series_lock. If you find yourself repeating the same color description across storyboards, it belongs in brand_lock.",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+      }
+     ]
+    },
+    {
+     "id": "e0ec45ffb76e",
+     "texto": "[Shot Grammar › Lighting style (referenced from series_lock)] Don't redefine per shot. Define once in `series_lock.lighting`. Examples:\n- `soft natural side-light, large window left, warm afternoon`\n- `hard top-light, single source, deep shadows, studio black`\n- `practical mixed sources, neon accents, urban night`",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Storyboard architect (shot-grammar, estilo de luz referenciado desde series_lock): la luz no se redefine por shot; se define una vez en `series_lock.lighting` y ese string fluye automáticamente a cada prompt. Ejemplos: `soft natural side-light, large window left, warm afternoon`; `hard top-light, single source, deep shadows, studio black`; `practical mixed sources, neon accents, urban night`. Si se repite la misma descripción de luz entre shots, pertenece a series_lock; si se repite la misma descripción de color entre storyboards, pertenece a brand_lock."
+  },
+  {
+   "grupo": "DUP-0183.1",
+   "originales": [
+    {
+     "id": "540118ad9a63",
+     "texto": "[Objeto balístico › 4. Luz en este medio] - Un specular duro en el objeto es obligatorio: sin él no hay información de material ni de forma. [FUENTE: video/references/race-and-speed.md §7]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 4. Luz en este medio"
+      }
+     ]
+    },
+    {
+     "id": "635eade2302e",
+     "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Specular y material legibles. [FUENTE: video/references/race-and-speed.md §7]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 9. Checklist del crítico"
+      }
+     ]
+    },
+    {
+     "id": "d95e62a65a27",
+     "texto": "[Grupo ensamble › 4. Luz en este medio] - Instrumentos con specular: barniz, metal, cuerdas; sin specular no hay material. [FUENTE: video/references/race-and-speed.md §7]",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "encabezado": "Grupo ensamble › 4. Luz en este medio"
+      }
+     ]
+    }
+   ],
+   "fusionado": "Specular duro obligatorio (fuente race-and-speed §7). En el régimen objeto balístico: un specular duro en el objeto es obligatorio, sin él no hay información de material ni de forma; checklist del crítico: specular y material legibles. En el régimen grupo ensamble: instrumentos con specular (barniz, metal, cuerdas); sin specular no hay material."
+  }
+ ]
+}
