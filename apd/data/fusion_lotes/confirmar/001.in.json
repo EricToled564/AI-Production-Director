@@ -1,0 +1,1280 @@
+{
+ "paso": "confirmar",
+ "instrucciones": "Recibes grupos de posibles duplicados. Cada miembro trae su documento de origen, la ruta de encabezados\nbajo la que está (skill › sección › subsección) y su texto completo. El encabezado dice el alcance real de la regla:\nmodelo, régimen, etapa, tipo de pieza, caso, checklist o fallo conocido. Para cada grupo decide, leyendo texto Y\nencabezado, qué miembros son la misma regla:\n- misma_regla: misma exigencia con el mismo alcance (la misma regla repetida en otra sección, checklist o resumen).\n- misma_regla_otro_alcance: contenido normativo idéntico pero el encabezado la sitúa en otro modelo, régimen o caso.\n- Si el encabezado muestra que dos miembros regulan cosas distintas (otro paso, otro modelo con otro valor, un ejemplo\n  frente a la regla), sepáralos.\nDevuelve JSON {\"componentes\": [{\"grupo\": \"...\", \"subgrupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" |\n\"misma_regla_otro_alcance\", \"regla\": \"la regla común en una frase, con su alcance\"}], \"sueltos\": [ids]}]}; cada id del\ngrupo aparece exactamente una vez.",
+ "componentes": [
+  {
+   "grupo": "DUP-0001.1",
+   "miembros": [
+    {
+     "id": "80a57e4c07a3",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Texto a añadir"
+      }
+     ],
+     "texto": "[Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Texto a añadir] 28\tLINTER DETERMINISTA OBLIGATORIO ANTES DE ENTREGAR PROMPT — Para todos los casos (1/2/3a/3b/3c/4), ejecutar `aurora-linter/prompt_linter.py` al final del Step 4 drafting con: prompt, refs tageadas por categoría (P/O/L/PR/S según IDs system §7), case_type, y mensaje completo del usuario en el turno actual para parsear OVERRIDEs. Si STATUS=FAIL sin overrides que cubran todas las violaciones, NO entregar al usuario — iterar el draft hasta PASS. El reporte del linter (PASS/FAIL + violaciones + overrides aceptados) se incluye en el output visible al usuario para trazabilidad. Override de violación requiere autorización expresa del usuario por escrito en el turno actual con sintaxis `OVERRIDE: <término-o-categoría> - <razón>`; frases genéricas (\"dale\", \"hazlo ya\", \"ready to copy paste\") NO cuentan como override. Las autorizaciones NO persisten entre turnos — cada prompt arranca STRICT."
+    },
+    {
+     "id": "95fda3ea0ab4",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+       "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Cómo se invoca"
+      }
+     ],
+     "texto": "[Edit propuesta al skill `prompt-production-protocol` — Step 5 › Cómo se invoca] Desde el agente al final del Step 4 drafting:\n# Pseudocódigo del agente\ndraft = \"...\"          # el prompt construido\nrefs = [...]           # tags por ref\ncase = \"3b\"            # caso clasificado en Step 0\nuser_msg = \"...\"       # mensaje completo del usuario en el turno actual\n\n# Escribir a temp files\nwrite(\"/tmp/draft.txt\", draft)\nwrite(\"/tmp/refs.yaml\", refs_yaml)\nwrite(\"/tmp/user.txt\", user_msg)\n\n# Correr linter\nresult = bash(f\"python3 aurora-linter/prompt_linter.py --prompt /tmp/draft.txt --refs /tmp/refs.yaml --case {case} --overrides /tmp/user.txt\")\n\nif result.exit_code == 0:\n    # PASS, proceder a Step 6\n    deliver(draft, linter_report=result.stdout)\nelse:\n    # FAIL, iterar\n    new_draft = revise_based_on_report(draft, result.stdout)\n    # vuelve a Step 4 hasta PASS"
+    },
+    {
+     "id": "0fb4c67621e8",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter › Cómo invocarlo"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter › Cómo invocarlo] Antes de entregar el prompt al usuario:\n1. **Etiquetar los refs por categoría.** Cada ref carga 0 o más de: P (sujeto), O (outfit), L (locación), PR (prop), S (estilo). Mapea a IDs system v6.0 §7. Ejemplo de refs.yaml:\n   ```yaml\n   - file: \"img_ciclista_ff.jpg\"\n     role: \"FF\"\n     tags: [\"P1\", \"O1\", \"L1\", \"PR1\"]\n   - file: \"img_climbing_wall_lf.jpg\"\n     role: \"LF\"\n     tags: [\"L2\", \"PR1\"]\n   ```\n2. **Escribir el draft del prompt** (incluyendo negative prompt) a un archivo de texto.\n3. **Capturar el mensaje del usuario** del turno actual a un archivo de texto (para parsear OVERRIDEs).\n4. **Ejecutar el linter:**\n   ```bash\n   python3 scripts/prompt_linter.py \\\n     --prompt /tmp/draft.txt \\\n     --refs /tmp/refs.yaml \\\n     --case 3b \\\n     --overrides /tmp/user_msg.txt \\\n     --sports-broadcast\n   ```\n5. **Interpretar el resultado:**\n   - Exit 0 → STATUS=PASS → entregar al usuario + incluir reporte del linter en el output para trazabilidad.\n   - Exit 1 → STATUS=FAIL → NO entregar. Iterar el draft basándose en las violaciones listadas. Repetir hasta PASS."
+    },
+    {
+     "id": "4abb902ab2fb",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "frontmatter › description"
+      }
+     ],
+     "texto": "[frontmatter › description] \"Gate determinista que valida prompts de generación visual AI (imagen/video) antes de entregar. Detecta 3 capas: redundancia con refs por categoría P/O/L/PR/S, secciones requeridas por plataforma+caso (Kling 3.0/Veo 3.1/Sora 2/GPT Image 2/Nano Banana Pro/Midjourney), y estructura (word count, negative prompt, vocab baneado). USA ESTE SKILL antes de entregar cualquier prompt visual al usuario — gate obligatorio del skill prompt-production-protocol Step 5b. Override solo con sintaxis expresa OVERRIDE: término-o-categoría - razón, válido únicamente en turno actual.\""
+    },
+    {
+     "id": "af17457fd1d1",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter v1.0 › Integración con skill] System prompt v6.1 (propuesta): nueva Regla 28 forzando llamada al linter antes de Step 6 delivery. Ver `system_prompt_v6_1_rule28.md`."
+    },
+    {
+     "id": "84b2e9411791",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "encabezado": "Aurora Prompt Linter v1.0"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter v1.0] Linter determinista que bloquea entrega de prompts AI con redundancia respecto a refs, violaciones de estructura, vocabulario baneado o falta de keywords obligatorios. Integra con el skill `prompt-production-protocol` como gate obligatorio en Step 5."
+    },
+    {
+     "id": "f10c3bf35642",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter v1.0 › Integración con skill] El linter NO corre solo. El skill `prompt-production-protocol` Step 5 debe invocarlo como item crítico. Ver `skill_update_step5.md` para la edit propuesta."
+    },
+    {
+     "id": "b1b066b6bfe0",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter] Gate determinista entre el drafting del prompt y la entrega al usuario. Mueve la regla \"no redescribir lo que está en los refs\" de memoria del agente a código ejecutable."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0001.2",
+   "miembros": [
+    {
+     "id": "69fc472f236b",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter › Cuándo usarlo] **El agente lo invoca automáticamente** al final de Step 4 (drafting) del skill `prompt-production-protocol`, antes de Step 6 (delivery). Si la Regla 28 está activa en el system prompt, es bloqueante."
+    },
+    {
+     "id": "c3e33ddc55a1",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter › Integración con system prompt v6.1"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter › Integración con system prompt v6.1] Si tu system prompt incluye Regla 28 (v6.1+), este linter es bloqueante — el agente NO entrega prompts sin pasar el linter o sin overrides válidos. Si tu system prompt es v6.0, el linter es opcional pero altamente recomendado."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0001.3",
+   "miembros": [
+    {
+     "id": "0c62b67be4d3",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+       "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Edit concreta › DESPUÉS (texto propuesto)"
+      }
+     ],
+     "texto": "[Edit propuesta al skill `prompt-production-protocol` — Step 5 › Edit concreta › DESPUÉS (texto propuesto)] ### Step 5 — Self-audit VISIBLE + Linter determinista\nLeer: `protocol/05_self_audit.md`\n\n**Step 5a — Self-audit cualitativo (igual que antes):**\n- Ejecutar checklist específico del caso\n- Marcar cada item Pass/Fail en el output\n- Si algún item crítico es Fail → revisar el draft y re-auditar\n\n**Step 5b — Linter determinista (NUEVO, obligatorio para casos 3a/3b/3c — recomendado para 1/2/4):**\n- Invocar `aurora-linter/prompt_linter.py` con: prompt, refs (con tags por categoría), case_type, mensaje del usuario (para parsear OVERRIDEs).\n- El linter chequea: redundancia por categoría, word count, negative prompt, vocabulario baneado, keywords requeridos.\n- Si STATUS=PASS → proceder a Step 6.\n- Si STATUS=FAIL sin override válido → NO entregar. Iterar el draft. NO se permite entregar al usuario con FAIL del linter.\n- Si STATUS=FAIL con overrides aceptados que cubren todas las violaciones → proceder a Step 6, declarando los overrides en el output del prompt.\n- Si STATUS=FAIL con overrides parciales (algunas violaciones overrideadas, otras no) → iterar el draft hasta limpiar las no-overrideadas.\n\n**Step 5c — Reporte del linter visible al usuario:**\nIncluir en el output del prompt el resumen del linter:\n```\nLINTER: PASS (o FAIL con overrides)\nViolaciones detectadas: N\nOverrides aceptados: M\nCategorías cubiertas por refs: [...]\n```\n\nEsto da trazabilidad y permite al usuario confirmar que el linter corrió antes de la entrega."
+    },
+    {
+     "id": "c83e49e29ec8",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter › Cuándo usarlo] **Obligatorio** para:\n- Casos 3a/3b/3c (I2V con FF/LF refs) — donde la redundancia es la falla más común"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0001.4",
+   "miembros": [
+    {
+     "id": "560b31e5f50d",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+      }
+     ],
+     "texto": "[AI Production Director › 1. Mapa de sub-skills] Sub-skill: `aurora-prompt-linter` (si está instalada) · Capa: Gate final · Qué aporta: Validación determinista de todo prompt visual antes de entregar · Autoridad sobre: Veto final sobre prompts"
+    },
+    {
+     "id": "da55c2a3199a",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+      }
+     ],
+     "texto": "[Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)] - [ ] `aurora-prompt-linter` limpio sobre todos los prompts (si está instalada)"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0001.5",
+   "miembros": [
+    {
+     "id": "69083508ea93",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 3 — Actualizar Sección 4.6 (F4 — Prompts Génesis) › Texto a añadir al final del paso 3 (\"Entregar con trazabilidad completa\")"
+      }
+     ],
+     "texto": "[Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 3 — Actualizar Sección 4.6 (F4 — Prompts Génesis) › Texto a añadir al final del paso 3 (\"Entregar con trazabilidad completa\")] - Antes de entregar, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar."
+    },
+    {
+     "id": "a97f8047b5cf",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas"
+      }
+     ],
+     "texto": "[Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Resumen de propuestas] #: 3 · Cambio: F4 paso final con linter · Tipo: MENOR · Sección: §4.6"
+    },
+    {
+     "id": "eea2d83afe50",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 4 — Actualizar Sección 4.7 (F5 — Prompts Ancla FF+LF) › Texto a añadir después del paso 4 (caso 2.5 deportivo)"
+      }
+     ],
+     "texto": "[Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 4 — Actualizar Sección 4.7 (F5 — Prompts Ancla FF+LF) › Texto a añadir después del paso 4 (caso 2.5 deportivo)] 6. Antes de entregar la Ancla, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar."
+    },
+    {
+     "id": "ff3fb1a61455",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 5 — Actualizar Sección 4.8 (F6 — Research video + Prompts) › Texto a añadir después del paso 2 (INVOCAR skill)"
+      }
+     ],
+     "texto": "[Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 5 — Actualizar Sección 4.8 (F6 — Research video + Prompts) › Texto a añadir después del paso 2 (INVOCAR skill)] 3. Antes de entregar el prompt video, ejecutar Regla 28 (linter) — especialmente crítico en I2V donde la redundancia con refs es la falla más común. Sin PASS o sin overrides cubriendo violaciones, NO entregar."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0002.1",
+   "miembros": [
+    {
+     "id": "6004249fbe0d",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Hard rules › Rule 1. Text is never in the prompt"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Hard rules › Rule 1. Text is never in the prompt] If the shot has `on_screen_text: \"text_03\"`, the prompt does NOT contain the text content. Text is composited separately. The only exception: Ideogram, where text-in-image is the reason you'd choose it, but even then, treat it as an explicit override flagged in rationale."
+    },
+    {
+     "id": "8eedfcad258a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+      }
+     ],
+     "texto": "[Prompt Anatomy: The Five Layers › Layer 4. Text Layer] **What:** on-screen text composited after generation.\n**Source:** `text-overlays.json`.\n**Never appears in image prompts** (except Ideogram Mode 2 with explicit override)."
+    },
+    {
+     "id": "13d4ce3190a7",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+       "encabezado": "One Shot, All Adapters › What's not in any prompt"
+      }
+     ],
+     "texto": "[One Shot, All Adapters › What's not in any prompt] The on-screen text content. Even though shot_04 has an on-screen text overlay (`text_03`, \"You don't have a content problem. You have an infrastructure problem.\"), none of the prompts contain that text. It's composited separately per the five-layer model."
+    },
+    {
+     "id": "2e67d42b5c0f",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+       "encabezado": "text-overlays.schema.json › (raíz)"
+      }
+     ],
+     "texto": "[text-overlays.schema.json › (raíz)] title=\"Text Overlays\"; description=\"On-screen text elements that get composited over generated images. Never baked into prompts.\""
+    },
+    {
+     "id": "882e35e60180",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+       "encabezado": "One Shot, All Adapters › What's not in any prompt"
+      }
+     ],
+     "texto": "[One Shot, All Adapters › What's not in any prompt] This is the discipline: the image generator handles the image, the compositor handles the text, neither tries to do the other's job."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0002.2",
+   "miembros": [
+    {
+     "id": "068a8502e04c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "encabezado": "Prompt Anatomy: The Five Layers"
+      }
+     ],
+     "texto": "[Prompt Anatomy: The Five Layers] Every image prompt this skill produces is composed from five layers. Four are inputs, one is applied at compose-time. Understanding the layers is the difference between bulletproof prompts and lottery tickets."
+    },
+    {
+     "id": "77e5fd8c0c25",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › The five-layer prompt anatomy"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › The five-layer prompt anatomy] Every prompt is composed from these layers. Read `references/prompt-anatomy.md` for the full theory. Quick version:\n1. **Brand Lock**, palette, type, mood, \"never\" list (constant across project)\n2. **Series Lock**, character/environment/lighting anchors (constant across storyboard)\n3. **Shot Spec**, framing, angle, motion, subject (per shot)\n4. **Text Layer**, **never in the prompt**, composited separately\n5. **Generator Adapter**, model-specific syntax wrapper"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0002.3",
+   "miembros": [
+    {
+     "id": "0d0d23c38916",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+      }
+     ],
+     "texto": "[Prompt Anatomy: The Five Layers › How layers compose] The adapter pulls from Layers 1–3 and produces a string. Layer 4 lives parallel and never enters the prompt."
+    },
+    {
+     "id": "ef37d5e48f13",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+      }
+     ],
+     "texto": "[Prompt Anatomy: The Five Layers › How layers compose] For a single shot's prompt:\nLayer 1 (brand) ───┐\n                   │\nLayer 2 (series) ──┼──> Layer 5 (adapter) ──> {generator-specific prompt}\n                   │\nLayer 3 (shot) ────┘\n\nLayer 4 (text) ────> separate compositing pipeline"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0002.4",
+   "miembros": [
+    {
+     "id": "0ad167b5f07e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 5. Separate the text layer"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 5. Separate the text layer] Every piece of on-screen text becomes an entry in `text-overlays.json`. Never bake text into the visual description. Each overlay has:\n- `id`, `text_01`, `text_02`...\n- `shot_id`, which shot this overlays on\n- `content`, the actual text\n- `font`, references brand-lock typography\n- `position`, `center`, `lower-third`, `upper-third`, `left-third`, `right-third`, or `{x, y}` percentages\n- `size`, `display`, `headline`, `body`, `caption`\n- `weight`, `regular`, `medium`, `bold`, `black`\n- `color`, hex (must come from brand-lock palette)\n- `enter`, `{ at: seconds, animation: fade-in | slide-up | slide-down | type-on | hard-cut }`\n- `exit`, `{ at: seconds, animation: fade-out | slide-up | slide-down | hard-cut }`"
+    },
+    {
+     "id": "c789dba1b759",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E4.4 · Subproceso: Capa de texto separada · Skill con autoridad: storyboard-architect paso 5 · Entra: Texto en pantalla · Sale: text-overlays.json · Gate o herramienta: Nunca texto dentro de la descripción visual"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0002.5",
+   "miembros": [
+    {
+     "id": "3b4acffdd205",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "encabezado": "Adapter: Ideogram (v3)"
+      }
+     ],
+     "texto": "[Adapter: Ideogram (v3)] Ideogram is the only generator that reliably renders text inside images. Use it for cases where text-as-image is the deliverable, posters, branded social tiles, signage, packaging mockups. For everything else, default to Flux or Midjourney and composite text separately."
+    },
+    {
+     "id": "4c80447132ae",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+      }
+     ],
+     "texto": "[Adapter: Ideogram (v3) › When NOT to use Ideogram] Ideogram's specialty is text. If the brief doesn't need text-in-image, picking Ideogram is choosing the wrong tool."
+    },
+    {
+     "id": "87de2432a86a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+      }
+     ],
+     "texto": "[Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)] Use when the on-screen text is meant to appear as part of the image itself, a poster headline, a sign in the scene, a packaging label. This is the only case where a generator prompt contains the text content."
+    },
+    {
+     "id": "ba7e4c1a375c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Adapters] File: `adapters/ideogram.md` · Generator: Ideogram v3 · Strength: Text in image (override only)"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0003.1",
+   "miembros": [
+    {
+     "id": "57c4e7216615",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 2. Four schools worth stealing"
+      }
+     ],
+     "texto": "[Race, speed and faceless kinetic montage › 2. Four schools worth stealing] **Rule-based ad (Honda *Cog*, Audi Quattro, Nike/Ritchie, Goodyear).** The drama is pure mechanism: every object does something irreversible, \"let the machine talk\" (no music), the entire spot first-person with no hero face. Tension is \"will it fire\". A static fetish shot of a gear lever flatlines; an object crossing a threshold says a decision just happened.\n→ **Rule:** objects carry feeling only when they visibly **change state** — board the \"after\" (needle pinned in the red, ignition lamp blooming live, slick caught mid-fold), the \"before\" is implied."
+    },
+    {
+     "id": "48e60058edfb",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+      }
+     ],
+     "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **State-change, not static fetish** — the object crosses a threshold (idle→flare, clean→smoked, planted→lifting). No idle anatomy, no parked gear-lever."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0003.2",
+   "miembros": [
+    {
+     "id": "15177319b34b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 1. Boardear el estado posterior: el agua ya abierta, la corona de salpicadura ya formada, el cuerpo ya parcialmente dentro; el instante anterior se implica. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "bde5fb6af9ee",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Estado posterior visible: agua abierta, corona formada. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "deb0ad9f8565",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - El modelo dibuja al clavadista en el aire cuando se pidió la entrada: falta el estado posterior; describir el agua ya abierta y las manos ya dentro. [FUENTE: video/references/animatic-keyframes.md §5]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0003.3",
+   "miembros": [
+    {
+     "id": "45d5c0685a6a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar] 1. Boardear el estado posterior del umbral: la cinta ya rota y volando, el pie ya despegado, el guante ya hundido en el saco; un corredor a un paso de la cinta intacta es setup, no impacto. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "c1e051baa895",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 9. Checklist del crítico] - [ ] Estado posterior del umbral visible. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "fba02976f692",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 8. Fallos conocidos y su corrección] - Cinta intacta con el corredor ya pasado: falta el estado posterior; describir la cinta rota y volando desde el pecho. [FUENTE: video/references/animatic-keyframes.md §5]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0003.4",
+   "miembros": [
+    {
+     "id": "d16ad54f0538",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 1. Un objeto solo carga emoción cuando cambia de estado: boardear el después del impacto, la pelota aplastada contra las cuerdas, el vaso ya quebrado, la gota ya convertida en corona; el objeto intacto en vuelo es un panel de setup, no de impacto. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "68f48bad5808",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Estado posterior visible con deformación y reacción del receptor. [FUENTE: video/references/animatic-keyframes.md §5]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0003.5",
+   "miembros": [
+    {
+     "id": "46ff5295dc2e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "[Objeto balístico › 7. Tratamiento de personas dentro del régimen] - Si aparece una persona, entra como anatomía en decisión: mano y antebrazo golpeando, no cuerpo entero; nombrar el verbo. [FUENTE: video/references/animatic-keyframes.md §5]"
+    },
+    {
+     "id": "64a356f41fbd",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen] - Anatomía solo en decisión: mano que cambia, pie que pisa, rodilla que baja. [FUENTE: video/references/animatic-keyframes.md §5]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0004.1",
+   "miembros": [
+    {
+     "id": "2f0a7234182e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "encabezado": "Luz y clima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Luz y clima › 6. Modelo recomendado] - NB2 con image grounding cuando el fenómeno cae sobre un lugar real reconocible, edificio o skyline. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "3fbf1fe5f814",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "encabezado": "Multitud anónima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Multitud anónima › 6. Modelo recomendado] - Lugar real, estadio o plaza reconocibles: NB2 con image grounding para la placa. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "c5be9c1e66dd",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Agua en superficie › 6. Modelo recomendado] - Lugar reconocible, una bahía o un lago concreto: NB2 con image grounding. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "b377cf0077e5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "encabezado": "Subacuático › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Subacuático › 6. Modelo recomendado] - NB2 con image grounding cuando el cenote, el arrecife o la especie deben ser fieles a la realidad; el grounding cubre lugares, animales y plantas. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "ec0a0c3b1a54",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 6. Modelo recomendado] - Si el sujeto es una especie animal real, NB2 con image grounding para la anatomía correcta. [FUENTE: image/references/nano-banana.md]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0004.2",
+   "miembros": [
+    {
+     "id": "de31cf83d8a8",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación] Situación: Arquitectura real, landmark, especie animal o vegetal · Modelo: NB2 con Image Grounding · Por qué según la fuente: Único con grounding; GPT solo anclas de época · Resolución y costo: thinking_level high si grounding + razonamiento espacial"
+    },
+    {
+     "id": "9571ccce35da",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase] Clase: Edificación / landmark · Subclases: Edificio, puente, plaza, monumento, ciudad reconocible · Categoría aurora: L · Caso en la base hoy: sin código propio · Modelo según la fuente: NB2 cuando la arquitectura debe ser fiel a la realidad; GPT Image 2 para época y cultura, no para geometría exacta · Grounding: Sí, solo NB2: \"ensure the architectural details are accurate to reality\" · Reglas propias: Verificar que el resultado coincide con el lugar real; thinking_level high si hay grounding y razonamiento espacial a la vez · Qué siembra: Placa de establecimiento, vista aérea, fondo de cuadros"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0005.1",
+   "miembros": [
+    {
+     "id": "5855eca90af9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+      }
+     ],
+     "texto": "[Universal rules — apply to every video model › 8. U7. Character consistency anchor] Anchor identity at the START of every prompt. In a multi-clip sequence, repeat the full identity block in every single prompt. Video generators have no memory between generations. Treat every clip like briefing a brilliant intern with memory damage."
+    },
+    {
+     "id": "0211be742da7",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)"
+      }
+     ],
+     "texto": "[Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)] Clips B and C follow the same structure with their own story paragraph, shot list, and final image. The character lock and visual style blocks are repeated **verbatim** in each clip — Seedance has no memory between generations."
+    },
+    {
+     "id": "039b1fe73787",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/patterns-and-genres.md",
+       "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat"
+      }
+     ],
+     "texto": "[Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat] Yes, every single clip. Yes, even if it feels repetitive. That repetition is the only thing keeping the output consistent."
+    },
+    {
+     "id": "e408da3228b2",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/patterns-and-genres.md",
+       "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat"
+      }
+     ],
+     "texto": "[Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat] Every clip is self-contained. The model has no memory. Repeat this block in every clip."
+    },
+    {
+     "id": "9165ef6c1528",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots"
+      }
+     ],
+     "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots] Fix.\nPreserve the exact character in every shot. Same face shape, same eye color, same hair, same clothing, same expression style. [repeat the full identity block]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0005.2",
+   "miembros": [
+    {
+     "id": "937368c961b7",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 1. Verbatim character anchors"
+      }
+     ],
+     "texto": "[Consistency Locks › Lock 1. Verbatim character anchors] The most effective single technique. The character is described in `series_lock.character` once, and that exact string appears in every shot's prompt verbatim. No paraphrasing, no synonyms, no \"improvement.\""
+    },
+    {
+     "id": "997e779fcaa8",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 1. Verbatim character anchors"
+      }
+     ],
+     "texto": "[Consistency Locks › Lock 1. Verbatim character anchors] Even small variations compound. Lock the string. Repeat verbatim."
+    },
+    {
+     "id": "7550d8063544",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+      }
+     ],
+     "texto": "[Adapter: Kling 3.0 (motion-aware video) › Continuity across shots] - Repeat the series_lock character anchor verbatim in every prompt."
+    },
+    {
+     "id": "2ee8ddd1a969",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid] - **Don't vary the character anchor between cuts.** Restate it once for the whole sequence, verbatim."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0005.3",
+   "miembros": [
+    {
+     "id": "a8dad25f862b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "encabezado": "Output"
+      }
+     ],
+     "texto": "[Output] - **B. Multi-clip prompts.** Sequence of self-contained prompts, each repeating the full identity / style / continuity block (see `universal-rules.md` U7)."
+    },
+    {
+     "id": "db6db7af0359",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format B. Multi-clip prompts"
+      }
+     ],
+     "texto": "[Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format B. Multi-clip prompts] Sequence of self-contained prompts. Each one repeats the full continuity block. Label them `Clip 1 / 5`, `Clip 2 / 5`, etc."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0006.1",
+   "miembros": [
+    {
+     "id": "1cbb7244227c",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "encabezado": "Universal rules — apply to every video model › 4. U3. Show don't tell"
+      }
+     ],
+     "texto": "[Universal rules — apply to every video model › 4. U3. Show don't tell] The model cannot render feelings. It renders bodies. Translate every emotion into a physical action."
+    },
+    {
+     "id": "688bda4d1260",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned"
+      }
+     ],
+     "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] - \"he is sad\", \"she is angry\", \"he is afraid\" — emotions named without a body"
+    },
+    {
+     "id": "9d3d4864ae7a",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+      }
+     ],
+     "texto": "[Screenwriter Skill › Best Practices › Common Pitfalls to Avoid] - ❌ **Telling emotions:** \"She feels sad\" → ✅ \"Tears streak her dusty cheeks\""
+    },
+    {
+     "id": "882153d2096c",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 8. Fallos conocidos y su corrección] - Expresión \"determinada\" o \"intensa\": emoción nombrada sin cuerpo; sustituir por las señales físicas. [FUENTE: video/references/dramaturgy.md §2]"
+    },
+    {
+     "id": "a4398109551e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar › Subject description"
+      }
+     ],
+     "texto": "[Shot Grammar › Subject description] Generators reward precision. Adjectives describing emotion (\"determined\", \"passionate\") produce stock-photo aesthetics. Describe what the camera actually sees."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0006.2",
+   "miembros": [
+    {
+     "id": "e44940cb88df",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+      }
+     ],
+     "texto": "[Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt.] Replace each with concrete physical facts. The full theory of why this works lives in `dramaturgy.md` §2 (Second law)."
+    },
+    {
+     "id": "fa1dffd117e1",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "encabezado": "Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned"
+      }
+     ],
+     "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] Replace each with concrete physical facts. If a writer cannot do that, the scene is not yet thought through."
+    },
+    {
+     "id": "c9109e9b0b52",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "encabezado": "Universal rules — apply to every video model › 10. U9. Concrete physical detail over abstract concept"
+      }
+     ],
+     "texto": "[Universal rules — apply to every video model › 10. U9. Concrete physical detail over abstract concept] \"Loneliness\" does not render. \"A man sitting alone, shoulders collapsed, face lit by blue phone glow, empty bottles on the table\" does."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0007.1",
+   "miembros": [
+    {
+     "id": "1a37a07ed321",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 4. Luz en este medio"
+      }
+     ],
+     "texto": "[Objeto balístico › 4. Luz en este medio] - El polvo, el spray o las astillas solo tienen volumen a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "f8a82349ae9a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 4. Luz en este medio] - El humo, el polvo o el spray de rueda solo a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "cad7d59f1091",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "encabezado": "Luz y clima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Luz y clima › 2. Leyes físicas que el still debe evidenciar] 4. La lluvia, la nieve y el polvo solo se leen a contraluz; iluminados de frente son gris muerto. [FUENTE: video/references/race-and-speed.md §7]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0007.2",
+   "miembros": [
+    {
+     "id": "8f893618cfd8",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 4. Luz en este medio"
+      }
+     ],
+     "texto": "[Agua en superficie › 4. Luz en este medio] - El spray solo se lee luminoso a contraluz o a contraluz lateral; el spray frontal es una masa gris muerta, igual que el humo frontal. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "ab0abf3986db",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - El spray sale como nube blanca sin forma: está iluminado de frente; pasar la fuente detrás o al lado del spray. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "5c7b40df5e14",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Spray con rim de contraluz, no masa gris. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "66184d87c3ae",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 4. Luz en este medio] - La corona y las gotas solo se leen a contraluz o con luz lateral dura; iluminarlas de frente produce una mancha blanca sin volumen. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "a27e5617d605",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - Corona blanca y plana: luz frontal; mover la fuente detrás del agua. [FUENTE: video/references/race-and-speed.md §7]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0008.1",
+   "miembros": [
+    {
+     "id": "022733f7466c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid] - **Don't include text content.** Composite captions from `text-overlays.json` in post."
+    },
+    {
+     "id": "37036abeee3d",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid] - **Don't include text content**, text rendering is poor; composite separately"
+    },
+    {
+     "id": "4c4860687a6c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Midjourney (v7) › Pitfalls to avoid] - **Don't include text content**, even if the shot has `on_screen_text`, leave it out. Composited separately."
+    },
+    {
+     "id": "90ae5256bff5",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid] - **Don't include text content**, even if Flux 2 handles text better than Flux 1.1, composite separately for editability"
+    },
+    {
+     "id": "b91cd9e30272",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid] - **Don't include text content.** Composite captions in post."
+    },
+    {
+     "id": "f2c047e49238",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid] - **Don't put on-screen text in the prompt.** Spoken lines are fine; rendered captions still come from `text-overlays.json` in post."
+    },
+    {
+     "id": "f9e53cb4c4e0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid] - **Don't include text content in image prompts**, composite separately; text rendering is mediocre"
+    },
+    {
+     "id": "fbc6c044bafe",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid] - **Don't include text content.** Video text rendering is unreliable; composite or animate text in post."
+    },
+    {
+     "id": "9394571f4a1b",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí] Texto en pantalla: capa separada, text-overlays.json"
+    },
+    {
+     "id": "9d06a5dcb3f8",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva] Texto en pantalla: capa separada, text-overlays.json."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0009.1",
+   "miembros": [
+    {
+     "id": "65d43c5dc90b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 2. Four schools worth stealing"
+      }
+     ],
+     "texto": "[Race, speed and faceless kinetic montage › 2. Four schools worth stealing] **Race-truth (Frankenheimer, Lelouch, Mangold/Papamichael, Howard/Dod Mantle, Refn).** Speed is a fact you earn by putting the camera where a real rig could bolt — bumper, hood lip, hostess-tray, axle, cabin. Low, wide and close, hard-mounted without vibration isolation so \"cheeks shake\", asphalt streaking in frame as the speedometer, mini-cams next to pistons and swelling tires for \"an electron-microscope view of the car at its limit\". Refn's cocoon: silence and stillness inside the shell, chaos outside, so the launch detonates. Refuse the crank — *Grand Prix* oiled tires for real smoke rather than fake the burnout.\n→ **Rule:** if the implied camera could not physically mount on the car, the panel reads as render — drop it to bumper height and bolt it on."
+    },
+    {
+     "id": "6463a785839a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 5. Cámara, ángulo y rig montable] - La cámara va donde un rig real puede atornillarse: parachoques, capó, hostess-tray, eje, cabina hard-mount; si no, se lee render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "932d8ede872e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 9. Checklist del crítico] - [ ] Rig montable. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "894601a18eab",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+      }
+     ],
+     "texto": "[Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra] #: D6 · Dimensión: Cámara · Valores posibles: encuadre ECU a EWS · lente 24, 35, 50, 85, 100 macro, anamórfico 40 · DOF shallow, deep, rack · cámara implícita · Qué decide: La cámara implícita es el movimiento del que este still es el primer frame; el rig debe poder montarse físicamente. El ángulo va aparte, en D9 · Fuente: shot-grammar · camera-lighting §1-3 · animatic §6 · race-and-speed §2"
+    },
+    {
+     "id": "0d592526035a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - El rig debe existir: una cámara dentro del chorro de entrada o en el fondo de la fosa mirando hacia arriba son montajes reales; una cámara flotando a mitad de la salpicadura no. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "4f778a7c6a4b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "encabezado": "Multitud anónima › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Multitud anónima › 5. Cámara, ángulo y rig montable] - Rig montable: grúa, dron, cámara de gradería, cable cam sobre el campo; una cámara dentro de la multitud a la altura de los ojos sin cuerpos que la tapen es irreal. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "939b39938354",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 5. Cámara, ángulo y rig montable] - Rig montable: cámara de foto de meta a nivel de la cinta, cable cam sobre el carril, cámara robótica en la línea; nunca una cámara flotando frente al atleta a media pista. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "bd60d5b6c5fd",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - La cámara debe poder montarse en un rig real: torre de la lancha, pole cam desde la embarcación, carcasa a nivel del agua, dron bajo o cámara en el mango de la cuerda; un ángulo que ningún rig acuático puede ocupar se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "ea4c60b97908",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "[Objeto balístico › 5. Cámara, ángulo y rig montable] - Rig montable: cámara de alta velocidad en trípode al nivel del impacto, o cámara robótica que sigue; una cámara que gira alrededor del objeto en el aire no existe en el rodaje real y se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "efc8ecb18e83",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "encabezado": "Agua en superficie › 9. Checklist del crítico"
+      },
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Agua en superficie › 9. Checklist del crítico | Ruptura de superficie › 9. Checklist del crítico] - [ ] Rig montable identificable. [FUENTE: video/references/race-and-speed.md §2]"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0010.1",
+   "miembros": [
+    {
+     "id": "2df5b50eb078",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 4. Seed locking"
+      }
+     ],
+     "texto": "[Consistency Locks › Lock 4. Seed locking] For generators that support seeds (Flux, Seedream, Ideogram, Stable Diffusion), set the seed at the storyboard level. Same seed across every shot. This anchors the generator's randomness so character features carry."
+    },
+    {
+     "id": "eb8333980445",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+       "encabezado": "Consistency Locks › Lock 4. Seed locking"
+      }
+     ],
+     "texto": "[Consistency Locks › Lock 4. Seed locking] The adapter reads this and applies to every prompt."
+    },
+    {
+     "id": "0501bd502756",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Ideogram (v3) › Pitfalls to avoid] - **Don't forget seed**, for any series work, lock the seed at the storyboard level"
+    },
+    {
+     "id": "6efa8970ce97",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "encabezado": "Adapter: Ideogram (v3) › Parameters"
+      }
+     ],
+     "texto": "[Adapter: Ideogram (v3) › Parameters] Parameter: `seed` · Where: API field · Default: set per-storyboard"
+    },
+    {
+     "id": "870abee99278",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid] - **Don't skip the seed lock for series work**, without it, character consistency breaks"
+    },
+    {
+     "id": "9f26656161da",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+      }
+     ],
+     "texto": "[Adapter: Seedream (4.5 / 4.0) › Parameters] Parameter: `seed` · Default: per-storyboard · Notes: Critical for series consistency"
+    },
+    {
+     "id": "ae4ee374b51b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+      }
+     ],
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go] Parameter: `seed` · Where: API call field · Default: set per-storyboard for series consistency"
+    },
+    {
+     "id": "e2d3b7344344",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Midjourney (v7) › Pitfalls to avoid] - **Don't change `--seed` mid-storyboard**, set once at series_lock level"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0011.1",
+   "miembros": [
+    {
+     "id": "0b814fd98b02",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Timing rule"
+      }
+     ],
+     "texto": "[Veo reference (Google) › 4. Dialogue syntax (critical) › Timing rule] Maximum 8 seconds of spoken audio. Cram too many words into a 5s clip and the delivery speeds up unnaturally. Cut the line until it fits."
+    },
+    {
+     "id": "5c35f58bf9d0",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/role-modes.md",
+       "encabezado": "Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)"
+      }
+     ],
+     "texto": "[Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)] Cut lines until they fit 8 seconds of natural speech."
+    },
+    {
+     "id": "63d17a1e0c22",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Dialogue too fast (Veo)"
+      }
+     ],
+     "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Dialogue too fast (Veo)] Fix. Cut the line. 8 seconds max of spoken text. Test by reading aloud at normal pace."
+    },
+    {
+     "id": "d00e7032f37a",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Dialogue speeds up unnaturally"
+      }
+     ],
+     "texto": "[Veo reference (Google) › 9. Failure modes and fixes › Dialogue speeds up unnaturally] Fix. Cut the line to fit 8 seconds of natural speech. Test by reading aloud."
+    },
+    {
+     "id": "68deebd2f8f3",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "[Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid] - **Don't overrun the duration with dialogue.** A line that needs 12s of speech will clip or rush at 8s."
+    },
+    {
+     "id": "9b758673a9a5",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "encabezado": "Veo reference (Google) › 2. Versions and specs"
+      }
+     ],
+     "texto": "[Veo reference (Google) › 2. Versions and specs] Duration. 4, 6, or 8 seconds.\nDialogue budget. Max 8 seconds of spoken audio per clip."
+    }
+   ]
+  }
+ ]
+}
