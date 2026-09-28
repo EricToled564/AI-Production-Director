@@ -20,6 +20,11 @@ if not F.RULES_DB.exists() or not (F.DATA / "registro.json").exists():
 ST.DB = Path(os.environ["APD_DB"])
 from apd import proyecto as P, llm  # noqa: E402
 
+# Las pruebas actúan como el director: crean el proyecto con la plantilla y el plan ya aprobados. La aprobación en sí
+# se prueba en test_flujos.TestAprobacionPlan con P.nuevo_sin_aprobar.
+P.nuevo_sin_aprobar = P.nuevo
+P.nuevo = lambda brief, nombre=None, aprobar_plan_como="test-humano": P.nuevo_sin_aprobar(brief, nombre, aprobar_plan_como)
+
 BRIEF_QUINTETO = ("Cinco retratos de casting de un quinteto de cuerdas: tres mujeres y dos hombres de 22–28 años, "
                   "orígenes diversos, hombros hacia arriba, fondo gris claro, personalidades distintas y rostros naturales.")
 

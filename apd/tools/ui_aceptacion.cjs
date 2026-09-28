@@ -78,7 +78,7 @@ async function esperarServidor() {
     const cab = await page.textContent('#main');
     const amb = await page.$$eval('h3:has-text("Falta y no se puede inferir") + ul li', ls => ls.map(l => l.textContent));
     check('A6.1b', 'Identifica ambigüedades decisivas', /Falta y no se puede inferir \(\d+\)/.test(cab) && amb.length > 0, `${amb.length} ambigüedades: ${amb.slice(0, 3).map(s => s.slice(0, 50)).join(' | ')}`);
-    const plant = await page.$$eval('h3:has-text("Brief en plantilla") + p + table tr', trs => trs.map(t => t.innerText));
+    const plant = await page.$$eval('h3:has-text("Brief en plantilla") ~ table tr', trs => trs.map(t => t.innerText));
     check('U4.plantilla', 'Brief en plantilla visible; cámara, luz, lugar y ángulo inferidos, nunca preguntados',
       plant.length > 10 && !/\b(camara|luz|fondo|angulo)\b/.test(amb.join(' ')) && plant.some(r => /camara/.test(r) && /inferido|propuesta/.test(r)),
       `${plant.length} filas de plantilla; faltantes que se muestran: ${amb.length} (ninguno de cámara, luz, lugar o ángulo)`);
@@ -93,6 +93,15 @@ async function esperarServidor() {
     await sleep(500);
     if (await page.$('#acepta')) { await page.click('#acepta'); await sleep(800); }
     check('A6.2b', 'Propuestas aceptables desde el plan con su clase', Number(nProp) > 0, `${nProp} propuestas aceptadas`);
+
+    // U8 — la plantilla y el plan se presentan para revisión: ningún prompt antes de aprobarlos
+    const antesDeAprobar = await page.textContent('#main');
+    const boton = await page.$('#aprPlan');
+    const bloqueadas = (antesDeAprobar.match(/pendientes de aprobación/g) || []).length;
+    await page.click('#aprPlan');
+    await page.waitForSelector('#ptxt', {timeout: 180000});
+    check('U8.aprobar_plan', 'Ningún prompt se compila antes de aprobar la plantilla y el plan; al aprobar se compila y se audita solo',
+      !!boton && bloqueadas > 0, `${bloqueadas} entregables bloqueados «pendientes de aprobación» antes del clic; tras aprobar se abre Prompts`);
 
     // A6.5 — previsualización
     await tab('prompts');

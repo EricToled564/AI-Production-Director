@@ -96,7 +96,8 @@ def vista_proyecto(pid, n=None):
                nota=(f"La selección mecánica ya decidió las {len(reg.reglas):,} reglas; el modelo sólo revisa las {n_rev} que quedaron "
                      f"abiertas, en {RV.paralelo()} llamadas simultáneas (APD_REVISION=todas para revisar todo el medio).")
                if modo == "abiertas" else "Se re-revisan TODAS las reglas del medio de cada perfil (APD_REVISION=todas).")
-    return {"id": pid, "version": n, "estimacion": est, "plantilla": plantilla, "plantilla_info": e["spec"].get("plantilla_info"), "brief": e["brief"], "spec": e["spec"], "plan": e["plan"], "preflight": e["preflight"],
+    return {"id": pid, "version": n, "estimacion": est, "plantilla": plantilla, "plantilla_info": e["spec"].get("plantilla_info"),
+            "plan_aprobado": P.plan_aprobado(e), "aprobacion_plan": e.get("aprobacion_plan"), "brief": e["brief"], "spec": e["spec"], "plan": e["plan"], "preflight": e["preflight"],
             "ledgers": e["ledgers"], "entregas": entregas, "diferencias": e.get("diferencias"),
             "versiones": ST.versiones(pid), "etapas": e.get("etapas", {}), "visual": vis,
             "propuestas": P.PR.proponer(e["spec"]), "decisiones_humanas": e["decisiones_humanas"]}
@@ -315,6 +316,9 @@ class H(BaseHTTPRequestHandler):
                 return self._send(202, {"trabajo": P.revisar_con_modelo(pid)})
             if metodo == "POST" and resto == ["auditar"]:
                 P.auditar(pid, originales=b.get("originales", True))
+                return self._send(200, vista_proyecto(pid))
+            if metodo == "POST" and resto == ["aprobar-plan"]:
+                P.aprobar_plan(pid, b.get("autor") or "usuario")
                 return self._send(200, vista_proyecto(pid))
             if metodo == "POST" and resto == ["feedback"]:
                 return self._send(200, P.feedback(pid, b.get("entrega"), b["texto"]))
