@@ -83,16 +83,38 @@ def spec_de_entrega(spec: dict, ent: dict) -> dict:
 
 # --------------------------------------------------------------------------- creación y recálculo
 
-def nuevo(brief: dict, nombre: str | None = None) -> str:
+def nuevo(brief: dict, nombre: str | None = None, aprobar_plan_como: str | None = None) -> str:
     spec = S.analizar_determinista(brief)
     # plantilla de brief: el modelo (si hay) y la app infieren cámara, luz, lugar, ángulo… sin preguntar al usuario
     spec, spec["plantilla_info"] = PB.completar(spec, brief, llm.proveedor().disponible())
     estado = {"brief": brief, "brief_hash": F.sha256_text(F.canon_json(brief)), "spec": spec,
               "decisiones_humanas": {}, "aprobaciones": {}, "semantica": {}, "auditorias": {}, "etapas": {},
-              "excepciones": {}, "historial_feedback": []}
+              "excepciones": {}, "historial_feedback": [],
+              # la plantilla y el plan se presentan para revisión; ningún prompt se compila hasta que el usuario los apruebe
+              "aprobacion_plan": {"requerida": True, "aprobada": None}}
+    if aprobar_plan_como:
+        estado["aprobacion_plan"]["aprobada"] = {"clave": clave_plan(estado), "autor": aprobar_plan_como, "fecha": ST.ahora()}
     estado = recalcular(estado)
     # persistible: sin esto la versión 1 guardaba los resúmenes del ledger pero no las 1,398 decisiones
     return ST.crear_proyecto(nombre or (brief.get("titulo") or brief.get("texto", "")[:60]), persistible(estado))
+
+
+def clave_plan(estado: dict) -> str:
+    """Lo que la aprobación del plan fija: niveles 0 y 1 (medio, tipo de pieza, modelo, tratamiento) y las entregas.
+    Un cambio de nivel 2 (un bloque) no reabre la aprobación (U-2026-09-28-CAMBIO-QUIRURGICO); uno de nivel 0-1 sí."""
+    c = estado["spec"]["comunes"]
+    fijo = {k: (c.get(k) or {}).get("valor") for k in ("medio", "tipo_tarea", "modelo", "tratamiento")}
+    fijo["entregas"] = [[e["id"], e.get("casos")] for e in estado["spec"]["entregas"]]
+    return F.sha256_text(F.canon_json(fijo))[:16]
+
+
+def plan_aprobado(estado: dict) -> bool:
+    """La aprobación se da una vez, al revisar la plantilla. Las ediciones posteriores las hace el propio usuario en
+    Especificación con la plantilla a la vista, así que no la reabren (sólo recompilan lo que tocan)."""
+    ap = estado.get("aprobacion_plan")
+    if not ap or not ap.get("requerida"):
+        return True  # proyectos anteriores a la aprobación de plan
+    return bool(ap.get("aprobada"))
 
 
 def recalcular(estado: dict, previo: dict | None = None) -> dict:
@@ -147,7 +169,10 @@ def recalcular(estado: dict, previo: dict | None = None) -> dict:
                               "recibo": L.recibo(reg, dec, conflictos)}
         info = {"perfil": clave, "casos": ent["casos"], "vinculos": ent.get("vinculos", {})}
         faltan = S.preflight_entrega(spec, ent)["faltan"]
-        if gates_abiertos:
+        if not plan_aprobado(estado):
+            info["compilado"] = None
+            info["bloqueo"] = "plantilla y plan pendientes de aprobación (Plan → Aprobar plantilla y plan)"
+        elif gates_abiertos:
             info["compilado"] = None
             info["bloqueo"] = "gates del recorrido sin aprobar: " + ", ".join(gates_abiertos)
         elif faltan:
@@ -378,7 +403,29 @@ def _texto_bloque(b):
 def cambiar_campos(pid, cambios, autor="usuario", nota="edición de campos"):
     def m(e):
         e["spec"], _ = S.aplicar_cambios(e["spec"], cambios, autor)
-    return nueva_version(pid, m, autor, nota)
+    r = nueva_version(pid, m, autor, nota)
+    _auditar_si_hay_texto(pid)
+    return r
+
+
+def aprobar_plan(pid, autor="usuario"):
+    """El usuario revisó la plantilla y el plan: recién ahora se compilan los prompts, y la auditoría determinista
+    (gates originales) corre sola sobre ellos. Vale mientras no cambien los niveles 0-1 (ver clave_plan)."""
+    def m(est):
+        est.setdefault("aprobacion_plan", {"requerida": True})
+        est["aprobacion_plan"]["aprobada"] = {"clave": clave_plan(est), "autor": autor, "fecha": ST.ahora()}
+    r = nueva_version(pid, m, autor, "aprobación de plantilla y plan")
+    _auditar_si_hay_texto(pid)
+    return r
+
+
+def _auditar_si_hay_texto(pid):
+    """La auditoría determinista no cuesta modelo: se ejecuta sola cada vez que hay texto nuevo, en vez de dejar
+    el prompt marcado «sin auditoría» hasta que alguien pulse un botón."""
+    n, e = cargar(pid)
+    if any((i.get("compilado") or {}).get("hash") and (e["auditorias"].get(k) or {}).get("texto_hash") != i["compilado"]["hash"]
+           for k, i in e["entregas"].items()):
+        auditar(pid)
 
 
 def aceptar_propuestas(pid, rutas: list[str] | None = None, autor="usuario"):

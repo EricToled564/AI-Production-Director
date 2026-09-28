@@ -112,10 +112,15 @@ class TestHashesEInvalidacion(unittest.TestCase):
         self.assertEqual(d["entregas_intactas"], ["E1", "E3", "E4", "E5"])
         self.assertEqual(d["bloques_regenerados"]["E2"], ["subject"])
         self.assertEqual(d["perfiles_cambiados"], [])
-        self.assertFalse(P.copiar(pid, "E2")["liberable"])
+        # cambio menor (U-2026-09-28-CAMBIO-QUIRURGICO): la aprobación se hereda con rastro y la auditoría determinista
+        # corre sola sobre el texto nuevo; E2 sigue liberable sin re-aprobar ni pulsar «Auditar»
+        n, e2 = P.cargar(pid)
+        h2 = e2["entregas"]["E2"]["compilado"]["hash"]
+        self.assertEqual(e2["auditorias"]["E2"]["texto_hash"], h2)
+        self.assertEqual(e2["aprobaciones"]["E2"]["texto_hash"], h2)
+        self.assertTrue(e2["aprobaciones"]["E2"].get("heredada"))
+        self.assertTrue(P.copiar(pid, "E2")["liberable"])
         self.assertTrue(P.copiar(pid, "E1")["liberable"])
-        with self.assertRaises(PermissionError):
-            P.exportar(pid, como_aprobado=True)
 
     def test_cambio_de_modelo_invalida_todo_el_perfil(self):
         pid = util.proyecto_quinteto("modelo")

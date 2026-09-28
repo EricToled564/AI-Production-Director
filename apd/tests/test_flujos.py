@@ -304,3 +304,63 @@ class TestPlantillaBrief(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAprobacionPlan(unittest.TestCase):
+    """La plantilla y el plan se presentan para revisión: ningún prompt se compila antes de que el usuario los apruebe;
+    al aprobar se compila y la auditoría determinista corre sola. Un cambio de bloque (nivel 2) no reabre la aprobación."""
+
+    BRIEF = {"texto": "Foto de producto de una botella de perfume de vidrio sobre mármol blanco, para Instagram 4:5"}
+
+    def test_sin_aprobacion_no_hay_prompt_y_al_aprobar_se_compila_y_audita(self):
+        pid = P.nuevo_sin_aprobar(self.BRIEF, "aprobar-plan")
+        n, e = P.cargar(pid)
+        self.assertFalse(P.plan_aprobado(e))
+        # el usuario revisa la plantilla y completa lo que falta (sin modelo, el sujeto del producto) antes de aprobar
+        P.cambiar_campos(pid, [{"ruta": "comunes.sujeto", "valor": "a glass perfume bottle"}])
+        n, e = P.cargar(pid)
+        self.assertIsNone(e["entregas"]["E1"]["compilado"])
+        for info in e["entregas"].values():
+            self.assertIsNone(info["compilado"])
+            self.assertIn("pendientes de aprobación", info["bloqueo"])
+        P.aprobar_plan(pid, "director")
+        n, e = P.cargar(pid)
+        self.assertTrue(P.plan_aprobado(e))
+        for eid, info in e["entregas"].items():
+            self.assertTrue(info["compilado"]["hash"])
+            self.assertEqual(e["auditorias"][eid]["texto_hash"], info["compilado"]["hash"])  # auditoría automática
+
+    def test_cambio_de_bloque_no_reabre_la_aprobacion(self):
+        pid = P.nuevo_sin_aprobar(self.BRIEF, "aprobar-plan-bloque")
+        P.cambiar_campos(pid, [{"ruta": "comunes.sujeto", "valor": "a glass perfume bottle"}])
+        P.aprobar_plan(pid, "director")
+        P.cambiar_campos(pid, [{"ruta": "comunes.luz", "valor": "hard sunlight from the right"}])
+        n, e = P.cargar(pid)
+        self.assertTrue(P.plan_aprobado(e))
+        self.assertIn("hard sunlight", e["entregas"]["E1"]["compilado"]["texto"].lower())
+
+    def test_edicion_del_usuario_no_pide_otra_aprobacion(self):
+        pid = P.nuevo_sin_aprobar(self.BRIEF, "aprobar-plan-modelo")
+        P.cambiar_campos(pid, [{"ruta": "comunes.sujeto", "valor": "a glass perfume bottle"}])
+        P.aprobar_plan(pid, "director")
+        P.cambiar_campos(pid, [{"ruta": "comunes.modelo", "valor": "nano-banana-pro"}])
+        n, e = P.cargar(pid)
+        self.assertTrue(P.plan_aprobado(e))
+        self.assertTrue(e["entregas"]["E1"]["compilado"]["hash"])
+
+
+class TestParametrosDelModelo(unittest.TestCase):
+    def test_modelo_no_puede_poner_descripcion_en_un_parametro(self):
+        """Visto con gpt-5.6-terra: puso «sharp product details…» en quality. Un parámetro sólo acepta su vocabulario."""
+        from apd import llm
+        def fn(sistema, usuario):
+            return json.dumps({"comunes": {"calidad": {"valor": "sharp product details, clean glass reflections", "origen": "inferido"},
+                                           "sujeto": {"valor": "a glass perfume bottle", "origen": "usuario"}}, "entregas": []})
+        llm.fijar(llm.Falso(fn))
+        try:
+            pid = P.nuevo({"texto": "Foto de producto de una botella de perfume de vidrio sobre mármol blanco"}, "param")
+        finally:
+            llm.fijar(None)
+        n, e = P.cargar(pid)
+        self.assertEqual(e["spec"]["comunes"]["calidad"]["valor"], "high")  # la propuesta citada de la app, no el texto del modelo
+        self.assertEqual(e["spec"]["comunes"]["sujeto"]["origen"], "brief_modelo")

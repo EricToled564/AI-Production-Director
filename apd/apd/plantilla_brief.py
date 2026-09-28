@@ -134,9 +134,18 @@ Reglas:
 - Valores del prompt en inglés, concretos y visibles; sin vocabulario prohibido (stunning, epic, masterpiece, cinematic,
   beautiful lighting, professional, high quality); nada de emociones nombradas: señales físicas.
 - Si un dato de contenido no está y no se puede inferir (p. ej. quién es el sujeto), pon null: se mostrará como faltante.
+- "calidad", "formato" y "duracion" son parámetros de la herramienta, no descripción: calidad sólo low|medium|high|auto
+  (GPT Image) o 1K|2K|4K (Nano Banana); formato sólo una relación de aspecto como 4:5; si no lo sabes, null.
 Responde SOLO JSON: {"comunes": {"<campo>": {"valor": ..., "origen": "usuario"|"inferido", "porque": "..."}},
  "entregas": [{"id": "E1", "campos": {"<campo>": {"valor": ..., "origen": ..., "porque": "..."}}}]}
 Campos comunes posibles: """ + ", ".join(S.TODOS)
+
+
+# Parámetros de la herramienta (van fuera del texto): el modelo sólo puede poner un valor de su vocabulario cerrado.
+# gpt-image.md:43-49 (low/medium/high/auto) · nano-banana (1K/2K/4K) · formato = relación de aspecto.
+PARAMETROS = {"calidad": re.compile(r"low|medium|high|auto|[124]K", re.I),
+              "formato": re.compile(r"\d{1,2}:\d{1,2}"),
+              "duracion": re.compile(r"\d{1,3}\s*s?")}
 
 
 def rellenar_con_modelo(brief: dict, spec: dict) -> tuple[list[dict], dict]:
@@ -151,6 +160,8 @@ def rellenar_con_modelo(brief: dict, spec: dict) -> tuple[list[dict], dict]:
     j = llm.extraer_json(r["texto"])
     cambios = []
     for k, x in (j.get("comunes") or {}).items():
+        if k in PARAMETROS and not (isinstance(x, dict) and PARAMETROS[k].fullmatch(str(x.get("valor") or ""))):
+            continue  # parámetro de la herramienta con valor que no es de su vocabulario: lo decide la app, no el modelo
         if k in spec["comunes"] and spec["comunes"][k]["estado"] == "OPEN" and isinstance(x, dict) and x.get("valor") not in (None, ""):
             cambios.append({"ruta": f"comunes.{k}", "valor": x["valor"], "origen": "inferido_modelo" if x.get("origen") != "usuario" else "brief_modelo",
                             "fuente": f"modelo: {x.get('porque', '')}"[:300]})
@@ -158,6 +169,8 @@ def rellenar_con_modelo(brief: dict, spec: dict) -> tuple[list[dict], dict]:
     for ent in j.get("entregas") or []:
         e = ids.get(ent.get("id"))
         for k, x in ((ent.get("campos") or {}).items() if e else []):
+            if k in PARAMETROS and not (isinstance(x, dict) and PARAMETROS[k].fullmatch(str(x.get("valor") or ""))):
+                continue
             f = e["campos"].get(k)
             if f and f["estado"] == "OPEN" and isinstance(x, dict) and x.get("valor") not in (None, ""):
                 cambios.append({"ruta": f"{e['id']}.{k}", "valor": x["valor"], "origen": "inferido_modelo",
