@@ -1,0 +1,1113 @@
+{
+ "fusiones": [
+  {
+   "grupo": "DUP-0038.1.1",
+   "texto": "Escribir el prompt en lenguaje natural, en frases completas y conectadas, nunca como pila de etiquetas separadas por comas (tag-soup). Alcances: GPT Image (1.5 / 2), en el adaptador de visual-prompt-forge (Pitfalls): no escribir \"Midjourney-style comma stacks\", porque GPT Image las interpreta como una lista de conceptos desconectados. Nano Banana (image/nano-banana.md, qué NO indicar): nada de tag-soup del tipo «cool, modern, 4k, cinematic»; se escribe en una oración conectada. Image en general (Golden Rules §4 Natural Language): ❌ Bad: \"Cool car, neon, city, night, 8k\"; ✅ Good: \"A cinematic wide shot of a futuristic sports car speeding through a rainy Tokyo street at night. Neon signs reflect off wet pavement and metallic chassis.\" Video, todo modelo (universal-rules U4 \"Natural language beats tag spam\"): los modelos de video no son modelos de imagen; el relleno de etiquetas como \"masterpiece, 4k, cinematic, beautiful\" falla; escribir en frases cinematográficas completas, como si se briefeara a un DOP humano.",
+   "cobertura": [
+    {
+     "id": "11e2bfe66dbf",
+     "elementos": [
+      "No escribir comma stacks estilo Midjourney → 'GPT Image (1.5 / 2) ... \"Midjourney-style comma stacks\"'",
+      "GPT Image los lee como lista de conceptos desconectados → misma frase",
+      "Alcance adapter GPT Image de forge → nombrado"
+     ]
+    },
+    {
+     "id": "26d738c30fec",
+     "elementos": [
+      "Tag-soup «cool, modern, 4k, cinematic» no se indica → 'Nano Banana ... «cool, modern, 4k, cinematic»'",
+      "Escribir oración conectada → 'se escribe en una oración conectada'",
+      "Alcance Nano Banana (qué NO indicar) → nombrado"
+     ]
+    },
+    {
+     "id": "49547dd7e39c",
+     "elementos": [
+      "Ejemplo Bad \"Cool car, neon, city, night, 8k\" → citado literal",
+      "Ejemplo Good del auto en Tokyo → citado literal",
+      "Alcance Golden Rules §4 image → nombrado"
+     ]
+    },
+    {
+     "id": "88989b8370e6",
+     "elementos": [
+      "Video models no son image models → 'los modelos de video no son modelos de imagen'",
+      "Tag stuffing \"masterpiece, 4k, cinematic, beautiful\" falla → citado",
+      "Frases cinematográficas completas como briefing a un DOP humano → incluido",
+      "Alcance U4 todo modelo de video → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0039.1.1",
+   "texto": "Resolución de conflicto de sintaxis de modelo (AI Production Director §6.2; política POLICY_FINAL_PROMPT_SYNTAX_001 en conflict-policies.v3.1.json, final_prompt.syntax_authority, gana la regla 8b582880dec3): `ai-video-storyboard` pide prompts model-agnostic y `video`/`image` (smixs) existen para la sintaxis por modelo. Los prompts model-agnostic van SOLO en artefactos intermedios (storyboard, shot cards). Todo prompt FINAL se escribe en la sintaxis del modelo destino según el archivo smixs correspondiente. Si el modelo no tiene archivo smixs (p. ej. Flux, Midjourney, Ideogram), la autoridad es el adaptador de `visual-prompt-forge`.",
+   "cobertura": [
+    {
+     "id": "361234855295",
+     "elementos": [
+      "Conflicto ai-video-storyboard model-agnostic vs video/image smixs → primera frase",
+      "Model-agnostic solo en intermedios (storyboard, shot cards) → incluido",
+      "Prompt FINAL en sintaxis del modelo destino según archivo smixs → incluido",
+      "Sin archivo smixs (Flux, Midjourney, Ideogram) → autoridad adaptador forge → incluido",
+      "Alcance APD §6.2 → nombrado"
+     ]
+    },
+    {
+     "id": "6fe15e231acb",
+     "elementos": [
+      "final_prompt.syntax_authority, gana 8b582880dec3 → nombrado en paréntesis",
+      "§6.2 resuelve model-agnostic como intermedio-only; finales en sintaxis del modelo destino → incluido",
+      "Alcance POLICY_FINAL_PROMPT_SYNTAX_001 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0039.2.1",
+   "texto": "Cada generador premia un estilo de prompt distinto, por lo que la elección de modelo cambia la estructura del prompt: mismo shot, distinta sintaxis. En visual-prompt-forge (que convierte datos estructurados de shot en prompts que funcionan en producción): corto y de alta señal para Midjourney, lenguaje natural para Flux, en forma de párrafo para GPT Image, consciente del texto para Ideogram; un prompt que arrasa en uno produce slop en otro, y por eso el skill adapta (\"Same shot, different syntax\"). En el skill image (models.md, Nano Banana vs GPT Image 2): el skill escribe prompts para dos familias de modelos que piensan distinto, y la elección de modelo cambia la estructura del prompt.",
+   "cobertura": [
+    {
+     "id": "5592ef3002bd",
+     "elementos": [
+      "Convertir shot data estructurada en prompts de producción → incluido",
+      "Midjourney corto y de alta señal, Flux natural, GPT Image párrafo, Ideogram text-aware → incluido",
+      "Un prompt que arrasa en uno produce slop en otro → incluido",
+      "Alcance forge SKILL → nombrado"
+     ]
+    },
+    {
+     "id": "5a4fbc91e86d",
+     "elementos": [
+      "El skill adapta; same shot, different syntax → 'el skill adapta (\"Same shot, different syntax\")'"
+     ]
+    },
+    {
+     "id": "667d46d4fd86",
+     "elementos": [
+      "Dos familias de modelos (Nano Banana vs GPT Image 2) que piensan distinto → incluido",
+      "La elección de modelo cambia la estructura del prompt → incluido",
+      "Alcance image/models.md → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0040.1.1",
+   "texto": "Modelo recomendado para escenas con física de agua: Nano Banana Pro, que es el modelo para escenas complejas con física y materiales finos. En el régimen 02 ruptura de superficie: para la física del agua, corona, gotas, refracción y tela mojada. En el régimen 01 agua en superficie: para escenas con física de agua, spray y tela mojada.",
+   "cobertura": [
+    {
+     "id": "5dc293f55d51",
+     "elementos": [
+      "NBP para física del agua: corona, gotas, refracción, tela mojada → incluido",
+      "Alcance régimen 02 §6 → nombrado"
+     ]
+    },
+    {
+     "id": "e37fc3b083ad",
+     "elementos": [
+      "Física de agua, spray y tela mojada → NBP → incluido",
+      "NBP es el modelo para escenas complejas con física y materiales finos → primera frase",
+      "Alcance régimen 01 §6 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0040.2.1",
+   "texto": "Nano Banana Pro es el modelo recomendado para la física de luz y partículas. En el régimen 03 subacuático: escenas complejas con física de luz, partículas y tela flotante. En el régimen 07 luz y clima: física de luz, partículas y atmósfera.",
+   "cobertura": [
+    {
+     "id": "a9e9f04519ee",
+     "elementos": [
+      "NBP para escenas complejas con física de luz, partículas y tela flotante → incluido",
+      "Alcance régimen 03 §6 → nombrado"
+     ]
+    },
+    {
+     "id": "fdbd9542185b",
+     "elementos": [
+      "NBP para física de luz, partículas y atmósfera → incluido",
+      "Alcance régimen 07 §6 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0041.1.1",
+   "texto": "De la Etapa 4 (E4, Shot Planning) en adelante `shots.json` es la fuente de verdad estructural (APD §6.3; SW30 regla crítica 15; mapa del spot, subproceso E4). Todo cambio, incluido un cambio creativo, entra primero en shots.json y se propaga/regenera hacia abajo; nunca se parcha un prompt de forma que contradiga su shot. En el paquete final (Etapa 7, reglas de trazabilidad, regla 4 Cambios): si un prompt necesita cambiar algo que su shot fija (encuadre, acción, luz), el cambio se hace en shots.json y se regenera hacia abajo; el paquete nunca contiene un prompt que contradiga su shot.",
+   "cobertura": [
+    {
+     "id": "21baa1d284b4",
+     "elementos": [
+      "Si un prompt necesita cambiar lo que fija el shot (encuadre, acción, luz), cambio en shots.json y se regenera → incluido",
+      "El paquete nunca contiene un prompt que contradiga su shot → incluido",
+      "Alcance Etapa 7 trazabilidad regla 4 → nombrado"
+     ]
+    },
+    {
+     "id": "2fa01a7c6a34",
+     "elementos": [
+      "shots.json fuente de verdad → incluido",
+      "Todo cambio entra ahí primero y se propaga → incluido",
+      "Alcance SW30 regla 15 → nombrado"
+     ]
+    },
+    {
+     "id": "89feb7b04fc6",
+     "elementos": [
+      "De la Etapa 4 en adelante shots.json → incluido",
+      "Cambio creativo primero en shots.json y se propaga → 'incluido un cambio creativo'",
+      "Nunca parchar un prompt que contradiga su shot → incluido",
+      "Alcance APD §6.3 → nombrado"
+     ]
+    },
+    {
+     "id": "eb7f201f5ad4",
+     "elementos": [
+      "E4 Shot Planning: desde aquí shots.json es fuente de verdad → 'Etapa 4 (E4, Shot Planning)'",
+      "Alcance mapa del spot nivel 2 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0042.1.1",
+   "texto": "En image-to-video la imagen de entrada es el ancla de identidad, layout y texto en imagen (el modelo la ve): el prompt es corto y centrado en el movimiento, describe solo el movimiento y el trabajo de cámara, es decir cómo evoluciona la escena desde la imagen, no lo que hay en ella. No describir elementos ya visibles en la imagen: re-describir elementos estáticos provoca deriva de identidad. Alcances: Seedance (§13 Image-to-video rule, con imagen de referencia); Kling 3.0 (\"lock first, then move\": la imagen de entrada es el ancla de identidad, layout y texto en imagen; describir **how the scene evolves from the image**); flujo de anclas, Paso 7 handoff al video (motion brief: el ancla aprobada entra al modelo de video con un prompt corto que solo dice cómo evoluciona) y rol de ancla Keyframe FF (primer frame del clip, fija identidad, layout y texto en imagen; el prompt de video describe solo cómo evoluciona).",
+   "cobertura": [
+    {
+     "id": "7d9d503b84f5",
+     "elementos": [
+      "Con imagen de referencia no describir elementos ya visibles; el modelo la ve → incluido",
+      "Describir solo movimiento y trabajo de cámara → incluido",
+      "Re-describir estáticos crea identity drift → incluido",
+      "Alcance Seedance §13 → nombrado"
+     ]
+    },
+    {
+     "id": "b450ae566ae2",
+     "elementos": [
+      "Imagen de entrada = ancla de identidad, layout, texto en imagen → incluido",
+      "Prompt corto y motion-focused → incluido",
+      "Describir cómo evoluciona la escena desde la imagen, no lo que hay → incluido con cita",
+      "Alcance Kling 3.0 lock first then move → nombrado"
+     ]
+    },
+    {
+     "id": "b5d3de8eba20",
+     "elementos": [
+      "Ancla aprobada entra con prompt corto que solo dice cómo evoluciona → incluido",
+      "Describir lo que ya está provoca deriva de identidad → incluido",
+      "Alcance flujo de anclas Paso 7 motion brief → nombrado"
+     ]
+    },
+    {
+     "id": "c1269507ea88",
+     "elementos": [
+      "Keyframe FF: primer frame del clip → incluido",
+      "Fija identidad, layout y texto en imagen; prompt describe solo cómo evoluciona → incluido",
+      "Alcance roles de ancla → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0043.1.1",
+   "texto": "Logos, marcas, patrocinadores y lettering de marca nunca se generan: solo se heredan de un asset aprobado o se componen en post, porque el modelo los deforma. Alcances: flujo de anclas (lo que un ancla nunca lleva: logos y lettering de marca generados); régimen 04 objeto balístico, modelo recomendado (sin logos ni marcas en el objeto: se heredan de asset aprobado o se componen en post) y fallos conocidos (marca o logo deformado en el objeto: quitarlo del prompt y componer en post); régimen 05 vehículo (sin marcas de patrocinador generadas: se componen en post o se heredan del asset aprobado); régimen 06 cuerpo en esfuerzo (cinta, dorsal y patrocinadores sin texto ni logo generado; se componen en post).",
+   "cobertura": [
+    {
+     "id": "22499b1542d7",
+     "elementos": [
+      "Sin logos ni marcas en el objeto → incluido",
+      "Heredar de asset aprobado o componer en post → incluido",
+      "El modelo los deforma → incluido",
+      "Alcance régimen 04 §6 → nombrado"
+     ]
+    },
+    {
+     "id": "35582ba0ef13",
+     "elementos": [
+      "Sin marcas de patrocinador generadas; post o asset aprobado → incluido",
+      "Alcance régimen 05 §6 → nombrado"
+     ]
+    },
+    {
+     "id": "4c962aefa26e",
+     "elementos": [
+      "Cinta, dorsal y patrocinadores sin texto ni logo generado; post → incluido",
+      "Alcance régimen 06 §6 → nombrado"
+     ]
+    },
+    {
+     "id": "59eefa0cbf13",
+     "elementos": [
+      "Ancla nunca lleva logos y lettering de marca generados; solo heredados o compuestos en post → incluido",
+      "Alcance flujo de anclas → nombrado"
+     ]
+    },
+    {
+     "id": "e7a63b08b412",
+     "elementos": [
+      "Fallo: marca o logo deformado en el objeto → quitarlo del prompt y componer en post → incluido",
+      "Alcance régimen 04 §8 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0044.1.1",
+   "texto": "Linter aurora, copia parcheada en el repo (v1.2-fupai), parche P1 (decisión 2 del 2026-09-25, alcance del linter aurora): el conteo de palabras nunca bloquea. Contradicción que lo motiva: el original hace HARD FAIL por encima de 130 (T2I) o 90 (I2V), mientras SW30 canoniza un maestro de rostro T1 de ~250 palabras (\"Template canónico T1 … alrededor de 250 palabras\"), GPT Image tolera 150–300 y Kling 3.0 dice \"structure beats length\". Con P1 el conteo pasa a WARN (advertencia) con el presupuesto por plataforma como referencia (tabla `WORD_BUDGET_BY_PLATFORM`) y el techo de `_capabilities.json` (`max_prompt_words` es \"a ceiling, not a target\"). Rangos de cada adaptador: kling 80–150, veo 80–150, flux 80–150, seedance 80–150, gpt-image 150–300, nano-banana 60–120, ideogram 60–120, hailuo 60–120, midjourney 40–80, seedream 40–70; `kling.md` §5 y §10 (I2V 20–40); `veo.md` §3 (50–200) y §9 (comprimir a 50–100). Si la plataforma no está en la tabla, el presupuesto original del caso (75–130 / 50–90) se reporta como referencia, también WARN. Siguen bloqueando la redundancia con referencias, el vocabulario prohibido y las secciones requeridas. Consecuencia operativa: los templates de 250 palabras de SW30 y los prompts de 5 slots de GPT Image pasan.",
+   "cobertura": [
+    {
+     "id": "b8296d816a42",
+     "elementos": [
+      "Original HARD FAIL >130 (T2I) o >90 (I2V) → incluido",
+      "SW30 T1 ~250, GPT Image 150–300, Kling 3.0 \"structure beats length\" → incluido",
+      "P1 nunca bloquea; WARN con WORD_BUDGET_BY_PLATFORM y techo de _capabilities.json → incluido",
+      "Plataforma fuera de tabla: presupuesto original del caso como referencia, WARN → incluido",
+      "Fuentes: _capabilities \"ceiling, not a target\", rangos por adaptador, kling §5/§10 I2V 20–40, veo §3 50–200 y §9, SW30 T1 ~250 → incluidos",
+      "Alcance README copia parcheada v1.2-fupai #1 → nombrado"
+     ]
+    },
+    {
+     "id": "ba413d6239ad",
+     "elementos": [
+      "P1 deja de ser HARD FAIL, pasa a WARN con presupuesto por plataforma → incluido",
+      "Rangos (kling, veo, gpt-image, nano-banana, midjourney, flux, ideogram, seedream, hailuo, seedance) → incluidos",
+      "veo §9 comprimir a 50–100 → incluido",
+      "Presupuesto original 75–130 / 50–90 como referencia fuera de tabla → incluido",
+      "Alcance docstring prompt_linter.py → nombrado implícito en 'copia parcheada'"
+     ]
+    },
+    {
+     "id": "fd82a9054cd5",
+     "elementos": [
+      "Decisión 2: copia parcheada en el repo → incluido",
+      "Conteo nunca bloquea: advertencia con presupuesto de plataforma → incluido",
+      "Siguen bloqueando redundancia con refs, vocabulario prohibido, secciones requeridas → incluido",
+      "Consecuencia: templates de 250 palabras de SW30 y prompts 5 slots GPT Image pasan → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0045.1.1",
+   "texto": "Aurora Prompt Linter v1.0 (skill original), word count por caso: los casos 1 (génesis text-to-image) y 2 (ancla image-with-refs) tienen un presupuesto de 75-130 palabras. El máximo es HARD FAIL; el mínimo es WARN no bloqueante.",
+   "cobertura": [
+    {
+     "id": "8f54a671d062",
+     "elementos": [
+      "Casos 1 y 2, budget 75-130 → incluido",
+      "Max HARD FAIL; Min WARN no bloqueante → incluido",
+      "Alcance SKILL word count por caso → nombrado"
+     ]
+    },
+    {
+     "id": "daf4c8ff2900",
+     "elementos": [
+      "Caso 1 génesis text-to-image, 75-130 → incluido",
+      "Alcance README v1.0 casos soportados → nombrado"
+     ]
+    },
+    {
+     "id": "578d96f77852",
+     "elementos": [
+      "Caso 2 ancla image-with-refs, 75-130 → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0045.2.1",
+   "texto": "Aurora Prompt Linter v1.0 (skill original): el caso 4, video con diálogo, tiene un presupuesto de 75-130 palabras, con el mismo comportamiento que los casos 1/2 (\"Same as 1/2\").",
+   "cobertura": [
+    {
+     "id": "6c3aa750683f",
+     "elementos": [
+      "Caso 4 budget 75-130 → incluido",
+      "Same as 1/2 → 'mismo comportamiento que los casos 1/2 (\"Same as 1/2\")'",
+      "Alcance SKILL word count → nombrado"
+     ]
+    },
+    {
+     "id": "e7ae4eaabe06",
+     "elementos": [
+      "Caso 4 video con diálogo, 75-130 → incluido",
+      "Alcance README v1.0 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0046.1.1",
+   "texto": "Régimen 03 subacuático: una fuente domina, la superficie. Toda luz adicional debe ser un práctico visible, linterna o foco del buzo, y su color cálido cerca del sujeto es la única forma legítima de recuperar rojos (luz en este medio). Fallo conocido: dos direcciones de luz sin práctico visible son una contradicción; una fuente desde la superficie y, si hay otra, que se vea. Checklist del crítico: una sola fuente dominante desde la superficie, prácticos visibles si hay más.",
+   "cobertura": [
+    {
+     "id": "3f2739dde8ba",
+     "elementos": [
+      "Checklist: una sola fuente dominante desde superficie, prácticos visibles si hay más → incluido"
+     ]
+    },
+    {
+     "id": "6326e1fb81f8",
+     "elementos": [
+      "Fallo: dos direcciones de luz sin práctico visible = contradicción → incluido",
+      "Corrección: una fuente desde superficie y, si hay otra, que se vea → incluido"
+     ]
+    },
+    {
+     "id": "89de1a51813d",
+     "elementos": [
+      "Una fuente domina: la superficie → incluido",
+      "Luz adicional = práctico visible, linterna o foco del buzo → incluido",
+      "Color cálido cerca del sujeto única forma legítima de recuperar rojos → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0046.2.1",
+   "texto": "Régimen 07 luz y clima: el fenómeno domina; cualquier otra luz debe ser un práctico visible y subordinado: farola, ventana, faros (luz en este medio). Fallo conocido: dos direcciones de sombra; corrección: eliminar la segunda fuente o hacerla práctico visible.",
+   "cobertura": [
+    {
+     "id": "64c7124cb3ef",
+     "elementos": [
+      "Fallo dos direcciones de sombra → incluido",
+      "Eliminar la segunda fuente o hacerla práctico visible → incluido"
+     ]
+    },
+    {
+     "id": "bb27d3cba3dc",
+     "elementos": [
+      "El fenómeno domina → incluido",
+      "Otra luz: práctico visible y subordinado (farola, ventana, faros) → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0047.1.1",
+   "texto": "Al escribir el brand-lock (Brand Packs, How to use, en brand-lock-extractor y storyboard-architect; template `_template.md` Brand Lock: {{BRAND_NAME}}; Brand Lock Extractor, Step 4) se llena cada campo y cada sección requerida (Fill **every** required section): no quedan placeholders. Reemplazar los placeholders y borrar el blockquote del template al terminar; cada campo alimenta el pipeline de storyboard, así que hay que ser específico. En el extractor se usa `templates/brand-lock.md.tpl` y después se añade una sección `## Extraction notes` que lista cada valor `inferred` y `needs confirmation` con su fuente y el razonamiento; es el rastro de auditoría y no rompe la validación (el validador comprueba que estén las nueve secciones requeridas; las secciones extra están bien).",
+   "cobertura": [
+    {
+     "id": "017ac47f54ea",
+     "elementos": [
+      "Fill in every field; no placeholders left behind → incluido",
+      "Alcance Brand Packs How to use en brand-lock-extractor y storyboard-architect → nombrado"
+     ]
+    },
+    {
+     "id": "364f6097637c",
+     "elementos": [
+      "Replace placeholders → incluido",
+      "Delete this blockquote when done → 'borrar el blockquote del template al terminar'",
+      "Every field feeds the storyboard pipeline; be specific → incluido",
+      "Alcance _template.md en ambos skills → nombrado"
+     ]
+    },
+    {
+     "id": "5d37517ee631",
+     "elementos": [
+      "Usar templates/brand-lock.md.tpl → incluido",
+      "Fill every required section, no placeholders → incluido",
+      "Añadir ## Extraction notes con cada inferred / needs confirmation, fuente y razonamiento → incluido",
+      "Es audit trail; no rompe validación; validador chequea nueve secciones; extras OK → incluido",
+      "Alcance Step 4 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0047.2.1",
+   "texto": "Brand Lock Extractor produce un `brand-lock.md` en el formato exacto que valida `tools/validate_brand_lock.py` y que consumen todos los demás skills: el mismo archivo que lee el pipeline, producido desde los assets de la marca en lugar de desde cero. En el mapa del spot es el subproceso E0.4 (Escribir brand-lock.md + Extraction notes): skill con autoridad brand-lock-extractor; entra el template brand-lock.md.tpl; sale brand-lock.md; gate o herramienta validate_brand_lock.py.",
+   "cobertura": [
+    {
+     "id": "1879b07ebfeb",
+     "elementos": [
+      "Código E0.4, subproceso escribir brand-lock.md + Extraction notes → incluido",
+      "Skill con autoridad brand-lock-extractor → incluido",
+      "Entra brand-lock.md.tpl, sale brand-lock.md → incluido",
+      "Gate validate_brand_lock.py → incluido"
+     ]
+    },
+    {
+     "id": "84840754d0ec",
+     "elementos": [
+      "Output brand-lock.md en formato exacto que valida tools/validate_brand_lock.py → incluido",
+      "Lo consumen todos los demás skills; mismo archivo que lee el pipeline → incluido",
+      "Producido desde assets en vez de desde cero → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0048.1.1",
+   "texto": "El aspect ratio se toma por defecto de `project.aspect` y se pasa en el parámetro propio de cada adaptador de visual-prompt-forge: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) `aspect_ratio` como campo de la llamada API; Ideogram (v3) `aspect_ratio` como campo API; Hailuo 02 Pro, Kling 3.0, Seedance 2.0, Seedream (4.5 / 4.0) y Veo 3 `aspect_ratio`; Nano Banana (Gemini 2.5 Flash Image) `aspectRatio`, con soporte nativo de `9:16`, `16:9`, `1:1`, `4:5`, `3:4`, `21:9`; Midjourney (v7, referencia de parámetros vigente a Q2 2026) `--ar`, p. ej. `--ar 9:16`, `--ar 16:9`, `--ar 1:1`.",
+   "cobertura": [
+    {
+     "id": "3d9b574b9d44",
+     "elementos": [
+      "Flux aspect_ratio, campo API, default project.aspect → incluido"
+     ]
+    },
+    {
+     "id": "4645c4447f53",
+     "elementos": [
+      "Nano Banana aspectRatio, default project.aspect → incluido",
+      "Soporte nativo 9:16, 16:9, 1:1, 4:5, 3:4, 21:9 → incluido"
+     ]
+    },
+    {
+     "id": "70263ce2c995",
+     "elementos": [
+      "Hailuo, Kling, Seedance, Seedream, Veo aspect_ratio default project.aspect → incluido con las versiones de cada adaptador"
+     ]
+    },
+    {
+     "id": "90d49e2fc429",
+     "elementos": [
+      "Midjourney --ar, default project.aspect → incluido",
+      "Ejemplos --ar 9:16, 16:9, 1:1 → incluidos",
+      "Q2 2026 → nombrado"
+     ]
+    },
+    {
+     "id": "dd15fa3ea757",
+     "elementos": [
+      "Ideogram aspect_ratio, API field, default project.aspect → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0049.1.1",
+   "texto": "Hailuo 02 Pro (visual-prompt-forge, adapter hailuo; Adapters: motion video, budget iteration; en fal.ai) es el modelo barato y rápido de iteración: fuerte respuesta de movimiento y seguimiento del prompt por su precio. Se usa para **find the shot**: bloquear movimiento de cámara, encuadre y timing a lo largo de muchos borradores rápidos y baratos. Su salida es un borrador de trabajo (draft tier), no un asset final: \"Don't ship Hailuo drafts as finals\". El keeper se regenera (re-roll) en el modelo final adecuado: **Kling** para motion finals, **Veo** para diálogo/lipsync, **Seedance** para secuencias multi-shot. Capabilities (`_capabilities.json`): display_name \"Hailuo 02 Pro\", model_version \"02 Pro\", last_verified 2026-06-18, prompt_style natural, max_prompt_words 120, supports_text_render false, supports_motion true, supports_character_ref true, supports_style_ref false, supports_negative_prompt false, aspect_param \"aspect_ratio\", api_access full.",
+   "cobertura": [
+    {
+     "id": "8eaf27940699",
+     "elementos": [
+      "No entregar drafts de Hailuo como finales → cita incluida",
+      "Re-roll del keeper en modelo final-tier → incluido"
+     ]
+    },
+    {
+     "id": "919568f29cea",
+     "elementos": [
+      "Adapters: hailuo.md, Hailuo 02 Pro, motion video, budget iteration → incluido"
+     ]
+    },
+    {
+     "id": "c7db651c97d1",
+     "elementos": [
+      "Modelo barato y rápido; fuerte motion y prompt-following por el precio; fal.ai → incluido",
+      "Find the shot: camera move, framing, timing en muchos drafts → incluido",
+      "Regenerar keeper en Kling (motion finals), Veo (dialogue), Seedance (sequences) → incluido",
+      "Output = working draft, no final → incluido"
+     ]
+    },
+    {
+     "id": "e059c615c07c",
+     "elementos": [
+      "Paso 3: Kling motion finals, Veo dialogue/lipsync, Seedance multi-shot sequences → incluido"
+     ]
+    },
+    {
+     "id": "ff43235b3b9c",
+     "elementos": [
+      "Todos los campos de capabilities (display_name, version, last_verified, prompt_style, max_prompt_words=120, flags, aspect_param, api_access) → incluidos",
+      "notes: budget, fast iteration, block out camera/framing/timing, re-roll on Kling/Veo/Seedance, draft tier → incluido en el cuerpo"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0050.1.1",
+   "texto": "Inspección visual propia al 100% de zoom de rostros y manos antes de presentar (SW30 regla crítica 14). En SW30 la regla incluye además: validadores del paquete y techos de palabras en verde antes de entregar; si algo falla, no se entrega, se repite, y se dice qué falló en una línea. Alcances: régimen 06 cuerpo en esfuerzo (tratamiento de personas: inspección al 100% de rostro y manos antes de presentar; checklist del crítico: rostro y manos correctos al 100%); régimen 09 grupo ensamble (inspección al 100% de todos los rostros y manos antes de presentar; con N miembros son N inspecciones).",
+   "cobertura": [
+    {
+     "id": "048e63155394",
+     "elementos": [
+      "Checklist régimen 06: rostro y manos correctos al 100% → incluido"
+     ]
+    },
+    {
+     "id": "16fc5f9b6f51",
+     "elementos": [
+      "Validadores del paquete y techos de palabras en verde antes de entregar → incluido",
+      "Zooms 100% de rostros y manos antes de presentar → incluido",
+      "Si falla: no se entrega, se repite, se dice qué falló en una línea → incluido",
+      "Alcance SW30 regla 14 → nombrado"
+     ]
+    },
+    {
+     "id": "2565834706fb",
+     "elementos": [
+      "Inspección al 100% de todos los rostros y manos; N miembros N inspecciones → incluido",
+      "Alcance régimen 09 §7 → nombrado"
+     ]
+    },
+    {
+     "id": "401000ca6c6f",
+     "elementos": [
+      "Inspección al 100% de rostro y manos antes de presentar → incluido",
+      "Alcance régimen 06 §7 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0051.1.1",
+   "texto": "Lateralidad nombrada en cualquier contacto de manos. Régimen 04 objeto balístico (tratamiento de personas): qué mano y qué lado de la raqueta. Régimen 09 grupo ensamble: manos e instrumentos con lateralidad nombrada en cualquier contacto, incluidos dos miembros que se tocan (tratamiento de personas); fallo conocido instrumento en la mano equivocada o dos manos derechas: nombrar lateralidad; checklist del crítico: instrumentos y manos con lateralidad correcta.",
+   "cobertura": [
+    {
+     "id": "0396f01fc5cb",
+     "elementos": [
+      "Lateralidad en cualquier contacto: qué mano, qué lado de la raqueta → incluido",
+      "Alcance régimen 04 §7 → nombrado"
+     ]
+    },
+    {
+     "id": "583f68f06ecc",
+     "elementos": [
+      "Checklist: instrumentos y manos con lateralidad correcta → incluido"
+     ]
+    },
+    {
+     "id": "9192cf69c51a",
+     "elementos": [
+      "Fallo: instrumento en mano equivocada o dos manos derechas → nombrar lateralidad → incluido"
+     ]
+    },
+    {
+     "id": "eb78a7214423",
+     "elementos": [
+      "Manos e instrumentos con lateralidad nombrada en cualquier contacto, incluidos dos miembros que se tocan → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0052.1.1",
+   "texto": "Régimen 06 cuerpo en el pico de esfuerzo [A PRUEBA]: la fase de contacto con el suelo debe ser coherente con la velocidad: en sprint un solo pie toca o ninguno, en el apex del salto ninguno, en el punto muerto del levantamiento los dos plantados y cargados (ley física que el still debe evidenciar). Checklist del crítico: fase de contacto con el suelo coherente.",
+   "cobertura": [
+    {
+     "id": "9158a8c861de",
+     "elementos": [
+      "Fase de contacto coherente con la velocidad → incluido",
+      "Sprint un pie o ninguno; apex ninguno; levantamiento dos plantados y cargados → incluido",
+      "Etiqueta A PRUEBA → incluida"
+     ]
+    },
+    {
+     "id": "acc829850692",
+     "elementos": [
+      "Checklist: fase de contacto coherente → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0052.2.1",
+   "texto": "Régimen 06 cuerpo en esfuerzo: fallo conocido dos pies plantados en pleno sprint; corrección: declarar la fase de zancada [A PRUEBA]. Hallazgo de campo (research familia 06, hallazgo 5, [CAMPO: https://www.media.io/ai-prompts/gemini-ai-runner-photo-prompts.html], C-19, [QUOTED]; el snippet de ai-prompt.jp lo repite): **siempre** nombrar el momento de la zancada con vocabulario de fase (start, mid-stride, finish tape) y qué pie carga el peso.",
+   "cobertura": [
+    {
+     "id": "386240c86591",
+     "elementos": [
+      "Fallo dos pies plantados en sprint → incluido",
+      "Declarar la fase de zancada → incluido",
+      "A PRUEBA → incluido"
+     ]
+    },
+    {
+     "id": "9b2ca972d64f",
+     "elementos": [
+      "Siempre nombrar momento con vocabulario de fase (start, mid-stride, finish tape) → incluido",
+      "Qué pie carga el peso → incluido",
+      "CAMPO url, C-19, QUOTED, snippet ai-prompt.jp → incluidos"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0053.1.1",
+   "texto": "En beats de acción y movimiento continuo no usar el god-angle alto, limpio y \"beauty\": el ángulo por defecto es low, a la altura del parachoques o más bajo; low/wide/close pulen los beats (race-and-speed §10 anti-fake guard). Régimen 05 vehículo: ángulo por defecto low a la altura del parachoques; el god-angle alto y limpio mata la velocidad. Flujo de anclas, D9 para el tipo de acción C (movimiento continuo): altura de parachoques o más baja, rig montable, larga focal a nivel de pista para compresión; por qué: cue a del presupuesto de velocidad, el ángulo alto y limpio es el god-angle que mata la velocidad; cuándo romperlo: un plano alto solo como proof shot lejano de espacio cubierto (fuente race §3 §5 §10).",
+   "cobertura": [
+    {
+     "id": "d0442da0a244",
+     "elementos": [
+      "Low a altura del parachoques; god-angle alto y limpio mata la velocidad → incluido",
+      "Alcance régimen 05 §5 → nombrado"
+     ]
+    },
+    {
+     "id": "f8987a0b43ba",
+     "elementos": [
+      "No high clean beauty god-angle en action beats; bajar a bumper height → incluido",
+      "low/wide/close beats polish → incluido",
+      "Alcance race §10 → nombrado"
+     ]
+    },
+    {
+     "id": "fdc950dc306c",
+     "elementos": [
+      "Tipo C movimiento continuo → incluido",
+      "Parachoques o más bajo; rig montable; larga focal a nivel de pista para compresión → incluido",
+      "Por qué: cue a del presupuesto de velocidad → incluido",
+      "Romperlo: plano alto solo como proof shot lejano → incluido",
+      "Fuente race §3 §5 §10 → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0054.1.1",
+   "texto": "Linter aurora, copia parcheada (v1.2-fupai), parche P7 (contradicción #8): anime / cartoon / 3D render eran BANNED global en el original, pero los patterns del skill `image` los usan de forma legítima (character cards anime, grids Pixar-style): `image/references/patterns/character-design.md` (\"Anime-Style Character Card\", \"clean cel-shaded anime\"), `multi-panel.md` (\"Pixar-style 3D\", \"anime cel shading\"), `editing.md` (\"vibrant anime\"), `dimensional.md` (\"photorealistic 3D render\"). Con P7 se añade `--treatment {fotorreal,ilustracion,animacion,race}` (default fotorreal) y `STYLE_BANNED_FOTORREAL` solo aplica en fotorreal/race. En ilustración/animación además se sustituyen los patrones de la sección `style` (`TREATMENT_SECTION_OVERRIDES`) y se retira `anti_style`. Lista `STYLE_BANNED_FOTORREAL` en hooks vocabularies.yaml: anime, anime-style, cartoon, cartoonish, 3D render, 3D rendered, 3D-rendered, CGI look, cel shading, cel-shaded, cel shaded, pixar-style, pixar style, claymation, vector illustration, flat illustration. El comentario que sigue en ese archivo (bloque SLOW MOTION (P7)) indica: WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing; dramaturgy §7 pide razón), FAIL con --treatment race (race-and-speed.md §1 ley 1), exento con prefijo \"ultra-\" (kling.md §3 tempo).",
+   "cobertura": [
+    {
+     "id": "23243a8baf39",
+     "elementos": [
+      "Contradicción #8: anime/cartoon/3D render BANNED global en original; patterns de image los usan → incluido",
+      "P7 --treatment {fotorreal,ilustracion,animacion,race}, default fotorreal → incluido",
+      "STYLE_BANNED_FOTORREAL solo en fotorreal/race → incluido",
+      "Ilustración/animación: sustituir patrones style (TREATMENT_SECTION_OVERRIDES) y retirar anti_style → incluido",
+      "Fuentes character-design, multi-panel, editing, dimensional con citas → incluidas"
+     ]
+    },
+    {
+     "id": "e256ca71614d",
+     "elementos": [
+      "Lista completa de 16 términos → incluida",
+      "Comentario siguiente SLOW MOTION (P7): WARN fotorreal, FAIL race, exento ultra- → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0054.2.1",
+   "texto": "Linter aurora parcheado, P7 (README, Uso › Tratamiento, y docstring de prompt_linter.py): los bans de estilo y el tratamiento de slow motion dependen de `--treatment`. `--treatment fotorreal` (default) banea anime / cartoon / 3D render y similares y avisa sobre slow motion; `ilustracion` y `animacion` levantan esos bans y ajustan la sección `style`, porque image/references/patterns/character-design.md (\"Anime-Style Character Card\", \"clean cel-shaded anime\"), multi-panel.md (\"Pixar-style 3D\", \"anime cel shading\") y editing.md (\"vibrant anime\") los usan de forma legítima; `race` mantiene los bans fotorreal y convierte slow motion en FAIL (race-and-speed.md §1 ley 1 \"never CGI-clean or sped-up... Over-crank... drain all threat\"). \"slow motion\" deja de ser BANNED global: WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing; dramaturgy §7 exige razón), FAIL con race, y permitido sin aviso con prefijo \"ultra-\" (kling.md §3 tempo words: \"ultra-slow motion (2-3s feel)\") o con OVERRIDE.",
+   "cobertura": [
+    {
+     "id": "1e9305f61040",
+     "elementos": [
+      "fotorreal default banea anime/cartoon/3D render y avisa slow motion → incluido",
+      "ilustracion y animacion levantan bans y ajustan style → incluido",
+      "race mantiene bans y slow motion FAIL (race ley 1) → incluido"
+     ]
+    },
+    {
+     "id": "801e9ea3d024",
+     "elementos": [
+      "Bans condicionados a --treatment; solo en fotorreal → incluido",
+      "Fuentes character-design, multi-panel, editing con citas → incluidas",
+      "slow motion deja de ser BANNED global → incluido",
+      "WARN fotorreal (kling §11 anti-morphing; dramaturgy §7 razón) → incluido",
+      "FAIL race con cita de race §1 ley 1 → incluido",
+      "Sin aviso con prefijo ultra- (kling §3 \"ultra-slow motion (2-3s feel)\") o con OVERRIDE → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0055.1.1",
+   "texto": "Storyboard (storyboard-architect, Beat Frameworks): elegir uno de los frameworks de beats estándar (\"Pick one\") y documentar la elección en `storyboard.md`. No inventar uno nuevo salvo que el brief genuinamente no encaje: el custom es último recurso, no primer movimiento; los frameworks estándar existen porque funcionan.",
+   "cobertura": [
+    {
+     "id": "0278298205d5",
+     "elementos": [
+      "Custom es último recurso, no primer movimiento → incluido",
+      "Los estándar existen porque funcionan → incluido"
+     ]
+    },
+    {
+     "id": "02e681912abf",
+     "elementos": [
+      "Pick one → incluido",
+      "No inventar salvo que el brief genuinamente no encaje → incluido",
+      "Documentar la elección en storyboard.md → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0055.2.1",
+   "texto": "Storyboard (storyboard-architect, Step 2 Pick the beat framework; Beat Frameworks › Custom): si el brief no encaja limpiamente en ningún framework, construir una estructura de beats custom y documentar por qué en la sección de rationale de `storyboard.md`, con este formato: \"## Beat framework: Custom\"; \"**Why custom:** [one sentence, what made the standard frameworks insufficient]\"; \"**Beats:**\" numerados como \"1. [name], [purpose], [duration]\", \"2. ...\".",
+   "cobertura": [
+    {
+     "id": "63800cb82e48",
+     "elementos": [
+      "Si el brief no encaja, custom → incluido",
+      "Formato: ## Beat framework: Custom, Why custom en una frase, Beats name/purpose/duration → incluido literal"
+     ]
+    },
+    {
+     "id": "f129d1c44b63",
+     "elementos": [
+      "Si ninguno encaja limpiamente, custom → incluido",
+      "Documentar por qué en la sección rationale de storyboard.md → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0056.1.1",
+   "texto": "Un texto en pantalla (text overlay) debe estar en pantalla lo suficiente para leerse **dos veces**, no una (regla \"read twice\"; storyboard-architect, timing-rules.md › On-screen text duration math, repetida en on-screen-text.md). Por qué: los espectadores escanean y los ojos no siempre se fijan en el primer frame. Calcular y luego verificar; no estimar a ojo.",
+   "cobertura": [
+    {
+     "id": "211b3b8352b3",
+     "elementos": [
+      "Texto en pantalla lo suficiente para leerse dos veces → incluido",
+      "Ya cubierto en timing-rules, se repite → mención de ambos documentos",
+      "Calculate, then verify; don't eyeball → incluido"
+     ]
+    },
+    {
+     "id": "dd5f41d42016",
+     "elementos": [
+      "Read twice, not once → incluido",
+      "Por qué: viewers skimming, eyes don't lock on first frame → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0057.1.1",
+   "texto": "Nunca una cabina perfectamente estable: renderizar vibración visible (\"trembling mirror, doubled needle, smeared rim\") e inclinar el horizonte 1–3° (race-and-speed §10 anti-fake guard). Régimen 05 vehículo, fallo conocido cabina perfectamente estable: añadir espejo trémulo, aguja doblada, horizonte 1 a 3 grados fuera. En las 5 familias de plano de race-and-speed §5, la familia 3 **Hard-mounted cabin shake** (función Pressure / Reaction): en el panel, montaje interior rígido con tablero/aguja/manos vibrando, espejo temblando, el mundo sacudiéndose a través del vidrio; tell de autenticidad: micro-vibración visible, nunca perfectamente estable.",
+   "cobertura": [
+    {
+     "id": "2c1b28ca2e36",
+     "elementos": [
+      "Cabina perfectamente estable → espejo trémulo, aguja doblada, horizonte 1-3° → incluido",
+      "Alcance régimen 05 §8 → nombrado"
+     ]
+    },
+    {
+     "id": "5c5702ec5f57",
+     "elementos": [
+      "No perfectly stable cabin; vibración visible: trembling mirror, doubled needle, smeared rim; tilt 1–3° → incluido",
+      "Alcance race §10 → nombrado"
+     ]
+    },
+    {
+     "id": "71239ba51988",
+     "elementos": [
+      "Familia 3 Hard-mounted cabin shake, Pressure/Reaction → incluido",
+      "Mount interior rígido: dash/needle/hands vibrando, mirror trembling, world shuddering through glass → incluido",
+      "Tell: micro-vibración visible, nunca estable → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0058.1.1",
+   "texto": "Linter aurora: la lista `ALLOWED_MOTION_PREFIXES` es idéntica en el vocabularies.yaml del skill (scripts/vocabularies.yaml) y en el de la copia parcheada del repo (.claude/hooks/aurora/vocabularies.yaml): camera, shot, lens, framing, angle, view, perspective, pans, tilts, arcs, pulls, dollies, pushes, tracks, follows, swings, orbits, descends, rises. Comentarios que siguen a la lista en cada archivo: en el skill, el bloque REQUIRED_SECTIONS_BY_PLATFORM_CASE (NUEVO v1.1 2026-05-27): secciones obligatorias del MAIN prompt por combinación plataforma + caso, cada una con keyword patterns case-insensitive de substring; la sección está PRESENTE si al menos un pattern matchea en el MAIN; si una sección requerida no se detecta es FAIL; keys `<platform>__<case>`; si una combinación no está listada, el linter omite la validación de secciones y reporta WARN (\"no required-sections snapshot for this platform+case — operate honor system\"). En la copia parcheada, el bloque TREATMENT_SECTION_OVERRIDES (P7): se aplican sobre cualquier snapshot, reemplazan los patrones de la sección nombrada o la eliminan (null) cuando no aplica a ese tratamiento.",
+   "cobertura": [
+    {
+     "id": "46cdda3a64f5",
+     "elementos": [
+      "Lista de 19 prefijos → incluida",
+      "Comentario REQUIRED_SECTIONS_BY_PLATFORM_CASE v1.1 con todas sus reglas → incluido",
+      "Alcance skill scripts/vocabularies.yaml → nombrado"
+     ]
+    },
+    {
+     "id": "7585c6ae0528",
+     "elementos": [
+      "Lista de 19 prefijos idéntica → incluida",
+      "Comentario TREATMENT_SECTION_OVERRIDES (P7) → incluido",
+      "Alcance hooks vocabularies.yaml → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0058.2.1",
+   "texto": "Linter aurora (Aurora Prompt Linter v1.0, exenciones automáticas; regla 6 de las que aplica): el linter NO flaggea un término cuando aparece en **contexto de motion/cámara** (p. ej. `camera arcs through the studio`: \"studio\" exento porque sigue a \"camera\") o como **anchor direccional** (`away from her face`, `across the climbing wall`, `over his head`): las preposiciones direccionales `away from`, `toward`, `off`, `over`, `behind`, `across`, `past`, `onto`, `into`, `above`, `below`, `beside`, seguidas opcionalmente de `her/his/the`, exentan el término que sigue.",
+   "cobertura": [
+    {
+     "id": "7c0d82fe4673",
+     "elementos": [
+      "No flaggea en contexto motion/cámara, ejemplo camera arcs through the studio → incluido",
+      "Anchor direccional con ejemplos → incluido",
+      "Lista de 12 preposiciones, opcional her/his/the → incluida"
+     ]
+    },
+    {
+     "id": "e5dfa1f426d1",
+     "elementos": [
+      "Regla 6 Exenciones: motion/cámara o anchor direccional no se flaggean, ejemplos away from her face, across the climbing wall → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0060.1.1",
+   "texto": "Visual asset critic: distinguir el fallo de prompt del fallo del generador. Si el prompt estaba bien y el generador produjo, por ejemplo, manos basura, es \"re-roll required\", no \"fix the prompt\" (rubric, speed bumps). Los hard fails técnicos (Layer 5, technical check) son casi siempre **re-roll required**: el prompt probablemente estaba bien y el generador solo produjo una mala muestra; ningún arreglo de prompt ayuda. Presupuestar 2–3 re-rolls (Step 3, map issues to fixes). Ejemplo: \"Hands are mangled. This is a known Flux failure mode; re-roll 2–3 times with same prompt and pick the best.\"",
+   "cobertura": [
+    {
+     "id": "144b6068ee89",
+     "elementos": [
+      "Re-roll required: ningún prompt fix ayuda; mala muestra → incluido",
+      "Budget 2–3 attempts → incluido",
+      "Ejemplo Flux manos → citado literal"
+     ]
+    },
+    {
+     "id": "2d5bce946fe0",
+     "elementos": [
+      "Distinguir prompt failure de generator failure → incluido",
+      "Prompt bien + manos basura = re-roll required, no fix the prompt → incluido"
+     ]
+    },
+    {
+     "id": "b6515bead7eb",
+     "elementos": [
+      "Technical hard fails casi siempre re-roll required → incluido",
+      "Prompt probablemente bien; mala muestra → incluido",
+      "Budget 2–3 re-rolls → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0061.1.1",
+   "texto": "Régimen 03 subacuático [A PRUEBA]: el agua absorbe primero los rojos: a pocos metros la piel, la sangre y los objetos rojos se ven pardos o grises salvo que una luz artificial cercana los recupere; un rojo saturado a profundidad sin fuente cercana es un error físico (ley física). Fallo conocido: piel rosada y labios rojos a diez metros, color físicamente imposible sin práctico; corrección: declarar el viraje o añadir la linterna como fuente. Checklist del crítico: absorción de color coherente con la profundidad declarada.",
+   "cobertura": [
+    {
+     "id": "0d635fb26e8c",
+     "elementos": [
+      "Absorbe primero los rojos → incluido",
+      "A pocos metros piel, sangre, objetos rojos pardos o grises salvo luz artificial cercana → incluido",
+      "Rojo saturado a profundidad sin fuente cercana = error físico → incluido"
+     ]
+    },
+    {
+     "id": "41d52389a865",
+     "elementos": [
+      "Fallo piel rosada y labios rojos a diez metros, imposible sin práctico → incluido",
+      "Declarar el viraje o añadir linterna → incluido"
+     ]
+    },
+    {
+     "id": "b526d9f34ee6",
+     "elementos": [
+      "Checklist: absorción coherente con profundidad declarada → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0062.1.1",
+   "texto": "Brand Lock WhyStrohm, dirección de color grade (brand-lock.snapshot.md de los ejemplos 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer de storyboard-architect y worked-run de visual-asset-critic; y series lock de los storyboards \"The Content Infrastructure Pitch\" y \"How The System Actually Works\"): \"Warm filmic, muted teal shadows. Slight grain. Cream highlights, deep navy/charcoal shadows, never crushed. Reminiscent of Kodak Portra 400 with a slight digital cleanup.\" En el ejemplo shotkit-explainer se añade: \"Skin tones warm but not orange. Greens kept slightly desaturated to push focus to subject.\" En el series lock de los storyboards: \"warm filmic, muted teal shadows, slight grain, cream highlights, deep navy shadows never crushed\".",
+   "cobertura": [
+    {
+     "id": "32196a421d11",
+     "elementos": [
+      "Texto completo del color grade → citado literal",
+      "Alcances: 30s-pain-proof-promise, 60s-founder-explainer, visual-asset-critic worked-run → nombrados"
+     ]
+    },
+    {
+     "id": "46c4e6f6ff63",
+     "elementos": [
+      "Mismo texto + Skin tones warm but not orange + greens desaturados → citado literal",
+      "Alcance shotkit-explainer → nombrado"
+     ]
+    },
+    {
+     "id": "9cce7acd74bf",
+     "elementos": [
+      "Series lock color grade → citado literal",
+      "Alcance storyboards de los dos ejemplos → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0063.1.1",
+   "texto": "Principio de dos pasos (mapa del spot, nivel 3, taxonomía de génesis; y principio de trabajo de DECISIONES 2026-09-25): la génesis fija solo la parte del sujeto que lleva la identidad; todo lo que la extiende es un paso posterior con esa génesis adjunta como referencia. Rostro T1 antes que cuerpo T2, siempre. En una persona la identidad vive en el rostro, así que el orden es retrato de rostro T1 → cuerpo entero T2 con el rostro como Image 1 → cuadros T3 y T4. En un animal, la cabeza y el pelaje primero, las poses después. En un producto, el hero shot frontal primero, el producto en escena después. Fuentes: SW30 reglas 1, 5 y 11; image/characters.md \"Identity Locking\"; nano-banana.md, fallos conocidos: los rostros y las manos derivan, y NBP a veces sostiene peor los rostros que NB2.",
+   "cobertura": [
+    {
+     "id": "78900aa6b3c1",
+     "elementos": [
+      "Génesis fija solo la parte con identidad; lo demás paso posterior con génesis como referencia → incluido",
+      "Persona: T1 rostro → T2 cuerpo con rostro como Image 1 → T3 y T4 → incluido",
+      "Animal: cabeza y pelaje primero, poses después → incluido",
+      "Producto: hero shot frontal primero, en escena después → incluido",
+      "Fuentes SW30 1/5/11, characters.md Identity Locking, nano-banana fallos (rostros y manos derivan, NBP peor que NB2) → incluidas"
+     ]
+    },
+    {
+     "id": "e3fa12343e38",
+     "elementos": [
+      "Mismo principio → incluido",
+      "Rostro T1 antes que cuerpo T2, siempre → incluido",
+      "Alcance DECISIONES principios → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0064.1.1",
+   "texto": "Kling 1.x – 2.x, Element Library y Element Binding: para consistencia de personaje entre generaciones subir 3-4 imágenes de referencia del personaje desde distintos ángulos al Element Library; ángulos requeridos: frente (Front), perfil (Side), tres cuartos (Three-quarter). Es también el fix cuando la cara del personaje cambia entre generaciones (kling.md §11) o entre shots (fixes-and-skeletons §2, para Kling): subir 3-4 referencias (front, side, three-quarter) y usar Bind Elements en los settings (Element Binding).",
+   "cobertura": [
+    {
+     "id": "41b157d80430",
+     "elementos": [
+      "Ángulos requeridos: Front, Side (profile), Three-quarter → incluido"
+     ]
+    },
+    {
+     "id": "685b63e45e63",
+     "elementos": [
+      "Fix cara cambia entre generaciones: subir 3-4 refs a Element Library, Bind Elements en settings → incluido"
+     ]
+    },
+    {
+     "id": "8e0fb00a14db",
+     "elementos": [
+      "Cara cambia entre shots, para Kling: Element Binding con 3-4 refs (front, side, three-quarter) → incluido"
+     ]
+    },
+    {
+     "id": "9074c4d4898d",
+     "elementos": [
+      "Consistencia entre generaciones: Element Library, 3-4 refs de distintos ángulos → incluido",
+      "Alcance Kling 1.x–2.x §7 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0065.1.1",
+   "texto": "Veo (solo Veo): usar prompts JSON estructurados escena por escena para escenas complejas con necesidades de continuidad estricta. Veo parsea JSON estructurado, lo que evita el \"concept bleed\" en que describir el mood cambia por accidente los colores de los objetos (veo.md §6). Es el formato de salida F del skill video (\"F. JSON (Veo only)\", continuidad estructurada escena por escena; fixes-and-skeletons, Format F. Veo JSON, remite a `references/veo.md` sección 6).",
+   "cobertura": [
+    {
+     "id": "226c6f012772",
+     "elementos": [
+      "Veo parsea JSON estructurado → incluido",
+      "Previene concept bleed (mood cambia colores) → incluido",
+      "Usar JSON para escenas complejas con continuidad estricta → incluido"
+     ]
+    },
+    {
+     "id": "6cdba2f147b0",
+     "elementos": [
+      "Format F Veo JSON, scene-by-scene, complex continuity, ver veo.md §6 → incluido"
+     ]
+    },
+    {
+     "id": "cfd27b9b473a",
+     "elementos": [
+      "F. JSON (Veo only), continuidad scene-by-scene, ver veo.md → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0066.1.1",
+   "texto": "Checklist del crítico, sin texto legible ni logos generados (forge Rule 1): en el régimen 06 cuerpo en esfuerzo, sin texto ni logos en cinta o dorsal; en el régimen 08 multitud anónima, sin texto legible en pancartas ni camisetas.",
+   "cobertura": [
+    {
+     "id": "05f616e90729",
+     "elementos": [
+      "Sin texto ni logos en cinta o dorsal → incluido",
+      "Alcance régimen 06 §9 → nombrado"
+     ]
+    },
+    {
+     "id": "3bac99796ea2",
+     "elementos": [
+      "Sin texto legible en pancartas ni camisetas → incluido",
+      "Alcance régimen 08 §9 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0066.2.1",
+   "texto": "Checklist del crítico, sin marcas generadas (forge Rule 6): en el régimen 04 objeto balístico, sin marcas en el objeto; en el régimen 05 vehículo, sin marcas generadas.",
+   "cobertura": [
+    {
+     "id": "13af204e2830",
+     "elementos": [
+      "Sin marcas en el objeto → incluido",
+      "Alcance régimen 04 §9 → nombrado"
+     ]
+    },
+    {
+     "id": "77cb57fa1fcd",
+     "elementos": [
+      "Sin marcas generadas → incluido",
+      "Alcance régimen 05 §9 → nombrado"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0067.1.1",
+   "texto": "Cada rostro legible en el frame es una identidad que hay que sostener en todos los clips; por eso el crítico cuenta los rostros legibles: cada uno debe corresponder a un héroe canonizado, y los que no se convierten en silueta, espalda o desenfoque mediante edición, o el ancla no pasa (flujo de anclas, Paso 3, D2 × D3; régimen 08 multitud anónima, tratamiento de personas). Régimen 08, fallo conocido rostros legibles en la masa: editar a desenfoque o silueta, o regenerar la placa con contraluz. Checklist del crítico (régimen 08): ningún rostro legible que no sea un héroe canonizado.",
+   "cobertura": [
+    {
+     "id": "0e77e93a0fe2",
+     "elementos": [
+      "Fallo rostros legibles en la masa: editar a desenfoque o silueta, o regenerar placa con contraluz → incluido"
+     ]
+    },
+    {
+     "id": "840a038b6ca5",
+     "elementos": [
+      "Cada rostro legible = identidad a sostener en todos los clips → incluido",
+      "Crítico cuenta rostros; no héroes → silueta, espalda o desenfoque, o el ancla no pasa → incluido",
+      "Alcance flujo de anclas Paso 3 D2×D3 → nombrado"
+     ]
+    },
+    {
+     "id": "9d8ac28b04b2",
+     "elementos": [
+      "Checklist: ningún rostro legible que no sea héroe canonizado → incluido"
+     ]
+    },
+    {
+     "id": "d5afae3a4c3b",
+     "elementos": [
+      "Cada rostro legible debe corresponder a héroe canonizado; el que no → silueta, espalda o desenfoque mediante edición → incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0068.1.1",
+   "texto": "Visual asset critic: el veredicto se deriva de las severidades, no se elige libremente ni es un juicio aparte; así el veredicto del markdown y el del JSON siempre coinciden (Step 6, gating rule; rubric, Aggregating verdict). `issues[].severity` es requerido, tipo string, enum [\"minor\", \"major\", \"blocking\"]. Cualquier issue `blocking` ⇒ `REJECT`. Tres o más `major` ⇒ `REJECT`. Uno o dos `major` (y ningún blocking) ⇒ `REVISE`: limitan el veredicto a REVISE y prohíben `ACCEPT`. Solo `minor`, o ninguno ⇒ `ACCEPT` (con post notes). Lo hace cumplir `tools/validate_critique.py` (el gate, documentado en los tools/README de brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge), no el schema.",
+   "cobertura": [
+    {
+     "id": "12db23331a64",
+     "elementos": [
+      "Gate: blocking fuerza REJECT; 3+ major fuerzan REJECT; 1-2 major prohíben ACCEPT → incluido",
+      "Alcance tools/README de cinco skills → nombrado"
+     ]
+    },
+    {
+     "id": "4714b4eca1a9",
+     "elementos": [
+      "Veredicto sigue a las severidades, no es juicio aparte → incluido"
+     ]
+    },
+    {
+     "id": "735f59b64da7",
+     "elementos": [
+      "severity string enum minor/major/blocking, requerido → incluido",
+      "blocking→REJECT; 1-2 major cap REVISE; 3+ major REJECT → incluido",
+      "Enforced por validate_critique.py, no por el schema → incluido"
+     ]
+    },
+    {
+     "id": "9236230a4f73",
+     "elementos": [
+      "Verdict derivado, no elegido libremente; md y JSON coinciden → incluido",
+      "Cuatro reglas incluyendo only minor/none → ACCEPT con post notes → incluido"
+     ]
+    }
+   ]
+  }
+ ]
+}

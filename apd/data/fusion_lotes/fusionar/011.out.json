@@ -1,0 +1,835 @@
+{
+ "fusiones": [
+  {
+   "grupo": "DUP-0353.1",
+   "texto": "Crítica (visual-asset-critic, SKILL.md Step 6 y critique-rubric.md › Aggregating verdict): el umbral de REJECT es un número, no discreción, y lo aplica el validador `tools/validate_critique.py`, que hace cumplir exactamente la tabla de agregación del rubric; una crítica que discrepa de ella falla en vez de entregarse. Antecedente: la regla de tres majors decía \"escalate to REJECT at your discretion\" mientras el rubric contaba hard fails y llamaba REJECT a 3+ (\"three hard fails a REJECT outright\"); esas dos reglas se contradecían, \"Discretion in a gate is not a gate\", y esa discrepancia es la razón de que el umbral sea ahora un número.",
+   "cobertura": [
+    {
+     "id": "90971e84803b",
+     "elementos": [
+      "antes decía \"escalate to REJECT at your discretion\" -> antecedente",
+      "\"Discretion in a gate is not a gate\" -> citado",
+      "discrepaba con critique-rubric.md que llamaba REJECT a tres hard fails -> antecedente",
+      "ahora es un umbral y el validador lo hace cumplir -> frase inicial"
+     ]
+    },
+    {
+     "id": "d41b50530315",
+     "elementos": [
+      "tools/validate_critique.py hace cumplir exactamente la tabla -> nombrado",
+      "crítica que discrepa falla en vez de entregarse -> incluido",
+      "versiones previas contaban hard fails y llamaban REJECT a 3+ mientras el skill decía discreción -> antecedente",
+      "la discrepancia es la razón de que el umbral sea un número -> cierre"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0354.1",
+   "texto": "Crítica (visual-asset-critic, SKILL.md Step 6 y critique-rubric.md › From pass/fail to severity): asignar una severidad por issue. Las tablas del rubric califican cada check como pass, soft fail o hard fail; el critique JSON registra en su lugar una severidad, y el veredicto se deriva de esas severidades. La severidad es el campo sobre el que corre el gate, así que se mapea desde el rubric por capas de forma determinista, de esta manera y solo de esta manera.",
+   "cobertura": [
+    {
+     "id": "54238b85a6c8",
+     "elementos": [
+      "una severidad por issue -> incluido",
+      "es el campo sobre el que corre el gate -> incluido",
+      "mapear desde el rubric por capas de forma determinista -> incluido"
+     ]
+    },
+    {
+     "id": "60e24a851e76",
+     "elementos": [
+      "tablas califican pass/soft fail/hard fail -> incluido",
+      "el JSON registra severidad en su lugar -> incluido",
+      "el veredicto se deriva de las severidades -> incluido",
+      "mapear así y solo así -> \"de esta manera y solo de esta manera\""
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0355.1",
+   "texto": "Crítica (visual-asset-critic, SKILL.md Step 6 y critique-rubric.md › From pass/fail to severity): severidad `blocking` = hard fail en una capa crítica (Brand Lock o Series Lock) sin ningún fix path claro, o un defecto que hace el asset inutilizable; mapea desde un hard fail irrecuperable. Razón: nada downstream lo recupera.",
+   "cobertura": [
+    {
+     "id": "1282cd0e42c6",
+     "elementos": [
+      "blocking = hard fail en capa crítica Brand/Series Lock sin fix claro -> incluido",
+      "o defecto que hace el asset inutilizable -> incluido",
+      "mapea desde hard fail irrecuperable -> incluido"
+     ]
+    },
+    {
+     "id": "8ae2be913527",
+     "elementos": [
+      "hard fail en Brand Lock o Series Lock sin fix path -> incluido",
+      "severidad blocking -> incluido",
+      "\"Nothing downstream recovers this\" -> \"nada downstream lo recupera\""
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0356.1",
+   "texto": "Crítica (visual-asset-critic, SKILL.md Step 6 y critique-rubric.md › From pass/fail to severity): severidad `major` = hard fail con un fix path claro; mapea desde un hard fail que un cambio de prompt o un re-roll resuelve.",
+   "cobertura": [
+    {
+     "id": "640c9591432d",
+     "elementos": [
+      "hard fail con fix path claro -> major",
+      "un cambio de prompt o re-roll lo resuelve -> incluido"
+     ]
+    },
+    {
+     "id": "7f56df9a6712",
+     "elementos": [
+      "major = hard-fail con fix path claro -> incluido",
+      "mapea desde hard-fail que prompt change o re-roll arregla -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0357.1",
+   "texto": "Crítica (visual-asset-critic, SKILL.md Step 6 y critique-rubric.md › From pass/fail to severity): severidad `minor` = soft fail en cualquier capa, arreglable en post (post puede absorberlo); `fix_type` es normalmente `post-level`.",
+   "cobertura": [
+    {
+     "id": "3a03d7cb84d2",
+     "elementos": [
+      "soft fail en cualquier capa -> minor",
+      "post puede absorberlo -> incluido",
+      "fix_type usualmente post-level -> \"normalmente\""
+     ]
+    },
+    {
+     "id": "d81c3fe48049",
+     "elementos": [
+      "minor = soft-fail arreglable en post -> incluido",
+      "mapea desde soft-fail en cualquier capa -> incluido",
+      "fix_type: post-level -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0358.1",
+   "texto": "Crítica (visual-asset-critic, Hard rules › Rule 3 y critique-rubric.md › Speed bumps to remember): no criticar lo que no se pidió. Si el brief era \"founder at laptop, calm mood\" y la generación entregó exactamente eso, no anotar que \"the room could be more visually interesting\"; si el spec no pidió cinematic mood, no decir \"could be more cinematic\". Eso es scope creep, no crítica.",
+   "cobertura": [
+    {
+     "id": "2f5b911b5291",
+     "elementos": [
+      "ejemplo \"founder at laptop, calm mood\" -> incluido",
+      "no anotar \"the room could be more visually interesting\" -> incluido",
+      "es scope creep, no crítica -> cierre"
+     ]
+    },
+    {
+     "id": "606253b451e0",
+     "elementos": [
+      "no criticar lo que no se pidió -> frase inicial",
+      "spec sin cinematic mood -> no decir \"could be more cinematic\" -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0359.1.1",
+   "texto": "Veredicto REJECT (visual-asset-critic › Handoff; visual-prompt-forge › Revision mode, paso 3 \"Stop on `REJECT`\"): REJECT significa un issue blocking o tres o más major, es decir un fallo sin fix path claro. En el handoff del critic no se ofrece el modo revisión; en forge, revision mode se detiene ahí: re-emitir un prompt para ese shot finge lo contrario. Listar los shots rechazados, decir qué los bloqueó y qué dijo el critic de ellos, y preguntar al usuario cómo proceder, nombrando la decisión que se necesita: un cambio en el shot spec, un cambio en el brand-lock o un generador distinto; las tres son decisiones por encima del alcance de este skill.",
+   "cobertura": [
+    {
+     "id": "62e7087976cb",
+     "elementos": [
+      "si el veredicto es REJECT no ofrecer la revisión -> incluido",
+      "REJECT = blocking o 3+ major, fallo sin fix path claro -> incluido",
+      "revision mode está hecho para parar y preguntar -> incluido",
+      "decir qué lo bloqueó y qué decisión necesita: shot spec, brand-lock o generador -> incluido"
+     ]
+    },
+    {
+     "id": "971fa812a626",
+     "elementos": [
+      "Stop on REJECT -> citado",
+      "definición blocking o 3+ major -> incluido",
+      "re-emitir finge lo contrario -> incluido",
+      "listar shots rechazados, lo que dijo el critic, preguntar al usuario -> incluido",
+      "respuestas comunes: shot spec, brand-lock, generador -> incluido",
+      "decisiones por encima del skill -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0360.1",
+   "texto": "`visual-asset-critic` (shotkit, capa 5 · QA) tiene autoridad para aceptar o rechazar renders: aporta la crítica del render contra el shot de origen y un critique.json accionable. En el Mapa del Spot Publicitario es el skill con autoridad del subproceso E5.7 Crítica por capas: entra render + shot + prompt + brand-lock; sale critique.json con ACCEPT / REVISE / REJECT y severidades; gate o herramienta: validate_critique.py y validate_provenance.py.",
+   "cobertura": [
+    {
+     "id": "2b452b48448f",
+     "elementos": [
+      "sub-skill visual-asset-critic (shotkit), capa 5 QA -> incluido",
+      "aporta crítica de render vs shot origen, critique.json accionable -> incluido",
+      "autoridad sobre aceptar/rechazar renders -> incluido"
+     ]
+    },
+    {
+     "id": "6100207f258a",
+     "elementos": [
+      "E5.7 Crítica por capas -> incluido",
+      "entra render+shot+prompt+brand-lock -> incluido",
+      "sale critique.json ACCEPT/REVISE/REJECT con severidades -> incluido",
+      "gate validate_critique.py, validate_provenance.py -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0361.1",
+   "texto": "Handoff de storyboard (ejemplos WhyStrohm 30s-pain-proof-promise y 60s-founder-explainer, Handoff notes): para QA de los frames generados, correr `visual-asset-critic` por shot, con la imagen generada y el shot ID.",
+   "cobertura": [
+    {
+     "id": "a0de243c6a14",
+     "elementos": [
+      "para QA de frames generados -> incluido",
+      "correr visual-asset-critic con imagen generada y shot ID -> incluido"
+     ]
+    },
+    {
+     "id": "d74a390c4157",
+     "elementos": [
+      "para QA correr visual-asset-critic por shot -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0362.1",
+   "texto": "Ejemplos (storyboard-architect › Examples; visual-prompt-forge › Examples): para ver cómo queda el árbol de salida tras la generación y la revisión, ver `../visual-asset-critic/examples/worked-run/`: un árbol completo de dos rondas, dos shots a través de dos rondas, con hashes reales, prompts y frames por ronda, y una crítica por shot por ronda (prompts, frames y críticas juntos).",
+   "cobertura": [
+    {
+     "id": "51b6c72a20a0",
+     "elementos": [
+      "árbol de salida tras generación y revisión -> incluido",
+      "ruta ../visual-asset-critic/examples/worked-run/ -> incluida",
+      "dos shots por dos rondas, hashes reales, prompts y frames por ronda, una crítica por shot por ronda -> incluido"
+     ]
+    },
+    {
+     "id": "a5e6df638ea6",
+     "elementos": [
+      "árbol completo de dos rondas -> incluido",
+      "prompts, frames y críticas juntos -> incluido",
+      "misma ruta -> incluida"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0363.1",
+   "texto": "Dramaturgia (video/dramaturgy.md §3 The three-jobs rule y §15 Dramaturgy check before sending any prompt): todo shot debe hacer al menos uno de tres trabajos: cambiar la emoción, avanzar la acción o subir la presión. Si no hace ninguno, se borra. Es la pregunta 3 del dramaturgy check antes de enviar cualquier prompt.",
+   "cobertura": [
+    {
+     "id": "451d3fc20094",
+     "elementos": [
+      "check 3 antes de enviar prompt -> incluido",
+      "tres trabajos: change emotion, advance action, increase pressure -> incluido"
+     ]
+    },
+    {
+     "id": "bc0e55cea792",
+     "elementos": [
+      "al menos uno de tres -> incluido",
+      "si no hace ninguno, borrarlo -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0364.1",
+   "texto": "Gate de la Etapa 6 — Video Prompts (casos 3 y 4; ai-production-director y README de la copia parcheada aurora v1.2-fupai): el gate obligatorio es doble: los dos checks de `video` (dramaturgy check de 6 puntos + auditoría de 3 detalles) Y el linter `aurora-prompt-linter` pasando limpio (si está instalado). Un prompt que falla cualquiera de los dos NO se entrega.",
+   "cobertura": [
+    {
+     "id": "7d517a935399",
+     "elementos": [
+      "Etapa 6 prompts de video casos 3 y 4 -> incluido",
+      "gate sigue siendo doble -> incluido",
+      "dramaturgy check 6 puntos + auditoría 3 detalles -> incluido",
+      "y este linter limpio -> incluido"
+     ]
+    },
+    {
+     "id": "86b15320e3b2",
+     "elementos": [
+      "gate obligatorio -> incluido",
+      "los dos checks de video -> incluido",
+      "si aurora-prompt-linter está instalada pasa limpio -> incluido",
+      "prompt que falla cualquiera NO se entrega -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0365.1",
+   "texto": "Blocking y staging (video/dramaturgy.md §6 Staging controls subtext; subproceso E3.2 del Mapa del Spot, con autoridad video/dramaturgy.md §5 y §6): antes de escribir un prompt, nombrar la dinámica de poder que revela el staging. Entra la escena; sale quién quiere qué de quién y la dinámica de poder en el encuadre; el gate es nombrar la dinámica antes de escribir.",
+   "cobertura": [
+    {
+     "id": "7e38047bfc13",
+     "elementos": [
+      "E3.2 Blocking y staging -> incluido",
+      "autoridad video/dramaturgy.md §5 y §6 -> incluido",
+      "entra escena; sale quién quiere qué de quién, dinámica de poder en encuadre -> incluido",
+      "gate: nombrar la dinámica antes de escribir -> incluido"
+     ]
+    },
+    {
+     "id": "f15319355bea",
+     "elementos": [
+      "antes de escribir un prompt nombrar la dinámica de poder que revela el staging -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0366.1",
+   "texto": "Grupo ensamble (09-grupo-ensamble.md §5 Cámara y §9 Checklist del crítico): eyelines coordinadas y declaradas: todos al director, todos a cámara, o cada uno a su instrumento; eyelines mezcladas sin intención se leen como error de continuidad. El crítico verifica que las eyelines estén coordinadas según lo declarado. [FUENTE: visual-asset-critic/references/critique-rubric.md Layer 4]",
+   "cobertura": [
+    {
+     "id": "4147c770d43d",
+     "elementos": [
+      "eyelines coordinadas y declaradas -> incluido",
+      "opciones: director, cámara, instrumento -> incluido",
+      "mezcladas sin intención = error de continuidad -> incluido",
+      "FUENTE critique-rubric Layer 4 -> incluido"
+     ]
+    },
+    {
+     "id": "fb6209c95202",
+     "elementos": [
+      "checklist: eyelines coordinadas según lo declarado -> incluido",
+      "FUENTE Layer 4 -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0367.1",
+   "texto": "Screenwriter (SKILL.md › Pacing Tips y advanced-techniques.md › Tension Escalation): construir tensión escalando los stakes escena a escena; cada escena debe subir stakes o tensión de forma incremental. Esquema: Scene 1: el personaje quiere algo; Scene 2: aparece un obstáculo; Scene 3: el obstáculo empeora; Scene 4: nuevas complicaciones; Scene 5: punto de crisis; Scene 6: resolución.",
+   "cobertura": [
+    {
+     "id": "0d128ea82a38",
+     "elementos": [
+      "Build tension: escalar stakes escena a escena -> incluido"
+     ]
+    },
+    {
+     "id": "eee3ee4b2821",
+     "elementos": [
+      "cada escena sube stakes o tensión incrementalmente -> incluido",
+      "esquema de 6 escenas -> incluido completo"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0368.1",
+   "texto": "Seedance 2.5 (seedance-25.md §12 Video editing y §5 Reference discipline): cortar primero las fuentes largas. La edición de video funciona mejor con clips de ≤20s; más largos es posible pero inestable: se atascan o fallan.",
+   "cobertura": [
+    {
+     "id": "5252c8c182d4",
+     "elementos": [
+      "slice long sources first -> incluido",
+      "mejor ≤20s -> incluido",
+      "más largos stall or fail -> incluido"
+     ]
+    },
+    {
+     "id": "b50b8f53f3bb",
+     "elementos": [
+      "input video-edit source length best ≤20s -> incluido",
+      "possible but unstable, longer stalls -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0369.1",
+   "texto": "Extensión hacia atrás (Seedance 2.5 §13 Video extension; fixes-and-skeletons.md §2 \"Objects or characters appear too early in an extension\", cross-model): al anteponer un comienzo, describir los eventos previos y definir el primer frame de @Video 1 como el end state explícito de la extensión (Seedance 2.5). Los materiales que pertenecen solo al video fuente, es decir que deben aparecer solo después de que empiece, deben marcarse explícitamente — \"<X> must not appear early in the backward extension\" / \"<Materials that should appear only after the source video begins> must not appear early in the backward extension.\" — o los personajes posteriores se filtran al pasado.",
+   "cobertura": [
+    {
+     "id": "31cf775fde51",
+     "elementos": [
+      "Backward: describir eventos previos -> incluido",
+      "primer frame de @Video 1 como end state explícito -> incluido",
+      "marcar materiales solo del video fuente con la frase -> incluido",
+      "si no, personajes posteriores se filtran -> incluido"
+     ]
+    },
+    {
+     "id": "72f448e66348",
+     "elementos": [
+      "fix: marcarlos explícitamente -> incluido",
+      "frase literal con <Materials...> -> incluida"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0370.1",
+   "texto": "Learning Registry v3.2 (regla 11, lrn32_surgical_edit_after_accept; efecto=REQUIRE, prioridad=935): edit quirúrgico tras la aceptación. Una vez aceptada una imagen, si los cambios pedidos son locales, usar edit, no reroll de la escena completa; preservar los píxeles y locks aprobados fuera del delta pedido. Evidencia: las correcciones finales de multitud/plataforma se manejaron correctamente como dos edits locales sobre un asset aceptado.",
+   "cobertura": [
+    {
+     "id": "3fce56de2c8a",
+     "elementos": [
+      "Surgical edit after acceptance -> incluido",
+      "cambios locales usan edit, no reroll -> incluido",
+      "preservar píxeles/locks aprobados fuera del delta -> incluido"
+     ]
+    },
+    {
+     "id": "937db7c2042a",
+     "elementos": [
+      "imagen aceptada y cambios locales -> edit quirúrgico -> incluido",
+      "no reroll de la escena completa -> incluido",
+      "efecto=REQUIRE, prioridad=935 -> incluido",
+      "evidencia crowd/platform dos edits locales -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0371.1",
+   "texto": "Lógica de edit por modelo (image/editing.md y models.md › diferencias de sintaxis): Nano Banana: conversacional, sin máscaras, «Keep X same, change Y»; entiende bien física y materiales. GPT Image 2: lógica de dos columnas «Change: X / Preserve: Y / Constraints: Z»; repetir la lista Preserve en cada iteración, si no hay drift; opcionalmente `mask_image_url` para edits puntuales; mejor identity preservation (ver gpt-image.md#editing).",
+   "cobertura": [
+    {
+     "id": "020880a58016",
+     "elementos": [
+      "Nano Banana conversacional sin máscaras, Keep X same change Y -> incluido",
+      "entiende física y materiales -> incluido",
+      "GPT Image 2 Change/Preserve/Constraints -> incluido",
+      "repetir Preserve cada iteración o drift -> incluido",
+      "mask_image_url opcional -> incluido",
+      "mejor identity preservation, ver gpt-image.md -> incluido"
+     ]
+    },
+    {
+     "id": "2a73eb67f4cd",
+     "elementos": [
+      "Edit NB «Keep X same, change Y» -> incluido",
+      "GPT Image 2 «Change: X / Preserve: Y / Constraints: Z» -> incluido",
+      "repetir preserve cada iteración -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0372.1",
+   "texto": "Plantilla de eliminación de objeto (image/editing.md › Object Removal, patrón universal; nano-banana.md › Editing, conversacional sin máscaras en Nano Banana): \"Remove [OBJECT] from this image. Fill with [LOGICAL REPLACEMENT] matching surroundings. Keep [PRESERVED ELEMENTS] exactly the same.\"",
+   "cobertura": [
+    {
+     "id": "5a6a98513fb3",
+     "elementos": [
+      "Nano Banana conversacional sin máscaras -> incluido",
+      "plantilla de tres líneas -> literal"
+     ]
+    },
+    {
+     "id": "f20647d177a0",
+     "elementos": [
+      "Object Removal plantilla universal -> literal"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0373.1.1",
+   "texto": "Refinamiento conversacional (image/editing.md › Conversational Refinement, universal; nano-banana.md › Editing): después del edit o generación inicial, refinar de forma iterativa con órdenes cortas: \"Make it warmer\"; \"Increase contrast\"; \"Soften the edges\"; \"Add more detail to shadows\"; en Nano Banana también «Soften background, add blur» y «Change headline color to #3b82f6».",
+   "cobertura": [
+    {
+     "id": "022187ee071b",
+     "elementos": [
+      "tras edit inicial -> incluido",
+      "Make it warmer, Increase contrast, Soften the edges, Add more detail to shadows -> incluidos"
+     ]
+    },
+    {
+     "id": "a865df585175",
+     "elementos": [
+      "tras generación añadir iterativamente -> incluido",
+      "Make it warmer, Increase contrast -> incluidos",
+      "Soften background, add blur; Change headline color to #3b82f6 -> incluidos con alcance Nano Banana"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0374.1",
+   "texto": "Adapter Nano Banana (Gemini 2.5 Flash Image) de visual-prompt-forge › Variant-generation workflow: al generar prompts en `nano-banana.txt`, incluir ambos: el prompt text-to-image (primera pasada) y un comentario con la plantilla de modificación para variantes. Formato: \"# shot_01, text-to-image prompt:\" seguido de {prompt}; luego \"# shot_01, variant template (after generating once):\" / \"# Reference: [the generated image]. Modify the image to {your change}.\" / \"# Preserve {anchors}. Change {target}.\"",
+   "cobertura": [
+    {
+     "id": "bb9914673b46",
+     "elementos": [
+      "en nano-banana.txt incluir ambos -> incluido",
+      "prompt text-to-image primera pasada -> incluido",
+      "comentario plantilla de modificación para variantes -> incluido"
+     ]
+    },
+    {
+     "id": "effa01d8e31e",
+     "elementos": [
+      "formato literal shot_01 text-to-image y variant template -> incluido",
+      "Reference/Modify/Preserve anchors/Change target -> literal"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0375.1",
+   "texto": "Selección de modelo (image/models.md, TL;DR y \"GPT Image 2 gana en\"): para editing preciso con preservación (try-on, swap, clima/weather, cambio de ropa o fondo) usar GPT Image 2, que tiene la mejor identity preservation en edit: rostro, pose y geometría no se desplazan; la lógica de dos columnas (change / preserve) funciona como contrato.",
+   "cobertura": [
+    {
+     "id": "173a865c1b94",
+     "elementos": [
+      "identity preservation en edit -> incluido",
+      "cambiar ropa/clima/fondo sin que cara, pose, geometría floten -> incluido",
+      "change/preserve funciona como contrato -> incluido"
+     ]
+    },
+    {
+     "id": "ef05dc915614",
+     "elementos": [
+      "tarea editing preciso con preservation (try-on, swap, weather) -> incluido",
+      "modelo GPT Image 2, mejor identity-preservation -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0376.1",
+   "texto": "Brand Lock WhyStrohm (Voice rules del snapshot shotkit-explainer y Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run): nunca signos de exclamación en titulares (\"no exclamation points in headlines\").",
+   "cobertura": [
+    {
+     "id": "9bf2a5537f04",
+     "elementos": [
+      "Voice rules shotkit-explainer: no exclamation points in headlines -> incluido"
+     ]
+    },
+    {
+     "id": "b064947c9bde",
+     "elementos": [
+      "Never list en 4 snapshots: never use exclamation points in headlines -> incluido con los 4 alcances"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0377.1",
+   "texto": "Brand Lock WhyStrohm (Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run; Voice rules de shotkit-explainer): nunca emojis en el body copy (\"no emojis in body copy\").",
+   "cobertura": [
+    {
+     "id": "c6fcfde9e2fa",
+     "elementos": [
+      "never use emojis in body copy en 4 snapshots -> incluido"
+     ]
+    },
+    {
+     "id": "fd738c50b75a",
+     "elementos": [
+      "Voice rules shotkit-explainer: no emojis in body copy -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0378.1",
+   "texto": "Brand Lock WhyStrohm (Never list de los snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run; Voice rules de shotkit-explainer): nunca hype words: \"game-changing\", \"revolutionary\", \"next-level\", \"comprehensive\" y, en Voice rules, también \"leverage\".",
+   "cobertura": [
+    {
+     "id": "05f95d9ea461",
+     "elementos": [
+      "Never list 4 snapshots -> incluido",
+      "game-changing, revolutionary, next-level, comprehensive -> incluidos"
+     ]
+    },
+    {
+     "id": "7515b5d281b6",
+     "elementos": [
+      "Voice rules -> incluido",
+      "misma lista + leverage -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0379.1",
+   "texto": "Brand Lock Northwind Coffee Roasters (brand-lock.md › Aspect ratios; input-brief.md, brand sheet de una página): aspect ratios por defecto 4:5 y 9:16 para social (Instagram) y 16:9 para el hero de la web.",
+   "cobertura": [
+    {
+     "id": "a94dde7186a0",
+     "elementos": [
+      "default 4:5 y 9:16 social -> incluido",
+      "16:9 web hero -> incluido"
+     ]
+    },
+    {
+     "id": "eb9bf819648f",
+     "elementos": [
+      "formatos anotados: Instagram 4:5 y 9:16 -> incluido",
+      "website hero 16:9 -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0380.1",
+   "texto": "Voice rules de los brand locks Acme SaaS (Example, saas-clean.md) y WhyStrohm (snapshot shotkit-explainer): preferir el presente (present-tense) sobre el futuro (future-tense).",
+   "cobertura": [
+    {
+     "id": "84ded1042bf4",
+     "elementos": [
+      "Acme SaaS prefer present-tense -> incluido"
+     ]
+    },
+    {
+     "id": "8cf7e3076d08",
+     "elementos": [
+      "WhyStrohm prefer present-tense over future-tense -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0381.1",
+   "texto": "Voice rules de los brand locks WhyStrohm (snapshot shotkit-explainer) y Acme SaaS (Example): preferir números específicos sobre claims vagos: \"48 hours\" not \"fast\", \"30 minutes a week\" not \"a little time\" (WhyStrohm); \"40% reduction in 90 days\" not \"significant improvement\" (Acme SaaS).",
+   "cobertura": [
+    {
+     "id": "24bff38fedaa",
+     "elementos": [
+      "WhyStrohm números específicos sobre claims vagos -> incluido",
+      "ejemplos 48 hours / 30 minutes a week -> incluidos"
+     ]
+    },
+    {
+     "id": "38d15d23fa48",
+     "elementos": [
+      "Acme SaaS prefer specific numbers -> incluido",
+      "ejemplo 40% reduction in 90 days -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0382.1",
+   "texto": "Never list de los brand locks: nunca usar dark mode por defecto. Acme SaaS (Example): nunca por defecto en el marketing primario. WhyStrohm (snapshots 30s-pain-proof-promise, 60s-founder-explainer, shotkit-explainer y visual-asset-critic worked-run): nunca por defecto, la marca es un híbrido light mode (\"light mode hybrid is the brand\").",
+   "cobertura": [
+    {
+     "id": "4f1cd93ec7d8",
+     "elementos": [
+      "Acme SaaS never default to dark mode in primary marketing -> incluido"
+     ]
+    },
+    {
+     "id": "7f73ee3f5016",
+     "elementos": [
+      "WhyStrohm never default to dark mode -> incluido",
+      "light mode hybrid is the brand -> citado",
+      "4 snapshots -> nombrados"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0383.1",
+   "texto": "Emoción sin rostro (video/animatic-keyframes.md §5, que es dueño del mecanismo; race-and-speed.md §4 race captioning system): un rostro hace cuatro trabajos: estado interno/sentimiento, hacia dónde mira, el costo y la decisión. Si los rostros están prohibidos, esos trabajos se redistribuyen: decisión → anatomía a mitad de acción; estado interno → un objeto cruzando un umbral; mirada/rivalidad → espacio (§6 y `dramaturgy.md` §2). Asignar un trabajo por panel y etiquetarlo. La emoción debe quedar ya congelada dentro del objeto: un still no puede dejar que el motion blur haga el trabajo emocional. En race, no duplicar el mecanismo, la tabla EMOTION→OBJECT ni el cheat-sheet de cambio de estado (son de `animatic-keyframes.md` §5); dos filtros antes de dibujar: nombrar el verbo en todo panel de mano o pie (grip / latch / shift / preload / release — sin verbo, no hay panel) y boardear solo el estado posterior (after) de cualquier umbral de objeto (Honda *Cog*). Elegir UN objeto héroe y boardearlo tres veces con intensidad creciente, que supera a doce inserts sin relación (`dramaturgy.md` §13).",
+   "cobertura": [
+    {
+     "id": "0a8e9bbfe379",
+     "elementos": [
+      "cuatro trabajos del rostro -> incluido",
+      "redistribución decisión/estado/mirada -> incluido",
+      "mecanismo, tabla EMOTION→OBJECT y cheat-sheet son de animatic-keyframes §5, no duplicar -> incluido",
+      "nombrar verbo grip/latch/shift/preload/release, sin verbo no hay panel -> incluido",
+      "boardear solo el after state (Honda Cog) -> incluido",
+      "un objeto héroe tres veces con intensidad creciente, dramaturgy §13 -> incluido"
+     ]
+    },
+    {
+     "id": "de68ce7d43e9",
+     "elementos": [
+      "cuatro trabajos: feeling, mirada, costo, decisión -> incluido",
+      "redistribución con refs §6 y dramaturgy §2 -> incluido",
+      "un trabajo por panel y etiquetarlo -> incluido",
+      "emoción congelada dentro del objeto; motion blur no hace el trabajo emocional -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0384.1",
+   "texto": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `MCU eye-level` se traduce en Midjourney (v7) como `medium close-up, eye level` y en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Medium close-up framing, camera at eye level.`",
+   "cobertura": [
+    {
+     "id": "948de291040f",
+     "elementos": [
+      "Midjourney MCU eye-level -> medium close-up, eye level -> incluido"
+     ]
+    },
+    {
+     "id": "ae12ae6d23bc",
+     "elementos": [
+      "Flux MCU eye-level -> Medium close-up framing, camera at eye level. -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0385.1",
+   "texto": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `WS overhead` se traduce en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Wide overhead shot, looking straight down.` y en Midjourney (v7) como `wide shot, overhead view, top-down`.",
+   "cobertura": [
+    {
+     "id": "0c18d3b38da7",
+     "elementos": [
+      "Flux WS overhead -> Wide overhead shot, looking straight down. -> incluido"
+     ]
+    },
+    {
+     "id": "ef30f9c0e07c",
+     "elementos": [
+      "Midjourney WS overhead -> wide shot, overhead view, top-down -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0386.1",
+   "texto": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `deep DOF` se traduce en Midjourney (v7) como `deep focus, everything sharp, f/8` y en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Shot at f/8, everything in sharp focus front to back.`",
+   "cobertura": [
+    {
+     "id": "068ebe9717f5",
+     "elementos": [
+      "Midjourney deep DOF -> deep focus, everything sharp, f/8 -> incluido"
+     ]
+    },
+    {
+     "id": "efa721247213",
+     "elementos": [
+      "Flux deep DOF -> Shot at f/8, everything in sharp focus front to back. -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0387.1",
+   "texto": "Composition mapping de los adapters de visual-prompt-forge: shot_grammar `shallow DOF` se traduce en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) como `Shot at f/1.8 with shallow depth of field, background softly out of focus.` y en Midjourney (v7) como `shallow depth of field, f/1.8, bokeh background`.",
+   "cobertura": [
+    {
+     "id": "2bc4538b04d6",
+     "elementos": [
+      "Flux shallow DOF frase literal -> incluido"
+     ]
+    },
+    {
+     "id": "c84b2bef06d5",
+     "elementos": [
+      "Midjourney shallow DOF frase literal -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0388.1",
+   "texto": "Composition mapping de los adapters de visual-prompt-forge: traducir el shot grammar al lenguaje del generador: en Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) a lenguaje descriptivo; en Midjourney (v7) a frases Midjourney-friendly.",
+   "cobertura": [
+    {
+     "id": "8fe4d109cc0b",
+     "elementos": [
+      "Flux: traducir a lenguaje descriptivo -> incluido"
+     ]
+    },
+    {
+     "id": "de8b71d3a2c1",
+     "elementos": [
+      "Midjourney: traducir a frases Midjourney-friendly -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0389.1",
+   "texto": "shots.json (storyboard-architect Step 4 y shots.schema.json): `shots[].depth_of_field` es opcional, tipo string, enum `shallow` / `deep` / `rack`; describe el comportamiento del foco (\"Focus behaviour\"), y `rack` significa que el foco cambia a mitad del shot.",
+   "cobertura": [
+    {
+     "id": "d76296b3c304",
+     "elementos": [
+      "depth_of_field opcional shallow/deep/rack -> incluido"
+     ]
+    },
+    {
+     "id": "dc40bd780a82",
+     "elementos": [
+      "type string, enum shallow/deep/rack -> incluido",
+      "description Focus behaviour; rack = focus shifts mid-shot -> incluido",
+      "opcional -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0390.1",
+   "texto": "shots.json (storyboard-architect Step 4 y shots.schema.json): `shots[].framing` es requerido, tipo string, enum ECU / CU / MCU / MS / MLS / WS / EWS.",
+   "cobertura": [
+    {
+     "id": "2f9dc6a30555",
+     "elementos": [
+      "framing ECU/CU/MCU/MS/MLS/WS/EWS -> incluido"
+     ]
+    },
+    {
+     "id": "9ec4623168e5",
+     "elementos": [
+      "type string, enum de 7 valores, requerido -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0391.1",
+   "texto": "`rack` (storyboard-architect Step 4 y shot-grammar.md › Depth of field): como valor de `depth_of_field` significa que el foco cambia a mitad del shot (\"Focus shifts mid-shot\"); como valor de `motion` significa que el rack focus es el movimiento del shot. Misma palabra, dos campos, dos significados.",
+   "cobertura": [
+    {
+     "id": "0f06d9de6489",
+     "elementos": [
+      "rack en motion = rack focus es el movimiento -> incluido",
+      "rack en depth_of_field = foco cambia a mitad -> incluido",
+      "misma palabra, dos campos, dos significados -> incluido"
+     ]
+    },
+    {
+     "id": "ffdaefa3cfd7",
+     "elementos": [
+      "código rack, efecto Focus shifts mid-shot -> incluido"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0392.1",
+   "texto": "Lente 35mm a 50mm para no deformar cuerpos (regímenes 09-grupo-ensamble §5 y 02-agua-ruptura §5). Grupo ensamble: a distancia suficiente para no deformar a los extremos; con larga focal los miembros del fondo se comprimen contra los del frente y se tapan. Ruptura de superficie: desde el borde para no deformar el cuerpo; macro solo para el detalle de las manos rompiendo la superficie. [FUENTE: video/references/camera-lighting-vocabulary.md §3]",
+   "cobertura": [
+    {
+     "id": "4e526575fa2f",
+     "elementos": [
+      "ensamble 35-50mm a distancia suficiente, no deformar extremos -> incluido",
+      "larga focal comprime y tapa -> incluido",
+      "FUENTE §3 -> incluido"
+     ]
+    },
+    {
+     "id": "79b2bbd009c8",
+     "elementos": [
+      "ruptura 35-50mm desde el borde, no deformar cuerpo -> incluido",
+      "macro solo para manos rompiendo superficie -> incluido",
+      "FUENTE §3 -> incluido"
+     ]
+    }
+   ]
+  }
+ ]
+}
