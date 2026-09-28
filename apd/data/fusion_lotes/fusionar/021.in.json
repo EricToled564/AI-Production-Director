@@ -1,0 +1,1482 @@
+{
+ "paso": "fusionar",
+ "instrucciones": "Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:\n- Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.\n- No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal\n  como aparecen. Escribe en español; los términos y frases de prompt que deben ir en inglés se dejan en inglés.\n- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado. El alcance lo\n  dicen el documento y el encabezado de cada miembro (campo ubicaciones): consérvalo en el texto fusionado.\nPara CADA grupo devuelve {\"grupo\": \"...\", \"texto\": \"registro fusionado\", \"cobertura\": [{\"id\": \"...\", \"elementos\": [\"cada exigencia del\nmiembro y dónde quedó en el texto\"]}]}\nDevuelve JSON {\"fusiones\": [ ...un objeto por grupo, con su \"grupo\"... ]}",
+ "grupos": [
+  {
+   "grupo": "DUP-0348.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Critique: shot_id null para imagen suelta sin storyboard.",
+   "miembros": [
+    {
+     "id": "1016b80d8292",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "encabezado": "critique.schema.json › shot_id"
+      }
+     ],
+     "texto": "[critique.schema.json › shot_id] shot_id: description=\"Shot this frame was generated for. Null when critiquing a standalone image with no storyboard.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^shot_[0-9]{2,3}$\"}]; opcional"
+    },
+    {
+     "id": "eb49581a8a70",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `shot_id` · Value: the shot, or `null` for a standalone image with no storyboard"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "1016b80d8292",
+     "elemento": "cita literal: Shot this frame was generated for. Null when critiquing a standalone image with no storyboard."
+    },
+    {
+     "id": "1016b80d8292",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "1016b80d8292",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "1016b80d8292",
+     "elemento": "cita literal: pattern"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0353.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Critique: el umbral de REJECT es numérico y lo aplica el validador.",
+   "miembros": [
+    {
+     "id": "90971e84803b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] The three-major rule used to read \"escalate to REJECT at your discretion.\" Discretion in a\ngate is not a gate, and it disagreed with `references/critique-rubric.md`, which called\nthree hard fails a REJECT outright. It is now a threshold, and the validator enforces it."
+    },
+    {
+     "id": "d41b50530315",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "[Critique Rubric › Aggregating verdict] `tools/validate_critique.py` enforces exactly this table, so a critique that disagrees with\nit fails rather than shipping. Earlier versions of this file counted hard fails and called\n3+ a REJECT while the skill said \"escalate at your discretion.\" Those two rules disagreed,\nand the disagreement is the reason the threshold is now a number."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "90971e84803b",
+     "elemento": "cita literal: escalate to REJECT at your discretion."
+    },
+    {
+     "id": "90971e84803b",
+     "elemento": "cita literal: references/critique-rubric.md"
+    },
+    {
+     "id": "d41b50530315",
+     "elemento": "cita literal: escalate at your discretion."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0357.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Critique: soft fail = minor, post-level.",
+   "miembros": [
+    {
+     "id": "3a03d7cb84d2",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "encabezado": "Critique Rubric › From pass/fail to severity"
+      }
+     ],
+     "texto": "[Critique Rubric › From pass/fail to severity] Rubric result: Soft fail on any layer · Severity: `minor` · Why: Post can absorb it. `fix_type` is usually `post-level`"
+    },
+    {
+     "id": "d81c3fe48049",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Severity: `minor` · Means: soft-fail, fixable in post · Maps from: a soft-fail on any layer; `fix_type: post-level`"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "d81c3fe48049",
+     "elemento": "cita literal: fix_type: post-level"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0358.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Critique: no criticar lo que no se pidió.",
+   "miembros": [
+    {
+     "id": "2f5b911b5291",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Hard rules › Rule 3. Don't critique what wasn't asked"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Hard rules › Rule 3. Don't critique what wasn't asked] If the brief was \"founder at laptop, calm mood\" and the generation delivered exactly that, don't note that \"the room could be more visually interesting.\" That's scope creep, not critique."
+    },
+    {
+     "id": "606253b451e0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "encabezado": "Critique Rubric › Speed bumps to remember"
+      }
+     ],
+     "texto": "[Critique Rubric › Speed bumps to remember] - **Don't critique what wasn't asked**, if the spec didn't call for cinematic mood, don't say \"could be more cinematic\""
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "2f5b911b5291",
+     "elemento": "cita literal: the room could be more visually interesting."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0389.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots.json depth_of_field opcional: shallow/deep/rack.",
+   "miembros": [
+    {
+     "id": "d76296b3c304",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `depth_of_field`, optional, shallow / deep / rack"
+    },
+    {
+     "id": "dc40bd780a82",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].depth_of_field"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].depth_of_field] shots[].depth_of_field: type=\"string\"; enum=[\"shallow\", \"deep\", \"rack\"]; description=\"Focus behaviour. 'rack' means focus shifts mid-shot.\"; opcional"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "dc40bd780a82",
+     "elemento": "cita literal: Focus behaviour. 'rack' means focus shifts mid-shot."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0433.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Linter aurora, Veo 3.1 caso 3a: secciones requeridas subject_action, timing_or_beat, camera, style y physics_cue (copia parcheada con vocabulario ampliado).",
+   "miembros": [
+    {
+     "id": "96f1f3840ba7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a"
+      }
+     ],
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  veo_3.1__3a:          # veo.md §7: \"Maintain the subject from the first frame\" + motion, camera, light change, audio, duration\n    subject_action: [she, he, the subject, lifts, turns, extends, walks, runs, glides, exhales]\n    timing_or_beat: [seconds, second, beat, gradually, slowly, quickly, over, during, then, \"duration:\"]\n    camera:         [camera, shot, lens, angle, dollies, pans, tilts, tracks, push-in, mm]\n    style:          [realism, photorealistic, 24fps, cinema, broadcast, naturalism, maintain the subject]\n    physics_cue:    [gravity, momentum, weight, mass, falls, bounces, drops, follows, arc, trajectory, wind, light grows, breath]"
+    },
+    {
+     "id": "dbc1e6d487bf",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a"
+      }
+     ],
+     "texto": "[skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  veo_3.1__3a:\n    subject_action: [she, he, the subject, lifts, turns, extends, walks, runs, glides]\n    timing_or_beat: [seconds, second, beat, gradually, slowly, quickly, over, during, then]\n    camera:         [camera, shot, lens, angle, dollies, pans, tilts, tracks]\n    style:          [realism, cinematic, photorealistic, 24fps, cinema, broadcast]\n    physics_cue:    [gravity, momentum, weight, mass, falls, bounces, drops, follows, arc, trajectory]\n\n  # ====== Caso 3b — I2V FF + LF ======"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "96f1f3840ba7",
+     "elemento": "número 1"
+    },
+    {
+     "id": "dbc1e6d487bf",
+     "elemento": "número 1"
+    },
+    {
+     "id": "dbc1e6d487bf",
+     "elemento": "número 3"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0436.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Ruptura de superficie: gotas arriba de la línea de agua, burbujas abajo, nunca invertidas.",
+   "miembros": [
+    {
+     "id": "d6d018d199c2",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Gotas arriba, burbujas abajo, nunca invertidas. [A PRUEBA]"
+    },
+    {
+     "id": "f6e04f418084",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 4. Arriba de la línea hay gotas; abajo hay burbujas. No se mezclan: las gotas caen, las burbujas suben. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "f6e04f418084",
+     "elemento": "número 4"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0437.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Ruptura de superficie: lo sumergido debe mostrar quiebre/desplazamiento óptico por refracción en la línea del agua.",
+   "miembros": [
+    {
+     "id": "4afea1de1964",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - El cuerpo aparece entero y nítido bajo el agua sin quiebre de refracción: pedir explícitamente el desplazamiento óptico en la línea del agua. [A PRUEBA]"
+    },
+    {
+     "id": "8cc316d8f23f",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 3. La parte sumergida se ve desplazada y ligeramente comprimida respecto a la parte emergida por la refracción; una extremidad que cruza la línea del agua sin quiebre óptico se lee como recorte. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "8cc316d8f23f",
+     "elemento": "número 3"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0439.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "El golpe se lee en lo que lo recibe (reacción visible del receptor); en régimen cuerpo en esfuerzo y en objeto balístico.",
+   "miembros": [
+    {
+     "id": "0e51e46ec902",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar] 5. El golpe se lee en lo golpeado: el saco ondula en el punto de impacto, la cinta se tensa antes de romper, la barra se flexiona en el punto muerto. [FUENTE: image/references/patterns/poster-illustration.md]"
+    },
+    {
+     "id": "d76df2ea67d7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 4. Toda acción produce reacción visible en lo que recibe el golpe: cuerdas deflectadas, tela hundida, superficie del agua deprimida; sin reacción, el objeto flota pegado. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "0e51e46ec902",
+     "elemento": "número 5"
+    },
+    {
+     "id": "d76df2ea67d7",
+     "elemento": "número 4"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0440.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Objeto balístico: la pelota blanda en el impacto se achata/deforma contra las cuerdas; pelota redonda es fallo.",
+   "miembros": [
+    {
+     "id": "0fc9c19a14ae",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 3. Una pelota blanda en el impacto no es redonda: se achata contra la superficie, y el material del que está hecha lo dice el borde, fieltro erizado o cuero tenso. [A PRUEBA]"
+    },
+    {
+     "id": "e1fba98383c6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - Pelota perfectamente redonda contra las cuerdas: falta el estado posterior; pedir la deformación y la deflexión de las cuerdas. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "0fc9c19a14ae",
+     "elemento": "número 3"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0441.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Vehículo/moto en curva: declarar ángulo de inclinación y rodilla/codo cerca del suelo; moto vertical es fallo.",
+   "miembros": [
+    {
+     "id": "718c3b822c8b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 4. En moto la física visible es el ángulo de inclinación y el borde del neumático trabajando: rodilla o codo cerca del suelo, el cuerpo descolgado hacia el interior de la curva. [A PRUEBA]"
+    },
+    {
+     "id": "d976276376d7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 8. Fallos conocidos y su corrección] - Moto vertical en curva: declarar el ángulo de inclinación y el lado de la rodilla. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "718c3b822c8b",
+     "elemento": "número 4"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0472.1",
+   "relacion": "misma_regla",
+   "regla_comun": "copy-prompt: las líneas de comentario dentro de un bloque de shot son anotaciones y no se copian.",
+   "miembros": [
+    {
+     "id": "dbfe4bb36c87",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 4. Write output files"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Workflow › Step 4. Write output files] The `#` lines are comments; the user copies just the prompt body. `tools/copy-prompt.py`\nparses this format, treating a comment line that names a shot as a block header and any\nother comment inside a block as an annotation it will not copy."
+    },
+    {
+     "id": "e09516382513",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Rendering › `copy-prompt.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Rendering › `copy-prompt.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Rendering › `copy-prompt.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Rendering › `copy-prompt.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Rendering › `copy-prompt.py`"
+      }
+     ],
+     "texto": "[Tools › Rendering › `copy-prompt.py`] Reads both file shapes the forge writes. Comment lines inside a shot block are annotations and\nnever land in the clipboard, so a revision file's `# fix [...]` notes are shown but not\ncopied. Revision files used to be unreadable to this tool entirely, which was awkward given\nthey are the files an operator pastes from most."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "dbfe4bb36c87",
+     "elemento": "cita literal: lines are comments; the user copies just the prompt body."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0486.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Midjourney v7: 40-80 palabras por prompt; más de 100 rinde peor.",
+   "miembros": [
+    {
+     "id": "343c8ca29fac",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+       "encabezado": "_capabilities.json › midjourney"
+      }
+     ],
+     "texto": "[_capabilities.json › midjourney] midjourney: display_name=\"Midjourney\"; model_version=\"v7\"; last_verified=\"2026-05-08\"; prompt_style=\"keyword\"; max_prompt_words=100; supports_text_render=false; supports_motion=false; supports_character_ref=true; supports_style_ref=true; supports_negative_prompt=true; aspect_param=\"--ar\"; api_access=\"limited\"; notes=\"Short high-signal phrases. 100 words is the ceiling, past which signal drops off; the adapter recommends 40 to 80. --cref/--sref for series consistency.\""
+    },
+    {
+     "id": "fc1587e255db",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "encabezado": "Adapter: Midjourney (v7) › Length"
+      }
+     ],
+     "texto": "[Adapter: Midjourney (v7) › Length] Aim for **40–80 words per prompt** including parameters. Anything over 100 words underperforms."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "343c8ca29fac",
+     "elemento": "cita literal: ; last_verified="
+    },
+    {
+     "id": "343c8ca29fac",
+     "elemento": "cita literal: ; prompt_style="
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0489.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Storyboard: lighting_ref por defecto series_lock.lighting, override solo con razón.",
+   "miembros": [
+    {
+     "id": "516a2d99a5fc",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `lighting_ref`, references series-lock language, default `series_lock.lighting`"
+    },
+    {
+     "id": "775b70fe8b2d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].lighting_ref"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].lighting_ref] shots[].lighting_ref: type=\"string\"; description=\"Default 'series_lock.lighting'. Override only with reason.\"; opcional"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "775b70fe8b2d",
+     "elemento": "cita literal: Default 'series_lock.lighting'. Override only with reason."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0491.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Luz y clima: una sola dirección de sombras.",
+   "miembros": [
+    {
+     "id": "8cc7dc0d9f3e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "encabezado": "Luz y clima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Luz y clima › 2. Leyes físicas que el still debe evidenciar] 3. Todas las sombras responden a una sola dirección; dos soles o dos direcciones de sombra son una contradicción y el modelo obedece la señal más fuerte. [FUENTE: video/references/universal-rules.md U8]"
+    },
+    {
+     "id": "aae4ee518634",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "encabezado": "Luz y clima › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "[Luz y clima › 9. Checklist del crítico] - [ ] Una sola dirección de sombras. [FUENTE: video/references/universal-rules.md U8]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "8cc7dc0d9f3e",
+     "elemento": "número 3"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0493.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Paleta y luz de keyframe: una fuente motivada, ~70% sin luz, un specular duro, textura nombrada; en animatic keyframes general y en race & speed.",
+   "miembros": [
+    {
+     "id": "ba7750df84cf",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+      }
+     ],
+     "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Cold palette held** — steel/cyan/magenta/mercury-white, red and green as accents only, amber ≤15% and point-source (toxic, never cozy). One motivated source, ~70% unlit, one hard specular hit. Texture named (grain, halation, one flare), not \"clean.\""
+    },
+    {
+     "id": "bcce1b0ec444",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 7. Light & color for speed without faces"
+      }
+     ],
+     "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces] Faces are banned, so light is the only actor left. It does not \"set a mood\" — it **rims a material** so a piece of metal, rubber or skin reports the emotion a face would. General light grammar (sources, direction, quality) is `camera-lighting-vocabulary.md` §4–7; the anti-sterile firewall is `animatic-keyframes.md` §7 + `universal-rules.md` U12. The race-specific governing law: *embrace the dark* (crush blacks, ~70% of the frame unlit), *one motivated practical per panel* (Tree lamp, headlight, sodium lamp, brake glow), *light is specular not ambient* (every panel needs ≥1 hard specular hit — no specular, no information)."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "ba7750df84cf",
+     "elemento": "cita literal: clean."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0500.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Texto en pantalla: el color de cada overlay es un hex de la paleta del brand-lock.",
+   "miembros": [
+    {
+     "id": "3108617db0f8",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/on-screen-text.md",
+       "encabezado": "On-Screen Text › Color rules"
+      }
+     ],
+     "texto": "[On-Screen Text › Color rules] The `color` field of every text overlay must be a hex value that exists in the brand-lock palette. If you find yourself wanting a color that's not in the palette, the answer is not to add it, the answer is to pick a different overlay style or shot composition."
+    },
+    {
+     "id": "c987b8d0dcb0",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+       "encabezado": "text-overlays.schema.json › overlays[].color"
+      }
+     ],
+     "texto": "[text-overlays.schema.json › overlays[].color] overlays[].color: type=\"string\"; pattern=\"^#[0-9A-Fa-f]{6}$\"; description=\"Hex value. Must come from brand-lock palette.\"; requerido"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "c987b8d0dcb0",
+     "elemento": "cita literal: Hex value. Must come from brand-lock palette."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0501.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Brand lock: tipografía display, body y mono opcional.",
+   "miembros": [
+    {
+     "id": "b418a61251a6",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+      },
+      {
+       "documento": "skills/storyboard-architect/brand-packs/_template.md",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+      }
+     ],
+     "texto": "[Brand Lock: {{BRAND_NAME}} › Typography] **Display font:** `______`\n**Body font:** `______`\n**Mono font (optional):** `______`"
+    },
+    {
+     "id": "eca890c19371",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+       "encabezado": "Extraction rubric › Typography"
+      }
+     ],
+     "texto": "[Extraction rubric › Typography] Display font, body font, optional mono, each with weight (`Inter Black 900`, not `Inter Bold`)."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "b418a61251a6",
+     "elemento": "cita literal: ______"
+    },
+    {
+     "id": "b418a61251a6",
+     "elemento": "cita literal: ______"
+    },
+    {
+     "id": "b418a61251a6",
+     "elemento": "cita literal: ______"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0503.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Texto en pantalla: cada font referencia una fuente definida en la tipografía del brand-lock.",
+   "miembros": [
+    {
+     "id": "42345bc0954b",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/text-overlays.schema.json",
+       "encabezado": "text-overlays.schema.json › overlays[].font"
+      }
+     ],
+     "texto": "[text-overlays.schema.json › overlays[].font] overlays[].font: type=\"string\"; description=\"Must reference a font defined in brand-lock typography.\"; requerido"
+    },
+    {
+     "id": "ce131d98fbc6",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/on-screen-text.md",
+       "encabezado": "On-Screen Text › Typography rules"
+      }
+     ],
+     "texto": "[On-Screen Text › Typography rules] Same: every `font` field must reference a font defined in brand-lock typography. Two fonts max per project (display + body). More than that and the brand stops being recognizable."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "42345bc0954b",
+     "elemento": "cita literal: Must reference a font defined in brand-lock typography."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0510.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Pie del brand-lock: Last updated, Owner y Version 1.0.",
+   "miembros": [
+    {
+     "id": "445a7a700a76",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/SKILL.md",
+       "encabezado": "Brand Lock Extractor › Workflow › Step 4. Write the brand-lock"
+      }
+     ],
+     "texto": "[Brand Lock Extractor › Workflow › Step 4. Write the brand-lock] Set the footer: `Last updated` to today, `Owner` to the user or \"extracted\", `Version: 1.0`."
+    },
+    {
+     "id": "8258f50e89e0",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+      },
+      {
+       "documento": "skills/storyboard-architect/brand-packs/_template.md",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Reference materials"
+      }
+     ],
+     "texto": "[Brand Lock: {{BRAND_NAME}} › Reference materials] **Last updated:** YYYY-MM-DD\n**Owner:** name / role\n**Version:** 1.0"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "445a7a700a76",
+     "elemento": "cita literal: Version: 1.0"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0516.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Stills en instante congelado (\"frozen mid-...\"), sin verbos de proceso; regla SW30 R8 y régimen ruptura de superficie.",
+   "miembros": [
+    {
+     "id": "1e6523eb60bf",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ],
+     "texto": "[Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS] 8. Stills en instante congelado (\"frozen mid-stride\"); nada de movimiento en imagen fija."
+    },
+    {
+     "id": "382c216a4052",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "encabezado": "Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 6. Un still es un instante congelado: usar \"frozen mid-entry\" o \"frozen at the instant the hands break the surface\", nunca verbos de proceso como \"diving\" o \"splashing\". [FUENTE: produccion-visual-sw30/SKILL.md R8]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "382c216a4052",
+     "elemento": "número 6"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0518.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Vehículo: palas de dron/hélice como discos translúcidos, nunca nítidas.",
+   "miembros": [
+    {
+     "id": "1539081451cb",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 7. En dron o hélice, las palas se dibujan como discos translúcidos, nunca como palas nítidas. [A PRUEBA]"
+    },
+    {
+     "id": "b918ee4c3511",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "[Vehículo en movimiento › 8. Fallos conocidos y su corrección] - Palas de dron nítidas: pedir discos translúcidos. [A PRUEBA]"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "1539081451cb",
+     "elemento": "número 7"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0519.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Linter parcheado P8: --sports-broadcast se ignora con WARN en casos de imagen 1/2 y sigue siendo FAIL en video.",
+   "miembros": [
+    {
+     "id": "4ff5f35b273b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "[aurora prompt_linter.py (parcheado en el repo) › docstring] P8  --sports-broadcast solo aplica a casos de video (3a/3b/3c/4). En casos 1 y 2\n    se ignora con WARN: la Regla 26 v6.0 del linter habla de \"60fps\" y\n    \"broadcast realism\", que son parámetros de video (kling.md §2 \"up to 60\n    fps\"); SW30 R8 prohíbe movimiento en stills (\"frozen mid-stride\")."
+    },
+    {
+     "id": "bfda7f865cde",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente] #: 9 · Contradicción detectada: **Flag broadcast en stills.** `--sports-broadcast` exige `60fps` y `broadcast realism` también en casos 1 y 2 (imagen), donde \"60fps\" no significa nada y SW30 prohíbe cualquier idea de movimiento. · Parche en esta copia: P8 — en casos 1/2 el flag se ignora con WARN explicativo; en 3a/3b/3c/4 sigue siendo FAIL si faltan las keywords. · Fuente que lo sustenta: `kling.md` §2 (\"up to 60 fps\" es especificación de video); SW30 R8 (\"Stills en instante congelado; nada de movimiento en imagen fija\"); Regla 26 v6.0 (origen del flag) habla de clips."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "4ff5f35b273b",
+     "elemento": "cita literal: ); SW30 R8 prohíbe movimiento en stills ("
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0521.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Streak-frame: panel barrido entero con una forma legible como whip pan implícito; animatic general y race & speed.",
+   "miembros": [
+    {
+     "id": "7a9068b7bcb7",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION"
+      }
+     ],
+     "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Streak-frame (implied whip)** · What it is in a still: The whole panel raked into motion-streaks with one readable shape surviving (a wheel arc, the shifter) — a \"between two shots\" blur panel. · Renders the implied move: whip pan, transition beat"
+    },
+    {
+     "id": "91b4794c1256",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "encabezado": "Race, speed and faceless kinetic montage › 6. Camera grammar for speed"
+      }
+     ],
+     "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Whip pan** · What it does to emotion: instant transfer of attention, reads as motion not a cut · Keyframe application (the still): Streak-frame between two clean panels: whole frame raked into horizontal streaks (Tree lamps, guardrail, lane stripes smeared), one shape barely surviving (a wheel arc, the shifter) · Tag: Shift"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "7a9068b7bcb7",
+     "elemento": "cita literal: between two shots"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0524.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Seedance multi-shot: 2-3 planos por clip de 5 s (4-5 beats cortos máximo); si hacen falta más, dividir en generaciones.",
+   "miembros": [
+    {
+     "id": "191531e230f6",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Multi-shot fails on 4+ shots in 5s"
+      }
+     ],
+     "texto": "[Seedance reference (ByteDance) › 15. Failure modes and fixes › Multi-shot fails on 4+ shots in 5s] Fix. Cap at 2-3 shots per 5-second clip for tight cinematic, or 4-5 short beats following the section 7 timeline. If more shots are needed, split into multiple generations."
+    },
+    {
+     "id": "d6762b907c24",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+      }
+     ],
+     "texto": "[Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)] Use 2-3 shots per 5-second clip for tight cinematic montage, 4-5 shot beats only when each beat is short and physically distinct (see section 7). Hard cap: 5 shots per generation — beyond that the model drops or compresses shots. Size the duration to the shot count (4 shots need 10-15s, not 5s). Every shot must share an anchor with its neighbors — same character, same location, or same lighting recipe — or the model produces disconnected clips instead of a sequence."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "d6762b907c24",
+     "elemento": "número 15s"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0529.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Linter parcheado P11: una mención negada (\"no cartoon\") no dispara BANNED ni bans de estilo.",
+   "miembros": [
+    {
+     "id": "74a6b681ad7e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 4. **Mención negada no dispara BANNED ni bans de estilo** (P11: \"no cartoon\", \"not anime\").\n   Alternativa descartada: flaggear igual y obligar a moverlo al negativo. Se descartó porque\n   el propio snapshot `gpt_image_2__1` del original exige \"no cartoon, no anime\" en MAIN como\n   patrón de `anti_style`; el linter se contradecía a sí mismo."
+    },
+    {
+     "id": "c383faced13a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "[aurora prompt_linter.py (parcheado en el repo) › docstring] P11 Mención negada no cuenta como violación de BANNED/estilo (\"no cartoon\", \"not\n    anime\"): image/gpt-image.md ejemplo anti_style \"no cartoon, no anime\" vive en\n    MAIN de forma legítima. Sigue siendo mala práctica en NB/GPT (golden-rules §2)\n    pero eso lo cubre gate_image.py, no este linter."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "74a6b681ad7e",
+     "elemento": "número 4"
+    },
+    {
+     "id": "c383faced13a",
+     "elemento": "cita literal: ): image/gpt-image.md ejemplo anti_style"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0530.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "Cláusula \"prohibit rigid cutting, prohibit objects appearing out of thin air\"; extensiones hacia adelante (fixes cross-model) y transiciones de Seedance 2.5.",
+   "miembros": [
+    {
+     "id": "4c1921787fc8",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Objects or characters appear too early in an extension"
+      }
+     ],
+     "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Objects or characters appear too early in an extension] For forward extensions, the standard clause: \"prohibit rigid cutting, prohibit objects appearing out of thin air.\""
+    },
+    {
+     "id": "4ee187e1bff9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions"
+      }
+     ],
+     "texto": "[Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions] - Always attach the incantation: **\"prohibit rigid cutting, prohibit objects appearing out of thin air\"** — it is the official anti-jump-cut clause, repeated in every transition template."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "4c1921787fc8",
+     "elemento": "cita literal: prohibit rigid cutting, prohibit objects appearing out of thin air."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0537.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Crítica: campo seed si el generador lo expone, si no null.",
+   "miembros": [
+    {
+     "id": "7998b2c405d7",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `seed` · Value: if the generator exposes one, else `null`"
+    },
+    {
+     "id": "b3d863b233de",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "encabezado": "critique.schema.json › seed"
+      }
+     ],
+     "texto": "[critique.schema.json › seed] seed: description=\"Generation seed if the generator exposes one. Null when it does not.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"integer\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "b3d863b233de",
+     "elemento": "cita literal: Generation seed if the generator exposes one. Null when it does not."
+    },
+    {
+     "id": "b3d863b233de",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "b3d863b233de",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "b3d863b233de",
+     "elemento": "cita literal: type"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0557.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Aurora kling_3.0 caso 3c exige secciones scene, motion_reference, character_orientation y camera (skill original y copia parcheada).",
+   "miembros": [
+    {
+     "id": "65377a8b9e6e",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+      }
+     ],
+     "texto": "[skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  kling_3.0__3c:\n    scene:                [scene, environment, setting, location, backdrop]\n    motion_reference:     [motion reference, \"@video\", reference video, skeletal, pose ref, mocap]\n    character_orientation: [orientation, facing, front-facing, character orientation, 人物朝向]\n    camera:               [camera, shot, framing, angle, lens]\n\n  # ====== Caso 4 — Video con diálogo ======"
+    },
+    {
+     "id": "663bd1b7dc9e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+      }
+     ],
+     "texto": "[.claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c] REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  kling_3.0__3c:        # kling.md §9 Motion Control: \"The prompt then focuses on subject description only\"\n    scene:                [scene, environment, setting, location, backdrop]\n    motion_reference:     [motion reference, \"@video\", reference video, skeletal, pose ref, mocap]\n    character_orientation: [orientation, facing, front-facing, character orientation, 人物朝向]\n    camera:               [camera, shot, framing, angle, lens]\n\n  # ====== Caso 4 — Video con diálogo ======"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "65377a8b9e6e",
+     "elemento": "número 1"
+    },
+    {
+     "id": "65377a8b9e6e",
+     "elemento": "número 4"
+    },
+    {
+     "id": "663bd1b7dc9e",
+     "elemento": "número 1"
+    },
+    {
+     "id": "663bd1b7dc9e",
+     "elemento": "número 4"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0561.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Aurora parcheado: --ref-role location/prop/style no altera P/O ni aplica identity block; solo avisa si hay tags P/O.",
+   "miembros": [
+    {
+     "id": "599b19492a91",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)] 10. **`--ref-role location/prop/style` no altera P/O** y solo avisa si los refs traen tags\n    P/O. Alternativa descartada: tratar esos roles como `character`. Se descartó porque el\n    identity block de U7 no tiene sentido para una placa o un prop."
+    },
+    {
+     "id": "dc133f52b4e0",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)] `--ref-role`: `location` / `prop` / `style` · Descriptores P/O en MAIN: permitidos (WARN si además hay tags P/O) · Identity block: no aplica · Cuándo: refs que no son de persona; L/PR/S se rigen por sus tags"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "599b19492a91",
+     "elemento": "cita literal: --ref-role location/prop/style"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0588.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Flux (adapter de forge) es el líder en fotorrealismo.",
+   "miembros": [
+    {
+     "id": "7c51cc112fa0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "[Visual Prompt Forge › Adapters] File: `adapters/flux.md` · Generator: Flux 2 / Flux 1.1 Pro · Strength: Photorealism"
+    },
+    {
+     "id": "fcb3740f8d65",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+      }
+     ],
+     "texto": "[Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)] Flux rewards natural-language prompts that read like a competent photographer briefing themselves. It interprets full sentences accurately and handles spatial relationships better than Midjourney. It's the photorealism leader as of Q2 2026, choose Flux over Midjourney when the brief calls for \"looks like a real photograph\" rather than \"looks designed.\""
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "fcb3740f8d65",
+     "elemento": "cita literal: looks designed."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0594.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots[].environment_ref por defecto 'series_lock.environment'; override solo con razón.",
+   "miembros": [
+    {
+     "id": "090df6139af8",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].environment_ref"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].environment_ref] shots[].environment_ref: type=\"string\"; description=\"Default 'series_lock.environment'. Override only with reason.\"; opcional"
+    },
+    {
+     "id": "390996b395ff",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `environment_ref`, references series-lock language, default `series_lock.environment`"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "090df6139af8",
+     "elemento": "cita literal: Default 'series_lock.environment'. Override only with reason."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0595.1",
+   "relacion": "misma_regla",
+   "regla_comun": "shots[].on_screen_text: null, un id de overlay o un array de ids.",
+   "miembros": [
+    {
+     "id": "0fd8a04eb14d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "encabezado": "shots.schema.json › shots[].on_screen_text"
+      }
+     ],
+     "texto": "[shots.schema.json › shots[].on_screen_text] shots[].on_screen_text: description=\"Overlay id, array of overlay ids for a shot carrying several, or null. Added the array form in 1.2: text-overlays.json has always allowed many overlays per shot, and a single string could not represent that.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}, {\"type\": \"array\", \"minItems\": 1, \"uniqueItems\": true, \"items\": {\"type\": \"string\", \"pattern\": \"^text_[0-9]{2,3}$\"}}]; opcional"
+    },
+    {
+     "id": "89055c0c78e9",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] - `on_screen_text`, null, one text-overlay id, OR an array of ids when a shot carries\n  more than one overlay"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: ; oneOf=[{"
+    },
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: pattern"
+    },
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "0fd8a04eb14d",
+     "elemento": "cita literal: pattern"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0598.1",
+   "relacion": "misma_regla_otro_alcance",
+   "regla_comun": "generators[].id con patrón ^[a-z0-9][a-z0-9-]*$; en run.schema y en capabilities.schema (donde además debe coincidir con el adapter).",
+   "miembros": [
+    {
+     "id": "86a2ff3a5b9d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/run.schema.json",
+       "encabezado": "run.schema.json › generators[].id"
+      }
+     ],
+     "texto": "[run.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; requerido"
+    },
+    {
+     "id": "9df1a1b16279",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+       "encabezado": "capabilities.schema.json › generators[].id"
+      }
+     ],
+     "texto": "[capabilities.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; description=\"Must match an adapter .md filename (without extension).\"; requerido"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "9df1a1b16279",
+     "elemento": "cita literal: Must match an adapter .md filename (without extension)."
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0599.1",
+   "relacion": "misma_regla",
+   "regla_comun": "validate_shots.py verifica esquema y reglas cruzadas de shots.json/text-overlays.json (tiempos, huecos, solapes, referencias de overlays, colores en paleta).",
+   "miembros": [
+    {
+     "id": "6f9484783bb3",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "encabezado": "Tools › Project checks › `validate_shots.py`"
+      }
+     ],
+     "texto": "[Tools › Project checks › `validate_shots.py`] Validates `shots.json` and `text-overlays.json` as instances, plus every cross-field and\ncross-file rule JSON Schema cannot express: `end` after `start`, no gaps or overlaps, span\nmatching `project.duration_s`, overlay references resolving in both directions, every overlay\nreachable from some shot, overlay timing inside its shot window, and every overlay color\npresent in the brand-lock palette."
+    },
+    {
+     "id": "70b9273f8c5e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Quality bar"
+      }
+     ],
+     "texto": "[Storyboard Architect › Quality bar] `validate_shots.py` checks every mechanical rule that used to live here as a checkbox,\nbecause a checkbox is a rule enforced by remembering to look:\n- shots.json and text-overlays.json validate against their schemas\n- `end` is after `start`, no duplicate ids, no gaps, no overlaps, and the covered span\n  matches `project.duration_s` within 0.1s\n- every `on_screen_text` resolves to an overlay, every `overlay.shot_id` resolves to a\n  shot, and every overlay is reachable from at least one shot\n- every overlay's timing sits inside its shot window, and exit is after enter\n- every overlay color appears in the brand-lock palette\n- `brand_lock_ref` resolves on disk"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "70b9273f8c5e",
+     "elemento": "número 0.1s"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0600.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Storyboard Architect: usar el vocabulario controlado de shot-grammar.md y los nombres exactos de campo en shots.json.",
+   "miembros": [
+    {
+     "id": "4ba0e60c1323",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "encabezado": "Shot Grammar"
+      }
+     ],
+     "texto": "[Shot Grammar] Controlled vocabulary. Use these exact terms in `shots.json`. Generators interpret loose language inconsistently, locked vocabulary survives translation."
+    },
+    {
+     "id": "c5ae07f81553",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+      }
+     ],
+     "texto": "[Storyboard Architect › Workflow › Step 4. Draft the shot list] Read `references/shot-grammar.md` for controlled vocabulary. The field names below are\nthe schema's field names. `templates/shots.schema.json` sets `additionalProperties:\nfalse`, so a near-miss like `environment` instead of `environment_ref` is a validation\nfailure, not a synonym."
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "c5ae07f81553",
+     "elemento": "cita literal: , so a near-miss like"
+    },
+    {
+     "id": "c5ae07f81553",
+     "elemento": "cita literal: instead of"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0602.1",
+   "relacion": "misma_regla",
+   "regla_comun": "critique.created_at: instante UTC YYYY-MM-DDThh:mm:ssZ.",
+   "miembros": [
+    {
+     "id": "7b694259d49f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `created_at` · Value: UTC instant, `YYYY-MM-DDThh:mm:ssZ`"
+    },
+    {
+     "id": "c63899eeb1b7",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "encabezado": "critique.schema.json › created_at"
+      }
+     ],
+     "texto": "[critique.schema.json › created_at] created_at: description=\"UTC ISO-8601 instant the critique was written. Second precision, trailing Z required.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$\"}]; opcional"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "c63899eeb1b7",
+     "elemento": "cita literal: UTC ISO-8601 instant the critique was written. Second precision, trailing Z required."
+    },
+    {
+     "id": "c63899eeb1b7",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "c63899eeb1b7",
+     "elemento": "cita literal: type"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0603.1",
+   "relacion": "misma_regla",
+   "regla_comun": "critique.run_id tomado de run.json, mismo formato timestamp + 8 hex.",
+   "miembros": [
+    {
+     "id": "5404351f6fe4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "encabezado": "critique.schema.json › run_id"
+      }
+     ],
+     "texto": "[critique.schema.json › run_id] run_id: description=\"The run this critique belongs to. Matches run.json:run_id. Format: UTC compact timestamp, a dash, then 8 hex characters.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"pattern\": \"^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$\"}]; opcional"
+    },
+    {
+     "id": "c27a5fbed98b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "[Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)] Field: `run_id`, `round` · Value: from `run.json` and the round directory you are writing into"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "5404351f6fe4",
+     "elemento": "cita literal: The run this critique belongs to. Matches run.json:run_id. Format: UTC compact timestamp, a dash, then 8 hex characters."
+    },
+    {
+     "id": "5404351f6fe4",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "5404351f6fe4",
+     "elemento": "cita literal: type"
+    },
+    {
+     "id": "5404351f6fe4",
+     "elemento": "cita literal: string"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0608.1.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Antes de entregar un prompt de video correr el dramaturgy check (§15) y la auditoría de tres detalles por shot.",
+   "miembros": [
+    {
+     "id": "078e260e8e47",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check"
+      }
+     ],
+     "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check] Before returning anything, run both checks:\n- Dramaturgy check (`dramaturgy.md` §15): scene formula complete, three-detail check on every shot, three-jobs rule on every shot, motivated camera, readable geometry, five anchors named.\n- Three-detail audit (`universal-rules.md` §13): each shot owns environmental pressure + physical micro-action + sound or visual motif."
+    },
+    {
+     "id": "1940d38d7d5c",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "[Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa] Código: E6.4 · Subproceso: Dramaturgy check + auditoría de 3 detalles · Skill con autoridad: video/dramaturgy.md §15, universal-rules U12 · Entra: Cada prompt · Sale: Seis respuestas sí, tres detalles por shot · Gate o herramienta: Si una es no, no se entrega"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "1940d38d7d5c",
+     "elemento": "número 3"
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0609.1",
+   "relacion": "misma_regla",
+   "regla_comun": "Aurora: PASS (exit 0) permite la entrega; FAIL (exit 1) la bloquea.",
+   "miembros": [
+    {
+     "id": "327b58f1b8b4",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "encabezado": "Aurora Prompt Linter › Output esperado"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter › Output esperado] Ejemplo de PASS:\nSTATUS: PASS\nDelivery PERMITTED."
+    },
+    {
+     "id": "c482b33f1ea4",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "encabezado": "Aurora Prompt Linter v1.0 › Cómo se usa"
+      }
+     ],
+     "texto": "[Aurora Prompt Linter v1.0 › Cómo se usa] Exit code:\n`0` → PASS, entrega permitida; `1` → FAIL, entrega bloqueada"
+    }
+   ],
+   "faltaron_en_el_intento_anterior": [
+    {
+     "id": "c482b33f1ea4",
+     "elemento": "cita literal: → PASS, entrega permitida;"
+    }
+   ]
+  }
+ ]
+}
