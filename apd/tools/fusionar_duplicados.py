@@ -7,7 +7,14 @@
 3. fusionar  — por grupo, el modelo redacta un registro fusionado que conserva cada exigencia de cada miembro
                y un segundo llamado verifica miembro por miembro que no se perdió nada.
 Tablas: registros_enunciado, registros_grupo, registros_fusion (originales intactos en registros).
-Uso: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar|estado
+
+Dos formas de ejecutar cada paso:
+- por API: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar  (usa apd.llm; requiere crédito)
+- por lotes en archivo: python3 tools/fusionar_duplicados.py lotes <paso>  escribe data/fusion_lotes/<paso>/NNN.in.json
+  con instrucciones + datos; quien procese el lote (p. ej. un subagente) escribe NNN.out.json con el mismo formato
+  JSON que devolvería la API; python3 tools/fusionar_duplicados.py importar <paso>  valida cada salida (ids completos,
+  temas de la lista, ids de grupo válidos) y la carga. Pasos por lotes: enunciar, agrupar, fusionar, verificar.
+Uso: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar|estado|lotes <paso>|importar <paso>
 """
 
 from __future__ import annotations
@@ -26,6 +33,8 @@ from apd import llm  # noqa: E402
 
 DB = APD / "data/rules.sqlite"
 CACHE = APD / "data/fusion_cache"
+LOTES = APD / "data/fusion_lotes"
+PALABRAS_LOTE = 7000
 LOTE = 25
 HILOS = 8
 
@@ -147,6 +156,7 @@ def con():
     c.execute("create table if not exists registros_grupo (grupo text, registro_id text, relacion text, regla text)")
     c.execute("create table if not exists registros_fusion (grupo text primary key, texto text, relacion text, "
               "miembros text, verificado integer, faltan text)")
+    c.execute("create table if not exists _grupos_crudos (lote text, ids text, relacion text, regla text)")
     return c
 
 
@@ -212,6 +222,10 @@ def cmd_agrupar(_a):
         for tema, n, nv, gs in ex.map(uno, sorted(por_tema.items())):
             print(f"{tema}: {n} registros, {nv} ventana(s), {len(gs)} grupos", file=sys.stderr, flush=True)
             todos.extend(gs)
+    guardar_grupos(c, todos)
+
+
+def guardar_grupos(c, todos):
     # unir grupos que comparten registros (misma_regla domina sobre otro_alcance)
     padre = {}
 
@@ -279,6 +293,173 @@ def cmd_fusionar(_a):
         sys.exit(1)
 
 
+# ---------------------------------------------------------------- ejecución por lotes en archivo
+
+MAX_VENTANA = 220
+
+
+def ventanas_por_tema(c):
+    por_tema: dict[str, list] = {}
+    for rid, en, al, temas in c.execute("select registro_id, enunciado, alcance, temas from registros_enunciado"):
+        for t in json.loads(temas):
+            por_tema.setdefault(t, []).append((rid, al, en))
+    out = []
+    for tema, filas in sorted(por_tema.items()):
+        filas = sorted(filas, key=lambda x: (x[1], x[2]))
+        # un tema grande se revisa en ventanas solapadas del 50% para que todo par cercano por alcance se compare
+        if len(filas) <= MAX_VENTANA:
+            vs = [filas]
+        else:
+            vs = [filas[i:i + MAX_VENTANA] for i in range(0, len(filas) - MAX_VENTANA // 2, MAX_VENTANA // 2)]
+        for k, v in enumerate(vs, 1):
+            out.append((tema, k, len(vs), v))
+    return out
+
+
+def grupos_actuales(c):
+    grupos: dict[str, dict] = {}
+    for g, rid, rel, regla in c.execute("select grupo, registro_id, relacion, regla from registros_grupo order by grupo"):
+        d = grupos.setdefault(g, {"ids": [], "rel": rel, "regla": regla})
+        d["ids"].append(rid)
+    return grupos
+
+
+def por_presupuesto(items, palabras, maximo):
+    lotes, actual, n = [], [], 0
+    for it, w in items:
+        if actual and (n + w > palabras or len(actual) >= maximo):
+            lotes.append(actual)
+            actual, n = [], 0
+        actual.append(it)
+        n += w
+    if actual:
+        lotes.append(actual)
+    return lotes
+
+
+def cmd_lotes(a):
+    c = con()
+    d = LOTES / a.paso
+    d.mkdir(parents=True, exist_ok=True)
+    for f in d.glob("*.in.json"):
+        if not (d / f.name.replace(".in.", ".out.")).exists():
+            f.unlink()
+    hechos = {f.name.split(".")[0] for f in d.glob("*.out.json")}
+    texto = dict(c.execute("select id, texto from registros"))
+    lotes = []
+    if a.paso == "enunciar":
+        ya = {r for (r,) in c.execute("select registro_id from registros_enunciado")}
+        items = [({"id": i, "texto": t}, len(t.split())) for i, t in c.execute("select id, texto from registros order by orden")
+                 if i not in ya]
+        sis = SIS_ENUNCIAR.format(temas="\n".join(f"{k}: {v}" for k, v in TEMAS.items()))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 200):
+            lotes.append({"paso": "enunciar", "instrucciones": sis, "registros": lote})
+    elif a.paso == "agrupar":
+        for tema, k, n, v in ventanas_por_tema(c):
+            lotes.append({"paso": "agrupar", "instrucciones": SIS_AGRUPAR, "tema": tema, "descripcion_tema": TEMAS.get(tema, ""),
+                          "ventana": f"{k} de {n}", "filas": [{"id": r, "alcance": al, "enunciado": e} for r, al, e in v]})
+    elif a.paso == "fusionar":
+        hechos_f = {g for (g,) in c.execute("select grupo from registros_fusion where verificado = 1")}
+        items = []
+        for g, dd in grupos_actuales(c).items():
+            if g in hechos_f:
+                continue
+            miembros = [{"id": i, "texto": texto[i]} for i in dd["ids"]]
+            previo = c.execute("select faltan from registros_fusion where grupo = ?", (g,)).fetchone()
+            item = {"grupo": g, "relacion": dd["rel"], "regla_comun": dd["regla"], "miembros": miembros}
+            if previo and previo[0] not in (None, "[]"):
+                item["faltaron_en_el_intento_anterior"] = json.loads(previo[0])
+            items.append((item, sum(len(m["texto"].split()) for m in miembros)))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 40):
+            lotes.append({"paso": "fusionar", "instrucciones": SIS_FUSIONAR.replace(
+                'Devuelve JSON {"texto"', 'Para CADA grupo devuelve {"grupo": "...", "texto"') +
+                '\nDevuelve JSON {"fusiones": [ ...un objeto por grupo, con su "grupo"... ]}', "grupos": lote})
+    elif a.paso == "verificar":
+        items = []
+        for g, t, miembros in c.execute("select grupo, texto, miembros from registros_fusion where verificado is null"):
+            orig = [{"id": i, "texto": texto[i]} for i in json.loads(miembros)]
+            items.append(({"grupo": g, "originales": orig, "fusionado": t},
+                          sum(len(o["texto"].split()) for o in orig) + len(t.split())))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 40):
+            lotes.append({"paso": "verificar", "instrucciones": SIS_VERIFICAR.replace(
+                'Devuelve JSON {"completo"', 'Para CADA grupo devuelve {"grupo": "...", "completo"') +
+                '\nDevuelve JSON {"verificaciones": [ ...un objeto por grupo, con su "grupo"... ]}', "grupos": lote})
+    base = max([int(x) for x in hechos] + [0])
+    for k, lote in enumerate(lotes, base + 1):
+        (d / f"{k:03d}.in.json").write_text(json.dumps(lote, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"{a.paso}: {len(lotes)} lotes nuevos en {d}")
+
+
+def cmd_importar(a):
+    c = con()
+    d = LOTES / a.paso
+    errores, n = [], 0
+    for fin in sorted(d.glob("*.in.json")):
+        fout = d / fin.name.replace(".in.", ".out.")
+        if not fout.exists():
+            errores.append(f"{fin.name}: sin salida")
+            continue
+        lote = json.loads(fin.read_text(encoding="utf-8"))
+        try:
+            r = json.loads(fout.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            errores.append(f"{fout.name}: JSON inválido ({e})")
+            continue
+        if a.paso == "enunciar":
+            out = {x.get("id"): x for x in r.get("registros", [])}
+            faltan = [x["id"] for x in lote["registros"] if not (out.get(x["id"], {}).get("enunciado") and out[x["id"]].get("temas"))]
+            malos = [i for i, x in out.items() if any(t not in TEMAS for t in x.get("temas", []))]
+            if faltan or malos:
+                errores.append(f"{fout.name}: faltan {len(faltan)} ids, {len(malos)} con temas fuera de la lista")
+                continue
+            for x in lote["registros"]:
+                y = out[x["id"]]
+                c.execute("insert or replace into registros_enunciado values (?,?,?,?)",
+                          (x["id"], y["enunciado"], y.get("alcance", "general"), json.dumps(y["temas"][:3])))
+            n += len(lote["registros"])
+        elif a.paso == "agrupar":
+            validos = {x["id"] for x in lote["filas"]}
+            for g in r.get("grupos", []):
+                ids = sorted({i for i in g.get("ids", []) if i in validos})
+                if len(ids) >= 2:
+                    c.execute("insert into _grupos_crudos values (?,?,?,?)",
+                              (fin.name, json.dumps(ids), g.get("relacion", "misma_regla"), g.get("regla", "")))
+                    n += 1
+        elif a.paso == "fusionar":
+            out = {x.get("grupo"): x for x in r.get("fusiones", [])}
+            for item in lote["grupos"]:
+                g = item["grupo"]
+                if not out.get(g, {}).get("texto"):
+                    errores.append(f"{fout.name}: falta la fusión de {g}")
+                    continue
+                c.execute("insert or replace into registros_fusion values (?,?,?,?,NULL,NULL)",
+                          (g, out[g]["texto"], item["relacion"], json.dumps([m["id"] for m in item["miembros"]])))
+                n += 1
+        elif a.paso == "verificar":
+            out = {x.get("grupo"): x for x in r.get("verificaciones", [])}
+            for item in lote["grupos"]:
+                g = item["grupo"]
+                v = out.get(g)
+                if v is None:
+                    errores.append(f"{fout.name}: falta la verificación de {g}")
+                    continue
+                faltan = v.get("faltan", []) + [{"agregado_sin_fuente": x} for x in v.get("agregado_sin_fuente", [])]
+                ok = 1 if v.get("completo") and not faltan else 0
+                c.execute("update registros_fusion set verificado = ?, faltan = ? where grupo = ?",
+                          (ok, json.dumps(faltan, ensure_ascii=False), g))
+                n += 1
+    if a.paso == "agrupar" and not errores:
+        crudos = [{"ids": json.loads(i), "relacion": rel, "regla": regla}
+                  for i, rel, regla in c.execute("select ids, relacion, regla from _grupos_crudos")]
+        guardar_grupos(c, crudos)
+    c.commit()
+    print(f"{a.paso}: {n} elementos importados · {len(errores)} errores")
+    for e in errores:
+        print("  " + e)
+    if errores:
+        sys.exit(1)
+
+
 def cmd_estado(_a):
     c = con()
     for q in ("select count(*) from registros", "select count(*) from registros_enunciado",
@@ -289,9 +470,16 @@ def cmd_estado(_a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("paso", choices=["enunciar", "agrupar", "fusionar", "estado"])
+    ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar"])
+    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "fusionar", "verificar"])
     a = ap.parse_args()
-    {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado}[a.paso](a)
+    if a.accion in ("lotes", "importar"):
+        if not a.paso:
+            ap.error("lotes/importar requieren el paso")
+        {"lotes": cmd_lotes, "importar": cmd_importar}[a.accion](a)
+        return
+    a.paso = a.accion
+    {"enunciar": cmd_enunciar, "agrupar": cmd_agrupar, "fusionar": cmd_fusionar, "estado": cmd_estado}[a.accion](a)
 
 
 if __name__ == "__main__":

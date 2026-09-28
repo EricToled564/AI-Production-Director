@@ -1,0 +1,782 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "f7d110106ec2",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt] Rules that keep the still honest:\n- **Name the differential blur explicitly.** Models default to over-clean stabilization. Write \"motion blur on background, fast-shutter look, sharp subject, rim spokes smeared to a disc.\" Equal/no blur is the most-faked and most-failed cue (anti-fake firewall, §4 speed-budget).\n- **Keep faces out or fragmented.** Convert any would-be face to silhouette / contre-jour with a rim and one glint. No features.\n- **Render audio as physical consequence, never as a named sound.** \"Loud engine\" is banned filler (`dramaturgy.md` §2) — prompt \"heat-haze warp off the headers, exhaust flame, chassis squat, sidewall wrinkle\" instead.\n- **Anti-sterile guard.** If the panel could be captioned \"clean,\" \"beautiful lighting,\" or \"high quality,\" it has failed — name the grain, the bloom, the crushed black, the one specular hit (`universal-rules.md` U12). One motivated source dominates; ~70% of the frame stays unlit (`camera-lighting-vocabulary.md` §5-7)."
+  },
+  {
+   "id": "ee5e8757c9f0",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt] Cross-link the vocabulary file for every framing/lens/light token. Then **the keyframe is the locked first frame**; hand it to `seedance.md` / `kling.md` / `veo.md` with the single dominant move (one per 5s — `camera-lighting-vocabulary.md` §2) to animate it. Name in the model syntax: \"low bumper-height camera, asphalt streaking, motion blur on background, sharp subject, no speed-up.\""
+  },
+  {
+   "id": "767c84141d1f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] A Sportsman-tree drag run, cold palette, no faces — ~13 panels using the card. This is the deliverable template the user fills: each row is a compressed keyframe card, format-C compatible (`Time | Shot | Function | Action | Camera | Light | Sound | Emotion`). Cut length collapses toward the green, holds on the wrinkle, then accelerates to the finish."
+  },
+  {
+   "id": "274178c55255",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 0.0–2.5 · Shot (anchor): Slick into water box · Function: Establish · Action (state-change + motion-as-still): Front tyre breaks mirror-still water; bulb reflected in the sheet · Camera (implied move): locked macro, low (held) · Light (cold): steel-blue, wet specular · Sound: idle lope, water trickle · Emotion-via-object: coiled stillness"
+  },
+  {
+   "id": "1746a1948a07",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 2.5–5.0 · Shot (anchor): Burnout wall · Function: Power · Action (state-change + motion-as-still): Rear erupts a smoke wall, car straining on line-lock; smoke backlit luminous · Camera (implied move): ground-level wide (burnout-cam) · Light (cold): cyan backlight through smoke, red tail bleed · Sound: lope → tyre scream · Emotion-via-object: leashed force"
+  },
+  {
+   "id": "0dc20d326574",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 5.0–6.5 · Shot (anchor): Pre-stage bulb + front tyre · Function: Pressure · Action (state-change + motion-as-still): Tyre creeps, top blue bulb lights, beam line as graphic spine · Camera (implied move): CU, static · Light (cold): blue glow on wet metal · Sound: lope thickens · Emotion-via-object: held breath"
+  },
+  {
+   "id": "586a94c48e7f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 6.5–8.0 · Shot (anchor): Stage bulb + knuckles · Function: Pressure · Action (state-change + motion-as-still): Second bulb lit, knuckles whiten on the trans-brake (depth: bulb BG, hand FG) · Camera (implied move): CU, depth layers, static · Light (cold): two blue bulbs, crushed black · Sound: idle DROPS to silence · Emotion-via-object: point of no return"
+  },
+  {
+   "id": "9051dd31bf3e",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 8.0–9.5 · Shot (anchor): Amber stagger (1 of 3) · Function: Pressure → Shift · Action (state-change + motion-as-still): First amber lights; foot pre-loading the pedal · Camera (implied move): tree-cam, snap-tight · Light (cold): amber pulse (sole warm, toxic) · Sound: vacuum of silence · Emotion-via-object: trigger tension"
+  },
+  {
+   "id": "944732428d63",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 9.5–10.3 · Shot (anchor): Held breath frame · Function: Pressure · Action (state-change + motion-as-still): Staged car dead-still, last amber, tach needle the only tremor · Camera (implied move): symmetric, locked (HOLD) · Light (cold): amber flare, steel rim · Sound: silence (the pause) · Emotion-via-object: loaded spring"
+  },
+  {
+   "id": "0b8d783cab19",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 10.3–11.6 · Shot (anchor): LAUNCH lunge · Function: Impact · Action (state-change + motion-as-still): Both cars squat, front wheels lift, green flares, asphalt smears back · Camera (implied move): low bumper-POV, fisheye (smear) · Light (cold): green flash + hard flare · Sound: BANG, leads pic 3fr · Emotion-via-object: release / violence"
+  },
+  {
+   "id": "77f4b6e2833d",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 11.6–13.5 · Shot (anchor): **Slick wrinkle** (HOLD) · Function: Detail / Reaction · Action (state-change + motion-as-still): Sidewall folds and hooks at the contact patch; speed-ramp pause, partial blur · Camera (implied move): macro slick-cam (frozen ramp) · Light (cold): hard side light, smoke bloom · Sound: tyre bite (near-silent) · Emotion-via-object: physics felt"
+  },
+  {
+   "id": "a1367787c614",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 13.5–15.5 · Shot (anchor): Cabin shake · Function: Pressure · Action (state-change + motion-as-still): Needle buried in red, mirror doubled by vibration, glass strobing · Camera (implied move): hard-mount interior (tremor) · Light (cold): strobing exterior, red needle accent · Sound: rising rev, gear stab · Emotion-via-object: strain"
+  },
+  {
+   "id": "8b6ea7ac4c61",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 15.5–18.5 · Shot (anchor): Bumper POV · Function: Pressure · Action (state-change + motion-as-still): Asphalt tears under the nose, lane stripes strobe to a vanishing point · Camera (implied move): low forward hood-cam, 24mm (radial smear) · Light (cold): streaked specular, mercury-white · Sound: doppler build · Emotion-via-object: commitment"
+  },
+  {
+   "id": "d875e8de5da2",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 18.5–22.5 · Shot (anchor): Joust / parallel pass · Function: Power · Action (state-change + motion-as-still): Rival closes head-on, offset; cone huge-blurred on the opposite edge · Camera (implied move): chase tracking + joust (closing) · Light (cold): streaked roadside lights, red tail accent · Sound: engine duel, doppler swell · Emotion-via-object: rivalry"
+  },
+  {
+   "id": "c26b88581133",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 22.5–26.5 · Shot (anchor): Finish · Function: Impact · Action (state-change + motion-as-still): Slicks blown-up and distorted, two cars inches apart across the line · Camera (implied move): slight high, finish-cam · Light (cold): cold-white finish pool · Sound: sound peak → cut · Emotion-via-object: margin"
+  },
+  {
+   "id": "a7bd82d27d8b",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Time: 26.5–30.0 · Shot (anchor): Hand unclenches / chute · Function: Aftermath / Exit · Action (state-change + motion-as-still): Fingers release the wheel; chute bloomed, smoke drifting through a beam · Camera (implied move): ECU then rear wide (settling) · Light (cold): single cold rim, residue haze · Sound: hard cut to silence, one breath · Emotion-via-object: consequence / release"
+  },
+  {
+   "id": "90b696af3f95",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 8. Worked keyframe board for a 30s race spot] Notes on the board: the 9.5–10.3 held panel is the single most-held still — the pause that triggers the bang. The launch is *not* one hero frame; in a fuller cut, fan 10.3–11.6 into a 6-9 panel micro-burst (§3) — that expansion is what carries the 13 compressed rows up to the ~18-26 panel count of §3. The wrinkle is the one place time expands inside the loud section. No two bang-clusters touch; every burst is separated by a held quiet panel. End on consequence, held ~2s — the vacuum is the punctuation."
+  },
+  {
+   "id": "0e9d1c129e6b",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] Run before every panel ships. Drop the panel if it fails."
+  },
+  {
+   "id": "90a4af3119d1",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Function tag named.** One of Establish / Reveal / Power / Pressure / Detail / Reaction / Shift / Impact / Aftermath / Exit. No tag → drop it."
+  },
+  {
+   "id": "54e595164ca0",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **One readable beat**, sayable in one sentence. If you cannot caption it (setup / commitment / mistake / recovery / proof-of-speed / result), it is a *fantik* — drop it."
+  },
+  {
+   "id": "bc7a633d6d67",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Emotion-via-object** present — the feeling a face would carry, frozen in a knuckle / needle / pedal / smoke / sweat-bead (§5). No state-change, no emotion → drop it."
+  },
+  {
+   "id": "5f9758385509",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Speed or drama cue** present — ≥1 of the six motion-as-still cues (smear / partial blur / streak / vector / sharp-blur / held stillness), or a deliberate held-still pause. \"Fast\" panels carry ≥3 of the five speed cues (§4)."
+  },
+  {
+   "id": "48e60058edfb",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **State-change, not static fetish** — the object crosses a threshold (idle→flare, clean→smoked, planted→lifting). No idle anatomy, no parked gear-lever."
+  },
+  {
+   "id": "ef1aa4465343",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Three depth layers**, each with a stated job (FG frame/obstruct, MG subject, BG stake). One focal point; every other object is evidence, not decoration."
+  },
+  {
+   "id": "16d41751847f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Implied camera named** — the move this still is the first frame of, physically mountable on the car (no god-angle render)."
+  },
+  {
+   "id": "ba7750df84cf",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Cold palette held** — steel/cyan/magenta/mercury-white, red and green as accents only, amber ≤15% and point-source (toxic, never cozy). One motivated source, ~70% unlit, one hard specular hit. Texture named (grain, halation, one flare), not \"clean.\""
+  },
+  {
+   "id": "7241e706d9b4",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **No face**, or a face fragmented past usefulness (silhouette / reflection only)."
+  },
+  {
+   "id": "c4c285641512",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Sound cell filled** even though the panel is a still — what audio underlies the held frame, where the cut bites (`dramaturgy.md` §11)."
+  },
+  {
+   "id": "31a240132816",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] - [ ] **Earns its density slot** — a held beat gets one panel, a bang gets a burst; the board reads as an accelerating tachometer on mute (§3)."
+  },
+  {
+   "id": "c77d99d08a9c",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place] If a panel survives all ten, it is an *opornyi kadr*, not wallpaper. Hand it to `seedance.md` / `kling.md` / `veo.md` as the locked first frame."
+  },
+  {
+   "id": "bd396a286442",
+   "texto": "[Camera, lighting, color, sound vocabulary] Use precise production language. \"Cinematic\" is not a direction. \"35mm, slow push-in, warm window key from frame-left\" is."
+  },
+  {
+   "id": "83f28aeea0d5",
+   "texto": "[Camera, lighting, color, sound vocabulary › 1. Framing] extreme wide shot; wide shot; medium wide; medium shot; medium close-up; close-up; extreme close-up; macro insert; over-the-shoulder; POV; profile; silhouette; low angle; high angle; top-down; dutch angle; locked-off frame"
+  },
+  {
+   "id": "79c56fd39c0c",
+   "texto": "[Camera, lighting, color, sound vocabulary › 2. Camera movement] static camera; slow push-in; fast push-in; pull-back; tracking shot; lateral tracking; handheld micro-shake; whip pan; snap zoom; rack focus; tilt up; tilt down; orbit; gimbal glide; dolly-in; dolly-out; crane shot; aerial shot; Hitchcock zoom (dolly-zoom); dive (camera plunges downward); FPV (drone first-person flight); one-take shot; bullet time; bounce speed ramp (speed up - slow down - speed up)"
+  },
+  {
+   "id": "18f4155af740",
+   "texto": "[Camera, lighting, color, sound vocabulary › 2. Camera movement] Universal rule. Pick one dominant move per 5-second shot. Layer one subtle secondary move at most. The popular techniques (one-take, dolly zoom, FPV, bullet time, bounce speed ramp) still need a subject, a start point and an end point — the name alone is not a direction."
+  },
+  {
+   "id": "9b656f49fbac",
+   "texto": "[Camera, lighting, color, sound vocabulary › 3. Lens language] 24mm. Wide, immersive, exaggerated proximity.; 35mm. Natural documentary.; 50mm. Intimate, human perspective.; 85mm. Portrait, compressed background.; 100mm macro. Texture, detail.; anamorphic 40mm. Cinematic widescreen.; shallow depth of field.; deep focus.; compressed telephoto background.; distorted wide-angle proximity."
+  },
+  {
+   "id": "7bed79543092",
+   "texto": "[Camera, lighting, color, sound vocabulary › 4. Light sources] cold refrigerator light; harsh overhead kitchen LED; moonlight through window; neon sign spill; phone screen glow; car headlights; streetlamp backlight; fluorescent office light; practical lamp; candlelight; monitor glow; emergency red light; sodium vapor street light; police strobe; theater house lights; stage spotlight; campfire flicker; sunset through blinds; under-counter kitchen LED"
+  },
+  {
+   "id": "6a5e60b570eb",
+   "texto": "[Camera, lighting, color, sound vocabulary › 5. Light direction] top light; side light; backlight; underlight; frontal soft light; rim light; bounce fill; window key light; motivated practical (the light source is visible in frame)"
+  },
+  {
+   "id": "26bbfd00f4e4",
+   "texto": "[Camera, lighting, color, sound vocabulary › 6. Light quality] hard shadow; soft diffused; low-key lighting; high contrast; silhouette; specular highlights; volumetric haze; steam catching backlight; wet reflections; desaturated palette; cold blue-gray grade; teal shadows; clean commercial lighting; gritty naturalistic; blown-out overexposure; crushed blacks"
+  },
+  {
+   "id": "af22e5c6de72",
+   "texto": "[Camera, lighting, color, sound vocabulary › 7. Color discipline] Define palette with concrete colors. Never write \"cinematic colors.\""
+  },
+  {
+   "id": "50bc80d5eab2",
+   "texto": "[Camera, lighting, color, sound vocabulary › 7. Color discipline] Bad. \"cinematic colors.\"\nGood. \"Cold blue-gray shadows, desaturated skin tones, greenish fridge spill, black negative space, no warm yellow tones.\""
+  },
+  {
+   "id": "cf3ad528c923",
+   "texto": "[Camera, lighting, color, sound vocabulary › 7. Color discipline] If the user bans a color, obey it strictly. Repeat the ban in every clip of a multi-clip sequence."
+  },
+  {
+   "id": "abb5d7968f10",
+   "texto": "[Camera, lighting, color, sound vocabulary › 7. Color discipline] Common palettes.\n- Fincher cold. Cold blue-gray shadows, desaturated skin, black negative space.\n- Deakins natural. Warm amber interiors, cool blue exteriors, clean contrast.\n- Wong Kar-wai. Saturated warm reds, deep greens, hazy practicals.\n- Glazer neon. Black, one dominant neon hue (magenta or teal), hard edges.\n- Commercial creamy. Warm creams, soft pastels, clean whites, no harsh blacks.\n- Safdie chaotic. Mixed sources, overlapping color temperatures, urban neon spill."
+  },
+  {
+   "id": "2d983f1a84cf",
+   "texto": "[Camera, lighting, color, sound vocabulary › 8. Sound categories] Even if the model does not generate audio, sound description helps structure rhythm."
+  },
+  {
+   "id": "32709520c4fa",
+   "texto": "[Camera, lighting, color, sound vocabulary › 8. Sound categories] Ambient.\nroom tone; distant city ambience; rain on tin roof; wind through leaves; fridge hum; fluorescent buzz; traffic wash"
+  },
+  {
+   "id": "35cd7e5ce1ae",
+   "texto": "[Camera, lighting, color, sound vocabulary › 8. Sound categories] Body and action.\nbreath; footsteps; fabric rustle; fork clink; door hinge; key in lock; zipper; stomach growl"
+  },
+  {
+   "id": "d5ba711ffa5f",
+   "texto": "[Camera, lighting, color, sound vocabulary › 8. Sound categories] Dramatic events.\nsudden silence; low bass hit; wet thud; glass break; distant thunder; car door slam; final sound cue before cut to black"
+  },
+  {
+   "id": "23ebaf628476",
+   "texto": "[Camera, lighting, color, sound vocabulary › 8. Sound categories] For Veo, wrap sound in syntax. `Audio:`, `SFX:`, or `(parenthetical description)`.\nFor Seedance 1.5+, include sound in the prompt body.\nFor Kling, sound descriptions help rhythm planning but audio is not generated."
+  },
+  {
+   "id": "398f8eb99136",
+   "texto": "[Camera, lighting, color, sound vocabulary › 9. Blocking language] Describe physical movement with six inputs.\nWho moves.; Where they start.; Where they end.; What object they touch.; What they look at.; What their body reveals emotionally."
+  },
+  {
+   "id": "518f2240d7c9",
+   "texto": "[Camera, lighting, color, sound vocabulary › 9. Blocking language] Example.\nThe man stands in the kitchen doorway, shoulders collapsed. He slowly approaches the refrigerator, opens it with hesitation, leans into the cold light, then freezes when he sees the empty shelves."
+  },
+  {
+   "id": "1d4261c4d0af",
+   "texto": "[Camera, lighting, color, sound vocabulary › 9. Blocking language] This beats \"a sad man goes to the fridge\" because it is playable by the model frame by frame."
+  },
+  {
+   "id": "ce4e31739fcf",
+   "texto": "[Camera, lighting, color, sound vocabulary › 10. Translating uncommon terms] Common terms (section 2) work by name. For rarer cinematography terms, keep the term **and** translate it into observable change, or the model guesses:\nTerm + target subject + visual change + foreground/background relationship + direction or speed"
+  },
+  {
+   "id": "0278ad2ec94b",
+   "texto": "[Camera, lighting, color, sound vocabulary › 10. Translating uncommon terms] Example.\nRack focus: shift focus smoothly from the leaves in the foreground to the person\nin the background. The leaves gradually blur while the person's face changes\nfrom soft to sharp."
+  },
+  {
+   "id": "454410b7de1f",
+   "texto": "[Camera, lighting, color, sound vocabulary › 10. Translating uncommon terms] Same pattern for snorricam, contra-zoom variants, tilt-shift, split diopter, speed ramps with specific curves. Numeric aperture and focal-length values are allowed, but the intended visible result phrased in words is what actually steers the model."
+  },
+  {
+   "id": "73cf1510661a",
+   "texto": "[Camera, lighting, color, sound vocabulary › 11. Transition vocabulary] Named transitions every current model understands to some degree (Seedance 2.5 honors them explicitly — templates in `seedance-25.md` §10):\n- **natural cut** — plain edit point, model picks the framing change\n- **fade in / fade out** — to or from black\n- **dissolve** — cross-fade, 1-2 seconds of overlap\n- **white flash / black flash** — one-frame blast, impact punctuation\n- **wipe** — new frame pushes the old one off\n- **occlusion mask** — a foreground object covers the lens, the new scene is revealed behind it\n- **match cut** — similar shape or motion bridges two scenes (moon → latte)\n- **action cut / whip pan** — cut hidden inside fast motion with motion blur\n- **motion relay** — subject exits frame A mid-move and lands in frame B continuing it\n- **zoom-through** — camera dives through a pupil, keyhole or window into the next scene\n- **ink-wash dissolve** — stylized bleed, common in guofeng / animation work"
+  },
+  {
+   "id": "fe07cbc1c294",
+   "texto": "[Camera, lighting, color, sound vocabulary › 11. Transition vocabulary] Rules of use. Name the transition and the exact moment it fires. One transition type per cut. When the choice is open, delegate: \"choose the most suitable from [natural cut / occlusion mask / match cut] for the style of this film.\""
+  },
+  {
+   "id": "91ebade7496c",
+   "texto": "[Dramaturgy, detail, montage] This is the mandatory layer. A beautiful frame without dramaturgy is wallpaper. Every prompt built by this skill must pass the dramaturgy check before it is sent to the user."
+  },
+  {
+   "id": "df5dfe74be2b",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] A scene exists only when all five elements are present."
+  },
+  {
+   "id": "7a1376274610",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] Scene = hero's desire + obstacle + space geometry + controlled gaze + editing rhythm"
+  },
+  {
+   "id": "3665c4dc5f92",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] If any element is missing, the scene collapses into decoration."
+  },
+  {
+   "id": "dd9a01f7d6d6",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] - Desire. What does the character want right now in this specific second."
+  },
+  {
+   "id": "5b061b763b33",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] - Obstacle. What blocks them. Object, person, fear, distance, rule."
+  },
+  {
+   "id": "0ca39b5dca46",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] - Space geometry. Who stands where. Who has the power position. Which direction is threat, which is escape."
+  },
+  {
+   "id": "56c605de7bac",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] - Controlled gaze. Where the viewer's eye is forced to look, one focal point per frame."
+  },
+  {
+   "id": "4019e72307dc",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] - Editing rhythm. How long each shot lives, where the pause lands, where the cut bites."
+  },
+  {
+   "id": "6db06fa6ae20",
+   "texto": "[Dramaturgy, detail, montage › 1. Core law. Scene formula] Before writing a prompt, name each of these in one sentence. If you cannot, the scene is not ready."
+  },
+  {
+   "id": "24fd30ca4e6f",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt.] The scene formula tells you **what a scene is**. The Details Law tells you **how every shot must be written**. Skip it and even a perfect dramaturgical structure produces mush on screen."
+  },
+  {
+   "id": "2c678543e84c",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt.] Every shot owns three concrete physical details: one environmental pressure, one physical micro-action, one sound or visual motif anchor."
+  },
+  {
+   "id": "fe7b402ace41",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › The three-detail rule] For each shot in the storyboard or prompt, before it is sent, the writer commits to:\n1. **Environmental pressure.** A physical fact about the space that carries the emotion. Cold refrigerator light. Wet asphalt. Flickering ceiling tube. Steam from the kettle. Rain on one specific windowpane. A buzzing AC unit. Tight corridor walls. Mirror reflection. (See §9 — Environment plays.)\n2. **Physical micro-action on the body.** The emotion translated into the actor's body. Jaw locks. Knuckles whiten. Lips press flat. Eyes drop a quarter-inch. He swallows hard. Fingers curl against the doorframe. The actor's body is the only place where feelings render — names of feelings do not.\n3. **Sound anchor or visual motif.** A recurring perceptual hook tied to the spine of the piece. Stomach growl repeated three times. Reflection in dark glass on every transition. The same musical sting at every Crack beat. The clock's second hand. Footsteps in an empty corridor."
+  },
+  {
+   "id": "a1c776f60e12",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › The three-detail rule] A shot with zero of these is filler. A shot with one is thin. Strong shots carry all three. The writer's job is to do this work — the model cannot infer it."
+  },
+  {
+   "id": "9f3e52f8db43",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] Words that mark a writer being lazy. Each one is a placeholder for absent detail."
+  },
+  {
+   "id": "fce23e44f306",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] - \"cinematic\", \"professional\", \"high quality\", \"masterpiece\", \"stunning\", \"epic\", \"amazing\""
+  },
+  {
+   "id": "d0b755a2adcc",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] - \"beautiful lighting\", \"dynamic camera\", \"intense moment\", \"powerful scene\""
+  },
+  {
+   "id": "688bda4d1260",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] - \"he is sad\", \"she is angry\", \"he is afraid\" — emotions named without a body"
+  },
+  {
+   "id": "fa1dffd117e1",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › What is banned] Replace each with concrete physical facts. If a writer cannot do that, the scene is not yet thought through."
+  },
+  {
+   "id": "1f8f4a61896a",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › How details map to dramaturgy] Each layer of dramaturgy has a default detail register:\n- Scene formula → environmental pressure (the geometry and atmosphere of the obstacle).\n- Three-jobs rule → physical micro-action (the body shifts when emotion / action / pressure shifts).\n- Five anchors → sound and visual motif (the motif is the anchor, the final image carries the motif)."
+  },
+  {
+   "id": "93d441cd0f46",
+   "texto": "[Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › How details map to dramaturgy] If a shot's detail set does not match its dramaturgical function, the function will not land on screen."
+  },
+  {
+   "id": "bc0e55cea792",
+   "texto": "[Dramaturgy, detail, montage › 3. The three-jobs rule] Every shot must do at least one of three things. If it does none, delete it."
+  },
+  {
+   "id": "067b3369c184",
+   "texto": "[Dramaturgy, detail, montage › 3. The three-jobs rule] - Change emotion (in hero, viewer, or the dynamic between characters)."
+  },
+  {
+   "id": "25309f5a794b",
+   "texto": "[Dramaturgy, detail, montage › 3. The three-jobs rule] - Advance action (new physical event, new information, new position)."
+  },
+  {
+   "id": "096601b3baa9",
+   "texto": "[Dramaturgy, detail, montage › 3. The three-jobs rule] - Increase pressure (stakes rise, clock ticks, space tightens, witness appears)."
+  },
+  {
+   "id": "6acd7892e5bd",
+   "texto": "[Dramaturgy, detail, montage › 3. The three-jobs rule] \"Beautiful establishing shot\" is not a job. \"Beautiful hero shot of product\" is not a job. Either the frame works for one of these three, or it is a fantik (wrapper without candy)."
+  },
+  {
+   "id": "1e94ec70b4e8",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] From the editor of Apocalypse Now, The Godfather Part II, and The English Patient. The priority order when deciding where to cut. Each item is weighted heavier than the sum of everything below it."
+  },
+  {
+   "id": "780c5fe563dd",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 1. **Emotion (51%).** Does the cut honor the emotional truth of the moment. What does the viewer feel now vs. what they should feel next."
+  },
+  {
+   "id": "9ab1a5c733ae",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 2. **Story (23%).** Does the cut advance story or reveal character."
+  },
+  {
+   "id": "dbc85ce7a572",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 3. **Rhythm (10%).** Does the cut fall on a musical beat of the scene."
+  },
+  {
+   "id": "9bef5e08749b",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 4. **Eye-trace (7%).** Where is the viewer's gaze at the moment of the cut. Does the new shot receive that gaze naturally."
+  },
+  {
+   "id": "1ef882f739ef",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 5. **2D plane (5%).** Does the cut respect the axis of screen direction."
+  },
+  {
+   "id": "607b92e422a6",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] 6. **3D space (4%).** Does the cut respect the geometry of the real location."
+  },
+  {
+   "id": "35a01bb940b2",
+   "texto": "[Dramaturgy, detail, montage › 4. Walter Murch Rule of Six] Practical consequence. Cutting for \"динамика\" (pace for its own sake) sits at item 3. If you cut there without serving items 1 and 2, the result is TikTok-ad for the attention-deficit."
+  },
+  {
+   "id": "4c5963ecd1fc",
+   "texto": "[Dramaturgy, detail, montage › 5. Blocking as choreography of desire] Blocking is not \"where the actor stands.\" Blocking is a visual answer to \"what does the character want and from whom.\""
+  },
+  {
+   "id": "ed7e659b2664",
+   "texto": "[Dramaturgy, detail, montage › 5. Blocking as choreography of desire] For every character in the scene, name.\nWhat they want now.; Who or what they move toward.; Who or what they move away from.; Whom they corner.; To whom they yield space.; What gesture reveals the hidden desire."
+  },
+  {
+   "id": "e3b23488e7a3",
+   "texto": "[Dramaturgy, detail, montage › 5. Blocking as choreography of desire] Bad. \"He stands near the window.\"\nGood. \"He edges toward the window but his shoulder stays angled back toward her, as if the conversation still holds him.\""
+  },
+  {
+   "id": "61d610267fc9",
+   "texto": "[Dramaturgy, detail, montage › 6. Staging controls subtext] Staging is the arrangement of people, objects, and camera inside the frame. Before dialogue, staging already tells the conflict."
+  },
+  {
+   "id": "18a4b4abf23b",
+   "texto": "[Dramaturgy, detail, montage › 6. Staging controls subtext] Power signals in staging.\n- The standing character dominates the seated one.\n- The character in the doorway controls the room.\n- The character behind glass or in reflection is psychologically distant.\n- The character in shadow carries threat or grief.\n- Negative space around a character signals isolation.\n- Tight framing signals suffocation.\n- Shared frame without eye contact signals broken intimacy."
+  },
+  {
+   "id": "60f9cb10898c",
+   "texto": "[Dramaturgy, detail, montage › 6. Staging controls subtext] Spielberg, Kubrick, Iñárritu often build entire scenes where the staging states the conflict before a line is spoken."
+  },
+  {
+   "id": "f15319355bea",
+   "texto": "[Dramaturgy, detail, montage › 6. Staging controls subtext] Before writing a prompt, name the power dynamic the staging reveals."
+  },
+  {
+   "id": "2bc55869ac36",
+   "texto": "[Dramaturgy, detail, montage › 7. Camera must have a reason] Fincher rule. Every camera movement answers \"what changed?\" If the answer is nothing, the camera is static."
+  },
+  {
+   "id": "9ffa91674820",
+   "texto": "[Dramaturgy, detail, montage › 7. Camera must have a reason] Reasons for camera movement.\n- A character made a decision and the camera follows the shift.\n- New information arrived in the frame.\n- Pressure escalated and the camera tightens.\n- The character looked, and the camera reveals what they saw.\n- A gesture pulled focus, and the camera rack-focused.\n- The space changed (door opened, someone entered)."
+  },
+  {
+   "id": "41242ede7bb7",
+   "texto": "[Dramaturgy, detail, montage › 7. Camera must have a reason] Bad. \"Cinematic gliding camera movement.\"\nGood. \"Push-in starts on 'I don't know' and stops on her jaw locking.\""
+  },
+  {
+   "id": "9445d61c124d",
+   "texto": "[Dramaturgy, detail, montage › 8. Spatial clarity beats montage hysteria] Spielberg principle. Even in chaos, the viewer must know."
+  },
+  {
+   "id": "fda02117b4b5",
+   "texto": "[Dramaturgy, detail, montage › 8. Spatial clarity beats montage hysteria] Where the hero is.; Where the threat is.; Which direction is escape.; Which direction is decision."
+  },
+  {
+   "id": "68b423fc5dca",
+   "texto": "[Dramaturgy, detail, montage › 8. Spatial clarity beats montage hysteria] High craft means fast, nervous, and still readable. Random whip-pans and strobe cuts without geography destroy drama. The fastest action scenes in cinema (Spielberg, Miller, early Bay) are built on a clear geometric map maintained through every cut."
+  },
+  {
+   "id": "848281bb62ab",
+   "texto": "[Dramaturgy, detail, montage › 8. Spatial clarity beats montage hysteria] Before writing a fast-cut sequence, sketch the geography in one sentence. \"Hero moves left-to-right. Threat enters from the top of the frame. Exit is off-camera right.\""
+  },
+  {
+   "id": "73b0d919ed06",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] Kurosawa principle. Weather and environment are characters. They amplify state."
+  },
+  {
+   "id": "6ba408a92f33",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] Translate this to a short video by leaning on one environmental pressure."
+  },
+  {
+   "id": "7d62baadec00",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - Flickering fluorescent light signals decay, bureaucracy, dread."
+  },
+  {
+   "id": "849d845e8fb8",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - Rain on a window signals grief withheld."
+  },
+  {
+   "id": "10713ffbb54d",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - Steam from a kettle signals suppressed anger."
+  },
+  {
+   "id": "7f29ef08dfe5",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - A buzzing air conditioner signals dissociation."
+  },
+  {
+   "id": "7e81156c6f8e",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - Wet asphalt at night signals guilt."
+  },
+  {
+   "id": "7aa58264e68f",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - A tight corridor signals the walls closing in."
+  },
+  {
+   "id": "52ef15b91e31",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - A mirror or glass surface signals self-reckoning."
+  },
+  {
+   "id": "a0244db5a57f",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] - Overhead cold office light signals judgment."
+  },
+  {
+   "id": "c9d174c3069a",
+   "texto": "[Dramaturgy, detail, montage › 9. Environment plays] Pick one environmental pressure per scene and let it carry the emotion."
+  },
+  {
+   "id": "9bc46cdcf2c2",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method] Build storyboards in three layers, in this order. Skipping a layer produces pretty but empty output."
+  },
+  {
+   "id": "56e8e7032a9c",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 1. Dramatic beats] For a 60-90 second piece, a reliable beat map."
+  },
+  {
+   "id": "d14ae2548187",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 1. Dramatic beats] 0-5s    Hook.        Hero already in tension. No setup. Problem on screen.\n5-15s   Context.     Where we are. Who is near. What is at stake.\n15-30s  Pressure.    Hero tries to hold control.\n30-45s  Crack.       A detail appears that breaks the hero's position.\n45-60s  Acceleration. Cuts shorten. Breath tightens.\n60-75s  Impact.      Decision, break, confession, or action.\n75-90s  Aftermath.   Brief silence or visual residue."
+  },
+  {
+   "id": "2240e095b707",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 1. Dramatic beats] Adjust for 30s or 15s by compressing proportionally. Never skip the Crack or the Impact."
+  },
+  {
+   "id": "dbc73b738d4c",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] Tag every shot with a function. Same taxonomy as in role-modes.md, expanded with Power."
+  },
+  {
+   "id": "6db6d334d51e",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Establish.** Where we are."
+  },
+  {
+   "id": "d4b7a43f3c7c",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Power.** Who controls the scene right now."
+  },
+  {
+   "id": "8b71c05936ec",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Pressure.** What is pushing down on the hero."
+  },
+  {
+   "id": "265f419ddf8e",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Detail.** Object, hand, phone, eye, drop, receipt, door. Macro anchor."
+  },
+  {
+   "id": "51d94ba2dd41",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Reaction.** Face after the event."
+  },
+  {
+   "id": "1f06da6eb0d2",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Shift.** Inner change made visible."
+  },
+  {
+   "id": "5d493806d8bd",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Impact.** The decisive frame."
+  },
+  {
+   "id": "beea1368d02e",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Aftermath.** Emptiness after action."
+  },
+  {
+   "id": "58b7ee1183e8",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] - **Exit.** Final image the viewer carries out."
+  },
+  {
+   "id": "001370c2aabf",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 2. Shot functions] This is cinema grammar. Everything else is decorative wallpaper."
+  },
+  {
+   "id": "5181961fc660",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 3. Editing rhythm] Not random mincing. A rhythmic staircase.\nlong - shorter - shorter - pause - impact"
+  },
+  {
+   "id": "9a54a87bcb34",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 3. Editing rhythm] Example internal structure of an 8-10 second montage.\n4s. Wide. Hero enters.; 2s. Medium. Hero notices the object.; 1s. Close-up. Eyes.; 12 frames (0.5s). Macro insert of the object.; 8 frames (0.33s). Hand.; 6 frames (0.25s). Detail / sound cue.; 2s. Sudden silence.; 1s. Decision."
+  },
+  {
+   "id": "364b4c6d88f3",
+   "texto": "[Dramaturgy, detail, montage › 10. Three-layer storyboard method › Layer 3. Editing rhythm] Rule. The pause before the impact is more important than the speed of the cuts. Without a pause, speed becomes visual meat grinder."
+  },
+  {
+   "id": "45c32a955414",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] For each shot in a storyboard, fill every field. Missing fields reveal missing direction."
+  },
+  {
+   "id": "d87a4cdbc42a",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Shot ID.** 01, 02, 03"
+  },
+  {
+   "id": "d81591bf7a8c",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Beat.** What changes in the story here."
+  },
+  {
+   "id": "27ed92482dfb",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Emotion.** Fear, shame, anger, guilt, resolve, relief, etc."
+  },
+  {
+   "id": "092aea404db3",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Frame.** wide / medium / close-up / macro insert"
+  },
+  {
+   "id": "0d5bd8e34605",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Composition.** Center, edge, negative space, reflection, silhouette, foreground obstruction."
+  },
+  {
+   "id": "30eac74cb752",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Camera.** Static, push-in, handheld, tracking, whip-pan."
+  },
+  {
+   "id": "7ddf84dc86d7",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Movement reason.** Why the camera moves here. Answer \"what changed?\""
+  },
+  {
+   "id": "9119baad7602",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Action.** Exact physical event."
+  },
+  {
+   "id": "f72728dcf90b",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Eye trace.** Where the viewer's gaze should land in the first 0.3s."
+  },
+  {
+   "id": "0d4eafb1b07b",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Duration.** 0.5s, 1s, 3s."
+  },
+  {
+   "id": "c9816ddefd7c",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Cut type.** match cut, smash cut, cut on action, J-cut, L-cut."
+  },
+  {
+   "id": "9c5ebf3ba2fa",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Sound.** Breath, bass hit, street noise, phone ring, silence."
+  },
+  {
+   "id": "3d2a17f098e2",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Light / color.** Cold, contrast, flicker, shadow, specific palette."
+  },
+  {
+   "id": "ed0372ed04e2",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] - **Production note.** Prop, location, actor direction."
+  },
+  {
+   "id": "421db64518cd",
+   "texto": "[Dramaturgy, detail, montage › 11. Shot card template] If a shot card has empty fields, fill them or drop the shot."
+  },
+  {
+   "id": "1e04bc9bd329",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder] Drama rhythm is not uniform. It is stepped."
+  },
+  {
+   "id": "9a084e6c802f",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder › Slow-burn drama] 4s, 4s, 3s, 2s, 1s, pause, 2s."
+  },
+  {
+   "id": "153cedf93bf6",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder › Commercial product arc] 3s, 2s, 1.5s, 1s, 0.5s (product macro), 2s (hero shot)."
+  },
+  {
+   "id": "2058fdb4f3ed",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder › Anxiety build] 2s, 1s, 1s, 0.5s, 0.5s, 0.3s, pause, 1s."
+  },
+  {
+   "id": "4c8013c1b860",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder › Impact scene] pause, 0.2s (flash), 2s (aftermath in stillness)."
+  },
+  {
+   "id": "f0f0a591c85f",
+   "texto": "[Dramaturgy, detail, montage › 12. Rhythm ladder › Impact scene] Always insert at least one pause before the biggest cut."
+  },
+  {
+   "id": "be6255f6daca",
+   "texto": "[Dramaturgy, detail, montage › 13. One-anchor principle] For any short dramatic piece, commit to exactly five anchors. No more."
+  },
+  {
+   "id": "ad028c9b04d9",
+   "texto": "[Dramaturgy, detail, montage › 13. One-anchor principle] One main emotion.; One visual motif.; One anchor object.; One break.; One final image."
+  },
+  {
+   "id": "6375b0ce8583",
+   "texto": "[Dramaturgy, detail, montage › 13. One-anchor principle] Example.\n- Emotion. Guilt.\n- Motif. The hero keeps being reflected in glass surfaces (window, phone screen, elevator door).\n- Anchor object. A phone with one unread message.\n- Break. The hero deletes the message.\n- Final image. The hero's face stays reflected in the darkened phone screen."
+  },
+  {
+   "id": "2966839708e2",
+   "texto": "[Dramaturgy, detail, montage › 13. One-anchor principle] This set can be storyboarded, prompted, and cut together into something that carries real weight. It beats stacking \"cinematic, professional, high quality, masterpiece\" forever."
+  },
+  {
+   "id": "7fb39bb50b20",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Five anchors] Emotion. Guilt.; Motif. Reflections in glass.; Anchor object. Phone with unread message.; Break. He deletes it.; Final image. His face ghosted on the dark phone screen."
+  },
+  {
+   "id": "ce6af5d8afc1",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 0-3s. Hook. Phone buzzes on a dark desk. His face lit from below."
+  },
+  {
+   "id": "aba4f960e72e",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 3-10s. Context. Small office after hours. Empty cubicles. Cold fluorescent. His reflection in the monitor."
+  },
+  {
+   "id": "90381ab7062a",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 10-18s. Pressure. He stares at the message preview. His jaw tightens. Hand hovers."
+  },
+  {
+   "id": "3facd310b9ab",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 18-22s. Crack. He starts to type. Stops. Deletes character by character."
+  },
+  {
+   "id": "b956bde2a4ad",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 22-26s. Acceleration. Tight cuts. Finger. Screen. Eye. Breath. Window reflection."
+  },
+  {
+   "id": "de8ed7126b48",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 26-28s. Impact. He taps Delete Conversation. One tap. Silence."
+  },
+  {
+   "id": "98ad97463899",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 1. Dramatic beats] - 28-30s. Aftermath. Screen goes black. His face remains reflected in the dark glass."
+  },
+  {
+   "id": "ee352c4293de",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 03. Establish. Empty office."
+  },
+  {
+   "id": "0de9dba2cb95",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 05. Power. He is alone. The room looms."
+  },
+  {
+   "id": "7e22a532fede",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 07. Detail. Phone screen close-up."
+  },
+  {
+   "id": "169d8b4ba286",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 09. Reaction. His face, jaw tightening."
+  },
+  {
+   "id": "f024b5049c21",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 11. Shift. Hand hesitates over keyboard."
+  },
+  {
+   "id": "26e243e4e031",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 13. Impact. Thumb taps Delete."
+  },
+  {
+   "id": "f98354f3bc77",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 2. Shot functions (selected)] - Shot 14. Aftermath. Dark screen, his ghosted reflection."
+  },
+  {
+   "id": "620a0746318f",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 3. Rhythm (final 10 seconds)] 2s. Finger hovers over Delete.; 1s. His face.; 0.5s. Thumb.; 0.5s. Screen confirmation prompt.; 1s. His eyes.; 0.5s. Thumb taps Delete.; 3s silence. Screen goes black.; 1.5s. His reflection on the dark phone."
+  },
+  {
+   "id": "8735b5377ef7",
+   "texto": "[Dramaturgy, detail, montage › 14. Worked example. Guilt, 30 seconds › Layer 3. Rhythm (final 10 seconds)] Now each beat can be translated into a model-specific prompt using `references/seedance.md`, `references/kling.md`, or `references/veo.md`."
+  },
+  {
+   "id": "8a86cfa78f58",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] Run this six-point check before returning the final prompt to the user."
+  },
+  {
+   "id": "4c636ff18836",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 1. Is the scene formula complete? (desire + obstacle + geometry + gaze + rhythm)"
+  },
+  {
+   "id": "6f0e6e25f0f7",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 2. Does every shot pass the three-detail check? (environmental pressure + physical micro-action + sound or visual motif)"
+  },
+  {
+   "id": "451d3fc20094",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 3. Does every shot do one of the three jobs? (change emotion, advance action, increase pressure)"
+  },
+  {
+   "id": "35509efe9d5a",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 4. Is there a motivated reason for every camera move?"
+  },
+  {
+   "id": "8737a153b919",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 5. Is the spatial geometry readable?"
+  },
+  {
+   "id": "22e09ce37541",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] 6. Are the five anchors named? (emotion, motif, object, break, final image)"
+  },
+  {
+   "id": "4df1539f150e",
+   "texto": "[Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt] If any answer is no, fix before sending. Step 2 is the most violated."
+  },
+  {
+   "id": "a73dd79c5344",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 1. Continuity checklist] Before sending a prompt to the user, verify.\nSame character across shots (face, body, hair).; Same clothes across shots, exactly named.; Consistent location logic.; Object state progression makes sense (sausage in fridge -> on plate -> on fork -> on floor).; No unwanted extra characters.; No unwanted text or subtitles.; No unwanted logos.; Consistent age / body / face.; No impossible hand-object action.; No vague camera instructions (\"cinematic camera\").; No vague lighting instructions (\"beautiful light\").; No random stacking of director references.; No contradictions.; Palette is defined with concrete colors.; Final image is explicitly stated."
+  },
+  {
+   "id": "5f83accc40d0",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 1. Continuity checklist] If any item is missing, fix before sending."
+  },
+  {
+   "id": "1723b3bf851c",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › One continuous take instead of montage] Fix.\nThis must be a multi-shot sequence with visible hard cuts. Do not generate a single continuous take. Each beat uses a different angle and framing."
+  },
+  {
+   "id": "596b04dbb024",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › One continuous take instead of montage] For Seedance specifically, add explicit `Cut to.` or `Camera cut to.` markers in the prompt body."
+  },
+  {
+   "id": "9165ef6c1528",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots] Fix.\nPreserve the exact character in every shot. Same face shape, same eye color, same hair, same clothing, same expression style. [repeat the full identity block]"
+  },
+  {
+   "id": "8e0fb00a14db",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots] For Kling. Use Element Binding with 3-4 reference images (front, side, three-quarter)."
+  },
+  {
+   "id": "30045cf5ea42",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Object disappears mid-scene] Fix.\nTrack the object continuously. The same object remains visible or clearly implied in every beat."
+  },
+  {
+   "id": "ca9d7a756b19",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Object disappears mid-scene] Describe the object's state progression in one sentence. \"The sausage moves. fridge -> pot -> fork -> floor.\""
+  },
+  {
+   "id": "fce515fc2f0a",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Weak drama. Scene feels flat.] Fix.\nPlay the scene with full emotional seriousness. Treat the ordinary object as if it carries life-or-death meaning. No comedy pacing. No detached observation."
+  },
+  {
+   "id": "e2bde158b7cd",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Messy random cuts in fast montage] Fix.\nUse fast montage with clear readable action per cut. Every cut shows a distinct detail. face, hand, object, reaction, impact. Each cut must have a visible function."
+  },
+  {
+   "id": "63d17a1e0c22",
+   "texto": "[Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Dialogue too fast (Veo)] Fix. Cut the line. 8 seconds max of spoken text. Test by reading aloud at normal pace."
+  }
+ ]
+}

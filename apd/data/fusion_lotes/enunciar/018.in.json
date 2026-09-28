@@ -1,0 +1,806 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "854536572114",
+   "texto": "[critique.schema.json › model_version] model_version: description=\"Model version string as of generation, copied from the capability matrix entry. The matrix records what is current; this records what ran.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "b3d863b233de",
+   "texto": "[critique.schema.json › seed] seed: description=\"Generation seed if the generator exposes one. Null when it does not.\"; oneOf=[{\"type\": \"null\"}, {\"type\": \"integer\"}, {\"type\": \"string\", \"minLength\": 1}]; opcional"
+  },
+  {
+   "id": "b5b0e9184f0c",
+   "texto": "[critique.schema.json › verdict] verdict: type=\"string\"; enum=[\"ACCEPT\", \"REVISE\", \"REJECT\"]; requerido"
+  },
+  {
+   "id": "b6bd1d5ff4e2",
+   "texto": "[critique.schema.json › confidence] confidence: type=\"string\"; enum=[\"HIGH\", \"MEDIUM\", \"LOW\"]; requerido"
+  },
+  {
+   "id": "6ecb16a2318a",
+   "texto": "[critique.schema.json › working] working: type=\"array\"; description=\"Concrete positives. Observations, not flattery.\"; opcional"
+  },
+  {
+   "id": "0818a2cff7e0",
+   "texto": "[critique.schema.json › issues] issues: type=\"array\"; requerido"
+  },
+  {
+   "id": "b1ca756fff33",
+   "texto": "[critique.schema.json › issues[].layer] issues[].layer: type=\"string\"; enum=[\"Brand Lock\", \"Series Lock\", \"Shot Spec\", \"Composition\", \"Technical\", \"Continuity\"]; requerido"
+  },
+  {
+   "id": "735f59b64da7",
+   "texto": "[critique.schema.json › issues[].severity] issues[].severity: type=\"string\"; enum=[\"minor\", \"major\", \"blocking\"]; description=\"Any blocking issue forces REJECT. One or two major issues cap the verdict at REVISE. Three or more major issues force REJECT. Enforced by tools/validate_critique.py, not by this schema.\"; requerido"
+  },
+  {
+   "id": "39e54940f1f7",
+   "texto": "[critique.schema.json › issues[].note] issues[].note: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "f4ad86e1c9f9",
+   "texto": "[critique.schema.json › issues[].fix_type] issues[].fix_type: type=\"string\"; enum=[\"prompt-level\", \"post-level\", \"re-roll\"]; requerido"
+  },
+  {
+   "id": "adab66a2e331",
+   "texto": "[critique.schema.json › issues[].fix] issues[].fix: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "6b5a6f9aa7b9",
+   "texto": "[critique.schema.json › issues[]] issues[]: additionalProperties=false (ningún campo fuera de: layer, severity, note, fix_type, fix)"
+  },
+  {
+   "id": "c082327b5a59",
+   "texto": "[critique.schema.json › (raíz)] (raíz): additionalProperties=false (ningún campo fuera de: version, meta, run_id, round, created_at, shot_id, brand_lock_ref, brand_lock_sha256, image_ref, image_sha256, prompt_ref, prompt_sha256, generator, model_version, seed, verdict, confidence, working, issues)"
+  },
+  {
+   "id": "c68161f59ede",
+   "texto": "[capabilities.schema.json › (raíz)] title=\"Generator Capabilities\"; description=\"Capability matrix for visual-prompt-forge adapters. The single source of truth for per-generator limits (prompt length, text/motion support, aspect param). Adapter .md files describe how to prompt; this file owns the numbers.\""
+  },
+  {
+   "id": "1de02973e084",
+   "texto": "[capabilities.schema.json › $schema_note] $schema_note: type=\"string\"; opcional"
+  },
+  {
+   "id": "1eaa2975ed60",
+   "texto": "[capabilities.schema.json › version] version: type=\"string\"; requerido"
+  },
+  {
+   "id": "6e229ac9709f",
+   "texto": "[capabilities.schema.json › matrix_last_reviewed] matrix_last_reviewed: type=\"string\"; pattern=\"^[0-9]{4}-[0-9]{2}-[0-9]{2}$\"; description=\"ISO date the whole matrix was last reviewed.\"; requerido"
+  },
+  {
+   "id": "199f010645c3",
+   "texto": "[capabilities.schema.json › generators] generators: type=\"array\"; minItems=1; requerido"
+  },
+  {
+   "id": "9df1a1b16279",
+   "texto": "[capabilities.schema.json › generators[].id] generators[].id: type=\"string\"; pattern=\"^[a-z0-9][a-z0-9-]*$\"; description=\"Must match an adapter .md filename (without extension).\"; requerido"
+  },
+  {
+   "id": "8395eee1a3b2",
+   "texto": "[capabilities.schema.json › generators[].display_name] generators[].display_name: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "dc0e9985df23",
+   "texto": "[capabilities.schema.json › generators[].last_verified] generators[].last_verified: type=\"string\"; pattern=\"^[0-9]{4}-[0-9]{2}-[0-9]{2}$\"; requerido"
+  },
+  {
+   "id": "d34d18308da4",
+   "texto": "[capabilities.schema.json › generators[].prompt_style] generators[].prompt_style: type=\"string\"; enum=[\"keyword\", \"natural\", \"paragraph\"]; requerido"
+  },
+  {
+   "id": "a304c86f55ea",
+   "texto": "[capabilities.schema.json › generators[].max_prompt_words] generators[].max_prompt_words: type=\"integer\"; requerido"
+  },
+  {
+   "id": "894cbea72996",
+   "texto": "[capabilities.schema.json › generators[].supports_text_render] generators[].supports_text_render: type=\"boolean\"; requerido"
+  },
+  {
+   "id": "42f798b61cee",
+   "texto": "[capabilities.schema.json › generators[].supports_motion] generators[].supports_motion: type=\"boolean\"; requerido"
+  },
+  {
+   "id": "ba43ad9b23e0",
+   "texto": "[capabilities.schema.json › generators[].supports_character_ref] generators[].supports_character_ref: type=\"boolean\"; requerido"
+  },
+  {
+   "id": "02d05c0ddfcd",
+   "texto": "[capabilities.schema.json › generators[].supports_style_ref] generators[].supports_style_ref: type=\"boolean\"; requerido"
+  },
+  {
+   "id": "ef320b548965",
+   "texto": "[capabilities.schema.json › generators[].supports_negative_prompt] generators[].supports_negative_prompt: type=\"boolean\"; requerido"
+  },
+  {
+   "id": "c6595acb53d1",
+   "texto": "[capabilities.schema.json › generators[].aspect_param] generators[].aspect_param: type=\"string\"; minLength=1; requerido"
+  },
+  {
+   "id": "57e9169d3d13",
+   "texto": "[capabilities.schema.json › generators[].api_access] generators[].api_access: type=\"string\"; enum=[\"full\", \"limited\", \"none\"]; requerido"
+  },
+  {
+   "id": "0784467419a6",
+   "texto": "[capabilities.schema.json › generators[].notes] generators[].notes: type=\"string\"; opcional"
+  },
+  {
+   "id": "4c7b91e92e41",
+   "texto": "[capabilities.schema.json › generators[]] generators[]: additionalProperties=false (ningún campo fuera de: id, display_name, model_version, last_verified, prompt_style, max_prompt_words, supports_text_render, supports_motion, supports_character_ref, supports_style_ref, supports_negative_prompt, aspect_param, api_access, notes)"
+  },
+  {
+   "id": "fe5c51c806a3",
+   "texto": "[capabilities.schema.json › (raíz)] (raíz): additionalProperties=false (ningún campo fuera de: $schema_note, version, matrix_last_reviewed, generators)"
+  },
+  {
+   "id": "13761c1bc236",
+   "texto": "[Agua en superficie] Especializa el método de keyframes para sujetos que se mueven sobre el agua. El agua es a la vez el\nsuelo, el fondo barrido y la fuente de partículas. La velocidad se lee en la superficie, no en el\nsujeto. Las reglas de velocidad de `race-and-speed.md` valen aquí con el agua ocupando el papel del\nasfalto."
+  },
+  {
+   "id": "f41d357d6ddf",
+   "texto": "[Agua en superficie › 1. Cuándo cargar] - Cargar este archivo siempre que el sujeto se desplace sobre una superficie de agua: tabla, casco, remo, pie descalzo o esquí. [A PRUEBA]"
+  },
+  {
+   "id": "52ea4d664836",
+   "texto": "[Agua en superficie › 1. Cuándo cargar] - Si el sujeto cruza la superficie hacia adentro o hacia afuera, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+  },
+  {
+   "id": "b78f9107877b",
+   "texto": "[Agua en superficie › 1. Cuándo cargar] - Si hay motor o vehículo acuático, leer antes `race-and-speed.md` §3 y §10: el presupuesto de velocidad y el anti-fake aplican íntegros. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "5c17bbffc02d",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 1. La estela y el spray deben salir del punto de contacto y apuntar en sentido contrario a la dirección de viaje declarada; una estela que no coincide con la dirección de viaje es una contradicción y el modelo obedece la señal más fuerte. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "9b5442b183cf",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 2. El spray se prompt como consecuencia física del canto de la tabla o del casco cortando el agua, nunca como \"splash\" abstracto: describe qué lo provoca y hacia dónde vuela. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "b2d637be9b16",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 3. Las gotas congeladas se describen como constelación de puntos speculares con rim en el borde de ataque; sin ese rim el spray se lee como niebla blanca. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "da6b2b2c868e",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 4. La superficie del agua debe mostrar textura direccional, rizado o chop, para que el barrido tenga algo que barrer; agua lisa equivale a asfalto sin textura. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "3b768d8ca5f9",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 5. Toda cuerda de remolque se dibuja tensa y recta desde el mango hasta fuera de cuadro; una cuerda con comba dice que no hay tracción y desmiente la velocidad. [A PRUEBA]"
+  },
+  {
+   "id": "1440503798e0",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 6. El cuerpo del rider debe mostrar el vector de la maniobra: rodillas flexionadas, cadera cargada hacia el canto, brazos en tensión; un rider erguido y relajado es un panel neutro y se descarta. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "e698d084a08e",
+   "texto": "[Agua en superficie › 2. Leyes físicas que el still debe evidenciar] 7. El agua desplazada tiene masa: la pared de agua junto al canto se levanta más alta en el lado de presión y se rompe en el lado libre; no es simétrica. [A PRUEBA]"
+  },
+  {
+   "id": "f6b6092641d9",
+   "texto": "[Agua en superficie › 3. Cue de movimiento congelado por defecto] - Cue por defecto: sujeto nítido contra superficie de agua barrida en el sentido del viaje, con el spray en blur parcial. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "5896f326eaa5",
+   "texto": "[Agua en superficie › 3. Cue de movimiento congelado por defecto] - Un still de superficie se considera rápido solo si reúne al menos tres de cinco cues: cámara a ras del agua, agua barriendo el borde inferior, referencia cercana pasando el borde, sujeto nítido contra fondo barrido, cue de vibración o spray golpeando la lente. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "f81eb71dde4d",
+   "texto": "[Agua en superficie › 3. Cue de movimiento congelado por defecto] - Las gotas sobre la lente o la carcasa son la cue de vibración de este medio y se nombran como tal. [A PRUEBA]"
+  },
+  {
+   "id": "8f893618cfd8",
+   "texto": "[Agua en superficie › 4. Luz en este medio] - El spray solo se lee luminoso a contraluz o a contraluz lateral; el spray frontal es una masa gris muerta, igual que el humo frontal. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "c3ffdd03e235",
+   "texto": "[Agua en superficie › 4. Luz en este medio] - La superficie del agua es el espejo del régimen: los prácticos y el sol se reflejan como estrías largas; usa el reflejo como spine de composición y saca la fuente real medio fuera de cuadro. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "280bc670cfee",
+   "texto": "[Agua en superficie › 4. Luz en este medio] - Piel y neopreno mojados devuelven speculares duros; un cuerpo mojado sin brillos speculares se lee seco y falso. [A PRUEBA]"
+  },
+  {
+   "id": "8eeca0f8033a",
+   "texto": "[Agua en superficie › 4. Luz en este medio] - Con sol alto el agua pierde textura y el spray se quema: preferir sol bajo, y declararlo en el prompt con hora y dirección, no con \"golden hour\" suelto. [A PRUEBA]"
+  },
+  {
+   "id": "bd60d5b6c5fd",
+   "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - La cámara debe poder montarse en un rig real: torre de la lancha, pole cam desde la embarcación, carcasa a nivel del agua, dron bajo o cámara en el mango de la cuerda; un ángulo que ningún rig acuático puede ocupar se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "6bd5a66dd391",
+   "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - Ángulo por defecto low a ras del agua: la superficie ocupa el tercio inferior y barre; el ángulo alto y limpio es el god-angle que mata la velocidad. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "57ac34185211",
+   "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - El ángulo alto se reserva para el proof shot lejano: estela larga como prueba de distancia cubierta, una sola vez en la secuencia. [FUENTE: video/references/race-and-speed.md §5]"
+  },
+  {
+   "id": "84f07c59ceeb",
+   "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - Reservar el dutch para el único beat de pérdida de canto o caída. [FUENTE: video/references/race-and-speed.md §6]"
+  },
+  {
+   "id": "22b165c164ee",
+   "texto": "[Agua en superficie › 5. Cámara, ángulo y rig montable] - Lente: 24mm en el rig cercano para exagerar la proximidad del agua; larga focal desde la orilla para comprimir al rider contra la estela y la lancha. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "e37fc3b083ad",
+   "texto": "[Agua en superficie › 6. Modelo recomendado] - Escenas con física de agua, spray y tela mojada: Nano Banana Pro, que es el modelo para escenas complejas con física y materiales finos. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "c9afd1e87019",
+   "texto": "[Agua en superficie › 6. Modelo recomendado] - Si la cara del rider está visible y es identidad de campaña, generar el maestro de rostro aparte según el template T1 y probar NB2 y NBP, porque NBP a veces sostiene peor los rostros. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "762d0ab4008a",
+   "texto": "[Agua en superficie › 6. Modelo recomendado] - Pedir \"natural contrast, no HDR look\": el agua y el spray disparan la tendencia a sobrecocer el HDR. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "c5be9c1e66dd",
+   "texto": "[Agua en superficie › 6. Modelo recomendado] - Lugar reconocible, una bahía o un lago concreto: NB2 con image grounding. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "88eafac62c73",
+   "texto": "[Agua en superficie › 7. Tratamiento de personas dentro del régimen] - El rostro suele quedar fragmentado por spray, gafas o casco: convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "f1e37e0ce154",
+   "texto": "[Agua en superficie › 7. Tratamiento de personas dentro del régimen] - Cuando la identidad del rider importa, la cara se fija en el maestro T1 y el cuadro de acción se inserta con referencia; nunca se pide identidad y spray en la misma génesis. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "bc91e06f0907",
+   "texto": "[Agua en superficie › 7. Tratamiento de personas dentro del régimen] - Las manos en el mango son anatomía en decisión: nudillos, tendones y agarre máximo; una mano relajada en el mango es filler. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "fdd2a9f69fe1",
+   "texto": "[Agua en superficie › 7. Tratamiento de personas dentro del régimen] - Dos riders en el mismo cuadro: uno por generación sobre la placa de agua, con la estela de cada uno coherente con su dirección. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "c059b692da0f",
+   "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - El agua congelada parece vidrio o gel: falta textura direccional y blur parcial en el spray; añadir chop, gotas con rim y blur diferencial. [A PRUEBA]"
+  },
+  {
+   "id": "ab0abf3986db",
+   "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - El spray sale como nube blanca sin forma: está iluminado de frente; pasar la fuente detrás o al lado del spray. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "6392021c8631",
+   "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - La estela va hacia el lado equivocado: la dirección de viaje no estaba declarada; declararla antes que el sujeto. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "19d34cf91c40",
+   "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - Horizonte inclinado sin querer: el modelo interpreta el movimiento como dutch; pedir horizonte nivelado salvo en el beat de caída. [A PRUEBA]"
+  },
+  {
+   "id": "69fcb9e9ad7b",
+   "texto": "[Agua en superficie › 8. Fallos conocidos y su corrección] - Cuerda floja o que termina en el aire: nombrar el destino de la cuerda fuera de cuadro y su tensión. [A PRUEBA]"
+  },
+  {
+   "id": "0e6b0c06d049",
+   "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Estela y spray coherentes con la dirección de viaje declarada. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "14f89de19cc8",
+   "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Al menos tres cues de velocidad presentes y nombrables. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "5c7b40df5e14",
+   "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Spray con rim de contraluz, no masa gris. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "736a4ff86beb",
+   "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Cuerpo con vector de maniobra, cuerda tensa si existe. [A PRUEBA]"
+  },
+  {
+   "id": "efc8ecb18e83",
+   "texto": "[Agua en superficie › 9. Checklist del crítico | Ruptura de superficie › 9. Checklist del crítico] - [ ] Rig montable identificable. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "c0d1c70d9184",
+   "texto": "[Agua en superficie › 9. Checklist del crítico] - [ ] Sin HDR sobrecocido, sin rostro pedido a través del spray. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "2fa35763fb6a",
+   "texto": "[Ruptura de superficie] El instante en que un cuerpo cruza la frontera entre aire y agua. Es el tipo B en estado puro: un\ndiezmilésimo de segundo arrestado. La regla que gobierna todo el archivo es boardear el estado\nposterior del umbral, nunca el anterior."
+  },
+  {
+   "id": "d859811917d4",
+   "texto": "[Ruptura de superficie › 1. Cuándo cargar] - Cargar cuando el beat es el cruce de la superficie en cualquier sentido: entrada de clavado, salida de un nadador, salto de un animal marino, objeto que cae al agua. [A PRUEBA]"
+  },
+  {
+   "id": "0bd3b3ac07c9",
+   "texto": "[Ruptura de superficie › 1. Cuándo cargar] - No cargar para un sujeto totalmente sumergido; eso es `03-subacuatico.md`. Para un sujeto que se desplaza encima sin cruzar, `01-agua-superficie.md`. [A PRUEBA]"
+  },
+  {
+   "id": "15177319b34b",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 1. Boardear el estado posterior: el agua ya abierta, la corona de salpicadura ya formada, el cuerpo ya parcialmente dentro; el instante anterior se implica. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "ee0806f27893",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 2. La forma de la salpicadura depende de la entrada y hay que declararla: un cuerpo alineado y vertical produce entrada limpia con corona baja y un chorro fino; un cuerpo abierto produce corona ancha y agua blanca. [A PRUEBA]"
+  },
+  {
+   "id": "8cc316d8f23f",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 3. La parte sumergida se ve desplazada y ligeramente comprimida respecto a la parte emergida por la refracción; una extremidad que cruza la línea del agua sin quiebre óptico se lee como recorte. [A PRUEBA]"
+  },
+  {
+   "id": "f6e04f418084",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 4. Arriba de la línea hay gotas; abajo hay burbujas. No se mezclan: las gotas caen, las burbujas suben. [A PRUEBA]"
+  },
+  {
+   "id": "9bd5162a2240",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 5. El movimiento se prompt por su consecuencia: el cuerpo abre el agua, la superficie se hunde en el punto de entrada y se levanta alrededor. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "382c216a4052",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 6. Un still es un instante congelado: usar \"frozen mid-entry\" o \"frozen at the instant the hands break the surface\", nunca verbos de proceso como \"diving\" o \"splashing\". [FUENTE: produccion-visual-sw30/SKILL.md R8]"
+  },
+  {
+   "id": "7a1583fe43f9",
+   "texto": "[Ruptura de superficie › 2. Leyes físicas que el still debe evidenciar] 7. La línea de superficie es una sola: si el encuadre es split-level, hay exactamente un menisco que cruza el cuadro, con el aire nítido arriba y el agua con su propia atmósfera abajo. [A PRUEBA]"
+  },
+  {
+   "id": "ad728125f54e",
+   "texto": "[Ruptura de superficie › 3. Cue de movimiento congelado por defecto] - Cue por defecto: blur parcial congelado, el agua en movimiento apenas barrida y el cuerpo o el objeto tack-sharp; es la prueba de un único instante arrestado. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "adcfc010566a",
+   "texto": "[Ruptura de superficie › 3. Cue de movimiento congelado por defecto] - Alternativa para el beat previo al impacto: vector de trayectoria, el cuerpo en el aire en una postura que solo puede resolverse hacia abajo, con espacio negativo hacia el agua. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "ea231c8bed97",
+   "texto": "[Ruptura de superficie › 3. Cue de movimiento congelado por defecto] - Nunca blur uniforme en toda la imagen: iguala la salpicadura al fondo y borra el instante. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "66184d87c3ae",
+   "texto": "[Ruptura de superficie › 4. Luz en este medio] - La corona y las gotas solo se leen a contraluz o con luz lateral dura; iluminarlas de frente produce una mancha blanca sin volumen. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "b350e18a928d",
+   "texto": "[Ruptura de superficie › 4. Luz en este medio] - En split-level la mitad de aire y la mitad de agua tienen exposiciones distintas: el agua uno o dos pasos más oscura, con cáusticas si hay sol; declararlo evita que el modelo unifique las dos mitades. [A PRUEBA]"
+  },
+  {
+   "id": "173f06326510",
+   "texto": "[Ruptura de superficie › 4. Luz en este medio] - Una presión ambiental por panel: la salpicadura ya es la atmósfera; no sumar niebla, lluvia o spray adicional. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "103cb382eccf",
+   "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - Rig por defecto: carcasa a nivel exacto de la superficie, o cámara de borde de piscina baja; para el split-level, carcasa con domo semisumergido. [A PRUEBA]"
+  },
+  {
+   "id": "b6a0a87ceea6",
+   "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - Ángulo por defecto low a nivel del agua, aislando la salpicadura contra cielo o techo; el overhead se reserva para leer la geometría de la corona desde arriba. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "79b2bbd009c8",
+   "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - Lente: 35mm a 50mm desde el borde para no deformar el cuerpo; macro solo para el detalle de las manos rompiendo la superficie. [FUENTE: video/references/camera-lighting-vocabulary.md §3]"
+  },
+  {
+   "id": "0d592526035a",
+   "texto": "[Ruptura de superficie › 5. Cámara, ángulo y rig montable] - El rig debe existir: una cámara dentro del chorro de entrada o en el fondo de la fosa mirando hacia arriba son montajes reales; una cámara flotando a mitad de la salpicadura no. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "5dc293f55d51",
+   "texto": "[Ruptura de superficie › 6. Modelo recomendado] - Nano Banana Pro para la física del agua: corona, gotas, refracción y tela mojada. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "7e0d9eb2158b",
+   "texto": "[Ruptura de superficie › 6. Modelo recomendado] - GPT Image 2 con quality high cuando el detalle de gotas y condensación es el centro del cuadro. [FUENTE: image/references/patterns/food-beverage.md]"
+  },
+  {
+   "id": "ec0a0c3b1a54",
+   "texto": "[Ruptura de superficie › 6. Modelo recomendado] - Si el sujeto es una especie animal real, NB2 con image grounding para la anatomía correcta. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "de971cad5404",
+   "texto": "[Ruptura de superficie › 6. Modelo recomendado] - Recorrido de costo: variantes a 0.5K, selección, regeneración del ganador a 2K o 4K. [FUENTE: image/references/golden-rules.md]"
+  },
+  {
+   "id": "76e1c473e0bc",
+   "texto": "[Ruptura de superficie › 7. Tratamiento de personas dentro del régimen] - En el instante de entrada el rostro no es la identidad: gorro, gafas, traje y silueta la sostienen; esos accesorios se fijan en el identity block del maestro y se repiten. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "b0ca69c8c442",
+   "texto": "[Ruptura de superficie › 7. Tratamiento de personas dentro del régimen] - El maestro de rostro se genera aparte y seco; el cuadro de ruptura se inserta con referencia sobre la placa de agua. [FUENTE: produccion-visual-sw30/SKILL.md R7]"
+  },
+  {
+   "id": "cbd503552277",
+   "texto": "[Ruptura de superficie › 7. Tratamiento de personas dentro del régimen] - La anatomía en el pico se audita al 100% de zoom como manos y rostros: dedos alineados, muñecas, columna en línea. [FUENTE: produccion-visual-sw30/SKILL.md R14]"
+  },
+  {
+   "id": "06038a12533e",
+   "texto": "[Ruptura de superficie › 7. Tratamiento de personas dentro del régimen] - Dos cuerpos entrando a la vez: un sujeto por generación; la sincronía la fija el keyframe aprobado, no el texto. [FUENTE: produccion-visual-sw30/SKILL.md R9]"
+  },
+  {
+   "id": "08e577ecfc1d",
+   "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - Dos superficies de agua o un horizonte de agua duplicado: el prompt mezcló vista de superficie y vista sumergida; declarar una sola línea de agua y desde qué lado mira la cámara. [A PRUEBA]"
+  },
+  {
+   "id": "4afea1de1964",
+   "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - El cuerpo aparece entero y nítido bajo el agua sin quiebre de refracción: pedir explícitamente el desplazamiento óptico en la línea del agua. [A PRUEBA]"
+  },
+  {
+   "id": "deb0ad9f8565",
+   "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - El modelo dibuja al clavadista en el aire cuando se pidió la entrada: falta el estado posterior; describir el agua ya abierta y las manos ya dentro. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "c311abf1d03a",
+   "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - Salpicadura sin dirección, simétrica como fuente: nombrar el ángulo de entrada y el lado de presión. [A PRUEBA]"
+  },
+  {
+   "id": "a27e5617d605",
+   "texto": "[Ruptura de superficie › 8. Fallos conocidos y su corrección] - Corona blanca y plana: luz frontal; mover la fuente detrás del agua. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "bde5fb6af9ee",
+   "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Estado posterior visible: agua abierta, corona formada. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "02d51675a553",
+   "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Una sola línea de superficie; refracción presente en lo sumergido. [A PRUEBA]"
+  },
+  {
+   "id": "d6d018d199c2",
+   "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Gotas arriba, burbujas abajo, nunca invertidas. [A PRUEBA]"
+  },
+  {
+   "id": "f3a98bdae9f1",
+   "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Blur diferencial, no uniforme. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "db17832ab442",
+   "texto": "[Ruptura de superficie › 9. Checklist del crítico] - [ ] Anatomía del pico correcta al zoom. [FUENTE: produccion-visual-sw30/SKILL.md R14]"
+  },
+  {
+   "id": "9a49b24f0382",
+   "texto": "[Subacuático] Bajo el agua no hay horizonte, la luz se absorbe por colores y el medio está lleno de materia. El\nentorno es la presión ambiental de todo el régimen: la visibilidad, las partículas y la dirección\nde la luz hacen el trabajo que en tierra hace el clima."
+  },
+  {
+   "id": "cedc3abc24a0",
+   "texto": "[Subacuático › 1. Cuándo cargar] - Cargar cuando la cámara y el sujeto están completamente sumergidos. [A PRUEBA]"
+  },
+  {
+   "id": "9a3422b77fda",
+   "texto": "[Subacuático › 1. Cuándo cargar] - Si el cuadro incluye la superficie desde abajo, este archivo manda; si la cruza, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+  },
+  {
+   "id": "0d635fb26e8c",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 1. El agua absorbe primero los rojos: a pocos metros la piel, la sangre y los objetos rojos se ven pardos o grises salvo que una luz artificial cercana los recupere; un rojo saturado a profundidad sin fuente cercana es un error físico. [A PRUEBA]"
+  },
+  {
+   "id": "3628801c0b06",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 2. La luz entra desde la superficie y se descompone en haces cuando hay una abertura o partículas; en un cenote los haces caen desde la boca de la caverna y son la única fuente motivada. [A PRUEBA]"
+  },
+  {
+   "id": "ba1e31af9428",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 3. Las cáusticas sobre el fondo o sobre el sujeto son la firma de una superficie iluminada por sol; sin sol directo no hay cáusticas. [A PRUEBA]"
+  },
+  {
+   "id": "630f084a7818",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 4. Las burbujas suben verticales y son la brújula del cuadro: indican dónde está arriba y, en racimo desde el regulador, marcan una exhalación reciente, es decir un cambio de estado. [A PRUEBA]"
+  },
+  {
+   "id": "87b180739f67",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 5. La visibilidad cae con la distancia: contraste y saturación se pierden hacia el fondo y viran al azul o verde, la perspectiva aérea de este medio. [FUENTE: image/references/vision-decomposer.md §2]"
+  },
+  {
+   "id": "89762eac7717",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 6. El pelo y la tela flotan y se separan del cuerpo; una melena pegada a la cabeza o una camiseta caída se leen como aire. [A PRUEBA]"
+  },
+  {
+   "id": "2bf83868c7db",
+   "texto": "[Subacuático › 2. Leyes físicas que el still debe evidenciar] 7. La partícula en suspensión cerca de la lente, el backscatter, existe siempre que hay luz frontal; un agua perfectamente limpia se lee como aire teñido de azul. [A PRUEBA]"
+  },
+  {
+   "id": "b4030a55af32",
+   "texto": "[Subacuático › 3. Cue de movimiento congelado por defecto] - Cue por defecto: quietud deliberada con una sola cosa en movimiento, el racimo de burbujas o una aleta en blur parcial; el medio ya comunica lentitud. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "0b9ee47c3f1c",
+   "texto": "[Subacuático › 3. Cue de movimiento congelado por defecto] - Para un nadador rápido: sujeto nítido y estela de burbujas barrida detrás, nunca el fondo barrido, porque bajo el agua el fondo casi nunca es legible. [A PRUEBA]"
+  },
+  {
+   "id": "b10a91feb157",
+   "texto": "[Subacuático › 3. Cue de movimiento congelado por defecto] - El estado de las burbujas es el cambio de estado del panel: exhalación recién liberada, no burbujas decorativas dispersas. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "89de1a51813d",
+   "texto": "[Subacuático › 4. Luz en este medio] - Una fuente domina: la superficie. Toda luz adicional debe ser un práctico visible, linterna o foco del buzo, y su color cálido cerca del sujeto es la única forma legítima de recuperar rojos. [FUENTE: video/references/camera-lighting-vocabulary.md §5]"
+  },
+  {
+   "id": "a32721213146",
+   "texto": "[Subacuático › 4. Luz en este medio] - Silueta contre-jour contra la superficie luminosa: cuerpo negro con un rim y un glint en la máscara; el cerebro completa lo que no ve. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "f485a21cac9d",
+   "texto": "[Subacuático › 4. Luz en este medio] - Los haces de luz son atmósfera y solo existen con partículas; pedir haces sin partículas produce rayos dibujados. [A PRUEBA]"
+  },
+  {
+   "id": "411720677b8b",
+   "texto": "[Subacuático › 4. Luz en este medio] - El 70% del cuadro puede quedar en penumbra azul; no rellenar. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "b9149b1626a7",
+   "texto": "[Subacuático › 5. Cámara, ángulo y rig montable] - Ángulo por defecto low mirando hacia la superficie: pone la fuente detrás del sujeto y da escala con los haces; el eye-level lateral sirve para la exploración; el picado desde arriba pierde la luz. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "66adb01d9e74",
+   "texto": "[Subacuático › 5. Cámara, ángulo y rig montable] - Lente ancha, 24mm o menos, y cerca del sujeto: bajo el agua la distancia come contraste, así que la cámara se acerca en vez de cerrar plano con tele. [A PRUEBA]"
+  },
+  {
+   "id": "1ea45d177d1a",
+   "texto": "[Subacuático › 5. Cámara, ángulo y rig montable] - El rig es una carcasa con domo; la deformación de gran angular y la ligera viñeta del domo son texturas legítimas del régimen. [A PRUEBA]"
+  },
+  {
+   "id": "0645d06e18d2",
+   "texto": "[Subacuático › 5. Cámara, ángulo y rig montable] - Cámara implícita: el descenso lento o el avance en una sola dirección; un solo movimiento por clip cuando se anime. [FUENTE: video/references/camera-lighting-vocabulary.md §2]"
+  },
+  {
+   "id": "a9e9f04519ee",
+   "texto": "[Subacuático › 6. Modelo recomendado] - Nano Banana Pro para escenas complejas con física de luz, partículas y tela flotante. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "b377cf0077e5",
+   "texto": "[Subacuático › 6. Modelo recomendado] - NB2 con image grounding cuando el cenote, el arrecife o la especie deben ser fieles a la realidad; el grounding cubre lugares, animales y plantas. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "657e5f60c64c",
+   "texto": "[Subacuático › 6. Modelo recomendado] - Pedir \"natural contrast, no HDR look\": el azul profundo dispara el HDR sobrecocido. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "a5f920191cde",
+   "texto": "[Subacuático › 6. Modelo recomendado] - thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "c91ac720a854",
+   "texto": "[Subacuático › 7. Tratamiento de personas dentro del régimen] - Con máscara y regulador el rostro no sostiene la identidad: la sostienen traje, aletas, color del tanque y silueta; esos elementos van en el identity block y se repiten verbatim. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "c07090972440",
+   "texto": "[Subacuático › 7. Tratamiento de personas dentro del régimen] - El apneísta sin máscara sí muestra rostro: entonces aplica el maestro T1 seco, y el cuadro sumergido se inserta con referencia, con el viraje de color declarado como cambio de luz, no como cambio de identidad. [FUENTE: produccion-visual-sw30/SKILL.md R5]"
+  },
+  {
+   "id": "77e5a091dbdc",
+   "texto": "[Subacuático › 7. Tratamiento de personas dentro del régimen] - La piel bajo el agua se describe con su viraje real, cálida solo bajo la linterna; skin_doc sigue aplicando en textura, no en color. [A PRUEBA]"
+  },
+  {
+   "id": "006211c97ddf",
+   "texto": "[Subacuático › 7. Tratamiento de personas dentro del régimen] - Dos buzos: uno por generación sobre la placa del cenote; la profundidad relativa se declara por tamaño y por pérdida de contraste, no por \"detrás\". [FUENTE: produccion-visual-sw30/SKILL.md R2]"
+  },
+  {
+   "id": "4656a7500f73",
+   "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - El agua parece aire azul: faltan partículas, haces o pérdida de contraste con la distancia; añadir las tres, una por cláusula. [A PRUEBA]"
+  },
+  {
+   "id": "41d52389a865",
+   "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Piel rosada y labios rojos a diez metros: color físicamente imposible sin práctico; declarar el viraje o añadir la linterna como fuente. [A PRUEBA]"
+  },
+  {
+   "id": "73c6c71c33af",
+   "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Burbujas que van de lado o hacia abajo: el modelo perdió la vertical; declarar \"bubbles rising straight up toward the surface\". [A PRUEBA]"
+  },
+  {
+   "id": "ecfc9d749ed1",
+   "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Pelo y tela pegados al cuerpo: pedir flotación explícita. [A PRUEBA]"
+  },
+  {
+   "id": "6326e1fb81f8",
+   "texto": "[Subacuático › 8. Fallos conocidos y su corrección] - Dos direcciones de luz sin práctico visible: contradicción; una fuente desde la superficie y, si hay otra, que se vea. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "b526d9f34ee6",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Absorción de color coherente con la profundidad declarada. [A PRUEBA]"
+  },
+  {
+   "id": "a497bae87430",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Partículas, haces o pérdida de contraste presentes. [A PRUEBA]"
+  },
+  {
+   "id": "2b42ded79923",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Burbujas verticales; racimo reciente si hay cambio de estado. [A PRUEBA]"
+  },
+  {
+   "id": "3f2739dde8ba",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Una sola fuente dominante desde la superficie, prácticos visibles si hay más. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "46296856c0e0",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Pelo y tela flotando. [A PRUEBA]"
+  },
+  {
+   "id": "30c2a9633050",
+   "texto": "[Subacuático › 9. Checklist del crítico] - [ ] Identidad sostenida por equipo y silueta, verbatim entre cuadros. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "8eee76ab6cd7",
+   "texto": "[Objeto balístico] Un objeto pequeño en vuelo o en el instante de impacto. Sin rostro y casi sin cuerpo, el objeto es\nel actor: su deformación, su sombra de contacto y su estela cuentan la fuerza. Es el régimen donde\nmás fácil se cae en el objeto estático fetiche, que la fuente prohíbe."
+  },
+  {
+   "id": "f9537aea0d1b",
+   "texto": "[Objeto balístico › 1. Cuándo cargar] - Cargar cuando el sujeto principal del panel es un objeto en vuelo, en impacto o en el instante posterior al impacto. [A PRUEBA]"
+  },
+  {
+   "id": "139b376f083a",
+   "texto": "[Objeto balístico › 1. Cuándo cargar] - Si el objeto lo impulsa una persona visible, cargar además `06-cuerpo-en-esfuerzo.md`; si el objeto es un vehículo, `05-vehiculo.md`. [A PRUEBA]"
+  },
+  {
+   "id": "d16ad54f0538",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 1. Un objeto solo carga emoción cuando cambia de estado: boardear el después del impacto, la pelota aplastada contra las cuerdas, el vaso ya quebrado, la gota ya convertida en corona; el objeto intacto en vuelo es un panel de setup, no de impacto. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "d12f48f9d10f",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 2. El impacto se describe por su consecuencia física: la pelota se deforma y las cuerdas ceden, la superficie se astilla en telaraña, el polvo salta de la línea. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "0fc9c19a14ae",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 3. Una pelota blanda en el impacto no es redonda: se achata contra la superficie, y el material del que está hecha lo dice el borde, fieltro erizado o cuero tenso. [A PRUEBA]"
+  },
+  {
+   "id": "d76df2ea67d7",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 4. Toda acción produce reacción visible en lo que recibe el golpe: cuerdas deflectadas, tela hundida, superficie del agua deprimida; sin reacción, el objeto flota pegado. [A PRUEBA]"
+  },
+  {
+   "id": "84c2d329d9ff",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 5. La sombra de contacto ancla el objeto al mundo: sin sombra de contacto o con sombra doble, el objeto se lee compuesto. [FUENTE: image/references/prompt-framework.md]"
+  },
+  {
+   "id": "81ed20bf70ec",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 6. El vector de trayectoria se compone con el espacio negativo hacia donde el objeto va a resolverse, no de donde viene. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "38f5928ea21b",
+   "texto": "[Objeto balístico › 2. Leyes físicas que el still debe evidenciar] 7. Un objeto pequeño necesita referencia de escala en el mismo plano de foco: una mano, una línea de cancha, una etiqueta; sin ella no hay tamaño. [A PRUEBA]"
+  },
+  {
+   "id": "24a917bc8dde",
+   "texto": "[Objeto balístico › 3. Cue de movimiento congelado por defecto] - Elegir una sola lógica de blur y declararla: o el objeto nítido y el fondo barrido, cámara que sigue al objeto, o el objeto barrido y el mundo nítido, cámara fija; las dos a la vez es imposible y el modelo mezcla. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "a707c0984a42",
+   "texto": "[Objeto balístico › 3. Cue de movimiento congelado por defecto] - Cue por defecto en el impacto: blur parcial congelado, el objeto deformado tack-sharp y el polvo, las cuerdas o el líquido apenas barridos. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "028e8e6d6acd",
+   "texto": "[Objeto balístico › 3. Cue de movimiento congelado por defecto] - Cue por defecto en vuelo: sharp-subject contra fondo barrido con macro y foco muy corto. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "afad8aca2c49",
+   "texto": "[Objeto balístico › 3. Cue de movimiento congelado por defecto] - Nunca describir la velocidad con adjetivos; describir el residuo: estela de polvo, fibras erizadas, gota alargada en el borde de fuga. [FUENTE: video/references/dramaturgy.md §2]"
+  },
+  {
+   "id": "2eefdb5c5cce",
+   "texto": "[Objeto balístico › 4. Luz en este medio] - Luz dura lateral o contraluz para que el material del objeto se lea: fieltro, cuero, vidrio, líquido; la luz frontal pareja convierte el objeto en un círculo plano. [FUENTE: video/references/camera-lighting-vocabulary.md §6]"
+  },
+  {
+   "id": "1a37a07ed321",
+   "texto": "[Objeto balístico › 4. Luz en este medio] - El polvo, el spray o las astillas solo tienen volumen a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "540118ad9a63",
+   "texto": "[Objeto balístico › 4. Luz en este medio] - Un specular duro en el objeto es obligatorio: sin él no hay información de material ni de forma. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "d6df3ef47bd0",
+   "texto": "[Objeto balístico › 4. Luz en este medio] - Sombra de contacto suave y definida donde el objeto toca, oclusión ambiental en el punto de deformación. [FUENTE: image/references/prompt-framework.md]"
+  },
+  {
+   "id": "4c44626dd3c5",
+   "texto": "[Objeto balístico › 5. Cámara, ángulo y rig montable] - Ángulo por defecto low a la altura del plano de impacto: la red, la línea, la mesa; eye-level para seguir un vuelo; overhead solo para leer la geometría de la corona o la dispersión. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "e542286e0b40",
+   "texto": "[Objeto balístico › 5. Cámara, ángulo y rig montable] - Lente macro 100mm o equivalente descriptivo para textura y detalle; en Nano Banana describir \"extreme close-up, shallow depth of field\", no números. [FUENTE: video/references/camera-lighting-vocabulary.md §3]"
+  },
+  {
+   "id": "ea4c60b97908",
+   "texto": "[Objeto balístico › 5. Cámara, ángulo y rig montable] - Rig montable: cámara de alta velocidad en trípode al nivel del impacto, o cámara robótica que sigue; una cámara que gira alrededor del objeto en el aire no existe en el rodaje real y se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "68fbe48b4b6b",
+   "texto": "[Objeto balístico › 5. Cámara, ángulo y rig montable] - Cámara implícita: crash zoom al detalle del impacto o freeze frame; nombrar cuál. [FUENTE: video/references/race-and-speed.md §6]"
+  },
+  {
+   "id": "956b24d5711c",
+   "texto": "[Objeto balístico › 6. Modelo recomendado] - GPT Image 2 con quality high para el detalle congelado y la legibilidad de texturas finas, como en los patrones de ingrediente flotante. [FUENTE: image/references/patterns/ecommerce.md]"
+  },
+  {
+   "id": "686007b49962",
+   "texto": "[Objeto balístico › 6. Modelo recomendado] - Nano Banana Pro cuando la deformación física es el centro: razonamiento espacial para distorsión creíble. [FUENTE: image/references/patterns/ecommerce.md]"
+  },
+  {
+   "id": "22499b1542d7",
+   "texto": "[Objeto balístico › 6. Modelo recomendado] - Sin logos ni marcas en el objeto: se heredan de asset aprobado o se componen en post; el modelo los deforma. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "83601316824f",
+   "texto": "[Objeto balístico › 6. Modelo recomendado] - Prompt en cinco slots para GPT Image 2 con el slot Constraints declarando \"no duplicate ball, no second shadow\". [FUENTE: image/references/gpt-image.md]"
+  },
+  {
+   "id": "46ff5295dc2e",
+   "texto": "[Objeto balístico › 7. Tratamiento de personas dentro del régimen] - Si aparece una persona, entra como anatomía en decisión: mano y antebrazo golpeando, no cuerpo entero; nombrar el verbo. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "28cc3d2ddbad",
+   "texto": "[Objeto balístico › 7. Tratamiento de personas dentro del régimen] - La mano y el objeto se generan juntos solo si el contacto es el beat; si no, el objeto se genera solo y la persona en su propio cuadro. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "0396f01fc5cb",
+   "texto": "[Objeto balístico › 7. Tratamiento de personas dentro del régimen] - Lateralidad nombrada en cualquier contacto: qué mano, qué lado de la raqueta. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "e1fba98383c6",
+   "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - Pelota perfectamente redonda contra las cuerdas: falta el estado posterior; pedir la deformación y la deflexión de las cuerdas. [A PRUEBA]"
+  },
+  {
+   "id": "211ea76c115f",
+   "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - Objeto duplicado o sombra doble: pedir \"single ball, single contact shadow\" en Constraints y bajar la complejidad del fondo. [FUENTE: image/references/gpt-image.md]"
+  },
+  {
+   "id": "a78af7f612ef",
+   "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - Blur en el objeto y en el fondo: se pidieron dos lógicas de cámara; elegir una. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "c22529de5874",
+   "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - El objeto flota sin tocar: falta sombra de contacto y reacción de la superficie. [A PRUEBA]"
+  },
+  {
+   "id": "e7a63b08b412",
+   "texto": "[Objeto balístico › 8. Fallos conocidos y su corrección] - Marca o logo deformado en el objeto: quitarlo del prompt y componer en post. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "68f48bad5808",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Estado posterior visible con deformación y reacción del receptor. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "756bad183c1f",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Una sola lógica de blur, declarada y cumplida. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "31d69dbb2a68",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Sombra de contacto única. [A PRUEBA]"
+  },
+  {
+   "id": "58fec8d72078",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Referencia de escala en foco. [A PRUEBA]"
+  },
+  {
+   "id": "635eade2302e",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Specular y material legibles. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "13af204e2830",
+   "texto": "[Objeto balístico › 9. Checklist del crítico] - [ ] Sin marcas en el objeto. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "68b5d1bba1b6",
+   "texto": "[Vehículo en movimiento] Este régimen ya tiene dueño: `race-and-speed.md` es la autoridad para todo vehículo a velocidad, con\n`animatic-keyframes.md` como método base. Este archivo no repite esas reglas; las señala y añade lo\nque cambia cuando el vehículo no es un auto de carreras en una pista."
+  },
+  {
+   "id": "99ef10a15d14",
+   "texto": "[Vehículo en movimiento › 1. Cuándo cargar] - Cargar `race-and-speed.md` completo antes que este archivo para cualquier vehículo a velocidad. [FUENTE: video/SKILL.md paso 4]"
+  },
+  {
+   "id": "4dc1a5be8f5b",
+   "texto": "[Vehículo en movimiento › 1. Cuándo cargar] - Este archivo se carga después, solo para las extensiones: moto, bicicleta, tren, lancha, dron y avión ligero. [A PRUEBA]"
+  },
+  {
+   "id": "2719069f1c4e",
+   "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 1. Un still vende velocidad solo si reúne al menos tres de cinco cues: cámara a la altura del parachoques o más baja, asfalto barriendo el borde inferior, referencia cercana pasando el borde, héroe nítido contra fondo barrido, cue de vibración mecánica. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "d8651f79b878",
+   "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 2. La física tiene que estar en el still: squat de la carrocería, nariz levantada, neumático arrugado, rim barrido; nunca depender de que el panel se vea rápido acelerado en post. [FUENTE: video/references/race-and-speed.md §1]"
+  },
+  {
+   "id": "2f58bd690ec3",
+   "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 3. Los rayos de una rueda en movimiento siempre van barridos en disco; un rim nítido en un vehículo en marcha es el fallo más frecuente y más delator. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "718c3b822c8b",
+   "texto": "[Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar] 4. En moto la física visible es el ángulo de inclinación y el borde del neumático trabajando: rodilla o codo cerca del suelo, el cuerpo descolgado hacia el interior de la curva. [A PRUEBA]"
+  }
+ ]
+}

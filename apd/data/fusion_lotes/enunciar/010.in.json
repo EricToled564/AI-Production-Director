@@ -1,0 +1,550 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "65d43c5dc90b",
+   "texto": "[Race, speed and faceless kinetic montage › 2. Four schools worth stealing] **Race-truth (Frankenheimer, Lelouch, Mangold/Papamichael, Howard/Dod Mantle, Refn).** Speed is a fact you earn by putting the camera where a real rig could bolt — bumper, hood lip, hostess-tray, axle, cabin. Low, wide and close, hard-mounted without vibration isolation so \"cheeks shake\", asphalt streaking in frame as the speedometer, mini-cams next to pistons and swelling tires for \"an electron-microscope view of the car at its limit\". Refn's cocoon: silence and stillness inside the shell, chaos outside, so the launch detonates. Refuse the crank — *Grand Prix* oiled tires for real smoke rather than fake the burnout.\n→ **Rule:** if the implied camera could not physically mount on the car, the panel reads as render — drop it to bumper height and bolt it on."
+  },
+  {
+   "id": "124ce8df65d6",
+   "texto": "[Race, speed and faceless kinetic montage › 2. Four schools worth stealing] **Loaded composition (Bong, Park, Anderson, Kon).** With no faces, geometry and the depth stack do the acting (the FG/MG/BG depth method is `animatic-keyframes.md` §6). One geometric spine (centerline or Christmas Tree as the axis); every object an evidence (Park: \"each object is a clue\") or it is cut. Symmetry is handwriting — one held symmetric \"breath\" frame says balanced rivalry; break it the instant one car noses ahead. Kon's graphic-match pairs compress time across two adjacent keyframes sharing a shape at the same size and screen position.\n→ **Rule:** a panel answers one question in the first glance and rewards a second look — one focal point, one emotion, three depth layers, zero dead objects."
+  },
+  {
+   "id": "57c4e7216615",
+   "texto": "[Race, speed and faceless kinetic montage › 2. Four schools worth stealing] **Rule-based ad (Honda *Cog*, Audi Quattro, Nike/Ritchie, Goodyear).** The drama is pure mechanism: every object does something irreversible, \"let the machine talk\" (no music), the entire spot first-person with no hero face. Tension is \"will it fire\". A static fetish shot of a gear lever flatlines; an object crossing a threshold says a decision just happened.\n→ **Rule:** objects carry feeling only when they visibly **change state** — board the \"after\" (needle pinned in the red, ignition lamp blooming live, slick caught mid-fold), the \"before\" is implied."
+  },
+  {
+   "id": "d3d8b98d3137",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] A still has no engine note and zero motion. It sells velocity through the **speed-budget rule** — a frame reads fast only when **≥3 of five cues coexist** (camera at/below bumper height · asphalt streaking the lower frame · a near foreground reference passing the edge · sharp hero against motion-blurred background · a mechanical-vibration cue). The full rule, with the anti-fake firewall, lives in `animatic-keyframes.md` §4; do not re-derive it. One cue is a car photo; three is velocity; five and even a parked car reads dangerous. If a \"fast\" panel can't name three, reframe lower, drag the camera to the asphalt, throw a barrier into the foreground."
+  },
+  {
+   "id": "d807b97830c8",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Two race-domain extensions the general file does not carry:\n**The foreground reference catalog** (cue *c*, the cheapest and strongest speed multiplier). Place the reference *near the lens* (so it smears most) and *passing the edge* (so it reads as transiting, not parked). Keep one near object tack-sharp so the brain measures the smear against it."
+  },
+  {
+   "id": "7a9c61f463ce",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Cone / timing block · Where to place it: near edge, elongated/smeared · Speed it implies: lane-level rush"
+  },
+  {
+   "id": "8c3f0393ee99",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Armco barrier / wall · Where to place it: scraping the near side, streaked · Speed it implies: proximity + velocity"
+  },
+  {
+   "id": "85f3225e1bcc",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Lane stripe / chevron · Where to place it: lower frame, smeared toward bottom · Speed it implies: ground speed"
+  },
+  {
+   "id": "3608bafb3f72",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Christmas-Tree pylon · Where to place it: foreground, sharp anchor; car blurred · Speed it implies: launch reference + timer"
+  },
+  {
+   "id": "8ec0108153fc",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Tree / lamp post / grandstand · Where to place it: whipping past, motion-rod · Speed it implies: open-road pace"
+  },
+  {
+   "id": "6fbf26d826ef",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Tire smoke / spray · Where to place it: raked by backlight across frame · Speed it implies: force + air movement"
+  },
+  {
+   "id": "77ad05d0624a",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] Reference object: Marshal / crowd at periphery · Where to place it: blurred, fragmented · Speed it implies: scale + danger"
+  },
+  {
+   "id": "12963a6482f3",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] **Long-lens compression** — the second speed register and the antidote to \"only blur sells speed\". Frankenheimer's 1000mm stacked distant cars onto the hero so closing distance reads as collapse. Pair compression panels with low-wide panels in the cut; never board the whole spot on one lens. In `seedance.md`/`veo.md` syntax name \"motion blur, fast-shutter look on background, sharp subject\" explicitly — models default to over-clean stabilization (the prompt skeleton is `animatic-keyframes.md` §7)."
+  },
+  {
+   "id": "31cddc17e586",
+   "texto": "[Race, speed and faceless kinetic montage › 3. Selling speed in a single frame] (The full \"what kills the speed\" audit lives once, in §10.)"
+  },
+  {
+   "id": "0a8e9bbfe379",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] A face does four jobs: internal state, where it looks, the cost, the decision. Banned, those jobs redistribute — **decision → anatomy mid-action; internal state → an object crossing a threshold; looking/rivalry → space.** The mechanism, the EMOTION→OBJECT substitution table and the state-change cheat-sheet are owned by `animatic-keyframes.md` §5; do not duplicate them. Two filters before you draw: name the **verb** on any hand/foot panel (grip / latch / shift / preload / release — no verb, no panel), and board only the **after** state of any object threshold (Honda *Cog*). Pick ONE hero object and board it three times at rising intensity — beats twelve unrelated inserts (`dramaturgy.md` §13)."
+  },
+  {
+   "id": "76ec9292ed56",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] What this file owns is the **race captioning system** — the margin label that proves an insert is load-bearing (Law 6). Every detail keyframe gets exactly one. If you cannot assign one, drop the panel."
+  },
+  {
+   "id": "ccad434de957",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **setup** · Story job: establishes capability / readiness · Typical object / crop: glove pull, harness latch, ignition dead · Skill tag (`role-modes.md` §4): Establish / Detail"
+  },
+  {
+   "id": "f700ee90ee46",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **commitment** · Story job: point of no return chosen · Typical object / crop: foot pins throttle, shifter rammed home, ignition live · Skill tag (`role-modes.md` §4): Shift / Impact"
+  },
+  {
+   "id": "e50da89787ac",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **mistake** · Story job: something slips / over-limit · Typical object / crop: tire shake, wheel fights back, revs flare wrong · Skill tag (`role-modes.md` §4): Pressure / Impact"
+  },
+  {
+   "id": "afcfc89da0cc",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **recovery** · Story job: control reclaimed · Typical object / crop: hand catches the correction, tach settles back into band · Skill tag (`role-modes.md` §4): Shift"
+  },
+  {
+   "id": "a474400ce5f6",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **proof-of-speed** · Story job: force is real, not staged · Typical object / crop: chassis squat, slick wrinkle, exhaust flame, asphalt streak · Skill tag (`role-modes.md` §4): Power / Pressure"
+  },
+  {
+   "id": "42534305508b",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] Label: **result** · Story job: who won the inch · Typical object / crop: finish stripe, slicks ballooned at trap, one nose ahead, chute bloom · Skill tag (`role-modes.md` §4): Impact / Aftermath"
+  },
+  {
+   "id": "c6afd01555b0",
+   "texto": "[Race, speed and faceless kinetic montage › 4. Storytelling without faces — the race captioning system] (Banned panels are consolidated in §10.)"
+  },
+  {
+   "id": "5c84bb9396e2",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] The race is not a chase, it is a *liturgy*. Every phase is a legible, irreversible state-change a knowing viewer reads instantly — muddle the order and the spot dies. The countdown *tightens cut length toward the green*, then explodes: the drag-specific instance of the `dramaturgy.md` §12 rhythm staircase. Draw one anchor keyframe per beat. In a faceless spot **Reaction** is reassigned from a human face to the *machine's* face — the needle jumping, the slick wrinkling, the nose squatting. Gauges and rubber are the actor."
+  },
+  {
+   "id": "3b7d08414586",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 1 · Ritual beat: Water box entry · Function: Establish · Keyframe to draw (still): Front slick easing into mirror-still water, chalk/box edge in frame, bulbs reflected in the sheet · Light (cold): Steel-blue dusk, wet specular · Emotion: coiled stillness"
+  },
+  {
+   "id": "e2d634905ab9",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 2 · Ritual beat: Burnout (white→blue) · Function: Power · Keyframe to draw (still): Ground-level wall of smoke off the rear, plume backlit; car straining on line-lock · Light (cold): Hard cyan backlight through smoke · Emotion: barely-leashed force"
+  },
+  {
+   "id": "d3f14269f190",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 3 · Ritual beat: Reverse settle · Function: Pressure · Keyframe to draw (still): Rear rolling back through its own drifting smoke toward the beams, tail-lights bleeding red into haze · Light (cold): Smoke haze, low key, red tail wash · Emotion: deliberate menace"
+  },
+  {
+   "id": "ba0044d29613",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 4 · Ritual beat: Pre-stage bulb · Function: Pressure · Keyframe to draw (still): Front tyre creeping, top blue bulb lit as anchor, beam line as a graphic spine on asphalt · Light (cold): Blue bulb glow on wet metal · Emotion: held breath"
+  },
+  {
+   "id": "c1c260a0cdd7",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 5 · Ritual beat: Stage bulb · Function: Pressure · Keyframe to draw (still): Second blue bulb lit, tyre on the line, knuckles whitening on wheel/trans-brake (depth: bulb BG, hand FG) · Light (cold): Two blue bulbs, deep black · Emotion: point of no return"
+  },
+  {
+   "id": "331acaa60dd5",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 6 · Ritual beat: Amber countdown · Function: Pressure→Shift · Keyframe to draw (still): The Tree as timer — three ambers, sequential (see below) · Light (cold): Amber pulse (the only narrative warm light) · Emotion: trigger tension"
+  },
+  {
+   "id": "a5f60dd250f6",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 7 · Ritual beat: Green / launch · Function: Impact · Keyframe to draw (still): Both cars squatting on rear suspension, front wheels lifting, asphalt streaking back · Light (cold): Green flash + hard flare · Emotion: release / violence"
+  },
+  {
+   "id": "f001a70b5f99",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 8 · Ritual beat: Slick wrinkle (hero) · Function: Detail/Reaction · Keyframe to draw (still): Macro into rear sidewall folding/wrinkling as it hooks — *the* hero detail, the held/ramp beat · Light (cold): Hard side light, smoke bloom · Emotion: physics made visible"
+  },
+  {
+   "id": "64c3615b61d2",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 9 · Ritual beat: Shift / exhaust flame · Function: Detail · Keyframe to draw (still): Hand slamming shifter with chassis twist, OR header pipe spitting flame · Light (cold): Flame as warm spark in cold frame · Emotion: escalation"
+  },
+  {
+   "id": "305797dc7b88",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 10 · Ritual beat: The pass · Function: Power · Keyframe to draw (still): Joust / parallel tracking, asphalt streaking, rival lane in frame · Light (cold): Streaked specular, motion-rod lights · Emotion: duel"
+  },
+  {
+   "id": "c0e5e6231538",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 11 · Ritual beat: Finish · Function: Impact · Keyframe to draw (still): Top-end: slicks \"blown up\"/distorted, cars inches apart crossing the line, one nose ahead · Light (cold): Cold-white finish pool · Emotion: margin"
+  },
+  {
+   "id": "b086e2458456",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] #: 12 · Ritual beat: Chutes / aftermath · Function: Aftermath/Exit · Keyframe to draw (still): Parachutes blooming, smoke drifting through headlight beams, OR hand unclenching off the wheel · Light (cold): Falling light, residue haze · Emotion: consequence"
+  },
+  {
+   "id": "3b276855c58f",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] **Amber logic (decision point).** Choose the **Sportsman / full tree** for an ad: three ambers fire *sequentially 0.5s apart* — three drawable keyframes, a stretched drum-roll of dread with cut length collapsing toward the green. The Pro tree fires all three at once — one panel, brutal but no build. Draw the Sportsman stagger. Always leave on the **last amber, not the green** (holeshot): the launch keyframe precedes the green-lit panel by a frame, which makes it read as *anticipation*, not reaction."
+  },
+  {
+   "id": "59cd2097d463",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families] **Drift adaptation — the slip-angle liturgy.** Drift swaps the countdown for a *continuous angle ritual*: **approach → entry → clutch-kick initiation → counter-steer hold → clipping point (wall proximity) → smoke wall → transition (flick) → exit.** The **counter-steer** replaces the slick-wrinkle as the \"physics made visible\" anchor — ECU/CU of hands wound into opposite lock, forearms crossed, wheel at full angle, cold side-light on knuckles, the steering angle drawn large and unmistakable. **Wall proximity** is danger without a face: barrier hard and sharp in the foreground layer, car door a hand's-width away, motion-streak on the wall texture — the gap *is* the emotion. The **transition flick** is yawed mid-switch, smoke crossing the frame diagonally, both exit directions readable."
+  },
+  {
+   "id": "6f2375c12efb",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] Rotate among all five across the 30s — speed reads through *changing perspective*, not long takes. Each family has one job and a default composition."
+  },
+  {
+   "id": "d3cfceec6acd",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] #: 1 · Family: **Hostess-tray side profile** · Job (function): Detail / Power · Put in the still panel: Side-mounted outside the door: hand on wheel/shifter, or rear-quarter wheel filling frame; asphalt streaking behind · Authenticity tell: door/window line anchors scale; rubber works in frame"
+  },
+  {
+   "id": "0c4deaaddfb8",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] #: 2 · Family: **Hood / bumper low forward POV** · Job (function): Pressure / Impact · Put in the still panel: Predatory low forward look: asphalt rushing under the nose, cones/Tree/markers growing fast, lane stripe strobing; fisheye edge optional · Authenticity tell: road texture under the car = velocity"
+  },
+  {
+   "id": "71239ba51988",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] #: 3 · Family: **Hard-mounted cabin shake** · Job (function): Pressure / Reaction · Put in the still panel: Rigid interior mount: dash/needle/hands vibrating, mirror trembling, world shuddering through glass · Authenticity tell: visible micro-vibration; never perfectly stable"
+  },
+  {
+   "id": "28ebf55520ea",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] #: 4 · Family: **Tracking / chase parallel + joust** · Job (function): Power / Reveal · Put in the still panel: Camera car alongside (parallel) or closing head-on offset (joust); rival lane in frame, roadside lights as streaks · Authenticity tell: closing distance + streaked surroundings"
+  },
+  {
+   "id": "b0096f28076c",
+   "texto": "[Race, speed and faceless kinetic montage › 5. The race ritual (liturgy) + the 5 shot families › The 5 shot families] #: 5 · Family: **Distant proof shot** · Job (function): Establish / Aftermath · Put in the still panel: Long locked lens: two cars as small hard shapes crossing huge space, smoke trail, barriers narrowing perspective · Authenticity tell: space covered brutally fast; one breath of stillness"
+  },
+  {
+   "id": "9f5b7d0062e2",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] The **six motion-as-still cues** (smear / partial blur / streak / vector / sharp-blur separation / held stillness) are catalogued in `animatic-keyframes.md` §4. This table is the complementary layer: the camera *move* the user names, resolved into one still composition. Format: technique — what it does to emotion — application in a keyframe/panel."
+  },
+  {
+   "id": "91b4794c1256",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Whip pan** · What it does to emotion: instant transfer of attention, reads as motion not a cut · Keyframe application (the still): Streak-frame between two clean panels: whole frame raked into horizontal streaks (Tree lamps, guardrail, lane stripes smeared), one shape barely surviving (a wheel arc, the shifter) · Tag: Shift"
+  },
+  {
+   "id": "298405639cce",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Crash / snap zoom** · What it does to emotion: shock-shove into a detail; discovery, alarm · Keyframe application (the still): Aggressively tight macro of the trigger detail (needle slamming red, last amber bulb), faint radial/zoom-blur ring at edges, subject oversized dead-center · Tag: Detail / Impact"
+  },
+  {
+   "id": "a92930a1212a",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Speed ramp** · What it does to emotion: punctuation: ramp = the breakout, freeze = exclamation mark · Keyframe application (the still): Frozen partial blur at the peak — sidewall wrinkle caught mid-deformation, smoke just blooming, everything else tack-sharp; one arrested ten-thousandth of a second · Tag: Impact"
+  },
+  {
+   "id": "05e7a6e5d811",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Freeze frame** · What it does to emotion: a held breath / a one-frame dossier on an object · Keyframe application (the still): Deliberately blur-free locked macro, hard edges, margin caption (knuckles whitening, *committed*); the symmetrical \"exhale\" amid kinetic panels · Tag: Detail / Pressure"
+  },
+  {
+   "id": "d1de00db5369",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **POV (cockpit / impossible mount)** · What it does to emotion: identification; the viewer *is* in the car · Keyframe application (the still): Hands + wheel rim in hard foreground, cluster mid-ground, Tree/rival in blurred deep ground; 24mm exaggerated proximity; or genuinely impossible mount (wheel arch, exhaust mouth) · Tag: POV / Pressure"
+  },
+  {
+   "id": "e4b4947accb3",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Joust** · What it does to emotion: closing-distance rate spikes the sense of speed · Keyframe application (the still): Near head-on, car offset to one side, a cone/marker huge and blurred on the opposite edge to mark the closing gap; reserve for the climax pass · Tag: Impact"
+  },
+  {
+   "id": "eeff785b1c51",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Low macro (aggressor cam)** · What it does to emotion: the lens is a predator, the track attacks the frame · Keyframe application (the still): Bumper/grille-level skimming the asphalt, fisheye curvature at the edges, road lunging into the lens; or extreme CU under hard cold side-light — a knuckle becomes a ridge, the lever a weapon · Tag: Impact / POV / Detail"
+  },
+  {
+   "id": "3aacc5d29ba6",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Restless / handheld cam** · What it does to emotion: the frame never settles; constant threat, physiological unease · Keyframe application (the still): Never a perfectly level, perfectly clean panel — bake in a 1–3° drift, edge smear, off-true horizon, a faint micro-shake artifact even in a \"static\" cockpit · Tag: Pressure"
+  },
+  {
+   "id": "0278acf3daf7",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Technique: **Dutch angle** · What it does to emotion: imbalance, loss of grip · Keyframe application (the still): Cant the horizon hard at the one loss-of-traction beat only (tyre breaking away, car stepping sideways) — reserve it so it stays loud · Tag: Impact"
+  },
+  {
+   "id": "e0aa76f1c79d",
+   "texto": "[Race, speed and faceless kinetic montage › 6. Camera grammar for speed] Ration aggression: one bumper-fisheye lunge, one crash-zoom, one dutch — at commitment beats, not as wallpaper. Per `camera-lighting-vocabulary.md` §2, the animatic prompt supplies one dominant move per clip; the keyframe is the locked first frame."
+  },
+  {
+   "id": "bcce1b0ec444",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces] Faces are banned, so light is the only actor left. It does not \"set a mood\" — it **rims a material** so a piece of metal, rubber or skin reports the emotion a face would. General light grammar (sources, direction, quality) is `camera-lighting-vocabulary.md` §4–7; the anti-sterile firewall is `animatic-keyframes.md` §7 + `universal-rules.md` U12. The race-specific governing law: *embrace the dark* (crush blacks, ~70% of the frame unlit), *one motivated practical per panel* (Tree lamp, headlight, sodium lamp, brake glow), *light is specular not ambient* (every panel needs ≥1 hard specular hit — no specular, no information)."
+  },
+  {
+   "id": "b0ab864372d4",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Hard white / dirty mercury white · Emotional job: clinical pressure, the white-hot edge of commitment · Where it lives in the keyframe: top/side key on knuckles, metal lip; blown highlight on chrome"
+  },
+  {
+   "id": "37c72a786d82",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Cyan / electric teal · Emotional job: cold adrenaline, machine-alive · Where it lives in the keyframe: backlight through burnout smoke; spill on wet asphalt; rim on rear-quarter"
+  },
+  {
+   "id": "5b8249e72d63",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Steel blue · Emotional job: night base, isolation, the void · Where it lives in the keyframe: negative space, deep shadow body, the unlit 70%"
+  },
+  {
+   "id": "e7c4e9e58669",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Magenta / cold violet · Emotional job: aggression, neon menace · Where it lives in the keyframe: practical sign spill on roofline; reflection ribbon down wet lane"
+  },
+  {
+   "id": "79a7b4db3b4e",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: **Red (accent only)** · Emotional job: danger, redline, point of no return · Where it lives in the keyframe: brake disc glow, tail-lights, Tree bulbs in lacquer, tach needle in the red"
+  },
+  {
+   "id": "553f18b060eb",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Green (accent only) · Emotional job: release, GO · Where it lives in the keyframe: the Tree's green bulb, its single reflection in a headlight lens or paint"
+  },
+  {
+   "id": "44607323107c",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] Color: Toxic amber/sodium (rationed) · Emotional job: temporary, contaminated, alien — never cozy · Where it lives in the keyframe: sodium lamp as a passing smear; spilled fluid catching one lamp; the Tree's three ambers as countdown only"
+  },
+  {
+   "id": "a9bf0fd19b0e",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › The cold combative palette] **Warmth as toxin** is the only permitted heat: brake-disc/exhaust glow (the machine at its thermal limit), a header flame stab gone in a frame, the Tree's alien ambers, a sickly sodium smear. Any warm element must be **point-source and surrounded by cold**. If amber fills more than ~15% of the frame it has become a wash — kill it."
+  },
+  {
+   "id": "f8936fd752bf",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Hard key on the working hand** [Detail/Pressure]: single hard source 45° camera-side onto knuckles on the shifter — finger shadows rake the skin, sweat reads as discrete specular dots, veins as ridges, background crushed. The whitening knuckle IS the fear."
+  },
+  {
+   "id": "11af89304989",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Backlight / rim on metal edge** [Power]: hard white or cyan source behind/above at low angle drawing one bright line down the roof gutter, mirror housing or wing edge; body in shadow, only the contour glows, against black sky."
+  },
+  {
+   "id": "649678d3a93e",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Backlit smoke** [Pressure/Establish]: hard cyan or mercury-white punching *through* tire smoke from behind; volumetric shafts, the car a dark mass dissolving into glowing haze, red tail-light bleed inside the smoke for the danger accent. Front-lit smoke is dead gray nothing — always rim it from behind."
+  },
+  {
+   "id": "9f31ca4bbe65",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Brake-disc glow** [Detail/Impact]: macro on the wheel, glowing orange-red rotor through the spokes as the *only* warm element (toxic heat), rim the caliper and spokes with that glow, everything else steel blue — the one ember in a cold frame."
+  },
+  {
+   "id": "9188b4b883a1",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Specular on wet asphalt — the mirror** [Establish/Shift]: low bumper-height, lane stretching away, practicals (Tree, sodium lamps, headlights) reflected as long vertical smears down the wet surface as the composition's spine; pull the real lamps half out of frame, keep the mirror. Wet asphalt at night = `dramaturgy.md` §9 guilt/threat, and the cheapest way to put more cold light in frame without lifting blacks."
+  },
+  {
+   "id": "7c665b76a119",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **Silhouette / contre-jour** [Power/Pressure]: helmet/shoulder as pure black shape against a blown headlight or the Tree's amber bank, one thin rim defining the form plus one glint on the visor edge, no features. The brain fills the dark with something worse than any face."
+  },
+  {
+   "id": "6b73f204291a",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] - **The Christmas Tree as the scene's lamp and clock** [Pressure→Impact]: put the Tree bank in frame as the dominant practical — its glow the only key. Stage 1: two blue bulbs as cold points in the lacquer. Stage 2: three ambers blazing, amber-as-toxin spill on wet asphalt, held. Stage 3: green pops, a single green reflection streaks the hood. Match-cut the round bulb → round headlight → round tach."
+  },
+  {
+   "id": "890565024815",
+   "texto": "[Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)] **Texture and atmosphere.** Name the grain, never \"clean\": fine-to-medium film grain (heaviest in shadow), halation/bloom on hard practicals (soft glow ring + hard hot core), one anamorphic flare off the dominant source, slight chromatic fringe on the hottest edges (anti-sterile test in `animatic-keyframes.md` §7). One atmospheric pressure per panel (`dramaturgy.md` §9, Kurosawa) — backlit tire smoke, frozen launch grit lit on its leading edge, heat-haze warping the rimmed edge, wet asphalt as the mirror. Don't stack smoke + haze + spray in one still or it turns to mud. Keep Tony Scott's restlessness and grain; discard his warm grade."
+  },
+  {
+   "id": "08177c2f600f",
+   "texto": "[Race, speed and faceless kinetic montage › 8. Sound & rhythm] You storyboard the **sound first**; the keyframes hang off it. The general law — **loudness in the audio = panel count** — and the descending duration staircase are the density ladder in `animatic-keyframes.md` §3, sitting on the `dramaturgy.md` §12 rhythm staircase. Do not re-derive them. The race-specific rhythm rules:\n- **Engine as metronome.** Tie panel *duration* to RPM: idle = ~2s panels, redline = panels collapsing 2s → 1s → 0.5s → 8fr → 4fr toward the green. The board should read as an accelerating tachometer on mute. Annotate each panel with its on-screen life.\n- **Amber collapse.** The Sportsman stagger (§5) is the audible drum-roll: idle drops out on the ambers, each amber a tighter panel, the green detonates.\n- **The wrinkle is the one time-expansion.** Dedicate 2–3 sequential panels to the slick folding (clean → wrinkled → gripping), marked \"RAMP — hold\", sound dropped (the Goodyear move) — the only place time *expands* inside the loud section.\n- **Pull-to-intimate at the peak.** At the contest's tensest point, cut from a wide loud pass to an ECU of glove-on-shifter / breath-fog, shallow focus, void around it — engines stripped to breath only. The *quiet* panel goes *tight*; the loud panel goes wide.\n- **Machine talks (the governing anchor).** Strip music; the `Sound` cell reads \"engine + tire only\" (Audi Quattro 1984).\n- **Sound leads picture by 2–3fr** (J-cuts). Annotate the offset at every hard mechanical event so the incoming panel opens mid-action (shifter already moving)."
+  },
+  {
+   "id": "ffa25efc3e56",
+   "texto": "[Race, speed and faceless kinetic montage › 8. Sound & rhythm] Every panel inherits a `Sound` cell even though it is a still (`dramaturgy.md` §11) — prompt the *physical consequence* of the sound (deformation, particulate, smear, heat-haze, isolation-in-void), never a named sound. Fill it."
+  },
+  {
+   "id": "3ef02bdb30a9",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Five phases: **ritual → staging → launch → contest → release.** Cut length escalates toward the green, the contest stays dense, one held aftermath. ~20–26 panels. Function tags from `role-modes.md` §4. This is the structural skeleton; for a fully worked, panel-by-panel deliverable board of this exact structure (format C, ~13 rows), use `animatic-keyframes.md` §8 — do not draw a second worked board here."
+  },
+  {
+   "id": "f1328990188f",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Time: 0:00–0:06 · Phase: **Ritual** · Function tags: Establish, Detail, Pressure · # keyframes: 3–4 · Panel life: 1.5–2s · Framing: Macro / ECU, locked · Sound: Idle lope, metal ticks, near-silence, music off · Render note: Held low-motion inserts: slick into water box, harness latch, finger over ignition, condensation on glass. Belief is won here."
+  },
+  {
+   "id": "19363aea39b5",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Time: 0:06–0:11 · Phase: **Staging** · Function tags: Pressure, Power · # keyframes: 3–4 · Panel life: 1s → held · Framing: Symmetric MS, Tree centered, static · Sound: Idle drops to silence on ambers; Tree relay click · Render note: Pre-stage/stage bulbs; one long *held* symmetric Tree panel = the pause. Tach trembling = the only motion."
+  },
+  {
+   "id": "2f9b0cf08157",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Time: 0:11–0:19 · Phase: **Launch** · Function tags: Impact · # keyframes: 6–9 · Panel life: 8fr → 4fr (burst) · Framing: Low bumper-POV, side-rig, ECU tach · Sound: BANG: tire chirp + roar, J-cut 2–3fr ahead · Render note: Hip-hop burst cluster: bumper smear, side wheelspin, tach flare, clutch hand, lane-stripe strobe. Asphalt in frame. One speed-ramp on the wrinkle."
+  },
+  {
+   "id": "5accb8603bd9",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Time: 0:19–0:27 · Phase: **Contest** · Function tags: Power, Shift, Reaction · # keyframes: 6–8 · Panel life: 0.5–1s · Framing: Mirror two-shot, joust, parallel pass · Sound: Layered roar; **one pull-to-intimate / in-the-head panel** · Render note: Mirrored compositions, joust, parallel pass, one medium-wide proving ground-speed. Alternate fragment-cluster ↔ one quiet detail panel."
+  },
+  {
+   "id": "6f50fbef49d8",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Time: 0:27–0:30 · Phase: **Release / Aftermath** · Function tags: Impact, Aftermath, Exit · # keyframes: 2–3 · Panel life: 0.5s, then 2s hold · Framing: Wide-to-detail, smoke in beam · Sound: Hard cut to silence / one tick · Render note: Finish marker + microscopic edge, OR skip the result → engine drop, smoke through headlight beam, car nosing into dark. End on consequence, not explanation."
+  },
+  {
+   "id": "916cdb6dded3",
+   "texto": "[Race, speed and faceless kinetic montage › 9. 30-second structure (beat map)] Allocation: plot the board as a descending duration staircase, broken only by the one pre-launch held panel (the single most-held still, most negative space) and the one post-finish hold. The launch is *never* one hero frame — fan it into the 6–9-panel micro-burst. No two bang-clusters touch; every burst is separated by a held quiet panel."
+  },
+  {
+   "id": "7abcd0278b2d",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] The race-specific list of panels that kill credibility — do not draw. (The general per-panel earns-its-place checklist is `animatic-keyframes.md` §9; run that on every panel as well.)"
+  },
+  {
+   "id": "f8987a0b43ba",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No high, clean, \"beauty\" god-angle for action beats — drop to bumper height; low/wide/close beats polish."
+  },
+  {
+   "id": "5c5702ec5f57",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No perfectly stable cabin — render visible vibration (trembling mirror, doubled needle, smeared rim); tilt 1–3°."
+  },
+  {
+   "id": "aa330cb212b8",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No long-lens speed panel without road texture or a passing reference object."
+  },
+  {
+   "id": "cc9733258e27",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No panel that only works \"when sped up\" — build the speed into the static composition (squat, lifted nose, slick wrinkle)."
+  },
+  {
+   "id": "9588dec4b81b",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No air around the car on a speed beat — crowd the near edge with barrier/rival/wall."
+  },
+  {
+   "id": "f30877024e4a",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No sharp wheel rim on a moving car — smear the spokes into a disc."
+  },
+  {
+   "id": "a9317cb7c05a",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No shiny-bodywork beauty pass — shoot force transmission (tire load, chassis squat, exhaust flame)."
+  },
+  {
+   "id": "c98454480281",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No ritual beat out of order or skipped (§5) — a knowing viewer reads the fake instantly."
+  },
+  {
+   "id": "b52a65f6214d",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No warm cozy grade — cold palette, red as danger accent only, amber ≤15% and toxic (§7)."
+  },
+  {
+   "id": "7f7d9adcf253",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] - [ ] No banned panel: static fetish insert (lever/badge/wheel with no verb, no state-change); anatomy at rest; a detail you cannot caption with a §4 label; all-proof-of-speed board with no commitment/mistake/recovery; decorative dashboard clutter (keyring, dice, coffee cup — \"each object is a clue\"); warm wash without narrative function."
+  },
+  {
+   "id": "e978e017bb4b",
+   "texto": "[Race, speed and faceless kinetic montage › 10. Anti-fake guard] Before sending the board, run `animatic-keyframes.md` §9 (per-panel master checklist), `dramaturgy.md` §15 and `universal-rules.md` §13 over it. The most-violated step is the three-detail check — do not skip it."
+  },
+  {
+   "id": "cc74412f32b8",
+   "texto": "[Role modes] This skill fuses three mindsets. Switch role based on the task stage. The dramaturgy layer sits underneath all three roles. For the full dramaturgy method (scene formula, Murch Rule of Six, blocking as choreography of desire, staging and subtext, three-layer storyboard, shot card template, rhythm ladder), load `references/dramaturgy.md`. Director mode leans heaviest on that file."
+  },
+  {
+   "id": "1ebcf61c2a08",
+   "texto": "[Role modes › 1. Director mode › Trigger] User asks to \"придумать сцену\", \"разработать концепцию\", \"визуализировать идею\", \"сделай как Финчер\", \"предложи трактовку\", \"какой вайб\", or shares a raw idea without structure."
+  },
+  {
+   "id": "bdc4e05149bd",
+   "texto": "[Role modes › 1. Director mode › Mindset] Every shot must answer at least one of these questions. If a shot answers none, delete it."
+  },
+  {
+   "id": "346b55194d77",
+   "texto": "[Role modes › 1. Director mode › Mindset] What changes emotionally?; What new information appears?; What action moves the story?; What pressure increases?; What does the viewer need to notice?; Why does the camera move?; Why does the cut happen here?"
+  },
+  {
+   "id": "f19f9fa6c313",
+   "texto": "[Role modes › 1. Director mode › Output format. Director treatment] Core idea. [one sentence, the point of the piece]\nEmotional arc. [start -> middle -> end, three emotion states]\nVisual motif. [one recurring visual element]\nRhythm. [pace logic. slow build, rapid montage, still + sudden burst]\nCamera language. [dominant grammar. handheld intimacy, locked precision, gliding observer]\nLighting. [dominant source and direction]\nSound. [texture. ambient layers, music role, silence moments]\nEnding image. [final frame in one sentence]"
+  },
+  {
+   "id": "73c3794be8c5",
+   "texto": "[Role modes › 1. Director mode › Style references] Use one dominant director reference per scene. Translate into concrete camera, light, rhythm, blocking. Never stack three or more references."
+  },
+  {
+   "id": "da1313677f15",
+   "texto": "[Role modes › 1. Director mode › Style references] - Fincher. Precise motivated camera. No handheld drift. Cold palette."
+  },
+  {
+   "id": "96b652e76e51",
+   "texto": "[Role modes › 1. Director mode › Style references] - Kurosawa. Weather as emotional pressure. Rain, wind, heat."
+  },
+  {
+   "id": "2058325552d7",
+   "texto": "[Role modes › 1. Director mode › Style references] - Spielberg. Readable staging. Clear geography. Emotional wide shots."
+  },
+  {
+   "id": "461333ea35a5",
+   "texto": "[Role modes › 1. Director mode › Style references] - Edgar Wright. Sound-driven montage. Match cuts on sound events."
+  },
+  {
+   "id": "6f28e64d9916",
+   "texto": "[Role modes › 1. Director mode › Style references] - Jonathan Glazer. Music-video visual idea translated to drama."
+  },
+  {
+   "id": "1a31a6d58a68",
+   "texto": "[Role modes › 1. Director mode › Style references] - Wong Kar-wai. Longing. Reflections. Slow emotional drift."
+  },
+  {
+   "id": "60749c73c853",
+   "texto": "[Role modes › 1. Director mode › Style references] - Safdie. Anxiety. Handheld pressure. Overlapping sound."
+  },
+  {
+   "id": "9ba44c619df6",
+   "texto": "[Role modes › 1. Director mode › Style references] - Wes Anderson. Symmetry. Controlled blocking. Color blocks."
+  },
+  {
+   "id": "fc1b3bcd98c9",
+   "texto": "[Role modes › 2. Screenwriter mode › Trigger] User asks to \"напиши сценарий\", \"разбей на биты\", \"придумай диалог\", \"адаптируй историю в видео\", \"нужен story arc.\""
+  },
+  {
+   "id": "79c1190ad887",
+   "texto": "[Role modes › 2. Screenwriter mode › Mindset] Translate every beat into physical action the camera can see. Tag each beat with a shot function (see section 4). Every beat must have subtext."
+  },
+  {
+   "id": "d7beb11c092f",
+   "texto": "[Role modes › 2. Screenwriter mode › Output format. Beat breakdown] Beat 1. [function] - [physical action]. Subtext. [what it means].\nBeat 2. [function] - [physical action]. Subtext. [what it means].\n...\nFinal image. [what the viewer takes with them]."
+  },
+  {
+   "id": "c42f3799de8a",
+   "texto": "[Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)] Write spoken lines in ready-to-paste Veo syntax.\nHe says, in a flat exhausted voice, \"We are fine. We are fine.\""
+  },
+  {
+   "id": "5c35f58bf9d0",
+   "texto": "[Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)] Cut lines until they fit 8 seconds of natural speech."
+  },
+  {
+   "id": "05ccaa60d128",
+   "texto": "[Role modes › 2. Screenwriter mode › Internal monologue rule] Veo cannot render internal monologue. Translate into visible bodily signal."
+  },
+  {
+   "id": "639994a41f1a",
+   "texto": "[Role modes › 2. Screenwriter mode › Internal monologue rule] Bad. \"He is thinking about his father.\"\nGood. \"He stops mid-motion. His eyes drift off-axis. He swallows. He resumes.\""
+  },
+  {
+   "id": "d8a80ea889ac",
+   "texto": "[Role modes › 3. Editor mode › Trigger] User asks to \"собери монтаж\", \"задай ритм\", \"сделай динамично\", \"разбей на склейки\", \"как смонтировать\", \"сколько кадров в 5 секундах.\""
+  },
+  {
+   "id": "61756e3ccc80",
+   "texto": "[Role modes › 3. Editor mode › Mindset] Dynamic montage is built through structure, not speed. Random fast cuts create visual soup. Readable fast cuts create propulsion."
+  },
+  {
+   "id": "28f819833c7e",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Clear shot function per cut."
+  },
+  {
+   "id": "df8a13aa8af1",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Escalating frame tightness (wide -> medium -> close)."
+  },
+  {
+   "id": "6b4ca51263c5",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Different camera angles per cut."
+  },
+  {
+   "id": "40a30b9dfdbd",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Motivated cuts (sound event, action beat, emotional shift)."
+  },
+  {
+   "id": "2f89daf08388",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Contrast speed and pause."
+  },
+  {
+   "id": "609e1323ec13",
+   "texto": "[Role modes › 3. Editor mode › Rules] - Sound-driven transitions."
+  },
+  {
+   "id": "cd1192b23f97",
+   "texto": "[Role modes › 3. Editor mode › Rules] - One silence or stillness moment before a major impact."
+  },
+  {
+   "id": "a2ba40b3bfb6",
+   "texto": "[Role modes › 3. Editor mode › Output format. Timecoded beat sheet] 00.0-00.8. [shot function] - [framing] - [camera] - [sound cue]\n00.8-01.6. [shot function] - [framing] - [camera] - [sound cue]\n..."
+  },
+  {
+   "id": "ef537ffabd07",
+   "texto": "[Role modes › 3. Editor mode › Density] Emotional drama. 3-4 beats per 5s.; Standard narrative. 4-7 beats per 5s.; Fast montage. 6-9 beats per 5s."
+  },
+  {
+   "id": "715ea20f11b2",
+   "texto": "[Role modes › 3. Editor mode › Density] More than 9 beats in 5s creates incoherent motion regardless of model."
+  },
+  {
+   "id": "da143862c2c5",
+   "texto": "[Role modes › 4. Shot function taxonomy] Every beat should carry at least one function tag. This is the editor's grammar."
+  },
+  {
+   "id": "6a2dc07b9e96",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Establish.** Where we are. Wide or master shot. Sets geography."
+  },
+  {
+   "id": "8cf034170cb4",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Reveal.** What appears. New information enters frame."
+  },
+  {
+   "id": "9a3a7f63b5b4",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Power.** Who controls the scene right now. Staging reveals the hierarchy before dialogue does."
+  },
+  {
+   "id": "fefda8c58b65",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Pressure.** Tension builds. Movement toward threat or decision. Environment can carry this (flickering light, rain, steam, a tight corridor)."
+  },
+  {
+   "id": "5dbbbe5ce581",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Detail.** Important object, hand, eye, texture, gesture. Macro or close-up. The anchor object often lives here."
+  },
+  {
+   "id": "2dff482409ca",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Reaction.** Emotional consequence. Face response to a beat."
+  },
+  {
+   "id": "04ec43f28ca3",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Shift.** Inner change. Body language turning point. The moment before the decision becomes visible."
+  },
+  {
+   "id": "3f3f968fd821",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Impact.** Decisive visual event. The drop. The hit. The break."
+  },
+  {
+   "id": "2e46fa763585",
+   "texto": "[Role modes › 4. Shot function taxonomy] - **Aftermath.** Emotional residue. Stillness after impact."
+  }
+ ]
+}

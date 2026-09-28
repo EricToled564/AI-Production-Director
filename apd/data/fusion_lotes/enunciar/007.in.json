@@ -1,0 +1,458 @@
+{
+ "paso": "enunciar",
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA (texto completo, puede estar en\ninglés, ruso o español). Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase, sin adornos: qué exige, prohíbe, limita o especifica. Si el registro\n  es un ejemplo o una explicación sin norma, di qué ilustra (\"Ejemplo: ...\", \"Explicación: ...\").\n- \"alcance\": a qué aplica exactamente (modelo y versión, caso T1-T5, etapa, tipo de pieza, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata la regla.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "66f1c3c5fee9",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] For hard-copy print (a single file with no folder structure), the skill can offer to inline\nframes as base64. Ask the user which they prefer if frames are present."
+  },
+  {
+   "id": "9a6ac4560b79",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] If a shot's `assets.generated` entry carries a `sha256` and the file no longer matches it,\nrender the frame but say so on the page. That mismatch means the frame changed after it was\nrecorded, which is exactly the case where a preview quietly showing the new file is worse\nthan one that flags it."
+  },
+  {
+   "id": "45be7bbaa098",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] If no frames exist, render styled placeholder cards showing the framing, subject, and shot\nspec. These are still useful for stakeholder review at the storyboard stage."
+  },
+  {
+   "id": "fac156496b36",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] **Template flag convention.** When composing the per-shot context for `preview.html.tpl`, set exactly one of:\n- `has_image: true` and `image_path: \"frames/round-2/shot_NN.png\"`, when a frame exists\n- `has_no_image: true`, when none does (renders the placeholder card)"
+  },
+  {
+   "id": "558ab2d51d41",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] The template uses two parallel `{{#if}}` blocks rather than `{{#if}}/{{else}}` to keep the rendering portable across template engines."
+  },
+  {
+   "id": "6f92c03dc266",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] For text overlays, set `has_overlays: true` and an `overlays` array on the shot. Each entry\ncarries `id`, `content`, `font`, `weight`, `color`, `size`, `position_class`,\n`position_label`, `enter_at`, `enter_animation`, `exit_at`, `exit_animation`. The template\niterates that array with `{{#each overlays}}`."
+  },
+  {
+   "id": "0bea9c5c146d",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] It is an array because `shots.json` lets a shot carry several overlays and\n`text-overlays.json` always did. A single set of `overlay_*` fields could hold one, so the\nsecond overlay on a shot rendered nowhere and nothing reported it."
+  },
+  {
+   "id": "10d68278ad55",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] For verdict badges, set `has_verdict`, `verdict`, `verdict_round`, and `verdict_class`\n(the lowercased verdict) from the newest critique for that shot under `critiques/`. Omit\nthem when the shot has no critique."
+  },
+  {
+   "id": "a0cb7c853c06",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 4. Embed frames if available] **Escape everything.** Subjects, rationales, VO lines, and overlay copy are model-generated\nprose that lands in both text and attribute contexts. One angle bracket in a rationale, or\none quote in an overlay font name, breaks the page a client is reading.\n`tools/shots-to-html.py` escapes every substitution by default and reserves raw output for\nthe inlined CSS alone."
+  },
+  {
+   "id": "276dc5f074ea",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually] For every shot with an `on_screen_text` reference, the HTML shows:\n- The text content rendered in approximately the brand font (or visible fallback)\n- The position indicated visually (lower-third, center, etc.)\n- Timing info (enter/exit beats)"
+  },
+  {
+   "id": "db648a341756",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually] This gives the reviewer a sense of what the final composited frame will look like, even before final compositing happens."
+  },
+  {
+   "id": "d3a8f53bbc0c",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 6. Print stylesheet] Include `@media print` rules that:\n- Hide nav, footer scripts, expand/collapse UI\n- Force one shot per page (or two if compact)\n- Ensure text overlays render legibly\n- Use black-on-white where brand colors won't print well"
+  },
+  {
+   "id": "c1ad45e9bd0c",
+   "texto": "[Storyboard HTML Preview › Workflow › Step 6. Print stylesheet] The user should be able to hit Cmd-P / Ctrl-P and get a clean PDF."
+  },
+  {
+   "id": "52eb280444a5",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 1. Single file, no exceptions] The output is one `.html` file. If you find yourself wanting a separate stylesheet or JS file, inline it. If you find yourself wanting a build step, you're solving the wrong problem."
+  },
+  {
+   "id": "a63b71cfad3c",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 2. No external dependencies at runtime] No CDN scripts. No Google Fonts. No external CSS frameworks. The file must work with no internet connection."
+  },
+  {
+   "id": "248ef72c70f4",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 2. No external dependencies at runtime] The exception: if the user explicitly opts in (e.g. \"make it pretty, I'm online\"), Tailwind via CDN is acceptable. Default is no."
+  },
+  {
+   "id": "4021fb4265e2",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 3. Print must work] Hit Cmd-P. The result should be a clean PDF. If layout breaks across page boundaries, the print stylesheet is broken."
+  },
+  {
+   "id": "af15b78f0741",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 4. Brand-aware but quiet] Use brand colors as accents, not as full backgrounds. The reviewer's job is to read the storyboard, not admire the design. Subtle."
+  },
+  {
+   "id": "8626490bcb07",
+   "texto": "[Storyboard HTML Preview › Hard rules › Rule 5. Mobile-readable] Stakeholders open links on phones. The HTML should be readable on mobile without horizontal scroll. Simple responsive CSS."
+  },
+  {
+   "id": "8d316a0ac828",
+   "texto": "[Storyboard HTML Preview › Templates] `templates/preview.html.tpl`, the structural template; `templates/styles.css.tpl`, the CSS to inline; `templates/print.css.tpl`, the print rules"
+  },
+  {
+   "id": "0b5cf7b50556",
+   "texto": "[Storyboard HTML Preview › Templates] The skill reads all three and assembles them into a single `preview.html`."
+  },
+  {
+   "id": "97d58aa36440",
+   "texto": "[Storyboard HTML Preview › Quality bar] Before declaring done, verify:\n- [ ] File opens in any browser (Chrome, Safari, Firefox) with no errors\n- [ ] No external network requests fire on load\n- [ ] Print preview produces a clean PDF\n- [ ] Mobile viewport (375px) renders without horizontal scroll\n- [ ] Brand colors and fonts come from the brand-lock, not from a fallback\n- [ ] Every shot from `shots.json` is present\n- [ ] Every overlay referenced by a shot is rendered, including second and third overlays\n- [ ] `brand_lock_ref` from `shots.json` is what the footer links to, not a hardcoded name\n- [ ] The run date and the render date are both shown, and labelled differently\n- [ ] No `{{` remains anywhere in the output"
+  },
+  {
+   "id": "bd1d5349a82a",
+   "texto": "[Storyboard HTML Preview › Quality bar] The CLI renderer checks the mechanical half of that list against itself:\npython tools/shots-to-html.py --selftest"
+  },
+  {
+   "id": "317b8ec08191",
+   "texto": "[Storyboard HTML Preview › Two timestamps, not one] \"Run\" is when the storyboard was produced, read from `run.json`. \"Rendered\" is when the page\nwas written. They are separate lines in the footer and they must stay separate."
+  },
+  {
+   "id": "c1c7164a2f9f",
+   "texto": "[Storyboard HTML Preview › Two timestamps, not one] Collapsing them into a single \"Generated\" date meant re-rendering a preview six months later\nrestamped the run as today, and the footer went on asserting the page was built against a\nbrand-lock on a date that had nothing to do with the frames above it."
+  },
+  {
+   "id": "fffcda800967",
+   "texto": "[Storyboard HTML Preview › Two timestamps, not one] If the brand-lock on disk no longer hashes to what `run.json` recorded, say so on the page.\nThe reader is looking at frames built against a brand state they can no longer see."
+  },
+  {
+   "id": "6430bd815027",
+   "texto": "[Storyboard HTML Preview › Examples] Generated `preview.html` files ship next to the storyboards that produced them:\n- `../storyboard-architect/examples/30s-pain-proof-promise/preview.html`\n- `../storyboard-architect/examples/60s-founder-explainer/preview.html`\n- `../storyboard-architect/examples/shotkit-explainer/preview.html`, including the\n  two-overlay shot\n- `../visual-asset-critic/examples/worked-run/preview.html`, with frames and verdict badges"
+  },
+  {
+   "id": "fea27ec683bb",
+   "texto": "[Storyboard HTML Preview › Examples] Open them in a browser to calibrate quality. All four are re-rendered in CI with pinned\ntimestamps and the build fails if the output moves, so they are also the regression test for\nthis skill's output."
+  },
+  {
+   "id": "9a1a378156bb",
+   "texto": "[frontmatter › description] Use this skill whenever the user asks to create, improve, audit, or split prompts for AI video generators (Seedance, Kling, Veo, Runway, Luma, Pika, Sora, any image-to-video system). The skill also covers storyboards, shot lists, director treatments, dynamic montage, multi-clip story structure, camera direction, lighting, blocking, pacing, character continuity, dialogue, and sound design. Trigger even when the user says things like \"придумай сцену для видео\", \"разбей на склейки\", \"сделай раскадровку\", \"улучши промпт для Kling\", \"переведи сценарий в промпты\", \"как снять X в AI-видео\", or shares a prompt and asks to fix it."
+  },
+  {
+   "id": "d94cb7865b46",
+   "texto": "[AI Director, Screenwriter & Editor] Hybrid role. You direct (see frame, emotion, motivated camera), write (build beat, action, consequence, final image), and edit (cut rhythm, protect continuity, drive montage). Prompt engineering is fourth — it serves the first three."
+  },
+  {
+   "id": "adc1b4568729",
+   "texto": "[AI Director, Screenwriter & Editor] A beautiful frame without dramaturgy is wallpaper. A dramaturgically clean prompt without details is mush. The whole craft of this skill lives in the reference files. The body of this SKILL.md is intentionally thin so you cannot fake a result by reading it alone."
+  },
+  {
+   "id": "93816acc4e9b",
+   "texto": "[AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?] - **No idea or script yet** (user wants a concept, a Big Idea, a campaign, an ad scenario — not a prompt): if the `creative-director` skill is installed, start there — it develops ideas and scripts for commercials and beyond ([github.com/smixs/creative-director-skill](https://github.com/smixs/creative-director-skill)). Come back here once there is a script to shoot."
+  },
+  {
+   "id": "88bc53cd67dc",
+   "texto": "[AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?] - **Still keyframes, character sheets, animatic panels** to feed the video pipeline: use the sibling `image` skill, then return with the keyframes."
+  },
+  {
+   "id": "69338d47b2bf",
+   "texto": "[AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?] - **A script or scene exists and needs prompts** — this skill. Continue below."
+  },
+  {
+   "id": "03bdfa2f614d",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS] Past attempts to write prompts directly from this skill body produced lazy, mush-prone results. The fix is structural: the process lives only in the reference files, and you load them in this order before producing output. Skipping a step **silently** degrades the result — the model cannot tell that a shot is wallpaper, only the writer can, and only by applying the rules from these files."
+  },
+  {
+   "id": "c1f0cb357818",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS] For every video prompt request, load the files in this order:"
+  },
+  {
+   "id": "4575667d1a03",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)] Scene formula. Details Law (the second core law, most violated). Murch Rule of Six. Three-jobs rule. Five anchors. Blocking, staging, environment as pressure. Three-layer storyboard. 14-field shot card. Rhythm ladder. Dramaturgy check."
+  },
+  {
+   "id": "c4006dd88775",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)] You cannot decide whether a prompt is ready without running the dramaturgy check from this file."
+  },
+  {
+   "id": "6a9883d096c4",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — always read second → [universal-rules.md](references/universal-rules.md)] U1–U12 universal rules that apply to every video model: prompt skeleton, weight-at-start, show-don't-tell, lens language, character anchor, contradictions, duration discipline, final image rule, three-detail check."
+  },
+  {
+   "id": "ed1fb95b8a40",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Use this short selector. The full reasoning is in the chosen file."
+  },
+  {
+   "id": "9ab950bb7f92",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Cue from the user / task: Seedance, ByteDance, Doubao, Jimeng, multi-shot in one clip, `--resolution`, `--duration`, `--camerafixed`, \"Cut to\", `@img1`, fast multi-shot drama · Read: [seedance.md](references/seedance.md)"
+  },
+  {
+   "id": "0ca1e742b0b0",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Cue from the user / task: **Seedance 2.5 production work**: 30s single-pass, 50-slot reference kits, video editing / partial re-render, extension, Ultra Long (30-180s), 3D blockout / green screen, `@Image N`, `{ }` dialogue markers · Read: [seedance.md](references/seedance.md) **+** [seedance-25.md](references/seedance-25.md)"
+  },
+  {
+   "id": "2a554f938aea",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Cue from the user / task: Kling, Kuaishou, Element Binding, Motion Brush, Motion Control, dedicated negative prompt field, **Kling 3.0 multi-shot with `[Character A: ...]` labels, native dialogue + lip-sync, 15s, Turbo (cheap lip-sync), Omni (references + editing, 4K)** · Read: [kling.md](references/kling.md)"
+  },
+  {
+   "id": "900b71bbcfe1",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Cue from the user / task: Veo, Google video, dialogue / lip-sync, JSON prompts, synchronized SFX, commercial polish with voiceover · Read: [veo.md](references/veo.md)"
+  },
+  {
+   "id": "21862ec4de56",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] Default if nothing in the request hints at a model:\n- Multi-shot narrative or fast montage drama → Seedance, or Kling 3.0 if dialogue is involved.\n- Dialogue / commercial polish / synchronized SFX → Veo, or Kling 3.0 for multi-character dialogue scenes up to 15s.\n- Character consistency across many social clips → Kling 2.6 Pro (cheaper) or Kling 3.0 (with in-prompt `[Character A: ...]` labels).\n- 10-15s continuous narrative with audio → Kling 3.0.\n- 15-30s continuous single-generation arc, heavy reference kits (up to 50 assets), editing or extending existing footage, 30-180s long-form → Seedance 2.5.\n- Face-heavy drama → Seedance 2.5 (realistic humans + lip-sync are its headline feature), Kling, or Veo. On a 2.0-only pipeline route faces to 1.5 Pro (2.0 filters human faces aggressively)."
+  },
+  {
+   "id": "abc010a9625f",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file] For a more detailed comparison (max clip length, audio support, character lock methods, motion brush, etc.), read the model file you picked. Do not load all three."
+  },
+  {
+   "id": "0f5ed3560573",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Storyboard / shot list / director treatment / \"разбей на склейки\" → [role-modes.md](references/role-modes.md). Determines whether you operate as Director, Screenwriter, or Editor for this turn."
+  },
+  {
+   "id": "31fa6f45ee28",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Storyboard keyframes / опорные кадры / аниматик / animatic / still panels / key visuals to pitch a sequence → [animatic-keyframes.md](references/animatic-keyframes.md). The general method for turning a beat sheet into still panels (and then image-gen prompts) that read as story, drama and emotion without motion or faces."
+  },
+  {
+   "id": "d7b71bab41f6",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Race / drift / drag / chase / speed / dynamic / kinetic montage, \"гонщик\", \"раскадровка гонки\", authentic-speed spot → [race-and-speed.md](references/race-and-speed.md). Specializes `animatic-keyframes.md` for the race domain — read that file first."
+  },
+  {
+   "id": "3acb2c9010c8",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Commercial, music video, drama, action, fashion, UGC, product film, escalation / anxiety / discovery / catastrophe / product-drama montage → [patterns-and-genres.md](references/patterns-and-genres.md)."
+  },
+  {
+   "id": "aa0dc28047f7",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Multi-clip continuity, fixing a broken prompt, known failure modes (one-take, face drift, melted hands, dialogue too fast) → [fixes-and-skeletons.md](references/fixes-and-skeletons.md)."
+  },
+  {
+   "id": "f94c52bb06a6",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] - Need precise framing / lens / movement / light / sound terms → [camera-lighting-vocabulary.md](references/camera-lighting-vocabulary.md)."
+  },
+  {
+   "id": "e60b0d592526",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)] If none match — proceed with steps 1-3 only."
+  },
+  {
+   "id": "078e260e8e47",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check] Before returning anything, run both checks:\n- Dramaturgy check (`dramaturgy.md` §15): scene formula complete, three-detail check on every shot, three-jobs rule on every shot, motivated camera, readable geometry, five anchors named.\n- Three-detail audit (`universal-rules.md` §13): each shot owns environmental pressure + physical micro-action + sound or visual motif."
+  },
+  {
+   "id": "8a3be90a5127",
+   "texto": "[Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check] If any shot fails, fix before sending. This is the step the user has had to enforce repeatedly. Do not skip it."
+  },
+  {
+   "id": "5a6d294b5586",
+   "texto": "[Output] Choose the format the request actually asks for. Default to **A** if unclear."
+  },
+  {
+   "id": "fa9375898ba6",
+   "texto": "[Output] - **A. Single prompt.** One ready-to-copy prompt for one generation. Lead with model name + parameters in a short header."
+  },
+  {
+   "id": "a8dad25f862b",
+   "texto": "[Output] - **B. Multi-clip prompts.** Sequence of self-contained prompts, each repeating the full identity / style / continuity block (see `universal-rules.md` U7)."
+  },
+  {
+   "id": "f24f85ab4b78",
+   "texto": "[Output] - **C. Storyboard.** Table — Time, Shot, Function, Action, Camera, Light, Sound, Emotion. Every row is a 14-field shot card from `dramaturgy.md` §11, compressed."
+  },
+  {
+   "id": "6db9098c783b",
+   "texto": "[Output] - **D. Prompt audit.** Given a user prompt, return: What works, What breaks generation, Missing direction, Continuity risks, Model-specific mismatches, Stronger version (rewritten prompt)."
+  },
+  {
+   "id": "beb0bdc07466",
+   "texto": "[Output] - **E. Director treatment.** Core idea, Emotional arc, Visual motif, Rhythm, Camera language, Lighting, Sound, Ending image. (Treatment ≠ prompt.)"
+  },
+  {
+   "id": "cfd27b9b473a",
+   "texto": "[Output] - **F. JSON (Veo only).** Structured scene-by-scene continuity. See `veo.md`."
+  },
+  {
+   "id": "cad7e0fbff99",
+   "texto": "[Output] Default output language follows the user. The final AI prompt itself goes in English unless the user asks otherwise — Seedance, Kling, and Veo all perform better in English."
+  },
+  {
+   "id": "7e8366835fc2",
+   "texto": "[Final response style] Prefer: ready-to-copy prompts, clear section labels, production language, motivated camera and light direction, strict continuity blocks, model-specific syntax, direct fixes."
+  },
+  {
+   "id": "6375ac05be98",
+   "texto": "[Final response style] Avoid: long theory unless asked, academic lectures, vague inspiration, decorative jargon, \"cinematic masterpiece\" filler, prompts without camera and light, prompts without continuity, stacking more than two director references, abstract emotions without physical translation."
+  },
+  {
+   "id": "be00df81c6b7",
+   "texto": "[Final response style] When in doubt about a model-specific detail — re-read the model file before writing the final prompt. It costs nothing and prevents bad output."
+  },
+  {
+   "id": "085e6d52bf12",
+   "texto": "[Keyframes for an animatic (opornye kadry)] This is the still-panel layer. A storyboard keyframe is not a frame grab of footage — it is a single drawn image that must carry one story-beat with **no motion and (usually) no face**. The animatic hangs off these panels. A panel that only looks good is wallpaper; a panel must report its story function, its drama, and the motion it cannot show, all frozen."
+  },
+  {
+   "id": "6054d462ec88",
+   "texto": "[Keyframes for an animatic (opornye kadry)] This file converts a beat sheet / treatment into **opornye kadry**, then into image-generation prompts. It sits on top of `dramaturgy.md` (§2 Details Law, §10 three-layer method, §11 shot card, §12 rhythm ladder, §15 check) and `universal-rules.md` (U1 skeleton, U11 final image). Pairs with `camera-lighting-vocabulary.md` for framing/lens/light tokens, `role-modes.md` §4 for the function taxonomy, `patterns-and-genres.md` (Action genre, Escalation pattern) for the spatial-clarity spine, and `seedance.md` / `kling.md` / `veo.md` to animate each locked frame. Output stays compatible with Storyboard format C: `Time | Shot | Function | Action | Camera | Light | Sound | Emotion`."
+  },
+  {
+   "id": "42fac48382ae",
+   "texto": "[Keyframes for an animatic (opornye kadry)] The running brief through every example below: drag/drift race spot, cold combative palette (steel blue, cyan, magenta, mercury-white; **red and green as accents only**; amber only as the start-tree's alien pulse or a toxic spill), faces absent or unusably fragmented. Swap subject as the task demands — the method holds."
+  },
+  {
+   "id": "2c129a936a2c",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 1. What an animatic keyframe must do] In an animatic the **panel is the unit, not the shot.** A shot has duration, motion, and sound to carry its function across time. A keyframe has one frozen image and must carry the same function in a single glance. So every panel does four things at once, in one still:\n- **One readable story-beat** — name it in one sentence before generating. If you cannot, the panel is not ready (`dramaturgy.md` §1).\n- **One function tag** — Establish / Reveal / Power / Pressure / Detail / Reaction / Shift / Impact / Aftermath / Exit (`role-modes.md` §4). The tag is the question the panel answers. In a faceless spot **Reaction** is reassigned from a human face to the *machine's* face — the needle jumping, the slick wrinkling, the nose squatting. Treat gauges and rubber as the actor.\n- **One emotion** — routed through metal, rubber, light, or anatomy, never named (`dramaturgy.md` §2). Mixed signals = no signal.\n- **One implied motion** — the movement the still cannot perform, frozen as its physical residue (§4)."
+  },
+  {
+   "id": "e3dd1c8d73b4",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 1. What an animatic keyframe must do] A panel that carries a beat, a function, an emotion, and an implied motion earns its place. A panel missing any of the four is a *fantik* — wrapper without candy (`dramaturgy.md` §3). The discipline of this whole file is: **you cannot prompt \"motion\" or \"emotion\" into a still — you prompt the physical consequence each leaves behind.**"
+  },
+  {
+   "id": "7c923e46a0bd",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 2. The keyframe card] The shot card in `dramaturgy.md` §11 describes a moving shot. A keyframe needs a *still*-specific card: every field describes a frozen image, and three fields are new (implied camera, emotion-via-object, motion-rendered-as-still). Fill every field before generating. Empty fields reveal missing direction."
+  },
+  {
+   "id": "094c9656361d",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 2. The keyframe card] KEYFRAME CARD\n- Panel ID.            01, 02, 03\n- Timecode.            on-screen life in the animatic (e.g. 0:10.5, HOLD 2s)\n- Function tag.        Establish / Reveal / Power / Pressure / Detail /\n                       Reaction / Shift / Impact / Aftermath / Exit\n- Beat.                what changes in the story in this one still\n- Framing + lens.      ECU / CU / MCU / wide / macro insert / POV + lens token\n                       (24mm immersive ... 100mm macro — camera-lighting-vocabulary.md §3)\n- Subject / anchor.    the ONE object or anatomy the eye lands on in 0.3s\n- Depth layers.        FG job (frame / obstruct / put us inside)\n                       MG job (the subject / the act)\n                       BG job (stakes / context / rival)\n- Implied camera.      the move this still is the first frame OF\n                       (push-in, whip, bumper-POV, joust) — what it would do if it ran\n- Light + palette.     one motivated source + direction + the surface it rims;\n                       concrete colors, amber-ban repeated\n- Emotion-via-object.  the feeling a face would show, mapped to an object's state (§5)\n- Motion-as-still.     which frozen cue carries the missing movement (§4):\n                       smear / partial blur / streak / vector / sharp-blur / held stillness\n- Caption / label.     one word: setup / commitment / mistake / recovery /\n                       proof-of-speed / result\n- Sound.               what audio sits under the held frame, where the cut bites\n                       (fill even though it is a still — dramaturgy.md §11)\n- Production note.      prop, rig, continuity anchor"
+  },
+  {
+   "id": "a95ac35a956d",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 2. The keyframe card] The card maps straight onto format C: `Function`, `Framing`, `Implied camera`, `Light`, `Sound`, `Emotion-via-object` become the table columns. The three still-specific fields — **implied camera, emotion-via-object, motion-as-still** — are the ones a normal shot card does not force you to name, and they are exactly the ones that keep a panel from going flat."
+  },
+  {
+   "id": "a90ad78903b9",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] **Loudness in the audio = panel count in the board.** Silence gets one held panel; a bang gets a burst. This is the still-panel reading of `dramaturgy.md` §12 (rhythm ladder) and `role-modes.md` §3 (editor density: 3-4 beats/5s drama, 4-7 narrative, 6-9 fast montage). The full 30s beat map is the worked board in §8; split it per `patterns-and-genres.md` §3 (30s = 6×5s)."
+  },
+  {
+   "id": "31a9c3fe34ba",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] Beat: **Ritual / staging** (quiet) · Density: 1 hero panel, held · Panels: 1 panel living 1.5-2.5s · Why: A silent beat is monolithic. Do not subdivide it — its power is that nothing moves while the world holds its breath. One symmetric \"breath\" frame, most negative space, least motion."
+  },
+  {
+   "id": "8da944f22af3",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] Beat: **Pressure climbing** (amber stagger) · Density: escalating singles · Panels: 3 panels, collapsing length · Why: The Sportsman tree fires three ambers 0.5s apart — three drawable panels, each tighter than the last, cut length collapsing toward the green."
+  },
+  {
+   "id": "1dc253c03621",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] Beat: **Launch / impact** (bang) · Density: 3-panel micro-burst → up to 6-9 · Panels: 6-9 panels at 8fr → 4fr · Why: The audio bang is rendered as panel *density*, not one big image. Hip-hop montage: bumper-POV smear, side wheelspin, tach flare, clutch hand, lane-stripe strobe."
+  },
+  {
+   "id": "2715d9794fe2",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] Beat: **Contest** (sustained roar) · Density: alternating · Panels: fragment-cluster ↔ one held detail · Why: Never two bang-clusters back to back. Between every burst, one held quiet panel — loud only works next to quiet."
+  },
+  {
+   "id": "409b2ebf3b91",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] Beat: **Aftermath / exit** (cut to silence) · Density: 1 hero panel, held · Panels: 1-2 panels, ~2s hold · Why: End on consequence, not explanation. One held still: drifting smoke, hand unclenching, car nosing into dark."
+  },
+  {
+   "id": "cc3da0bea732",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 3. How many keyframes per beat — the density ladder] **Allocation rule.** A 30s spot lands at ~18-26 panels. Plot the board as a descending duration staircase (≈2.5s → 0.5s → 4fr), broken only by the one pre-launch pause and the one post-finish hold. The board should *read* as an accelerating tachometer even on mute. Give a beat a micro-burst only when the audio detonates; everywhere else, one panel that holds is stronger than three that scatter."
+  },
+  {
+   "id": "20ef1a81ea12",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] A keyframe cannot ramp, cut, or whip. Each missing move resolves into one of **six frozen cues**. Never write \"motion\" — write the artifact motion leaves behind. State the cue in the card's *Motion-as-still* field and again in the prompt's camera/light clause; models default to over-clean stabilization and will sand the speed off unless told (§7)."
+  },
+  {
+   "id": "7e90ba414971",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Directional motion-blur smear** · What it is in a still: Background streaked along the travel axis, subject sharp. Guardrail, lane stripes, tree lamps pulled into horizontal light-rods. · Renders the implied move: tracking pass, POV launch, the whip-pan aftermath"
+  },
+  {
+   "id": "30dbdbb16fdf",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Frozen partial blur** · What it is in a still: One moving element blurred (tyre sidewall, smoke bloom, shift hand mid-throw) while the anchor stays crisp — proof of a single arrested instant. · Renders the implied move: speed-ramp peak, launch, shift"
+  },
+  {
+   "id": "7a9068b7bcb7",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Streak-frame (implied whip)** · What it is in a still: The whole panel raked into motion-streaks with one readable shape surviving (a wheel arc, the shifter) — a \"between two shots\" blur panel. · Renders the implied move: whip pan, transition beat"
+  },
+  {
+   "id": "445178ed4cb4",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Posture / trajectory vector** · What it is in a still: A body or car locked in a pose that can only resolve forward — wrist cocked over the shifter, front wheels lifting, weight slung onto the rear axle. The eye finishes the move. · Renders the implied move: charged pose, freeze frame, launch"
+  },
+  {
+   "id": "6ea789ec8ffb",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Sharp-subject / blurred-field separation** · What it is in a still: Shallow-DOF macro: knuckle, needle, latch razor-sharp, everything else dissolved. Isolation = the cut-to-detail frozen. · Renders the implied move: insert chain, crash-zoom arrival, hip-hop CU"
+  },
+  {
+   "id": "a22bc8b76f2f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Cue: **Freeze-frame stillness** · What it is in a still: Deliberately *zero* blur, hard edges, held breath — reads as a stopped clock against the blurred panels around it. · Renders the implied move: the pre-launch held beat, the loaded spring"
+  },
+  {
+   "id": "eb405de36236",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] Per-technique kit (triad + the still application):\n- **Frozen motion blur** — what it does to emotion: differential blur reads as velocity made tactile, the world torn past a steady subject — where seen: Dod Mantle whip-panned every overtake in *Rush* so the background dissolves. — *in a keyframe* [Shift/Impact]: hero car tack-sharp, entire background raked into horizontal streaks, foreground objects elongated into light-rods. The most powerful single-panel speed trick: **sharp hero + fully smeared world.** Equal blur everywhere = soft photo; differential blur = speed.\n- **Tyre wrinkle / partial blur** — emotion: physics you can feel, force arrested at its peak — seen: Goodyear's deliberately silent slow-mo of the slick sidewall folding; Ritchie's speed-ramp as the exclamation mark. — *in a keyframe* [Detail/Reaction]: macro into the rear sidewall, the wrinkle caught at its deepest fold, smoke just blooming at the contact patch, everything else crisp. One arrested ten-thousandth of a second. The hero detail to *hold*.\n- **Smoke / debris / spray shape** — emotion: force given a visible body, dread made airborne — seen: NHRA burnout-cam, \"a wall of smoke\" backlit at ground level. — *in a keyframe* [Pressure/Power]: backlit tyre smoke as a luminous wall (front-lit smoke is dead gray nothing); water-box spray frozen as a constellation of specular droplets, each rimmed on its leading edge. Atmosphere only reads when light passes through it (§5).\n- **Posture / lean vector** — emotion: a stillness that can only resolve forward; the eye does the launching — seen: Vaughn's charged poses (*Kingsman*, *Layer Cake*) — every frame loaded with a trajectory. — *in a keyframe* [Power/Shift]: **no neutral panels.** Car at idle = front wheels micro-lifting, body slung onto the rear axle. Hand on wheel = fingers mid-clench. Compose the negative space *ahead* of the subject, the direction it is about to fire into.\n- **Leading lines / light streak** — emotion: a rail for the eye that also encodes direction and speed — seen: Papamichael's asphalt-in-frame (*Ford v Ferrari*), the road as the speedometer. — *in a keyframe* [Power/Impact]: lane centerline raking to a vanishing point, sodium/mercury practicals smeared as long reflections down wet asphalt. Keep the texture (chevrons, tar seams, rubber marks) so the streak has something to streak.\n- **Off-balance dutch** — emotion: imbalance, loss of grip, threat — seen: Raimi's canted attack frames (*Evil Dead II*). — *in a keyframe* [Impact]: cant the horizon hard at the one loss-of-traction beat — tyre breaking away, car stepping sideways. Reserve it for a single instability beat so it stays loud; dutch as wallpaper reads as bad framing."
+  },
+  {
+   "id": "f4a0e0ed3f28",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION] **The speed-budget rule** (from the race-truth school): a still sells velocity when **at least three of five coexist in one frame** — (a) camera at/below bumper height, (b) asphalt streaking the lower frame, (c) a near foreground reference passing the edge, (d) sharp hero against motion-blurred background, (e) a mechanical-vibration cue (trembling mirror, doubled needle, smeared rim). One cue is a car photo. Three is velocity. If a \"fast\" panel cannot name three, reframe lower, drag the camera to the asphalt, throw a cone or barrier into the foreground."
+  },
+  {
+   "id": "de68ce7d43e9",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] A face does four jobs: shows the feeling, shows where it looks, shows the cost, shows the decision. Faces banned, redistribute: **decision → anatomy mid-action; internal state → an object crossing a threshold; looking/rivalry → space** (§6 and `dramaturgy.md` §2). Assign one job per panel and tag it. The emotion must already be frozen *inside the object* — a still cannot let motion blur do the emotional work for it."
+  },
+  {
+   "id": "294585e25970",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Two load-bearing rules:\n- **Anatomy only on a decision.** A hand at rest is filler; a hand *deciding* is a shot. Before drawing any hand/foot panel, name the verb — grip / latch / shift / preload / release. No verb, no panel. Render tendons raised, glove leather creasing, one hard side-light carving knuckle texture, the rest in shadow (Leone's hands-before-the-draw; Nike *Take It to the Next Level*, first-person, no hero face).\n- **Objects only when they change state.** A static gear-lever says \"car stuff\" and flatlines. Board the **after** state of a threshold-crossing; the before is implied (Honda *Cog*: every object does something irreversible). Tach pinned in the red, not idling. Ignition lamp blooming live, not dark. Slick caught mid-fold."
+  },
+  {
+   "id": "62f9a56e1eec",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Use the substitution table as the core deliverable — when the script wants an emotion and no face is available, render this object at this crop. Cold palette throughout."
+  },
+  {
+   "id": "fd16e750158f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Fear / dread** · Object substitute: sweat bead on knuckle; tremor in the mirror reflection (not eyes) · Crop: macro / ECU · Render note (the still): one hard specular highlight on the bead, cold rim, deep black around it; mirror edge doubled to imply vibration · Label / tag: setup → Pressure"
+  },
+  {
+   "id": "d7c610c7ff9d",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Resolve / commitment** · Object substitute: knuckles whitening on wheel or shifter; foot pinning throttle · Crop: CU / MCU · Render note (the still): tendons raised, glove leather creasing, grip at maximum; one side-light, cabin in shadow · Label / tag: commitment → Shift"
+  },
+  {
+   "id": "23015581204a",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Focus / lock-in** · Object substitute: start-lights reflected in lacquer / headlight glass (not a human eye) · Crop: MCU · Render note (the still): staging bulbs mirrored as cold points on paint or chrome; tight, centered, still · Label / tag: setup → Detail"
+  },
+  {
+   "id": "5d66e7406dea",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Strain (machine at limit)** · Object substitute: tach needle pinned in red arc; slick sidewall wrinkling; exhaust flame · Crop: ECU / CU · Render note (the still): needle hard against redline, motion-still but unmistakably max; sidewall at deepest fold · Label / tag: proof-of-speed → Pressure"
+  },
+  {
+   "id": "5234bdaaab6a",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Mistake / panic** · Object substitute: tyre shake (sidewall \"goes square\"), wheel kicking back, revs over-flared · Crop: CU · Render note (the still): sidewall deformed wrong, blur direction fighting the lane; tach spiked past the band · Label / tag: mistake → Impact"
+  },
+  {
+   "id": "cd4ce3b17980",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Triumph / release** · Object substitute: grip relaxing; chute blooming; one nose past the stripe; smoke through headlight beams · Crop: CU → WS · Render note (the still): fingers unfurling off the wheel; or distant clean geometry of the win, cold backlight through smoke · Label / tag: result → Aftermath / Exit"
+  },
+  {
+   "id": "23fc6a7c3190",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] Emotion (a face would show): **Anticipation (pre-launch)** · Object substitute: finger over ignition / line-lock; pre-stage bulb lit; held shifter · Crop: ECU / CU · Render note (the still): finger a hair off the button, bulb just lit cold, everything frozen — the \"silence\" panel · Label / tag: setup → Pressure"
+  },
+  {
+   "id": "0410a94dd09f",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 5. Emotion without faces in a still] State-change cheat-sheet (board the live state; the dead is implied): ignition dark → lamp blooming; tach idle → needle pinned red; slick round → wrinkle folded deep; water-box mirror-still → shredded by launch; front wheels planted → lifting; chassis level → squatted; chute packed → bloomed at the trap."
+  },
+  {
+   "id": "582e779da659",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] A keyframe is a diagram the viewer solves in 0.3s and re-reads with pleasure at 1s. With no face, the geometry and the depth stack do the acting."
+  },
+  {
+   "id": "f0170d007b2d",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **Core law of the loaded panel.** One focal point, one emotion, three working depth layers, zero dead objects. Answer one question in the first glance; reward a second look."
+  },
+  {
+   "id": "83e4875714e2",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **Depth-layer jobs (FG / MG / BG).** Write the prompt in three explicit depth clauses, each with a stated job. This is the engine of \"reads in one glance, rewards a second\" (extends `dramaturgy.md` §10 into a single still). If all three planes carry the same blur or scale, you have one plane, not three — force a sharp MG subject against a soft FG frame and a soft BG stake (shallow DOF is the panel's hierarchy tool, `camera-lighting-vocabulary.md` §3)."
+  },
+  {
+   "id": "3bd4634e83ae",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] Plane: **Foreground** · Default job: frame / obstruct / put us inside · Drag-race objects: roll-cage bar, mirror edge, harness strap, smoke wisp, wet glass · Function it serves: Pressure, Power"
+  },
+  {
+   "id": "6456eae9aa79",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] Plane: **Midground** · Default job: the subject / the act · Drag-race objects: hand on shifter, knuckles on wheel, foot on pedal, tach face · Function it serves: Detail, Shift, Impact"
+  },
+  {
+   "id": "8f793cc49ab5",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] Plane: **Background** · Default job: stakes / context / rival · Drag-race objects: staging bulb, rival lane headlight, finish line, narrowing barrier · Function it serves: Establish, Reveal, Pressure"
+  },
+  {
+   "id": "0376c255cb16",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **One-glance + reward** — what it does to emotion: an instantly readable frame creates trust; a frame that rewards re-reading creates density and worth. With no face to anchor on, a muddy panel collapses to nothing. — *in a keyframe*: name the single focal point before generating (tach needle / staging bulb / knuckle), put it on a strong line, demote everything else to support. The second-look reward is a reflection, a bridge object, or a state indicator — one, not a clutter."
+  },
+  {
+   "id": "9e99b3b374e6",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **Centerline spine, then break symmetry** — emotion: a single dominant axis (lane stripe, the Christmas Tree, a dividing wall) gives the eye a rail and makes even a chaotic frame readable; breaking it the instant one car noses ahead reads as momentum. — seen: Anderson centers for instant legibility; Bong breaks balanced staging to show a power shift. — *in a keyframe*: build one head-on symmetric \"breath\" panel — both cars mirrored across the centerline, Tree dead-middle, equal negative space (tag **Establish/Pressure**, hold longest). On the next panel, break the mirror — hero a nose ahead, rival shoved soft, centerline slid off the third (tag **Shift/Impact**). Use the pair exactly once, at the launch; overusing symmetry kills the speed."
+  },
+  {
+   "id": "f9000bd37a14",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **Functional vs decorative clutter — the evidence test.** Keep an object only if it does at least one of: (1) **indicator of state** (replaces the face — tach in the red, white knuckles), (2) **stage of action** (advances the beat — front wheel 7\" off the line = pre-stage), (3) **bridge to the next panel** (sets up a match-cut or a reach). Dead detail — coffee cup, mirror dice, dashboard sticker — shows no state, advances nothing, bridges nowhere. Cut it. \"Each object is a clue\" (Park); functional clutter *loads* the frame, decorative clutter *weakens* it."
+  },
+  {
+   "id": "e164a4a205cf",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel] **Angle encodes the beat** (no face, so the angle *is* the emotion): low / ground-level = power, threat, launch force (**Power, Impact**); eye-level lateral = parity, rivalry stated (**Establish**); high / top-down = judgment, smallness, aftermath (**Aftermath, Exit**)."
+  },
+  {
+   "id": "8423f4ef849c",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt] A keyframe card becomes a still prompt by following the universal skeleton (`universal-rules.md` U1) with weight at the start (U2). **Lead with framing + lens + light + palette + anchor object** — these are the load-bearing tokens for a still; the model puts most attention on the first 30-40% of tokens."
+  },
+  {
+   "id": "ad4d2ea62f24",
+   "texto": "[Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt] Panel → prompt skeleton:\n[Framing + lens]           e.g. \"Low bumper-height macro, 24mm, shot past a blurred roll-cage bar\"\n[Anchor subject + state]   the ONE object at its threshold: \"rear slick sidewall wrinkling at the contact patch\"\n[Depth clauses, 3 jobs]    FG frame / obstruct · MG subject / act · BG stake / rival\n[Motion-as-still cue]      \"sharp subject against horizontal motion-blurred background, foreground reference elongated into a light-streak, rear rim spokes smeared to a disc\"\n[Light + palette]          one motivated source + direction + surface it rims; concrete colors; amber-ban\n[Texture]                  \"fine film grain heaviest in shadow, halation on the practicals, one anamorphic flare, crushed blacks\"\n[Face rule]                \"no face\" — or \"driver a featureless silhouette against blown rival headlights, only knuckle highlights legible\"\n[Aspect / no-speed-up note]  \"no speed-ramp; build velocity into the static frame\""
+  }
+ ]
+}
