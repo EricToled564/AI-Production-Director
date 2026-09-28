@@ -40,7 +40,7 @@ FORMATOS = {
              "literal_fuente": "image/references/golden-rules.md R1 'Start with a Verb' (gate_image R1) — primera línea antes de los 5 slots: "
                                "composición de la app que satisface R1 y los 5 slots de gpt-image.md a la vez"},
             {"id": "scene", "etiqueta": "Scene:", "campos": ["fondo", "luz_escena"], "destinos": ["fondo"]},
-            {"id": "subject", "etiqueta": "Subject:", "campos": ["referencias_linea", "identidad_linea", "identidad", "contexto", "personalidad", "encuadre_linea", "encuadre_sin_mirada"],
+            {"id": "subject", "etiqueta": "Subject:", "campos": ["referencias_linea", "identidad_linea", "pose", "identidad", "contexto", "personalidad", "encuadre_linea", "encuadre_sin_mirada"],
              "destinos": ["identidad", "encuadre"]},
             {"id": "details", "etiqueta": "Important Details:",
              "campos": ["rasgos", "camara", "foco", "luz", "textura", "color"],
@@ -59,7 +59,7 @@ FORMATOS = {
              "literal": "Create a {tipo_pieza}.",
              "literal_fuente": "image/references/golden-rules.md R1 'Start with a Verb'"},
             {"id": "encuadre", "etiqueta": None, "campos": ["encuadre_linea", "encuadre_sin_mirada", "camara"], "destinos": ["encuadre", "camara"]},
-            {"id": "sujeto", "etiqueta": None, "campos": ["referencias_linea", "identidad_linea", "identidad", "contexto", "personalidad", "rasgos"], "destinos": ["identidad", "referencias"]},
+            {"id": "sujeto", "etiqueta": None, "campos": ["referencias_linea", "identidad_linea", "pose", "identidad", "contexto", "personalidad", "rasgos"], "destinos": ["identidad", "referencias"]},
             {"id": "escena", "etiqueta": None, "campos": ["fondo"], "destinos": ["fondo"]},
             {"id": "luz", "etiqueta": None, "campos": ["luz", "color"], "destinos": ["luz", "color"]},
             {"id": "textura", "etiqueta": None, "campos": ["textura", "foco"], "destinos": ["textura", "camara"]},
@@ -110,6 +110,7 @@ FRASES = {
     "fondo": "{fondo}.",
     "luz_escena": "",
     "identidad_linea": "{sujeto}.",
+    "pose": "{pose}.",
     "contexto": "One of the {contexto}.",
     "personalidad": "Expression and posture: {personalidad}.",
     "encuadre_linea": "{encuadre}, {angulo} camera, looking {mirada}.",
@@ -219,7 +220,7 @@ def hechos_entrega(spec: dict, ent: dict) -> tuple[dict, dict]:
         # T1 (maestro de rostro): el contexto del casting no se ve en el cuadro y puede meter un instrumento; va en notas
         # (screenwriter/SKILL.md:253 'Lean prose', señalado por la revisión semántica independiente, ronda 2)
         "fondo": val("fondo"), "sujeto": sujeto, "contexto": None if "T1" in ent["casos"] else val("contexto"),
-        "personalidad": val("personalidad"),
+        "personalidad": val("personalidad"), "pose": val("pose"),
         "encuadre": val("encuadre"), "angulo": val("angulo"),
         "mirada": val("mirada") or ("straight into the lens" if medio == "imagen" and val("encuadre") and "T1" in ent["casos"] else None),
         "rasgos": val("rasgos"), "identidad": val("identidad"), "camara": val("camara"), "foco": val("foco"), "luz": val("luz"),
@@ -239,8 +240,10 @@ def hechos_entrega(spec: dict, ent: dict) -> tuple[dict, dict]:
             hechos["personajes"] = f"[Character A: {val('sujeto')}]"
         hechos.pop("sujeto", None)
         hechos.pop("encuadre", None) if not val("encuadre") else None
+    if isinstance(hechos.get("angulo"), str):  # la frase de encuadre añade «camera»: «eye-level product view camera» no
+        hechos["angulo"] = re.sub(r"(?:\s+(?:camera|angle|view|product view|shot))+\s*$", "", hechos["angulo"].strip(), flags=re.I) or hechos["angulo"]
     hechos = {k: x for k, x in hechos.items() if x not in (None, "")}
-    for k in ("fondo", "encuadre", "camara", "foco", "luz", "textura", "color", "uso", "restricciones", "movimiento"):
+    for k in ("fondo", "pose", "encuadre", "camara", "foco", "luz", "textura", "color", "uso", "restricciones", "movimiento"):
         if isinstance(hechos.get(k), str) and hechos[k][:1].islower():
             hechos[k] = hechos[k][0].upper() + hechos[k][1:]
     no_prompt = {"modelo", "formato", "calidad", "duracion"}
