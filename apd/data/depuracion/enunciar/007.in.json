@@ -1,0 +1,720 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "6fe4d3e43411",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "62-69",
+     "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+    }
+   ],
+   "texto": "```\nScene: solid {background_color} background, graphic poster composition, typography dominates 60% of visual space\nSubject: {model_description} in {streetwear_outfit}, standing or crouching in a {pose_description}, positioned {model_position} — partially overlapping the text layers\nImportant Details: headline \"{HEADLINE_TEXT}\" in extra-bold condensed {font_style}, {text_color}, occupying upper two-thirds of frame — model breaks in front of some letters and behind others (depth interplay), secondary text \"{SUBHEAD_TEXT}\" in thin weight {subhead_color} near bottom edge, {lighting_type} on model creating {shadow_quality} shadows, grain overlay across entire image ({grain_intensity}), composition follows rule of thirds with model at {grid_position} intersection\nUse Case: streetwear brand drop poster, social media announcement, lookbook cover\nConstraints: text must be fully legible even where model overlaps, no extra text or watermarks, no decorative elements besides type and model, model does not obscure more than 30% of any single letter, \"{HEADLINE_TEXT}\" spelled exactly as provided\nQuality: high\n```"
+  },
+  {
+   "id": "0b20adb3b04d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "71-73",
+     "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+    }
+   ],
+   "texto": "**Key levers:** `{HEADLINE_TEXT}` (brand name, drop name), `{SUBHEAD_TEXT}` (date, \"LIMITED DROP\", collection name), `{background_color}` (off-white #F5F1EB, concrete gray #8C8C8C, matte black #0D0D0D), `{text_color}` (#000000, #FF3333, #FFFFFF), `{font_style}` (sans-serif like Druk Wide, slab-serif, stencil), `{streetwear_outfit}`, `{model_position}` (center-left, right third), `{lighting_type}` (harsh direct flash, soft window light), `{grain_intensity}` (subtle film grain, heavy 35mm grain)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text rendering and model-type depth interplay"
+  },
+  {
+   "id": "4782e7ebed32",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "79-79",
+     "encabezado": "Fashion Editorial Patterns › Retro Roller Skating Sportswear Campaign"
+    }
+   ],
+   "texto": "Use for playful, nostalgic sportswear or athleisure campaigns with 70s-80s visual language."
+  },
+  {
+   "id": "1ac941725e90",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "83-83",
+     "encabezado": "Fashion Editorial Patterns › Retro Roller Skating Sportswear Campaign"
+    }
+   ],
+   "texto": "A sun-drenched wide shot of {model_description} roller skating along a {location_description}. They wear {outfit_description} — the fabric catches light as they move, one leg extended mid-glide, arms relaxed and swinging naturally. The ground is smooth asphalt with painted lane markings in faded {lane_color}. Background shows {background_elements} slightly out of focus through heat haze. Shot on {film_stock} with pronounced grain and slightly lifted shadows. Color palette centers on {palette_description}. Golden hour backlight creates a warm halo around the subject and long shadow stretching toward camera. Genuine movement energy — hair and loose fabric respond to speed. Format: {aspect_ratio}."
+  },
+  {
+   "id": "896bc26372e8",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "85-87",
+     "encabezado": "Fashion Editorial Patterns › Retro Roller Skating Sportswear Campaign"
+    }
+   ],
+   "texto": "**Key levers:** `{model_description}`, `{outfit_description}` (high-waisted terry shorts in coral, cropped zip-up in cream, tube socks with racing stripes), `{location_description}` (Venice Beach boardwalk, empty suburban tennis court, coastal promenade), `{film_stock}` (Kodak Gold 200, Fuji Superia 400), `{palette_description}` (terracotta #CC5533, cream #FFF5E1, sky blue #87CEEB, mustard #D4A017), `{lane_color}` (faded yellow, sun-bleached white), `{background_elements}` (palm trees and pastel buildings, chain-link fence and bleachers), `{aspect_ratio}` (3:2, 16:9)\n\n**Recommended model:** NB2 — natural movement, analog film grain, atmospheric grounding"
+  },
+  {
+   "id": "9403000cc85a",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "93-93",
+     "encabezado": "Fashion Editorial Patterns › Futuristic Sportswear Editorial with 3D Blob Shapes"
+    }
+   ],
+   "texto": "Use for forward-looking athletic or techwear editorials where abstract 3D forms create a surreal spatial environment around the model."
+  },
+  {
+   "id": "2e5163158464",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "97-103",
+     "encabezado": "Fashion Editorial Patterns › Futuristic Sportswear Editorial with 3D Blob Shapes"
+    }
+   ],
+   "texto": "```\nScene: {studio_environment} studio space, matte {floor_color} floor extending to infinity, ambient fill light with no visible source, three to five large organic 3D blob shapes ({blob_color}, glossy smooth surface with environment reflections) floating at varying heights around the subject\nSubject: {model_description} in {techwear_outfit}, posed in an athletic stance — {pose_detail}\nImportant Details: blobs range from basketball-sized to armchair-sized, each with smooth amoebic curves and a single specular highlight, they cast soft colored shadows onto the floor and the model's clothing, model lit by cool directional light from camera-right creating defined muscle/fabric contour, {fabric_detail} visible in the garment construction, one blob partially behind the model and one in front (spatial depth), color palette limited to {palette}, overall mood is clinical and aspirational\nUse Case: sportswear lookbook, techwear campaign, editorial magazine spread\nConstraints: blobs must look physically present (not composited), no text, no logos, no additional props, model remains the clear focal point despite the surrounding forms, blobs do not touch or intersect with the model's body, no motion blur\n```"
+  },
+  {
+   "id": "b5f2659ebf3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "105-107",
+     "encabezado": "Fashion Editorial Patterns › Futuristic Sportswear Editorial with 3D Blob Shapes"
+    }
+   ],
+   "texto": "**Key levers:** `{studio_environment}` (white void, concrete gray, deep navy), `{floor_color}` (light gray #D0D0D0, charcoal #333333), `{blob_color}` (chrome silver, translucent jade #00A86B, matte coral #FF6B6B), `{techwear_outfit}` (bonded seam track pants + compression top, oversized windbreaker + utility shorts), `{pose_detail}` (low lunge position, standing with one arm extended checking a wrist device, mid-jump), `{fabric_detail}` (visible bonded seams, reflective piping, mesh ventilation panels), `{palette}` (monochrome + single accent, earth tones + neon green #39FF14)\n\n**Recommended model:** NBP — complex spatial reasoning for blob placement and reflections"
+  },
+  {
+   "id": "8cb925b6dc1e",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "lineas": "111-113",
+     "encabezado": "Fashion Editorial Patterns › Futuristic Sportswear Editorial with 3D Blob Shapes › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA futuristic sportswear editorial photograph in a {studio_environment} studio space with a matte {floor_color} floor extending to infinity. {model_description} stands in an athletic {pose_detail}, wearing {techwear_outfit} with {fabric_detail}. Three to five large organic 3D blob shapes in {blob_color} with glossy smooth surfaces float at varying heights around the subject — the largest is armchair-sized, the smallest basketball-sized. Each blob has amoebic curves and casts soft colored shadows onto the floor and the model's clothes. Cool directional light from camera-right defines contour and fabric texture. One blob sits partially behind the model, one in front, creating depth. The model is the clear focal point. No text, no logos. Format: 4:5.\n```"
+  },
+  {
+   "id": "d1711242147d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "3-3",
+     "encabezado": "Food & Beverage Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for food photography, beverage campaigns, and culinary illustration. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "3b69f990fe16",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "9-9",
+     "encabezado": "Food & Beverage Patterns › Luxury Chocolate Brand Campaign"
+    }
+   ],
+   "texto": "Use for premium chocolate or confectionery brand visuals — moody, textural, with controlled color and atmosphere. Adaptable across mood variants (dark indulgence, bright artisan, earthy origin-story)."
+  },
+  {
+   "id": "337caea96af6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "13-22",
+     "encabezado": "Food & Beverage Patterns › Luxury Chocolate Brand Campaign"
+    }
+   ],
+   "texto": "```\nScene: {surface_material} surface, {lighting_mood} lighting setup — {light_description}, thin atmospheric haze at background edge, color palette restricted to {palette}\nSubject: {product_arrangement} — {product_count} pieces of {chocolate_type} arranged in {arrangement_style}\nImportant Details: visible snap edge on broken piece revealing {interior_texture}, fine cocoa powder dusted across surface (concentrated near product, fading to clean edges), {garnish_elements} placed deliberately as art direction not garnish, one piece mid-break with clean fracture line, surface texture of chocolate shows {surface_quality}, camera angle {camera_angle}, shallow depth of field with sharpest focus on the broken piece\nUse Case: luxury chocolate brand campaign, print ad, packaging insert\nConstraints: no human hands, no utensils, no wrappers or packaging visible, no text, cocoa dust must look natural not dumped, maximum {product_count} chocolate pieces, no melting\n\nMood variant — {mood_name}:\n{mood_modifier}\n```"
+  },
+  {
+   "id": "97d702fdc98d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "24-33",
+     "encabezado": "Food & Beverage Patterns › Luxury Chocolate Brand Campaign"
+    }
+   ],
+   "texto": "**Key levers:**\n- `{surface_material}` — dark slate, raw walnut wood, black marble, crumpled kraft paper\n- `{lighting_mood}` — dramatic chiaroscuro / soft diffused warmth / cold window light\n- `{light_description}` — single hard key from upper left / wrap-around softbox / backlit through parchment\n- `{palette}` — deep browns #3E2723 + gold #C9A84C + black / warm terracotta #A0522D + cream #FFF8E7 / emerald #2D6A4F + copper #B87333\n- `{chocolate_type}` — single-origin dark 72%, white chocolate with matcha veins, ruby chocolate\n- `{interior_texture}` — smooth ganache center, crunchy praline layers, salted caramel pocket\n- `{garnish_elements}` — single vanilla pod, fleur de sel crystals, edible gold leaf fragments, dried raspberry\n- `{arrangement_style}` — diagonal cascade, tight cluster with negative space right, single row\n- `{mood_name} / {mood_modifier}` — \"Dark Indulgence\": push contrast, deepen shadows, add smoke wisp / \"Bright Artisan\": overcast daylight, lifted blacks, pastel accent / \"Origin Story\": raw earth tones, burlap texture, raw cacao beans nearby"
+  },
+  {
+   "id": "2dbe1f6750f9",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "35-35",
+     "encabezado": "Food & Beverage Patterns › Luxury Chocolate Brand Campaign"
+    }
+   ],
+   "texto": "**Recommended model:** GPT Image 2 (`quality: high`) — fracture detail and cocoa powder precision"
+  },
+  {
+   "id": "e3771586b73f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "41-41",
+     "encabezado": "Food & Beverage Patterns › High-Fashion Beverage Campaign Board"
+    }
+   ],
+   "texto": "Use for premium beverage brand campaigns that combine lifestyle and product in a structured board layout — model shot + hero product + product lineup."
+  },
+  {
+   "id": "82ad7920d553",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "45-55",
+     "encabezado": "Food & Beverage Patterns › High-Fashion Beverage Campaign Board"
+    }
+   ],
+   "texto": "```\nScene: horizontal triptych layout on single canvas — left panel (45% width), center panel (30%), right panel (25%), thin {divider_color} dividers (2px), unified {color_temperature} color temperature\nSubject: {beverage_brand} campaign board featuring {model_description} and {product_name}\nImportant Details:\n  Left panel (lifestyle): {model_description} at {location}, holding {product_name} at {hold_position}, {model_action}, shot on {film_aesthetic} — environment tells the brand story\n  Center panel (hero): {product_name} bottle/can beauty shot, {product_angle} angle, {product_surface} surface, single key light with {highlight_style}, condensation droplets on glass/can surface, label sharp and legible\n  Right panel (lineup): {lineup_count} product variants arranged in a {lineup_arrangement}, same lighting as center panel but pulled back wider, each label variant distinguishable by color ({variant_colors})\n  Typography: none in image\nUse Case: brand campaign presentation, pitch deck, retail POS\nConstraints: model does not look directly at product (natural interaction), product label consistent and legible in all panels, lighting temperature cohesive, no floating elements, condensation looks physical not painted on\n```"
+  },
+  {
+   "id": "4e791eb865ce",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "57-59",
+     "encabezado": "Food & Beverage Patterns › High-Fashion Beverage Campaign Board"
+    }
+   ],
+   "texto": "**Key levers:** `{product_name}`, `{beverage_brand}`, `{model_description}`, `{location}` (sunlit rooftop bar, marble kitchen counter, poolside), `{hold_position}` (mid-sip, resting at hip, gesturing with it), `{model_action}` (laughing mid-conversation, looking off-frame, walking), `{film_aesthetic}` (warm Kodak Portra feel, clean digital, cold editorial), `{product_angle}` (three-quarter front, straight-on, slight low angle), `{product_surface}` (wet dark stone, frosted glass shelf, white marble), `{lineup_count}` (3-5), `{variant_colors}` (amber/ruby/gold, mint/lemon/berry), `{divider_color}` (#FFFFFF, #1A1A1A)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — label legibility and panel consistency"
+  },
+  {
+   "id": "a1f01c7440ec",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "65-65",
+     "encabezado": "Food & Beverage Patterns › Hyper-Realistic Food Poster Template"
+    }
+   ],
+   "texto": "Use for hero food posters — restaurants, delivery apps, menu boards — where the food is the entire composition with fillable content slots."
+  },
+  {
+   "id": "e1ae92d56be7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "69-82",
+     "encabezado": "Food & Beverage Patterns › Hyper-Realistic Food Poster Template"
+    }
+   ],
+   "texto": "```\nScene: {background_treatment}, {atmosphere_effect}, overall tone {color_tone}\nSubject: {dish_name} — {dish_description}, plated on {plate_description}, centered in frame\nImportant Details:\n  Plating: {plating_details}\n  Steam/moisture: {steam_detail}\n  Garnish: {garnish_detail} placed at {garnish_position}\n  Surface: {table_surface}, visible texture extending to frame edges\n  Props: {prop_list} — arranged {prop_arrangement}\n  Camera: overhead ({overhead_angle}) OR {camera_angle}, {lens_feel}\n  Lighting: {food_lighting} — highlights on {highlight_targets}\nUse Case: restaurant poster, delivery app hero, menu board, food magazine cover\nConstraints: food must look freshly prepared (not cold or sat-out), no human hands or utensils in active use (props only), colors must be appetizing — no blue cast, no desaturated tones on the food itself, {plate_description} must not compete with the dish\n```"
+  },
+  {
+   "id": "1277f9136804",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "84-94",
+     "encabezado": "Food & Beverage Patterns › Hyper-Realistic Food Poster Template"
+    }
+   ],
+   "texto": "**Key levers:**\n- `{dish_name}` / `{dish_description}` — the hero food item described in appetizing physical detail\n- `{plate_description}` — matte white ceramic, dark stoneware, rustic wooden board, banana leaf\n- `{plating_details}` — sauce swoosh from 2 o'clock, microgreens at 10 o'clock, sesame seed scatter\n- `{steam_detail}` — visible steam wisps rising from center, condensation on glass nearby, no steam\n- `{garnish_detail}` — single basil sprig, chili flake scatter, citrus zest curls\n- `{table_surface}` — aged oak, dark concrete, white marble with gray veins\n- `{prop_list}` — linen napkin, vintage fork, small bowl of sauce, scattered herbs\n- `{food_lighting}` — warm directional from upper-left with fill bounce, harsh noon daylight, moody side light\n- `{background_treatment}` — dark vignette, clean bright, rustic blur\n- `{camera_angle}` — 45-degree three-quarter, straight-on eye-level, overhead flat-lay"
+  },
+  {
+   "id": "5df62f440496",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "96-96",
+     "encabezado": "Food & Beverage Patterns › Hyper-Realistic Food Poster Template"
+    }
+   ],
+   "texto": "**Recommended model:** GPT Image 2 (`quality: high`) — steam, condensation, and ingredient texture fidelity"
+  },
+  {
+   "id": "14993358b4ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "102-102",
+     "encabezado": "Food & Beverage Patterns › Naturalist Food Specimen Cross-Section"
+    }
+   ],
+   "texto": "Use for educational food content, ingredient features, or artisanal brand storytelling — the food item rendered as a scientific illustration in the style of 19th-century naturalist prints."
+  },
+  {
+   "id": "d987f5d11476",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "106-106",
+     "encabezado": "Food & Beverage Patterns › Naturalist Food Specimen Cross-Section"
+    }
+   ],
+   "texto": "A detailed naturalist illustration of {food_item} rendered in the style of 19th-century scientific specimen plates. The composition shows the item in three states arranged vertically on an aged {paper_color} parchment background: whole specimen at top with botanical accuracy, lateral cross-section at center revealing internal structure ({internal_details}), and an exploded detail of {detail_element} at bottom with fine ink annotation lines pointing to key features. Drawn with precise {medium_description} — visible hatching for shadow, stippling for texture, thin ink outlines. Color is naturalistic but slightly muted as if from a hand-tinted lithograph. A thin decorative border frames the composition. Small italic Latin-style label \"{latin_label}\" at the bottom in serif font, {ink_color} ink. Format: 3:4."
+  },
+  {
+   "id": "4f44c2e50c2d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "108-110",
+     "encabezado": "Food & Beverage Patterns › Naturalist Food Specimen Cross-Section"
+    }
+   ],
+   "texto": "**Key levers:** `{food_item}` (pomegranate, sourdough loaf, wagyu ribeye, cacao pod), `{internal_details}` (seed chambers with ruby arils, crumb structure with irregular air pockets, marbling fat distribution), `{detail_element}` (individual seed anatomy, crust layering, fat crystal structure), `{paper_color}` (warm cream #FDF5E6, cool ivory #FFFFF0), `{medium_description}` (watercolor wash with ink line, graphite with colored pencil, pure ink with minimal color), `{latin_label}` (a playful Latinized name), `{ink_color}` (sepia #704214, India black #1A1A1A)\n\n**Recommended model:** NB2 — naturalist illustration style, grounding on botanical plate aesthetics"
+  },
+  {
+   "id": "ee8b5126ab4d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "116-116",
+     "encabezado": "Food & Beverage Patterns › City Food Map Illustration"
+    }
+   ],
+   "texto": "Use for restaurant guides, food festival materials, travel content, or local cuisine features — a bird's-eye illustrated map showing food specialties across a city."
+  },
+  {
+   "id": "0a9ff08caa4b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "120-120",
+     "encabezado": "Food & Beverage Patterns › City Food Map Illustration"
+    }
+   ],
+   "texto": "A hand-drawn illustrated bird's-eye map of {city_name} showing its food culture. The map covers the {area_description} with simplified but recognizable {landmark_list} drawn in a loose ink-and-watercolor style. Scattered across the map are {dish_count} illustrated food items representing local specialties — each dish ({dish_list}) drawn at exaggerated scale hovering near its neighborhood, rendered in warm appetizing watercolor with visible brushstrokes. Streets are thin ink lines with {street_style}. Water features rendered in soft {water_color} wash. The overall palette is {palette_description}. A decorative hand-lettered title \"{MAP_TITLE}\" sits in a banner at the top. Small hand-written labels mark each dish and neighborhood. Style references vintage travel poster illustration meets editorial food drawing. Format: {aspect_ratio}."
+  },
+  {
+   "id": "3558f81777ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "122-124",
+     "encabezado": "Food & Beverage Patterns › City Food Map Illustration"
+    }
+   ],
+   "texto": "**Key levers:** `{city_name}`, `{area_description}` (central 5 km, old town quarter, waterfront district), `{landmark_list}` (main cathedral, central market, river bridges), `{dish_count}` (6-10), `{dish_list}` (plov near the bazaar, samsa near the old town, shashlik near the park), `{street_style}` (slightly wobbly freehand, clean but simplified), `{water_color}` (cerulean #0077B6, teal #2A9D8F), `{palette_description}` (warm terracotta and cream with food items in full saturated color, cool blues and greens with warm food accents), `{MAP_TITLE}` (\"A Taster's Guide to {city_name}\"), `{aspect_ratio}` (3:4, 1:1)\n\n**Recommended model:** NB2 — image grounding for real city landmarks + illustration style"
+  },
+  {
+   "id": "567ad184ec40",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/food-beverage.md",
+     "lineas": "128-130",
+     "encabezado": "Food & Beverage Patterns › City Food Map Illustration › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA hand-drawn illustrated bird's-eye food map of {city_name}, covering the {area_description}. Simplified but recognizable {landmark_list} are drawn in loose ink-and-watercolor style. {dish_count} local dishes ({dish_list}) float at exaggerated scale near their neighborhoods, each painted in warm appetizing watercolor with visible brushstrokes. Streets are thin freehand ink lines. Water features in soft {water_color} wash. A hand-lettered banner at top reads \"{MAP_TITLE}\". Small hand-written labels mark dishes and neighborhoods. Style mixes vintage travel poster illustration with editorial food drawing. Palette: {palette_description}. Format: {aspect_ratio}.\n```"
+  },
+  {
+   "id": "57c6b11bdd9d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "3-3",
+     "encabezado": "Portrait & Cinema Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for cinematic portraits, atmospheric character photography, and mood-driven portraiture. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "d12917490df7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "9-9",
+     "encabezado": "Portrait & Cinema Patterns › Golden Hour Street Backlit Portrait"
+    }
+   ],
+   "texto": "Use for warm, emotive street portraits with strong backlight flare — editorial, personal branding, album covers."
+  },
+  {
+   "id": "acf3c62a2d98",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "13-19",
+     "encabezado": "Portrait & Cinema Patterns › Golden Hour Street Backlit Portrait"
+    }
+   ],
+   "texto": "```\nScene: {street_description} at golden hour, sun positioned directly behind subject (5-10 degrees above horizon line), warm amber light flooding the street, slight atmospheric haze diffusing the backlight\nSubject: {person_description}, standing at {position_in_street}, body angled three-quarter to camera, face turned toward lens with {expression}\nImportant Details: strong rim light outlining hair and shoulders in warm gold (#FFAA33), face lit primarily by bounce light from {bounce_surface} on the opposite side — softer and cooler than the backlight, shallow depth of field rendering background into warm bokeh circles, {clothing_detail} catches backlight along edges showing fabric texture, visible lens flare — one or two hexagonal flare artifacts near frame edge (organic, not excessive), long shadow cast toward camera on {ground_surface}, skin rendered naturally with warm undertones — no heavy smoothing, visible pores, {color_grade}\nUse Case: editorial portrait, personal brand photography, album art\nConstraints: face must be visible and well-exposed despite backlight (not silhouetted), no reflectors or studio equipment visible, lens flare limited to one or two subtle artifacts — not a starburst explosion, no added text, no vignette\n```"
+  },
+  {
+   "id": "3e922a3b0a26",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "21-23",
+     "encabezado": "Portrait & Cinema Patterns › Golden Hour Street Backlit Portrait"
+    }
+   ],
+   "texto": "**Key levers:** `{street_description}` (narrow European alley with stone walls, wide boulevard with linden trees, industrial backstreet with brick), `{person_description}`, `{expression}` (quiet confidence, mid-smile with closed lips, contemplative gaze), `{bounce_surface}` (cream-painted wall, parked white van, sand-colored buildings), `{clothing_detail}` (linen shirt collar, leather jacket shoulder seam, scarf edge), `{ground_surface}` (wet cobblestones, dry asphalt, packed earth), `{color_grade}` (Kodak Portra 400 warmth, slightly lifted blacks with amber cast, clean digital with warm white balance)\n\n**Recommended model:** GPT Image 2 — backlight exposure control and skin rendering"
+  },
+  {
+   "id": "c1f8bbf65ad6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "29-29",
+     "encabezado": "Portrait & Cinema Patterns › Convenience Store Neon Portrait"
+    }
+   ],
+   "texto": "Use for urban night portraits with mixed artificial lighting — fluorescent overhead + colored neon signage creating a chromatic push-pull on the subject's face."
+  },
+  {
+   "id": "ce8a3b8358cc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "33-39",
+     "encabezado": "Portrait & Cinema Patterns › Convenience Store Neon Portrait"
+    }
+   ],
+   "texto": "```\nScene: exterior of a {store_type} at night, shot through or near the front window/entrance, overhead fluorescent tubes casting flat {fluorescent_color} light from inside, {neon_sign_description} mounted on the wall/window casting {neon_color} glow on one side of the subject's face\nSubject: {person_description}, {pose_description}, positioned at the threshold between interior fluorescent zone and exterior neon zone — split lighting across the face\nImportant Details: face receives {fluorescent_color} fill from the store interior on one side and {neon_color} accent from signage on the other — the two colors mix on the nose bridge and chin, visible product shelves or cooler glow softly in background bokeh, {clothing_description} absorbs and reflects the two light sources differently, condensation or grime on window glass if shot through it (subtle, not obscuring), wet pavement outside reflects both light sources in streaks, shallow depth of field with subject sharp, background a mosaic of colored bokeh, {camera_feel}\nUse Case: urban editorial, music press portrait, fashion story, short film still\nConstraints: face clearly visible — neither light source blows out features, neon sign text (if present) is secondary to the portrait not the focal point, no additional light sources beyond what exists in the scene, no heavy color grading beyond what the practical lights create naturally, no motion blur\n```"
+  },
+  {
+   "id": "930df3e98ec3",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "41-43",
+     "encabezado": "Portrait & Cinema Patterns › Convenience Store Neon Portrait"
+    }
+   ],
+   "texto": "**Key levers:** `{store_type}` (Korean convenience store, bodega, late-night pharmacy, 24-hour laundromat), `{fluorescent_color}` (cool blue-white, greenish-white, warm tungsten), `{neon_sign_description}` (red \"OPEN\" sign, blue beer brand logo, pink cursive word), `{neon_color}` (red #FF2D2D, blue #3366FF, pink #FF69B4, green #39FF14), `{person_description}`, `{pose_description}` (leaning against door frame, sitting on overturned crate, standing with hands in pockets), `{clothing_description}` (dark hoodie that absorbs light, white t-shirt that bounces both colors, leather that reflects), `{camera_feel}` (Cinestill 800T with halation around neon, clean digital night, Fujifilm color science)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — precise dual-light color rendering on skin"
+  },
+  {
+   "id": "6e7908eda01f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "49-49",
+     "encabezado": "Portrait & Cinema Patterns › Monochrome Glitch Profile Portrait"
+    }
+   ],
+   "texto": "Use for edgy, tech-forward portraits — artist profiles, electronic music press, tech brand campaigns. High contrast black-and-white with selective red digital artifacts."
+  },
+  {
+   "id": "1e59d6d1e8c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "53-59",
+     "encabezado": "Portrait & Cinema Patterns › Monochrome Glitch Profile Portrait"
+    }
+   ],
+   "texto": "```\nScene: pure black background (#000000), no environment — subject emerges from darkness\nSubject: {person_description} in sharp profile (facing {direction}), head and upper shoulders only, high-contrast black-and-white rendering\nImportant Details: extreme contrast — skin highlights blow to near-white, shadows fall to pure black with minimal midtone graduation, {hair_detail} silhouetted against black, one eye visible in profile with a single catchlight, horizontal glitch displacement lines cutting across the image at {glitch_positions} — each line offsets a thin horizontal slice (4-8px) to the right by 10-20px, the displaced slices rendered in {accent_color} (#FF0000 default) while the rest remains monochrome, fine horizontal scan lines across entire image (subtle, CRT monitor texture), grain: heavy high-ISO film grain throughout, jaw line and nose bridge are the sharpest elements in frame\nUse Case: artist press photo, electronic music EP cover, tech brand portrait, social media profile\nConstraints: glitch lines must look digital (clean horizontal displacement, not organic), accent color appears ONLY in the displaced glitch slices — no other colored elements, maximum {max_glitch_lines} glitch lines to avoid visual noise, face must remain recognizable despite artifacts, no text, background is solid black — no gradient or texture\n```"
+  },
+  {
+   "id": "686b77acb73a",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "61-63",
+     "encabezado": "Portrait & Cinema Patterns › Monochrome Glitch Profile Portrait"
+    }
+   ],
+   "texto": "**Key levers:** `{person_description}`, `{direction}` (left, right), `{hair_detail}` (tight buzz cut showing skull contour, shoulder-length hair with flyaway strands catching backlight, pulled-back bun), `{glitch_positions}` (across the eye, across the mouth, across the forehead — specify 2-3 positions), `{accent_color}` (#FF0000 red, #00FF41 terminal green, #FF00FF magenta), `{max_glitch_lines}` (3-5)\n\n**Recommended model:** GPT Image 2 — high-contrast mono rendering and controlled glitch placement"
+  },
+  {
+   "id": "7da5cd885478",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "69-69",
+     "encabezado": "Portrait & Cinema Patterns › Japanese Negative Film Rooftop Portrait"
+    }
+   ],
+   "texto": "Use for moody, atmospheric portraits with overexposed analog film qualities — muted colors, lifted shadows, and a feeling of faded memory. Ideal for editorial, zine, or personal project work."
+  },
+  {
+   "id": "244d1c01e330",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "73-73",
+     "encabezado": "Portrait & Cinema Patterns › Japanese Negative Film Rooftop Portrait"
+    }
+   ],
+   "texto": "A waist-up portrait of {person_description} on a {rooftop_description}. They stand near the edge railing, {pose_description}, with the {city_skyline} visible behind them but washed out and desaturated by {sky_condition}. Shot on expired Japanese negative film — colors shifted toward {color_shift}, highlights blown soft and chalky, shadows lifted with visible grain in the flat midtones. Skin tones slightly green-yellow as if the film has aged. {clothing_description} reads as muted tones, almost monochromatic against the overexposed sky. Wind moves {wind_detail}. The mood is nostalgic and transient — a memory captured on deteriorating film stock. Eye-level framing, subject slightly off-center toward {frame_position}. Format: {aspect_ratio}."
+  },
+  {
+   "id": "572c16632a07",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "75-77",
+     "encabezado": "Portrait & Cinema Patterns › Japanese Negative Film Rooftop Portrait"
+    }
+   ],
+   "texto": "**Key levers:** `{person_description}`, `{rooftop_description}` (concrete apartment building rooftop, industrial warehouse roof with exhaust vents, school building roof with chain-link fence), `{pose_description}` (leaning on railing looking at camera, turned away looking at skyline, sitting on a ledge with knees drawn up), `{city_skyline}` (Tokyo mid-rise apartments, generic Asian city with power lines), `{sky_condition}` (overcast white sky, hazy afternoon sun), `{color_shift}` (green-cyan cast, yellow-amber cast), `{clothing_description}` (oversized vintage windbreaker, plain white t-shirt, navy work jacket), `{wind_detail}` (hair across face, jacket hem, collar), `{frame_position}` (left third, right third), `{aspect_ratio}` (3:2, 4:5)\n\n**Recommended model:** NB2 — analog film grain emulation and atmospheric mood"
+  },
+  {
+   "id": "689dfe315601",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "83-83",
+     "encabezado": "Portrait & Cinema Patterns › Dreamy Underwater Surreal Portrait"
+    }
+   ],
+   "texto": "Use for beauty campaigns, conceptual art, or album visuals — a portrait where the subject floats in clear water surrounded by translucent aquatic elements."
+  },
+  {
+   "id": "882ca5fd1089",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "87-93",
+     "encabezado": "Portrait & Cinema Patterns › Dreamy Underwater Surreal Portrait"
+    }
+   ],
+   "texto": "```\nScene: clear {water_color} water filling the entire frame, caustic light patterns rippling across the subject from above (sunlight through water surface), no visible pool walls or floor — infinite aquatic void\nSubject: {person_description}, floating in a relaxed {pose_description}, eyes {eye_state}, hair fanning out in all directions as if weightless, {clothing_description} billowing and suspended in the water\nImportant Details: {fish_count} translucent {fish_type} swimming in a loose school around the subject — each fish semi-transparent with visible skeletal structure and iridescent scales catching the caustic light, light rays penetrating from above in {light_pattern}, fine air bubbles rising from near the subject's {bubble_source}, fabric of clothing moves independently from the body — folds and hems suspended in mid-drift, skin has a subtle cool {water_tint} cast from the water, overall palette is {palette}, composition framed as a {shot_type}\nUse Case: beauty campaign, album cover, conceptual art print, fashion editorial\nConstraints: subject's face must be clearly visible and serene (not distressed or holding breath with effort), fish are translucent — not solid opaque tropical fish, no visible water surface edge or pool tiles, no scuba gear or goggles, bubbles are small and delicate not large air pockets, underwater physics must be consistent (everything floats)\n```"
+  },
+  {
+   "id": "2aa09c58202b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "95-97",
+     "encabezado": "Portrait & Cinema Patterns › Dreamy Underwater Surreal Portrait"
+    }
+   ],
+   "texto": "**Key levers:** `{water_color}` (deep cerulean #0077B6, pale turquoise #AFEEEE, dark teal #004D4D), `{person_description}`, `{pose_description}` (arms slightly outstretched like a slow free-fall, curled fetal position, one arm reaching upward toward the light), `{eye_state}` (softly closed, open and gazing upward at the light, looking directly at camera), `{clothing_description}` (flowing white silk dress, loose linen shirt and trousers, sheer organza wrap), `{fish_count}` (5-8), `{fish_type}` (jellyfish, small reef fish, elongated glass catfish), `{light_pattern}` (parallel god rays from upper right, scattered dappled caustics, single concentrated beam), `{bubble_source}` (lips, fingertips, fabric edges), `{water_tint}` (blue-green, aquamarine), `{palette}` (teal and ivory, deep blue and gold, seafoam and blush), `{shot_type}` (full body vertical, waist-up centered, three-quarter with negative space below)\n\n**Recommended model:** NBP — complex physics (floating hair, fabric, fish transparency, caustic light)"
+  },
+  {
+   "id": "b68c2dd1d8c9",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "lineas": "101-103",
+     "encabezado": "Portrait & Cinema Patterns › Dreamy Underwater Surreal Portrait › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA surreal underwater portrait of {person_description} floating in a relaxed {pose_description} in clear {water_color} water. Eyes {eye_state}, hair fans out weightlessly in all directions. {clothing_description} billows and suspends in the current, folds drifting independently. {fish_count} translucent {fish_type} swim in a loose school around the subject — each semi-transparent with visible skeletal structure and iridescent scales catching caustic light from above. Sunlight penetrates from the surface in {light_pattern}, casting rippling patterns across skin and fabric. Fine air bubbles rise from the subject's {bubble_source}. Skin has a subtle cool {water_tint} cast. No pool walls, no surface edge visible — infinite aquatic void. Serene and dreamlike. Palette: {palette}. Format: 4:5.\n```"
+  },
+  {
+   "id": "cbf51b095f8c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "3-3",
+     "encabezado": "Poster & Illustration Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for posters, art prints, campaign collages, and graphic illustrations. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "3585a48bc290",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "9-9",
+     "encabezado": "Poster & Illustration Patterns › City Across Two Centuries (Time-Split Composition)"
+    }
+   ],
+   "texto": "Use for urban development campaigns, anniversary materials, cultural exhibitions, or editorial features — a single city view divided down the middle, one half historical and one half modern."
+  },
+  {
+   "id": "57c8c56e64aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "13-24",
+     "encabezado": "Poster & Illustration Patterns › City Across Two Centuries (Time-Split Composition)"
+    }
+   ],
+   "texto": "```\nScene: wide establishing shot of {city_landmark_view}, frame divided vertically down the center — left half shows the scene in {historical_era}, right half shows {modern_era}\nSubject: the same geographic viewpoint across two time periods, architecture and infrastructure transforming at the dividing line\nImportant Details:\n  Left half ({historical_era}): {historical_details} — muted {historical_palette} palette, {historical_atmosphere}, period-accurate architecture, {historical_figures} going about daily life, {historical_transport}\n  Right half ({modern_era}): {modern_details} — {modern_palette} palette, {modern_atmosphere}, contemporary architecture where old buildings once stood (some landmarks preserved), {modern_figures}, {modern_transport}\n  Dividing line: not a hard cut — elements morph and blend across a narrow 5% transition zone (a horse-drawn cart becomes a car, a gas lamp becomes LED, cobblestones become asphalt, a tree grows taller)\n  Sky transitions too: {historical_sky} on left to {modern_sky} on right\n  Camera angle: elevated three-quarter view (roughly 30 degrees above street level) to show depth of both eras\nUse Case: city anniversary campaign, urban development feature, cultural exhibition poster, editorial illustration\nConstraints: both halves must depict the SAME geographic location (matching terrain, river, hill positions), transition zone should feel organic not pasted, scale and perspective consistent across both halves, no text unless specified, no anachronistic elements (modern items in historical half or vice versa outside the transition)\n```"
+  },
+  {
+   "id": "203b7838fe69",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "26-28",
+     "encabezado": "Poster & Illustration Patterns › City Across Two Centuries (Time-Split Composition)"
+    }
+   ],
+   "texto": "**Key levers:** `{city_landmark_view}` (view down the main avenue toward the central square, riverfront panorama, view from the hill overlooking the old town), `{historical_era}` / `{modern_era}` (1920s / 2020s, medieval / present day, 1960s / 2060s), `{historical_details}` (cobblestone streets, horse-drawn carts, hand-painted shop signs), `{modern_details}` (glass facades, rooftop gardens, digital signage), `{historical_palette}` (sepia and desaturated earth tones, hand-colored photograph quality), `{modern_palette}` (clean contemporary color, cooler blue-grays with warm accent), `{historical_atmosphere}` (coal haze, soft morning fog), `{modern_atmosphere}` (clear sky, light pollution glow at horizon), `{historical_sky}` (warm overcast), `{modern_sky}` (clear gradient blue)\n\n**Recommended model:** NBP — spatial reasoning for architectural morphing and perspective consistency"
+  },
+  {
+   "id": "3d89baa47456",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "32-34",
+     "encabezado": "Poster & Illustration Patterns › City Across Two Centuries (Time-Split Composition) › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA wide elevated view of {city_landmark_view}, divided vertically down the center into two eras. The left half depicts the scene in {historical_era}: {historical_details}, rendered in a muted {historical_palette} palette with {historical_atmosphere}. The right half shows {modern_era}: {modern_details} in a {modern_palette} palette under {modern_atmosphere}. At the center dividing line, elements morph organically across a narrow transition zone — a horse-drawn cart becomes a car, gas lamps become LED lights, cobblestones blend into asphalt, trees grow taller. The sky transitions from {historical_sky} on the left to {modern_sky} on the right. Both halves share the same geographic terrain and perspective. Camera angle roughly 30 degrees above street level. Format: 16:9.\n```"
+  },
+  {
+   "id": "c4cdcc2229b6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "40-40",
+     "encabezado": "Poster & Illustration Patterns › Fitness Boxing Campaign Collage"
+    }
+   ],
+   "texto": "Use for sport and fitness brand campaigns — a dynamic 3-panel collage combining action, detail, and atmosphere around a boxing/combat sport theme."
+  },
+  {
+   "id": "f9d6022dc6d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "44-55",
+     "encabezado": "Poster & Illustration Patterns › Fitness Boxing Campaign Collage"
+    }
+   ],
+   "texto": "```\nScene: three-panel horizontal collage on {canvas_color} canvas — left panel (35%), center panel (40%), right panel (25%), {divider_style} dividers, unified {overall_tone} color tone\nSubject: {athlete_description} in a boxing/training context — same person across all panels\nImportant Details:\n  Left panel (environment): wide shot of {gym_environment}, atmospheric — {atmosphere_detail}, equipment visible but out of focus, {athlete_description} as a silhouette or distant figure warming up, mood: anticipation\n  Center panel (action): medium shot, {athlete_description} mid-{action_type}, captured at peak effort — {action_detail}, sweat visible on skin and {gear_description}, sharp focus on face showing {expression}, directional hard light from {light_direction} creating dramatic shadow on the opposite side of the face, slight motion trail on the {moving_element}\n  Right panel (detail): extreme close-up of {detail_subject} — {detail_description}, texture dominates the frame, {detail_lighting}\n  Grain: uniform {grain_level} across all panels\n  Color: {color_treatment}\nUse Case: fitness brand campaign, gym poster, sportswear ad, magazine editorial spread\nConstraints: same athlete across all panels (consistent identity, gear, wraps), no text or logos, no sponsor branding, center panel is the visual anchor — should feel like the decisive moment, grain must be uniform not just added to one panel\n```"
+  },
+  {
+   "id": "e6b7a7a7b6fb",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "57-59",
+     "encabezado": "Poster & Illustration Patterns › Fitness Boxing Campaign Collage"
+    }
+   ],
+   "texto": "**Key levers:** `{athlete_description}`, `{gym_environment}` (industrial boxing gym with heavy bags, outdoor concrete training yard, dimly lit basement ring), `{atmosphere_detail}` (chalk dust in backlight, steam from breath in cold air, golden light through high windows), `{action_type}` (throwing a cross, landing a hook on a heavy bag, rope-skipping), `{action_detail}` (fist connecting with bag creating visible impact ripple, rope frozen in arc above head), `{gear_description}` (red hand wraps, worn leather gloves, no gloves — taped knuckles), `{expression}` (focused intensity, controlled exhale, battle cry), `{detail_subject}` (taped knuckles against red canvas, worn boxing boot laces, sweat dripping from chin onto canvas), `{detail_description}` (each tape fiber visible, leather cracking at flex points, individual droplets mid-fall), `{color_treatment}` (desaturated with warm midtones, high-contrast monochrome with sepia, teal-and-orange split tone), `{canvas_color}` (matte black #0D0D0D, dark charcoal #1A1A1A), `{divider_style}` (thin white 2px, no dividers — edge bleed)\n\n**Recommended model:** GPT Image 2 — identity consistency across panels and sweat/texture detail"
+  },
+  {
+   "id": "33a318577143",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "65-65",
+     "encabezado": "Poster & Illustration Patterns › Lavender Smartphone Hero Ad"
+    }
+   ],
+   "texto": "Use for tech product launch visuals — clean, color-dominant hero shots where a smartphone (or similar device) floats against a monochromatic gradient with soft 3D accent elements."
+  },
+  {
+   "id": "10545905b54c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "69-78",
+     "encabezado": "Poster & Illustration Patterns › Lavender Smartphone Hero Ad"
+    }
+   ],
+   "texto": "```\nScene: smooth gradient background from {color_light} to {color_dark}, no hard edges, studio void environment\nSubject: {device_name} floating at slight {tilt_angle}-degree angle, screen facing camera showing {screen_content}, centered vertically but offset {horizontal_position} horizontally\nImportant Details: device renders with physically accurate {device_finish} — visible edge chamfer catching a thin highlight line, screen content crisp and legible at this scale, {accent_element_count} soft 3D shapes floating nearby (matte {accent_shape_color} {accent_shapes} — frosted glass or soft plastic appearance, each {accent_size}), shapes are out of focus at varying depths creating a layered composition, soft omnidirectional lighting with a subtle key from upper-left, gentle device shadow projected onto the gradient ({shadow_softness}), overall color palette stays within the {color_family} family — no complementary or clashing tones\n  Bottom text area: \"{HEADLINE}\" in {headline_weight} {headline_font_style}, {headline_color}, centered below device\n  Subtext: \"{SUBHEADLINE}\" in thin weight, {subtext_color}, below headline\nUse Case: product launch hero, website header, retail POS, digital ad\nConstraints: screen content must be sharp and readable, floating shapes must not obscure the device screen, no reflections of a studio environment on screen, gradient is smooth — no banding, device proportions must match a real smartphone (no stretched or squished body), text exactly as quoted\nQuality: high\n```"
+  },
+  {
+   "id": "ad37333d1988",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "80-82",
+     "encabezado": "Poster & Illustration Patterns › Lavender Smartphone Hero Ad"
+    }
+   ],
+   "texto": "**Key levers:** `{device_name}`, `{color_light}` / `{color_dark}` (lavender #E6D5F5 to #7B4FA0, mint #D0F0E0 to #1B7A5A, coral #FFDDD2 to #C44536), `{device_finish}` (matte aluminum, polished titanium, frosted glass back), `{screen_content}` (a clean home screen with app icons, a camera app showing a landscape, a gradient wallpaper), `{accent_shapes}` (spheres, rounded pills, soft cubes, torus rings), `{accent_shape_color}` — same family as background but slightly lighter or more saturated, `{accent_size}` (golf-ball to grapefruit), `{HEADLINE}` / `{SUBHEADLINE}`, `{headline_color}` (white #FFFFFF, dark tint of the color family), `{color_family}` (lavender-purple, sage-green, warm terracotta), `{tilt_angle}` (5-15), `{horizontal_position}` (left third, center, right third)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text rendering, screen content legibility, device accuracy"
+  },
+  {
+   "id": "fde5786f3651",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "88-88",
+     "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+    }
+   ],
+   "texto": "Use for fashion drops, event announcements, or editorial magazine covers where bold typography and a street fashion figure share equal visual weight on a saturated color field."
+  },
+  {
+   "id": "caf61f54373d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "92-99",
+     "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+    }
+   ],
+   "texto": "```\nScene: solid {background_color} background (flat, no gradient), graphic poster composition split between typography (upper 55%) and figure (lower 60%, overlapping into the type zone)\nSubject: {model_description} in {outfit_description}, full-body shot from low angle (worm's eye, approximately 15 degrees below eye level), standing with {pose_description}\nImportant Details: \"{MAIN_TITLE}\" in extra-bold extended {title_font_style}, {title_color}, filling the upper half — each letter approximately 20% of frame height, model's head and shoulders break in front of the bottom row of letters (depth layering), \"{SUBTITLE}\" in lightweight condensed type, {subtitle_color}, running along the bottom edge or lower-right corner, model lit by overcast flat light — even exposure, minimal shadow, fabric textures fully readable ({fabric_details}), shoes visible and grounded (not floating), {graphic_accents} if any\nUse Case: fashion brand poster, event flyer, editorial magazine cover, retail window display\nConstraints: title text fully legible — model overlap must not obscure more than one letter by more than 40%, no additional decorative elements unless specified in {graphic_accents}, background is flat solid color — no texture or pattern, \"{MAIN_TITLE}\" and \"{SUBTITLE}\" spelled exactly as given, model does not hold props unless specified\nQuality: high\n```"
+  },
+  {
+   "id": "d1467ff92337",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "101-103",
+     "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+    }
+   ],
+   "texto": "**Key levers:** `{background_color}` (emerald #006B3F, cobalt #0047AB, saffron #F4C430, hot pink #FF1493), `{model_description}`, `{outfit_description}` (oversized leather trench + chunky sneakers, cropped bomber + wide-leg trousers + platform boots), `{pose_description}` (wide stance with arms crossed, one hand adjusting collar, walking stride caught mid-step), `{MAIN_TITLE}` / `{SUBTITLE}`, `{title_font_style}` (geometric sans-serif, grotesque, stencil cut), `{title_color}` (#FFFFFF, #000000, cream #FFF5E1), `{subtitle_color}` (same as title but at 60% opacity), `{fabric_details}` (visible grain in leather, corduroy ridges, denim selvedge edge), `{graphic_accents}` (none, thin white border 20px from edge, small logo mark at bottom-left)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — typography rendering and figure-type layering"
+  },
+  {
+   "id": "8bad6eabb211",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "109-109",
+     "encabezado": "Poster & Illustration Patterns › Peacock Botanical Vintage Art Print"
+    }
+   ],
+   "texto": "Use for decorative prints, packaging illustration, wallpaper design, or editorial art — a symmetrical composition combining a peacock with botanical elements in a vintage printmaking style."
+  },
+  {
+   "id": "1cdda1f51ed7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "113-113",
+     "encabezado": "Poster & Illustration Patterns › Peacock Botanical Vintage Art Print"
+    }
+   ],
+   "texto": "A symmetrical ornamental art print centered on a {peacock_variant} peacock in full tail display, viewed from {view_angle}. The tail feathers fan into a perfect semicircle filling the upper two-thirds of the frame, each eye-spot rendered with precise detail — iridescent {eye_colors} with fine barb texture. The peacock stands on a {base_element} at the composition's center axis. Flanking the bird symmetrically: {botanical_left} on the left mirrored by {botanical_right} on the right — leaves, stems, and blossoms curve inward framing the peacock. {additional_fauna} perch or fly near the upper corners. The entire composition sits on a {background_texture} background in {background_color}. Rendering style: {print_style} — visible {technique_marks}, rich but slightly flattened color as if from layered printing passes. Border: {border_style}. Color palette: {palette}. Format: 3:4."
+  },
+  {
+   "id": "37680ca66eed",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "115-117",
+     "encabezado": "Poster & Illustration Patterns › Peacock Botanical Vintage Art Print"
+    }
+   ],
+   "texto": "**Key levers:** `{peacock_variant}` (Indian blue, white albino, green Java), `{view_angle}` (front-facing straight on, three-quarter turning left), `{eye_colors}` (deep blue #003366 and emerald #006B3F and gold #C9A84C, monochrome — all in shades of navy and silver), `{base_element}` (ornate stone pedestal, flowering branch, decorative tile floor), `{botanical_left}` / `{botanical_right}` (magnolia branches, trailing wisteria, passion flower vines, banksia stems), `{additional_fauna}` (two small butterflies, a dragonfly pair, none), `{background_texture}` / `{background_color}` (aged linen #F5F0E1, dark navy #0A1628, cream parchment #FDF5E6), `{print_style}` (hand-colored etching, woodblock print, chromolithograph), `{technique_marks}` (cross-hatching in shadows, visible plate tone, registration marks at corners), `{border_style}` (thin double-line art nouveau border, ornamental corner flourishes, simple single-line rectangle), `{palette}` (natural jewel tones — emerald, sapphire, gold on cream / limited three-color palette — teal, copper, black on ivory / muted earth tones — sage, terracotta, umber)\n\n**Recommended model:** NB2 — image grounding for accurate peacock anatomy and botanical species"
+  },
+  {
+   "id": "f367cc2d7bcb",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "lineas": "121-123",
+     "encabezado": "Poster & Illustration Patterns › Peacock Botanical Vintage Art Print › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA symmetrical ornamental art print centered on a {peacock_variant} peacock in full tail display, viewed {view_angle}. Tail feathers fan into a perfect semicircle filling the upper two-thirds, each eye-spot rendered with iridescent {eye_colors} and fine barb texture. The peacock stands on a {base_element}. Flanking it symmetrically: {botanical_left} on the left mirrored by {botanical_right} on the right, stems and blossoms curving inward to frame the bird. {additional_fauna} near the upper corners. Background: {background_texture} in {background_color}. Style: {print_style} with visible {technique_marks} and slightly flattened color as from layered printing passes. Border: {border_style}. Palette: {palette}. Format: 3:4.\n```"
+  },
+  {
+   "id": "ef6c330aa517",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "lineas": "3-3",
+     "encabezado": "UI Mockups & Social Media Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for social media ads, app store assets, dashboard mockups, and visual analysis boards. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "539650566319",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "lineas": "9-9",
+     "encabezado": "UI Mockups & Social Media Patterns › Instagram Story Ad (9:16)"
+    }
+   ],
+   "texto": "Use for vertical product or brand ads targeting Instagram Stories — hero product, bold headline, and swipe-up CTA zone at the bottom."
+  }
+ ]
+}

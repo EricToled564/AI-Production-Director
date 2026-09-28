@@ -1,0 +1,1400 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "8084492752c0",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "120-131",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 6 — Add Post-Production Checklist"
+    }
+   ],
+   "texto": "Close with actionable post-production notes:\n\n```\n## Post-Production Checklist\n- [ ] Generate all N shots with your preferred AI video tool\n- [ ] Stitch in [CapCut / Descript / DaVinci Resolve / Premiere]\n- [ ] Apply [specific LUT or color grade] for consistency\n- [ ] Add [transition type and duration] between shots\n- [ ] Layer BGM: [genre / BPM / mood]\n- [ ] Add text overlays for [hook / CTA / captions]\n- [ ] Export [platform spec: 9:16 1080x1920 30fps for TikTok, etc.]\n```"
+  },
+  {
+   "id": "7a56b84a2881",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "135-140",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 7 — Explain Why It Works"
+    }
+   ],
+   "texto": "Close with a \"Why this works\" block explaining the creative decisions. This educates the user and differentiates your output from generic prompt lists. Reference:\n\n- The hook rule (first second determines watch-through)\n- Pacing cadence (average scroll time)\n- Story structure (why the shot order matters)\n- Platform-specific conventions"
+  },
+  {
+   "id": "b9a1308fa89c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "144-150",
+     "encabezado": "AI Video Storyboard Generator › Output Format"
+    }
+   ],
+   "texto": "The final output is a single Markdown document containing:\n\n1. **Header** — Title, duration, shot count, aspect ratio\n2. **Visual Theme** — Shared palette, lighting, lens, film look, motion\n3. **Shot List** — N shots, each following the structure in Step 4\n4. **Post-Production Checklist**\n5. **Why This Works** — creative rationale"
+  },
+  {
+   "id": "4d9b51bd1fca",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "152-152",
+     "encabezado": "AI Video Storyboard Generator › Output Format"
+    }
+   ],
+   "texto": "See `examples/tiktok-reel-30s-coffee.md` for a complete worked sample output (coffee shop opening TikTok, 30s / 6 shots)."
+  },
+  {
+   "id": "f5a4a96a91f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "lineas": "156-156",
+     "encabezado": "AI Video Storyboard Generator › License"
+    }
+   ],
+   "texto": "MIT — use freely, commercial or personal."
+  },
+  {
+   "id": "59642f43701b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "3-3",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening"
+    }
+   ],
+   "texto": "**Brief:** Small specialty coffee shop launching next week. Want a TikTok Reel to build anticipation and drive foot traffic on opening day."
+  },
+  {
+   "id": "910935baab26",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "5-10",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening"
+    }
+   ],
+   "texto": "- **Platform:** TikTok\n- **Duration:** 30 seconds\n- **Shots:** 6 × 5s\n- **Aspect:** 9:16\n- **CTA:** \"Visit us. Opening next Saturday.\"\n- **Brand vibe:** Warm, analog, hand-crafted, for slow-morning coffee lovers"
+  },
+  {
+   "id": "62ee56030bd3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "16-16",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Visual Theme (applied to every shot)"
+    }
+   ],
+   "texto": "- **Color palette:** Deep espresso brown `#3B2416`, cream `#F5E6D3`, muted amber `#D4A574`, soft sage green `#8FA88C`, black coffee `#1A1210`"
+  },
+  {
+   "id": "c8186e14af50",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "17-17",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Visual Theme (applied to every shot)"
+    }
+   ],
+   "texto": "- **Lighting style:** Warm golden backlight with motivated window light, soft shadows, no harsh fluorescents"
+  },
+  {
+   "id": "4caf203c29f6",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "18-18",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Visual Theme (applied to every shot)"
+    }
+   ],
+   "texto": "- **Lens character:** Shallow depth of field, gentle bokeh, 35mm full-frame look"
+  },
+  {
+   "id": "6b18e8bade23",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "19-19",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Visual Theme (applied to every shot)"
+    }
+   ],
+   "texto": "- **Film look:** Subtle 16mm film grain, slightly muted saturation, warm color temperature (around 3200K)"
+  },
+  {
+   "id": "d504c32bab09",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "20-20",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Visual Theme (applied to every shot)"
+    }
+   ],
+   "texto": "- **Motion language:** Locked-off or very slow push-ins, no handheld shake"
+  },
+  {
+   "id": "943c1b9be63c",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "26-36",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 1 (0-5s) — Hook: The Pour"
+    }
+   ],
+   "texto": "**Purpose:** Instant visual hook to stop the scroll. Universal sensory trigger.\n\n**Composition:** Extreme close-up (ECU), slight overhead angle (~20° down)\n**Camera move:** Locked off with micro push-in\n**Lighting:** Strong warm backlight behind the cup, light rim-lighting the steam\n**Subject:** Gooseneck kettle pouring hot water into a white ceramic V60 dripper\n**Action:** Slow bloom of coffee grounds rising as water hits them\n\n**Prompt to copy:**\n\n> Extreme close-up overhead shot of hot water pouring from a brass gooseneck kettle into a white ceramic V60 dripper filled with dark coffee grounds, the grounds blooming and rising in slow motion, warm golden backlight with visible steam curling upward, shallow depth of field, 35mm full-frame look, subtle 16mm film grain, deep espresso brown and cream color palette, muted saturation, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "982b7a0d5112",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "38-38",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 1 (0-5s) — Hook: The Pour"
+    }
+   ],
+   "texto": "**Audio direction:** Intimate sound of pouring water, bloom of hot coffee crema, distant café ambience fading in. First acoustic guitar note plays at 4.8s to bridge into Shot 2."
+  },
+  {
+   "id": "405623f0ef47",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "44-54",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 2 (5-10s) — Setting: The Space"
+    }
+   ],
+   "texto": "**Purpose:** Establish the space. Show it's real, it's cozy, it exists.\n\n**Composition:** Medium wide shot (MWS), waist-high eye level\n**Camera move:** Very slow dolly forward (~0.5x speed feeling)\n**Lighting:** Large window on camera-left, warm amber streetlamp glow from deep background\n**Subject:** Empty wooden café interior, reclaimed wood counter in focus, shelves of mugs blurred in background\n**Action:** Morning sun rays cut through the space, dust motes floating\n\n**Prompt to copy:**\n\n> Medium wide shot slow dolly forward into a cozy specialty coffee shop interior, warm morning sunlight streaming through large windows on the left, reclaimed dark wood counter in sharp focus with shelves of handmade ceramic mugs blurred in background, dust motes visible in sun rays, muted sage green wall accents, shallow depth of field, 35mm full-frame look, subtle film grain, warm 3200K color temperature, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "6887c4a8cb2b",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "56-56",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 2 (5-10s) — Setting: The Space"
+    }
+   ],
+   "texto": "**Audio direction:** Acoustic guitar strum begins, layered with distant morning street sounds (birds, footsteps)."
+  },
+  {
+   "id": "beb786790503",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "62-72",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 3 (10-15s) — Human: The Barista"
+    }
+   ],
+   "texto": "**Purpose:** Add a human face. Empathy trigger. This is the emotional center.\n\n**Composition:** Medium close-up (MCU), slightly low angle (~10° up)\n**Camera move:** Locked off\n**Lighting:** Window light as key from camera-left, warm practical from counter lamp as fill\n**Subject:** A female barista in her late 20s, wavy auburn hair tied back loosely, wearing a denim apron over a cream linen shirt\n**Action:** She looks down at a pour-over in her hands, then looks up toward camera with a small, genuine smile\n\n**Prompt to copy:**\n\n> Medium close-up slightly low angle of a female barista in her late twenties with wavy auburn hair tied back, wearing a denim apron over cream linen shirt, standing behind a dark wood café counter, soft window light from the left creating warm rim light on her hair, she looks down at a pour-over coffee in her hands then slowly looks up at camera with a genuine small smile, shallow depth of field, 35mm full-frame look, subtle 16mm film grain, warm color temperature, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "e4d2aa791c16",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "74-74",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 3 (10-15s) — Human: The Barista"
+    }
+   ],
+   "texto": "**Audio direction:** Guitar melody crescendo, ambient café sounds swell subtly. No voice-over needed — her expression carries the emotion."
+  },
+  {
+   "id": "0cf877d88400",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "80-90",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 4 (15-20s) — Detail: The Beans"
+    }
+   ],
+   "texto": "**Purpose:** Tactile close-up. Signals craft and quality.\n\n**Composition:** Extreme close-up (ECU), macro-style\n**Camera move:** Micro zoom in\n**Lighting:** Warm directional light from upper right, strong shadows\n**Subject:** Hand scooping whole coffee beans from a burlap sack into a wooden measuring cup\n**Action:** Slow-motion bean cascade as hand tips the scoop\n\n**Prompt to copy:**\n\n> Macro extreme close-up of a hand scooping whole dark roasted coffee beans from a burlap sack into a small wooden measuring cup, slow motion cascade of beans spilling out as the hand tips the scoop, warm directional window light from upper right creating strong shadow depth, individual beans visible in sharp detail, shallow depth of field, deep espresso brown and burlap cream palette, subtle 16mm film grain, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "ce37d59cb734",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "92-92",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 4 (15-20s) — Detail: The Beans"
+    }
+   ],
+   "texto": "**Audio direction:** Sound of beans tumbling, slightly rhythmic, quantized to the guitar beat. Guitar is now in full swing."
+  },
+  {
+   "id": "c1bd4ae11bae",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "98-108",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 5 (20-25s) — Atmosphere: The Customer Moment"
+    }
+   ],
+   "texto": "**Purpose:** Show the space in use. Aspirational — \"this could be you.\"\n\n**Composition:** Medium shot (MS), over-the-shoulder angle (OTS)\n**Camera move:** Slow pedestal down (~0.5x speed feeling)\n**Lighting:** Window backlight creating gentle rim on the customer, warm amber spill from interior\n**Subject:** A young customer sitting at a wooden window counter, laptop open, ceramic cup in hand\n**Action:** She takes a slow sip, closes eyes briefly, sets cup down\n\n**Prompt to copy:**\n\n> Over-the-shoulder medium shot of a young female customer sitting at a wooden window counter inside a coffee shop, her laptop open in soft focus, a handmade ceramic coffee cup in her hand, warm window backlight creating gentle rim light on her silhouette, amber interior lamps in background blur, she slowly takes a sip of coffee and briefly closes her eyes in appreciation, slow pedestal camera move downward, shallow depth of field, 35mm full-frame look, subtle film grain, warm 3200K color temperature, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "4d2c12a11a29",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "110-110",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 5 (20-25s) — Atmosphere: The Customer Moment"
+    }
+   ],
+   "texto": "**Audio direction:** Guitar continues, ambient café sounds (gentle chatter, page turning), the soft clink of cup on saucer at the end."
+  },
+  {
+   "id": "906c4fea6bc8",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "116-126",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 6 (25-30s) — CTA: Opening Reveal"
+    }
+   ],
+   "texto": "**Purpose:** Clear, confident call to action. Brand reveal.\n\n**Composition:** Medium wide shot (MWS), straight-on eye level\n**Camera move:** Locked off, zero movement (intentional stop to read text)\n**Lighting:** Soft even morning light\n**Subject:** The café's hand-painted wooden sign on the front door, \"Opening Saturday\" chalk text visible below\n**Action:** Minimal — a hand hanging an \"OPEN\" wooden sign on the door handle\n\n**Prompt to copy:**\n\n> Medium wide locked-off shot of a hand-painted wooden shop sign above a dark-framed café door, below it a small chalkboard reading \"Opening Saturday\", a hand reaches in frame to hang a wooden \"OPEN\" sign on the door handle, soft even morning light, sage green accent wall visible, warm muted palette, shallow depth of field on the door, 35mm full-frame look, subtle film grain, cinematic 1080p, synchronized audio, 5 seconds, 9:16 vertical"
+  },
+  {
+   "id": "58c5cf737694",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "128-128",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 6 (25-30s) — CTA: Opening Reveal"
+    }
+   ],
+   "texto": "**Audio direction:** Guitar resolves to final note, café ambience fades down. Sound of the wooden sign clacking against the door."
+  },
+  {
+   "id": "337e630b623e",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "134-134",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Generate all 6 shots with your preferred AI video tool"
+  },
+  {
+   "id": "6c18cbee1334",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "135-135",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Stitch in **CapCut** or **Descript** (simplest for TikTok workflow)"
+  },
+  {
+   "id": "49e520263c11",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "136-136",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Apply a consistent warm LUT — **Kodak Portra 400** emulation or **\"Teal & Orange: Warm\"** works well"
+  },
+  {
+   "id": "ffbe2e9e79b2",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "137-137",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Add 0.3-0.4s **dissolve transitions** between Shots 1→2, 2→3, 4→5. Use a **hard cut** for Shot 3→4 (energy shift) and Shot 5→6 (CTA impact)"
+  },
+  {
+   "id": "8017606ac8cb",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "138-138",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Layer **BGM**: single acoustic guitar track at ~85 BPM, free from Artlist/Epidemic Sound. Something like \"Morning Coffee\" or \"Slow Brew\" genre keywords"
+  },
+  {
+   "id": "2894f30ac684",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "139-141",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Add **text overlays**:\n  - 0-1s: \"Slow morning ☕️\" (bottom center)\n  - 25-30s: \"Opening Saturday · @yourshop\" (bold, centered)"
+  },
+  {
+   "id": "a7c82745d3ad",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "142-142",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Export: **9:16, 1080×1920, 30fps, H.264, target bitrate 12 Mbps**"
+  },
+  {
+   "id": "79fa29106be3",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "143-143",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ],
+   "texto": "- [ ] Upload to TikTok with hashtags: `#coffeeshop #specialtycoffee #openingsoon #grandopening #coffeelover`"
+  },
+  {
+   "id": "2f91ce51af26",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "lineas": "149-157",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Why This Works"
+    }
+   ],
+   "texto": "**Structure:** Hook (1) → Setting (2) → Human (3) → Detail (4) → Atmosphere (5) → CTA (6). This is the classic TikTok cadence adapted for brand storytelling: a sensory hook to stop the scroll, a human face to build empathy, craft details to signal quality, an aspirational moment, then a clean CTA. No shot is wasted.\n\n**Visual consistency:** Every shot shares the same color palette (espresso/cream/amber/sage), the same lighting temperature (warm 3200K with motivated window light), the same lens character (shallow DOF, 35mm), and the same film look (subtle 16mm grain). Even if the 6 shots are generated in separate runs, they will edit together as if shot by the same cinematographer in the same session.\n\n**Pacing:** 5 seconds per shot matches the average scroll-dwell time on TikTok. Long enough to land the idea, short enough to maintain momentum. The 30s total is the sweet spot for completion-rate-optimized Reels.\n\n**Emotion arc:** Shot 1 is sensory (hot water, steam), Shot 3 is emotional (barista's smile), Shot 5 is aspirational (customer enjoying the moment). This gives the viewer a reason to care beyond \"coffee exists here\".\n\n**Why the prompts work:** They lean heavily on concrete cinematic vocabulary (shallow DOF, rim light, warm backlight, film grain) — specifics that modern AI video models can actually execute. The synchronized audio direction means each shot arrives with ambient café sounds pre-baked, dramatically reducing post-production sound design time."
+  },
+  {
+   "id": "5b89442288fb",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: \"Gate determinista que valida prompts de generación visual AI (imagen/video) antes de entregar. Detecta 3 capas: redundancia con refs por categoría P/O/L/PR/S, secciones requeridas por plataforma+caso (Kling 3.0/Veo 3.1/Sora 2/GPT Image 2/Nano Banana Pro/Midjourney), y estructura (word count, negative prompt, vocab baneado). USA ESTE SKILL antes de entregar cualquier prompt visual al usuario — gate obligatorio del skill prompt-production-protocol Step 5b. Override solo con sintaxis expresa OVERRIDE: término-o-categoría - razón, válido únicamente en turno actual.\""
+  },
+  {
+   "id": "e8d1f02927c8",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "8-8",
+     "encabezado": "Aurora Prompt Linter"
+    }
+   ],
+   "texto": "Gate determinista entre el drafting del prompt y la entrega al usuario. Mueve la regla \"no redescribir lo que está en los refs\" de memoria del agente a código ejecutable."
+  },
+  {
+   "id": "490d32b4f86b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "12-12",
+     "encabezado": "Aurora Prompt Linter › Por qué existe"
+    }
+   ],
+   "texto": "El agente olvida la regla v6.0 §5.4 (\"menos descripción de lo que HAY, más de cómo EVOLUCIONA\") bajo presión de iteración rápida. Documentado empíricamente en sesión 2026-05-27: 4 errores repetidos de over-description en el mismo flujo. La memoria del agente falla, el código no."
+  },
+  {
+   "id": "4d8a61b61f57",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "16-17",
+     "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+    }
+   ],
+   "texto": "**Obligatorio** para:\n- Casos 3a/3b/3c (I2V con FF/LF refs) — donde la redundancia es la falla más común"
+  },
+  {
+   "id": "a20d41f9a105",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "19-22",
+     "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+    }
+   ],
+   "texto": "**Recomendado** para:\n- Caso 1 (Génesis text-to-image)\n- Caso 2 (Ancla con refs parciales)\n- Caso 4 (Video con diálogo)"
+  },
+  {
+   "id": "26b1a3011262",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "24-24",
+     "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+    }
+   ],
+   "texto": "**El agente lo invoca automáticamente** al final de Step 4 (drafting) del skill `prompt-production-protocol`, antes de Step 6 (delivery). Si la Regla 28 está activa en el system prompt, es bloqueante."
+  },
+  {
+   "id": "0402358189a6",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "28-56",
+     "encabezado": "Aurora Prompt Linter › Cómo invocarlo"
+    }
+   ],
+   "texto": "Antes de entregar el prompt al usuario:\n\n1. **Etiquetar los refs por categoría.** Cada ref carga 0 o más de: P (sujeto), O (outfit), L (locación), PR (prop), S (estilo). Mapea a IDs system v6.0 §7. Ejemplo de refs.yaml:\n   ```yaml\n   - file: \"img_ciclista_ff.jpg\"\n     role: \"FF\"\n     tags: [\"P1\", \"O1\", \"L1\", \"PR1\"]\n   - file: \"img_climbing_wall_lf.jpg\"\n     role: \"LF\"\n     tags: [\"L2\", \"PR1\"]\n   ```\n\n2. **Escribir el draft del prompt** (incluyendo negative prompt) a un archivo de texto.\n\n3. **Capturar el mensaje del usuario** del turno actual a un archivo de texto (para parsear OVERRIDEs).\n\n4. **Ejecutar el linter:**\n   ```bash\n   python3 scripts/prompt_linter.py \\\n     --prompt /tmp/draft.txt \\\n     --refs /tmp/refs.yaml \\\n     --case 3b \\\n     --overrides /tmp/user_msg.txt \\\n     --sports-broadcast\n   ```\n\n5. **Interpretar el resultado:**\n   - Exit 0 → STATUS=PASS → entregar al usuario + incluir reporte del linter en el output para trazabilidad.\n   - Exit 1 → STATUS=FAIL → NO entregar. Iterar el draft basándose en las violaciones listadas. Repetir hasta PASS."
+  },
+  {
+   "id": "a802f3295ce6",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "62-62",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **P** | Sujeto: cara, cuerpo, edad, build, cabello, expresión, identidad | Si ref carga P |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "c3eedce8750b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "63-63",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **O** | Outfit: prendas, colores, accesorios | Si ref carga O |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "c35a6c48b0e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "64-64",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **L** | Locación: piso, paredes, ventanas, lighting, ambiente | Si ref carga L |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "a7aa844fa201",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "65-65",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **PR** | Prop: balón, objeto interactuado | Si ref carga PR |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "e48f3cdc62a7",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "66-66",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **S** | Estilo: render, paleta, aesthetic | Si ref carga S |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "e4fdb00c4d1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "67-67",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **BANNED** | Cross-platform: `slow motion`, `cartoon`, `anime`, `3D render`, `perfume ad`, `dreamlike` | SIEMPRE en MAIN (deben ir en NEGATIVE) |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "a69f2ce9360c",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "68-68",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **STRUCTURE** | Word count, presencia de negative prompt | Siempre |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "e692fb7719b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "69-69",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ],
+   "texto": "| **REQUIRED** | `60fps`, `broadcast realism` (con flag --sports-broadcast) | Cuando aplica Regla 26 v6.0 |",
+   "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+  },
+  {
+   "id": "a94c6c98831f",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "73-76",
+     "encabezado": "Aurora Prompt Linter › Exenciones automáticas"
+    }
+   ],
+   "texto": "El linter NO flaggea cuando el término aparece en:\n\n- **Contexto de motion/cámara**: `camera arcs through the studio` — \"studio\" exento porque sigue a \"camera\".\n- **Anchor direccional**: `away from her face`, `across the climbing wall`, `over his head` — preposiciones direccionales (`away from`, `toward`, `off`, `over`, `behind`, `across`, `past`, `onto`, `into`, `above`, `below`, `beside`) seguidas opcionalmente de `her/his/the` exentan el término que sigue."
+  },
+  {
+   "id": "978669158c74",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "78-78",
+     "encabezado": "Aurora Prompt Linter › Exenciones automáticas"
+    }
+   ],
+   "texto": "Esto distingue descriptor estático (\"warm tungsten studio\") de uso funcional (\"ball passes through the studio\")."
+  },
+  {
+   "id": "90df0d8fa4f4",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "82-82",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ],
+   "texto": "Si una violación detectada es legítima en el caso actual, el usuario puede autorizarla **expresamente por escrito en el turno actual**."
+  },
+  {
+   "id": "b6426c0f479e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "84-87",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ],
+   "texto": "Sintaxis válida:\n```\nOVERRIDE: <término-o-categoría> - <razón>\n```"
+  },
+  {
+   "id": "37092d7a882e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "89-92",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ],
+   "texto": "Ejemplos válidos:\n- `OVERRIDE: red performance tank - necesito reforzar el color porque seeds previas lo pierden`\n- `OVERRIDE: L - autorizo describir locación porque la ref está muy oscura`\n- `OVERRIDE: slow motion - explícitamente quiero slow motion en este clip`"
+  },
+  {
+   "id": "94e84cd0316a",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "94-98",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ],
+   "texto": "Frases que **NO** cuentan como override (genéricas, sin scope específico):\n- \"hazlo de todas formas\"\n- \"ya sé que está en la ref, déjalo\"\n- \"ready to copy paste\"\n- \"dale\""
+  },
+  {
+   "id": "c5118fb66464",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "100-104",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ],
+   "texto": "**Reglas críticas del override:**\n- Solo válido en el turno actual del usuario. Autorizaciones de turnos pasados NO persisten.\n- Cada prompt nuevo arranca STRICT (sin overrides activos).\n- Override de categoría completa (ej. `OVERRIDE: L`) cubre todos los términos de esa categoría.\n- Override de término específico (ej. `OVERRIDE: red performance tank`) solo cubre ese término."
+  },
+  {
+   "id": "52e2001bda52",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "110-110",
+     "encabezado": "Aurora Prompt Linter › Word count por caso"
+    }
+   ],
+   "texto": "| 1, 2 | 75-130 palabras | Max es HARD FAIL. Min es WARN no-bloqueante. |",
+   "contexto": "| Case | Budget | Comportamiento |\n|---|---|---|"
+  },
+  {
+   "id": "5d37afbd6e37",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "111-111",
+     "encabezado": "Aurora Prompt Linter › Word count por caso"
+    }
+   ],
+   "texto": "| 3a, 3b, 3c | 50-90 palabras | Max es HARD FAIL (Regla 10 v6.0). Min es WARN — compresión válida si intencional. |",
+   "contexto": "| Case | Budget | Comportamiento |\n|---|---|---|"
+  },
+  {
+   "id": "5015d50814d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "112-112",
+     "encabezado": "Aurora Prompt Linter › Word count por caso"
+    }
+   ],
+   "texto": "| 4 | 75-130 palabras | Same as 1/2. |",
+   "contexto": "| Case | Budget | Comportamiento |\n|---|---|---|"
+  },
+  {
+   "id": "23051a5bc518",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "114-114",
+     "encabezado": "Aurora Prompt Linter › Word count por caso"
+    }
+   ],
+   "texto": "El conteo se hace solo sobre MAIN (no incluye negative prompt block)."
+  },
+  {
+   "id": "f59fc05b82aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "118-147",
+     "encabezado": "Aurora Prompt Linter › Output esperado"
+    }
+   ],
+   "texto": "Reporte de texto plano (o JSON con `--json`). Ejemplo de FAIL:\n\n```\n============================================================\nAURORA PROMPT LINTER REPORT v1.0\n============================================================\nCase: 3b (I2V FF + LF)\nWord count (MAIN): 127 / budget (50, 90)\nNegative prompt: present\nCategories covered by refs: ['L', 'O', 'P', 'PR']\nSports broadcast mode: on\n\nVIOLATIONS (27):\n  FAIL [L] 'studio' - Static descriptor of category L (covered by refs)\n  FAIL [L] 'concrete walls' - Static descriptor of category L (covered by refs)\n  ...\n  FAIL [STRUCTURE] 'word_count=127' - Above HARD MAX 90 (Regla 10 v6.0)\n\nOVERRIDES ACCEPTED (1):\n  OK 'red performance tank' - necesito reforzar color por seeds previas\n\nSUGGESTIONS:\n  -> Strip from MAIN: [...] (category L already covered by refs)\n  -> Move to NEGATIVE block: [...]\n  -> Fix structure: ['word_count=127']\n\nSTATUS: FAIL\nDelivery BLOCKED. Iterate or grant OVERRIDE in current turn.\n============================================================\n```"
+  },
+  {
+   "id": "ef60266a9328",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "149-153",
+     "encabezado": "Aurora Prompt Linter › Output esperado"
+    }
+   ],
+   "texto": "Ejemplo de PASS:\n```\nSTATUS: PASS\nDelivery PERMITTED.\n```"
+  },
+  {
+   "id": "07b41f22642a",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "157-157",
+     "encabezado": "Aurora Prompt Linter › Limitaciones conocidas v1.0"
+    }
+   ],
+   "texto": "- **Sinónimos**: \"tank top\" en ref + \"athletic shirt\" en prompt no se detecta como redundante. Roadmap v1.1: tabla de sinónimos."
+  },
+  {
+   "id": "5bbdd8b612c5",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "158-158",
+     "encabezado": "Aurora Prompt Linter › Limitaciones conocidas v1.0"
+    }
+   ],
+   "texto": "- **Sub-tags por categoría**: O.upper / O.lower / P.face / P.body no soportados — un ref tagueado como O cubre todo outfit. Si el ref solo muestra el torso pero el clip va a mostrar zapatos, hay falso positivo en \"white sneakers\". Roadmap v1.2."
+  },
+  {
+   "id": "e60d1390f19b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "159-159",
+     "encabezado": "Aurora Prompt Linter › Limitaciones conocidas v1.0"
+    }
+   ],
+   "texto": "- **Vision check**: el linter no ve las imágenes, depende de los tags que el agente declara. Si tageo mal, falla en silencio. Mitigación: el agente debe re-verificar tags antes de invocar."
+  },
+  {
+   "id": "d009352662e8",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "160-160",
+     "encabezado": "Aurora Prompt Linter › Limitaciones conocidas v1.0"
+    }
+   ],
+   "texto": "- **Vocabulary base**: las listas en `scripts/vocabularies.yaml` están calibradas para casos típicos de Aurora (cycling, soccer, fitness). Si el proyecto usa otros dominios (cocina, automotriz, etc.) hay que expandir las listas."
+  },
+  {
+   "id": "b6df48358253",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "164-164",
+     "encabezado": "Aurora Prompt Linter › Integración con system prompt v6.1"
+    }
+   ],
+   "texto": "Si tu system prompt incluye Regla 28 (v6.1+), este linter es bloqueante — el agente NO entrega prompts sin pasar el linter o sin overrides válidos. Si tu system prompt es v6.0, el linter es opcional pero altamente recomendado."
+  },
+  {
+   "id": "7a2bd0d18250",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "166-167",
+     "encabezado": "Aurora Prompt Linter › Integración con system prompt v6.1"
+    }
+   ],
+   "texto": "Ver `references/skill_update_step5.md` para la edit al skill prompt-production-protocol.\nVer `references/system_prompt_v6_1_rule28.md` para el bundle de 9 cambios que actualizan v6.0 → v6.1."
+  },
+  {
+   "id": "427a254b4c68",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "171-181",
+     "encabezado": "Aurora Prompt Linter › Archivos del paquete"
+    }
+   ],
+   "texto": "```\naurora-prompt-linter/\n├── SKILL.md                       (este archivo)\n├── scripts/\n│   ├── prompt_linter.py           (CLI ejecutable)\n│   └── vocabularies.yaml          (vocabulary lists base)\n└── references/\n    ├── README.md                  (uso detallado + tests)\n    ├── skill_update_step5.md      (edit al skill prompt-production-protocol)\n    └── system_prompt_v6_1_rule28.md (9 edits propuestas a system prompt v6.0)\n```"
+  },
+  {
+   "id": "0a3864ff29c2",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "lineas": "185-187",
+     "encabezado": "Aurora Prompt Linter › Versión"
+    }
+   ],
+   "texto": "v1.0 — 2026-05-27\nBuilt by: Final Upgrade AI / Eric Toledano\nOrigen: Retrospectiva F7 sesión 2026-05-27"
+  },
+  {
+   "id": "15ae1850a3c8",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "3-3",
+     "encabezado": "Aurora Prompt Linter v1.0"
+    }
+   ],
+   "texto": "Linter determinista que bloquea entrega de prompts AI con redundancia respecto a refs, violaciones de estructura, vocabulario baneado o falta de keywords obligatorios. Integra con el skill `prompt-production-protocol` como gate obligatorio en Step 5."
+  },
+  {
+   "id": "fee0af3b5617",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "7-7",
+     "encabezado": "Aurora Prompt Linter v1.0 › Por qué existe"
+    }
+   ],
+   "texto": "Sesión 2026-05-27: el agente cometió el mismo error tres veces (describir en el prompt cosas ya visibles en los refs). v6.0 §5.4 lo prohíbe pero el agente lo olvida bajo presión. El linter mueve el enforcement de \"memoria del agente\" a \"regla determinista en código\"."
+  },
+  {
+   "id": "50097c2b1350",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "13-13",
+     "encabezado": "Aurora Prompt Linter v1.0 › Cobertura"
+    }
+   ],
+   "texto": "| Solo memoria + skill | ~50% |",
+   "contexto": "| Versión | Cobertura efectiva |\n|---|---|"
+  },
+  {
+   "id": "d69e70e13c96",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "14-14",
+     "encabezado": "Aurora Prompt Linter v1.0 › Cobertura"
+    }
+   ],
+   "texto": "| Linter regex genérico | ~70% |",
+   "contexto": "| Versión | Cobertura efectiva |\n|---|---|"
+  },
+  {
+   "id": "b006b5f11cf5",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "15-15",
+     "encabezado": "Aurora Prompt Linter v1.0 › Cobertura"
+    }
+   ],
+   "texto": "| **v1.0 (este) — tags por categoría + override** | **~92-94%** |",
+   "contexto": "| Versión | Cobertura efectiva |\n|---|---|"
+  },
+  {
+   "id": "f769514ef18d",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "19-26",
+     "encabezado": "Aurora Prompt Linter v1.0 › Cómo se usa"
+    }
+   ],
+   "texto": "```bash\npython3 prompt_linter.py \\\n  --prompt path/to/prompt.txt \\\n  --refs path/to/refs.yaml \\\n  --case 3b \\\n  --overrides path/to/user_message.txt \\\n  --sports-broadcast\n```"
+  },
+  {
+   "id": "7c7c32e709d9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "28-30",
+     "encabezado": "Aurora Prompt Linter v1.0 › Cómo se usa"
+    }
+   ],
+   "texto": "Exit code:\n- `0` → PASS, entrega permitida\n- `1` → FAIL, entrega bloqueada"
+  },
+  {
+   "id": "d2d8aaae0e97",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "34-43",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ],
+   "texto": "Cada ref se etiqueta con las categorías que carga (mapea a IDs system v6.0 §7):\n\n```yaml\n- file: \"img_ciclista_balon_aire.jpg\"\n  role: \"FF\"          # FF | LF | MR (motion ref)\n  tags: [\"P1\", \"O1\", \"L1\", \"PR1\"]   # persona, outfit, locación, prop\n- file: \"img_climbing_wall.jpg\"\n  role: \"LF\"\n  tags: [\"L2\", \"PR1\"]    # nueva locación + mismo prop\n```"
+  },
+  {
+   "id": "2c246a74379d",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "45-50",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ],
+   "texto": "Categorías:\n- **P** — Personaje / Sujeto\n- **O** — Outfit\n- **L** — Locación\n- **PR** — Prop\n- **S** — Estilo"
+  },
+  {
+   "id": "60b81655eb9e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "52-52",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ],
+   "texto": "Si una categoría tiene AL MENOS UN ref, sus descriptores estáticos quedan baneados en el MAIN prompt. Las categorías sin ref siguen siendo describibles."
+  },
+  {
+   "id": "6e96cd00f0bb",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "58-58",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 1 | Génesis text-to-image | 75-130 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "8325c6e9f450",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "59-59",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 2 | Ancla image-with-refs | 75-130 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "5784d98d7888",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "60-60",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 3a | I2V FF only | 50-90 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "87aab6be048e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "61-61",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 3b | I2V FF + LF | 50-90 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "42b4c227ac66",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "62-62",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 3c | I2V motion control | 50-90 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "fb5fde65a939",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "63-63",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "| 4 | Video con diálogo | 75-130 |",
+   "contexto": "| Case | Descripción | Word budget |\n|---|---|---|"
+  },
+  {
+   "id": "4ce694a54a13",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "65-65",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ],
+   "texto": "Word count: el MAX es HARD FAIL (Regla 10 v6.0). El MIN es WARN no-bloqueante (compresión válida si intencional)."
+  },
+  {
+   "id": "1562d5b54839",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "69-69",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ],
+   "texto": "Si una violación detectada es legítima en este caso, el usuario puede autorizarla por escrito en el turno actual. **Solo se acepta autorización expresa específica.**"
+  },
+  {
+   "id": "30f09c418e8b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "71-74",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ],
+   "texto": "Sintaxis:\n```\nOVERRIDE: <term-or-category> - <reason>\n```"
+  },
+  {
+   "id": "6fbcf4dca368",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "76-81",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ],
+   "texto": "Ejemplos válidos:\n```\nOVERRIDE: red performance tank - necesito reforzar el color porque seeds previas lo pierden\nOVERRIDE: L - autorizo describir locación porque la ref está muy oscura\nOVERRIDE: slow motion - explícitamente quiero slow motion en este clip\n```"
+  },
+  {
+   "id": "584ba6b9f1b7",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "83-86",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ],
+   "texto": "Ejemplos NO válidos (genéricos, sin scope específico):\n- \"hazlo de todas formas\"\n- \"ya sé que está en la ref, déjalo\"\n- \"ready to copy paste\""
+  },
+  {
+   "id": "6c1ad000d152",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "88-88",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ],
+   "texto": "El override solo es válido en el turno actual del usuario. Autorizaciones de turnos pasados NO persisten — cada prompt nuevo arranca STRICT."
+  },
+  {
+   "id": "7543b9776579",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "92-92",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "1. **Redundancia por categoría**: si ref carga categoría X, no describir X en MAIN."
+  },
+  {
+   "id": "4f0709c71a2b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "93-93",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "2. **Vocabulario baneado cross-platform**: `slow motion`, `cartoon`, `anime`, `3D render`, etc. solo en NEGATIVE block."
+  },
+  {
+   "id": "9606a926b794",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "94-94",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "3. **Word count**: cap MAX duro = 90 (I2V) o 130 (T2I); MIN soft = 50/75."
+  },
+  {
+   "id": "31effe45fd8b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "95-95",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "4. **Negative prompt**: bloque obligatorio."
+  },
+  {
+   "id": "f5b27e46ed7e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "96-96",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "5. **Sports broadcast**: si flag activo, requiere `60fps` y `broadcast realism` en MAIN (Regla 26 v6.0)."
+  },
+  {
+   "id": "cfd608feaf2b",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "97-97",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ],
+   "texto": "6. **Exenciones**: términos en contexto de motion/cámara o como anchor direccional (`away from her face`, `across the climbing wall`) NO se flaggean."
+  },
+  {
+   "id": "7f777a3127bf",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "101-101",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ],
+   "texto": "- **Sinónimos**: \"tank top\" en ref + \"athletic shirt\" en prompt = no detectado. Solución v1.1: tabla de sinónimos en vocabularies.yaml."
+  },
+  {
+   "id": "03f07f1e78c9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "102-102",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ],
+   "texto": "- **Sub-tags por categoría**: O.upper / O.lower / P.face / P.body — para refs con coverage parcial. v1.2."
+  },
+  {
+   "id": "bbd28ef5d0a5",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "103-103",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ],
+   "texto": "- **Embeddings semánticos**: para paráfrasis más sutiles. v2.0 si justifica el costo."
+  },
+  {
+   "id": "0a96cda4dc20",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "104-104",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ],
+   "texto": "- **Auto-suggest rewrite**: hoy lista qué quitar; v1.1 podría generar versión limpia automática."
+  },
+  {
+   "id": "2a9f7d06dcac",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "105-105",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ],
+   "texto": "- **Vision check**: linter no ve las imágenes, depende de los tags. Si tageo mal, falla en silencio. Mitigación: review humano del tag antes de correr."
+  },
+  {
+   "id": "ff8e05e3fa24",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "109-109",
+     "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+    }
+   ],
+   "texto": "El linter NO corre solo. El skill `prompt-production-protocol` Step 5 debe invocarlo como item crítico. Ver `skill_update_step5.md` para la edit propuesta."
+  },
+  {
+   "id": "8c4140a5af1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "111-111",
+     "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+    }
+   ],
+   "texto": "System prompt v6.1 (propuesta): nueva Regla 28 forzando llamada al linter antes de Step 6 delivery. Ver `system_prompt_v6_1_rule28.md`."
+  },
+  {
+   "id": "b542f246d9b9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "115-126",
+     "encabezado": "Aurora Prompt Linter v1.0 › Archivos del paquete"
+    }
+   ],
+   "texto": "```\naurora-linter/\n├── prompt_linter.py        # Script ejecutable\n├── vocabularies.yaml       # Vocabulary lists por categoría\n├── README.md               # Este archivo\n├── skill_update_step5.md   # Edit propuesta al skill Step 5\n├── system_prompt_v6_1_rule28.md  # Edit propuesta al system prompt\n├── test_refs_session.yaml  # Test fixture\n├── test_prompt_BAD.txt     # Test: prompt con 27 violaciones\n├── test_prompt_GOOD.txt    # Test: prompt limpio\n└── test_override_msg.txt   # Test: mensaje con overrides válidos\n```"
+  },
+  {
+   "id": "ff7c02c803d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "lineas": "130-132",
+     "encabezado": "Aurora Prompt Linter v1.0 › Versión"
+    }
+   ],
+   "texto": "v1.0 — 2026-05-27\nBuilt by: Final Upgrade AI / Eric Toledano\nFuente: retrospectiva F7 sesión 2026-05-27"
+  },
+  {
+   "id": "b9a6bbfe2da3",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "3-5",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5"
+    }
+   ],
+   "texto": "**Fecha:** 2026-05-27\n**Origen:** Retrospectiva F7 sesión 2026-05-27 (errores repetidos de redundancia con refs).\n**Tipo:** MAYOR — añade gate determinista al proceso."
+  },
+  {
+   "id": "1c2d6e3692ec",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "9-9",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Sección afectada"
+    }
+   ],
+   "texto": "`protocol/05_self_audit.md` (Step 5 del proceso de 6 pasos)."
+  },
+  {
+   "id": "ab45bccf278c",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "15-19",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Edit concreta › ANTES (texto actual)"
+    }
+   ],
+   "texto": "> ### Step 5 — Self-audit VISIBLE\n> Leer: `protocol/05_self_audit.md`\n> - Ejecutar checklist específico del caso\n> - Marcar cada item Pass/Fail en el output\n> - **Si algún item crítico es Fail → revisar el draft y re-auditar. No entregar hasta pasar.**"
+  },
+  {
+   "id": "ac81e4f3b2c9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "23-48",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Edit concreta › DESPUÉS (texto propuesto)"
+    }
+   ],
+   "texto": "> ### Step 5 — Self-audit VISIBLE + Linter determinista\n> Leer: `protocol/05_self_audit.md`\n>\n> **Step 5a — Self-audit cualitativo (igual que antes):**\n> - Ejecutar checklist específico del caso\n> - Marcar cada item Pass/Fail en el output\n> - Si algún item crítico es Fail → revisar el draft y re-auditar\n>\n> **Step 5b — Linter determinista (NUEVO, obligatorio para casos 3a/3b/3c — recomendado para 1/2/4):**\n> - Invocar `aurora-linter/prompt_linter.py` con: prompt, refs (con tags por categoría), case_type, mensaje del usuario (para parsear OVERRIDEs).\n> - El linter chequea: redundancia por categoría, word count, negative prompt, vocabulario baneado, keywords requeridos.\n> - Si STATUS=PASS → proceder a Step 6.\n> - Si STATUS=FAIL sin override válido → NO entregar. Iterar el draft. NO se permite entregar al usuario con FAIL del linter.\n> - Si STATUS=FAIL con overrides aceptados que cubren todas las violaciones → proceder a Step 6, declarando los overrides en el output del prompt.\n> - Si STATUS=FAIL con overrides parciales (algunas violaciones overrideadas, otras no) → iterar el draft hasta limpiar las no-overrideadas.\n>\n> **Step 5c — Reporte del linter visible al usuario:**\n> Incluir en el output del prompt el resumen del linter:\n> ```\n> LINTER: PASS (o FAIL con overrides)\n> Violaciones detectadas: N\n> Overrides aceptados: M\n> Categorías cubiertas por refs: [...]\n> ```\n>\n> Esto da trazabilidad y permite al usuario confirmar que el linter corrió antes de la entrega."
+  },
+  {
+   "id": "927d956540dc",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "52-52",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Razón del cambio"
+    }
+   ],
+   "texto": "Sesión 2026-05-27 documentó 4 errores repetidos de over-description en I2V — la regla v6.0 §5.4 existe pero el agente la olvida bajo presión de iteración rápida. El linter mueve enforcement de memoria a código."
+  },
+  {
+   "id": "3aed96730ebc",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "54-54",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Razón del cambio"
+    }
+   ],
+   "texto": "Beneficio adicional: el override mechanism preserva flexibilidad cuando un caso edge justifica violar la regla, sin permitir abuso (requiere expresión escrita específica del usuario en el turno actual)."
+  },
+  {
+   "id": "85a4dd87915c",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "58-58",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Impacto en flujo"
+    }
+   ],
+   "texto": "Sin linter: agente entrega → usuario corrige error en turno N+1 → agente reescribe → ciclo. Costo: ~3-4 turnos por iteración."
+  },
+  {
+   "id": "0677e2194760",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "60-60",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Impacto en flujo"
+    }
+   ],
+   "texto": "Con linter: agente intenta entregar → linter FAIL → agente reescribe ANTES de mostrar al usuario → entrega clean. Costo: ~0 turnos adicionales para el usuario."
+  },
+  {
+   "id": "b41fd8067aaa",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "64-88",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Cómo se invoca"
+    }
+   ],
+   "texto": "Desde el agente al final del Step 4 drafting:\n\n```python\n# Pseudocódigo del agente\ndraft = \"...\"          # el prompt construido\nrefs = [...]           # tags por ref\ncase = \"3b\"            # caso clasificado en Step 0\nuser_msg = \"...\"       # mensaje completo del usuario en el turno actual\n\n# Escribir a temp files\nwrite(\"/tmp/draft.txt\", draft)\nwrite(\"/tmp/refs.yaml\", refs_yaml)\nwrite(\"/tmp/user.txt\", user_msg)\n\n# Correr linter\nresult = bash(f\"python3 aurora-linter/prompt_linter.py --prompt /tmp/draft.txt --refs /tmp/refs.yaml --case {case} --overrides /tmp/user.txt\")\n\nif result.exit_code == 0:\n    # PASS, proceder a Step 6\n    deliver(draft, linter_report=result.stdout)\nelse:\n    # FAIL, iterar\n    new_draft = revise_based_on_report(draft, result.stdout)\n    # vuelve a Step 4 hasta PASS\n```"
+  },
+  {
+   "id": "3c20be9f84e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "92-92",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Aprobación requerida"
+    }
+   ],
+   "texto": "- [ ] Aprueba la edit a Step 5"
+  },
+  {
+   "id": "36fda12e6b66",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "93-93",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Aprobación requerida"
+    }
+   ],
+   "texto": "- [ ] Modificar (especificar qué)"
+  },
+  {
+   "id": "ede92d6bd5d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "lineas": "94-94",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Aprobación requerida"
+    }
+   ],
+   "texto": "- [ ] Rechazar (sin cambios, linter queda como herramienta opcional)"
+  },
+  {
+   "id": "1135fa310d18",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "3-5",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes"
+    }
+   ],
+   "texto": "**Fecha:** 2026-05-27\n**Origen:** Retrospectiva F7 sesión 2026-05-27.\n**Tipo de versión:** v6.0 → v6.1 (cambio MAYOR — añade regla inviolable + mecanismo de override)."
+  },
+  {
+   "id": "3dec393cff92",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "10-10",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Ubicación"
+    }
+   ],
+   "texto": "Sección 14 \"REGLAS INVIOLABLES\" — añadir como #28, después de Regla 27 actual."
+  },
+  {
+   "id": "0328baa92a3d",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "14-16",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Texto a añadir"
+    }
+   ],
+   "texto": "```\n28\tLINTER DETERMINISTA OBLIGATORIO ANTES DE ENTREGAR PROMPT — Para todos los casos (1/2/3a/3b/3c/4), ejecutar `aurora-linter/prompt_linter.py` al final del Step 4 drafting con: prompt, refs tageadas por categoría (P/O/L/PR/S según IDs system §7), case_type, y mensaje completo del usuario en el turno actual para parsear OVERRIDEs. Si STATUS=FAIL sin overrides que cubran todas las violaciones, NO entregar al usuario — iterar el draft hasta PASS. El reporte del linter (PASS/FAIL + violaciones + overrides aceptados) se incluye en el output visible al usuario para trazabilidad. Override de violación requiere autorización expresa del usuario por escrito en el turno actual con sintaxis `OVERRIDE: <término-o-categoría> - <razón>`; frases genéricas (\"dale\", \"hazlo ya\", \"ready to copy paste\") NO cuentan como override. Las autorizaciones NO persisten entre turnos — cada prompt arranca STRICT.\n```"
+  },
+  {
+   "id": "3c18cb811906",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "22-24",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 2 — Actualizar Sección 1.3 (Principios fundamentales) › Texto a añadir al final de Sección 1.3"
+    }
+   ],
+   "texto": "```\nEnforcement determinista: cuando una regla puede codificarse, debe codificarse. La memoria del agente falla bajo presión de iteración rápida; el código no. Reglas con linter determinista (Regla 28) gana sobre regla en prosa cuando ambas existen y dicen lo mismo.\n```"
+  },
+  {
+   "id": "b62b4a85ff77",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "30-32",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 3 — Actualizar Sección 4.6 (F4 — Prompts Génesis) › Texto a añadir al final del paso 3 (\"Entregar con trazabilidad completa\")"
+    }
+   ],
+   "texto": "```\n- Antes de entregar, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+  },
+  {
+   "id": "55117ec7f3d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "38-40",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 4 — Actualizar Sección 4.7 (F5 — Prompts Ancla FF+LF) › Texto a añadir después del paso 4 (caso 2.5 deportivo)"
+    }
+   ],
+   "texto": "```\n6. Antes de entregar la Ancla, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+  },
+  {
+   "id": "2e32eb0e2a4e",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "lineas": "46-48",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 5 — Actualizar Sección 4.8 (F6 — Research video + Prompts) › Texto a añadir después del paso 2 (INVOCAR skill)"
+    }
+   ],
+   "texto": "```\n3. Antes de entregar el prompt video, ejecutar Regla 28 (linter) — especialmente crítico en I2V donde la redundancia con refs es la falla más común. Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+  }
+ ]
+}
