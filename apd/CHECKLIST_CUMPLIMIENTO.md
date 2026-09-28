@@ -11,7 +11,7 @@ Estado a 2026-09-28. Repo base `e61005d` (sin modificar). Registro vigente `R139
 | [`evidencia/ui/ui_aceptacion.json`](evidencia/ui/ui_aceptacion.json) | `node apd/tools/ui_aceptacion.cjs`: Chromium hace clic en la app real, servidor real, sin modelo | 29/29 |
 | [`evidencia/ORIGINAL_TESTS_REPORT.md`](evidencia/ORIGINAL_TESTS_REPORT.md) + [`logs_originales/`](evidencia/logs_originales/) | tests y hooks originales del repo y del paquete | 16/21 scripts PASS; 5 `check.sh` fallan (documentado) |
 | [`evidencia/revision_semantica/`](evidencia/revision_semantica/) | 3 rondas de revisión semántica independiente del proyecto demo (5 prompts × 195–200 reglas) | ronda 1 → 2 → 3, ver §Revisión semántica |
-| [`demo/`](demo/) | proyecto demostración (quinteto) con 11 versiones, exportación y prompts | ver `demo/LEEME.md` |
+| [`demo/`](demo/) | proyecto demostración (quinteto) con 13 versiones, exportación y prompts | ver `demo/LEEME.md` |
 
 ## Totales por estado
 
@@ -180,17 +180,21 @@ ids exactos, sin duplicados ni inventados). Todos los veredictos y entradas est�
 |---|---|---|---|
 | 1 | v6 | 22 / 21 / 13 / 14 / 19 | 10 NO_CUMPLE disputados con autoridad (salían del linter v1.1 sustituido: DECISIONES #2); el resto corregido en bloque fuente: contradicción de altura de cámara, negativos fuera de Constraints, meta del pipeline en el cuerpo, «photoreal», hex del fondo, material de prendas, rasgos de identidad, asimetría facial, mirada de E5 |
 | 2 | v8 | 1 / 1 / 1 / 1 / 6 | lean prose compartida corregida (encuadre duplicado, contexto del casting a notas, mirada de E4); los 5 restantes de E5 = CF-MOTOR-SW30 → conflicto para el director |
-| 3 | v11 | en curso al cerrar este commit | se completa en el commit siguiente |
+| 3 | v11 | 0 / 0 / 2 / 4 / 1 | E3: tope de 130 palabras disputado con DECISIONES #2 + U-2026-09-28-LONGITUD; E4: «calm» nombra una emoción → corregido en v12–v13 (v12 chocaba con E1 en el umbral de genericidad de la regresión A7); `54a39fd24578` (stock documental) en E3, E4 y E5 queda **para el director**: los revisores discrepan (E1/E2 lo dieron por no aplicable al tratamiento comercial) |
+| 4 | v13 | E4: RONDA4 | sólo E4 (el cambio de v12–v13 invalidó sólo su revisión; E1, E2, E3 y E5 conservan la suya) |
 
 ## Decisiones que son del director (la app bloquea hasta que se tomen)
 
 1. **CF-MOTOR-SW30** — SW30 exige instanciar todo prompt con `template_engine.build()` (T1 = luz dura documental);
    la app compila en los 5 slots de GPT Image con luz pareja de character ref. DECISIONES #2 admite ambos formatos
    sin decir cuál manda. Si gana A, la entrega queda bloqueada: la app aún no construye vía `template_engine`.
-2. **16 CONDICIONAL y 2 CONFLICTO de regla** heredados de la revisión externa (p. ej. si el instrumento se ve;
+2. **`54a39fd24578` (stock documental de reportaje del template T1)**: ¿aplica a un casting de tratamiento
+   comercial? Los revisores discrepan; la autoridad candidata es flujo-anclas.html Paso 4 (la fila comercial no
+   usa Tri-X, CF-TRIX-COLOR). Se resuelve disputándolo con esa cita o añadiendo un look documental a color.
+3. **16 CONDICIONAL y 2 CONFLICTO de regla** heredados de la revisión externa (p. ej. si el instrumento se ve;
    `7077767cb105` prohibición de softbox en rostros; `1e898f2c0308` re-rolls del crítico vs SW30 R13).
-3. **Confirmar la revisión de reglas heredada** (cambiaron encuadre y textura desde la revisión externa) o re-revisar.
-4. **Aprobar la redacción** de cada prompt (hash exacto).
+4. **Confirmar la revisión de reglas heredada** (cambiaron encuadre y textura desde la revisión externa) o re-revisar.
+5. **Aprobar la redacción** de cada prompt (hash exacto).
 
 ## Limitaciones comprobadas
 
