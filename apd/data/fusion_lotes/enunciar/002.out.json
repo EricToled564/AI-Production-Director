@@ -1,0 +1,828 @@
+{
+ "registros": [
+  {
+   "id": "6754b4cb668e",
+   "enunciado": "El traspaso al modelo de video debe ser un motion brief (movimiento de cámara, sujeto y fondo, duración, framing lock, cambios prohibidos) que no vuelva a describir lo que ya está en el cuadro.",
+   "alcance": "keyframes de Nano Banana para video",
+   "temas": [
+    "i2v_keyframes",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "277487626c14",
+   "enunciado": "Los stills pueden ir a Veo 3.1, Kling 3.0, Seedance 2.0/2.5 o Gemini Omni Flash, pero solo los aprobados tras un gate de revisión del lote.",
+   "alcance": "keyframes de Nano Banana para video",
+   "temas": [
+    "i2v_keyframes",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "7f2423032310",
+   "enunciado": "Manos y rostros aún derivan en Nano Banana (dedos, articulaciones, parecido); corregir con instrucciones anatómicas explícitas, referencias y regeneraciones, y considerar que NBP sostiene peor los rostros que NB2.",
+   "alcance": "Nano Banana, fallos conocidos",
+   "temas": [
+    "capacidades_modelo",
+    "anatomia_manos",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "3c3c74cc54ec",
+   "enunciado": "El texto pequeño se emborrona a 1K; para texto denso usar 2K+ o GPT Image 2.",
+   "alcance": "Nano Banana, fallos conocidos",
+   "temas": [
+    "capacidades_modelo",
+    "texto_en_pantalla",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "1cffdd1b1f87",
+   "enunciado": "Verificar siempre las cifras de infografías de Nano Banana porque pueden contener datos erróneos; el grounding ayuda pero no garantiza.",
+   "alcance": "Nano Banana, infografías",
+   "temas": [
+    "capacidades_modelo",
+    "layout_grafico",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "dbb2373404eb",
+   "enunciado": "Nano Banana tiende al HDR sobrecocido y la sobresaturación; pedir \"natural contrast, no HDR look\".",
+   "alcance": "Nano Banana, fallos conocidos",
+   "temas": [
+    "color_grade_paleta",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "4297ba600c74",
+   "enunciado": "Todas las generaciones de Nano Banana llevan marca de agua invisible SynthID y en Vertex además C2PA.",
+   "alcance": "Nano Banana",
+   "temas": [
+    "capacidades_modelo",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "6fded89f1271",
+   "enunciado": "Pasar de NB2 a NBP cuando NB2 no resuelve un prompt complejo multicapa.",
+   "alcance": "Nano Banana, escalado de modelo",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "a75d09f73afb",
+   "enunciado": "Pasar de NB2 a NBP cuando se necesita el máximo de referencias por rol (6 objetos + 5 personajes + 3 estilos).",
+   "alcance": "Nano Banana, escalado de modelo",
+   "temas": [
+    "seleccion_modelo",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "bfeeb29f777b",
+   "enunciado": "Pasar de NB2 a NBP para fotorrealismo con trabajo muy fino de materiales y luz.",
+   "alcance": "Nano Banana, escalado de modelo",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "b70139617ac6",
+   "enunciado": "NBP es más lento y caro y a veces pierde frente a NB2 en rostros; en series de retrato probar ambos primero.",
+   "alcance": "Nano Banana, escalado de modelo",
+   "temas": [
+    "seleccion_modelo",
+    "piel_rostro_realismo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "588d4a3fe1ef",
+   "enunciado": "Explicación: los patrones de diseño de personaje (turnarounds, hojas de expresiones, variantes de vestuario, coleccionables) usan variables y por defecto GPT Image 2 en 5 slots.",
+   "alcance": "patrones de diseño de personaje",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "e7ac4e337b9b",
+   "enunciado": "Usar la hoja turnaround de 3 vistas (frente, lado, espalda) en lienzo blanco con callouts de color y líneas de altura para preproducción de juego o animación.",
+   "alcance": "turnaround de personaje",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "3316203ef13e",
+   "enunciado": "Especifica la plantilla del turnaround: fondo blanco sin sombras, líneas de altura, tres vistas con proporciones idénticas alineadas, callouts de color con hex, pose neutra, sin props ni fondos.",
+   "alcance": "turnaround de personaje, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "f90e05cbc1f6",
+   "enunciado": "Para el turnaround definir nombre, descripción específica y 3 colores con hex, y usar GPT Image 2 quality high por las líneas y callouts.",
+   "alcance": "turnaround de personaje",
+   "temas": [
+    "patrones_genero",
+    "parametros_tecnicos",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "be978af2f403",
+   "enunciado": "Usar la hoja de expresiones para un grid de 6–9 expresiones del mismo personaje con ángulo y estilo constantes y etiqueta bajo cada rostro.",
+   "alcance": "hoja de expresiones",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "b8b50a0436ed",
+   "enunciado": "Especifica la plantilla de hoja de expresiones: grid 3x3 o 3x2, misma cabeza a tres cuartos, cada celda con expresión descrita por señales faciales y etiqueta, identidad y estilo idénticos, sin gestos de mano.",
+   "alcance": "hoja de expresiones, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "consistencia_identidad",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "9baeaf95556d",
+   "enunciado": "Para la hoja de expresiones definir descripción facial, estilo artístico, fuente de etiqueta y expresiones extra, y usar GPT Image 2 quality high.",
+   "alcance": "hoja de expresiones",
+   "temas": [
+    "patrones_genero",
+    "parametros_tecnicos",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "f955ff45b2fd",
+   "enunciado": "Usar el grid de variantes de vestuario para mostrar un personaje con varios outfits (moda, skins de juego, vestuario).",
+   "alcance": "grid de variantes de vestuario",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "d4e776bfc884",
+   "enunciado": "Especifica la plantilla del grid de vestuario: fondo neutro, misma pose en cada celda, solo cambia la ropa, nombre del outfit bajo cada celda, identidad corporal y facial idéntica.",
+   "alcance": "grid de variantes de vestuario, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "consistencia_identidad",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "d3b42a5a00a9",
+   "enunciado": "Para el grid de vestuario definir identidad, color de fondo, layout 2x3 o 3x3, pose y outfits, y usar GPT Image 2 medium (high solo si las etiquetas lo requieren).",
+   "alcance": "grid de variantes de vestuario",
+   "temas": [
+    "patrones_genero",
+    "parametros_tecnicos",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "2c600a112913",
+   "enunciado": "Usar el patrón chibi/mini-me para convertir un personaje realista en figura coleccionable 3D con cabeza grande y varias poses.",
+   "alcance": "coleccionable chibi",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "c9b14d8f4c98",
+   "enunciado": "Especifica la plantilla chibi: fondo en degradado, luz de producto con rim, proporción cabeza-cuerpo 1:2, vinilo mate, rasgos y outfit reconocibles simplificados, base circular, proporciones uniformes y sin texto.",
+   "alcance": "coleccionable chibi, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "568578915440",
+   "enunciado": "Para el chibi definir marcadores faciales, paleta en hex, degradado, 3–5 poses y color de base, y usar GPT Image 2 medium (high para close-ups de marketing).",
+   "alcance": "coleccionable chibi",
+   "temas": [
+    "patrones_genero",
+    "parametros_tecnicos",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "0b2b9be3b5bf",
+   "enunciado": "Ejemplo: versión en prosa para Nano Banana del prompt de figuras chibi de vinilo en fila, formato 16:9.",
+   "alcance": "coleccionable chibi, Nano Banana",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "75496662455a",
+   "enunciado": "Usar la tarjeta de personaje estilo anime para una referencia completa con retrato, cuerpo entero, objetos clave y paleta en layout de concept art.",
+   "alcance": "tarjeta de personaje anime",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "e451adaedff6",
+   "enunciado": "Especifica la plantilla de tarjeta anime: secciones separadas con cuerpo entero, busto a tres cuartos, objetos con etiqueta, swatches con hex y bloque de stats; estilo unificado, mismo personaje y texto legible.",
+   "alcance": "tarjeta de personaje anime, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "92f2e28e2322",
+   "enunciado": "Para la tarjeta anime definir descripción detallada, rasgos faciales, objetos, swatches con hex y stats, y usar GPT Image 2 quality high por la densidad de texto.",
+   "alcance": "tarjeta de personaje anime",
+   "temas": [
+    "patrones_genero",
+    "parametros_tecnicos",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "5f7e6c136bb8",
+   "enunciado": "Ejemplo: versión en prosa para Nano Banana de la tarjeta de personaje anime, formato 3:4.",
+   "alcance": "tarjeta de personaje anime, Nano Banana",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "ee6d82f1b646",
+   "enunciado": "Explicación: los patrones de fotografía de producto e-commerce son plantillas con variables y por defecto usan GPT Image 2 en 5 slots.",
+   "alcance": "fotografía de producto e-commerce",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "f2e5b54f09a8",
+   "enunciado": "Usar el diorama en miniatura, con trabajadores diminutos interactuando con un producto gigante, para anuncios sociales y lanzamientos llamativos.",
+   "alcance": "anuncio de producto diorama en miniatura",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "707af39fec7f",
+   "enunciado": "Especifica la plantilla del diorama: mesa de estudio, tilt-shift, producto centrado con figuras a escala 1/87, sombras duras de las figuras, producto reconocible e inalterado, sin texto ni logos extra y máximo 8 figuras.",
+   "alcance": "anuncio de producto diorama en miniatura, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "89f0cdbbc4d6",
+   "enunciado": "Para el diorama definir producto, material, superficie y color de acento, y usar GPT Image 2 quality high.",
+   "alcance": "anuncio de producto diorama en miniatura",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "f53d4faf6d1f",
+   "enunciado": "Usar el plano de estudio de cosmética de lujo para belleza o fragancia premium: oscuro, táctil y con atmósfera.",
+   "alcance": "cosmética de lujo, estudio",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "fe94a975ae55",
+   "enunciado": "Especifica la plantilla de cosmética de lujo: estudio oscuro, humo bajo, una sola luz clave, condensación, acentos materiales, paleta restringida, sombra de contacto nítida; sin texto, manos, flare ni color fuera de paleta.",
+   "alcance": "cosmética de lujo, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "6861fb1e448e",
+   "enunciado": "Para cosmética de lujo definir superficie, acabado, material de acento, paleta y temperatura, y usar GPT Image 2 quality high.",
+   "alcance": "cosmética de lujo",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "3a8e268ed492",
+   "enunciado": "Para la variante oscura con timestamps del storyboard de 9 paneles remitir a multi-panel.md.",
+   "alcance": "storyboard TVC de 9 paneles",
+   "temas": [
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "d764a89936b8",
+   "enunciado": "Usar el grid TVC de 9 paneles para presentar el desglose de un comercial de producto en una imagen (pitch, presentación, aprobación).",
+   "alcance": "storyboard TVC de 9 paneles, e-commerce",
+   "temas": [
+    "layout_grafico",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "92fd417b8eb9",
+   "enunciado": "Especifica la plantilla del TVC de 9 paneles: grid 3x3 blanco, arco de establecimiento a pack shot con tagline, identidad constante, sin numeración, luz uniforme en paneles 1-7 y de estudio en 8-9.",
+   "alcance": "storyboard TVC de 9 paneles, GPT Image 2",
+   "temas": [
+    "layout_grafico",
+    "patrones_genero",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "ee76613ce960",
+   "enunciado": "Para el TVC de 9 paneles definir producto, protagonista, escenario, emoción, superficie, tagline y duración, y usar GPT Image 2 quality high.",
+   "alcance": "storyboard TVC de 9 paneles",
+   "temas": [
+    "layout_grafico",
+    "parametros_tecnicos",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "78f12f6a52a4",
+   "enunciado": "Usar el freeze-frame de ingredientes flotantes en comida, bebida o suplementos para comunicar frescura, sabor o composición.",
+   "alcance": "ingredientes flotantes, producto",
+   "temas": [
+    "patrones_genero",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "b798846c9d90",
+   "enunciado": "Especifica la plantilla de ingredientes flotantes: flash de alta velocidad, líquido en arco con viscosidad, ingredientes nítidos en órbita, rim desde atrás, etiqueta legible; sin blur de movimiento ni salpicaduras en bordes y con número máximo de elementos.",
+   "alcance": "ingredientes flotantes, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "movimiento_congelado_blur",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "b19254e6683c",
+   "enunciado": "Para ingredientes flotantes definir degradado, líquido, ingredientes, texturas, inclinación y máximo 6-8 elementos, y usar GPT Image 2 quality high.",
+   "alcance": "ingredientes flotantes",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "e61c68b4aaf4",
+   "enunciado": "Usar el póster de surrealismo inflable para anuncios disruptivos donde el empaque parece apretado o inflado como vinilo.",
+   "alcance": "póster de producto inflable",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "fd854da06410",
+   "enunciado": "Especifica la plantilla inflable: fondo liso, luz suave, empaque como vinilo inflado apretado con costuras y válvula, marca distorsionada pero legible, objetos acompañantes inflados; sin líquidos, partículas, personas ni texto extra.",
+   "alcance": "póster de producto inflable, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "475b1e957da4",
+   "enunciado": "Para el póster inflable definir producto, color de fondo, esquema de color y objetos acompañantes, y usar NBP por el razonamiento espacial de la deformación física.",
+   "alcance": "póster de producto inflable",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "dd8aabcd8c92",
+   "enunciado": "Ejemplo: versión en prosa para Nano Banana del póster de producto inflable de vinilo, formato 4:5.",
+   "alcance": "póster de producto inflable, Nano Banana",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "3cf7257a5371",
+   "enunciado": "Explicación: los patrones de editorial de moda son plantillas con variables y por defecto usan GPT Image 2 en 5 slots.",
+   "alcance": "editorial de moda",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "34aff8d6be13",
+   "enunciado": "Usar el collage de 3 paneles de moda para imágenes héroe de campaña: pose héroe, detalle y movimiento en tríptico.",
+   "alcance": "editorial de moda, collage de 3 paneles",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "1d10163a6ec0",
+   "enunciado": "Especifica la plantilla del tríptico de moda: panel héroe de cuerpo entero, detalle de textura de tela con luz rasante y paso en contrapicado con caída natural; misma persona y outfit, piel constante, sin texto, logos ni equipo, como una sola sesión.",
+   "alcance": "editorial de moda, collage de 3 paneles, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "020bb97d2d9a",
+   "enunciado": "Para el tríptico de moda definir modelo, outfit, detalle, tejido, fondos, grade y temperatura de color, y usar GPT Image 2 quality high.",
+   "alcance": "editorial de moda, collage de 3 paneles",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "fa0b6646fae1",
+   "enunciado": "Usar el grid 2x2 de retrato editorial para pruebas de modelo, comp cards o portafolio: cuatro ángulos de la misma persona.",
+   "alcance": "editorial de moda, grid 2x2",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "7bf212579e40",
+   "enunciado": "Especifica la plantilla 2x2 de moda: headshot con butterfly light, tres cuartos con clave lateral, perfil a contraluz y momento cándido; piel con poros sin suavizado, persona idéntica, sin cambios de maquillaje ni texto.",
+   "alcance": "editorial de moda, grid 2x2, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "consistencia_identidad",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "939550458969",
+   "enunciado": "Para el 2x2 de moda definir modelo, outfit, fondo, color del divisor, stock de película, tratamiento de piel y accesorio, y usar GPT Image 2 quality high.",
+   "alcance": "editorial de moda, grid 2x2",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "4c748f599068",
+   "enunciado": "Usar el póster streetwear con tipografía gigante para drops, ediciones limitadas o campañas urbanas donde domina el texto.",
+   "alcance": "póster streetwear",
+   "temas": [
+    "patrones_genero",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "81a20b648829",
+   "enunciado": "Especifica la plantilla del póster streetwear: titular extra-bold ocupando dos tercios con el modelo delante y detrás de letras, subtítulo fino, grano; texto legible, deletreado exacto y el modelo no tapa más del 30% de ninguna letra.",
+   "alcance": "póster streetwear, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "texto_en_pantalla",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "977e43863fdd",
+   "enunciado": "Para el póster streetwear definir titular, subtítulo, colores, fuente, outfit, posición, luz y grano, y usar GPT Image 2 quality high.",
+   "alcance": "póster streetwear",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "1f3f5c87128b",
+   "enunciado": "Usar la campaña retro de patinaje para sportswear o athleisure lúdico y nostálgico con lenguaje visual de los 70-80.",
+   "alcance": "campaña retro de patinaje",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "4f8f573f327c",
+   "enunciado": "Ejemplo: prompt en prosa de patinaje retro al sol con stock de película con grano, contraluz de hora dorada, sombra larga y energía de movimiento real en pelo y tela.",
+   "alcance": "campaña retro de patinaje",
+   "temas": [
+    "patrones_genero",
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "5f9cfc631282",
+   "enunciado": "Para el patinaje retro definir modelo, outfit, locación, stock, paleta en hex, color de carril, fondo y aspect ratio, y usar NB2 por el movimiento natural y el grano analógico.",
+   "alcance": "campaña retro de patinaje",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "07615f358c31",
+   "enunciado": "Usar el editorial futurista con blobs 3D para techwear o sportswear con formas abstractas que crean un espacio surreal alrededor del modelo.",
+   "alcance": "editorial sportswear con blobs 3D",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "4708f1013d5c",
+   "enunciado": "Especifica la plantilla de blobs 3D: estudio infinito, 3-5 blobs brillantes a distintas alturas con sombras de color, uno delante y otro detrás, luz fría direccional; blobs físicamente presentes, sin tocar al modelo, sin texto, logos ni blur.",
+   "alcance": "editorial sportswear con blobs 3D",
+   "temas": [
+    "patrones_genero",
+    "composicion_frame",
+    "luz"
+   ]
+  },
+  {
+   "id": "9838e3fb57e2",
+   "enunciado": "Para el editorial de blobs definir entorno, suelo, color de blobs, outfit, pose, detalle de tela y paleta, y usar NBP por el razonamiento espacial de reflejos y colocación.",
+   "alcance": "editorial sportswear con blobs 3D",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "bb5c0518db80",
+   "enunciado": "Ejemplo: versión en prosa para Nano Banana del editorial de sportswear con blobs 3D, formato 4:5.",
+   "alcance": "editorial sportswear con blobs 3D, Nano Banana",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "26e2339409e2",
+   "enunciado": "Explicación: los patrones de comida y bebida son plantillas con variables y por defecto usan GPT Image 2 en 5 slots.",
+   "alcance": "comida y bebida",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "5af69a2785a6",
+   "enunciado": "Usar la campaña de chocolate de lujo para visuales premium de chocolate o confitería, con variantes de mood (dark indulgence, bright artisan, origin story).",
+   "alcance": "campaña de chocolate de lujo",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "b1737c8383b1",
+   "enunciado": "Especifica la plantilla de chocolate de lujo: superficie y luz definidas, paleta restringida, pieza rota con fractura limpia, cacao en polvo natural, guarnición como dirección de arte; sin manos, utensilios, envoltorios, texto ni derretido, con número máximo de piezas.",
+   "alcance": "campaña de chocolate de lujo, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "227f304358f2",
+   "enunciado": "Especifica las variables del chocolate de lujo: superficie, mood y descripción de luz, paleta en hex, tipo de chocolate, textura interior, guarnición, disposición y modificadores de mood.",
+   "alcance": "campaña de chocolate de lujo",
+   "temas": [
+    "patrones_genero",
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "aae9df548923",
+   "enunciado": "Para el chocolate de lujo usar GPT Image 2 quality high por el detalle de fractura y cacao en polvo.",
+   "alcance": "campaña de chocolate de lujo",
+   "temas": [
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "6bb4f1ccc9e8",
+   "enunciado": "Usar el board de campaña de bebida de alta moda para combinar estilo de vida y producto: modelo, producto héroe y lineup.",
+   "alcance": "board de campaña de bebida",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "8b8b01e31760",
+   "enunciado": "Especifica la plantilla del board de bebida: tríptico 45/30/25%, panel lifestyle, beauty shot con condensación y etiqueta legible, lineup de variantes; sin tipografía, modelo sin mirar el producto, luz coherente y condensación física.",
+   "alcance": "board de campaña de bebida, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "0070bdc9ffcb",
+   "enunciado": "Para el board de bebida definir producto, marca, modelo, locación, acción, estética, ángulo, superficie, lineup y colores, y usar GPT Image 2 quality high.",
+   "alcance": "board de campaña de bebida",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "c61da214a5b1",
+   "enunciado": "Usar el póster hiperrealista de comida cuando el plato es toda la composición (restaurantes, apps de delivery, menús).",
+   "alcance": "póster de comida hiperrealista",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "7e95cb24251d",
+   "enunciado": "Especifica la plantilla del póster de comida: plato centrado con emplatado, vapor, guarnición, superficie, props, cámara y luz; comida recién hecha, sin manos ni utensilios en uso, colores apetitosos sin dominante azul.",
+   "alcance": "póster de comida hiperrealista, GPT Image 2",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "915a9aa0d8b9",
+   "enunciado": "Especifica las variables del póster de comida: plato, vajilla, emplatado, vapor, guarnición, superficie, props, luz, fondo y ángulo de cámara.",
+   "alcance": "póster de comida hiperrealista",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "d545d1df2993",
+   "enunciado": "Para el póster de comida usar GPT Image 2 quality high por la fidelidad de vapor, condensación y texturas.",
+   "alcance": "póster de comida hiperrealista",
+   "temas": [
+    "seleccion_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "f5726e2a87ad",
+   "enunciado": "Usar el corte de espécimen naturalista para contenido educativo o de marca artesanal, ilustrando el alimento como lámina científica del siglo XIX.",
+   "alcance": "ilustración naturalista de alimento",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "884d6e99faac",
+   "enunciado": "Ejemplo: prompt en prosa de lámina naturalista con espécimen entero, corte transversal y detalle anotado, sombreado a trama, color de litografía y etiqueta latina, formato 3:4.",
+   "alcance": "ilustración naturalista de alimento",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "7e358ee8a227",
+   "enunciado": "Para la lámina naturalista definir alimento, detalles internos, elemento de detalle, papel, técnica, etiqueta y tinta, y usar NB2.",
+   "alcance": "ilustración naturalista de alimento",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "53954be9646f",
+   "enunciado": "Usar el mapa ilustrado gastronómico de ciudad para guías, festivales o viajes: vista aérea con especialidades locales.",
+   "alcance": "mapa gastronómico ilustrado",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "c655f6527073",
+   "enunciado": "Ejemplo: prompt en prosa de mapa aéreo dibujado a tinta y acuarela con hitos, platos a escala exagerada, calles a línea, título en banner y etiquetas manuscritas.",
+   "alcance": "mapa gastronómico ilustrado",
+   "temas": [
+    "patrones_genero",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "07d0860614a3",
+   "enunciado": "Para el mapa gastronómico definir ciudad, área, hitos, 6-10 platos, estilo de calles, colores, título y aspect ratio, y usar NB2 por el grounding de hitos reales.",
+   "alcance": "mapa gastronómico ilustrado",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "594065cd0133",
+   "enunciado": "Ejemplo: versión en prosa para Nano Banana del mapa gastronómico ilustrado de una ciudad.",
+   "alcance": "mapa gastronómico ilustrado, Nano Banana",
+   "temas": [
+    "patrones_genero",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "cfd1dc470912",
+   "enunciado": "Explicación: los patrones de retrato y cine son plantillas con variables y por defecto usan GPT Image 2 en 5 slots.",
+   "alcance": "retrato cinematográfico",
+   "temas": [
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "5569ef16279d",
+   "enunciado": "Usar el retrato callejero a contraluz en hora dorada para retratos cálidos y emotivos con flare (editorial, marca personal, portadas).",
+   "alcance": "retrato a contraluz en hora dorada",
+   "temas": [
+    "patrones_genero",
+    "luz"
+   ]
+  },
+  {
+   "id": "ec7fbafda095",
+   "enunciado": "Especifica la plantilla de contraluz dorado: sol detrás del sujeto a 5-10°, rim dorado, rostro iluminado por rebote más frío, bokeh cálido, 1-2 flares sutiles, sombra larga, piel con poros; rostro expuesto (no silueta), sin equipo, texto ni viñeta.",
+   "alcance": "retrato a contraluz en hora dorada, GPT Image 2",
+   "temas": [
+    "luz",
+    "piel_rostro_realismo",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "78dce620da36",
+   "enunciado": "Para el contraluz dorado definir calle, persona, expresión, superficie de rebote, detalle de ropa, suelo y grade, y usar GPT Image 2 por el control de exposición y piel.",
+   "alcance": "retrato a contraluz en hora dorada",
+   "temas": [
+    "patrones_genero",
+    "seleccion_modelo",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "178e40c4304e",
+   "enunciado": "Usar el retrato neón de tienda de conveniencia para retratos urbanos nocturnos con fluorescente y neón de color en tensión cromática sobre el rostro.",
+   "alcance": "retrato neón nocturno",
+   "temas": [
+    "patrones_genero",
+    "luz"
+   ]
+  },
+  {
+   "id": "5d0e973efe8f",
+   "enunciado": "Especifica la plantilla neón: sujeto en el umbral entre fluorescente interior y neón exterior con luz dividida en el rostro, bokeh de estantes, pavimento mojado con reflejos; rostro visible, sin fuentes extra, sin grade añadido ni blur.",
+   "alcance": "retrato neón nocturno, GPT Image 2",
+   "temas": [
+    "luz",
+    "patrones_genero",
+    "color_grade_paleta"
+   ]
+  }
+ ]
+}
