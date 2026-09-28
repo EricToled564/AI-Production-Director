@@ -78,6 +78,21 @@ FRASES = [
     (r"luz suave|soft light", "luz", "soft even light"),
     (r"luz dura|hard light", "luz", "hard directional light"),
     (r"luz natural|natural light", "luz", "natural available light"),
+    # hora y dirección, no "golden hour" suelto (regimenes/01 §4, research 01 Q1–Q6)
+    (r"luz de (?:la )?tarde|afternoon light", "luz", "warm late-afternoon light from a low side angle"),
+    (r"luz de (?:la )?ma[nñ]ana|morning light", "luz", "cool early-morning light from a low side angle"),
+    (r"atardecer|puesta de sol|sunset|golden hour|hora dorada", "luz", "low warm sun just above the horizon, long shadows"),
+    (r"de noche|nocturn|at night", "luz", "night scene lit only by visible practical lights"),
+    (r"junto a (?:la|una) ventana|by (?:the|a) window|near (?:the|a) window", "luz", "daylight entering through a window beside the subject"),
+    # lugar nombrado por el usuario (con modelo se infiere cualquier otro)
+    (r"\bcaf[eé]\b|cafeter[ií]a|coffee shop", "fondo", "a café interior"),
+    (r"\bparque\b|\bpark\b", "fondo", "an urban park"),
+    (r"\bcalle\b|\bstreet\b", "fondo", "a city street"),
+    (r"\bplaya\b|\bbeach\b", "fondo", "a sandy beach"),
+    (r"\boficina\b|\boffice\b", "fondo", "an office interior"),
+    (r"\bcocina\b|\bkitchen\b", "fondo", "a home kitchen"),
+    (r"\bbosque\b|\bforest\b", "fondo", "a forest"),
+    (r"\bm[aá]rmol blanco\b|white marble", "fondo", "a white marble surface"),
 ]
 TRATAMIENTO_RE = [
     ("documental", r"documental|documentary|reportaje"),
@@ -366,19 +381,22 @@ def analizar_determinista(brief: dict) -> dict:
 
 
 def ambiguedades(spec: dict) -> list[dict]:
+    """Sólo lo que de verdad falta y no se infiere. Cámara, luz, lugar, ángulo, encuadre, color y textura nunca se
+    preguntan (plantilla_brief.NUNCA_PREGUNTAR): si faltan, aparecen como campo faltante editable en la plantilla."""
+    from .plantilla_brief import NUNCA_PREGUNTAR
     out = []
     c = spec["comunes"]
     medio = c["medio"]["valor"]
     for k in REQUERIDOS_PARAMETRO.get(medio, []):
-        if c.get(k, {}).get("estado") == "OPEN":
+        if c.get(k, {}).get("estado") == "OPEN" and k not in NUNCA_PREGUNTAR:
             out.append({"campo": k, "decisiva": k == "modelo", "motivo": c[k].get("motivo") or "parámetro sin fijar"})
     for k in requeridos(spec):
         f = c.get(k)
-        if f and f["estado"] == "OPEN" and f.get("prompt_required", True):
+        if f and f["estado"] == "OPEN" and f.get("prompt_required", True) and k not in NUNCA_PREGUNTAR:
             out.append({"campo": k, "decisiva": True, "motivo": f.get("motivo") or "campo requerido por la plantilla sin valor"})
     if c.get("tratamiento", {}).get("estado") == "OPEN" and "T1" in (c["tipo_tarea"]["valor"] or []):
         out.append({"campo": "tratamiento", "decisiva": True, "motivo": c["tratamiento"]["motivo"]})
-    if c.get("color", {}).get("estado") == "OPEN" and medio == "imagen":
+    if c.get("color", {}).get("estado") == "OPEN" and medio == "imagen" and "color" not in NUNCA_PREGUNTAR:
         out.append({"campo": "color", "decisiva": True,
                     "motivo": "color o B/N no indicado; SW30 usecase_doc cita Kodak Tri-X (stock B/N): en Vivaldi produjo B/N no pedido "
                               "(produccion/vivaldi-invierno/05-genesis-anclas.md, corrección 1)"})

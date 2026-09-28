@@ -76,9 +76,13 @@ async function esperarServidor() {
 
     // A6.2 — plan visual
     const cab = await page.textContent('#main');
-    const amb = await page.$$eval('h3:has-text("Ambigüedades") + ul li', ls => ls.map(l => l.textContent));
-    check('A6.1b', 'Identifica ambigüedades decisivas', /Ambigüedades \(\d+\)/.test(cab) && amb.length > 0, `${amb.length} ambigüedades: ${amb.slice(0, 3).map(s => s.slice(0, 50)).join(' | ')}`);
-    const filas = await page.$$eval('#main table tr', trs => trs.slice(1).map(t => t.innerText));
+    const amb = await page.$$eval('h3:has-text("Falta y no se puede inferir") + ul li', ls => ls.map(l => l.textContent));
+    check('A6.1b', 'Identifica ambigüedades decisivas', /Falta y no se puede inferir \(\d+\)/.test(cab) && amb.length > 0, `${amb.length} ambigüedades: ${amb.slice(0, 3).map(s => s.slice(0, 50)).join(' | ')}`);
+    const plant = await page.$$eval('h3:has-text("Brief en plantilla") + p + table tr', trs => trs.map(t => t.innerText));
+    check('U4.plantilla', 'Brief en plantilla visible; cámara, luz, lugar y ángulo inferidos, nunca preguntados',
+      plant.length > 10 && !/\b(camara|luz|fondo|angulo)\b/.test(amb.join(' ')) && plant.some(r => /camara/.test(r) && /inferido|propuesta/.test(r)),
+      `${plant.length} filas de plantilla; faltantes que se muestran: ${amb.length} (ninguno de cámara, luz, lugar o ángulo)`);
+    const filas = await page.$$eval('h3:has-text("Etapas") + table tr', trs => trs.slice(1).map(t => t.innerText));
     const noAplican = filas.filter(f => /\tno\t/.test(f) || /\bno\b/.test(f.split('\t')[1] || ''));
     check('A6.2a', 'Plan: recorrido, etapas que aplican y que no, con razón', /Recorrido/.test(cab) && filas.length > 3 && noAplican.length > 0,
       `${filas.length} filas; ${noAplican.length} etapas marcadas "no" con razón; recorrido: ${(cab.match(/Recorrido [^—]+/) || [''])[0].trim()}`);

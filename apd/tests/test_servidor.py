@@ -88,8 +88,8 @@ class TestServidor(unittest.TestCase):
         c, lotes = self.req(f"/api/proyectos/{pid}/lotes-decision")
         clave, per = next(iter(lotes["perfiles"].items()))
         ids = [i for l in per["lotes"] for i in l["ids"]]
-        self.assertEqual(len(ids), 1398)
-        self.assertEqual(len(set(ids)), 1398)
+        self.assertEqual(len(ids), 1104)  # 1,398 menos las 294 reglas de video: nivel 0 fijo
+        self.assertEqual(len(set(ids)), 1104)
         # respuesta incompleta: rechazada, nada se aplica
         malas = {str(l["indice"]): {"decisiones": [{"id": i, "estado": "NO_APLICA", "razon": "no aplica"} for i in l["ids"]]} for l in per["lotes"]}
         c, inf = self.req(f"/api/proyectos/{pid}/lotes-decision", {"perfil": clave, "respuestas": malas, "revisor": "prueba"})

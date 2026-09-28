@@ -85,6 +85,12 @@ class TestRegistro(unittest.TestCase):
         self.assertEqual(out.returncode, 0, out.stdout[-500:])
         self.assertIn("fallidas=0", out.stdout)
 
+    def test_version_1_guarda_todas_las_decisiones(self):
+        pid = util.P.nuevo({"texto": util.BRIEF_QUINTETO}, "v1")
+        n, e = util.P.cargar(pid)
+        self.assertEqual(n, 1)
+        self.assertEqual([len(l["decisiones"]) for l in e["_ledgers_completos"].values()], [1398])
+
     def test_originales_intactos(self):
         sums = (F.ORIGINALES / "SHA256SUMS").read_text().split("\n")
         for linea in filter(None, sums):

@@ -8,20 +8,20 @@ Estado a 2026-09-28. Repo base `e61005d` (sin modificar). Registro vigente `R139
 | Evidencia | Qué es | Resultado |
 |---|---|---|
 | [`evidencia/pruebas_app.txt`](evidencia/pruebas_app.txt) | `python3 -m unittest -v` sobre `apd/tests` (7 módulos) | ver cabecera del archivo: total y OK |
-| [`evidencia/ui/ui_aceptacion.json`](evidencia/ui/ui_aceptacion.json) | `node apd/tools/ui_aceptacion.cjs`: Chromium hace clic en la app real, servidor real, sin modelo | 29/29 |
+| [`evidencia/ui/ui_aceptacion.json`](evidencia/ui/ui_aceptacion.json) | `node apd/tools/ui_aceptacion.cjs`: Chromium hace clic en la app real, servidor real, sin modelo | 30/30 |
 | [`evidencia/ORIGINAL_TESTS_REPORT.md`](evidencia/ORIGINAL_TESTS_REPORT.md) + [`logs_originales/`](evidencia/logs_originales/) | tests y hooks originales del repo y del paquete | 16/21 scripts PASS; 5 `check.sh` fallan (documentado) |
-| [`evidencia/revision_semantica/`](evidencia/revision_semantica/) | 3 rondas de revisión semántica independiente del proyecto demo (5 prompts × 195–200 reglas) | ronda 1 → 2 → 3, ver §Revisión semántica |
-| [`demo/`](demo/) | proyecto demostración (quinteto) con 13 versiones, exportación y prompts | ver `demo/LEEME.md` |
+| [`evidencia/revision_semantica/`](evidencia/revision_semantica/) | 5 rondas de revisión semántica independiente del proyecto demo (5 prompts × 195–200 reglas) | ronda 1 → 5, ver §Revisión semántica |
+| [`demo/`](demo/) | proyecto demostración (quinteto) con 18 versiones, exportación y prompts | ver `demo/LEEME.md` |
 
 ## Totales por estado
 
 | Estado | Filas |
 |---|---:|
-| CUMPLE | 71 |
+| CUMPLE | 75 |
 | BLOQUEADO POR DEPENDENCIA | 2 |
 | NO CUMPLE | 0 |
 | NO VERIFICADO | 0 |
-| **Total** | **73** |
+| **Total** | **77** |
 
 (Conteo generado leyendo la columna Estado de cada fila de esta tabla, no a mano.)
 
@@ -88,7 +88,7 @@ Columnas: ID | Requisito | Fuente | Ubicación en la app | Prueba | Resultado es
 |---|---|---|---|---|---|---|---|---|---|
 | A5.1 | Recorrer todos los IDs; APLICA con evidencia | A5.1 | control `cobertura_ids`, `evidencia_aplica` | UI `A6.4a` (resolver 44 bloqueos desde la UI) | bloqueos listados y resolubles | 44 reglas resueltas vía «Resolver en Reglas» | json UI | CUMPLE | — |
 | A5.2 | Controles deterministas + gates originales | A5.2 | `auditoria.controles`; gates como subproceso | UI `A5.2a`; `test_gates_originales_pasan` | gate_image, dramaturgy, aurora, ast_gate PASS; render idéntico | 5/5 PASS | json UI | CUMPLE | aurora: se usa la copia v1.2-fupai del repo (DECISIONES #2); la v1.1 del skill da FAIL por el tope de 130 palabras |
-| A5.3a | Revisión semántica separada (revisor independiente, misma validación) | A5.3 | lotes semánticos export/import; disputa con autoridad | 3 rondas con subagentes independientes sobre el demo; `test_disputa_exige_autoridad_y_firma_no_borra` | discrepancias registradas y corregidas en bloque fuente | NO_CUMPLE por entrega: ronda 1 22/21/13/14/19 → ronda 2 1/1/1/1/6 → ronda 3 ver §Revisión semántica | [`evidencia/revision_semantica/`](evidencia/revision_semantica/) | CUMPLE | — |
+| A5.3a | Revisión semántica separada (revisor independiente, misma validación) | A5.3 | lotes semánticos export/import; disputa con autoridad | 5 rondas con subagentes independientes sobre el demo; `test_disputa_exige_autoridad_y_firma_no_borra` | discrepancias registradas y corregidas en bloque fuente | NO_CUMPLE por entrega: ronda 1 22/21/13/14/19 → ronda 2 1/1/1/1/6 → ronda 5: 0 abiertos, ver §Revisión semántica | [`evidencia/revision_semantica/`](evidencia/revision_semantica/) | CUMPLE | — |
 | A5.3b | Revisión semántica automática con modelo por API | A5.3, F | `revision.revisar_semantica` | adaptadores contra servidor local que imita las APIs | — | no ejecutada con modelo real | `tests/test_llm.py` | BLOQUEADO POR DEPENDENCIA | sin clave de API en el entorno |
 | A5.4 | Bloquear Copiar/Exportar como aprobado | A5.4 | Prompts, Exportar | UI `A5.4a`, `A6.9a`; `test_flujo_http_sin_modelo` (409) | deshabilitado / 409 | deshabilitado; 409 | json UI | CUMPLE | — |
 | A5.5 | Cuatro estados distintos, nunca «fail free» | A5 | Prompts › niveles | UI `A5.5a`, `A6.10b` | cobertura / semántica / redacción / visual | 4 estados; visual EVALUADO_CON_DEFECTOS con cobertura COMPROBADA | json UI | CUMPLE | — |
@@ -130,10 +130,10 @@ Columnas: ID | Requisito | Fuente | Ubicación en la app | Prueba | Resultado es
 
 | ID | Requisito | Prueba | Obtenido | Evidencia | Estado | Límite |
 |---|---|---|---|---|---|---|
-| F.1 | App web local ejecutable con instrucciones | UI test arranca `python3 apd/server.py` y la recorre | 29/29 | [`README.md`](README.md) | CUMPLE | — |
+| F.1 | App web local ejecutable con instrucciones | UI test arranca `python3 apd/server.py` y la recorre | 30/30 | [`README.md`](README.md) | CUMPLE | — |
 | F.2 | Base y datos derivados con procedencia | `datos.construir` | 10 archivos en `data/` con `generado` | [`data/`](data/) | CUMPLE | — |
 | F.3 | Pruebas ejecutadas | suite + UI | ver archivos | [`evidencia/pruebas_app.txt`](evidencia/pruebas_app.txt) | CUMPLE | — |
-| F.4 | Demo, prompts de muestra, auditorías | exportación del demo | 5 prompts + auditorías + ledger | [`demo/`](demo/) | CUMPLE | el demo **no es liberable**: decisiones del director pendientes (§Decisiones) |
+| F.4 | Demo, prompts de muestra, auditorías | exportación del demo | 5 prompts + auditorías + ledger | [`demo/`](demo/) | CUMPLE | el demo **no es liberable** sólo por la aprobación humana de la redacción (§Decisiones) |
 | F.5 | Originales intactos y separados | `test_originales_intactos` | igual | `originales/` | CUMPLE | — |
 | F.6 | No publicar ni desplegar | servidor en `127.0.0.1` | sin despliegue ni publicación | `server.py` | CUMPLE | — |
 | F.7 | Clave sólo en servidor/entorno | `test_clave_no_sale_del_servidor`; `/api/config` sin clave; grep del repo | la clave no aparece en navegador, exportación ni repo | `tests/test_llm.py` | CUMPLE | — |
@@ -149,6 +149,10 @@ Columnas: ID | Requisito | Fuente | Ubicación en la app | Prueba | Resultado es
 | U1 | «ninguna regla en absoluto sin clasificar» | `test_ninguna_regla_sin_clasificar` | 1,398/1,398 con caso, tarea y d1–d9 (faltantes marcados `app_derivada`) | CUMPLE |
 | U2 | Sintaxis por salida, modelo y composición | `test_citas_de_sintaxis_verificadas`; control `sintaxis_ledger` | 563 requisitos, 831 citas | CUMPLE |
 | U3 | Longitud aspiracional; bloquear y regenerar sólo sobre 2× | `TestLongitud` (2) | corto avisa; >2× bloquea y ofrece regenerar | CUMPLE |
+| U4 | Plantilla de brief con bloques = facetas de la base = slots del prompt; el modelo la rellena; no se pregunta cámara, luz ni lugar | `TestPlantillaBrief` (4); UI `U4.plantilla` | cada bloque declara nivel, faceta y slot; `NUNCA_PREGUNTAR` fuera de ambigüedades; producto sin «one person only» ni luz de rostro; lo dicho por el usuario gana | CUMPLE |
+| U5 | Cambio quirúrgico por niveles (medio → perfil de reglas → bloque); el otro medio nunca se re-revisa | `TestCambioQuirurgico`; `TestSemanticaDisputaYHerencia` | cambio menor conserva revisión y aprobación; dramático re-revisa sólo lo que tocan los bloques cambiados; 294 reglas de VIDEO excluidas en imagen | CUMPLE |
+| U6 | D1 y D2 valen para todo brief; una decisión no genera decisiones nuevas | `test_decisiones_permanentes_del_director_para_todo_brief` | CF-MOTOR-SW30 y CF-REROLL-SW30 se resuelven solos en `b`; el demo no pide decisiones salvo la redacción | CUMPLE |
+| U7 | El estado no se pierde (defectos encontrados y corregidos) | `TestConcurrencia`, `TestMigracionClave`, `test_version_1_guarda_todas_las_decisiones` | candado por proyecto; decisiones del director migran con la clave; v1 persiste decisiones | CUMPLE |
 
 ## Matriz antes / después
 
@@ -170,7 +174,7 @@ ejecutado con [`tools/evidencia_ejecutor.cjs`](tools/evidencia_ejecutor.cjs).
 | Evaluación de imagen | `evaluarImagen` (`:653`) la hace el modelo | registro manual de defectos ligados a contratos, separado de la cobertura | el veredicto visual no se confunde con la auditoría textual | `test_parece_render_y_ojos_con_imagen` |
 | Sin modelo | no funciona | modo determinista honesto + revisor externo con la misma validación | se puede operar e inspeccionar sin clave | UI `A6.12a/b` |
 
-## Revisión semántica del demo (independiente, 3 rondas)
+## Revisión semántica del demo (independiente, 5 rondas)
 
 Revisores: subagentes independientes, importados con `importar_semantica` (misma validación que el modelo:
 ids exactos, sin duplicados ni inventados). Todos los veredictos y entradas están en
@@ -181,20 +185,28 @@ ids exactos, sin duplicados ni inventados). Todos los veredictos y entradas est�
 | 1 | v6 | 22 / 21 / 13 / 14 / 19 | 10 NO_CUMPLE disputados con autoridad (salían del linter v1.1 sustituido: DECISIONES #2); el resto corregido en bloque fuente: contradicción de altura de cámara, negativos fuera de Constraints, meta del pipeline en el cuerpo, «photoreal», hex del fondo, material de prendas, rasgos de identidad, asimetría facial, mirada de E5 |
 | 2 | v8 | 1 / 1 / 1 / 1 / 6 | lean prose compartida corregida (encuadre duplicado, contexto del casting a notas, mirada de E4); los 5 restantes de E5 = CF-MOTOR-SW30 → conflicto para el director |
 | 3 | v11 | 0 / 0 / 2 / 4 / 1 | E3: tope de 130 palabras disputado con DECISIONES #2 + U-2026-09-28-LONGITUD; E4: «calm» nombra una emoción → corregido en v12–v13 (v12 chocaba con E1 en el umbral de genericidad de la regresión A7); `54a39fd24578` (stock documental) en E3, E4 y E5 queda **para el director**: los revisores discrepan (E1/E2 lo dieron por no aplicable al tratamiento comercial) |
-| 4 | v13 | E4: 1 (`c1d814f8c059`, falta la forma del rostro: «square jaw» no es forma de cara) — corregido en los datos de la app («square face with a strong jaw»); en el demo queda abierto y visible como ejemplo del bloqueo | sólo E4 (el cambio de v12–v13 invalidó sólo su revisión; E1, E2, E3 y E5 conservan la suya) |
+| 4 | v13 | E4: 1 (`c1d814f8c059`, falta la forma del rostro: «square jaw» no es forma de cara) | sólo E4 (el cambio de v12–v13 invalidó sólo su revisión; E1, E2, E3 y E5 conservan la suya) |
+| 5 | v17–v18 | E4: 0 | v14–v17: forma del rostro («square face with a strong jaw»), D1/D2 aplicados como política permanente, 16 CONDICIONAL + `7077767cb105` y `54a39fd24578` cerrados por hecho verificable o autoridad documentada; v18: herencia confirmada por U-2026-09-28-CAMBIO-QUIRURGICO. Sólo E4 se re-revisó: el cambio fue de un bloque (nivel 2) y los demás conservan su revisión |
+
+Estado final del demo (v18): 0 NO_CUMPLE abiertos en las 5 entregas; los disputados (E3: 2, E5: 1) citan
+DECISIONES #2 + U-2026-09-28-LONGITUD o flujo-anclas.html Paso 4. Nota: el resumen de E3 guardado en el demo repite
+la etiqueta «disputados con autoridad» (defecto de texto anterior a la corrección de `disputar_semantica`,
+`proyecto.py:924`); las versiones son inmutables y la etiqueta se normaliza en la próxima disputa.
 
 ## Decisiones que son del director (la app bloquea hasta que se tomen)
 
-1. **CF-MOTOR-SW30** — SW30 exige instanciar todo prompt con `template_engine.build()` (T1 = luz dura documental);
-   la app compila en los 5 slots de GPT Image con luz pareja de character ref. DECISIONES #2 admite ambos formatos
-   sin decir cuál manda. Si gana A, la entrega queda bloqueada: la app aún no construye vía `template_engine`.
-2. **`54a39fd24578` (stock documental de reportaje del template T1)**: ¿aplica a un casting de tratamiento
-   comercial? Los revisores discrepan; la autoridad candidata es flujo-anclas.html Paso 4 (la fila comercial no
-   usa Tri-X, CF-TRIX-COLOR). Se resuelve disputándolo con esa cita o añadiendo un look documental a color.
-3. **16 CONDICIONAL y 2 CONFLICTO de regla** heredados de la revisión externa (p. ej. si el instrumento se ve;
-   `7077767cb105` prohibición de softbox en rostros; `1e898f2c0308` re-rolls del crítico vs SW30 R13).
-4. **Confirmar la revisión de reglas heredada** (cambiaron encuadre y textura desde la revisión externa) o re-revisar.
-5. **Aprobar la redacción** de cada prompt (hash exacto).
+Sólo queda una, y es la que el procedimiento reserva a una persona:
+
+1. **Aprobar la redacción** de cada prompt (hash exacto): Auditoría → «Aprobar redacción».
+
+Resueltas y ya no se preguntan:
+
+- **D1 = 5 slots de GPT Image** y **D2 = SW30, máximo 2 intentos**: política permanente para todo brief
+  (`apd/politicas.py` U-2026-09-28-MOTOR y U-2026-09-28-REROLL; conflictos CF-MOTOR-SW30 y CF-REROLL-SW30 siempre `b`).
+- **Cambio quirúrgico** (U-2026-09-28-CAMBIO-QUIRURGICO): los niveles anteriores quedan fijos; la herencia de la
+  clasificación de reglas se confirma por política, no se pide.
+- **16 CONDICIONAL, `7077767cb105` (softbox en rostros) y `54a39fd24578` (stock documental)**: cerrados por hecho
+  verificable o autoridad documentada, registrados como «claude-code (el director puede revertir)».
 
 ## Limitaciones comprobadas
 
@@ -205,6 +217,11 @@ ids exactos, sin duplicados ni inventados). Todos los veredictos y entradas est�
 - Hallazgos en los originales (no modificados): el patrón d9 «high» de `rules_v3.REGEX_FACETA` captura
   «contrapicado» (ángulo bajo) — la app lo compensa y hay test; los 5 `check.sh` de shotkit fallan (layout y
   fixture ausente); el linter v1.1 del skill contradice a la copia v1.2 vigente.
-- Casos de imagen distintos de T1 casting: sin modelo, el usuario completa sujeto, ángulo, cámara, luz… en
-  Especificación (la app lo pide como ambigüedad decisiva; no inventa).
+- Plantilla de brief sin modelo: cámara, luz, ángulo, fondo, lente y encuadre se infieren con reglas deterministas
+  (`plantilla_brief.inferir_app`, citadas); son valores por defecto razonables, no el criterio de un director. Con
+  clave de API los rellena el modelo (`SIS_PLANTILLA`) y lo dicho por el usuario siempre gana. Sólo se pregunta lo
+  que no se puede inferir (sujeto, cantidad, producto real).
+- `clasificar_cambio` decide «dramático» con umbrales fijos (sexo, origen, franja de edad <30/30–49/≥50 o ±15
+  años, Jaccard de palabras <0.5 por bloque); un cambio semántico grande con pocas palabras distintas puede
+  clasificarse como menor.
 - Evaluación visual: registro manual; no hay propuesta automática de defectos con modelo de visión.

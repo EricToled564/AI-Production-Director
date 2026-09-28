@@ -107,7 +107,14 @@ function vPlan() {
   const p = S.p, pl = p.plan;
   const amb = p.spec.ambiguedades || [];
   $('#main').innerHTML = cab('Plan', `Recorrido <b>${esc(pl.recorrido)}${pl.subtipo ? ' · ' + esc(pl.subtipo) : ''}${pl.track ? ' · track ' + esc(pl.track) : ''}</b> — ${esc(pl.motivo)}`) + `
-  ${amb.length ? `<div class="card"><h3>Ambigüedades (${amb.length})</h3><ul>${amb.map(a => `<li>${a.decisiva ? pill('decisiva', 'bad') : pill('abierta', 'warn')} <b>${esc(a.campo)}</b> — ${esc(a.motivo)}</li>`).join('')}</ul>
+  ${p.plantilla ? `<div class="card"><h3>Brief en plantilla</h3>
+    <p class="small mute">Bloques alineados con las facetas de la base de reglas y con los bloques del prompt. Cámara, luz, lugar y ángulo no se preguntan: se infieren de lo que diste y se pueden editar en Especificación. Nivel 0 = medio, 1 = tipo de pieza (cambiarlo re-revisa sólo reglas de ese medio), 2 = contenido de un bloque (cambio quirúrgico).</p>
+    <table><tr><th>Nivel</th><th>Bloque</th><th>Valor</th><th>Origen</th><th>Va al prompt en</th></tr>
+    ${p.plantilla.map(f => f.campos.map((c, i) => `<tr><td>${i ? '' : f.nivel}</td><td>${i ? '' : `<b>${esc(f.nombre)}</b>${f.faceta ? ` <span class="small mute mono">${esc(f.faceta)}</span>` : ''}`}<br><span class="small mono">${esc(c.campo)}</span></td>
+      <td class="small">${c.estado === 'OPEN' ? pill('falta', 'bad') : c.estado === 'NO_APLICA' ? pill('no aplica', '') : esc(Array.isArray(c.valor) ? c.valor.join(', ') : c.valor)}</td>
+      <td class="small" title="${esc(c.fuente || '')}">${c.origen ? pill(c.origen, /inferido|propuesta/.test(c.origen) ? 'info' : c.origen === 'brief' || c.origen === 'usuario' ? 'ok' : '') : ''}</td>
+      <td class="small mono">${esc((c.slot || []).join(', '))}</td></tr>`).join('')).join('')}</table></div>` : ''}
+  ${amb.length ? `<div class="card"><h3>Falta y no se puede inferir (${amb.length})</h3><ul>${amb.map(a => `<li>${a.decisiva ? pill('decisiva', 'bad') : pill('abierta', 'warn')} <b>${esc(a.campo)}</b> — ${esc(a.motivo)}</li>`).join('')}</ul>
     ${p.propuestas.length ? `<div class="row"><button class="prim" id="acepta">Aceptar ${p.propuestas.length} propuestas</button><button id="verProp">Ver propuestas</button><span class="small mute">Las propuestas llevan su clase (fuente citada o creativa de la app). Puede editarlas en Especificación.</span></div>` : ''}</div>` : `<div class="okbox">Sin ambigüedades abiertas.</div>`}
   <div class="card"><h3>Etapas</h3><table><tr><th>Etapa</th><th>Aplica</th><th>Entra → sale</th><th>Gate</th><th>Razón</th></tr>
   ${pl.etapas.map(e => `<tr><td><b>${e.clave}</b> ${esc(e.nombre)}${e.depende_de.length ? `<br><small class="mute">depende de ${e.depende_de.join(', ')}</small>` : ''}</td>

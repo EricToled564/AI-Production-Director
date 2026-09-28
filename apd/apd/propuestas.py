@@ -104,7 +104,7 @@ def proponer(spec: dict) -> list[dict]:
                     "fuente": "propuesta de la app: un retrato de casting es referencia de personaje (flujo-anclas D1 Character ref); "
                               "la alternativa 'documental' activa el template SW30 T1 (luz dura, Tri-X)"})
         trat = trat or "comercial"
-    if c["luz"]["estado"] == "OPEN" and trat in LUZ_POR_TRATAMIENTO:
+    if c["luz"]["estado"] == "OPEN" and trat in LUZ_POR_TRATAMIENTO and set(casos) & {"T1", "T2", "T3", "T4", "MULTI"}:
         v, f = LUZ_POR_TRATAMIENTO[trat]
         out.append({"ruta": "comunes.luz", "valor": v, "clase": "fuente", "fuente": f})
     if c["camara"]["estado"] == "OPEN" and "T1" in casos:
@@ -118,7 +118,11 @@ def proponer(spec: dict) -> list[dict]:
                                                   "no fotorreal fuera del MAIN (no hay campo negativo en Nano Banana)"})
     if c["restricciones"]["estado"] == "OPEN" and "T5" not in casos and c["medio"]["valor"] == "imagen" and not (modelo or "").startswith("nano-banana"):
         out.append({"ruta": "comunes.restricciones",
-                    "valor": "one person only, no text, no watermark, no logo, no retouched plastic skin, not an illustration or 3D render",
+                    "valor": ("one person only, no text, no watermark, no logo, no retouched plastic skin, not an illustration or 3D render"
+                              if "T1" in casos or "T2" in casos or "T3" in casos else
+                              "two people only, no text, no watermark, no logo, no retouched plastic skin, not an illustration or 3D render"
+                              if "T4" in casos else
+                              "no text, no watermark, no logo, not an illustration or 3D render"),
                     "clase": "fuente",
                     "fuente": "gpt-image.md:13 'Constraints: what must NOT change/appear (no watermarks, … no extra text)' · "
                               "flujo-anclas 'Lo que un ancla nunca lleva' · golden-rules ✅ 'solo portrait'"})

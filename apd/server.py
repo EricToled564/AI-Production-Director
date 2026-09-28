@@ -83,12 +83,15 @@ def vista_proyecto(pid, n=None):
             "sintaxis": {"gate": sx.get("gate"), "conflictos": sx.get("conflictos"), "controles": sx.get("controles"),
                          "aplica": sx.get("aplica")},
         }
-    from apd import revision as RV
+    from apd import revision as RV, plantilla_brief as PB
+    fmt0 = next(((i.get("compilado") or {}).get("formato") for i in e["entregas"].values() if i.get("compilado")), None)
+    mod = e["spec"]["comunes"]["modelo"]["valor"] or ""
+    plantilla = PB.vista(e["spec"], fmt0 or ("nano-banana" if mod.startswith("nano-banana") else mod))
     reg = P.registro()
     n_lotes = -(-len(reg.reglas) // RV.LOTE)
     est = dict(RV.estimar(reg, n_lotes), perfiles=len(e["ledgers"]),
                nota="Se revisan TODAS las reglas de cada perfil; el ahorro sólo viene de compartir perfil entre entregas, nunca de recortar reglas.")
-    return {"id": pid, "version": n, "estimacion": est, "brief": e["brief"], "spec": e["spec"], "plan": e["plan"], "preflight": e["preflight"],
+    return {"id": pid, "version": n, "estimacion": est, "plantilla": plantilla, "plantilla_info": e["spec"].get("plantilla_info"), "brief": e["brief"], "spec": e["spec"], "plan": e["plan"], "preflight": e["preflight"],
             "ledgers": e["ledgers"], "entregas": entregas, "diferencias": e.get("diferencias"),
             "versiones": ST.versiones(pid), "etapas": e.get("etapas", {}), "visual": vis,
             "propuestas": P.PR.proponer(e["spec"]), "decisiones_humanas": e["decisiones_humanas"]}

@@ -262,7 +262,10 @@ def estado_liberacion(auditoria: dict | None, texto_actual_hash: str, semantica:
     sem_ok = bool(semantica) and semantica.get("completo") and semantica.get("texto_hash") == texto_actual_hash \
         and not semantica.get("no_cumple_abiertos")
     if not sem_ok:
-        if semantica and semantica.get("texto_hash") == texto_actual_hash and semantica.get("no_cumple_abiertos"):
+        if semantica and semantica.get("texto_hash") == texto_actual_hash and semantica.get("pendientes"):
+            bloqueos.append(f"revisión semántica: {len(semantica['pendientes'])} reglas de los bloques cambiados pendientes "
+                            f"({', '.join((semantica.get('heredada') or {}).get('bloques', []))}); el resto se heredó")
+        elif semantica and semantica.get("texto_hash") == texto_actual_hash and semantica.get("no_cumple_abiertos"):
             bloqueos.append(f"revisión semántica: {len(semantica['no_cumple_abiertos'])} NO_CUMPLE abiertos — corregir el bloque fuente "
                             "o disputar con autoridad documentada")
         else:

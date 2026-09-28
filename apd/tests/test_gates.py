@@ -198,8 +198,8 @@ class TestSemanticaDisputaYHerencia(unittest.TestCase):
         self.assertEqual(sorted(e["semantica"]["E1"]["disputados"]), sorted(nc))
         self.assertFalse(any("NO_CUMPLE" in b for b in P.liberacion(e, "E1")["bloqueos"]))
 
-    def test_cambio_de_contexto_hereda_revision_y_bloquea_hasta_confirmar(self):
-        # brief propio: la caché de revisión se comparte entre proyectos con brief y perfil idénticos (por diseño)
+    def test_cambio_de_contexto_hereda_revision_sin_rerevisar(self):
+        # U-2026-09-28-CAMBIO-QUIRURGICO: niveles anteriores fijos; la revisión de reglas se hereda y no bloquea
         pid = P.nuevo({"texto": util.BRIEF_QUINTETO + " Serie interna de prueba de herencia."}, "herencia")
         P.aceptar_propuestas(pid)
         P.aceptar_propuestas(pid)
@@ -208,58 +208,52 @@ class TestSemanticaDisputaYHerencia(unittest.TestCase):
         resp = {str(l["indice"]): {"decisiones": [{"id": i, "estado": "NO_APLICA", "razon": "revisada para esta entrega T1 gpt-image-2 imagen fija"}
                                                   for i in l["ids"]]} for l in per["lotes"]}
         self.assertTrue(P.importar_lotes_decision(pid, clave, resp, "externo-prueba")["completo"])
-        n, e = P.cargar(pid)
-        self.assertTrue(all(d["capa"].startswith("externo") for d in e["_ledgers_completos"][clave]["decisiones"].values()
-                            if d["capa"] != "humano"))
         r = P.cambiar_campos(pid, [{"ruta": "comunes.fondo", "valor": "plain seamless light grey (#D0D0D0) studio background"}])
         her = r["diferencias"]["revisiones_heredadas"][clave]
         self.assertEqual(her["campos_cambiados"], ["fondo"])
-        self.assertIsNone(her["confirmada"])
+        self.assertEqual(her["confirmada"]["autor"], "U-2026-09-28-CAMBIO-QUIRURGICO")
         n, e = P.cargar(pid)
         led = e["_ledgers_completos"][clave]
-        self.assertTrue(all(d["capa"].endswith("+heredada") for d in led["decisiones"].values() if d["capa"].startswith("externo")))
-        self.assertGreater(sum(1 for d in led["decisiones"].values() if d["capa"].startswith("externo")), 1300)
+        self.assertGreater(sum(1 for d in led["decisiones"].values() if d["capa"].startswith("externo")), 1000)
         lib = P.liberacion(e, "E1")
-        self.assertEqual(lib["niveles"]["cobertura"]["estado"], "HEREDADA_SIN_CONFIRMAR")
-        self.assertTrue(lib["bloqueos"][0].startswith("revisión de reglas heredada"))
-        P.nueva_version(pid, lambda est: None, "prueba", "versión sin cambio de contexto")
-        n, e = P.cargar(pid)
-        self.assertIsNone(e["_ledgers_completos"][clave]["herencia"]["confirmada"])  # no se auto-confirma
-        self.assertEqual(e["_ledgers_completos"][clave]["herencia"]["campos_cambiados"], ["fondo"])
-        with self.assertRaises(ValueError):
-            P.confirmar_herencia(pid, clave, "director", "corta")
-        P.confirmar_herencia(pid, clave, "director", "el valor hex del fondo no cambia qué reglas aplican a un retrato T1")
-        n, e = P.cargar(pid)
-        self.assertEqual(e["_ledgers_completos"][clave]["herencia"]["confirmada"]["autor"], "director")
-        self.assertFalse(any("heredada" in b for b in P.liberacion(e, "E1")["bloqueos"]))
-        # (antes de confirmar) una versión sin cambios de contexto no confirma sola la herencia pendiente: probado abajo
-        # un cambio posterior del contexto exige una confirmación nueva
-        P.cambiar_campos(pid, [{"ruta": "comunes.luz", "valor": "soft even frontal key light with gentle fill"}])
-        n, e = P.cargar(pid)
-        self.assertIsNone(e["_ledgers_completos"][clave]["herencia"]["confirmada"])
-
+        self.assertNotEqual(lib["niveles"]["cobertura"]["estado"], "HEREDADA_SIN_CONFIRMAR")
+        self.assertFalse(any("heredada" in b for b in lib["bloqueos"]))
 
 class TestConflictosSobreRevision(unittest.TestCase):
     def test_revision_externa_no_salta_el_catalogo_de_conflictos(self):
+        # sin tratamiento decidido CF-LUZ-T1 queda abierto: la revisión externa no puede saltárselo
         pid = P.nuevo({"texto": util.BRIEF_QUINTETO + " Serie interna de prueba de conflictos."}, "cf-sobre-revision")
-        P.aceptar_propuestas(pid)
-        P.aceptar_propuestas(pid)
+        P.cambiar_campos(pid, [{"ruta": "comunes.tratamiento", "valor": None}])  # tratamiento sin decidir
         lotes = P.exportar_lotes_decision(pid)
         clave, per = next(iter(lotes["perfiles"].items()))
-        motor = {"7ba769efe2d7", "c0bc3ce2b122", "ed3f4a2ab62f", "f75cfcf75330", "4a2eeac6c89d"}
+        luz = {"d5b415caa2cd", "98e61771053d"}
         resp = {str(l["indice"]): {"decisiones": [
-            {"id": i, "estado": "APLICA" if i in motor else "NO_APLICA",
+            {"id": i, "estado": "APLICA" if i in luz else "NO_APLICA",
              "razon": "revisada para esta entrega T1 gpt-image-2 imagen fija"} for i in l["ids"]]} for l in per["lotes"]}
         self.assertTrue(P.importar_lotes_decision(pid, clave, resp, "externo-prueba")["completo"])
         n, e = P.cargar(pid)
         led = e["_ledgers_completos"][clave]
-        for rid in motor:  # el revisor dijo APLICA, pero CF-MOTOR-SW30 está abierto: queda en CONFLICTO
+        for rid in luz:  # el revisor dijo APLICA, pero CF-LUZ-T1 está abierto: queda en CONFLICTO
             self.assertEqual(led["decisiones"][rid]["estado"], "CONFLICTO", rid)
         self.assertTrue(any("CONFLICTO" in b for b in led["gate"]["bloqueos"]))
-        P.resolver_conflicto(pid, "CF-MOTOR-SW30", "b", "el director elige los 5 slots de GPT Image para castings", autor="director")
+        P.resolver_conflicto(pid, "CF-LUZ-T1", "b", "el director elige luz pareja de character ref para este casting", autor="director")
         n, e = P.cargar(pid)
-        for rid in motor:
-            self.assertEqual(e["_ledgers_completos"][clave]["decisiones"][rid]["estado"], "NO_APLICA", rid)
+        clave2 = e["entregas"]["E1"]["perfil"]
+        for rid in luz:
+            self.assertEqual(e["_ledgers_completos"][clave2]["decisiones"][rid]["estado"], "NO_APLICA", rid)
+
+    def test_decisiones_permanentes_del_director_para_todo_brief(self):
+        # DECISIONES #10 y #11 se aplican solas en cualquier proyecto nuevo, sin volver a preguntar
+        for texto in (util.BRIEF_QUINTETO, "Retrato de cuerpo entero de una bailarina de flamenco, fondo negro, para GPT Image 2."):
+            pid = P.nuevo({"texto": texto}, "politica")
+            n, e = P.cargar(pid)
+            cf = {c["id"]: c for led in e["ledgers"].values() for c in led["conflictos"]}
+            for cid in ("CF-MOTOR-SW30", "CF-REROLL-SW30"):
+                if cid in cf:
+                    self.assertTrue(cf[cid]["resuelto"] and cf[cid]["gana"] == "b", (texto, cf[cid]))
+            led = next(iter(e["_ledgers_completos"].values()))
+            for rid in ("7ba769efe2d7", "1e898f2c0308", "7eac9caa0ac8", "87d7e03eed3d"):
+                self.assertNotIn(led["decisiones"][rid]["estado"], ("APLICA", "CONFLICTO"), (texto, rid))
 
 
 class TestMigracionClave(unittest.TestCase):

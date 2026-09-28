@@ -30,16 +30,18 @@ revisión humana o exportar los lotes a un revisor externo e importarlos con la 
 ## 2. Ejecutar un brief
 
 1. **Nuevo brief** → texto (y referencias con su rol, modelo y formato si los sabe) → *Analizar brief*.
-2. **Plan**: recorrido (imagen / referencia / edición / clip / ancla / spot + track), etapas que aplican y
-   que no (con razón), subprocesos, gates. *Aceptar propuestas* para cerrar ambigüedades (cada propuesta
-   dice si viene de una fuente citada o es creativa de la app).
+2. **Plan**: la tarjeta *Brief en plantilla* muestra el brief ordenado en bloques; cada bloque coincide con una
+   faceta de la base de reglas (caso, medio, D1–D9) y con un slot del prompt. Cámara, luz, ángulo, lugar,
+   lente y encuadre **no se preguntan**: los infiere el modelo (con clave) o las reglas deterministas citadas
+   (sin clave); lo que usted escribió siempre gana. *Falta y no se puede inferir* lista sólo lo imposible de
+   deducir. Debajo: recorrido, etapas que aplican y que no (con razón), subprocesos y gates. *Aceptar
+   propuestas* cierra ambigüedades (cada propuesta dice si viene de una fuente citada o es creativa).
 3. **Prompts**: texto final, parámetros fuera del texto, bloques con las reglas que satisfacen; cuatro
    estados separados — cobertura de IDs, semántica, redacción, resultado visual.
 4. **Auditoría**: *Auditar todas* ejecuta los gates originales sin modificar (gate_image, gate_dramaturgy,
    aurora, AST gate v3.4, render v3.4). Revisión con modelo, revisión externa o firma humana. Un NO_CUMPLE del
    revisor sólo se cierra corrigiendo el bloque fuente o con *Disputar con autoridad* (archivo:línea citado).
-   *Resolver en Reglas* lleva de un bloqueo a las reglas que lo causan. Si editar el brief cambia el contexto de
-   una revisión de reglas ya hecha, la revisión se **hereda** visiblemente y bloquea hasta re-revisar o confirmar.
+   *Resolver en Reglas* lleva de un bloqueo a las reglas que lo causan.
 5. **Reglas**: las 1,398 con estado, razón y capa; filtros por caso, tarea, faceta, fuente y motivo;
    ficha con texto original y trazabilidad; decisión humana en bloque.
 6. *Aprobar redacción* → *Copiar prompt final* (verifica sha256 en el navegador) → **Exportar**.
@@ -48,10 +50,24 @@ Cambios: **Especificación** (editar campos crea una versión y recompila sólo 
 (antes/después), **Feedback** (primer contrato afectado), **Evaluación visual** (defectos del render,
 separados de la cobertura de reglas).
 
+Un cambio es **quirúrgico** (`apd/politicas.py` U-2026-09-28-CAMBIO-QUIRURGICO). Hay tres niveles y lo decidido
+en un nivel anterior queda fijo:
+
+| Nivel | Qué cambia | Qué se vuelve a revisar |
+|---|---|---|
+| 0 · medio | imagen ↔ video | sólo las reglas del medio nuevo; las del otro medio nunca entran en la revisión |
+| 1 · perfil de reglas | caso o tipo de pieza (retrato → editorial, una persona → grupo) | todas las reglas de ese medio |
+| 2 · bloque | un campo (edad, fondo, luz…) | nada de la clasificación de reglas: se hereda y se confirma sola. Un cambio **dramático** (sexo, origen, franja de edad, o un bloque reescrito) re-revisa sólo las reglas de los bloques cambiados e invalida la aprobación de redacción; uno menor conserva revisión y aprobación |
+
+La auditoría determinista (gates originales) siempre se vuelve a ejecutar.
+
+Políticas permanentes del director para todo brief: compilación en los 5 slots de GPT Image (CF-MOTOR-SW30 → b)
+y SW30 con máximo 2 intentos por método (CF-REROLL-SW30 → b).
+
 ## 3. Pruebas
 
 ```bash
-cd apd/tests && python3 -m unittest -v      # 68 pruebas: registro, gates, lotes, flujos, e2e, HTTP, adaptadores
+cd apd/tests && python3 -m unittest -v      # 77 pruebas: registro, gates, lotes, flujos, plantilla, cambio quirúrgico, e2e, HTTP, adaptadores
 python3 apd/tools/check_citas.py apd/data/sintaxis_fuente.json   # 831 citas de sintaxis verificadas
 # prueba de interfaz: Chromium hace clic en la app real (necesita Node + Playwright)
 NODE_PATH=$(npm root -g) node apd/tools/ui_aceptacion.cjs        # 29 comprobaciones → apd/evidencia/ui/
@@ -66,7 +82,7 @@ NODE_PATH=$(npm root -g) node apd/tools/ui_aceptacion.cjs        # 29 comprobaci
 | `apd/apd/` | motor: `registro`, `spec`, `plan`, `ledger`, `conflictos`, `sintaxis`, `compilador`, `auditoria`, `revision`, `llm`, `proyecto`, `store` |
 | `apd/web/` | interfaz |
 | `apd/tests/` | pruebas |
-| `apd/demo/` | proyecto de demostración (quinteto, 13 versiones): base SQLite, exportación, prompts y auditorías — `APD_DB=apd/demo/demo.sqlite python3 apd/server.py` |
+| `apd/demo/` | proyecto de demostración (quinteto, 18 versiones): base SQLite, exportación, prompts y auditorías — `APD_DB=apd/demo/demo.sqlite python3 apd/server.py` |
 | `apd/evidencia/` | informes de ejecución (tests originales, pruebas de la app) |
 | `apd/CHECKLIST_CUMPLIMIENTO.md` | checklist con evidencia |
 

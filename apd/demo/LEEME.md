@@ -15,7 +15,7 @@ Trabaje sobre una copia si no quiere añadir versiones al demo: `cp apd/demo/dem
 
 | Archivo | Qué es |
 |---|---|
-| `demo.sqlite` | el proyecto con sus 13 versiones inmutables, ledgers, auditorías, revisiones y eventos |
+| `demo.sqlite` | el proyecto con sus 18 versiones inmutables, ledgers, auditorías, revisiones y eventos |
 | `prompts/E1..E5.txt` | texto final de cada retrato (el sha256 está en `estado_demo.json`) |
 | `auditorias/E1..E5.json` | controles deterministas + gates originales ejecutados sin modificar |
 | `export_borrador.zip` | exportación completa marcada **BORRADOR (no liberado)**, con MANIFIESTO de hashes |
@@ -36,21 +36,29 @@ Trabaje sobre una copia si no quiere añadir versiones al demo: `cp apd/demo/dem
 | 11 | claude-code | migra esas decisiones; lista también conflictos resueltos; **ronda 3** sobre estos textos |
 | 12 | claude-code | ronda 3: 0/0/2/4/1 NO_CUMPLE. E4 «calm» (emoción nombrada) → señales físicas. E3 tope de 130 palabras disputado con DECISIONES #2 |
 | 13 | claude-code | la redacción de v12 compartía palabras con E1 (lo detectó la regresión A7): E4 pasa a «jaw set, shoulders squared, head held level»; **ronda 4** sólo de E4 |
+| 14 | director (Eric) | D1: CF-MOTOR-SW30 → b (5 slots de GPT Image), política permanente para todo brief |
+| 15 | director (Eric) | D2: SW30, máximo 2 intentos por método (CF-REROLL-SW30 → b), política permanente para todo brief |
+| 16 | claude-code | 17 decisiones de regla cerradas por hecho verificable o autoridad documentada (16 CONDICIONAL + `7077767cb105`); el director puede revertirlas |
+| 17 | claude-code | ronda 4 → `c1d814f8c059`: forma del rostro explícita en E4 («square face with a strong jaw»); **ronda 5** sólo de E4: 0 NO_CUMPLE |
+| 18 | claude-code | U-2026-09-28-CAMBIO-QUIRURGICO: los niveles anteriores quedan fijos; la revisión de reglas heredada se conserva sin re-revisar |
 
 Los defectos de v7 y v10 no se borraron: quedan en el historial y están corregidos en el código con pruebas
 (`test_cambio_de_contexto_hereda_revision_y_bloquea_hasta_confirmar`, `test_decisiones_del_director_sobreviven_a_un_cambio_de_clave`).
 
 ## Por qué no es liberable
 
-La app bloquea hasta que el director:
+Las cinco entregas tienen cobertura COMPROBADA, revisión semántica REVISADA_EXTERNO y 0 NO_CUMPLE abiertos (los
+disputados citan autoridad: E3 2, E5 1). Lo único que falta es lo que el procedimiento reserva a una persona:
 
-1. decida **CF-MOTOR-SW30** (SW30 `template_engine` vs 5 slots de GPT Image);
-2. decida si `54a39fd24578` (stock documental del template T1) aplica a un casting comercial (NO_CUMPLE abierto en E3, E5 y posiblemente E4);
-3. resuelva las reglas CONDICIONAL/CONFLICTO restantes (Reglas → bloqueo «abiertas»);
-4. confirme la revisión de reglas heredada (Auditoría → «Confirmar herencia») o la vuelva a revisar;
-5. apruebe la redacción de cada texto (hash exacto).
+- **aprobar la redacción** de cada texto (Auditoría → «Aprobar redacción», contra el hash exacto).
 
-Además, E4 tiene abierto `c1d814f8c059` (forma del rostro, ronda 4): la corrección ya está en los datos de la
-app para proyectos nuevos; en este demo se dejó abierto a propósito para que se vea cómo bloquea un NO_CUMPLE.
+| Entrega | sha256 (12) | Palabras |
+|---|---|---:|
+| E1 | `3f719e39dace` | 154 |
+| E2 | `ca57dbc6e504` | 159 |
+| E3 | `8056f188c066` | 163 |
+| E4 | `9bbd5ec413bc` | 159 |
+| E5 | `744e1e78bed5` | 149 |
 
-Eso es el comportamiento correcto, no una falla: son decisiones de dirección que la app no toma por su cuenta.
+El resumen semántico guardado de E3 repite la etiqueta «disputados con autoridad»: es un defecto de texto
+anterior a la corrección de `disputar_semantica` (`proyecto.py:924`); las versiones son inmutables.

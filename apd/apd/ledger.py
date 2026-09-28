@@ -155,6 +155,13 @@ def _dec(estado, razon, capa="determinista", evidencia=None, campos=None, destin
             "campos": campos or [], "destino": destino or [], "inferencia": inferencia}
 
 
+def fuera_de_medio(r: dict, cl: "Clasif", p: dict) -> bool:
+    """Nivel 0 del flujo: una regla del otro medio queda fuera para siempre en esta entrega (no se re-revisa)."""
+    if r["medio"] == "VIDEO" and p["medio"] == "IMAGEN":
+        return True
+    return r["medio"] == "IMAGEN" and p["medio"] == "VIDEO" and not (set(cl.tareas(r["id"])) & p["tareas"])
+
+
 def decidir_regla(r: dict, cl: Clasif, p: dict) -> dict:
     rid = r["id"]
     et = etiqueta(p)

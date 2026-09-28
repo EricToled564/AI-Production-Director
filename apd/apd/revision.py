@@ -55,10 +55,11 @@ def estimar(reg, n_lotes: int, chars_por_regla=420) -> dict:
             "tokens_salida_estimados": int(total * 45)}
 
 
-def construir_lotes(reg, spec, perfil, entrega, dec, lote_n=LOTE) -> list[tuple[list[str], str]]:
-    """Todos los ids, primero lo abierto. Devuelve [(ids, mensaje_usuario)]."""
+def construir_lotes(reg, spec, perfil, entrega, dec, lote_n=LOTE, excluir=frozenset()) -> list[tuple[list[str], str]]:
+    """Todos los ids del medio de la entrega, primero lo abierto. `excluir`: reglas del otro medio (nivel 0 fijo,
+    U-2026-09-28-CAMBIO-QUIRURGICO), que conservan su NO_APLICA determinista y no se re-revisan."""
     prio = {"CONFLICTO": 0, "CONDICIONAL": 1, "APLICA": 2, "NO_APLICA": 3, "PENDIENTE": 0}
-    ids = sorted(reg.reglas, key=lambda k: (prio[dec[k]["estado"]], k))
+    ids = sorted((k for k in reg.reglas if k not in excluir), key=lambda k: (prio[dec[k]["estado"]], k))
     contexto = _resumen_perfil(spec, perfil, entrega)
     out = []
     for grupo in partir(ids, lote_n):
@@ -92,13 +93,13 @@ def aplicar_respuestas(reg, spec, perfil, dec, lotes: list[tuple[list[str], str]
 
 
 def revisar_ledger(reg, spec, perfil, entrega, dec: dict[str, dict], clave: str, pid=None, progreso=None,
-                   lote_n: int = LOTE, reintentos: int = REINTENTOS) -> dict:
+                   lote_n: int = LOTE, reintentos: int = REINTENTOS, excluir=frozenset()) -> dict:
     """Revisa TODOS los ids. Reanuda: los lotes ya validados no se repiten."""
     p = llm.proveedor()
     if not p.disponible():
         raise llm.SinModelo(llm.estado()["motivo"])
     # orden de trabajo: primero lo que la capa determinista dejó abierto o con evidencia débil
-    construidos = construir_lotes(reg, spec, perfil, entrega, dec, lote_n)
+    construidos = construir_lotes(reg, spec, perfil, entrega, dec, lote_n, excluir)
     grupos = [g for g, _ in construidos]
     mensajes = [m for _, m in construidos]
     previos = {l["indice"]: l for l in ST.lotes(clave, "decision")}
