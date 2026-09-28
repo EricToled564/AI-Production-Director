@@ -1,0 +1,1569 @@
+{
+ "instrucciones": "Eliminas duplicados SIN reescribir nada. Cada grupo trae registros originales (texto literal completo,\ndocumento, encabezado y contexto). Decide qué originales se CONSERVAN tal cual y cuáles se ELIMINAN:\n- Un original se elimina solo si TODO su contenido (cada exigencia, prohibición, valor, número, cita literal,\n  excepción, ejemplo y alcance, incluido el que da su encabezado) ya está en UN conservado, que indicas en\n  \"contenido_en\".\n- Si dos registros dicen lo mismo pero cada uno tiene algo propio, se conservan los dos. En la duda, se conserva.\n- El grupo puede mezclar reglas distintas: esas se conservan todas.\nDevuelve JSON {\"grupos\": [{\"grupo\": \"...\", \"conservar\": [ids], \"eliminar\": [{\"id\": \"...\", \"contenido_en\": \"id\",\n\"razon\": \"...\"}]}]}; cada id del grupo aparece exactamente una vez y \"contenido_en\" es un id conservado del grupo.",
+ "grupos": [
+  {
+   "grupo": "G0187",
+   "miembros": [
+    {
+     "id": "13048b575736",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/templates/v3.2/underwater-human-reference-policy.md",
+       "lineas": "7-7",
+       "encabezado": "Underwater Human Reference Policy v3.2 › Preserve first"
+      }
+     ],
+     "texto": "- If the user gave a recognized domain pose/technique, preserve the domain label; do not expand it into speculative anatomy by default."
+    },
+    {
+     "id": "7c713fee9718",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+       "lineas": "85-122",
+       "encabezado": "production-learnings.v3.2.json › lrn32_domain_pose_literal"
+      }
+     ],
+     "texto": "      \"rule\": {\n        \"id\": \"lrn32_domain_pose_literal\",\n        \"skill\": \"learned-production\",\n        \"source_path\": \"learned/production-learnings.v3.2.json\",\n        \"line\": 3,\n        \"text\": \"Preserve a sufficiently specific domain-native pose/technique label instead of expanding it into speculative anatomy. Expand only when the target adapter requires it or evidence shows the literal domain label fails.\"\n      \"metadata\": {\n        \"rule_id\": \"lrn32_domain_pose_literal\",\n        \"classification_status\": \"CLASSIFIED\",\n        \"authority\": \"LEARNED_PRODUCTION\",\n        \"effect\": \"REQUIRE\",\n        \"priority\": 930,\n        \"when\": {\n          \"all\": [\n              \"path\": \"media\",\n              \"op\": \"eq\",\n              \"value\": \"image\"\n              \"path\": \"subject.human\",\n              \"op\": \"eq\",\n              \"value\": true\n        \"validator\": {\n          \"id\": \"v32:domain-pose-preservation\",\n          \"kind\": \"semantic\"\n        \"supersedes\": [],\n        \"conflict_key\": null,\n        \"classification_provenance\": {\n          \"method\": \"production_trial\",\n          \"reviewer\": \"APD-v3.2-learning-patch\",\n          \"reviewed_at\": \"2026-09-11\",\n          \"notes\": \"The user-specified Olympic 10 m platform entry label was clearer than assistant-added anatomical decompositions.\""
+    },
+    {
+     "id": "920abd0d595f",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+       "lineas": "7-7",
+       "encabezado": "AI Production Director — Learning Registry v3.2"
+      }
+     ],
+     "texto": "3. **Preserve domain-native pose terminology.** A precise phrase such as a standard Olympic 10 m platform diving entry position should not be expanded into speculative anatomical prose unless required or proven necessary."
+    }
+   ]
+  },
+  {
+   "grupo": "G0188",
+   "miembros": [
+    {
+     "id": "133b1b99e789",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "lineas": "2-178",
+       "encabezado": "critique.schema.json › (raíz)"
+      }
+     ],
+     "texto": "  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"$id\": \"https://whystrohm.com/schemas/shotkit/critique.schema.json\",\n  \"title\": \"Critique\",\n  \"description\": \"Machine-readable verdict for one generated frame reviewed against its shot spec and brand-lock. The structured sibling of the markdown critique. Version 1.1 adds run provenance: the frame, prompt, and brand-lock are identified by content hash as well as by path, so a verdict can be proven to describe the bytes that were actually reviewed. Every provenance field is required at 1.1 and explicitly nullable, so an absent input is a recorded decision rather than an omission.\",\n  \"type\": \"object\",\n  \"required\": [\"version\", \"verdict\", \"confidence\", \"issues\"],\n  \"additionalProperties\": false,\n  \"properties\": {\n  \"allOf\": [\n      \"if\": {\n        \"required\": [\"version\"]\n      \"then\": {\n        \"required\": [\n          \"version\",\n          \"run_id\",\n          \"round\",\n          \"created_at\",\n          \"shot_id\",\n          \"brand_lock_ref\",\n          \"brand_lock_sha256\",\n          \"image_ref\",\n          \"image_sha256\",\n          \"prompt_ref\",\n          \"prompt_sha256\",\n          \"generator\",\n          \"model_version\",\n          \"seed\",\n          \"verdict\",\n          \"confidence\",\n          \"issues\""
+    },
+    {
+     "id": "ba8501e9f824",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "165-168",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "Every one of those fields is required, and every one is nullable. That combination is\ndeliberate: `null` records that an input genuinely was not available, while a missing field\nrecords nothing at all. If you did not have the prompt, write `prompt_ref: null` and drop\nyour confidence to MEDIUM. Do not omit the key."
+    },
+    {
+     "id": "d716ddfacd6f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "145-146",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "**Provenance, all of it required at 1.1.** A verdict is a claim about specific bytes. Name\nthem, and hash them:"
+    }
+   ]
+  },
+  {
+   "grupo": "G0189",
+   "miembros": [
+    {
+     "id": "13b22b1128aa",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "31-31",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Length"
+      }
+     ],
+     "texto": "Hailuo handles **60–120 words** efficiently. Shorter than Kling/Veo. Keep drafts lean, you are testing motion and framing, not final polish."
+    },
+    {
+     "id": "8c3011bee2b2",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "50-52",
+       "encabezado": "Adapter: Ideogram (v3) › Length"
+      }
+     ],
+     "texto": "Ideogram handles **60–120 words** comfortably. Text-bearing prompts run shorter still:\nthe more scene description you stack around a text instruction, the more likely the\nrender drops or garbles the copy."
+    },
+    {
+     "id": "fee3daa3c731",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "42-42",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Length"
+      }
+     ],
+     "texto": "Nano Banana handles **60–120 words** efficiently. Shorter than GPT Image, longer than Midjourney."
+    }
+   ]
+  },
+  {
+   "grupo": "G0190",
+   "miembros": [
+    {
+     "id": "143c452316bd",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "lineas": "281-290",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format E. Director treatment"
+      }
+     ],
+     "texto": "For concept stage before any prompt is written.\n\n- Core idea (one sentence)\n- Emotional arc (three states)\n- Visual motif (one recurring element)\n- Rhythm (pace logic)\n- Camera language (dominant grammar)\n- Lighting (dominant source)\n- Sound (texture)\n- Ending image (final frame)"
+    },
+    {
+     "id": "63f973dd0573",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "lineas": "88-88",
+       "encabezado": "Output"
+      }
+     ],
+     "texto": "- **E. Director treatment.** Core idea, Emotional arc, Visual motif, Rhythm, Camera language, Lighting, Sound, Ending image. (Treatment ≠ prompt.)"
+    },
+    {
+     "id": "b1524f9ea304",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/role-modes.md",
+       "lineas": "34-43",
+       "encabezado": "Role modes › 1. Director mode › Output format. Director treatment"
+      }
+     ],
+     "texto": "```text\nCore idea. [one sentence, the point of the piece]\nEmotional arc. [start -> middle -> end, three emotion states]\nVisual motif. [one recurring visual element]\nRhythm. [pace logic. slow build, rapid montage, still + sudden burst]\nCamera language. [dominant grammar. handheld intimacy, locked precision, gliding observer]\nLighting. [dominant source and direction]\nSound. [texture. ambient layers, music role, silence moments]\nEnding image. [final frame in one sentence]\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0191",
+   "miembros": [
+    {
+     "id": "1620beec328a",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "37-37",
+       "encabezado": "Shot Grammar › Motion (camera movement)"
+      }
+     ],
+     "texto": "| `pull` | Camera moves away | Releasing, contextualizing |",
+     "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+    },
+    {
+     "id": "8595c2c526d2",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "233-233",
+       "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+      }
+     ],
+     "texto": "- Dolly Out. Reveals context, pulling away."
+    },
+    {
+     "id": "98966448877c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-media/SKILL.md",
+       "lineas": "136-136",
+       "encabezado": "Creación Visual — Visual Media › Producción de video › Movimientos de cámara"
+      }
+     ],
+     "texto": "| **Pull out** | Revela el conjunto | Cierre, transición |",
+     "contexto": "| Movimiento | Efecto | Cuándo usarlo |\n|------------|--------|---------------|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0192",
+   "miembros": [
+    {
+     "id": "16d3db740bfb",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/characters.md",
+       "lineas": "45-54",
+       "encabezado": "Character Consistency › Brand Asset Generation"
+      }
+     ],
+     "texto": "```\nUsing this [PRODUCT] as reference:\nCreate [NUMBER] [TYPE] shots.\n\nMaintain: Brand consistency, quality level\nVary: Angles, lighting, context\nStyle: [editorial / lifestyle / product]\n\nGenerate one at a time.\n```"
+    },
+    {
+     "id": "21b3996ab3c2",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/storyboards.md",
+       "lineas": "22-34",
+       "encabezado": "Storyboards & Sequential Art › Commercial Storyboard"
+      }
+     ],
+     "texto": "```\nCreate [NUMBER]-part story for [PRODUCT] commercial.\n\nCharacters: [man and woman / family / solo]\nProduct: [DESCRIPTION]\nStory: [EMOTIONAL ARC]\nEnding: Elegant shot with [LOGO/PRODUCT]\n\nIdentity and attire consistent throughout.\nVary angles and distances.\nGenerate one at a time.\nFormat: 16:9 landscape.\n```"
+    },
+    {
+     "id": "a46c0565751f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/structural.md",
+       "lineas": "62-80",
+       "encabezado": "Structural Control › Brand Identity Systems"
+      }
+     ],
+     "texto": "```\n[Input: logo sketch or design]\nCreate identity system using this logo.\n\nGenerate one at a time:\n1. Logo refinement\n2. Business card mockup\n3. Letterhead\n4. Billboard application\n5. Product packaging\n6. Digital banner\n7. Social media avatar\n8. App icon\n9. Signage\n10. Merchandise\n\nFormat: 16:9 each\nMaintain: brand consistency across all\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0193",
+   "miembros": [
+    {
+     "id": "19327bf74bf4",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "360-360",
+       "encabezado": "aurora prompt_linter.py › NEGATION_BEFORE"
+      }
+     ],
+     "texto": "NEGATION_BEFORE = re.compile(r\"\\b(no|not|never|avoid|without|non)[\\s\\-]+(?:\\w+[\\s\\-]+){0,2}$\")"
+    },
+    {
+     "id": "6ee4d3f40914",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "233-236",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "4. **Mención negada no dispara BANNED ni bans de estilo** (P11: \"no cartoon\", \"not anime\").\n   Alternativa descartada: flaggear igual y obligar a moverlo al negativo. Se descartó porque\n   el propio snapshot `gpt_image_2__1` del original exige \"no cartoon, no anime\" en MAIN como\n   patrón de `anti_style`; el linter se contradecía a sí mismo."
+    },
+    {
+     "id": "a19e82e56208",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "84-87",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P11 Mención negada no cuenta como violación de BANNED/estilo (\"no cartoon\", \"not\n    anime\"): image/gpt-image.md ejemplo anti_style \"no cartoon, no anime\" vive en\n    MAIN de forma legítima. Sigue siendo mala práctica en NB/GPT (golden-rules §2)\n    pero eso lo cubre gate_image.py, no este linter."
+    }
+   ]
+  },
+  {
+   "grupo": "G0194",
+   "miembros": [
+    {
+     "id": "194b81e9fbff",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "196-196",
+       "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow"
+      }
+     ],
+     "texto": "2. Skip any with `verdict: ACCEPT`. Those are done."
+    },
+    {
+     "id": "4af443f5e0ec",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "186-186",
+       "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop)"
+      }
+     ],
+     "texto": "This is what `visual-asset-critic`'s structured output is for. When the user hands you `shots.json` plus one or more `critique.json` files (the machine-readable verdict the critic writes), don't re-forge the whole storyboard, re-emit prompts for **only the shots that failed**, with the fix already applied."
+    },
+    {
+     "id": "9ca4ae7a62a4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "271-274",
+       "encabezado": "Visual Asset Critic › Handoff"
+      }
+     ],
+     "texto": "After delivering the critique, if the verdict is REVISE, offer:\n\n> \"Want me to draft the revised prompt? Point `visual-prompt-forge` at this output tree in\n> revision mode and it will re-emit prompts for just the shots that need them.\""
+    }
+   ]
+  },
+  {
+   "grupo": "G0195",
+   "miembros": [
+    {
+     "id": "1a26ee644a25",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "lineas": "149-149",
+       "encabezado": "Race, speed and faceless kinetic montage › 6. Camera grammar for speed"
+      }
+     ],
+     "texto": "| **Dutch angle** | imbalance, loss of grip | Cant the horizon hard at the one loss-of-traction beat only (tyre breaking away, car stepping sideways) — reserve it so it stays loud | Impact |",
+     "contexto": "| Technique | What it does to emotion | Keyframe application (the still) | Tag |\n|---|---|---|---|"
+    },
+    {
+     "id": "a8f96b169a7b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "55-55",
+       "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Reservar el dutch para el único beat de pérdida de canto o caída. [FUENTE: video/references/race-and-speed.md §6]"
+    },
+    {
+     "id": "c60aebb7677e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "54-54",
+       "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Dutch solo en el único beat de pérdida de tracción. [FUENTE: video/references/race-and-speed.md §6]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0196",
+   "miembros": [
+    {
+     "id": "1a6e8fa7b007",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "146-146",
+       "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+      }
+     ],
+     "texto": "Every clip needs a clear final frame. The model uses the ending as emotional destination."
+    },
+    {
+     "id": "1e3bd475dec4",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "150-150",
+       "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+      }
+     ],
+     "texto": "The final image is also one of the five anchors (see `dramaturgy.md` §13). Naming it is non-negotiable."
+    },
+    {
+     "id": "ac74ab73d44f",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "144-144",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 6. The 30-second structure: stages and end states"
+      }
+     ],
+     "texto": "Divide the clip into consecutive stages. **One primary state change per stage, and always state the visible end state** — the end state is what the model steers toward (this is the U11 final-image rule, per stage)."
+    }
+   ]
+  },
+  {
+   "grupo": "G0197",
+   "miembros": [
+    {
+     "id": "1dbb78359895",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "179-179",
+       "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+      }
+     ],
+     "texto": "- 1.6. Keep it simple, minimal."
+    },
+    {
+     "id": "2c647672c6b2",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "30-30",
+       "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+      }
+     ],
+     "texto": "- **Kling 1.6.** Simplified prompts. Keep it very simple."
+    },
+    {
+     "id": "7267cd033cd3",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "185-185",
+       "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+      }
+     ],
+     "texto": "Long prompts on 1.x – 2.x = melted outputs. Compress ruthlessly. On 3.0, structure beats length."
+    }
+   ]
+  },
+  {
+   "grupo": "G0198",
+   "miembros": [
+    {
+     "id": "1e41029466af",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "67-67",
+       "encabezado": "Grupo ensamble › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- El crítico corre la capa de identidad una vez por miembro, cada rostro contra su maestro; un rostro sin maestro es REJECT, no REVISE. [FUENTE: visual-asset-critic/references/critique-rubric.md Layer 2]"
+    },
+    {
+     "id": "7beca6eec170",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "213-213",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+      }
+     ],
+     "texto": "EN.6\nCrítico por miembro: capa Series Lock se corre N veces, cada rostro contra su maestro; manos e instrumentos con lateralidad correcta; ningún rostro sin dueño\ncritique-rubric Layer 2 y 5 · forge Rule 6 handedness\nUn rostro que no corresponde a ningún maestro es REJECT, no REVISE",
+     "contexto": "Paso | Qué se hace | Regla que lo sostiene | Límite duro"
+    },
+    {
+     "id": "b069e0f91e29",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "82-82",
+       "encabezado": "Grupo ensamble › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Cada rostro legible corresponde a un maestro canonizado; N rostros, N coincidencias. [FUENTE: visual-asset-critic/references/critique-rubric.md Layer 2]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0199",
+   "miembros": [
+    {
+     "id": "1e53d515f21d",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "lineas": "169-169",
+       "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Sequential Numbering"
+      }
+     ],
+     "texto": "**No Scene 0:** Start at 1, not 0 (industry standard)"
+    },
+    {
+     "id": "aac6d3c1a649",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "196-196",
+       "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+      }
+     ],
+     "texto": "- `number`: Scene sequence number (1, 2, 3...)"
+    },
+    {
+     "id": "c084904b2c93",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "lineas": "162-167",
+       "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Sequential Numbering"
+      }
+     ],
+     "texto": "Number scenes sequentially from 1 to N:\n```xml\n<scene number=\"1\" ...>\n<scene number=\"2\" ...>\n<scene number=\"3\" ...>\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0200",
+   "miembros": [
+    {
+     "id": "1f362b6d8755",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+       "lineas": "16-16",
+       "encabezado": "AI Production Director — Learning Registry v3.2"
+      }
+     ],
+     "texto": "12. **Empirical model routing.** For complex split-level underwater human anatomy, especially Olympic/platform diving, Nano Banana Pro is the preferred default candidate based on this trial. An explicit user model lock wins; future benchmark evidence may supersede the preference."
+    },
+    {
+     "id": "7c530c1d74ba",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/model-routing.v3.2.json",
+       "lineas": "5-20",
+       "encabezado": "model-routing.v3.2.json › route_underwater_platform_diving_nano_pro"
+      }
+     ],
+     "texto": "      \"id\":\"route_underwater_platform_diving_nano_pro\",\n      \"priority\":900,\n      \"when\":{\n        \"all\":[\n          {\"path\":\"media\",\"op\":\"eq\",\"value\":\"image\"},\n          {\"path\":\"task.tags\",\"op\":\"contains\",\"value\":\"AQUATIC\"},\n          {\"path\":\"task.tags\",\"op\":\"contains\",\"value\":\"OLYMPIC_DIVING\"},\n          {\"path\":\"subject.human\",\"op\":\"eq\",\"value\":true},\n          {\"path\":\"composition.split_level\",\"op\":\"eq\",\"value\":true},\n          {\"path\":\"risk_flags\",\"op\":\"contains\",\"value\":\"HUMAN_ANATOMY\"}\n      \"preferred\":{\"family\":\"nano_banana\",\"model\":\"nano-banana-pro\"},\n      \"confidence\":\"EMPIRICAL_MEDIUM_HIGH\",\n      \"override_policy\":\"explicit_user_model_lock_wins\",\n      \"evidence\":\"Diver trial 2026-09-11: Nano Banana Pro produced accepted pose/anatomy and complex water result; GPT Image 2 repeatedly failed pose/head/feet in comparable prompts.\""
+    },
+    {
+     "id": "876aecbf087e",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+       "lineas": "453-510",
+       "encabezado": "production-learnings.v3.2.json › lrn32_nano_underwater_diving_route"
+      }
+     ],
+     "texto": "      \"rule\": {\n        \"id\": \"lrn32_nano_underwater_diving_route\",\n        \"skill\": \"learned-production\",\n        \"source_path\": \"learned/production-learnings.v3.2.json\",\n        \"line\": 12,\n        \"text\": \"For complex split-level underwater images with a human in Olympic/platform diving or similarly extreme aquatic anatomy, prefer Nano Banana Pro as the default model candidate unless the user explicitly locks another model or current benchmark evidence supersedes this heuristic.\"\n      \"metadata\": {\n        \"rule_id\": \"lrn32_nano_underwater_diving_route\",\n        \"classification_status\": \"CLASSIFIED\",\n        \"authority\": \"LEARNED_PRODUCTION\",\n        \"effect\": \"RECOMMEND\",\n        \"priority\": 850,\n        \"when\": {\n          \"all\": [\n              \"path\": \"media\",\n              \"op\": \"eq\",\n              \"value\": \"image\"\n              \"path\": \"task.tags\",\n              \"op\": \"contains\",\n              \"value\": \"AQUATIC\"\n              \"path\": \"task.tags\",\n              \"op\": \"contains\",\n              \"value\": \"OLYMPIC_DIVING\"\n              \"path\": \"subject.human\",\n              \"op\": \"eq\",\n              \"value\": true\n              \"path\": \"composition.split_level\",\n              \"op\": \"eq\",\n              \"value\": true\n              \"path\": \"risk_flags\",\n              \"op\": \"contains\",\n              \"value\": \"HUMAN_ANATOMY\"\n        \"validator\": {\n          \"id\": \"v32:model-routing-evidence\",\n          \"kind\": \"routing\"\n        \"supersedes\": [],\n        \"conflict_key\": null,\n        \"classification_provenance\": {\n          \"method\": \"production_trial\",\n          \"reviewer\": \"APD-v3.2-learning-patch\",\n          \"reviewed_at\": \"2026-09-11\",\n          \"notes\": \"In this controlled trial Nano Banana Pro achieved acceptable Olympic entry anatomy and water physics where GPT Image 2 repeatedly distorted the pose/head/feet. Empirical preference, not universal capability claim.\""
+    }
+   ]
+  },
+  {
+   "grupo": "G0201",
+   "miembros": [
+    {
+     "id": "1fa1a4735824",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "lineas": "55-55",
+       "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+      }
+     ],
+     "texto": "Presenta los conceptos en una matriz 1–5, sin promediar a ciegas — el usuario pondera:"
+    },
+    {
+     "id": "5a734f4db0e7",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "lineas": "60-60",
+       "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+      }
+     ],
+     "texto": "Debajo de la matriz, tu recomendación argumentada en un párrafo: cuál elegirías y por qué, nombrando el trade-off que implica. Recomendar es parte del trabajo; decidir es del usuario."
+    },
+    {
+     "id": "9b9cc9444564",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "101-101",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E1.4\nMatriz de selección\ncreative-strategy.md\nCards\nMatriz 1 a 5 + recomendación argumentada\nUsuario elige UN concepto",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    }
+   ]
+  },
+  {
+   "grupo": "G0202",
+   "miembros": [
+    {
+     "id": "206319d47666",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "373-379",
+       "encabezado": "aurora prompt_linter.py › OVERRIDE_PATTERN"
+      }
+     ],
+     "texto": "# ----------------------------------------------------------------------------\n# Overrides (unchanged from v1.1)\n# ----------------------------------------------------------------------------\nOVERRIDE_PATTERN = re.compile(\n    r\"OVERRIDE\\s*:\\s*(?P<term>[^\\-\\n]+?)\\s*[\\-]+\\s*(?P<reason>[^\\n]+)\",\n    re.IGNORECASE\n)"
+    },
+    {
+     "id": "30f09c418e8b",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "71-74",
+       "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+      }
+     ],
+     "texto": "Sintaxis:\n```\nOVERRIDE: <term-or-category> - <reason>\n```"
+    },
+    {
+     "id": "b6426c0f479e",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "84-87",
+       "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+      }
+     ],
+     "texto": "Sintaxis válida:\n```\nOVERRIDE: <término-o-categoría> - <razón>\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0203",
+   "miembros": [
+    {
+     "id": "2262c89b2e3f",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "40-40",
+       "encabezado": "Shot Grammar › Motion (camera movement)"
+      }
+     ],
+     "texto": "| `handheld` | Subtle organic shake | Documentary feel, urgency |",
+     "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+    },
+    {
+     "id": "86aac720999a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-media/SKILL.md",
+       "lineas": "141-141",
+       "encabezado": "Creación Visual — Visual Media › Producción de video › Movimientos de cámara"
+      }
+     ],
+     "texto": "| **Cámara en mano** | Inmediatez, presencia | Documental, tensión |",
+     "contexto": "| Movimiento | Efecto | Cuándo usarlo |\n|------------|--------|---------------|"
+    },
+    {
+     "id": "f5e20c079da1",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "239-239",
+       "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+      }
+     ],
+     "texto": "- Handheld. Documentary, intimate, UGC."
+    }
+   ]
+  },
+  {
+   "grupo": "G0204",
+   "miembros": [
+    {
+     "id": "24bff38fedaa",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "82-82",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ],
+     "texto": "- prefer specific numbers over vague claims (\"48 hours\" not \"fast\", \"30 minutes a week\" not \"a little time\")"
+    },
+    {
+     "id": "38d15d23fa48",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "lineas": "70-70",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      }
+     ],
+     "texto": "- prefer specific numbers (\"40% reduction in 90 days\" not \"significant improvement\")"
+    },
+    {
+     "id": "980c6ad8001c",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+       "lineas": "60-60",
+       "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+      }
+     ],
+     "texto": "- prefer specific origin claims (farm, region, roast date) over vague quality words"
+    }
+   ]
+  },
+  {
+   "grupo": "G0205",
+   "miembros": [
+    {
+     "id": "2652ae30f31a",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/role-modes.md",
+       "lineas": "81-85",
+       "encabezado": "Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)"
+      }
+     ],
+     "texto": "Write spoken lines in ready-to-paste Veo syntax.\n\n```text\nHe says, in a flat exhausted voice, \"We are fine. We are fine.\"\n```"
+    },
+    {
+     "id": "45e285fc5b16",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "35-37",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Dialogue and lipsync"
+      }
+     ],
+     "texto": "When the shot calls for the subject to speak, put the exact line in quotes:\n\n> The founder looks directly into the lens and says, \"I built the system once, and it runs without me.\""
+    },
+    {
+     "id": "9a8c9fac925a",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "lineas": "55-55",
+       "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+      }
+     ],
+     "texto": "Double quotes + lead-in verb (says, whispers, shouts, mutters, asks)."
+    }
+   ]
+  },
+  {
+   "grupo": "G0206",
+   "miembros": [
+    {
+     "id": "2709cd04764b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "332-332",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Edit mode stalls or ignores the instruction"
+      }
+     ],
+     "texto": "Fix. Source ≤20s (slice first); name @Video 1 as \"the sole editing master\"; one edit target per pass."
+    },
+    {
+     "id": "289a6215cbc9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "140-140",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+      }
+     ],
+     "texto": "| Video-edit source length | ≤20s | longer stalls |",
+     "contexto": "| Input | Best | Possible but unstable |\n|---|---|---|"
+    },
+    {
+     "id": "3d8fe9096cfe",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "255-255",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+      }
+     ],
+     "texto": "- **Slice long sources first.** Editing works best on clips ≤20s; longer sources stall or fail."
+    }
+   ]
+  },
+  {
+   "grupo": "G0207",
+   "miembros": [
+    {
+     "id": "2933493f6319",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "34-34",
+       "encabezado": "Screenwriter Skill › Core Workflow › 1. Analyze Input Concept"
+      }
+     ],
+     "texto": "- Identify characters, locations, emotional arc"
+    },
+    {
+     "id": "73a0b42a02da",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "104-104",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E2.1\nAnalizar concepto\nscreenwriter\nCard + dirección narrativa\nBeats, personajes, locaciones, arco\nCore workflow 1",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "ec2d4aab40bb",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "33-33",
+       "encabezado": "Screenwriter Skill › Core Workflow › 1. Analyze Input Concept"
+      }
+     ],
+     "texto": "- Extract key story beats from raw ideas"
+    }
+   ]
+  },
+  {
+   "grupo": "G0208",
+   "miembros": [
+    {
+     "id": "2a5493ad2524",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "7-7",
+       "encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots"
+      }
+     ],
+     "texto": "GPT Image 2 сильнее всего реагирует на разделение по секциям. Пиши лейблами, не сплошным текстом."
+    },
+    {
+     "id": "3d5d9ea46e14",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "17-17",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern"
+      }
+     ],
+     "texto": "Paragraph breaks help GPT Image parse separate beats. One long monolithic paragraph underperforms, the model loses track of which detail applies where."
+    },
+    {
+     "id": "7c5cde4162fd",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "124-124",
+       "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+      }
+     ],
+     "texto": "- Для длинных промптов — labeled sections, не одна простыня."
+    }
+   ]
+  },
+  {
+   "grupo": "G0209",
+   "miembros": [
+    {
+     "id": "2b34ae3e9283",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+       "lineas": "290-337",
+       "encabezado": "production-learnings.v3.2.json › lrn32_physical_occlusion_strategy"
+      }
+     ],
+     "texto": "      \"rule\": {\n        \"id\": \"lrn32_physical_occlusion_strategy\",\n        \"skill\": \"learned-production\",\n        \"source_path\": \"learned/production-learnings.v3.2.json\",\n        \"line\": 8,\n        \"text\": \"For complex underwater human anatomy, physically justified bubbles/turbulence may obscure non-critical anatomical detail when the brief does not require that detail, provided the required pose silhouette, human proportions, orientation, and continuity remain readable.\"\n      \"metadata\": {\n        \"rule_id\": \"lrn32_physical_occlusion_strategy\",\n        \"classification_status\": \"CLASSIFIED\",\n        \"authority\": \"LEARNED_PRODUCTION\",\n        \"effect\": \"RECOMMEND\",\n        \"priority\": 780,\n        \"when\": {\n          \"all\": [\n              \"path\": \"media\",\n              \"op\": \"eq\",\n              \"value\": \"image\"\n              \"path\": \"physics.water\",\n              \"op\": \"eq\",\n              \"value\": true\n              \"path\": \"subject.human\",\n              \"op\": \"eq\",\n              \"value\": true\n              \"path\": \"risk_flags\",\n              \"op\": \"contains\",\n              \"value\": \"HUMAN_ANATOMY\"\n        \"validator\": {\n          \"id\": \"v32:physical-occlusion\",\n          \"kind\": \"semantic\"\n        \"supersedes\": [],\n        \"conflict_key\": null,\n        \"classification_provenance\": {\n          \"method\": \"production_trial\",\n          \"reviewer\": \"APD-v3.2-learning-patch\",\n          \"reviewed_at\": \"2026-09-11\",\n          \"notes\": \"User-proposed method to trade invisible fine anatomy for physically plausible turbulence while preserving proportions.\""
+    },
+    {
+     "id": "7203394d86ae",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+       "lineas": "12-12",
+       "encabezado": "AI Production Director — Learning Registry v3.2"
+      }
+     ],
+     "texto": "8. **Physically justified occlusion.** In complex underwater anatomy, bubbles/turbulence may hide non-critical detail while preserving required silhouette, proportions, orientation and continuity."
+    },
+    {
+     "id": "7b23d3c79512",
+     "ubicaciones": [
+      {
+       "documento": "pkg/repo/templates/v3.2/underwater-human-reference-policy.md",
+       "lineas": "18-18",
+       "encabezado": "Underwater Human Reference Policy v3.2 › Complex underwater anatomy"
+      }
+     ],
+     "texto": "If fine upper-body anatomy is non-critical, physically plausible turbulence/bubbles may hide detail while preserving the required pose silhouette, frontal orientation, continuous proportions and body geometry."
+    }
+   ]
+  },
+  {
+   "grupo": "G0210",
+   "miembros": [
+    {
+     "id": "2d11321137d4",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "48-48",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 11 | **S vs secciones requeridas.** Con un ref de estilo, `photorealistic/documentary/editorial` quedan prohibidos en MAIN y a la vez la sección `style` exige exactamente una de esas palabras: imposible de satisfacer. | P12 — si S está cubierta por refs, la sección `style` se **dispensa** y se reporta como WARN informativo. | `universal-rules.md` U13 (\"Do not restate what a reference already defines\"); `seedance-25.md` §5; `consistency-locks.md` Lock 6 (style refs). |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    },
+    {
+     "id": "32992db00d58",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "237-239",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "5. **La sección `style` se dispensa cuando S está cubierta** (P12). Alternativa descartada:\n   sacar `photorealistic/documentary/editorial` de S. Se descartó porque eso vacía la categoría\n   S y U13 es explícito en que lo que define la referencia no se restata."
+    },
+    {
+     "id": "c5a8407f908f",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "88-93",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P12 S vs secciones requeridas: si un ref carga S, el vocabulario de estilo queda\n    prohibido en MAIN y a la vez la sección `style` lo exigía — imposible de\n    satisfacer. Con S cubierto la sección `style` se dispensa y se reporta como\n    WARN informativo. Fuente: universal-rules U13 (\"Do not restate what a\n    reference already defines\"), seedance-25.md §5, consistency-locks Lock 6.\n\"\"\""
+    }
+   ]
+  },
+  {
+   "grupo": "G0211",
+   "miembros": [
+    {
+     "id": "2dfca6fddfd1",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "81-81",
+       "encabezado": "Dramaturgy, detail, montage › 3. The three-jobs rule"
+      }
+     ],
+     "texto": "Every shot must do at least one of three things. If it does none, delete it."
+    },
+    {
+     "id": "73d0d408b759",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "87-87",
+       "encabezado": "Dramaturgy, detail, montage › 3. The three-jobs rule"
+      }
+     ],
+     "texto": "\"Beautiful establishing shot\" is not a job. \"Beautiful hero shot of product\" is not a job. Either the frame works for one of these three, or it is a fantik (wrapper without candy)."
+    },
+    {
+     "id": "cf2a367fd577",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "349-349",
+       "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+      }
+     ],
+     "texto": "3. Does every shot do one of the three jobs? (change emotion, advance action, increase pressure)"
+    }
+   ]
+  },
+  {
+   "grupo": "G0212",
+   "miembros": [
+    {
+     "id": "2e3aff6942ea",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "246-246",
+       "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+      }
+     ],
+     "texto": "- **Parseable format:** Maintain strict XML structure"
+    },
+    {
+     "id": "5bd5c97dfd05",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "51-51",
+       "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+      }
+     ],
+     "texto": "- Format for easy pipeline parsing"
+    },
+    {
+     "id": "779d5daff842",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "lineas": "222-225",
+       "encabezado": "Pipeline Integration Guide › Output Format Validation › XML Well-Formedness"
+      }
+     ],
+     "texto": "Ensure valid XML structure:\n- All opening tags have closing tags\n- Proper nesting (no overlapping tags)\n- Special characters escaped (&lt; &gt; &amp;)"
+    }
+   ]
+  },
+  {
+   "grupo": "G0213",
+   "miembros": [
+    {
+     "id": "2e95784f1e50",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "lineas": "64-64",
+       "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Con máscara y regulador el rostro no sostiene la identidad: la sostienen traje, aletas, color del tanque y silueta; esos elementos van en el identity block y se repiten verbatim. [FUENTE: video/references/universal-rules.md U7]"
+    },
+    {
+     "id": "515fb86ed682",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "63-63",
+       "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- En el instante de entrada el rostro no es la identidad: gorro, gafas, traje y silueta la sostienen; esos accesorios se fijan en el identity block del maestro y se repiten. [FUENTE: video/references/universal-rules.md U7]"
+    },
+    {
+     "id": "ecde725c7004",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "lineas": "84-84",
+       "encabezado": "Subacuático › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Identidad sostenida por equipo y silueta, verbatim entre cuadros. [FUENTE: video/references/universal-rules.md U7]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0214",
+   "miembros": [
+    {
+     "id": "3114b7ac65bd",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "lineas": "156-156",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel"
+      }
+     ],
+     "texto": "**Functional vs decorative clutter — the evidence test.** Keep an object only if it does at least one of: (1) **indicator of state** (replaces the face — tach in the red, white knuckles), (2) **stage of action** (advances the beat — front wheel 7\" off the line = pre-stage), (3) **bridge to the next panel** (sets up a match-cut or a reach). Dead detail — coffee cup, mirror dice, dashboard sticker — shows no state, advances nothing, bridges nowhere. Cut it. \"Each object is a clue\" (Park); functional clutter *loads* the frame, decorative clutter *weakens* it."
+    },
+    {
+     "id": "461a14282b26",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "lineas": "142-142",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel"
+      }
+     ],
+     "texto": "> **Core law of the loaded panel.** One focal point, one emotion, three working depth layers, zero dead objects. Answer one question in the first glance; reward a second look."
+    },
+    {
+     "id": "4a9907dc3ed9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "lineas": "47-48",
+       "encabezado": "Race, speed and faceless kinetic montage › 2. Four schools worth stealing"
+      }
+     ],
+     "texto": "**Loaded composition (Bong, Park, Anderson, Kon).** With no faces, geometry and the depth stack do the acting (the FG/MG/BG depth method is `animatic-keyframes.md` §6). One geometric spine (centerline or Christmas Tree as the axis); every object an evidence (Park: \"each object is a clue\") or it is cut. Symmetry is handwriting — one held symmetric \"breath\" frame says balanced rivalry; break it the instant one car noses ahead. Kon's graphic-match pairs compress time across two adjacent keyframes sharing a shape at the same size and screen position.\n→ **Rule:** a panel answers one question in the first glance and rewards a second look — one focal point, one emotion, three depth layers, zero dead objects."
+    }
+   ]
+  },
+  {
+   "grupo": "G0215",
+   "miembros": [
+    {
+     "id": "31effe45fd8b",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "95-95",
+       "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+      }
+     ],
+     "texto": "4. **Negative prompt**: bloque obligatorio."
+    },
+    {
+     "id": "4477741cad6d",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+       "lineas": "163-168",
+       "encabezado": "aurora skill vocabularies.yaml › NEGATIVE_PROMPT_REQUIRED"
+      }
+     ],
+     "texto": "NEGATIVE_PROMPT_REQUIRED:\n  - negative\n\n# ---------- ALLOWED motion/camera vocabulary (exento de baneo) ----------\n# Si un término baneado aparece en proximidad (<50 chars) de uno de estos\n# prefixes, se considera contexto de motion/cámara y NO se flaggea."
+    },
+    {
+     "id": "a69f2ce9360c",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "68-68",
+       "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+      }
+     ],
+     "texto": "| **STRUCTURE** | Word count, presencia de negative prompt | Siempre |",
+     "contexto": "| Categoría | Qué cubre | Cuándo se banea en MAIN |\n|---|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0216",
+   "miembros": [
+    {
+     "id": "33c36c296bdc",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/advanced-techniques.md",
+       "lineas": "127-134",
+       "encabezado": "Advanced Screenwriting Techniques › Pacing Optimization › Tension Escalation"
+      }
+     ],
+     "texto": "Each scene should raise stakes or tension incrementally:\n\n**Scene 1:** Character wants something\n**Scene 2:** Obstacle appears\n**Scene 3:** Obstacle worsens\n**Scene 4:** New complications\n**Scene 5:** Crisis point\n**Scene 6:** Resolution"
+    },
+    {
+     "id": "425001e309d5",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "236-236",
+       "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+      }
+     ],
+     "texto": "- **Build tension:** Escalate stakes scene-by-scene"
+    },
+    {
+     "id": "d722754579e4",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/storyboards.md",
+       "lineas": "88-88",
+       "encabezado": "Storyboards & Sequential Art › Narrative Pacing"
+      }
+     ],
+     "texto": "- \"Build tension through first [N] images\""
+    }
+   ]
+  },
+  {
+   "grupo": "G0217",
+   "miembros": [
+    {
+     "id": "340306ed4a03",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "81-90",
+       "encabezado": "Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)"
+      }
+     ],
+     "texto": "For single-shot 5s clips with one clear action.\n\n```text\nSubject. [Who or what]\nMotion. [Present-tense verb, one clear action]\nCamera. [Movement + framing + lens]\nEnvironment. [Where, props, atmosphere]\nLighting. [Direction + quality + color]\nStyle. [Realism level, genre reference]\n```"
+    },
+    {
+     "id": "b57d84fb117b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "386-399",
+       "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+      }
+     ],
+     "texto": "For a single non-dramatic shot or a quick test, the original 6-step skeleton still works:\n\n```text\nSubject. [identity block with face, hair, clothing, distinguishing features].\nMotion. [one clear present-tense action for the scene].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time of day, props, weather].\nLighting. [dominant source, direction, quality, color].\nStyle. [realism level, genre reference, palette].\nAudio. [ambient, SFX, silence moments]. (1.5+ only)\nContinuity. [what must remain constant across shots].\n\n--resolution 1080p --duration 5 --camerafixed false\n```"
+    },
+    {
+     "id": "ce2db1f577a2",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "lineas": "165-176",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Seedance"
+      }
+     ],
+     "texto": "```text\nSubject. [identity block].\nMotion. [one clear present-tense action].\nCamera. Shot 1. [framing, lens, movement]. Cut to. Shot 2. [framing, lens, movement]. Cut to. Shot 3. [framing, lens, movement].\nEnvironment. [location, time, props].\nLighting. [source, direction, quality, color].\nStyle. [realism level, genre reference].\nAudio. [ambient, SFX]. (1.5+ only)\nContinuity. [what must remain constant].\n\n--resolution 1080p --duration 5 --camerafixed false\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0218",
+   "miembros": [
+    {
+     "id": "349713d8298f",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "111-112",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+      }
+     ],
+     "texto": "1. `refs.yaml` se escribe desde el plan de anchors: cada referencia con `role` (`CHARACTER`,\n   `LOCATION`, `PROP`, `STYLE`) y `tags` (`P1`, `O1`, `L1`, `PR1`, `S1`)."
+    },
+    {
+     "id": "6bca679404ac",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "132-133",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+      }
+     ],
+     "texto": "1. `refs.yaml` con la imagen aprobada como `role: FF` (y `LF`/`TAIL` si hay tail image),\n   tags de lo que esa imagen ya fija — normalmente `P`, `O`, `L`, `PR`."
+    },
+    {
+     "id": "d2d8aaae0e97",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "34-43",
+       "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+      }
+     ],
+     "texto": "Cada ref se etiqueta con las categorías que carga (mapea a IDs system v6.0 §7):\n\n```yaml\n- file: \"img_ciclista_balon_aire.jpg\"\n  role: \"FF\"          # FF | LF | MR (motion ref)\n  tags: [\"P1\", \"O1\", \"L1\", \"PR1\"]   # persona, outfit, locación, prop\n- file: \"img_climbing_wall.jpg\"\n  role: \"LF\"\n  tags: [\"L2\", \"PR1\"]    # nueva locación + mismo prop\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0219",
+   "miembros": [
+    {
+     "id": "357530501ec2",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "lineas": "257-266",
+       "encabezado": "Pipeline Integration Guide › Pipeline Handoff Checklist"
+      }
+     ],
+     "texto": "Before passing screenplay to next pipeline stage:\n\n- [ ] All scenes have complete metadata\n- [ ] key_visuals array populated (3-5 per scene)\n- [ ] Character names consistent throughout\n- [ ] XML well-formed and parseable\n- [ ] Total duration within target range (5-10 min)\n- [ ] Scene numbers sequential with no gaps\n- [ ] Visual descriptions rich and specific\n- [ ] No technical camera directions (use visual descriptions instead)"
+    },
+    {
+     "id": "41a2884a134c",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "245-245",
+       "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+      }
+     ],
+     "texto": "- **Rich visuals:** Every scene needs 3-5 key_visuals for image generation"
+    },
+    {
+     "id": "f5bec2bb329d",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/references/pipeline-integration.md",
+       "lineas": "20-30",
+       "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Completeness"
+      }
+     ],
+     "texto": "Every scene MUST include all required metadata fields for reliable pipeline processing:\n\n**Required Fields:**\n- `number`: Integer, sequential scene numbering\n- `slugline`: Full scene heading (INT/EXT. LOCATION - TIME)\n- `location`: Extracted location name for tracking\n- `time`: Time of day (affects lighting in image generation)\n- `characters`: All characters present in scene\n- `mood`: Emotional tone/atmosphere descriptor\n- `key_visuals`: 3-5 specific visual elements\n- `action`: Full action/description text"
+    }
+   ]
+  },
+  {
+   "grupo": "G0220",
+   "miembros": [
+    {
+     "id": "3999058dc1bf",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "47-47",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ],
+     "texto": "- never use em dashes in copy (only periods, commas, semicolons)"
+    },
+    {
+     "id": "67c7f4bf7bd0",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "lineas": "44-44",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "lineas": "44-44",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "lineas": "44-44",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ],
+     "texto": "- never use em dashes in copy"
+    },
+    {
+     "id": "d59a24773263",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "lineas": "67-67",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "76-76",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ],
+     "texto": "- no em dashes"
+    }
+   ]
+  },
+  {
+   "grupo": "G0221",
+   "miembros": [
+    {
+     "id": "39ea37ba2310",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "34-34",
+       "encabezado": "Luz y clima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "8. Un fenómeno de luz quema su núcleo: centro blanco sin detalle, halo de halación alrededor, negros aplastados en lo que no toca; pedir detalle en el núcleo del rayo es pedir una ilustración. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "48f3e1da028e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "84-84",
+       "encabezado": "Luz y clima › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Núcleo quemado con halación, sin HDR. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "973f90e7c2bc",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/research/07-luz-y-clima.md",
+       "lineas": "142-145",
+       "encabezado": "Investigación de campo — Familia 07: Luz y clima › (4) Hallazgos nuevos (reglas candidatas)"
+      }
+     ],
+     "texto": "3. El rayo se describe siempre por su aura y sus ramas de color, nunca por detalle en el núcleo: el\n   fotógrafo real expone para \"the aura of the strike and the colours in the branches\" porque el canal\n   central siempre clipea. `[QUOTED]` (Q2, Q4)\n   [CAMPO: https://stushort.com/lightning-photography-guide-2/]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0222",
+   "miembros": [
+    {
+     "id": "3a1c3921f7ea",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "310-310",
+       "encabezado": "Visual Prompt Forge › Hard rules › Rule 5. Prompts must be reproducible"
+      }
+     ],
+     "texto": "Every prompt is composed from the same inputs the same way. If two consecutive runs produce different prompts for the same shot, the skill is broken. Determinism is the whole point."
+    },
+    {
+     "id": "79624e74431b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "152-154",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 4. Write output files"
+      }
+     ],
+     "texto": "Record the run and round in the header, not a wall-clock \"Generated\" line. A timestamp in\nthe header made every file differ between two otherwise identical runs, which is a strange\nthing to put in an artifact whose selling point is determinism."
+    },
+    {
+     "id": "eddb3447a2f3",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "241-243",
+       "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Determinism, and its limits"
+      }
+     ],
+     "texto": "Given the same `shots.json`, the same brand-lock, and the same critique, this should\nproduce the same revised prompt. Nothing in the file format fights that any more: no\nwall-clock stamps, no random ordering."
+    }
+   ]
+  },
+  {
+   "grupo": "G0223",
+   "miembros": [
+    {
+     "id": "3b6aa8cce0a6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "50-50",
+       "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Ángulo por defecto low a nivel del agua, aislando la salpicadura contra cielo o techo; el overhead se reserva para leer la geometría de la corona desde arriba. [FUENTE: video/references/animatic-keyframes.md §6]"
+    },
+    {
+     "id": "4cabd6184194",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "51-51",
+       "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Ángulo por defecto low a la altura del plano de impacto: la red, la línea, la mesa; eye-level para seguir un vuelo; overhead solo para leer la geometría de la corona o la dispersión. [FUENTE: video/references/animatic-keyframes.md §6]"
+    },
+    {
+     "id": "553db90ba773",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "140-140",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra › D9 por tipo de acción: el ángulo como decisión, no como variedad"
+      }
+     ],
+     "texto": "B instante pico\nLow o a ras de la superficie, aislando al sujeto contra cielo o agua; nivel del agua para la ruptura\nEl pico se lee como fuerza; el fondo limpio deja ver la consecuencia física\nTop-down para el patrón de la salpicadura o la geometría del impacto\nanimatic §6 INFERENCIA",
+     "contexto": "Tipo de acción | Ángulo y altura por defecto | Por qué | Cuándo romperlo | Fuente"
+    }
+   ]
+  },
+  {
+   "grupo": "G0224",
+   "miembros": [
+    {
+     "id": "3bcca94aa4cc",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "319-323",
+       "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Text-to-video (1.x – 2.x)"
+      }
+     ],
+     "texto": "```text\n[Subject with identity anchor]. [Subject movement in one clean verb phrase]. Scene. [3-5 environment elements]. Camera. [one movement + lens]. Lighting. [source + quality]. Atmosphere. [mood].\n\nNegative field. blurry, distorted hands, extra fingers, melted face, watermark, subtitles, jitter.\n```"
+    },
+    {
+     "id": "990901ba347b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "162-171",
+       "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+      }
+     ],
+     "texto": "For 1.6, 2.1 Pro, 2.5 Turbo Pro, 2.6 Pro:\n\n```text\nSubject (with specific details)\n+ Subject Movement (one clean verb phrase)\n+ Scene (3-5 elements max)\n+ Camera Language\n+ Lighting\n+ Atmosphere\n```"
+    },
+    {
+     "id": "c463a68a9321",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "lineas": "180-184",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling text-to-video"
+      }
+     ],
+     "texto": "```text\n[Subject with identity anchor]. [Subject movement]. Scene. [3-5 environment elements]. Camera. [one movement + lens]. Lighting. [source + quality]. Atmosphere. [mood].\n\nNegative field. blurry, distorted hands, extra fingers, melted face, watermark, subtitles, jitter.\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0225",
+   "miembros": [
+    {
+     "id": "3d14459a4e50",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+       "lineas": "34-34",
+       "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Series lock"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+       "lineas": "34-34",
+       "encabezado": "WhyStrohm. How The System Actually Works › Series lock"
+      }
+     ],
+     "texto": "| **Color grade** | warm filmic, muted teal shadows, slight grain, cream highlights, deep navy shadows never crushed |",
+     "contexto": "| | |\n|---|---|"
+    },
+    {
+     "id": "53b76bcaeb7e",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "66-66",
+       "encabezado": "Brand Lock: WhyStrohm › Color grade direction"
+      }
+     ],
+     "texto": "Warm filmic, muted teal shadows. Slight grain. Cream highlights, deep navy/charcoal shadows, never crushed. Reminiscent of Kodak Portra 400 with a slight digital cleanup. Skin tones warm but not orange. Greens kept slightly desaturated to push focus to subject."
+    },
+    {
+     "id": "df0d14af76e0",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "lineas": "62-62",
+       "encabezado": "Brand Lock: WhyStrohm › Color grade direction"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "lineas": "62-62",
+       "encabezado": "Brand Lock: WhyStrohm › Color grade direction"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "lineas": "62-62",
+       "encabezado": "Brand Lock: WhyStrohm › Color grade direction"
+      }
+     ],
+     "texto": "Warm filmic, muted teal shadows. Slight grain. Cream highlights, deep navy/charcoal shadows, never crushed. Reminiscent of Kodak Portra 400 with a slight digital cleanup."
+    }
+   ]
+  },
+  {
+   "grupo": "G0226",
+   "miembros": [
+    {
+     "id": "3d5d35a43d87",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "105-105",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E2.2\nScene breakdown\nscreenwriter\nBeats\nEscenas con propósito y progresión emocional\nCada escena cambia emoción, avanza acción o sube presión",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "c566fd802f3e",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "38-38",
+       "encabezado": "Screenwriter Skill › Core Workflow › 2. Generate Scene Breakdown"
+      }
+     ],
+     "texto": "- Convert story beats into discrete scenes"
+    },
+    {
+     "id": "c7491bb3185c",
+     "ubicaciones": [
+      {
+       "documento": "skills/screenwriter/SKILL.md",
+       "lineas": "40-40",
+       "encabezado": "Screenwriter Skill › Core Workflow › 2. Generate Scene Breakdown"
+      }
+     ],
+     "texto": "- Define scene purpose and emotional progression"
+    }
+   ]
+  }
+ ]
+}

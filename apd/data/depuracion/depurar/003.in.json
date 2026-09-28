@@ -1,0 +1,1373 @@
+{
+ "instrucciones": "Eliminas duplicados SIN reescribir nada. Cada grupo trae registros originales (texto literal completo,\ndocumento, encabezado y contexto). Decide qué originales se CONSERVAN tal cual y cuáles se ELIMINAN:\n- Un original se elimina solo si TODO su contenido (cada exigencia, prohibición, valor, número, cita literal,\n  excepción, ejemplo y alcance, incluido el que da su encabezado) ya está en UN conservado, que indicas en\n  \"contenido_en\".\n- Si dos registros dicen lo mismo pero cada uno tiene algo propio, se conservan los dos. En la duda, se conserva.\n- El grupo puede mezclar reglas distintas: esas se conservan todas.\nDevuelve JSON {\"grupos\": [{\"grupo\": \"...\", \"conservar\": [ids], \"eliminar\": [{\"id\": \"...\", \"contenido_en\": \"id\",\n\"razon\": \"...\"}]}]}; cada id del grupo aparece exactamente una vez y \"contenido_en\" es un id conservado del grupo.",
+ "grupos": [
+  {
+   "grupo": "G0010",
+   "miembros": [
+    {
+     "id": "01af3c0ce5a3",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "96-99",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "`tools/validate_critique.py` enforces exactly this table, so a critique that disagrees with\nit fails rather than shipping. Earlier versions of this file counted hard fails and called\n3+ a REJECT while the skill said \"escalate at your discretion.\" Those two rules disagreed,\nand the disagreement is the reason the threshold is now a number."
+    },
+    {
+     "id": "15262b61f193",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "111-111",
+       "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+      }
+     ],
+     "texto": "| REJECT | Three+ layers fail or one critical layer (Brand Lock, Series Lock) hard-fails with no clear fix |",
+     "contexto": "| Verdict | When |\n|---|---|"
+    },
+    {
+     "id": "438560ad9618",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "92-92",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "| three or more `major` | REJECT |",
+     "contexto": "| Severities present | Verdict |\n|---|---|"
+    },
+    {
+     "id": "47d55204fcca",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "74-76",
+       "encabezado": "Critique Rubric › From pass/fail to severity"
+      }
+     ],
+     "texto": "The tables above grade each check as pass, soft fail, or hard fail. The JSON critique\nrecords a severity instead, and the verdict is derived from those severities. Map them\nthis way, and only this way:"
+    },
+    {
+     "id": "554455999cc9",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "lineas": "139-140",
+       "encabezado": "Tools › Project checks › `validate_critique.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "lineas": "139-140",
+       "encabezado": "Tools › Project checks › `validate_critique.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "lineas": "139-140",
+       "encabezado": "Tools › Project checks › `validate_critique.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "lineas": "139-140",
+       "encabezado": "Tools › Project checks › `validate_critique.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "lineas": "139-140",
+       "encabezado": "Tools › Project checks › `validate_critique.py`"
+      }
+     ],
+     "texto": "The gate: any `blocking` issue forces `REJECT`, three or more `major` issues force `REJECT`,\none or two `major` forbid `ACCEPT`."
+    },
+    {
+     "id": "66fdc7470618",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "182-187",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "**Gating rule, the verdict is derived from severities, not chosen freely.** This guarantees the markdown verdict and the JSON verdict always agree:\n\n- Any `blocking` issue ⇒ verdict is `REJECT`.\n- Three or more `major` issues ⇒ verdict is `REJECT`.\n- One or two `major` issues (and no blocking) ⇒ verdict is `REVISE`.\n- Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes)."
+    },
+    {
+     "id": "6dfc2c71ed63",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "110-110",
+       "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+      }
+     ],
+     "texto": "| REVISE | One or two layers hard-fail; clear fix path |",
+     "contexto": "| Verdict | When |\n|---|---|"
+    },
+    {
+     "id": "7cd1e76d34e6",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "91-91",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "| any `blocking` | REJECT |",
+     "contexto": "| Severities present | Verdict |\n|---|---|"
+    },
+    {
+     "id": "a5b92944e6f5",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "189-191",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "The three-major rule used to read \"escalate to REJECT at your discretion.\" Discretion in a\ngate is not a gate, and it disagreed with `references/critique-rubric.md`, which called\nthree hard fails a REJECT outright. It is now a threshold, and the validator enforces it."
+    },
+    {
+     "id": "a65e00bbb834",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+       "lineas": "139-142",
+       "encabezado": "critique.schema.json › issues[].severity"
+      }
+     ],
+     "texto": "          \"severity\": {\n            \"type\": \"string\",\n            \"enum\": [\"minor\", \"major\", \"blocking\"],\n            \"description\": \"Any blocking issue forces REJECT. One or two major issues cap the verdict at REVISE. Three or more major issues force REJECT. Enforced by tools/validate_critique.py, not by this schema.\""
+    },
+    {
+     "id": "a940704784b3",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "87-87",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "The verdict follows from the severities. It is not a separate judgement:"
+    },
+    {
+     "id": "cc1a49a52c45",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "94-94",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "| only `minor`, or none | ACCEPT (with post notes) |",
+     "contexto": "| Severities present | Verdict |\n|---|---|"
+    },
+    {
+     "id": "dbc5cf3c7ac4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "109-109",
+       "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+      }
+     ],
+     "texto": "| ACCEPT | All layers pass or soft-fail in ways post can fix |",
+     "contexto": "| Verdict | When |\n|---|---|"
+    },
+    {
+     "id": "e4b9e9c7d0aa",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "174-174",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "**Severity, assign one per issue.** This is the field the gate runs on, so map it from the layer rubric deterministically:"
+    },
+    {
+     "id": "eb62da1eb450",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+       "lineas": "93-93",
+       "encabezado": "Critique Rubric › Aggregating verdict"
+      }
+     ],
+     "texto": "| one or two `major` | REVISE |",
+     "contexto": "| Severities present | Verdict |\n|---|---|"
+    },
+    {
+     "id": "ed60b159436e",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-asset-critic/SKILL.md",
+       "lineas": "193-193",
+       "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+      }
+     ],
+     "texto": "Pick the markdown `## Verdict` by this same rule."
+    }
+   ]
+  },
+  {
+   "grupo": "G0011",
+   "miembros": [
+    {
+     "id": "0328baa92a3d",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "lineas": "14-16",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Texto a añadir"
+      }
+     ],
+     "texto": "```\n28\tLINTER DETERMINISTA OBLIGATORIO ANTES DE ENTREGAR PROMPT — Para todos los casos (1/2/3a/3b/3c/4), ejecutar `aurora-linter/prompt_linter.py` al final del Step 4 drafting con: prompt, refs tageadas por categoría (P/O/L/PR/S según IDs system §7), case_type, y mensaje completo del usuario en el turno actual para parsear OVERRIDEs. Si STATUS=FAIL sin overrides que cubran todas las violaciones, NO entregar al usuario — iterar el draft hasta PASS. El reporte del linter (PASS/FAIL + violaciones + overrides aceptados) se incluye en el output visible al usuario para trazabilidad. Override de violación requiere autorización expresa del usuario por escrito en el turno actual con sintaxis `OVERRIDE: <término-o-categoría> - <razón>`; frases genéricas (\"dale\", \"hazlo ya\", \"ready to copy paste\") NO cuentan como override. Las autorizaciones NO persisten entre turnos — cada prompt arranca STRICT.\n```"
+    },
+    {
+     "id": "0402358189a6",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "28-56",
+       "encabezado": "Aurora Prompt Linter › Cómo invocarlo"
+      }
+     ],
+     "texto": "Antes de entregar el prompt al usuario:\n\n1. **Etiquetar los refs por categoría.** Cada ref carga 0 o más de: P (sujeto), O (outfit), L (locación), PR (prop), S (estilo). Mapea a IDs system v6.0 §7. Ejemplo de refs.yaml:\n   ```yaml\n   - file: \"img_ciclista_ff.jpg\"\n     role: \"FF\"\n     tags: [\"P1\", \"O1\", \"L1\", \"PR1\"]\n   - file: \"img_climbing_wall_lf.jpg\"\n     role: \"LF\"\n     tags: [\"L2\", \"PR1\"]\n   ```\n\n2. **Escribir el draft del prompt** (incluyendo negative prompt) a un archivo de texto.\n\n3. **Capturar el mensaje del usuario** del turno actual a un archivo de texto (para parsear OVERRIDEs).\n\n4. **Ejecutar el linter:**\n   ```bash\n   python3 scripts/prompt_linter.py \\\n     --prompt /tmp/draft.txt \\\n     --refs /tmp/refs.yaml \\\n     --case 3b \\\n     --overrides /tmp/user_msg.txt \\\n     --sports-broadcast\n   ```\n\n5. **Interpretar el resultado:**\n   - Exit 0 → STATUS=PASS → entregar al usuario + incluir reporte del linter en el output para trazabilidad.\n   - Exit 1 → STATUS=FAIL → NO entregar. Iterar el draft basándose en las violaciones listadas. Repetir hasta PASS."
+    },
+    {
+     "id": "26b1a3011262",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "24-24",
+       "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+      }
+     ],
+     "texto": "**El agente lo invoca automáticamente** al final de Step 4 (drafting) del skill `prompt-production-protocol`, antes de Step 6 (delivery). Si la Regla 28 está activa en el system prompt, es bloqueante."
+    },
+    {
+     "id": "2e32eb0e2a4e",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "lineas": "46-48",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 5 — Actualizar Sección 4.8 (F6 — Research video + Prompts) › Texto a añadir después del paso 2 (INVOCAR skill)"
+      }
+     ],
+     "texto": "```\n3. Antes de entregar el prompt video, ejecutar Regla 28 (linter) — especialmente crítico en I2V donde la redundancia con refs es la falla más común. Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+    },
+    {
+     "id": "40b828f0c34e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "126-128",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+      }
+     ],
+     "texto": "Exit `0` → se entrega con el reporte adjunto (trazabilidad, SKILL.md del linter §\"Interpretar el\nresultado\"). Exit `1` → no se entrega; se itera. Los WARN de palabras se leen junto al techo\ndel adaptador, no se \"arreglan\" recortando el T1."
+    },
+    {
+     "id": "4d8a61b61f57",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "16-17",
+       "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+      }
+     ],
+     "texto": "**Obligatorio** para:\n- Casos 3a/3b/3c (I2V con FF/LF refs) — donde la redundancia es la falla más común"
+    },
+    {
+     "id": "4f68688b0249",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "lineas": "52-65",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 6 — Sección 5 (Aprendizajes validados) — Nueva sub-sección 5.5"
+      }
+     ],
+     "texto": "```\n5.5 Linter determinista — disciplina sobre memoria\n\nSesión 2026-05-27 documentó que la regla \"no redescribir lo que está en los refs\" (v6.0 §5.4) se viola repetidamente bajo presión de iteración rápida. La memoria del agente falla; el código no. El linter aurora-linter/prompt_linter.py mueve enforcement de memoria a código determinista. Aplica las siguientes reglas como gates duros:\n\n- Redundancia por categoría P/O/L/PR/S vía IDs system §7.\n- Word count duro (Regla 10 v6.0): 130 max T2I, 90 max I2V.\n- Vocabulario baneado en MAIN: cartoon, anime, slow motion, etc. (deben ir en NEGATIVE).\n- Negative prompt obligatorio.\n- Keywords sports broadcast cuando aplica Regla 26.\n- Exenciones: motion/camera context, anchors direccionales (away from her face).\n\nOverride del linter solo se acepta con autorización expresa escrita en el turno actual, con scope específico (término o categoría). Esto preserva flexibilidad sin permitir abuso de la disciplina.\n```"
+    },
+    {
+     "id": "55117ec7f3d2",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "lineas": "38-40",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 4 — Actualizar Sección 4.7 (F5 — Prompts Ancla FF+LF) › Texto a añadir después del paso 4 (caso 2.5 deportivo)"
+      }
+     ],
+     "texto": "```\n6. Antes de entregar la Ancla, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+    },
+    {
+     "id": "7c7c32e709d9",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "28-30",
+       "encabezado": "Aurora Prompt Linter v1.0 › Cómo se usa"
+      }
+     ],
+     "texto": "Exit code:\n- `0` → PASS, entrega permitida\n- `1` → FAIL, entrega bloqueada"
+    },
+    {
+     "id": "8c4140a5af1f",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "111-111",
+       "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+      }
+     ],
+     "texto": "System prompt v6.1 (propuesta): nueva Regla 28 forzando llamada al linter antes de Step 6 delivery. Ver `system_prompt_v6_1_rule28.md`."
+    },
+    {
+     "id": "a20d41f9a105",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "19-22",
+       "encabezado": "Aurora Prompt Linter › Cuándo usarlo"
+      }
+     ],
+     "texto": "**Recomendado** para:\n- Caso 1 (Génesis text-to-image)\n- Caso 2 (Ancla con refs parciales)\n- Caso 4 (Video con diálogo)"
+    },
+    {
+     "id": "ac81e4f3b2c9",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+       "lineas": "23-48",
+       "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Edit concreta › DESPUÉS (texto propuesto)"
+      }
+     ],
+     "texto": "> ### Step 5 — Self-audit VISIBLE + Linter determinista\n> Leer: `protocol/05_self_audit.md`\n>\n> **Step 5a — Self-audit cualitativo (igual que antes):**\n> - Ejecutar checklist específico del caso\n> - Marcar cada item Pass/Fail en el output\n> - Si algún item crítico es Fail → revisar el draft y re-auditar\n>\n> **Step 5b — Linter determinista (NUEVO, obligatorio para casos 3a/3b/3c — recomendado para 1/2/4):**\n> - Invocar `aurora-linter/prompt_linter.py` con: prompt, refs (con tags por categoría), case_type, mensaje del usuario (para parsear OVERRIDEs).\n> - El linter chequea: redundancia por categoría, word count, negative prompt, vocabulario baneado, keywords requeridos.\n> - Si STATUS=PASS → proceder a Step 6.\n> - Si STATUS=FAIL sin override válido → NO entregar. Iterar el draft. NO se permite entregar al usuario con FAIL del linter.\n> - Si STATUS=FAIL con overrides aceptados que cubren todas las violaciones → proceder a Step 6, declarando los overrides en el output del prompt.\n> - Si STATUS=FAIL con overrides parciales (algunas violaciones overrideadas, otras no) → iterar el draft hasta limpiar las no-overrideadas.\n>\n> **Step 5c — Reporte del linter visible al usuario:**\n> Incluir en el output del prompt el resumen del linter:\n> ```\n> LINTER: PASS (o FAIL con overrides)\n> Violaciones detectadas: N\n> Overrides aceptados: M\n> Categorías cubiertas por refs: [...]\n> ```\n>\n> Esto da trazabilidad y permite al usuario confirmar que el linter corrió antes de la entrega."
+    },
+    {
+     "id": "b62b4a85ff77",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+       "lineas": "30-32",
+       "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 3 — Actualizar Sección 4.6 (F4 — Prompts Génesis) › Texto a añadir al final del paso 3 (\"Entregar con trazabilidad completa\")"
+      }
+     ],
+     "texto": "```\n- Antes de entregar, ejecutar Regla 28 (linter). Sin PASS o sin overrides cubriendo violaciones, NO entregar.\n```"
+    },
+    {
+     "id": "b6df48358253",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/SKILL.md",
+       "lineas": "164-164",
+       "encabezado": "Aurora Prompt Linter › Integración con system prompt v6.1"
+      }
+     ],
+     "texto": "Si tu system prompt incluye Regla 28 (v6.1+), este linter es bloqueante — el agente NO entrega prompts sin pasar el linter o sin overrides válidos. Si tu system prompt es v6.0, el linter es opcional pero altamente recomendado."
+    },
+    {
+     "id": "d7d8628fcb31",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "136-136",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E6.5\nLinter determinista\naurora-prompt-linter\nPrompt + refs.yaml + caso\nPASS o FAIL con violaciones\nprompt_linter.py exit 0",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "ff8e05e3fa24",
+     "ubicaciones": [
+      {
+       "documento": "skills/aurora-prompt-linter/references/README.md",
+       "lineas": "109-109",
+       "encabezado": "Aurora Prompt Linter v1.0 › Integración con skill"
+      }
+     ],
+     "texto": "El linter NO corre solo. El skill `prompt-production-protocol` Step 5 debe invocarlo como item crítico. Ver `skill_update_step5.md` para la edit propuesta."
+    }
+   ]
+  },
+  {
+   "grupo": "G0012",
+   "miembros": [
+    {
+     "id": "02ac1e79fd1f",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "305-305",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Checks del crítico por tipo de acción, encima de las 6 capas"
+      }
+     ],
+     "texto": "E: poder legible sin guion, eyelines, contacto correcto, luz continua en contraplano"
+    },
+    {
+     "id": "143a97e6a8f3",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "27-27",
+       "encabezado": "Grupo ensamble › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "1. Un solo trabajo por generación: un miembro por inserción, nunca el grupo completo desde texto. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+    },
+    {
+     "id": "3a8a272a5f72",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "66-66",
+       "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Dos cuerpos entrando a la vez: un sujeto por generación; la sincronía la fija el keyframe aprobado, no el texto. [FUENTE: produccion-visual-sw30/SKILL.md R9]"
+    },
+    {
+     "id": "4bb51f21dab9",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "183-183",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción"
+      }
+     ],
+     "texto": "La regla madre es SW30 regla 1: un solo trabajo por generación. Todo lo demás es cómo respetarla cuando la escena pide más de una persona. Hay dos casos que no se parecen: la multitud anónima, donde nadie tiene rostro legible y la masa es entorno, y el grupo ensamble, un quinteto de cuerdas o un grupo de K-pop, donde cada miembro es un héroe con identidad, vestuario e instrumento propios y todos deben reconocerse en el mismo frame."
+    },
+    {
+     "id": "5e2785c81511",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/research/06-cuerpo-en-esfuerzo.md",
+       "lineas": "106-106",
+       "encabezado": "RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos"
+      }
+     ],
+     "texto": "2. **Siempre** un solo atleta por generación en sprint; una salida de tacos con varios corredores falla mucho más que un corredor solo. [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] — (C-14) `[QUOTED]` — refuerza `produccion-visual-sw30 R9`."
+    },
+    {
+     "id": "7cf92e66a3e5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "lineas": "67-67",
+       "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Dos buzos: uno por generación sobre la placa del cenote; la profundidad relativa se declara por tamaño y por pérdida de contraste, no por \"detrás\". [FUENTE: produccion-visual-sw30/SKILL.md R2]"
+    },
+    {
+     "id": "8857d2c26330",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "29-29",
+       "encabezado": "Multitud anónima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "2. Un sujeto por generación: nunca se pide a un modelo N rostros distintos desde texto. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+    },
+    {
+     "id": "aae1888d43af",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "lineas": "116-117",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ],
+     "texto": "1. Un solo trabajo por generación. Con dos personajes: un sujeto por generación, o técnica\n   de colocación probada; nunca \"a ver si sale\"."
+    },
+    {
+     "id": "bf6a346e68af",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "172-172",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensión D2: Seis tipos de acción y cómo se congela cada uno"
+      }
+     ],
+     "texto": "E interacción o diálogo\nDos personas conversando en un café, entrega de objeto, abrazo, high five, confrontación\nMicro-acción del cuerpo en el punto de contacto o de mirada: nudillos, mandíbula, hombro angulado; el gesto que revela el deseo oculto\nStaging antes que diálogo: quién domina de pie o sentado, quién en la puerta, quién tras el vidrio, espacio negativo, encuadre apretado. Eyelines nombradas. Manos nombradas en cualquier contacto. Producción en pasos: placa del café → inserto A → inserto B; el contacto lo fija el keyframe aprobado, nunca la asignación de manos por texto\nDos personas en una sola génesis, \"left half\" como posición, dos manos derechas, cambio de dirección de luz en el contraplano sin rationale\nDinámica de poder legible sin leer el guion; eyelines correctas; contacto anatómico al zoom; luz consistente entre plano y contraplano\ndramaturgy §5 §6 · SW30 R1 R2 R4 R7 R9 · forge Rule 6 handedness · Lock 7 · critique Layer 4 eye-line",
+     "contexto": "Tipo | Ejemplos | Cue de movimiento congelado | Qué debe estar en el prompt | Qué lo mata | Check del crítico añadido | Fuente"
+    },
+    {
+     "id": "d51f8f983c22",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "124-124",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+      }
+     ],
+     "texto": "D3\nNúmero de sujetos\n0 placa · 1 · 2 sin contacto · 2 con contacto · grupo ensamble 3 a 8 con todas las identidades reconocibles · multitud anónima más de 6 sin rostros legibles\nCuántas generaciones, en qué orden, con qué referencias y roles. Ensamble y multitud son dos técnicas distintas, no dos tamaños de la misma\nSW30 R1 R4 R7 R9 · fixes twins · kling §7 Elements · nano-banana multi-reference · U13",
+     "contexto": "# | Dimensión | Valores posibles | Qué decide | Fuente"
+    },
+    {
+     "id": "db3820f749e9",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "196-196",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción"
+      }
+     ],
+     "texto": "2 con contacto\nAbrazo estático: T4 desde keyframe aprobado\nHigh five o choque en el pico: T4, manos nombradas, blur parcial solo en la extremidad\nRelevo, tackle: T4 + ≥3 cues\nContacto rimado por el evento\nEntrega de objeto, apretón: la anatomía la fija el keyframe, nunca el texto\nContacto entre héroes sobre placa",
+     "contexto": "Sujetos ↓ · Acción → | A pose | B instante pico | C movimiento | D fenómeno | E interacción | F multitud"
+    },
+    {
+     "id": "e331307888ed",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "70-70",
+       "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Dos riders en el mismo cuadro: uno por generación sobre la placa de agua, con la estela de cada uno coherente con su dirección. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+    },
+    {
+     "id": "ea95b6e1027a",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "lineas": "130-131",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ],
+     "texto": "9. Contactos entre personas: \"a natural high five\" — la anatomía la fija el keyframe\n   aprobado, nunca la asignación de manos por texto."
+    },
+    {
+     "id": "ee74bb41a45e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "lineas": "68-68",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Dos atletas en contacto, tackle o abrazo de meta: un sujeto por generación, el contacto lo fija el keyframe aprobado, manos nombradas. [FUENTE: produccion-visual-sw30/SKILL.md R9]"
+    },
+    {
+     "id": "f7324edaf745",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "lineas": "22-22",
+       "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+      }
+     ],
+     "texto": "- Multitud anónima y grupo ensamble son técnicas distintas, no dos tamaños de la misma. En la multitud nadie tiene rostro legible; en el ensamble todos."
+    }
+   ]
+  },
+  {
+   "grupo": "G0013",
+   "miembros": [
+    {
+     "id": "0314053f050a",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "119-119",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E4.5\nSeries lock\nstoryboard-architect paso 6\nAnclas de E3\ncharacter, environment, lighting, color_grade\nDefine qué génesis hacen falta: personaje y entorno como mínimo",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "05648e4f7773",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "lineas": "28-33",
+       "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+      }
+     ],
+     "texto": "Contains:\n\n- Character anchor (who's in frame, described identically every shot)\n- Environment description (where the action takes place, identical every shot)\n- Lighting setup (direction, source, color temperature, identical every shot)\n- Color grade (filmic look, identical every shot)"
+    },
+    {
+     "id": "2b45b8b352b0",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "88-92",
+       "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+      }
+     ],
+     "texto": "This trips people up. The rule:\n\n- **brand_lock**, locked across the entire project. Palette, type, \"never\" list.\n- **series_lock**, locked across this storyboard. Character anchor, environment, lighting style, color grade.\n- **subject (per shot)**, what's different about *this* shot. Action, expression, framing-specific composition notes."
+    },
+    {
+     "id": "52a9c28acb70",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "lineas": "7-9",
+       "encabezado": "Prompt Anatomy: The Five Layers › Layer 1. Brand Lock"
+      }
+     ],
+     "texto": "**What:** the locked brand parameters for the entire project.\n**Source:** `brand-lock.snapshot.md` referenced in `shots.json`.\n**Constant across:** every storyboard, every shot."
+    },
+    {
+     "id": "5ed8061b9f95",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-video-storyboard/SKILL.md",
+       "lineas": "87-94",
+       "encabezado": "AI Video Storyboard Generator › Workflow › Step 4 — Write Each Shot"
+      }
+     ],
+     "texto": "**Critical rules for shot prompts:**\n\n1. **Always specify the shared visual language** in every prompt (color palette, lighting, lens character, film look). This is how you enforce consistency.\n2. **Specify exact duration** (4s / 5s / 8s) and **aspect ratio** (9:16 for TikTok/Reels, 16:9 for YouTube landscape, 1:1 for feed posts).\n3. **Always end with \"cinematic 1080p, synchronized audio\"** — this signals professional-grade quality and works with modern video models that support both.\n4. **Use cinematography vocabulary**: ECU (extreme close-up), CU, MS (medium shot), WS (wide shot), OTS (over-the-shoulder), POV, Dutch angle, low angle, high angle, bird's eye, dolly in, dolly out, tracking, handheld, rack focus, etc.\n5. **Don't write abstract prompts** — be concrete. \"A woman\" → \"A barista in her late 20s with wavy auburn hair, wearing a denim apron\".\n6. **No model-specific hacks** — don't write prompts tuned to specific model quirks. Write model-agnostic cinematic prompts that work anywhere."
+    },
+    {
+     "id": "73cb97ea1a81",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "113-114",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+      }
+     ],
+     "texto": "2. `series_lock.json` se extrae de `shots.json` (`series_lock.character/environment/\n   lighting/color_grade`) — son las mismas cadenas que forge exige verbatim."
+    },
+    {
+     "id": "793b494091d3",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/templates/shots.schema.json",
+       "lineas": "42-46",
+       "encabezado": "shots.schema.json › series_lock"
+      }
+     ],
+     "texto": "    \"series_lock\": {\n      \"type\": \"object\",\n      \"required\": [\"character\", \"environment\", \"lighting\", \"color_grade\"],\n      \"additionalProperties\": false,\n      \"properties\": {"
+    },
+    {
+     "id": "9dc1f62bf9b4",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/SKILL.md",
+       "lineas": "147-147",
+       "encabezado": "Storyboard Architect › Workflow › Step 6. Lock the series"
+      }
+     ],
+     "texto": "Define environment, lighting, and character anchors that apply across every shot. These go at the top of `shots.json` under `series_lock`. Without these, image generation will produce incoherent frames."
+    },
+    {
+     "id": "a17cc447a0bd",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "94-94",
+       "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+      }
+     ],
+     "texto": "If you find yourself repeating the same lighting description across shots, it belongs in series_lock. If you find yourself repeating the same color description across storyboards, it belongs in brand_lock."
+    },
+    {
+     "id": "b92c3acf8c10",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "204-204",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Entradas de la génesis"
+      }
+     ],
+     "texto": "series_lock de shots.json: personaje, entorno, luz"
+    },
+    {
+     "id": "c29d1042ecc9",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+       "lineas": "24-26",
+       "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+      }
+     ],
+     "texto": "**What:** the locked anchors for this specific storyboard.\n**Source:** `shots.json` → `series_lock`.\n**Constant across:** every shot in this one storyboard."
+    },
+    {
+     "id": "d257df135e0f",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-video-storyboard/SKILL.md",
+       "lineas": "58-64",
+       "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+      }
+     ],
+     "texto": "Before writing any shot, lock in the shared visual language. This is what makes shots edit together:\n\n- **Color palette** (3-5 specific hex values or named colors)\n- **Lighting style** (golden hour / neon / overcast / motivated / cinematic rim light)\n- **Lens character** (shallow DOF / deep focus / wide angle distortion / macro)\n- **Film look** (clean digital / 16mm grain / anamorphic / VHS / 35mm)\n- **Motion language** (handheld / locked off / dolly only / gimbal smooth)"
+    },
+    {
+     "id": "d40a1aac0155",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "402-405",
+       "encabezado": "aurora prompt_linter.py › SERIES_LOCK_KEYS"
+      }
+     ],
+     "texto": "# ----------------------------------------------------------------------------\n# Series lock (P4)\n# ----------------------------------------------------------------------------\nSERIES_LOCK_KEYS = (\"character\", \"environment\", \"lighting\", \"color_grade\")"
+    },
+    {
+     "id": "e15b207af24d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "58-62",
+       "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+      }
+     ],
+     "texto": "Don't redefine per shot. Define once in `series_lock.lighting`. Examples:\n\n- `soft natural side-light, large window left, warm afternoon`\n- `hard top-light, single source, deep shadows, studio black`\n- `practical mixed sources, neon accents, urban night`"
+    },
+    {
+     "id": "e3d40303bdc2",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-video-storyboard/SKILL.md",
+       "lineas": "66-66",
+       "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+      }
+     ],
+     "texto": "Write these as a **Visual Theme** block at the top of the output. Every shot's prompt must respect this block."
+    }
+   ]
+  },
+  {
+   "grupo": "G0014",
+   "miembros": [
+    {
+     "id": "03cc62ed2296",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "401-401",
+       "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+      }
+     ],
+     "texto": "For dramatic, multi-shot, character-locked, or stitched-clip work — always use the 11-block production-grade skeleton from section 6."
+    },
+    {
+     "id": "19453edd814b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "92-92",
+       "encabezado": "Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)"
+      }
+     ],
+     "texto": "Write in full sentences, not tags. Seedance prefers clear grammatical prose. For dramatic / multi-shot / character-locked work, **use the production-grade skeleton in section 6 instead.**"
+    },
+    {
+     "id": "22e170833e7a",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/prompt-framework.md",
+       "lineas": "87-88",
+       "encabezado": "Prompt Framework › Output Structure"
+      }
+     ],
+     "texto": "**3. Exclusions** - что исключить (опционально):\n> Формулируй позитивно! NBP лучше понимает \"clean background\" чем \"no clutter\""
+    },
+    {
+     "id": "4c1ece8f1d5b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "64-64",
+       "encabezado": "Universal rules — apply to every video model › 2. U1. Universal prompt skeleton"
+      }
+     ],
+     "texto": "Model-specific skeletons live in their reference files (`seedance.md`, `kling.md`, `veo.md`). For dramatic / multi-shot / character-locked Seedance work, the production-grade 11-block skeleton in `seedance.md` §6 supersedes this generic skeleton."
+    },
+    {
+     "id": "5720658ff904",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "51-51",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+      }
+     ],
+     "texto": "| Negative framing | Использовать позитив | Использовать позитив + явный preserve list |",
+     "contexto": "| Аспект | Nano Banana | GPT Image 2 |\n|--------|-------------|-------------|"
+    },
+    {
+     "id": "6cf160475d9f",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "96-96",
+       "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+      }
+     ],
+     "texto": "Use this for any dramatic piece, multi-shot ad, music-video segment, or character-locked clip. Each block answers a specific failure mode. Skipping a block reintroduces that failure."
+    },
+    {
+     "id": "770fabbe163b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "81-81",
+       "encabezado": "Universal rules — apply to every video model › 5. U4. Natural language beats tag spam"
+      }
+     ],
+     "texto": "Video models are not image models. Tag stuffing like \"masterpiece, 4k, cinematic, beautiful\" fails. Write in full cinematic sentences as if briefing a human DOP."
+    },
+    {
+     "id": "787210f26b9f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "25-25",
+       "encabezado": "Nano Banana — Specific Rules › Что НЕ указывать"
+      }
+     ],
+     "texto": "- Tag-soup: «cool, modern, 4k, cinematic» — пишет связным предложением."
+    },
+    {
+     "id": "87b4652499a9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "173-173",
+       "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+      }
+     ],
+     "texto": "Write as flowing prose. Kling 1.x – 2.x dislikes fragmented tag-style inputs."
+    },
+    {
+     "id": "8adea3cbbb4f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "lineas": "114-114",
+       "encabezado": "Final response style"
+      }
+     ],
+     "texto": "Avoid: tag soup (\"cool, modern, 4k\"), vague praise (\"stunning, epic, masterpiece\" — actively hurts GPT Image 2), negative framing (\"no people, no cars\" — invert to positive), external comparisons (\"like Apple ad\" — describe the visual properties instead), numerical lens parameters in Nano Banana prompts (it ignores them)."
+    },
+    {
+     "id": "9ca075e56808",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "27-28",
+       "encabezado": "Golden Rules › 4. Natural Language"
+      }
+     ],
+     "texto": "❌ Bad: \"Cool car, neon, city, night, 8k\"\n✅ Good: \"A cinematic wide shot of a futuristic sports car speeding through a rainy Tokyo street at night. Neon signs reflect off wet pavement and metallic chassis.\""
+    },
+    {
+     "id": "c8c490e17c80",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "86-86",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't write Midjourney-style comma stacks**. GPT Image parses them as a list of disconnected concepts"
+    },
+    {
+     "id": "cf0b924fa82c",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "12-12",
+       "encabezado": "Golden Rules › 2. Positive Framing"
+      }
+     ],
+     "texto": "Describe what you WANT, not what you don't want. The model understands presence better than absence."
+    },
+    {
+     "id": "d3c8cb311190",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "152-152",
+       "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+      }
+     ],
+     "texto": "Why 11 blocks and not 6? Each block prevents one specific Seedance failure: identity drift, one-take collapse, mood smear, lens chaos, audio mismatch, drift on rhythm. Cheap insurance."
+    }
+   ]
+  },
+  {
+   "grupo": "G0015",
+   "miembros": [
+    {
+     "id": "098af7511cdb",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "22-22",
+       "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+      }
+     ],
+     "texto": "If you don't see that override flag, default to Mode 1."
+    },
+    {
+     "id": "0aa9b5e755c8",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Ideogram (v3)"
+      }
+     ],
+     "texto": "This adapter has **two modes**: composited (default) and text-in-image (override)."
+    },
+    {
+     "id": "30006d101ab0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "326-326",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "| `adapters/ideogram.md` | Ideogram v3 | Text in image (override only) |",
+     "contexto": "| File | Generator | Strength |\n|---|---|---|"
+    },
+    {
+     "id": "40be298cd6df",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "92-92",
+       "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't pile multiple text elements in one prompt**. Ideogram handles one text element well, two becomes lottery, three is broken"
+    },
+    {
+     "id": "5cb5d9f24542",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "86-86",
+       "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+      }
+     ],
+     "texto": "Ideogram's specialty is text. If the brief doesn't need text-in-image, picking Ideogram is choosing the wrong tool."
+    },
+    {
+     "id": "70a6e342ec77",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+       "lineas": "52-56",
+       "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+      }
+     ],
+     "texto": "**Prompt-level fixes:**\n- The right answer is almost always: **don't put text in the prompt**. Composite separately from `text-overlays.json`.\n- If text must be in-image (poster work), use Ideogram v3 with explicit override flag\n- Limit to one text element per prompt\n- Use simple fonts (sans-serif, clean serif), cursive and decorative fonts fail even on Ideogram"
+    },
+    {
+     "id": "8adbd948a790",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "90-90",
+       "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't use Mode 2 without the rationale override**, defaults to text-in-image cause double-text (composited + generated) which destroys the comp"
+    },
+    {
+     "id": "a00cbbaeccec",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+       "lineas": "38-53",
+       "encabezado": "_capabilities.json › ideogram"
+      }
+     ],
+     "texto": "    {\n      \"id\": \"ideogram\",\n      \"display_name\": \"Ideogram\",\n      \"model_version\": \"v3\",\n      \"last_verified\": \"2026-05-08\",\n      \"prompt_style\": \"natural\",\n      \"max_prompt_words\": 120,\n      \"supports_text_render\": true,\n      \"supports_motion\": false,\n      \"supports_character_ref\": false,\n      \"supports_style_ref\": true,\n      \"supports_negative_prompt\": true,\n      \"aspect_param\": \"aspect_ratio\",\n      \"api_access\": \"full\",\n      \"notes\": \"Best in-class text rendering. The exception case: if a shot truly needs baked text, Ideogram is the fallback. Default is still composite-after.\"\n    },"
+    },
+    {
+     "id": "a36a65ed4c44",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "75-80",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+      }
+     ],
+     "texto": "GPT Image handles text-in-image at roughly 95% accuracy, second only to Ideogram. When text is required:\n\n- Put the exact text in straight double-quotes within the prompt\n- Specify position explicitly (\"centered in the lower third\")\n- Specify approximate typeface character (\"bold sans-serif\", \"elegant serif\")\n- Limit to one text element per prompt for reliability"
+    },
+    {
+     "id": "a6b60635a93f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "5-5",
+       "encabezado": "Adapter: Ideogram (v3)"
+      }
+     ],
+     "texto": "Ideogram is the only generator that reliably renders text inside images. Use it for cases where text-as-image is the deliverable, posters, branded social tiles, signage, packaging mockups. For everything else, default to Flux or Midjourney and composite text separately."
+    },
+    {
+     "id": "abc41c129f8c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "56-60",
+       "encabezado": "Adapter: Ideogram (v3) › Composition pattern (Mode 1, composited)"
+      }
+     ],
+     "texto": "Same as Flux pattern, no text in prompt:\n\n```\n{Framing description with character and action}. {Environment from series_lock}. {Lighting from series_lock}. {Photographic spec}. {Brand mood and color}. Clean composition with negative space for text overlay placement.\n```"
+    },
+    {
+     "id": "b6867214509a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "15-15",
+       "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+      }
+     ],
+     "texto": "Use when the on-screen text is meant to appear as part of the image itself, a poster headline, a sign in the scene, a packaging label. This is the only case where a generator prompt contains the text content."
+    },
+    {
+     "id": "d58afe65873b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "11-11",
+       "encabezado": "Adapter: Ideogram (v3) › Mode 1: Composited (default)"
+      }
+     ],
+     "texto": "Same as Flux, generate the image clean, composite text in post. Use when Ideogram is being chosen for general image quality, not text rendering. Syntax matches Flux conventions."
+    },
+    {
+     "id": "e5fe4eddba9c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "17-20",
+       "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+      }
+     ],
+     "texto": "**To trigger Mode 2, the shot must have an explicit override flag in rationale**, e.g.:\n```\n\"rationale\": \"Text-in-image override: poster shot, headline must render as part of composition\"\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0016",
+   "miembros": [
+    {
+     "id": "0e38a4033ff6",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "166-166",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+      }
+     ],
+     "texto": "Edificación / landmark\nEdificio, puente, plaza, monumento, ciudad reconocible\nL\nsin código propio\nNB2 cuando la arquitectura debe ser fiel a la realidad; GPT Image 2 para época y cultura, no para geometría exacta\nSí, solo NB2: \"ensure the architectural details are accurate to reality\"\nVerificar que el resultado coincide con el lugar real; thinking_level high si hay grounding y razonamiento espacial a la vez\nPlaca de establecimiento, vista aérea, fondo de cuadros",
+     "contexto": "Clase | Subclases | Categoría aurora | Caso en la base hoy | Modelo según la fuente | Grounding | Reglas propias | Qué siembra"
+    },
+    {
+     "id": "1e3c7b6e5e02",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "55-58",
+       "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Thinking Mode"
+      }
+     ],
+     "texto": "Включён по умолчанию; у NBP отключить нельзя (модель рисует до 2 «thought images» в бэкенде, они не тарифицируются как картинки, но thinking-токены платные). У NB2 есть рычаг `thinking_level: minimal | high` (default `minimal`) — поднимай до `high` для:\n- Невнятных результатов, требующих reasoning\n- Сложных инфографик со spatial logic\n- Grounding + spatial reasoning одновременно"
+    },
+    {
+     "id": "314570390f9b",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "30-30",
+       "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)"
+      }
+     ],
+     "texto": "NB2 ищет реальные изображения в интернете до генерации. Архитектурно точные конкретные локации, корректные виды животных/растений."
+    },
+    {
+     "id": "3ee6573f6ba9",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "62-62",
+       "encabezado": "Multitud anónima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Lugar real, estadio o plaza reconocibles: NB2 con image grounding para la placa. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "41f28766aa00",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "246-246",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "Arquitectura real, landmark, especie animal o vegetal\nNB2 con Image Grounding\nÚnico con grounding; GPT solo anclas de época\nthinking_level high si grounding + razonamiento espacial",
+     "contexto": "Situación | Modelo | Por qué según la fuente | Resolución y costo"
+    },
+    {
+     "id": "51fb0525e7a5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "63-63",
+       "encabezado": "Agua en superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Lugar reconocible, una bahía o un lago concreto: NB2 con image grounding. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "67df074d3132",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "25-25",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в"
+      }
+     ],
+     "texto": "- **Image grounding.** NB2 ищет реальные изображения в интернете перед генерацией — точная архитектура конкретного храма, моста, площади; конкретные виды животных, растений. GPT Image 2 этого не делает."
+    },
+    {
+     "id": "83680d5237d3",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "lineas": "60-60",
+       "encabezado": "Subacuático › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "93f4bbc8781e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "60-60",
+       "encabezado": "Luz y clima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- NB2 con image grounding cuando el fenómeno cae sobre un lugar real reconocible, edificio o skyline. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "99453f3d8486",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "58-58",
+       "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Si el sujeto es una especie animal real, NB2 con image grounding para la anatomía correcta. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "a370b61cc5a6",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "221-221",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que cambia por clase"
+      }
+     ],
+     "texto": "Edificación y animal: grounding NB2, verificación contra la realidad"
+    },
+    {
+     "id": "b7c53d9dd935",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/03-subacuatico.md",
+       "lineas": "58-58",
+       "encabezado": "Subacuático › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- NB2 con image grounding cuando el cenote, el arrecife o la especie deben ser fieles a la realidad; el grounding cubre lugares, animales y plantas. [FUENTE: image/references/nano-banana.md]"
+    },
+    {
+     "id": "ddd6b01f36f8",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "9-9",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Реальное место/объект (с грунтингом) | **Nano Banana** (NB2/NBP) |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    },
+    {
+     "id": "ec1d4e770aa8",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-spot.html",
+       "lineas": "167-167",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+      }
+     ],
+     "texto": "Animal\nEspecie real, mascota de marca, criatura\nP\nsin código propio\nNB2 con grounding para anatomía correcta de la especie; NBP para física compleja\nSí: especies de animales, plantas, insectos\nSin template de identidad en SW30. Consistencia solo por refs de personaje: NB2 hasta 4, NBP hasta 5. Anatomía y pelaje se auditan como manos y rostros\nVariantes de pose, cuadros con persona, keyframes",
+     "contexto": "Clase | Subclases | Categoría aurora | Caso en la base hoy | Modelo según la fuente | Grounding | Reglas propias | Qué siembra"
+    }
+   ]
+  },
+  {
+   "grupo": "G0017",
+   "miembros": [
+    {
+     "id": "0425c91eae54",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "49-49",
+       "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+      }
+     ],
+     "texto": "Стартуй с `low`, апгрейди по необходимости. Часто `low` уже достаточно."
+    },
+    {
+     "id": "0c52df765700",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+      }
+     ],
+     "texto": "For storyboard work, Seedream is useful for the storyboard preview pass: render every shot quickly to validate composition before committing to higher-cost generation for finals."
+    },
+    {
+     "id": "17469e7ff15d",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "336-336",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 18. Economics and model choice"
+      }
+     ],
+     "texto": "- Costs are real: a 30s/720p generation on Jimeng runs ~500-700 credits. Production budgets must assume re-rolls, extensions and segment reshoots — fix with edit/extend/reshoot instead of full regeneration whenever possible. Draft at 480p, finish at 720p."
+    },
+    {
+     "id": "2eaaa40b20b7",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "120-120",
+       "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+      }
+     ],
+     "texto": "**Workflow:** прогон вариантов на `0.5K` flash (или NB2 Lite на 1K) → отбор → переген победителя на `2K`/`4K`."
+    },
+    {
+     "id": "36c53ee6ba05",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "62-62",
+       "encabezado": "Luz y clima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo, final en alta. [FUENTE: image/references/golden-rules.md]"
+    },
+    {
+     "id": "41bd2faae18a",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "45-45",
+       "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+      }
+     ],
+     "texto": "| `quality: low` | High-volume, превью, exploratory, latency-sensitive, draft |",
+     "contexto": "| Setting | Когда |\n|---------|-------|"
+    },
+    {
+     "id": "5c83024ef907",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "79-79",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "- **GPT Image 2:** прогон на `quality: low` → отбор → переген на `medium` или `high`."
+    },
+    {
+     "id": "76b59a27bfd7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "59-59",
+       "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Recorrido de costo: variantes a 0.5K, selección, regeneración del ganador a 2K o 4K. [FUENTE: image/references/golden-rules.md]"
+    },
+    {
+     "id": "8789e1114b9f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "57-57",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › When Seedream is the right choice"
+      }
+     ],
+     "texto": "- **Storyboard preview pass**, render all shots quickly at low cost to validate composition before final pass"
+    },
+    {
+     "id": "8c9f82b73ade",
+     "ubicaciones": [
+      {
+       "documento": "apd/originales/flujo-anclas.html",
+       "lineas": "250-250",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "Serie de muchas variantes o exploración\nNB2 Lite o gpt-image-1-mini\nReconocimiento barato, final caro\nLite solo 1K",
+     "contexto": "Situación | Modelo | Por qué según la fuente | Resolución y costo"
+    },
+    {
+     "id": "95192cdd4004",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "63-63",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "| GPT Image 2 (`low`) | дёшево | Latency-sensitive, превью |",
+     "contexto": "| Модель | Цена | Заметки |\n|--------|------|---------|"
+    },
+    {
+     "id": "d3b4e661476d",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "78-78",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "- **Nano Banana:** прогон вариантов на `0.5K` Flash → отбор → переген победителя на `2K`/`4K`."
+    },
+    {
+     "id": "d3bfafc81060",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "81-81",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "В обоих случаях: дешёвая разведка → дорогой финал."
+    }
+   ]
+  }
+ ]
+}
