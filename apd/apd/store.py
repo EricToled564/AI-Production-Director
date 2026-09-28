@@ -1,21 +1,32 @@
-"""Persistencia del servidor (SQLite). Un cierre del navegador no pierde nada: el
-proyecto, cada versión, los lotes en curso, los ledgers revisados y las evaluaciones
-visuales viven aquí, no en el navegador."""
+"""Persistencia del servidor. Un cierre del navegador no pierde nada: el proyecto, cada versión, los lotes en curso,
+los ledgers revisados y las evaluaciones visuales viven aquí, no en el navegador.
+
+Dos motores con el mismo SQL (dialecto SQLite):
+- local: un archivo SQLite (APD_DB, por defecto apd/data/proyectos.sqlite);
+- Turso/libSQL por HTTP cuando existen TURSO_DATABASE_URL y TURSO_AUTH_TOKEN (despliegue sin disco, p. ej. Vercel).
+"""
 
 from __future__ import annotations
 
+import base64
 import json
+import os
 import sqlite3
 import threading
+import urllib.request
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
 from . import fuentes as F
 
-DB = Path(__import__("os").environ.get("APD_DB", F.DATA / "proyectos.sqlite"))
+DB = Path(os.environ.get("APD_DB", F.DATA / "proyectos.sqlite"))
 UPLOADS = F.DATA / "uploads"
 _lock = threading.RLock()
+
+
+def motor() -> str:
+    return "turso" if os.environ.get("TURSO_DATABASE_URL") and os.environ.get("TURSO_AUTH_TOKEN") else "sqlite"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS proyectos (id TEXT PRIMARY KEY, nombre TEXT NOT NULL, creado TEXT NOT NULL,
@@ -32,6 +43,8 @@ CREATE TABLE IF NOT EXISTS eventos (proyecto_id TEXT, ts TEXT NOT NULL, tipo TEX
 CREATE TABLE IF NOT EXISTS visual (id TEXT PRIMARY KEY, proyecto_id TEXT NOT NULL, version INTEGER NOT NULL,
   entrega_id TEXT NOT NULL, archivo TEXT NOT NULL, sha256 TEXT NOT NULL, media_type TEXT, prompt_hash TEXT,
   defectos TEXT NOT NULL, veredicto TEXT, nota TEXT, creado TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS archivos (nombre TEXT PRIMARY KEY, datos TEXT NOT NULL, creado TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS trabajos (id TEXT PRIMARY KEY, datos TEXT NOT NULL, actualizado TEXT NOT NULL);
 """
 
 
@@ -39,7 +52,96 @@ def ahora() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def con() -> sqlite3.Connection:
+# --------------------------------------------------------------------------- Turso / libSQL por HTTP (Hrana v2)
+
+class _Cursor:
+    def __init__(self, filas):
+        self._f = filas
+
+    def fetchone(self):
+        return self._f[0] if self._f else None
+
+    def fetchall(self):
+        return list(self._f)
+
+    def __iter__(self):
+        return iter(self._f)
+
+
+def _arg(v):
+    if v is None:
+        return {"type": "null"}
+    if isinstance(v, bool):
+        return {"type": "integer", "value": str(int(v))}
+    if isinstance(v, int):
+        return {"type": "integer", "value": str(v)}
+    if isinstance(v, float):
+        return {"type": "float", "value": v}
+    if isinstance(v, (bytes, bytearray)):
+        return {"type": "blob", "base64": base64.b64encode(v).decode()}
+    return {"type": "text", "value": str(v)}
+
+
+def _val(x):
+    t = x.get("type")
+    if t == "null":
+        return None
+    if t == "integer":
+        return int(x["value"])
+    if t == "float":
+        return float(x["value"])
+    if t == "blob":
+        return base64.b64decode(x.get("base64", ""))
+    return x.get("value")
+
+
+class _Turso:
+    """Subconjunto de sqlite3.Connection que usa este módulo, sobre la API HTTP de Turso. Cada execute va en su propia
+    petición (autocommit); el `with` no abre transacción. Sin dependencias: sólo urllib."""
+    _esquema_listo = False
+
+    def __init__(self):
+        url = os.environ["TURSO_DATABASE_URL"].strip()
+        self.url = ("https://" + url.split("://", 1)[1] if url.startswith("libsql://") else url).rstrip("/") + "/v2/pipeline"
+        self.token = os.environ["TURSO_AUTH_TOKEN"].strip()
+
+    def _pipeline(self, stmts):
+        reqs = [{"type": "execute", "stmt": {"sql": s, "args": [_arg(a) for a in args]}} for s, args in stmts]
+        body = json.dumps({"requests": reqs + [{"type": "close"}]}).encode()
+        req = urllib.request.Request(self.url, data=body, method="POST",
+                                     headers={"authorization": f"Bearer {self.token}", "content-type": "application/json"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            res = json.loads(r.read().decode())
+        out = []
+        for x in res.get("results", [])[:len(stmts)]:
+            if x.get("type") != "ok":
+                raise sqlite3.OperationalError(f"Turso: {(x.get('error') or {}).get('message', x)}")
+            rs = x["response"]["result"]
+            out.append([tuple(_val(c) for c in fila) for fila in rs.get("rows", [])])
+        return out
+
+    def execute(self, sql, params=()):
+        return _Cursor(self._pipeline([(sql, tuple(params))])[0])
+
+    def executescript(self, script):
+        stmts = [(s.strip(), ()) for s in script.split(";") if s.strip()]
+        if stmts:
+            self._pipeline(stmts)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def con():
+    if motor() == "turso":
+        c = _Turso()
+        if not _Turso._esquema_listo:
+            c.executescript(SCHEMA)
+            _Turso._esquema_listo = True
+        return c
     DB.parent.mkdir(parents=True, exist_ok=True)
     c = sqlite3.connect(DB, timeout=30, check_same_thread=False)
     c.executescript(SCHEMA)
@@ -135,13 +237,41 @@ def lotes(clave: str, tipo: str) -> list[dict]:
 
 
 def guardar_archivo(data: bytes, nombre: str) -> dict:
-    UPLOADS.mkdir(parents=True, exist_ok=True)
-    h = F.sha256_text(data.decode("latin-1")) if False else __import__("hashlib").sha256(data).hexdigest()
+    h = __import__("hashlib").sha256(data).hexdigest()
     ext = Path(nombre).suffix.lower()[:8]
-    p = UPLOADS / f"{h}{ext}"
-    if not p.exists():
-        p.write_bytes(data)
-    return {"sha256": h, "ruta": str(p.relative_to(F.DATA)), "nombre": nombre, "bytes": len(data)}
+    archivo = f"{h}{ext}"
+    if motor() == "turso":  # sin disco persistente: el archivo vive en la base
+        with _lock, con() as c:
+            c.execute("insert or ignore into archivos values (?,?,?)", (archivo, base64.b64encode(data).decode(), ahora()))
+    else:
+        UPLOADS.mkdir(parents=True, exist_ok=True)
+        p = UPLOADS / archivo
+        if not p.exists():
+            p.write_bytes(data)
+    return {"sha256": h, "ruta": f"uploads/{archivo}", "nombre": nombre, "bytes": len(data)}
+
+
+def leer_archivo(archivo: str) -> bytes | None:
+    """Bytes de un archivo subido (sólo el nombre sha256+ext; nunca una ruta)."""
+    archivo = Path(archivo).name
+    if motor() == "turso":
+        with con() as c:
+            r = c.execute("select datos from archivos where nombre=?", (archivo,)).fetchone()
+        return base64.b64decode(r[0]) if r else None
+    p = UPLOADS / archivo
+    return p.read_bytes() if p.is_file() and p.resolve().is_relative_to(UPLOADS.resolve()) else None
+
+
+def trabajo_put(tid: str, datos: dict):
+    """Estado de un trabajo largo (revisión por lotes). Persistido para que otra instancia del servidor lo lea."""
+    with _lock, con() as c:
+        c.execute("insert or replace into trabajos values (?,?,?)", (tid, json.dumps(datos, ensure_ascii=False, default=str), ahora()))
+
+
+def trabajo_get(tid: str) -> dict | None:
+    with con() as c:
+        r = c.execute("select datos from trabajos where id=?", (tid,)).fetchone()
+    return json.loads(r[0]) if r else None
 
 
 def visual_put(v: dict):

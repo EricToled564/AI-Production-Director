@@ -12,6 +12,7 @@ from __future__ import annotations
 import copy
 import io
 import json
+import os
 import re
 import threading
 import uuid
@@ -410,7 +411,12 @@ def cambiar_campos(pid, cambios, autor="usuario", nota="edición de campos"):
 
 def aprobar_plan(pid, autor="usuario"):
     """El usuario revisó la plantilla y el plan: recién ahora se compilan los prompts, y la auditoría determinista
-    (gates originales) corre sola sobre ellos. Vale mientras no cambien los niveles 0-1 (ver clave_plan)."""
+    (gates originales) corre sola sobre ellos. No se aprueba una plantilla con datos que faltan."""
+    n, e = cargar(pid)
+    faltan = sorted(set(e["preflight"]["faltan"]) | {f for ent in e["spec"]["entregas"] for f in S.preflight_entrega(e["spec"], ent)["faltan"]})
+    if faltan:
+        raise ValueError("faltan datos en la plantilla antes de aprobar: " + ", ".join(faltan))
+
     def m(est):
         est.setdefault("aprobacion_plan", {"requerida": True})
         est["aprobacion_plan"]["aprobada"] = {"clave": clave_plan(est), "autor": autor, "fecha": ST.ahora()}
@@ -488,13 +494,16 @@ def aprobar_gate(pid, gate: str, artefacto: str = "", autor="usuario"):
 # --------------------------------------------------------------------------- modelo: revisión por lotes
 
 _trabajos: dict[str, dict] = {}
+# En un servidor sin proceso persistente (Vercel: cada petición es una invocación) un hilo de fondo muere al
+# responder: el trabajo corre dentro de la petición y su estado se guarda en la base para que la consulta lo lea.
+SIN_HILOS = bool(os.environ.get("VERCEL"))
 
 
 def trabajo(tid):
-    return _trabajos.get(tid)
+    return _trabajos.get(tid) or ST.trabajo_get(tid)
 
 
-def revisar_con_modelo(pid, en_hilo=True) -> str:
+def revisar_con_modelo(pid, en_hilo=None) -> str:
     """Revisa con el modelo los ids que la selección mecánica dejó abiertos (APD_REVISION=todas: todos los del medio).
     Reanudable: los lotes válidos no se repiten."""
     if not llm.proveedor().disponible():
@@ -524,10 +533,14 @@ def revisar_con_modelo(pid, en_hilo=True) -> str:
             _trabajos[tid]["estado"] = "COMPLETO" if all(r["completo"] for r in res.values()) else "INCOMPLETO"
         except Exception as ex:
             _trabajos[tid].update(estado="ERROR", error=f"{type(ex).__name__}: {ex}")
+    if en_hilo is None:
+        en_hilo = not SIN_HILOS
+    ST.trabajo_put(tid, _trabajos[tid])
     if en_hilo:
-        threading.Thread(target=run, daemon=True).start()
+        threading.Thread(target=lambda: (run(), ST.trabajo_put(tid, _trabajos[tid])), daemon=True).start()
     else:
         run()
+        ST.trabajo_put(tid, _trabajos[tid])
     return tid
 
 
@@ -574,7 +587,7 @@ def auditar(pid, originales=True) -> dict:
     return out
 
 
-def semantica_modelo(pid, eid, en_hilo=True) -> str:
+def semantica_modelo(pid, eid, en_hilo=None) -> str:
     if not llm.proveedor().disponible():
         raise llm.SinModelo(llm.estado()["motivo"])
     tid = uuid.uuid4().hex[:8]
@@ -601,10 +614,14 @@ def semantica_modelo(pid, eid, en_hilo=True) -> str:
             _trabajos[tid]["estado"] = "COMPLETO"
         except Exception as ex:
             _trabajos[tid].update(estado="ERROR", error=f"{type(ex).__name__}: {ex}")
+    if en_hilo is None:
+        en_hilo = not SIN_HILOS
+    ST.trabajo_put(tid, _trabajos[tid])
     if en_hilo:
-        threading.Thread(target=run, daemon=True).start()
+        threading.Thread(target=lambda: (run(), ST.trabajo_put(tid, _trabajos[tid])), daemon=True).start()
     else:
         run()
+        ST.trabajo_put(tid, _trabajos[tid])
     return tid
 
 

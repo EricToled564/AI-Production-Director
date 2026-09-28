@@ -223,8 +223,10 @@ async function esperarServidor() {
     await page.selectOption('#selEnt', 'E1'); await sleep(200);
     const e1 = /LIBERABLE/.test(await page.textContent('#main'));
     await page.selectOption('#selEnt', 'E2'); await sleep(200);
-    const e2 = /BLOQUEADA/.test(await page.textContent('#main'));
-    check('A6.4b', 'Editar E2 no toca E1: E1 sigue liberada; E2 bloqueada', e1 && e2, `E1 LIBERABLE=${e1} · E2 BLOQUEADA=${e2}`);
+    const m2 = await page.textContent('#main');
+    const e2 = /LIBERABLE/.test(m2) && !/FALTA \d/.test(m2);  // la herencia con rastro se comprueba en test_e2e
+    check('A6.4b', 'Editar E2 no toca E1; el cambio menor de E2 hereda la aprobación con rastro y se re-audita solo (U-2026-09-28-CAMBIO-QUIRURGICO)',
+      e1 && e2, `E1 LIBERABLE=${e1} · E2 LIBERABLE con aprobación heredada=${e2}`);
     await page.selectOption('#selEnt', 'E1'); await sleep(200);
 
     // A6.8 — feedback dirigido
@@ -249,8 +251,8 @@ async function esperarServidor() {
     check('A6.10a', 'Evaluación visual con imagen, defectos ligados a contratos', /Apariencia de render/.test(vis) && /Ojos desalineados/.test(vis) && /contrato/.test(vis),
       vis.replace(/\s+/g, ' ').match(/REVISE.{0,200}/)?.[0] || '');
     await tab('prompts');
-    const niv = await page.$$eval('.nivel', ns => ns.map(n => n.innerText.replace(/\s+/g, ' ')));
-    check('A6.10b', 'Veredicto visual separado de la cobertura', niv.some(n => /Resultado visual EVALUADO_CON_DEFECTOS/i.test(n)) && niv.some(n => /Cobertura de IDs COMPROBADA/i.test(n)), niv.map(n => n.slice(0, 50)).join(' | '));
+    const niv = await page.$$eval('.nivel', ns => ns.map(n => n.textContent.replace(/\s+/g, ' ')));
+    check('A6.10b', 'Veredicto visual separado de la cobertura', niv.some(n => /Resultado visual\s*EVALUADO_CON_DEFECTOS/i.test(n)) && niv.some(n => /Cobertura de IDs\s*COMPROBADA/i.test(n)), niv.map(n => n.slice(0, 50)).join(' | '));
     await shot('07_visual');
 
     // A6.9 — exportación

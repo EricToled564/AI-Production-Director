@@ -429,6 +429,9 @@ def aplicar_cambios(spec: dict, cambios: list[dict], autor: str = "usuario") -> 
         nuevo = dict(prev)
         if "valor" in c:
             nuevo["valor"] = c["valor"]
+            if isinstance(prev.get("valor"), list) and isinstance(c["valor"], str):
+                # la interfaz muestra las listas separadas por comas (p. ej. tipo_tarea «PROD, T1»)
+                nuevo["valor"] = [x.strip() for x in c["valor"].split(",") if x.strip()]
         estado = c.get("estado") or ("LOCKED" if nuevo["valor"] not in (None, "", []) else "OPEN")
         if estado == "NO_APLICA" and not (c.get("motivo") or "").strip():
             raise ValueError(f"{ruta}: NO_APLICA exige motivo")
