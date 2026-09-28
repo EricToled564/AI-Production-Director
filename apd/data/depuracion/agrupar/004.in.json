@@ -1,0 +1,1313 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "audio_dialogo",
+ "descripcion_tema": "audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio",
+ "filas": [
+  {
+   "id": "80c9f09dd127",
+   "alcance": "Kling (Kuaishou), kling.md §11",
+   "enunciado": "Fix para música que aparece aunque el prompt diga \"no music\" en Kling: el negativo de música no es fiable, así que se genera con generate_audio apagado y se agrega el sonido en post o se quita la pista de música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Music appears even though the prompt says \"no music\""
+    }
+   ]
+  },
+  {
+   "id": "e9ab4589d870",
+   "alcance": "Kling (Kuaishou), kling.md §11; Kling 3.0",
+   "enunciado": "Fix para Kling 3.0 que elige la voz equivocada: aplicar P3 poniendo el tono de voz dentro de la etiqueta del hablante, porque etiquetas genéricas [Man]/[Woman] reciben una voz genérica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Kling 3.0 picks the wrong voice"
+    }
+   ]
+  },
+  {
+   "id": "35b0f5024055",
+   "alcance": "Kling (Kuaishou), kling.md §11; Kling 3.0",
+   "enunciado": "Fix para lip-sync que deriva en Kling 3.0: aplicar P2 (ligar el diálogo a una acción visual única antes de la línea) y P4 (palabras de enlace como \"Immediately,\" entre líneas consecutivas).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Kling 3.0 dialogue lip-sync drifts"
+    }
+   ]
+  },
+  {
+   "id": "ba2a903c43c2",
+   "alcance": "Kling (Kuaishou), kling.md §12, multi-shot con diálogo; Kling 3.0",
+   "enunciado": "Ejemplo: prompt multi-shot con diálogo para Kling 3.0 (interrogatorio de 12 s con etiquetas de personaje con voz, cuatro shots con tiempos, enlace \"Immediately,\", líneas Camera/Lighting/Audio y campo negativo con dialogue overlap).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Multi-shot with dialogue (Kling 3.0)"
+    }
+   ]
+  },
+  {
+   "id": "8c1cf9932d61",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), elección de modelo por defecto",
+   "enunciado": "Exige usar Kling 3.0 sobre versiones anteriores cuando la tarea incluya diálogo multi-shot, narrativa continua de 10-15 s, lip-sync, varios personajes con voces distintas o imagen a video con texto legible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Default model choice"
+    }
+   ]
+  },
+  {
+   "id": "3c64bf028966",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), parámetros API (3.0, fal/oficial)",
+   "enunciado": "Parámetro API de Kling 3.0: generate_audio es booleano y no hay opción de \"sin música\" (el modelo pone música aun con prompt negativo), así que para audio limpio se genera con audio apagado o se quita la pista en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "f12598b6b2dd",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo P1-P4",
+   "enunciado": "Exige seguir cuatro reglas (P1-P4 de la guía de fal.ai) en cualquier escena hablada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "c4bcf0cbabeb",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P1 nombrado estructurado",
+   "enunciado": "Regla P1: usar identificadores únicos por personaje (correcto [Character A: Black-suited Agent]) y no etiquetas genéricas con \"then, he says\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "bd8cf8a9ff19",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P2",
+   "enunciado": "Ejemplo correcto de P2: \"Character A saca una nota doblada de su bolsillo y lee en voz alta: 'It's not what you think.'\"",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "97e2de6bebd8",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P2",
+   "enunciado": "Ejemplo incorrecto de P2: \"Character A says 'It's not what you think.'\" sin ancla visual hace derivar el lip-sync.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "98c34e966dd6",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P2 anclaje visual",
+   "enunciado": "Regla P2: anclar visualmente antes del diálogo, ligando la línea a una acción única primero.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "a6cbcbad9c2f",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P3",
+   "enunciado": "Ejemplo correcto de P3: [Character A, raspy deep voice]: \"We're out of time.\"",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "027eb2eda723",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P3",
+   "enunciado": "Ejemplo correcto de P3: [Character B, clear fearful voice]: \"Don't open it.\"",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "a42bb0d88f79",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P3",
+   "enunciado": "Ejemplo incorrecto de P3: [Man]: \"We're out of time.\" es vago y el modelo elige una voz genérica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "ea6ac3389338",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P3 tono de voz",
+   "enunciado": "Regla P3: asignar emoción o textura de voz en la etiqueta, en línea.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "514908765cb0",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P4",
+   "enunciado": "Ejemplo correcto de P4: \"Character A: 'I won't ask again.' Immediately, Character B: 'You don't have to.'\"",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "7526df0f086b",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P4",
+   "enunciado": "Ejemplo incorrecto de P4: dos líneas consecutivas [Character X] sin transición hacen que el modelo las superponga.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "2c00ea0a656f",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), protocolo de diálogo, P4 control temporal",
+   "enunciado": "Regla P4: usar palabras de enlace entre líneas para evitar que el diálogo se fusione.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Dialogue protocol (P1-P4)"
+    }
+   ]
+  },
+  {
+   "id": "c5a5cf493317",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), tabla vs 2.x; Kling 1.x-2.6 vs 3.0",
+   "enunciado": "Capacidad: audio nativo es limitado o apagado en Kling 1.x-2.6 y en 3.0 incluye diálogo, ambiente y tono de voz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+    }
+   ]
+  },
+  {
+   "id": "308f190db603",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), tabla vs 2.x; Kling 1.x-2.6 vs 3.0",
+   "enunciado": "Capacidad: lip-sync no existe en Kling 1.x-2.6 y en 3.0 es coherente en escenas multipersonaje.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+    }
+   ]
+  },
+  {
+   "id": "e42776a696d0",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), mapeo de casos (P9)",
+   "enunciado": "Mapeo de casos: los alias CLIP-DIALOGO, CLIP-DIALOG y CLIP-DIALOGUE corresponden al caso 4 (Etapa 6): Kling 3.0 P1-P4, Veo Says:, Seedance 2.5 { }.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "c85740a874a5",
+   "alcance": "Seedance (familia), seedance.md, §14 audio (1.5+)",
+   "enunciado": "Ejemplo: línea de audio 'Audio. fridge hum, distant rain on window, one stomach growl at 2.3 sec, final silence.'",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ]
+  },
+  {
+   "id": "d11ee082acba",
+   "alcance": "Seedance (familia), seedance.md, §14 audio (1.5+)",
+   "enunciado": "Reglas de audio: en 1.5/2.0 el diálogo va entre comillas dobles con la entrega declarada (en 2.5 usar marcadores dedicados `{ }`, `< >`, `( )`, `【 】`), mantener las líneas cortas porque los monólogos largos pierden sincronía (menos robusto que Veo para habla), escribir 'no music' si no se quiere y para subtítulos describir la voz en off y pedir texto en el borde inferior sincronizado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ]
+  },
+  {
+   "id": "648e43441777",
+   "alcance": "Seedance (familia), seedance.md, §14 audio (1.5+)",
+   "enunciado": "Seedance 1.5 Pro, 2.0 y 2.5 generan audio nativo y soportan lip-sync; incluir señales de audio en el cuerpo del prompt como si fuera un brief de sonido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ]
+  },
+  {
+   "id": "73c17f60a32d",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica Seedance 1.5 Pro: añade audio nativo y lip-sync.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "13aa90fba7ee",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "enunciado": "En Seedance 2.5 los humanos realistas son una característica destacada y no un riesgo (poros reales, microactuación contenida, lip-sync multilingüe en 11 idiomas); la precaución con rostros de la era 2.0 no aplica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+    }
+   ]
+  },
+  {
+   "id": "f06a7a2747d0",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "Cuando la fuente tiene narración, anclar los tiempos al habla y no a segundos ('When they say {now look at my hand}...'), porque la voz es la línea de tiempo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "175790599af7",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "Las ediciones solo de audio funcionan: por ejemplo, quitar solo la música original conservando diálogo, lip sync, ambiente y SFX de acción, y preservando imagen y ritmo de edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "2495807a28a8",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "Patrón de localización (filmar una vez, redoblar por mercado): reemplazar la narración y a la presentadora, conservando movimiento de cámara, blocking, ritmo de actuación, escena y producto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "3b0e77cfd717",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "enunciado": "Falla de subtítulos aleatorios o BGM no deseado: usar 'Pure video, no subtitles, no background music', fiable en 2.5, y repetirlo en la cola global.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Random subtitles or unwanted BGM"
+    }
+   ]
+  },
+  {
+   "id": "794ab69961b1",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "enunciado": "Ejemplo: heist de museo en un plano con 17 referencias (Jimeng), declarando escena y referencias por rol, ruta de cámara de @Image 16, beats con timestamps y sonido por marcadores `< >` y `( )`, cerrando con 'No subtitles, no logo, no watermark'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)"
+    }
+   ]
+  },
+  {
+   "id": "0836982acb6d",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "enunciado": "Explicación: las diecisiete referencias están ligadas a un rol por escena, la coreografía de cámara se aporta como diagrama de ruta y no como prosa y el sonido se diseña por beat con los marcadores dedicados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)"
+    }
+   ]
+  },
+  {
+   "id": "4d6fee16ed71",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Especifica el marcador de diálogo: llaves `{ }`, p. ej. {Hello, welcome back.}.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "b0f7758b7c24",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Especifica el marcador de efecto de sonido: ángulos `< >`, p. ej. <A bell rings in the distance>.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "8acacebb2800",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Especifica el marcador de música: paréntesis `( )`, p. ej. (Soft, rhythmic piano music plays in the background).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "90d913719127",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Especifica el marcador de subtítulos/títulos: corchetes `【 】`, p. ej. 【Chapter One: Departure】.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "919a53320eff",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Explicación: forma de labios, ritmo de habla y rostro coinciden con el idioma asignado en una sola pasada en los 11 idiomas soportados, incluidas escenas de idiomas mezclados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "5bad24b5567e",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Reforzar el idioma del diálogo con la fórmula 'Dialogue language + variedad regional o acento + estilo de entrega + hablante + {línea}' (ejemplo con inglés de Los Ángeles y japonés).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "1f3fabdc0478",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "enunciado": "Usar los marcadores dedicados de 2.5 para audio, diálogo y texto y no describir el audio en prosa suelta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "aaa38cf30e90",
+   "alcance": "Skill video, role-modes, modo Editor, reglas",
+   "enunciado": "Impulsar las transiciones con sonido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 3. Editor mode › Rules"
+    }
+   ]
+  },
+  {
+   "id": "90a4a7dc8992",
+   "alcance": "Skill video, role-modes, modo Editor, reglas",
+   "enunciado": "Poner un momento de silencio o quietud antes de un impacto mayor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 3. Editor mode › Rules"
+    }
+   ]
+  },
+  {
+   "id": "2652ae30f31a",
+   "alcance": "Skill video, role-modes, modo Guionista, formato de diálogo; Veo",
+   "enunciado": "Escribir las líneas habladas en sintaxis Veo lista para pegar (p. ej. 'He says, in a flat exhausted voice, \"We are fine. We are fine.\"').",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)"
+    }
+   ]
+  },
+  {
+   "id": "d65c6fdf8a45",
+   "alcance": "Skill video, role-modes, modo Guionista, formato de diálogo; Veo",
+   "enunciado": "Recortar las líneas de diálogo hasta que quepan en 8 segundos de habla natural.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)"
+    }
+   ]
+  },
+  {
+   "id": "49ded13694da",
+   "alcance": "Skill visual-prompt-forge, adapters, Veo 3",
+   "enunciado": "Adapter Veo 3: video con diálogo, lipsync y audio nativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Adapters"
+    }
+   ]
+  },
+  {
+   "id": "ddf2713d9341",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Define el patrón de sintaxis de Veo: movimiento de cámara al inicio, sujeto y acción en la duración, línea de diálogo entre comillas, entorno y luz del series_lock, dirección de audio y grade/mood del brand_lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "d01b0b3f2d6e",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Ejemplo: prompt de Veo con cámara estática, fundador que dice una línea entre comillas, luz lateral, dirección de audio de room tone y grade cálido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Example"
+    }
+   ]
+  },
+  {
+   "id": "54572ef3771a",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Ejemplo: shot con motion static y una línea hablada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Example"
+    }
+   ]
+  },
+  {
+   "id": "3a72a45093bf",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Establece que en video el movimiento de cámara es esencial y que la línea hablada, cuando hay diálogo, se escribe en el prompt (es audio, no texto en pantalla).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ]
+  },
+  {
+   "id": "9b9317d1b3a9",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija generate_audio=true por defecto, que es la razón de elegir Veo; solo se pone false para shots mudos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "44d77ad98987",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Presenta a Veo 3 como el modelo de diálogo y lipsync, el único adaptador con audio nativo sincronizado, con la mejor adherencia y realismo físico pero el más caro, reservado para shots con diálogo, lipsync o audio integrado; para B-roll mudo usar Kling.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ]
+  },
+  {
+   "id": "2a5840d25f53",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe poner texto en pantalla en el prompt; las líneas habladas sí, pero los captions se rinden en post desde text-overlays.json.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "c7462d7c0059",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe que el audio automático de Veo compita con una cama de audio de post: un solo dueño del sonido por shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "5714d0c643d2",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe que el diálogo exceda la duración: una línea que necesita 12 s se corta o se acelera a 8 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "af7c69b5787a",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge), dirección de audio",
+   "enunciado": "Exige poner generate_audio=false y omitir la dirección de audio cuando el brand-lock o storyboard es dueño del audio (VO aparte, música en post), para que Veo no invente una pista competidora.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Audio direction"
+    }
+   ]
+  },
+  {
+   "id": "5954151235b8",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge), dirección de audio",
+   "enunciado": "Indica que incluso en shots mudos Veo puede colocar ambiente, y la dirección de audio debe ser explícita y breve, con ejemplos como room tone sin música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Audio direction"
+    }
+   ]
+  },
+  {
+   "id": "45e285fc5b16",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge), diálogo y lipsync",
+   "enunciado": "Exige poner la línea exacta entre comillas cuando el sujeto debe hablar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Dialogue and lipsync"
+    }
+   ]
+  },
+  {
+   "id": "702beaf3ebbf",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge), diálogo y lipsync",
+   "enunciado": "Limita las líneas habladas a lo que cabe en la duración (unas 12-18 palabras en 8 s), dirigiendo la entrega; Veo hace lipsync de la línea citada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Dialogue and lipsync"
+    }
+   ]
+  },
+  {
+   "id": "928ddcdda102",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge), entrega",
+   "enunciado": "Establece que los clips de Veo llegan con audio y aún requieren ensamblaje al timing, texto desde text-overlays.json, grade y decisión de audio (conservar la pista nativa o silenciarla), indicando cuál en el handoff.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "c9926f7685b1",
+   "alcance": "Veo, Seedance 1.5+ y Kling; camera-lighting-vocabulary §8",
+   "enunciado": "Especifica por modelo cómo escribir el sonido: en Veo se envuelve en sintaxis (Audio:, SFX: o paréntesis), en Seedance 1.5+ va en el cuerpo del prompt y en Kling ayuda a planificar el ritmo pero no genera audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 8. Sound categories"
+    }
+   ]
+  },
+  {
+   "id": "b85049e802da",
+   "alcance": "Veo, ejemplo trabajado de plano hero comercial",
+   "enunciado": "Ejemplo: plano hero comercial resuelto con el esqueleto en prosa de Veo, con audio, diálogo y SFX y duración de 6 segundos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 10. Skeleton › Worked example. Commercial hero shot"
+    }
+   ]
+  },
+  {
+   "id": "d733628247b3",
+   "alcance": "Veo, fallo: audio ausente",
+   "enunciado": "Si falta el audio en la salida, añadir etiquetas explícitas Audio:, SFX: o Says: y no asumir que el modelo lo infiere de la descripción visual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Audio missing from output"
+    }
+   ]
+  },
+  {
+   "id": "45db882da0cf",
+   "alcance": "Veo, fallo: diálogo acelerado",
+   "enunciado": "Si el diálogo se acelera de forma antinatural, recortar la línea para que quepa en 8 segundos de habla natural y comprobarlo leyéndola en voz alta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Dialogue speeds up unnaturally"
+    }
+   ]
+  },
+  {
+   "id": "cd9ec0564f7a",
+   "alcance": "Veo, fallo: lip-sync",
+   "enunciado": "Si el lip-sync falla, revisar el verbo de entrada: 'She says, ...' rinde mejor que la cita sola y la forma con dos puntos suele ser más fiable que con coma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Lip-sync off"
+    }
+   ]
+  },
+  {
+   "id": "e1b6718eef08",
+   "alcance": "Veo, veo.md, §1 qué es Veo",
+   "enunciado": "Explicación: Veo es el modelo de video cinematográfico de Google con audio sincronizado NATIVO, el único mayor que crea diálogo, SFX y música en sync con el video y hace lip-sync nativo; ideal para pulido comercial, narrativa con diálogo y audio cinematográfico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 1. What Veo is"
+    }
+   ]
+  },
+  {
+   "id": "7f0ad55e9cf2",
+   "alcance": "Veo, veo.md, §2 versiones y specs",
+   "enunciado": "Especifica duración de 4, 6 u 8 segundos y presupuesto de diálogo de máximo 8 s de audio hablado por clip.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "33e554078782",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo",
+   "enunciado": "Ejemplo: diálogo con dos puntos (A woman says: \"Welcome to the future.\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ]
+  },
+  {
+   "id": "26b5a4ee5b8c",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo",
+   "enunciado": "Ejemplo: líneas de diálogo Veo con verbo y comillas (A woman says, \"Welcome to the future.\"; He whispers, \"Don't move.\"; She shouts, \"Get out!\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ]
+  },
+  {
+   "id": "6021cdb83f0e",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo",
+   "enunciado": "Explicación: Veo es el único modelo que renderiza labios y voz sincronizados, y la sintaxis del diálogo importa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical)"
+    }
+   ]
+  },
+  {
+   "id": "9a8c9fac925a",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo; formato requerido",
+   "enunciado": "Formato requerido de diálogo en Veo: comillas dobles más un verbo de introducción (says, whispers, shouts, mutters, asks).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ]
+  },
+  {
+   "id": "49b4fcb2de3b",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo; formato requerido",
+   "enunciado": "Los dos puntos tras el verbo de introducción también funcionan y suelen ser más fiables.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ]
+  },
+  {
+   "id": "5a47f9bf4c00",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo; modificadores de voz",
+   "enunciado": "Colocar los modificadores de voz antes del verbo de introducción (p. ej. 'He says in a weary voice, ...', 'She whispers nervously, ...').",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Voice character modifiers"
+    }
+   ]
+  },
+  {
+   "id": "d068742c1923",
+   "alcance": "Veo, veo.md, §4 sintaxis de diálogo; regla de timing",
+   "enunciado": "Regla de timing: máximo 8 segundos de audio hablado; meter demasiadas palabras en un clip de 5 s acelera la entrega de forma poco natural, así que recortar la línea hasta que quepa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Timing rule"
+    }
+   ]
+  },
+  {
+   "id": "562e346f392e",
+   "alcance": "Veo, veo.md, §5 sintaxis de SFX",
+   "enunciado": "Tres formatos soportados de SFX en Veo, mezclables: línea 'SFX: ...', línea 'Audio: ...' y descripciones entre paréntesis.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ]
+  },
+  {
+   "id": "98680e82a979",
+   "alcance": "Veo, veo.md, §5 sintaxis de SFX",
+   "enunciado": "Usar las etiquetas 'Audio:', 'Says:' y 'SFX:' para separar la dirección de sonido de la visual, porque el modelo necesita una señal explícita de que debe generar audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ]
+  },
+  {
+   "id": "a3a8b2a0b820",
+   "alcance": "Video de carreras y velocidad (race-and-speed), §8; sonido y ritmo",
+   "enunciado": "Cada panel hereda una celda 'Sound' aunque sea un still: se pide la consecuencia física del sonido (deformación, particulado, smear, calima de calor, aislamiento en el vacío) y nunca un sonido nombrado, y la celda debe llenarse.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 8. Sound & rhythm"
+    }
+   ]
+  },
+  {
+   "id": "ea1438b540c6",
+   "alcance": "Video de carreras y velocidad (race-and-speed), §8; sonido y ritmo",
+   "enunciado": "Storyboardear primero el sonido y colgar los keyframes de él: el motor como metrónomo (duración del panel ligada a RPM), colapso de ámbar, la arruga como única expansión de tiempo, pull-to-intimate en el pico (el panel silencioso va tight y el ruidoso wide), la máquina habla sin música y el sonido se adelanta al cuadro 2-3 fr (J-cuts) con el offset anotado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 8. Sound & rhythm"
+    }
+   ]
+  },
+  {
+   "id": "62c62c106bc2",
+   "alcance": "Video, animatic-keyframes §9, checklist",
+   "enunciado": "Exige llenar la celda de sonido aunque el panel sea un still: qué audio subyace al cuadro retenido y dónde muerde el corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "16db82afbcb5",
+   "alcance": "Video, camera-lighting-vocabulary §8 (categorías de sonido)",
+   "enunciado": "Explicación: aunque el modelo no genere audio, describir el sonido ayuda a estructurar el ritmo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 8. Sound categories"
+    }
+   ]
+  },
+  {
+   "id": "e52469294c81",
+   "alcance": "Video, camera-lighting-vocabulary §8, categoría Ambiente",
+   "enunciado": "Lista de vocabulario de sonido ambiente: room tone, ambiente de ciudad lejana, lluvia en techo de lata, viento en hojas, zumbido de refrigerador, zumbido fluorescente y oleaje de tráfico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 8. Sound categories"
+    }
+   ]
+  },
+  {
+   "id": "0fac129b579e",
+   "alcance": "Video, camera-lighting-vocabulary §8, categoría Cuerpo y acción",
+   "enunciado": "Lista de vocabulario de sonido de cuerpo y acción: respiración, pasos, roce de tela, tintineo de tenedor, bisagra, llave en cerradura, cierre y gruñido de estómago.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 8. Sound categories"
+    }
+   ]
+  },
+  {
+   "id": "8f586eb1924d",
+   "alcance": "Video, camera-lighting-vocabulary §8, categoría Eventos dramáticos",
+   "enunciado": "Lista de vocabulario de sonido de eventos dramáticos: silencio súbito, golpe de bajo, golpe húmedo, vidrio roto, trueno lejano, portazo de auto y última señal sonora antes del corte a negro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 8. Sound categories"
+    }
+   ]
+  },
+  {
+   "id": "8023169ddda0",
+   "alcance": "Video, dramaturgy.md §11, tarjeta de shot",
+   "enunciado": "Campo de la tarjeta de shot: Sound (respiración, golpe de bajo, ruido de calle, timbre de teléfono o silencio).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "b67cc396bdc0",
+   "alcance": "Video, dramaturgy.md §9, el entorno actúa",
+   "enunciado": "Ejemplo de presión ambiental: un aire acondicionado zumbando señala disociación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 9. Environment plays"
+    }
+   ]
+  },
+  {
+   "id": "85a74c5ca2f6",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo Diálogo demasiado rápido; Veo",
+   "enunciado": "Fix para diálogo demasiado rápido en Veo: recortar la línea a un máximo de 8 s de texto hablado, verificando leyéndola en voz alta a ritmo normal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Dialogue too fast (Veo)"
+    }
+   ]
+  },
+  {
+   "id": "c301aab81766",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo Subtítulos/música aleatoria",
+   "enunciado": "Fix para subtítulos aleatorios o música de fondo no deseada: prohibirlos directamente y repetir la prohibición al final del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Random subtitles or unwanted background music"
+    }
+   ]
+  },
+  {
+   "id": "27fb5d4aa2b8",
+   "alcance": "Video, fixes-and-skeletons.md §3, esqueleto Veo prosa",
+   "enunciado": "Esqueleto de prompt Veo en prosa: sujeto y acción en entorno, cámara con lente y movimiento, luz, estilo y paleta, más líneas Audio, Says (diálogo de máx. 8 s), SFX y Duration de 4, 6 u 8 segundos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Veo prose"
+    }
+   ]
+  },
+  {
+   "id": "e9e458a32646",
+   "alcance": "ejemplo storyboard WhyStrohm, founder explainer 60s, shot_01",
+   "enunciado": "Ejemplo: shot_01 (0-2 s, MCU, static), beat hook con VO 'Most founders treat content like a hobby.': fundador mirando a cámara con leve sonrisa; el hook es provocador pero calmado y la voz lleva el filo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_01 · 0.0–2.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "50496d158341",
+   "alcance": "ejemplo storyboard WhyStrohm, founder explainer 60s, shot_02",
+   "enunciado": "Ejemplo: shot_02 (2-8 s, MS, static), beat stakes con VO sobre empezar de cero con cada post: fundador gesticulando; plano más abierto para que el gesto se lea, sin texto porque la VO hace el trabajo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_02 · 2.0–8.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "92c6f9aecf61",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Kling 3.0 caso 4",
+   "enunciado": "Define las secciones requeridas de Kling 3.0 caso 4 según el protocolo de diálogo P1-P4 de kling.md §3: etiquetas de personaje, lista de shots, diálogo, tag de voz, enlace temporal y audio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__4"
+    }
+   ]
+  },
+  {
+   "id": "2f859e431b29",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Seedance 2.0 caso 3a",
+   "enunciado": "Define las secciones requeridas de Seedance caso 3a según seedance.md §13-14 (describir solo movimiento y cámara, audio en el cuerpo): sujeto/acción, cámara y audio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance__3a"
+    }
+   ]
+  },
+  {
+   "id": "151ad314e167",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Seedance 2.5 caso 4",
+   "enunciado": "Define las secciones requeridas de Seedance 2.5 caso 4 según seedance-25.md §4 (marcadores { } < > ( )): marcador de diálogo, lenguaje del diálogo, sujeto/acción, cámara y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__4"
+    }
+   ]
+  },
+  {
+   "id": "55dfb6e9a1a0",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Veo 3.1 caso 4",
+   "enunciado": "Define las secciones requeridas de Veo 3.1 caso 4 según veo.md §4, §5 y §10: sujeto/acción, diálogo, tono o acento, timing y especificaciones de audio (incl. sfx).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__4"
+    }
+   ]
+  },
+  {
+   "id": "05110fd371a5",
+   "alcance": "secciones requeridas del linter aurora para Sora 2, caso 4 (video con diálogo) (skill y copia del repo)",
+   "enunciado": "Define las secciones requeridas de un prompt Sora 2 caso 4 (video con diálogo): sujeto/acción, diálogo, tono o acento, timing y especificaciones de audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › sora_2__4"
+    },
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › sora_2__4"
+    }
+   ]
+  },
+  {
+   "id": "b0a6b1f6c479",
+   "alcance": "secciones requeridas del linter aurora para Veo 3.1, caso 4 (video con diálogo) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt Veo 3.1 caso 4 (video con diálogo): sujeto/acción, diálogo entre comillas, tono o acento, timing y especificaciones de audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__4"
+    }
+   ]
+  },
+  {
+   "id": "852620d0ebfa",
+   "alcance": "shots.schema.json de storyboard-architect, shots[].vo",
+   "enunciado": "Define shots[].vo como null o un string no vacío.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › shots[].vo"
+    }
+   ]
+  },
+  {
+   "id": "8017606ac8cb",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (checklist de post)",
+   "enunciado": "Ejemplo: checklist de post del reel de cafetería, paso 5: capa de BGM con una guitarra acústica a unos 85 BPM de librerías libres (Artlist/Epidemic Sound).",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "982b7a0d5112",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 1, audio)",
+   "enunciado": "Ejemplo: audio del shot 1 con sonido íntimo del agua, ambiente de café que entra y primera nota de guitarra a los 4.8 s como puente al shot 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 1 (0-5s) — Hook: The Pour"
+    }
+   ]
+  },
+  {
+   "id": "6887c4a8cb2b",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 2, audio)",
+   "enunciado": "Ejemplo: audio del shot 2 con rasgueo de guitarra acústica sobre sonidos de calle matinal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 2 (5-10s) — Setting: The Space"
+    }
+   ]
+  },
+  {
+   "id": "e4d2aa791c16",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 3, audio)",
+   "enunciado": "Ejemplo: audio del shot 3 con melodía de guitarra en crescendo y ambiente de café, sin voz en off porque la expresión lleva la emoción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 3 (10-15s) — Human: The Barista"
+    }
+   ]
+  },
+  {
+   "id": "ce37d59cb734",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 4, audio)",
+   "enunciado": "Ejemplo: audio del shot 4 con granos cayendo de forma rítmica cuantizada al beat de la guitarra en pleno ritmo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 4 (15-20s) — Detail: The Beans"
+    }
+   ]
+  },
+  {
+   "id": "4d2c12a11a29",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 5, audio)",
+   "enunciado": "Ejemplo: audio del shot 5 con guitarra, murmullo de café, páginas y un suave tintineo de taza al final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 5 (20-25s) — Atmosphere: The Customer Moment"
+    }
+   ]
+  },
+  {
+   "id": "58c5cf737694",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (shot 6, audio)",
+   "enunciado": "Ejemplo: audio del shot 6 con la guitarra resolviendo en la nota final, ambiente que se apaga y el golpe del letrero de madera contra la puerta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Shot 6 (25-30s) — CTA: Opening Reveal"
+    }
+   ]
+  },
+  {
+   "id": "fb5fde65a939",
+   "alcance": "skill aurora-prompt-linter, references/README.md (casos soportados)",
+   "enunciado": "Ejemplo: caso 4 del linter, video con diálogo, presupuesto de 75-130 palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ]
+  },
+  {
+   "id": "f11b383c6e19",
+   "alcance": "skill screenwriter, consistencia de voz de personaje",
+   "enunciado": "Cada personaje debe tener patrones de habla distintos; ejemplo: Marcus habla de forma técnica y precisa, con cifras de probabilidad y margen de error.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Character Voice Consistency"
+    }
+   ]
+  },
+  {
+   "id": "960a0fc82755",
+   "alcance": "skill screenwriter, consistencia de voz de personaje",
+   "enunciado": "Ejemplo: Sarah habla de forma emocional e intuitiva ('Lo lograremos. Siempre lo hacemos.'), en contraste con la voz técnica de Marcus.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Character Voice Consistency"
+    }
+   ]
+  },
+  {
+   "id": "73474a977eb6",
+   "alcance": "skill screenwriter, errores comunes",
+   "enunciado": "Evitar el exceso de diálogo, porque los cortos requieren narración visual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ]
+  },
+  {
+   "id": "77e38a0eed5a",
+   "alcance": "skill screenwriter, ritmo del diálogo",
+   "enunciado": "Variar la longitud de las frases del diálogo para lograr un flujo natural; ejemplo con frases corta, media y corta de Elena.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Dialogue Rhythm"
+    }
+   ]
+  },
+  {
+   "id": "eade229780cf",
+   "alcance": "skill screenwriter, salida XML, campo dialogue",
+   "enunciado": "El campo dialogue es opcional y contiene el diálogo de los personajes cuando lo hay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ]
+  },
+  {
+   "id": "5fd81d98fbec",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo estilo de voiceover (VO presente, solo texto en pantalla o captions): opcional; preguntar si no está claro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "a9882299faf1",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, cuándo no se justifica",
+   "enunciado": "El texto no se justifica cuando repite la VO: si la voz lo dice, el texto es ruido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ]
+  },
+  {
+   "id": "cdd1f3eda181",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, cuándo se justifica",
+   "enunciado": "El texto en pantalla se justifica como puntuación de beat: una palabra o frase que cae en un golpe de música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "1a8303ff6b52",
+   "alcance": "skill storyboard-architect, shots.json, campo vo",
+   "enunciado": "Campo vo: la línea de voiceover o null.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "2353e1b53eef",
+   "alcance": "skill video, paso 3, selector",
+   "enunciado": "Selector: Kling (Kuaishou, Element Binding, Motion Brush, Motion Control, campo de negative prompt, Kling 3.0 multi-shot con etiquetas [Character A: ...], diálogo nativo con lip-sync, 15 s, Turbo para lip-sync barato y Omni para referencias y edición en 4K) se lee en kling.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ]
+  },
+  {
+   "id": "10f0fbd2174d",
+   "alcance": "skill video, paso 3, selector",
+   "enunciado": "Selector: Veo (video de Google, diálogo y lip-sync, prompts JSON, SFX sincronizados, pulido comercial con voiceover) se lee en veo.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ]
+  },
+  {
+   "id": "8494b8777a63",
+   "alcance": "skills brand-lock-extractor y storyboard-architect, brand-packs/_template.md (Voice rules)",
+   "enunciado": "La sección Voice rules recoge reglas a nivel de copy que aplican a la voz en off y al texto en pantalla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "bd2788ae316c",
+   "alcance": "skills/screenwriter/SKILL.md › Screenplay Format Standards › Dialogue",
+   "enunciado": "Formato de diálogo: nombre del personaje, paréntesis opcional y texto del diálogo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Dialogue (Use Sparingly)"
+    }
+   ]
+  },
+  {
+   "id": "a9435f8a2a29",
+   "alcance": "skills/screenwriter/SKILL.md › Screenplay Format Standards › Dialogue",
+   "enunciado": "Guías de diálogo para cortos: usarlo solo cuando es esencial, favorecer la narración visual, líneas concisas (máximo 3-4 por bloque), paréntesis solo para tono o acción críticos y nombres centrados en mayúsculas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Dialogue (Use Sparingly)"
+    }
+   ]
+  },
+  {
+   "id": "10809e2221fe",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, veo",
+   "enunciado": "Ficha de capacidades de Veo 3: modelo de diálogo y lipsync con audio nativo sincronizado en la misma pasada, techo de 150 palabras, sin render de texto ni negativo, con character ref, mayor adherencia y física pero mayor costo, ~8 s; las líneas habladas van en el prompt y el texto en pantalla no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › veo"
+    }
+   ]
+  }
+ ]
+}

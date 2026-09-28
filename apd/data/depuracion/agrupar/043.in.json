@@ -1,0 +1,3076 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "parametros_tecnicos",
+ "descripcion_tema": "aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API",
+ "filas": [
+  {
+   "id": "8c0aac18e292",
+   "alcance": "Adapter Flux, acceso API",
+   "enunciado": "Flux tiene varias superficies de API: fal.ai (más rápida y estable, todas las variantes), Replicate, BFL directa (oficial, requiere su clave) y WaveSpeedAI (interfaz unificada).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › API access"
+    }
+   ]
+  },
+  {
+   "id": "e731c8e46cd4",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "En flux.txt los parámetros se documentan como línea de comentario sobre cada prompt (ar, seed, upsampling).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "b2335609a957",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Flux, aspect_ratio: campo de la llamada API, por defecto tomado de project.aspect.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "05399042016b",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Flux, output_format: campo de la llamada API, png por defecto para composición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "a029d74c5ec9",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Flux, prompt_upsampling: campo de la llamada API, false para trabajo en serie porque las reescrituras automáticas matan la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "c2571d22b65b",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Flux, safety_tolerance: campo de la llamada API, valor por defecto 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "bd219e613678",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Flux, seed: campo de la llamada API, fijado por storyboard para consistencia de serie.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "a7c3655d31d8",
+   "alcance": "Adapter Flux, parámetros",
+   "enunciado": "Los parámetros de Flux se pasan junto al prompt, no dentro de él.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ]
+  },
+  {
+   "id": "ab241e19adcf",
+   "alcance": "Adapter Flux, patrón de sintaxis",
+   "enunciado": "En Flux los puntos separan beats y cada oración hace un trabajo; no hay pesos entre corchetes ni flags --, y en la mayoría de APIs no lleva parámetros dentro del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "ee08f19b14f1",
+   "alcance": "Adapter Flux, pitfalls",
+   "enunciado": "No activar prompt upsampling en trabajo en serie, porque la reescritura automática de fal.ai produce shots inconsistentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "973afe2ac9ce",
+   "alcance": "Adapter GPT Image, acceso API",
+   "enunciado": "GPT Image es solo de OpenAI (Q2 2026), con el endpoint estándar images.generate, precio aproximado de 0.04-0.08 dólares por imagen y acceso por UI con ChatGPT Plus o superior.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › API access"
+    }
+   ]
+  },
+  {
+   "id": "9546b9189618",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "Ejemplo: los parámetros de GPT Image se documentan en un comentario sobre cada prompt (size, quality, style, model).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "34fa12d5c588",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image se maneja por API de OpenAI con parámetros propios.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "0e9b262d79c3",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image, model: gpt-image-1.5, o gpt-image-2 si está disponible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "b663054da504",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image, quality: high para hero shots y medium para series.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f5e7150a4dea",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image, size: 1024x1792 para 9:16, 1792x1024 para 16:9 y 1024x1024 para 1:1, que son los aspectos nativos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "89c3f627925e",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image, style: natural para fotorreal y vivid para estilizado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "0c6af54befbb",
+   "alcance": "Adapter GPT Image, pitfalls",
+   "enunciado": "No incluir flags --ar ni sintaxis de peso en GPT Image, que los ignora.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "f5b78d9604e9",
+   "alcance": "Adapter Hailuo 02 Pro, flujo de iteración",
+   "enunciado": "Flujo de iteración con Hailuo, paso 1: hacer el borrador del shot con prompt_optimizer=false, que es barato y rápido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Iteration workflow"
+    }
+   ]
+  },
+  {
+   "id": "1c993df87f70",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Ejemplo: comentario de parámetros de Hailuo sobre el prompt de un borrador (duration, ar, optimizer).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "9dcde01584ae",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Hailuo, aspect_ratio: tomado de project.aspect.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "c52ca8c67a62",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Hailuo, duration: 6 s por defecto, comprobando el techo vigente del tier Pro en fal.ai.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "e29b390895a8",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Hailuo, prompt_optimizer: false para series, porque la reescritura automática ayuda a piezas sueltas pero rompe la consistencia entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f04c159c0749",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Hailuo, start_image: opcional, para imagen a video desde un still aceptado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "b1474571f519",
+   "alcance": "Adapter Hailuo 02 Pro, pitfalls",
+   "enunciado": "No activar el prompt optimizer en trabajo de serie, porque la reescritura automática rompe la consistencia entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "11acda7f6824",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ejemplo: los parámetros de Ideogram se documentan en un bloque de comentario sobre cada prompt (ar, model, magic_prompt, style, seed).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "126c5293b47a",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, aspect_ratio: campo API tomado de project.aspect.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "aa65ea972419",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, magic_prompt: campo API en OFF para series, porque mata la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "9f96bfa9189a",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, model: campo API con valor V_3 por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "7334fcc014d4",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, seed: campo API fijado por storyboard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "701a9f71ba34",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, style_type: campo API, DESIGN para pósters y REALISTIC para escenas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f6f3dd5d5aa7",
+   "alcance": "Adapter Ideogram v3, pitfalls",
+   "enunciado": "No confiar en magic_prompt, que se reescribe solo y produce shots inconsistentes en una serie.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "a67b7ac6a0cb",
+   "alcance": "Adapter Ideogram v3, pitfalls",
+   "enunciado": "No olvidar el seed en Ideogram: en cualquier serie se fija a nivel de storyboard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "c7bfb9847aeb",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Ejemplo: los parámetros de Kling se documentan como línea de comentario sobre cada prompt (duration, ar, cfg, start_image).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "46229b8f5ebe",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Kling, cfg_scale: 0.5 por defecto; más bajo es más suelto y dinámico y más alto sigue más el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "5f36e2682f59",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Kling, duration: 5 s para shots y 10 s para hero; 5 y 10 s son las duraciones soportadas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "50469a623908",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Kling, negative_prompt: soportado por serie, sirve para suprimir deriva (por ejemplo extra fingers, warped face).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "78243f26ee0b",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Kling, start_image: opcional, imagen a video; se pasa un still aceptado de los assets de shots.json para fijar el frame inicial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f6a432c3b7b1",
+   "alcance": "Adapter Kling 3.0, parámetros",
+   "enunciado": "Kling, tail_image: opcional, objetivo de frame final para movimientos controlados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "3b0c6dd14770",
+   "alcance": "Adapter Kling 3.0, pitfalls",
+   "enunciado": "No describir un movimiento más rápido de lo que permite la duración: un dolly lento en 5 s es plausible, en 1 s es jitter.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "18ffe0482509",
+   "alcance": "Adapter Midjourney v7, acceso API",
+   "enunciado": "Midjourney tiene acceso API limitado (Q2 2026): los prompts de midjourney.txt están pensados para pegarse en Discord o en la web, y wrappers de terceros (PiAPI, Useapi.net) aceptan la misma sintaxis.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › API access note"
+    }
+   ]
+  },
+  {
+   "id": "c67dcb78d5e8",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --ar: relación de aspecto tomada de project.aspect (9:16, 16:9, 1:1).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "9dc8cad5bf74",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --c (chaos 0-100): se omite y se usa solo para explorar variaciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "faa0ddb8b324",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --cref: URL de imagen de referencia de personaje, se usa cuando existe ancla de personaje y se empareja con --cw.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "b45cd2ff2513",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --cw (0-100): peso de personaje, 50 por defecto; 100 es coincidencia estricta y 0 solo ropa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "e7420b6b0e58",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --s (stylize 0-1000): 50 para marca y 250 para artístico; más bajo sigue más el prompt y más alto da más estética de MJ.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "6c3ec157fb9f",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --seed: entero, se omite salvo para reproducir; para consistencia de serie se fija por storyboard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "f01b535229fc",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --sref: URL de imagen de referencia de estilo, se usa cuando existe ancla de estilo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "b8c9e415021d",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --style: raw por defecto para fotorrealismo (raw, 4a, 4b, 4c); se omite para la estética por defecto de Midjourney.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "22366ca7c8a3",
+   "alcance": "Adapter Midjourney v7, patrón de composición",
+   "enunciado": "Ejemplo: patrón de composición de Midjourney con encuadre, sujeto con ancla de personaje, acción, nota compositiva, entorno y luz del series_lock, grade, mood de marca y parámetros --ar --style raw --s 50.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Composition pattern"
+    }
+   ]
+  },
+  {
+   "id": "0282faa2f230",
+   "alcance": "Adapter Midjourney v7, patrón de sintaxis",
+   "enunciado": "Ejemplo: patrón de sintaxis de Midjourney: frases separadas por comas (sujeto, acción, composición, entorno, luz, color y mood, modificadores) seguidas de --ar, --style y --s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "e3e76fece156",
+   "alcance": "Adapter Midjourney v7, pitfalls",
+   "enunciado": "No cambiar --seed a mitad de un storyboard en Midjourney: se fija una vez a nivel de series_lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "fee914e41495",
+   "alcance": "Adapter Midjourney v7, pitfalls",
+   "enunciado": "No usar --c en trabajo de serie en Midjourney, porque el caos mata la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "5a9cd695e20f",
+   "alcance": "Adapter Nano Banana, acceso API",
+   "enunciado": "Nano Banana se accede por la API de Google Gemini (endpoint gemini-2.5-flash-image), vía Gemini API directa, Vertex AI, Replicate o fal.ai.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › API access"
+    }
+   ]
+  },
+  {
+   "id": "ebcda316709b",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Ejemplo: los parámetros de Nano Banana se documentan en un comentario sobre cada prompt (ar, n, refs).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "1fbafe9b33ef",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana se usa a través de la API de Gemini con parámetros propios.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "c8da57ec05b5",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana, aspectRatio: tomado de project.aspect, con soporte nativo para 9:16, 16:9, 1:1, 4:5, 3:4 y 21:9.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "8eeafc68b048",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana, model: gemini-2.5-flash-image.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "9e05f2025efa",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana, numberOfImages: 1 para series y 4 para exploración de variantes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "d9c043b948eb",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana, referenceImages: arreglo opcional de imágenes en base64.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "2b8bad069a26",
+   "alcance": "Adapter Nano Banana, pitfalls",
+   "enunciado": "No usar sintaxis de flags de Midjourney en Nano Banana: ignora --ar y espera el parámetro aspectRatio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "2db58982d135",
+   "alcance": "Flujo de Anclas Cinematográficas, lo que el video hereda",
+   "enunciado": "El aspect ratio se genera en el ratio destino y nunca se recorta después de animar.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "792d956b18af",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 4 (D4 a D7), tratamiento UGC / social",
+   "enunciado": "Tratamiento UGC / social: iPhone handheld en 9:16 con gesto a cámara, luz natural disponible, sin grade impuesto (color science del dispositivo), textura de smartphone sin grano de cine y rostro directo a cámara; prohibido cualquier signo de producción como rim light, anamórfico o grano.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 4 · dimensiones D4 a D7: Tratamiento artístico: defaults de cámara, luz, paleta y textura"
+    }
+   ]
+  },
+  {
+   "id": "b9d93377f723",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), aspect ratio del clip",
+   "enunciado": "El aspect ratio del clip es el del proyecto desde el primer intento (una campaña vertical se genera en 9:16, recortar después de animar es un punto de fallo silencioso, FF y LF con el mismo ratio); GPT admite máximo 3:1 y los extremos 1:8 y 8:1 solo NB.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "1d1f1f46dc96",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), escena compleja; Nano Banana Pro",
+   "enunciado": "Para escena compleja de 5 o más elementos, física de fluidos o distorsión: NBP, con JSON para 5+ elementos, por su máximo reasoning y control de agua, pelo y tela; NBP cuesta 0.15 por imagen y se valida en 1K con final en 2K.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "299ad5cf8194",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), etiquetas, UI y texto; GPT Image 2",
+   "enunciado": "Para etiqueta de producto, UI o texto pequeño legible: GPT Image 2 quality high (texto denso y multi-font, hasta 2560×1440), usando high solo en el final.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "ba645c2ea087",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), hero photoreal sin rostro; Flux 2 Pro, Midjourney v7",
+   "enunciado": "Para hero photoreal sin rostro, cuando la calidad de piel no es el problema: Flux 2 Pro o Midjourney v7 vía adaptador de forge (failure-modes F1), con seed lock a nivel storyboard donde el modelo lo soporte.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "70ed381e0ba3",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), rostro humano",
+   "enunciado": "Para rostro humano, maestro o keyframe con cara: probar NB2 y NBP y usar GPT Image 2 quality high para piel e identidad (NBP a veces sostiene peor las caras que NB2, GPT Image 2 tiene la mejor identity preservation en edición); NB 0.5K para variantes y 2K o 4K para el ganador, GPT low a high.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "8c9f82b73ade",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), variantes y exploración",
+   "enunciado": "Para series de muchas variantes o exploración: NB2 Lite o gpt-image-1-mini (reconocimiento barato, final caro), con Lite solo en 1K.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "5a20a3340e40",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 6 (cuando hay persona: bloques SW30 encima)",
+   "enunciado": "Los metadatos Model, Quality y Size van fuera del cuerpo del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+    }
+   ]
+  },
+  {
+   "id": "6cba2e6bd6db",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 6 (orden de bloques para un still cinematográfico)",
+   "enunciado": "Último bloque, ratio y nota: sin speed-up, la velocidad construida en el frame.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Orden de bloques para un still cinematográfico"
+    }
+   ]
+  },
+  {
+   "id": "cca06ac7f56c",
+   "alcance": "Flujo de Anclas Cinematográficas, roles de un ancla; Seedance",
+   "enunciado": "Rol Keyframe LF: último frame con el mismo aspect ratio que el FF, pues si no el modelo lo estira, y en Seedance se declara por separado del FF.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "d3166262500f",
+   "alcance": "Flujo de Anclas Cinematográficas, tarjeta de ancla (paso 1), dimensión D8",
+   "enunciado": "D8 Modelo y resolución (NB2, NBP, GPT Image 2 low/medium/high, Flux y Midjourney vía forge, grounding sí/no, 0.5K a 2K/4K): el grounding fuerza NB2 en arquitectura y especies, los rostros se prueban en NB2 y NBP, etiquetas y UI van en GPT high y el hero photoreal en Flux 2 Pro.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "f120313fef35",
+   "alcance": "Flujo del spot, Nivel 4 (subflujo atómico de génesis sin referencias), Entradas",
+   "enunciado": "Entrada de la génesis: el modelo destino y el presupuesto de créditos.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Entradas de la génesis"
+    }
+   ]
+  },
+  {
+   "id": "008fb435f16a",
+   "alcance": "Investigación de campo, familia 04 objeto balístico (candidata derivada, fuente foro tennis-warehouse); GPT Image 2 y NBP",
+   "enunciado": "Para el look de impacto congelado la referencia física es 1/2000 s o más rápido (el contacto raqueta-pelota dura 0.004 s); a 1/250 s se congela el cuerpo y se barre la raqueta como blur parcial legítimo, y el prompt puede anclar \"fast-shutter look\" en ese número para GPT Image 2 o en \"high-speed freeze\" para NBP.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/04-objeto-balistico.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)"
+    }
+   ]
+  },
+  {
+   "id": "779b041c083f",
+   "alcance": "Investigación de campo, familia 05 vehículo en movimiento (candidata derivada, fuentes racetagger y Sony)",
+   "enunciado": "Referencia física para el panning look: 1/125-1/250 s en autos, 1/60-1/125 s en motos y 1/30-1/60 s en atletas; un prompt puede anclar el cue con el número.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/05-vehiculo.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 05 · Vehículo en movimiento › Fase 4b — Hallazgos nuevos"
+    }
+   ]
+  },
+  {
+   "id": "0c20bd06c15a",
+   "alcance": "Investigación de campo, familia 08 multitud anónima; GPT Image 2 (candidata con fuentes everypixel y Simon Willison)",
+   "enunciado": "En escenas densas de GPT Image 2 usar quality high y la resolución máxima (3840×2160), porque un elemento pequeño en multitud faltaba a calidad por defecto y aparecía a alta.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/08-multitud-anonima.md",
+     "encabezado": "Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "80c9f09dd127",
+   "alcance": "Kling (Kuaishou), kling.md §11",
+   "enunciado": "Fix para música que aparece aunque el prompt diga \"no music\" en Kling: el negativo de música no es fiable, así que se genera con generate_audio apagado y se agrega el sonido en post o se quita la pista de música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Music appears even though the prompt says \"no music\""
+    }
+   ]
+  },
+  {
+   "id": "bfccd37db2dd",
+   "alcance": "Kling (Kuaishou), kling.md §2, Kling 2.1 Pro",
+   "enunciado": "Kling 2.1 Pro: 1080p a 30 fps, con Motion Brush y control de frame final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "4e21e26308d6",
+   "alcance": "Kling (Kuaishou), kling.md §2, Kling 3.0",
+   "enunciado": "Kling 3.0: multi-shot en una generación (hasta 6 shots), audio nativo con diálogo y lip-sync, salida continua de 15 s, 4K nativo hasta 60 fps, máxima consistencia de personaje y escena, en dos niveles v3/pro y v3/standard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "c2b07f0d50cd",
+   "alcance": "Kling (Kuaishou), kling.md §2, Kling 3.0 Turbo (junio 2026)",
+   "enunciado": "Kling 3.0 Turbo (junio 2026): nivel de velocidad y precio con audio incluido en el costo base, mejor lip-sync en cabezas parlantes, 3-15 s, limitado a 1080p sin 4K.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "685dd70d332b",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), parámetros API (3.0, fal/oficial)",
+   "enunciado": "Parámetro API de Kling 3.0: aspect_ratio admite 16:9, 9:16 y 1:1.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "520e1d92e9d8",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), parámetros API (3.0, fal/oficial)",
+   "enunciado": "Parámetro API de Kling 3.0: cfg_scale de 0 a 1 con 0.5 por defecto, 0.3-0.4 para libertad creativa y 0.7-1.0 para adherencia estricta al prompt (producto, explainer).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "3c64bf028966",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), parámetros API (3.0, fal/oficial)",
+   "enunciado": "Parámetro API de Kling 3.0: generate_audio es booleano y no hay opción de \"sin música\" (el modelo pone música aun con prompt negativo), así que para audio limpio se genera con audio apagado o se quita la pista en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "76bba60189ac",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), parámetros API (3.0, fal/oficial)",
+   "enunciado": "Parámetro API de Kling 3.0: las duraciones por shot deben sumar 15 s o menos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "54b66463c815",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), tabla vs 2.x; Kling 1.x-2.6 vs 3.0",
+   "enunciado": "Capacidad: duración máxima de 5-10 s en Kling 1.x-2.6 y hasta 15 s en 3.0.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+    }
+   ]
+  },
+  {
+   "id": "a97c880b0914",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), aprendizaje 5",
+   "enunciado": "Los parámetros de generación son ajustes duros: pasar aspect ratio y tamaño como ajustes del generador cuando sea posible y verificarlos en los píxeles de salida.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2"
+    }
+   ]
+  },
+  {
+   "id": "cf702ac8c486",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), aprendizaje 6",
+   "enunciado": "Política de aspect ratio de salida: lo exacto es lo preferido, una desviación de hasta 1 % es menor y se corrige con recorte, y más de 1 % es bloqueante salvo aceptación explícita.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2"
+    }
+   ]
+  },
+  {
+   "id": "749dcc6f4efa",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), parche P8",
+   "enunciado": "Parche P8: --sports-broadcast solo aplica a casos de video (3a/3b/3c/4) y en casos 1 y 2 se ignora con WARN, pues 60fps y broadcast realism son parámetros de video y SW30 R8 prohíbe movimiento en stills.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "d1a9737521b6",
+   "alcance": "Overlay production-learnings.v3.2.json (reglas aprendidas, ensayo de clavado)",
+   "enunciado": "Regla lrn32_generation_params_are_hard (REQUIRE, prioridad 950, imagen en etapas prompt/generation/qa/delivery, validador determinista): los parámetros de entrega como el aspect ratio son ajustes duros del generador cuando la plataforma los expone, el texto del prompt no basta y hay que validar el archivo generado.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+     "encabezado": "production-learnings.v3.2.json › lrn32_generation_params_are_hard"
+    }
+   ]
+  },
+  {
+   "id": "163ab17894f6",
+   "alcance": "Overlay production-learnings.v3.2.json (reglas aprendidas, ensayo de clavado)",
+   "enunciado": "Regla lrn32_ratio_tolerance (REQUIRE, prioridad 945, imagen en qa/delivery, validador determinista): en el QA post-generación el ratio exacto es lo preferido, hasta 1 % de desviación es corrección menor de entrega o recorte, y más es fallo bloqueante salvo aceptación del usuario.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+     "encabezado": "production-learnings.v3.2.json › lrn32_ratio_tolerance"
+    }
+   ]
+  },
+  {
+   "id": "05370f8dc9b7",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), contradicción 1, parche P1",
+   "enunciado": "Contradicción 1 (presupuesto de palabras): el original hace HARD FAIL sobre 130/90 palabras pese a que SW30 usa ~250 y GPT Image tolera 150-300; el parche P1 hace que el conteo nunca bloquee y dé WARN con el presupuesto por plataforma y el techo de _capabilities.json.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "538846abde61",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), contradicción 9, parche P8",
+   "enunciado": "Contradicción 9 (flag broadcast en stills): el parche P8 ignora --sports-broadcast en casos 1/2 (imagen) con WARN explicativo y lo mantiene como FAIL en 3a/3b/3c/4 si faltan las keywords, porque '60fps' no aplica a stills (SW30 R8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "c680abb53597",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), invocación Etapa 6",
+   "enunciado": "Etapa 6, paso 3: se usa --treatment race en spots de velocidad y --sports-broadcast solo si aplica la Regla 26.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "6e432ced5d18",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), pruebas",
+   "enunciado": "Prueba T11: --sports-broadcast en caso 1 termina en exit 0 con WARN (P8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "76b59a27bfd7",
+   "alcance": "Régimen 02 ruptura de superficie, modelo recomendado",
+   "enunciado": "Recorrido de costo: generar variantes a 0.5K, elegir y regenerar la ganadora a 2K o 4K.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "037e2cb4193d",
+   "alcance": "Régimen 02 ruptura de superficie, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high cuando el detalle de gotas y condensación es el centro del cuadro.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "83680d5237d3",
+   "alcance": "Régimen 03 subacuático, modelo recomendado; NB2",
+   "enunciado": "Usar thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "encabezado": "Subacuático › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "4ba58a4a67ab",
+   "alcance": "Régimen 04 objeto balístico, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high para el detalle congelado y la legibilidad de texturas finas, como en los patrones de ingrediente flotante.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "180f14012e4e",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high para piel, identidad y textura de tela.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "36c53ee6ba05",
+   "alcance": "Régimen 07 luz y clima, modelo recomendado",
+   "enunciado": "Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo y final en alta.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+     "encabezado": "Luz y clima › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "2128a9db2ce9",
+   "alcance": "Régimen 08 multitud anónima, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high si hay objetos del héroe con detalle fino, sin texto en pancartas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "5b19c7430098",
+   "alcance": "Régimen 09 grupo ensamble, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high para identidad y para partituras, logos de instrumento o UI, sin texto generado.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "6e550da8cec3",
+   "alcance": "Rúbrica de extracción de brand-lock (brand-lock-extractor), sección Aspect ratios",
+   "enunciado": "Los aspect ratios de la marca son por defecto 9:16, 16:9, 1:1 y 4:5; si los assets revelan un sesgo (solo vertical, hero 21:9) se refleja y se anota la evidencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "encabezado": "Extraction rubric › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "70f44f021111",
+   "alcance": "Rúbrica, capa 1 Brand Lock",
+   "enunciado": "Capa 1, aspect ratio: pasa si coincide con project.aspect, soft fail si es recortable al spec, hard fail si el aspecto es incorrecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ]
+  },
+  {
+   "id": "2d4efeed7f1a",
+   "alcance": "Seedance (familia), seedance.md, §10 sintaxis @img1; 2.0 y 2.5",
+   "enunciado": "Reglas de @img1: el bloque de identidad completo debe seguir a la mención de @img1 (la imagen sola deriva), repetirlo en cada clip de una secuencia unida, etiquetar cada referencia múltiple con su rol, declarar en prosa el rol de @Video1 y @Audio1, y respetar los límites (12 archivos en 2.0: 9 imágenes, 3 videos, 3 audios; hasta 50 en 2.5).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ]
+  },
+  {
+   "id": "488c7fca1555",
+   "alcance": "Seedance (familia), seedance.md, §11 movimientos de cámara (9 presets)",
+   "enunciado": "Especifica el preset Static, mediante `--camerafixed true`: cuadro bloqueado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 11. Camera movements (9 presets)"
+    }
+   ]
+  },
+  {
+   "id": "6cef92b0342a",
+   "alcance": "Seedance (familia), seedance.md, §15 fallos y correcciones",
+   "enunciado": "Falla movimiento ignorado por debajo de 5 s: duración mínima de 5 s para cualquier escena con varias acciones o movimientos de cámara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Motion ignored below 5 seconds"
+    }
+   ]
+  },
+  {
+   "id": "f963ddb88648",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica Seedance 1.0 Pro: 1080p, 5-10 s (API hasta 12 s) y multi-shot fuerte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "8ffc552326d0",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica Seedance 2.0: mejor movimiento y audio, 9 presets de movimiento de cámara, soporte limitado de negative prompt, hasta 12 referencias con tags @, 4K nativo y color de 10 bits desde junio 2026; la versión Mini es ~2× más rápida y ~30% más barata para borradores y lotes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "af5d93c3801a",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica Seedance 2.5 (lanzada 2026-07-31): clip nativo de 30 s, hasta 60 s por extensión y 30-180 s en Ultra Long, 50 referencias multimodales, edición de video, blockout 3D de modelo blanco y humanos realistas con lip-sync en 11 idiomas; la referencia de producción completa es seedance-25.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "3674e1433896",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica resoluciones (480p, 720p, 1080p; 2.0 añade 4K nativo; 2.5 entrega 480p/720p en Jimeng), aspect ratios (16:9, 4:3, 1:1, 3:4, 9:16, 21:9, 9:21) y frame rate de 24-30 fps.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "ec9a679121c8",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI (solo 1.x/2.0)",
+   "enunciado": "Especifica los parámetros CLI: `--resolution` (480p/720p/1080p), `--duration` (2 a 12 en Pro), `--camerafixed` (true bloquea la cámara, false permite movimiento) y `--seed` para reproducibilidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)"
+    }
+   ]
+  },
+  {
+   "id": "770b33959632",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI (solo 1.x/2.0)",
+   "enunciado": "Los parámetros CLI de Seedance 1.x/2.0 se añaden al final del prompt (ejemplo `--resolution 1080p --duration 5 --camerafixed false --seed 42`).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)"
+    }
+   ]
+  },
+  {
+   "id": "c098085bbaba",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI; aplica a 2.5",
+   "enunciado": "Los parámetros CLI no son sintaxis de 2.5: allí duración, aspect ratio y resolución se fijan en la página de generación o por API y no van en el prompt (excepción: Ultra Long reafirma duración y ratio al inicio).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 3. CLI parameters (1.x / 2.0 only)"
+    }
+   ]
+  },
+  {
+   "id": "fd88cc254985",
+   "alcance": "Seedance 2.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Define el parámetro opcional start_image como imagen de referencia image-to-video para el fotograma de apertura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "a4b88e556b8a",
+   "alcance": "Seedance 2.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija la duración por defecto en 5 s por bloque de shot; las secuencias multi-shot duran más y hay que revisar el techo vigente de fal.ai.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "eeea6bc7ecd9",
+   "alcance": "Seedance 2.0 (adapter de visual-prompt-forge), modo multi-shot",
+   "enunciado": "Define el parámetro shots (por defecto 1) como número de cortes de la secuencia en modo multi-shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "38d5c8790497",
+   "alcance": "Seedance 2.0 (adapter de visual-prompt-forge), multi-shot",
+   "enunciado": "Ejemplo: comentario de cabecera que documenta los parámetros (ar=9:16, shots=3, multi-shot) encima del prompt de una secuencia shot_02-shot_04.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "4a541b624f02",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "enunciado": "Seedance 2.5 genera clips nativos de 30 s en una sola pasada con un arco continuo y sin costuras; la extensión lleva a 60 s y un modo Ultra Long separado llega a 180 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+    }
+   ]
+  },
+  {
+   "id": "3d8fe9096cfe",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "Cortar primero las fuentes largas: la edición funciona mejor en clips ≤20 s y las más largas se atascan o fallan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "941102f2da4e",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "enunciado": "Cualquier clip ≤30 s se extiende 4-30 s por pasada, anidable repetidamente hasta un techo duro de 60 s; el nuevo prompt aplica solo al segmento añadido, los cuadros originales no se tocan y los verbos obligatorios son extend forward / extend backward / continue.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension"
+    }
+   ]
+  },
+  {
+   "id": "b27af913b693",
+   "alcance": "Seedance 2.5, §14 modo Ultra Long",
+   "enunciado": "El modo Ultra Long (30-180 s) es distinto de la extensión: una sola entrega en la que se reafirman duración y aspect ratio al inicio del prompt, con dos registros (timestamped para piezas ambientales de 1 min con prohibiciones por ventana, y flujo narrativo para piezas de 3 min con cadena de eventos y referencias en línea).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 14. Ultra Long mode (30-180s)"
+    }
+   ]
+  },
+  {
+   "id": "9b988122c06a",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "enunciado": "First + last frame funciona en modo omni-reference declarando cada ancla por separado ('@Image 1 is the first frame... @Image 2 is the last frame...') y nunca conjuntamente, con el mismo aspect ratio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "17469e7ff15d",
+   "alcance": "Seedance 2.5, §18 economía y elección de modelo",
+   "enunciado": "Presupuestar costos reales (30 s/720p en Jimeng cuesta ~500-700 créditos) asumiendo re-rolls, extensiones y re-tomas, preferir editar/extender/re-tomar a regenerar por completo y borradores a 480p con final a 720p.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 18. Economics and model choice"
+    }
+   ]
+  },
+  {
+   "id": "b460ef7f37e2",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de duración en una pasada: hasta 15 s en 2.0 y hasta 30 s en 2.5 (duración -1 o 4-30).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "17e711da771d",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de imágenes por solicitud: 9 en 2.0 y 30 en 2.5 (cada una ≤4K y ≤30 MB).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "881dbac10975",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de referencias de audio: 3 clips y ≤15 s en 2.0; 10 clips y ≤30 s en total en 2.5, con entrada solo de audio ahora permitida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "9b7af7be9252",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de referencias de video: 3 clips y ≤15 s en total en 2.0; 10 clips, cada uno de 2-30 s y ≤30 s en total, en 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "989383461346",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica la resolución de salida: hasta 4K en 2.0 y 480p/720p en Jimeng web para 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "4117249dcb19",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica los timestamps: solo pistas de orden en 2.0 y respetados al segundo en 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "917090711e9a",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Los parámetros de generación (duración, aspect ratio, resolución) se fijan en la página de generación o por API y no van en el prompt; la cola CLI `--resolution --duration` de 1.x/2.0 no es sintaxis 2.5, salvo en modo Ultra Long, donde se reafirman duración y ratio al inicio del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "3848b64b20a0",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Parámetros autobloqueados en 2.5: la edición de video bloquea ratio y duración a los del input (±0.3 s), first/last frame bloquea el ratio al de la primera imagen (un último cuadro desajustado se estira) y la extensión bloquea el ratio y permite fijar duración.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "4f7cd56fce31",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Punto óptimo: clips de referencia de 5-10 s por sujeto; más largos son posibles pero inestables.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "289a6215cbc9",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Punto óptimo: el video fuente de edición debe durar ≤20 s; más largo se atasca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "6f4721bd1042",
+   "alcance": "Seedance 2.5, §9 lenguaje de cámara",
+   "enunciado": "Los números de apertura y focal están permitidos, pero lo que realmente dirige al modelo es el resultado visible descrito en palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 9. Camera language"
+    }
+   ]
+  },
+  {
+   "id": "438f1b28ca36",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Ejemplo: comentario de documentación con los parámetros (ar, seed, guidance, steps) encima del prompt de un shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "445e874da849",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija el parámetro seed por storyboard como crítico para la consistencia de serie.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "5f0835a336ae",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija guidance_scale por defecto en 4.5 (menor = más creativo, mayor = más literal).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "a3f218caf063",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija steps por defecto en 28, subiendo a 50 para más calidad a mayor costo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "d3d23dffd89b",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Informa que Seedream se usa por API vía fal.ai, Replicate o BytePlus directo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "0f404724d81b",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Lista los accesos API de Seedream: fal.ai (bytedance/seedream-4.5 y 4.0), Replicate (seedream-4.5) y BytePlus directo, que requiere cuenta propia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › API access"
+    }
+   ]
+  },
+  {
+   "id": "9f5ea82f2cac",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe la sintaxis --ar; la relación de aspecto se pasa como parámetro aspect_ratio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "51631ac8631b",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe omitir el bloqueo de seed en trabajo de serie, pues sin él se rompe la consistencia de personaje.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "f710f3e0231e",
+   "alcance": "Seedream 4.5/4.0 (adapter de visual-prompt-forge), consistencia de serie",
+   "enunciado": "Establece que la consistencia de personaje de Seedream es más débil que --cref de Midjourney o omni-reference de Ideogram y exige compensar: fijar seed por storyboard, repetir el ancla verbatim, no variar el lenguaje de luz y presupuestar re-rolls.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Series consistency"
+    }
+   ]
+  },
+  {
+   "id": "a305d839cfe7",
+   "alcance": "Skill image, SKILL.md, Step 2, modelo GPT Image 2",
+   "enunciado": "Paso 2, leer el archivo del modelo elegido: para GPT Image 2, gpt-image.md (plantilla de 5 slots Scene, Subject, Important Details, Use Case, Constraints; lista anti-slop; quality low, medium, high como palanca; tamaños múltiplos de 16, máximo 3:1, hasta 2560×1440; lógica de edición Change, Preserve, Constraints; hasta 16 referencias con rol explícito).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ]
+  },
+  {
+   "id": "0987cfd1a819",
+   "alcance": "Skill image, SKILL.md, sección Output format",
+   "enunciado": "Formato de salida: el prompt se devuelve con Model (nano-banana-2, nano-banana-pro o gpt-image-2), Quality (solo gpt-image-2), Size o Ratio, el Prompt listo para copiar y Notes con lo inferido o asumido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Output format"
+    }
+   ]
+  },
+  {
+   "id": "d3bfafc81060",
+   "alcance": "Skill image, references/golden-rules.md, Cost Optimization",
+   "enunciado": "En ambos modelos vale el patrón de exploración barata y final caro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+    }
+   ]
+  },
+  {
+   "id": "5c83024ef907",
+   "alcance": "Skill image, references/golden-rules.md, Cost Optimization",
+   "enunciado": "Optimización de costo en GPT Image 2: correr en quality low, elegir y regenerar en medium o high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+    }
+   ]
+  },
+  {
+   "id": "d3b4e661476d",
+   "alcance": "Skill image, references/golden-rules.md, Cost Optimization",
+   "enunciado": "Optimización de costo en Nano Banana: correr variantes a 0.5K Flash, elegir y regenerar la ganadora a 2K o 4K.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+    }
+   ]
+  },
+  {
+   "id": "0fe8dba31908",
+   "alcance": "Skill image, references/golden-rules.md, Prompt Template",
+   "enunciado": "Explicación: Thinking Mode existe solo en Nano Banana y quality low, medium o high solo en GPT Image 2; se documentan en sus referencias.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Prompt Template"
+    }
+   ]
+  },
+  {
+   "id": "08caa4a71600",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Editing",
+   "enunciado": "Endpoint de edición de GPT Image 2: openai/gpt-image-2/edit en fal.ai o su equivalente en la API de OpenAI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+    }
+   ]
+  },
+  {
+   "id": "0425c91eae54",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Quality Settings",
+   "enunciado": "Empezar con low y subir según necesidad; a menudo low ya basta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+    }
+   ]
+  },
+  {
+   "id": "4c4e3984ea41",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Quality Settings",
+   "enunciado": "quality high se usa para texto pequeño o denso, infografías, retratos, ediciones sensibles a la identidad y assets de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+    }
+   ]
+  },
+  {
+   "id": "41bd2faae18a",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Quality Settings",
+   "enunciado": "quality low se usa para alto volumen, previews, exploración, latencia crítica y borradores.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+    }
+   ]
+  },
+  {
+   "id": "2e284538d3e8",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Quality Settings",
+   "enunciado": "quality medium es el punto de partida por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+    }
+   ]
+  },
+  {
+   "id": "cb6af1bafab0",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Tamaños",
+   "enunciado": "GPT Image 2 no soporta ratios extremos como 1:8 u 8:1; para ellos hay que usar Nano Banana.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)"
+    }
+   ]
+  },
+  {
+   "id": "bd7997e86d8f",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Tamaños",
+   "enunciado": "Tamaños comunes: retrato 1024×1536, paisaje 1536×1024, cuadrado 1024×1024 y 2K 2560×1440.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)"
+    }
+   ]
+  },
+  {
+   "id": "a409327b7242",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Tamaños",
+   "enunciado": "Tamaños de gpt-image-2: borde máximo menor de 3840 px, ambos lados múltiplos de 16, ratio máximo 3:1, total de píxeles entre 655 360 y 8 294 400, y límite fiable superior 2560×1440.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)"
+    }
+   ]
+  },
+  {
+   "id": "b689d296b8e3",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Text in Image",
+   "enunciado": "Texto pequeño, denso o multi-fuente exige quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "5f72fe378c34",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Use-Case Templates, Infographic",
+   "enunciado": "Ejemplo: plantilla de Infografía o Diagrama (título, flujo de contenido, formato visual, audiencia, constraints de etiquetas legibles y jerarquía clara, quality high, tamaño 1536×1024).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Infographic / Diagram"
+    }
+   ]
+  },
+  {
+   "id": "cdbe907eb090",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Use-Case Templates, UI Mockup",
+   "enunciado": "Ejemplo: plantilla de UI Mockup (marco de dispositivo, pantalla descrita como si existiera, jerarquía, copy exacto entre comillas; sin lenguaje de sketch, sin placeholder ni Lorem Ipsum; quality high para texto pequeño).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › UI Mockup"
+    }
+   ]
+  },
+  {
+   "id": "2adcc4f3e67b",
+   "alcance": "Skill image, references/models.md, Costo",
+   "enunciado": "Costo orientativo: GPT Image 2 en high es más caro; para texto pequeño, trabajo sensible a marca y fotorrealismo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+    }
+   ]
+  },
+  {
+   "id": "95192cdd4004",
+   "alcance": "Skill image, references/models.md, Costo",
+   "enunciado": "Costo orientativo: GPT Image 2 en low es barato y sirve para latencia crítica y previews.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+    }
+   ]
+  },
+  {
+   "id": "3f8bb7539fc5",
+   "alcance": "Skill image, references/models.md, Costo",
+   "enunciado": "Costo orientativo: GPT Image 2 en medium tiene costo medio y es el default de GPT Image.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+    }
+   ]
+  },
+  {
+   "id": "62efed3f9473",
+   "alcance": "Skill image, references/models.md, Costo",
+   "enunciado": "Costo orientativo: Nano Banana 2 Lite cuesta unos 0.034 USD por imagen, solo 1K y unos 4 s; sirve para borradores y batches masivos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+    }
+   ]
+  },
+  {
+   "id": "086fdb72a519",
+   "alcance": "Skill image, references/models.md, GPT Image 2 gana en",
+   "enunciado": "GPT Image 2 ofrece la palanca quality (low, medium, high) como compromiso consciente entre velocidad y precisión.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в"
+    }
+   ]
+  },
+  {
+   "id": "102865f2604b",
+   "alcance": "Skill image, references/models.md, Nano Banana gana en",
+   "enunciado": "Nano Banana gana en proporciones extremas (1:8, 8:1, 1:4, 4:1) para banners, scrolls y tiras de cómic; GPT Image 2 llega como máximo a 3:1.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в"
+    }
+   ]
+  },
+  {
+   "id": "f8fe4a8a4414",
+   "alcance": "Skill image, references/models.md, TL;DR",
+   "enunciado": "Formatos horizontales o verticales extremos (1:8, 8:1, 4:1): usar Nano Banana, el único que los soporta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "f0b92bd5f551",
+   "alcance": "Skill image, references/multi-panel.md, 1. 9-Cell Grid Storyboard, Template",
+   "enunciado": "Para la cuadrícula de 9 celdas: tamaño recomendado 1536x1024, modelo GPT Image 2 en quality high (mucho texto); omitir números de panel hace que el modelo fusione o salte paneles, descripciones vagas producen paneles casi idénticos y timestamps pequeños exigen quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "a4d7aec9a159",
+   "alcance": "Skill image, references/multi-panel.md, 2. 2x2 Editorial Portrait Grid, Template",
+   "enunciado": "Para la cuadrícula 2x2: tamaño 1024x1024 o 1024x1536, modelo GPT Image 2 en medium o Nano Banana Pro; no decir \"same person\" en cada panel genera cuatro personas, omitir qué ángulo va en cada cuadrante hace que el modelo lo organice arbitrariamente, y recortes demasiado distintos crean inconsistencia de escala.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "f89ff53c6bf5",
+   "alcance": "Skill image, references/multi-panel.md, 4. 4x3 Borderless Grid, Template",
+   "enunciado": "Para la cuadrícula 4x3: tamaño 1536x1024 y Nano Banana Pro (thinking, sin texto); decir solo \"borderless\" no basta, hay que escribir \"no white lines, no black borders, no gaps\"; con 12 paneles hay que mantener descripciones cortas y distintas, y sin consistencia explícita cada panel puede mostrar otra persona u objeto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "ac843e459e74",
+   "alcance": "Skill image, references/multi-panel.md, 5. 6-Frame Cinematic Sequence, Template",
+   "enunciado": "Para la secuencia de 6 cuadros: tamaño 1536x1024 (3x2), GPT Image 2 en medium o Nano Banana Pro; nombrar cada cuadro explícitamente, anclar cada cuadro a una posición de la cuadrícula (cenital y contrapicado juntos confunden al modelo) y especificar el blur (\"blur on hands and feet\") o el modelo lo aplica en todas partes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "f27e1f44ca48",
+   "alcance": "Skill image, references/multi-panel.md, 6. Before/After Split, Template",
+   "enunciado": "Para el split antes/después: tamaño 1536x1024, GPT Image 2 en medium (high si hay etiquetas BEFORE/AFTER); indicar \"same camera angle both sides\", usar un divisor visible y declarar qué lado es antes y cuál después.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "7a81b5a4f6d0",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Extreme Aspect Ratios",
+   "enunciado": "Ratios estándar de Nano Banana: 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9 y 21:9.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ]
+  },
+  {
+   "id": "3fc2d565bde3",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Extreme Aspect Ratios (NB2 only)",
+   "enunciado": "Ejemplo: prompt de tira de cómic horizontal de 4 paneles (ratio 4:1) con historia de personaje, giro final, estilo cómic vibrante y diseño consistente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ]
+  },
+  {
+   "id": "234ee992c854",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Extreme Aspect Ratios (NB2 only)",
+   "enunciado": "Ratios extremos solo en NB2: 1:8, 8:1, 1:4 y 4:1 para banners, scrolls y tiras de cómic.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ]
+  },
+  {
+   "id": "e168a0188ba1",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "En la API, image_size se escribe con K mayúscula (1K, 2K, 4K; 1k se rechaza); 512px solo existe en NB2 y Lite solo 1K; sin tamaño el modelo iguala la entrada o usa 1:1.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "2eaaa40b20b7",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "Flujo de costo en Nano Banana: correr variantes a 0.5K Flash (o NB2 Lite a 1K), elegir y regenerar la ganadora a 2K o 4K.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "8b5aea65aa82",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "Resolución 0.5K de Nano Banana: la más barata, para batch y variantes A/B.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "ac9f9ccc3cee",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "Resolución 1K de Nano Banana: la opción por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "074a32836bd4",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "Resolución 2K de Nano Banana: para la selección final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "0d826954408b",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Resolution / Cost",
+   "enunciado": "Resolución 4K de Nano Banana: para impresión y assets hero.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ]
+  },
+  {
+   "id": "1e3c7b6e5e02",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Thinking Mode",
+   "enunciado": "El Thinking Mode está activado por defecto y no se puede desactivar en NBP; en NB2 la palanca thinking_level (minimal o high, default minimal) se sube a high para resultados confusos que requieren reasoning, infografías con lógica espacial y grounding más razonamiento espacial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Thinking Mode"
+    }
+   ]
+  },
+  {
+   "id": "9b405d5caccf",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), tabla de tiers",
+   "enunciado": "NB2 Lite (gemini-3.1-flash-lite-image) es la más rápida y barata (0.034 USD, unos 4 s), solo 1K; para borradores y batches masivos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules"
+    }
+   ]
+  },
+  {
+   "id": "d64fea9f22be",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Кейфреймы для видео",
+   "enunciado": "Generar directamente el aspect ratio objetivo (9:16 para vertical) y no recortar después de animar, que es un punto de falla silencioso.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "c43a45a4d6b4",
+   "alcance": "Skill image, references/patterns/character-design.md, Anime-Style Character Card",
+   "enunciado": "Palancas de la ficha anime: descripción detallada, rasgos faciales distintivos, tres objetos firma, colores de swatches con hex, número de swatches y campos de stats; modelo recomendado GPT Image 2 en high por el layout con mucho texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "encabezado": "Character Design Patterns › Anime-Style Character Card"
+    }
+   ]
+  },
+  {
+   "id": "0b56a218b4bc",
+   "alcance": "Skill image, references/patterns/character-design.md, Character Turnaround Sheet",
+   "enunciado": "Palancas del turnaround: nombre y descripción específica del personaje (edad, complexión, peinado, vestuario) y hasta tres colores clave con hex; modelo recomendado GPT Image 2 en quality high porque las líneas de altura y el texto de llamadas exigen render preciso.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "encabezado": "Character Design Patterns › Character Turnaround Sheet (3-View)"
+    }
+   ]
+  },
+  {
+   "id": "2cd897f5ce04",
+   "alcance": "Skill image, references/patterns/character-design.md, Chibi / Mini-Me Collectible",
+   "enunciado": "Palancas del chibi: descripción simplificada, rasgos faciales, paleta con hex, degradado de fondo, número de poses (3 a 5), descripción de poses y color de base; modelo recomendado GPT Image 2 en medium (high para close-ups de marketing).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "encabezado": "Character Design Patterns › Chibi / Mini-Me Collectible"
+    }
+   ]
+  },
+  {
+   "id": "34848605b2cf",
+   "alcance": "Skill image, references/patterns/character-design.md, Expression Sheet",
+   "enunciado": "Palancas de la hoja de expresiones: descripción facial del personaje, estilo artístico, fuente de etiquetas y celdas extra; modelo recomendado GPT Image 2 en high por las etiquetas y la identidad facial consistente en 9 celdas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "encabezado": "Character Design Patterns › Expression Sheet"
+    }
+   ]
+  },
+  {
+   "id": "ed1c40968d94",
+   "alcance": "Skill image, references/patterns/character-design.md, Outfit Variant Grid",
+   "enunciado": "Palancas de la cuadrícula de vestuarios: personaje, color de fondo, layout 2x3 o 3x3, pose y descripción de cada traje; modelo recomendado GPT Image 2 en medium (high solo si las etiquetas exigen legibilidad fina).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "encabezado": "Character Design Patterns › Outfit Variant Grid"
+    }
+   ]
+  },
+  {
+   "id": "82da88d3a585",
+   "alcance": "Skill image, references/patterns/ecommerce.md, 9-Panel TVC Storyboard Grid",
+   "enunciado": "Palancas de la cuadrícula TVC: producto, protagonista, escenario, emoción, superficie beauty, tagline y duración; modelo recomendado GPT Image 2 en high por la precisión de la cuadrícula y el texto del panel 9.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "encabezado": "E-Commerce Product Photography Patterns › 9-Panel TVC Storyboard Grid"
+    }
+   ]
+  },
+  {
+   "id": "a55091efb822",
+   "alcance": "Skill image, references/patterns/ecommerce.md, Floating Ingredient Freeze-Frame",
+   "enunciado": "Palancas de los ingredientes flotantes: producto, degradado de fondo, tipo de líquido, lista de ingredientes, detalles de textura, ángulo de inclinación y máximo de ingredientes (6 a 8); modelo recomendado GPT Image 2 en high por la precisión del detalle congelado y la legibilidad de etiqueta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "encabezado": "E-Commerce Product Photography Patterns › Floating Ingredient Freeze-Frame"
+    }
+   ]
+  },
+  {
+   "id": "f6fa3f52b7b6",
+   "alcance": "Skill image, references/patterns/ecommerce.md, Luxury Cosmetics Studio Shot",
+   "enunciado": "Palancas de la cosmética de lujo: superficie de fondo, acabado del producto, material de acentos, paleta con hex y mood de tiempo; modelo recomendado GPT Image 2 en high por materiales de superficie y detalle de condensación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "encabezado": "E-Commerce Product Photography Patterns › Luxury Cosmetics Studio Shot"
+    }
+   ]
+  },
+  {
+   "id": "d18f4c16a66f",
+   "alcance": "Skill image, references/patterns/ecommerce.md, Miniature Diorama Product Ad",
+   "enunciado": "Palancas del diorama: producto, material (vidrio esmerilado, aluminio mate), color de superficie y color de acento; modelo recomendado GPT Image 2 en high por el detalle de figurinas y la legibilidad de etiqueta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "encabezado": "E-Commerce Product Photography Patterns › Miniature Diorama Product Ad"
+    }
+   ]
+  },
+  {
+   "id": "a88e34cf3ed9",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §11 U10 disciplina de duración",
+   "enunciado": "Divisiones por defecto: 10 s = 2 clips de 5 s, 15 s = 3 × 5 s, 30 s = 6 × 5 s y 60 s = 12 × 5 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ]
+  },
+  {
+   "id": "1ef0d3a37848",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §11 U10 disciplina de duración",
+   "enunciado": "U10 disciplina de duración: la mayoría de modelos trabajan con clips de 5-10 s y las narrativas largas viven en varios clips unidos en el editor; no meter una historia de 30 s en un prompt de 5 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ]
+  },
+  {
+   "id": "7a597689a1e3",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §11 U10 disciplina de duración; excepciones",
+   "enunciado": "Tres excepciones a U10: Seedance con 2-3 shots en un clip de 5-10 s vía 'Cut to', Kling 3.0 con hasta 6 shots y 15 s con audio y diálogo nativos, y Seedance 2.5 con hasta 30 s en una pasada mediante etapas consecutivas con un cambio de estado primario y estado final visible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ]
+  },
+  {
+   "id": "129eed74b5c7",
+   "alcance": "Skill visual-asset-critic, JSON 1.1",
+   "enunciado": "En el JSON de crítica, seed es la semilla si el generador la expone y null si no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "5a728debb379",
+   "alcance": "Skill visual-media, formato corto, Douyin",
+   "enunciado": "Douyin: duración óptima 15-60 s, relación 9:16, carácter de contenido local.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "3aec88ec5d05",
+   "alcance": "Skill visual-media, formato corto, Reels",
+   "enunciado": "Reels: duración óptima 15-90 s, relación 9:16, carácter cuidado y estético.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "070d388a0df0",
+   "alcance": "Skill visual-media, formato corto, Shorts",
+   "enunciado": "Shorts: duración óptima 15-60 s, relación 9:16, carácter de divulgación y humor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "f87df49a10a4",
+   "alcance": "Skill visual-media, formato corto, TikTok",
+   "enunciado": "TikTok: duración óptima 15-60 s, relación 9:16, carácter de entretenimiento y retos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "f97f5748cda5",
+   "alcance": "Skill visual-media, fundamentos de fotografía",
+   "enunciado": "Explicación: el triángulo de exposición relaciona diafragma (abierto da poca profundidad, cerrado mucha), obturador (rápido congela, lento da motion blur) e ISO (bajo limpio, alto con ruido).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Fundamentos de fotografía › Triángulo de exposición"
+    }
+   ]
+  },
+  {
+   "id": "92568cb17fc4",
+   "alcance": "Skill visual-prompt-forge, hard rule 4",
+   "enunciado": "Regla 4: los adapters son la fuente de verdad de la sintaxis; si el entrenamiento dice --style 4a y el adapter dice --style raw, gana el adapter.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 4. Adapters are the source of truth on syntax"
+    }
+   ]
+  },
+  {
+   "id": "c646f9c76a45",
+   "alcance": "Skill visual-prompt-forge, paso 2",
+   "enunciado": "adapters/_capabilities.json es la fuente única de verdad de los límites por generador (max_prompt_words, supports_text_render, supports_motion, aspect_param); se lee al inicio, se respeta y no se apunta movimiento a un generador solo de stills.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  },
+  {
+   "id": "1cff7a417462",
+   "alcance": "Skill visual-prompt-forge, paso 2",
+   "enunciado": "tools/validate_capabilities.py hace cumplir la precedencia y falla si un adapter anuncia más palabras que su techo o no documenta el aspect_param que el JSON manda enviar (caso de aspect_ratio vs aspectRatio en nano-banana).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  },
+  {
+   "id": "7427e278e336",
+   "alcance": "Skill visual-prompt-forge, paso 3",
+   "enunciado": "Paso 3: por cada shot y generador se toman paleta, mood y lista never del brand-lock, character/environment/lighting del series_lock y framing/angle/motion/subject del shot, se elimina toda referencia a on_screen_text (el texto nunca va en el prompt), se aplica la sintaxis del adapter y se añaden parámetros (aspect ratio, flags, seed).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 3. Compose per shot"
+    }
+   ]
+  },
+  {
+   "id": "e7a669096f0c",
+   "alcance": "Underwater Human Reference Policy v3.2, sección Delivery",
+   "enunciado": "El aspect ratio pertenece a los ajustes del generador cuando se soporta y debe verificarse en los píxeles de salida; el texto del prompt solo no garantiza la entrega.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/templates/v3.2/underwater-human-reference-policy.md",
+     "encabezado": "Underwater Human Reference Policy v3.2 › Delivery"
+    }
+   ]
+  },
+  {
+   "id": "6964088e6347",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Ejemplo: comentario de cabecera con parámetros (duration=8s, ar=9:16, generate_audio=true) encima del prompt de un shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "9b9317d1b3a9",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija generate_audio=true por defecto, que es la razón de elegir Veo; solo se pone false para shots mudos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "fb9e6135ef0b",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Fija la duración por defecto en 8 s, la longitud nativa de clip de Veo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "5714d0c643d2",
+   "alcance": "Veo 3 (adapter de visual-prompt-forge)",
+   "enunciado": "Prohíbe que el diálogo exceda la duración: una línea que necesita 12 s se corta o se acelera a 8 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "9004529ad50e",
+   "alcance": "Veo, veo.md, §2 versiones y specs",
+   "enunciado": "Especifica Veo 3: texto a video, audio nativo, clips de 4/6/8 segundos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "7f0ad55e9cf2",
+   "alcance": "Veo, veo.md, §2 versiones y specs",
+   "enunciado": "Especifica duración de 4, 6 u 8 segundos y presupuesto de diálogo de máximo 8 s de audio hablado por clip.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "dd065ad8d5e0",
+   "alcance": "Veo, veo.md, §6 prompts JSON; esquema completo",
+   "enunciado": "Ejemplo: esquema JSON completo de Veo 3.1 con output, global_style, continuity (personajes, props, luz constante) y escenas con shot, acción, entorno, luz y audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › Full schema"
+    }
+   ]
+  },
+  {
+   "id": "ce2db1f577a2",
+   "alcance": "Video, fixes-and-skeletons.md §3, esqueleto Seedance",
+   "enunciado": "Esqueleto de prompt para Seedance: Subject (bloque de identidad), Motion (una acción en presente), Camera con shots separados por Cut to, Environment, Lighting, Style, Audio (solo 1.5+) y Continuity, más flags --resolution 1080p --duration 5 --camerafixed false.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Seedance"
+    }
+   ]
+  },
+  {
+   "id": "27fb5d4aa2b8",
+   "alcance": "Video, fixes-and-skeletons.md §3, esqueleto Veo prosa",
+   "enunciado": "Esqueleto de prompt Veo en prosa: sujeto y acción en entorno, cámara con lente y movimiento, luz, estilo y paleta, más líneas Audio, Says (diálogo de máx. 8 s), SFX y Duration de 4, 6 u 8 segundos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Veo prose"
+    }
+   ]
+  },
+  {
+   "id": "beb4501834ef",
+   "alcance": "Video, patterns-and-genres.md §2, UGC/Social",
+   "enunciado": "Módulo de género UGC/Social: auténtico, vertical y rápido, con handheld, luz natural, 9:16, composiciones verticales, gestos directos a cámara y beats rápidos, tono inmediato e informal y ritmo veloz legible en miniatura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 2. Genre modules › UGC / Social"
+    }
+   ]
+  },
+  {
+   "id": "55d2b0e4c406",
+   "alcance": "Video, patterns-and-genres.md §3, divisiones por defecto",
+   "enunciado": "Divisiones por defecto de duración en clips de 5 s: 10 s en 2 clips, 15 s en 3, 30 s en 6, 45 s en 9 y 60 s en 12.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › Default splits"
+    }
+   ]
+  },
+  {
+   "id": "8cb745691ecf",
+   "alcance": "aurora-prompt-linter, scripts/vocabularies.yaml v1.0/v1.1 (skill instalado), REQUIRED_SPORTS_BROADCAST; casos 3a/3b/3c sports broadcast",
+   "enunciado": "Exige que los prompts de los casos 3a/3b/3c con sports broadcast contengan las palabras clave '60fps' y 'broadcast realism' (Regla 26 v6.0).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "aurora skill vocabularies.yaml › REQUIRED_SPORTS_BROADCAST"
+    }
+   ]
+  },
+  {
+   "id": "c04c4e4cf42b",
+   "alcance": "brand-lock de WhyStrohm (ejemplo), aspect ratios",
+   "enunciado": "Ejemplo: aspect ratios de WhyStrohm: 9:16 principal para social corto, 16:9 para largo, films héroe y embeds web, 1:1 para posts de feed y portadas de podcast, 4:5 como alternativa de feed de Instagram.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Aspect ratios"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Aspect ratios"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Aspect ratios"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "a9c83f10c3f8",
+   "alcance": "ejemplo storyboard WhyStrohm, 30s, cabecera",
+   "enunciado": "Ejemplo: el storyboard de WhyStrohm usa aspect 9:16.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works"
+    }
+   ]
+  },
+  {
+   "id": "74533a8140e6",
+   "alcance": "ejemplo storyboard shotkit explainer, 90s, cabecera",
+   "enunciado": "Ejemplo: ficha del proyecto shotkit: film explainer de 90 s, aspect 16:9 (render héroe 1280x720 y corte vertical 1080x1920 para social), framework founder-explainer, brand-lock con snapshot 2026-05-08T14:34:24Z, generado el 2026-05-08.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer."
+    }
+   ]
+  },
+  {
+   "id": "39b1eb138cfb",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 4",
+   "enunciado": "Ejemplo: se documenta la seed a nivel proyecto en shots.json (project.seed).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "bd1a8836f2b0",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 4",
+   "enunciado": "Establece que el adaptador lee la seed del proyecto y la aplica a cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "d13bedca818d",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 4; Midjourney, Veo, Seedance",
+   "enunciado": "Advierte que Midjourney y algunos modelos de movimiento (Veo, Seedance) manejan la seed distinto o no la manejan, por lo que el bloqueo de seed se documenta como mejor esfuerzo y no como garantía.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "fb76062e3865",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 4; generadores con seed",
+   "enunciado": "Lock 4: en generadores con seed (Flux, Seedream, Ideogram, Stable Diffusion) se fija la seed a nivel storyboard, la misma en todos los shots, para anclar la aleatoriedad y que los rasgos del personaje se mantengan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "3fb943e1fc86",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Ideogram",
+   "enunciado": "En Ideogram la referencia se pasa con el parámetro omni-reference y la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "228c3439fc22",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Midjourney",
+   "enunciado": "En Midjourney la referencia se pasa con --cref {url} --cw 50 (peso 50 = solo rasgos, no vestuario).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "03b515f7e575",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Nano Banana",
+   "enunciado": "En Nano Banana la referencia se pasa con el arreglo referenceImages.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "e013bf8f857d",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Explicación: sin lock de seed, los rasgos derivan aleatoriamente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "8e9fd188d301",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 2; Midjourney",
+   "enunciado": "Prescribe arreglos contra la deriva: verificar la cadena verbatim, añadir 1-2 rasgos específicos, usar referencia tras el primer shot logrado, bloquear seed y, en Midjourney, --cref con --cw 50.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 2. Character drift across shots"
+    }
+   ]
+  },
+  {
+   "id": "29d2f6b0d8a3",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 6",
+   "enunciado": "Prescribe arreglos de serie: auditar cada prompt contra series_lock y brand-lock con verificación verbatim, verificar aspect ratio idéntico y fijar los adjetivos de mood de marca, el mismo conjunto en cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ]
+  },
+  {
+   "id": "21c50ac1515a",
+   "alcance": "general (prompt-anatomy de visual-prompt-forge), Layer 5",
+   "enunciado": "Lista lo que maneja el adaptador: orden de palabras (Midjourney abre con sujeto, Kling con cámara), convenciones de longitud (Seedream corto, GPT Image largo), sintaxis de parámetros (--ar vs aspect_ratio) y fortalezas propias de cada modelo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 5. Generator Adapter"
+    }
+   ]
+  },
+  {
+   "id": "1a88c1e535ee",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, REQUIRED_SPORTS_BROADCAST; casos de video 3a/3b/3c/4",
+   "enunciado": "Exige los términos '60fps' y 'broadcast realism' en los casos de video 3a/3b/3c/4 con sports broadcast.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › REQUIRED_SPORTS_BROADCAST"
+    }
+   ]
+  },
+  {
+   "id": "5ef3b08d23be",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, WORD_BUDGET_BY_PLATFORM",
+   "enunciado": "Define WORD_BUDGET_BY_PLATFORM como referencia que nunca bloquea: rango default, rango i2v y techo de max_prompt_words por plataforma (Midjourney 40-80, Flux 80-150, Ideogram 60-120, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70, Kling 80-150 con i2v 20-40, Veo 80-150 con i2v 50-100, Seedance 80-150, Hailuo 60-120).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › WORD_BUDGET_BY_PLATFORM"
+    }
+   ]
+  },
+  {
+   "id": "b9023158e8e0",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Midjourney caso 1",
+   "enunciado": "Define las secciones requeridas de Midjourney caso 1 en el repo: sujeto, estilo, composición (incl. negative space), luz, aspect ratio y calidad.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+    }
+   ]
+  },
+  {
+   "id": "354f2aec3ae2",
+   "alcance": "secciones requeridas del linter aurora para Midjourney, caso 1 (génesis text-to-image) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt Midjourney caso 1: sujeto, estilo, composición, luz, aspect ratio y calidad (--v, --style, --q, --stylize).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+    }
+   ]
+  },
+  {
+   "id": "c6409372ce7c",
+   "alcance": "shots.schema.json y run.schema.json, project.aspect",
+   "enunciado": "Restringe project.aspect a 16:9, 9:16, 1:1, 4:5 o 21:9.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › project.aspect"
+    },
+    {
+     "documento": "skills/storyboard-architect/templates/run.schema.json",
+     "encabezado": "run.schema.json › project.aspect"
+    }
+   ]
+  },
+  {
+   "id": "4abc5568747c",
+   "alcance": "skill ai-production-director, resolución de conflictos 6.1 (vocabulario)",
+   "enunciado": "El vocabulario prohibido de video/dramaturgy (y aurora-prompt-linter) gana siempre (cinematic, epic, stunning, masterpiece, beautiful lighting, professional, high quality, emociones nombradas sin cuerpo) y anula la regla de ai-video-storyboard de cerrar con \"cinematic 1080p, synchronized audio\"; resolución, aspect ratio, duración y audio se especifican como parámetros técnicos según el archivo del modelo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.1 Vocabulario"
+    }
+   ]
+  },
+  {
+   "id": "9f7774a7b3aa",
+   "alcance": "skill ai-video-storyboard (paso 2, estructura)",
+   "enunciado": "Según duración y plataforma la línea de tiempo se divide en shots de unos 5 segundos, el punto ideal para los generadores de video.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 2 — Infer Structure"
+    }
+   ]
+  },
+  {
+   "id": "5ed8061b9f95",
+   "alcance": "skill ai-video-storyboard (paso 4, reglas críticas)",
+   "enunciado": "Reglas críticas de prompt por shot: especificar en cada prompt el lenguaje visual compartido, duración exacta y aspect ratio, cerrar siempre con \"cinematic 1080p, synchronized audio\", usar vocabulario de cinematografía (ECU, CU, dolly...), ser concreto y no abstracto, y no escribir hacks específicos de un modelo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 4 — Write Each Shot"
+    }
+   ]
+  },
+  {
+   "id": "910935baab26",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee",
+   "enunciado": "Ejemplo: parámetros del reel de cafetería: TikTok, 30 s, 6 shots de 5 s, 9:16, CTA \"Visit us. Opening next Saturday.\" y vibe cálido, analógico y artesanal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening"
+    }
+   ]
+  },
+  {
+   "id": "a7c82745d3ad",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (checklist de post)",
+   "enunciado": "Ejemplo: checklist de post del reel de cafetería, paso 7: exportar en 9:16, 1080x1920, 30 fps, H.264 y bitrate objetivo de 12 Mbps.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "e692fb7719b8",
+   "alcance": "skill aurora-prompt-linter (categorías, REQUIRED), modo sports-broadcast",
+   "enunciado": "La categoría REQUIRED del linter exige 60fps y broadcast realism con el flag --sports-broadcast, cuando aplica la Regla 26 v6.0.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ]
+  },
+  {
+   "id": "f5b27e46ed7e",
+   "alcance": "skill aurora-prompt-linter, references/README.md (reglas que aplica), modo sports-broadcast",
+   "enunciado": "Regla 5 del linter, sports broadcast: con el flag activo se exigen 60fps y broadcast realism en MAIN (Regla 26 v6.0).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ]
+  },
+  {
+   "id": "f830ee05211a",
+   "alcance": "skill brand-lock-extractor, brand-packs/examples/saas-clean.md (Acme SaaS, ejemplo) (Aspect ratios)",
+   "enunciado": "Ejemplo: aspect ratio de Acme SaaS, 16:9 como primario para demos de producto y hero films.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "dad268292e7f",
+   "alcance": "skill brand-lock-extractor, brand-packs/examples/saas-clean.md (Acme SaaS, ejemplo) (Aspect ratios)",
+   "enunciado": "Ejemplo: aspect ratio de Acme SaaS, 1:1 para carruseles de LinkedIn.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "82edbe480451",
+   "alcance": "skill brand-lock-extractor, brand-packs/examples/saas-clean.md (Acme SaaS, ejemplo) (Aspect ratios)",
+   "enunciado": "Ejemplo: aspect ratio de Acme SaaS, 9:16 para social de formato corto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "8cdd167f9b22",
+   "alcance": "skill brand-lock-extractor, examples/brand-lock.md (Northwind Coffee Roasters, ejemplo) (Aspect ratios)",
+   "enunciado": "Ejemplo: aspect ratios de Northwind, 4:5 y 9:16 para social y 16:9 para el hero web.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "0babaeb5d140",
+   "alcance": "skill brand-lock-extractor, examples/input-brief.md (Northwind, ejemplo de entrada) (fuente 2, hoja de marca)",
+   "enunciado": "Ejemplo: fuente 2 (hoja de marca) de Northwind, formatos anotados de Instagram (4:5 y 9:16) y hero web (16:9).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ]
+  },
+  {
+   "id": "ee35183f9ffe",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo aspect ratio: obligatorio (16:9, 9:16 o 1:1); si falta, preguntar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "570b3b212f90",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, tamaños",
+   "enunciado": "Tamaño body: aproximadamente 32-48 px a 1080p, estilo caption y persistente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "628a5d8bbfb0",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, tamaños",
+   "enunciado": "Tamaño caption: aproximadamente 20-28 px a 1080p, para avisos legales y atribuciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "3ce449ed5202",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, tamaños",
+   "enunciado": "Tamaño display: aproximadamente 96-144 px a 1080p, para beats hero o de hook.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "d6d24bf4a35b",
+   "alcance": "skill storyboard-architect, references/on-screen-text.md, tamaños",
+   "enunciado": "Tamaño headline: aproximadamente 56-80 px a 1080p, para beats de reframe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "3c9731f74a06",
+   "alcance": "skill video, salida",
+   "enunciado": "Formato A, prompt único: un prompt listo para copiar para una generación, encabezado con el nombre del modelo y los parámetros.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Output"
+    }
+   ]
+  },
+  {
+   "id": "e5dac45b63fb",
+   "alcance": "skills brand-lock-extractor y storyboard-architect, brand-packs/_template.md (Aspect ratios)",
+   "enunciado": "Ejemplo: valor por defecto de aspect ratios de la plantilla (16:9 / 9:16 / 1:1 / 4:5 / otro).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Aspect ratios"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Aspect ratios"
+    }
+   ]
+  },
+  {
+   "id": "cdf7014d0ad4",
+   "alcance": "skills/image, prompt-framework › Output Structure",
+   "enunciado": "Exige entregar los Parameters solo si no son estándar: aspect ratio si no es 1:1 y resolución si se necesita 2K/4K.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Output Structure"
+    }
+   ]
+  },
+  {
+   "id": "7d86910cd8a6",
+   "alcance": "skills/image, prompt-framework › Quick Decision Tree; solo Nano Banana",
+   "enunciado": "Limita a Nano Banana el image grounding (búsqueda de lugares reales) y los ratios extremos (1:8, 8:1, 4:1).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Quick Decision Tree"
+    }
+   ]
+  },
+  {
+   "id": "2297dce93910",
+   "alcance": "skills/image, slides › Design Principles › Visual Consistency",
+   "enunciado": "Exige imágenes solo en alta resolución, cada una reforzando la idea del slide.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Visual Consistency"
+    }
+   ]
+  },
+  {
+   "id": "784418f35f8f",
+   "alcance": "skills/image, storyboards › Output Control",
+   "enunciado": "Control de salida: exigir que cada imagen tenga el aspect ratio indicado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/storyboards.md",
+     "encabezado": "Storyboards & Sequential Art › Output Control"
+    }
+   ]
+  },
+  {
+   "id": "0325e2b9f40f",
+   "alcance": "skills/image, storyboards › Output Control",
+   "enunciado": "Control de salida: pedir que las imágenes se generen una a la vez.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/storyboards.md",
+     "encabezado": "Storyboards & Sequential Art › Output Control"
+    }
+   ]
+  },
+  {
+   "id": "b782b87b56b6",
+   "alcance": "skills/image, storyboards › Output Control",
+   "enunciado": "Control de salida: pedir que se generen N imágenes, una a la vez.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/storyboards.md",
+     "encabezado": "Storyboards & Sequential Art › Output Control"
+    }
+   ]
+  },
+  {
+   "id": "f8734854981d",
+   "alcance": "skills/image, vision-decomposer › Output Protocol › Block 2",
+   "enunciado": "Exige añadir tras el prompt la cabecera estándar del skill image (Model / Quality / Size) para poder usarlo directamente en el generador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL › Block 2 — Final Prompt"
+    }
+   ]
+  },
+  {
+   "id": "a97049af64ba",
+   "alcance": "storyboard-architect, shots.schema.json (shots[].assets.generated)",
+   "enunciado": "El seed del frame generado puede ser null, un entero o una cadena no vacía.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › shots[].assets.generated[].seed"
+    }
+   ]
+  },
+  {
+   "id": "b9a7fea89555",
+   "alcance": "visual-asset-critic, critique.schema.json",
+   "enunciado": "seed de la crítica es la semilla de generación si el generador la expone (entero o cadena), o null si no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/templates/critique.schema.json",
+     "encabezado": "critique.schema.json › seed"
+    }
+   ]
+  },
+  {
+   "id": "ae83094f2870",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, flux",
+   "enunciado": "Ficha de capacidades de Flux 2 Pro: lenguaje natural descriptivo, techo de 150 palabras, con render de texto (aun así el texto en pantalla es un pase de compositing aparte), con character ref, sin style ref ni negativo, parámetro aspect_ratio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › flux"
+    }
+   ]
+  },
+  {
+   "id": "2688d8313928",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, gpt-image",
+   "enunciado": "Ficha de capacidades de GPT Image 1.5/2: estilo párrafo que sigue instrucciones, techo de 300 palabras, con render de texto y character ref, sin style ref ni negativo, parámetro size; tolera más contexto y sirve para composiciones complejas descritas en oraciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › gpt-image"
+    }
+   ]
+  },
+  {
+   "id": "32a826e4650b",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, midjourney",
+   "enunciado": "Ficha de capacidades de Midjourney v7: prompt tipo keyword, techo de 100 palabras, sin render de texto ni movimiento, con character ref, style ref y negativo, parámetro --ar, acceso limitado; frases cortas y de alta señal, recomendado 40-80 palabras y --cref/--sref para consistencia (verificado 2026-05-08).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › midjourney"
+    }
+   ]
+  },
+  {
+   "id": "08184464710b",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, nano-banana",
+   "enunciado": "Ficha de capacidades de Nano Banana (Gemini 2.5 Flash Image): lenguaje natural, techo de 120 palabras, con render de texto, character y style ref, sin negativo, parámetro aspectRatio en camelCase que ignora --ar; rápido, barato y fuerte en edición/consistencia por referencias, bueno para iteración de alto volumen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › nano-banana"
+    }
+   ]
+  },
+  {
+   "id": "2f69b8752249",
+   "alcance": "visual-prompt-forge, adapters/_capabilities.json, seedream",
+   "enunciado": "Ficha de capacidades de Seedream 4.5: lenguaje natural, techo de 120 palabras, con render de texto, character y style ref y negativo, parámetro aspect_ratio; fuerte en fotorrealismo y texto bilingüe, competitivo en consistencia de personaje.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/_capabilities.json",
+     "encabezado": "_capabilities.json › seedream"
+    }
+   ]
+  },
+  {
+   "id": "178717467065",
+   "alcance": "visual-prompt-forge, capabilities.schema.json (matriz de capacidades de generadores)",
+   "enunciado": "api_access de un generador solo admite full, limited o none.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "encabezado": "capabilities.schema.json › generators[].api_access"
+    }
+   ]
+  },
+  {
+   "id": "d17deddd353a",
+   "alcance": "visual-prompt-forge, capabilities.schema.json (matriz de capacidades de generadores)",
+   "enunciado": "aspect_param es una cadena no vacía con el parámetro de relación de aspecto del generador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "encabezado": "capabilities.schema.json › generators[].aspect_param"
+    }
+   ]
+  }
+ ]
+}
