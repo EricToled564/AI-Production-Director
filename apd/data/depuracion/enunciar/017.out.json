@@ -1,0 +1,1015 @@
+{
+ "registros": [
+  {
+   "id": "56e90a0aad8d",
+   "enunciado": "En Seedance 2.5 los comandos negativos son confiables ('Pure video, no subtitles, no background music' suprime subtítulos y música no deseados), corrigiendo el fallo clásico de 1.x/2.0.",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "temas": [
+    "negativos",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "07320a6e5e2b",
+   "enunciado": "En Seedance 2.5 las ventanas de beat `[0-4s]` se respetan como temporización y no solo como orden (control de timestamps al segundo).",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "temas": [
+    "capacidades_modelo",
+    "beat_framework_timing",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "6e61cb047fab",
+   "enunciado": "En Seedance 2.5 editar un video existente (re-render parcial, cambio de fondo, redoblaje) y extenderlo son modos de primera clase y no soluciones improvisadas.",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "temas": [
+    "edicion_extension_video",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "dbb6c4d1b33b",
+   "enunciado": "Seedance 2.5 ofrece control de blockout: un video previz 3D de modelo blanco (o placas de green screen) fija trayectoria de cámara, staging y blocking, y los plugins de Blender/Maya suben directo a Jimeng.",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "temas": [
+    "edicion_extension_video",
+    "camara_movimiento",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "7d1cb1db5624",
+   "enunciado": "Explicación: puntos de entrada de Seedance 2.5 (Jimeng con Omni Reference, Smart Edit, Long Video y First & Last Frames; Doubao con suscripción Pro; Xiaoyunque con biblioteca de personajes, escenario de director 3D y re-toma de segmento).",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "temas": [
+    "capacidades_modelo",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "b460ef7f37e2",
+   "enunciado": "Especifica el límite de duración en una pasada: hasta 15 s en 2.0 y hasta 30 s en 2.5 (duración -1 o 4-30).",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "17e711da771d",
+   "enunciado": "Especifica el límite de imágenes por solicitud: 9 en 2.0 y 30 en 2.5 (cada una ≤4K y ≤30 MB).",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "9b7af7be9252",
+   "enunciado": "Especifica el límite de referencias de video: 3 clips y ≤15 s en total en 2.0; 10 clips, cada uno de 2-30 s y ≤30 s en total, en 2.5.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "881dbac10975",
+   "enunciado": "Especifica el límite de referencias de audio: 3 clips y ≤15 s en 2.0; 10 clips y ≤30 s en total en 2.5, con entrada solo de audio ahora permitida.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "989383461346",
+   "enunciado": "Especifica la resolución de salida: hasta 4K en 2.0 y 480p/720p en Jimeng web para 2.5.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "4117249dcb19",
+   "enunciado": "Especifica los timestamps: solo pistas de orden en 2.0 y respetados al segundo en 2.5.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "917090711e9a",
+   "enunciado": "Los parámetros de generación (duración, aspect ratio, resolución) se fijan en la página de generación o por API y no van en el prompt; la cola CLI `--resolution --duration` de 1.x/2.0 no es sintaxis 2.5, salvo en modo Ultra Long, donde se reafirman duración y ratio al inicio del prompt.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "3848b64b20a0",
+   "enunciado": "Parámetros autobloqueados en 2.5: la edición de video bloquea ratio y duración a los del input (±0.3 s), first/last frame bloquea el ratio al de la primera imagen (un último cuadro desajustado se estira) y la extensión bloquea el ratio y permite fijar duración.",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "temas": [
+    "parametros_tecnicos",
+    "i2v_keyframes",
+    "edicion_extension_video"
+   ]
+  },
+  {
+   "id": "df6d680876ee",
+   "enunciado": "Fórmula base de todo prompt 2.5: Sujeto realiza acción o evento en escena y entorno; los visuales presentan estilo visual; usar tamaño de plano, ángulo, movimiento de cámara o cortes; el audio incluye diálogo, ambiente, efectos o música.",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "79a7e5a019d2",
+   "enunciado": "Cualquier componente de la fórmula base puede omitirse; para trabajo largo o con muchas referencias usar la macrofórmula: declaración de referencias + resumen de una línea + trama por línea de tiempo + cola global.",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "estructura_prompt_video",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "5151d3dc9e02",
+   "enunciado": "La declaración de referencias lista cada activo por orden de subida junto con su rol (personaje, voz, movimiento, escena).",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "referencias_roles",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "bec63131d3dd",
+   "enunciado": "El resumen de una línea contiene sujeto, lugar, evento, género/estilo y tratamiento especial de cámara.",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "e689436141f3",
+   "enunciado": "En la trama por línea de tiempo, cada beat lleva contenido positivo (imagen, cámara, acción, diálogo, SFX) y prohibiciones locales ('no subtitles', 'no BGM').",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "estructura_prompt_video",
+    "negativos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "479940cb3f5c",
+   "enunciado": "La cola global reafirma los globales que deben mantenerse (posición de cámara, entorno, sonido, iluminación) y repite las prohibiciones globales.",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "estructura_prompt_video",
+    "negativos",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "5bcf24a0ddde",
+   "enunciado": "Re-mencionar con @ el mismo activo varias veces a lo largo del prompt, porque según la guía oficial las menciones repetidas aumentan la precisión.",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "temas": [
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "1f3fabdc0478",
+   "enunciado": "Usar los marcadores dedicados de 2.5 para audio, diálogo y texto y no describir el audio en prosa suelta.",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo",
+    "texto_en_pantalla",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "8acacebb2800",
+   "enunciado": "Especifica el marcador de música: paréntesis `( )`, p. ej. (Soft, rhythmic piano music plays in the background).",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "b0f7758b7c24",
+   "enunciado": "Especifica el marcador de efecto de sonido: ángulos `< >`, p. ej. <A bell rings in the distance>.",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "4d6fee16ed71",
+   "enunciado": "Especifica el marcador de diálogo: llaves `{ }`, p. ej. {Hello, welcome back.}.",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "90d913719127",
+   "enunciado": "Especifica el marcador de subtítulos/títulos: corchetes `【 】`, p. ej. 【Chapter One: Departure】.",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "texto_en_pantalla",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "5bad24b5567e",
+   "enunciado": "Reforzar el idioma del diálogo con la fórmula 'Dialogue language + variedad regional o acento + estilo de entrega + hablante + {línea}' (ejemplo con inglés de Los Ángeles y japonés).",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "919a53320eff",
+   "enunciado": "Explicación: forma de labios, ritmo de habla y rostro coinciden con el idioma asignado en una sola pasada en los 11 idiomas soportados, incluidas escenas de idiomas mezclados.",
+   "alcance": "Seedance 2.5, §4 marcadores de sintaxis",
+   "temas": [
+    "audio_dialogo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "3213b5649051",
+   "enunciado": "El sentido de los 50 slots no es volcar activos: el rol de cada material debe escribirse en el prompt, sin depender de etiquetas de texto dentro de las imágenes ni hacer que el modelo infiera el mapeo.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "d1f387917610",
+   "enunciado": "Plantilla de rol: '@Image 1 defines <sujeto>'s <apariencia, ropa, estructura o material>; @Video 1 defines <movimiento, cámara o ritmo>; @Audio 1 defines <voz, diálogo, ambiente o música> del personaje o tipo de sonido'.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "0ecd5081474e",
+   "enunciado": "Reglas de referencias: vincular cada sujeto individualmente (prohibido el patrón '@Images 1 through 4 define four characters respectively'), añadir exclusiones para todo lo que pueda filtrarse, no re-describir lo que una referencia ya define y usar un Subject Profile para personajes recurrentes.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "9d694461fb77",
+   "enunciado": "Ejemplo: plantilla de Subject Profile para un personaje recurrente (apariencia y ropa por @Image, prop fijo, locaciones, referencias de movimiento y exclusiones).",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "c0119632db6f",
+   "enunciado": "Seleccionar las referencias por escena y no todas a la vez, con el formato 'Scene 1 | Use: <lista>. Event: ... End state: ...'.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "22d90de5ca10",
+   "enunciado": "El mismo personaje en dos estados (antes/después de una transformación) requiere dos slots de imagen separados, cada uno ligado a su rango de tiempo; es el enlace más frágil, así que se presupuestan re-rolls.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "consistencia_identidad",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "0c274ccca7e8",
+   "enunciado": "Explicación: introduce los puntos óptimos oficiales de estabilidad de las referencias (mejor frente a posible pero inestable).",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "afa21a3c99bf",
+   "enunciado": "Punto óptimo: 1-5 sujetos en una referencia de video/audio es lo mejor; 6-10 es posible pero inestable.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "multitud_grupo"
+   ]
+  },
+  {
+   "id": "4f7cd56fce31",
+   "enunciado": "Punto óptimo: clips de referencia de 5-10 s por sujeto; más largos son posibles pero inestables.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "9a493c78d656",
+   "enunciado": "Punto óptimo: 1-8 sujetos entre las imágenes de referencia es lo mejor; 9-12 es posible pero inestable.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "multitud_grupo"
+   ]
+  },
+  {
+   "id": "68a58dd2deb3",
+   "enunciado": "Hojas multivista: con ≤5 sujetos cualquier formato sirve; con más de 5 solo vista única, y imágenes separadas por vista superan a un collage.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "referencias_roles",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "289a6215cbc9",
+   "enunciado": "Punto óptimo: el video fuente de edición debe durar ≤20 s; más largo se atasca.",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "temas": [
+    "edicion_extension_video",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "ac74ab73d44f",
+   "enunciado": "Dividir el clip de 30 s en etapas consecutivas con un cambio de estado primario por etapa y declarar siempre el estado final visible, hacia el cual el modelo se orienta (regla U11 de imagen final aplicada por etapa).",
+   "alcance": "Seedance 2.5, §6 estructura de 30 s: etapas y estados finales",
+   "temas": [
+    "estructura_prompt_video",
+    "cinco_anclas_motivo",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "7ba5ba9f23d6",
+   "enunciado": "Ejemplo: esqueleto por etapas con [Generation Goal], [Stage 1..3] (estado inicial, evento primario, estado final) y [Maintain Consistency] para identidad, conteo, ropa, propiedad de props, dirección espacial y relaciones de audio.",
+   "alcance": "Seedance 2.5, §6 estructura de 30 s",
+   "temas": [
+    "estructura_prompt_video",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "c57f0671e8f7",
+   "enunciado": "Reglas de timestamps: un rango es presupuesto de tiempo y no punto de edición (consecutivos y sin solapamiento), ventanas de 3 s o más, un solo movimiento de cámara y una acción central por ventana sin exigir frecuencias, precisión al segundo solo donde importa y contenido proporcional al presupuesto.",
+   "alcance": "Seedance 2.5, §6 estructura de 30 s; timestamps",
+   "temas": [
+    "beat_framework_timing",
+    "estructura_prompt_video",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "82ce126f7152",
+   "enunciado": "Ejemplo/especifica: esqueleto oficial anticolapso de tres módulos (capa de referencia, ajustes globales con prohibiciones, storyboard con timestamps) para trabajo dramático de 30 s, más ligero que el esqueleto de 11 bloques.",
+   "alcance": "Seedance 2.5, §7 esqueleto anticolapso",
+   "temas": [
+    "estructura_prompt_video",
+    "negativos",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "dd8c46542f66",
+   "enunciado": "El esqueleto usa dos técnicas: una lista de prohibiciones específica y no genérica (vetar exactamente las formas en que esa escena puede colapsar) y directiva más subtexto (explicar al modelo por qué ocurre la acción, lo que mejora la actuación y se compone con la Details Law).",
+   "alcance": "Seedance 2.5, §7 esqueleto anticolapso",
+   "temas": [
+    "negativos",
+    "emocion_sin_nombrar",
+    "dramaturgia_escena"
+   ]
+  },
+  {
+   "id": "fd34c2e36338",
+   "enunciado": "Fórmula de humano realista: personaje = edad/etnia + tono y textura de piel + 3-4 detalles faciales + mirada/alma + peinado/color + ropa/tela + complexión/emoción/aura.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista (anti-AI-face)",
+   "temas": [
+    "piel_rostro_realismo",
+    "consistencia_identidad",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "faf328268793",
+   "enunciado": "Añadir siempre el sufijo de fidelidad 'retaining real fine pores and skin texture' (opcionalmente pecas o imperfecciones), la corrección oficial contra la piel plástica.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "temas": [
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "131a76de9269",
+   "enunciado": "Los detalles faciales deben ser 3-4 puntos concretos: forma de ojos, arco superciliar, puente nasal, labios, mandíbula.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "temas": [
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "36f294c284e0",
+   "enunciado": "Mirada/alma es la emoción que cargan los ojos, separada de la geometría facial.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "temas": [
+    "piel_rostro_realismo",
+    "emocion_sin_nombrar"
+   ]
+  },
+  {
+   "id": "a08147b3d72c",
+   "enunciado": "La fórmula de humano realista sirve también para personajes animados cambiando el registro de textura.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "temas": [
+    "piel_rostro_realismo",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "5aaecf10a155",
+   "enunciado": "Para una transición emocional bastan 2-4 señales observables (ojos, tensión de cejas, boca, respiración, tragar, manos); más se lee como sobreactuación y las palabras de emoción abstractas dejan demasiado margen.",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "temas": [
+    "emocion_sin_nombrar",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "73864016da54",
+   "enunciado": "Seedance 2.5 entiende sin traducción un vocabulario de cámara oficial (planos de extreme wide a ECU, push in, pull out, pan, follow, orbit, dive, tilt, handheld, low angle, overhead, first-person, one-take, dolly zoom, aerial, FPV, bullet time, bounce speed ramp).",
+   "alcance": "Seedance 2.5, §9 lenguaje de cámara",
+   "temas": [
+    "camara_movimiento",
+    "encuadre_lente_dof",
+    "angulo_camara"
+   ]
+  },
+  {
+   "id": "4f6c32c4c23d",
+   "enunciado": "Para términos de cámara más raros, conservar el término y traducirlo a cambio observable con el patrón 'término + sujeto objetivo + cambio visual + relación primer plano/fondo + dirección o velocidad' (vocabulario completo en camera-lighting-vocabulary §10).",
+   "alcance": "Seedance 2.5, §9 lenguaje de cámara",
+   "temas": [
+    "camara_movimiento",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "6f4721bd1042",
+   "enunciado": "Los números de apertura y focal están permitidos, pero lo que realmente dirige al modelo es el resultado visible descrito en palabras.",
+   "alcance": "Seedance 2.5, §9 lenguaje de cámara",
+   "temas": [
+    "encuadre_lente_dof",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "63096f99f9f9",
+   "enunciado": "El vocabulario de transiciones vive en camera-lighting-vocabulary §11; en Seedance se usa la fórmula 'cut = tipo de transición + restricciones básicas + lógica de corte'.",
+   "alcance": "Seedance 2.5, §10 transiciones",
+   "temas": [
+    "ritmo_montaje",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "0d25ec9cd2fd",
+   "enunciado": "Adjuntar siempre la fórmula 'prohibit rigid cutting, prohibit objects appearing out of thin air', la cláusula oficial anti-jump-cut repetida en cada plantilla de transición.",
+   "alcance": "Seedance 2.5, §10 transiciones",
+   "temas": [
+    "ritmo_montaje",
+    "negativos"
+   ]
+  },
+  {
+   "id": "229ba879cb9a",
+   "enunciado": "Las transiciones pueden delegarse al modelo: 'De [corte natural / máscara de oclusión / tinta / match cut], elige la que mejor encaje con el estilo del film'.",
+   "alcance": "Seedance 2.5, §10 transiciones",
+   "temas": [
+    "ritmo_montaje",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "e8b06b57e8bb",
+   "enunciado": "Compuertas de orden para efectos que no deben dispararse antes: por ejemplo, el efecto tinta solo aparece DESPUÉS de 25 s, activado por el sonido 'click', sin aparición prematura.",
+   "alcance": "Seedance 2.5, §10 transiciones",
+   "temas": [
+    "ritmo_montaje",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "62e60366aa3c",
+   "enunciado": "Explotar la física real de 2.5 acoplada al audio con cuatro movimientos: declarar el régimen físico al inicio, narrar consecuencias y no solo acciones, restringir negativamente el fallo conocido y condicionar los eventos a disparadores en lugar de segundos crudos.",
+   "alcance": "Seedance 2.5, §11 física por consecuencias y disparadores",
+   "temas": [
+    "fisica_consecuencia",
+    "negativos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "7831ffd967f8",
+   "enunciado": "Para editar un video existente en 2.5 (cambiar sujeto, fondo, quitar marca de agua, cambiar idioma hablado) usar el patrón canónico de bloques [Edit Goal], [Source Video Role], [Target Material Role], [Edit Scope] y [Content to Preserve], dejando todo lo demás en su lugar.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "referencias_roles",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "db27383bf995",
+   "enunciado": "La sustitución de sujeto añade un bloque [Timeline Inheritance] (el objetivo hereda apariencia, movimiento, oclusión y salida del original con su tiempo, duración, trayectoria y cambios de velocidad) y cierra con la cláusula de conservar todo lo demás de @Video 1 sin cambios.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "2037cfdb0ef6",
+   "enunciado": "En metraje filmado, abrir con la cláusula de preservación enumerando todo lo que debe conservarse antes de declarar cualquier cambio (identidad, rostro, voz, cámara, focal, perspectiva, duración); cuanto más larga la lista, menos deriva.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "f06a7a2747d0",
+   "enunciado": "Cuando la fuente tiene narración, anclar los tiempos al habla y no a segundos ('When they say {now look at my hand}...'), porque la voz es la línea de tiempo.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "audio_dialogo",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "3d8fe9096cfe",
+   "enunciado": "Cortar primero las fuentes largas: la edición funciona mejor en clips ≤20 s y las más largas se atascan o fallan.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "175790599af7",
+   "enunciado": "Las ediciones solo de audio funcionan: por ejemplo, quitar solo la música original conservando diálogo, lip sync, ambiente y SFX de acción, y preservando imagen y ritmo de edición.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "audio_dialogo",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "2495807a28a8",
+   "enunciado": "Patrón de localización (filmar una vez, redoblar por mercado): reemplazar la narración y a la presentadora, conservando movimiento de cámara, blocking, ritmo de actuación, escena y producto.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "4c34a13bb06b",
+   "enunciado": "Para cambiar el fondo, limitar el alcance: 'modify only the background outside the subject's silhouette'.",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "temas": [
+    "edicion_extension_video",
+    "edicion_imagen"
+   ]
+  },
+  {
+   "id": "941102f2da4e",
+   "enunciado": "Cualquier clip ≤30 s se extiende 4-30 s por pasada, anidable repetidamente hasta un techo duro de 60 s; el nuevo prompt aplica solo al segmento añadido, los cuadros originales no se tocan y los verbos obligatorios son extend forward / extend backward / continue.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "4b5ed110e0d7",
+   "enunciado": "Ejemplo/patrón de extensión hacia adelante: el primer cuadro del segmento continúa desde el último de @Video 1, se mantiene continuidad de pose, props, fondo, cámara, luz y dirección, y cada sujeto sigue siendo la misma instancia continua sin duplicarse ni dividirse.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "431d1528bf4b",
+   "enunciado": "En extensión hacia atrás describir los eventos previos y definir el primer cuadro de @Video 1 como estado final explícito de la extensión; marcar los materiales exclusivos del video fuente ('X must not appear early') o los personajes posteriores se filtran al pasado.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "ccbb85aa7af1",
+   "enunciado": "Explicación: los cuadros frontera conectan visualmente, no idénticos al píxel.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "bb5dbe0474c9",
+   "enunciado": "Las extensiones conservan aspecto del personaje, estilo artístico y timbre de voz incluso sin volver a suministrar referencias, por lo que bastan prompts de extensión solo de trama.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "consistencia_identidad",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "f35ef50fbf70",
+   "enunciado": "Ejemplo: prompt mínimo de extensión probado por la comunidad que fija identidad, estructura facial, proporciones, luz, estilo y espacio, y cambia solo el movimiento de cámara sin rediseñar personaje ni acción.",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "b27af913b693",
+   "enunciado": "El modo Ultra Long (30-180 s) es distinto de la extensión: una sola entrega en la que se reafirman duración y aspect ratio al inicio del prompt, con dos registros (timestamped para piezas ambientales de 1 min con prohibiciones por ventana, y flujo narrativo para piezas de 3 min con cadena de eventos y referencias en línea).",
+   "alcance": "Seedance 2.5, §14 modo Ultra Long",
+   "temas": [
+    "edicion_extension_video",
+    "parametros_tecnicos",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "c804e7149426",
+   "enunciado": "Planificar el ritmo de antemano en Ultra Long, sin timestamps o cadena de beats la segunda mitad deriva; el pipeline genera por segmentos usando los últimos ~3 s como referencia del siguiente, por lo que un segmento débil se propaga, y en Xiaoyunque la re-toma de segmento regenera solo un tramo malo dejando lo demás idéntico.",
+   "alcance": "Seedance 2.5, §14 modo Ultra Long",
+   "temas": [
+    "edicion_extension_video",
+    "continuidad_multiclip",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "f5643777abf1",
+   "enunciado": "Blockout como rey de la controlabilidad: bloquear espacio, cámara y staging en 3D antes y dejar que el modelo renderice materiales y luz; en blockout grueso mapear cada primitiva a una referencia, excluir el estilo de render y evitar modelos con extremidades o alas, y en blockout fino limpiar antes la captura del viewport (trayectorias, ejes, controladores, frustums); el grueso funciona mejor hoy.",
+   "alcance": "Seedance 2.5, §15 blockout y green screen",
+   "temas": [
+    "edicion_extension_video",
+    "camara_movimiento",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "2df05d4816fc",
+   "enunciado": "Notas de pipeline: plugins Blender/Maya suben el blockout a Jimeng (Blender ≥3.6, sin C4D/3ds Max), no codificar primitivas por color sino por texto, el escenario 3D de Xiaoyunque permite dibujar la ruta de cámara, un diagrama de ruta cenital sirve como imagen de referencia y el green screen se usa en ambas direcciones (componer sobre escenas o convertir fondo a verde).",
+   "alcance": "Seedance 2.5, §15 blockout y green screen",
+   "temas": [
+    "edicion_extension_video",
+    "camara_movimiento",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "28f37d0a3089",
+   "enunciado": "Un grid de storyboard como input (una imagen, ≤15 paneles oficiales, línea limpia, poco texto) exige declarar el orden de lectura y excluir su estilo de línea, etiquetas y personajes placeholder, seguido de 'Shot 1: ... Shot N: ...'.",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "temas": [
+    "i2v_keyframes",
+    "referencias_roles",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "a90307d1117f",
+   "enunciado": "En secuencias multi-keyframe usar 'Use @Image 1 through @Image N as keyframes in this order', un estado clave por imagen; las imágenes independientes alinean mejor que un grid y los keyframes controlan orden de etapas y estados clave, no cuadros exactos.",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "temas": [
+    "i2v_keyframes",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "9b988122c06a",
+   "enunciado": "First + last frame funciona en modo omni-reference declarando cada ancla por separado ('@Image 1 is the first frame... @Image 2 is the last frame...') y nunca conjuntamente, con el mismo aspect ratio.",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "temas": [
+    "i2v_keyframes",
+    "referencias_roles",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "77d07ab67e94",
+   "enunciado": "Explicación: aquí encadena la skill image, cuyas hojas de personaje y keyframes de animatic-keyframes se convierten en el kit de referencias.",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "temas": [
+    "flujo_pipeline",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "b43d1d580dfd",
+   "enunciado": "Falla gemelos/mezcla de rostros en escenas de varias personas: corregir con vinculación por sujeto (§5) más diferenciación explícita ('movements not synchronized; clothing colors, hairstyles and facial features distinct; no identical clones in the background').",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones; gemelos",
+   "temas": [
+    "consistencia_identidad",
+    "multitud_grupo",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "7807334065c1",
+   "enunciado": "Falla del mismo personaje en dos estados que aparece en el momento equivocado: los slots pre/post transformación confunden al modelo; vincular cada estado a su rango de tiempo y presupuestar re-rolls, el enlace más frágil de 2.5.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "3b0e77cfd717",
+   "enunciado": "Falla de subtítulos aleatorios o BGM no deseado: usar 'Pure video, no subtitles, no background music', fiable en 2.5, y repetirlo en la cola global.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "negativos",
+    "texto_en_pantalla",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "f3e9862003cd",
+   "enunciado": "Falla de piel plástica: usar 'Retaining real fine pores and skin texture' y lenguaje de producción en lugar de 'hyperrealistic 8k'.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "piel_rostro_realismo",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "73bbe4d1b4ee",
+   "enunciado": "Falla de plausibilidad en contexto largo: pasados 30 s el modelo puede colocar un objeto plausible en un lugar imposible; declarar las restricciones duras del mundo en la cola global y verificar toda la línea de tiempo antes de entregar, porque los errores se esconden en la segunda mitad.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "continuidad_multiclip",
+    "critica_qa",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "3b36a8623a6b",
+   "enunciado": "Falla del one-take que no se mantiene: 2.5 peca por comisión y puede cortar aunque se pida toma continua; usar 'One continuous shot, no cuts of any kind' con una ruta de cámara que nunca motive un corte y, si se filtra montaje, bajar a una ventana de 10-15 s.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "camara_movimiento",
+    "negativos",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "2709cd04764b",
+   "enunciado": "Falla de modo edición que se atasca o ignora la instrucción: fuente ≤20 s (cortar antes), nombrar @Video 1 como 'the sole editing master' y un solo objetivo de edición por pasada.",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "temas": [
+    "edicion_extension_video",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "17469e7ff15d",
+   "enunciado": "Presupuestar costos reales (30 s/720p en Jimeng cuesta ~500-700 créditos) asumiendo re-rolls, extensiones y re-tomas, preferir editar/extender/re-tomar a regenerar por completo y borradores a 480p con final a 720p.",
+   "alcance": "Seedance 2.5, §18 economía y elección de modelo",
+   "temas": [
+    "seleccion_modelo",
+    "revision_iteracion",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "cb2afc2f28a1",
+   "enunciado": "Frente a Minimax H3, H3 peca por omisión (más fílmico pero omite shots) y Seedance 2.5 por comisión (ejecuta casi todo pero puede mal usar una referencia o romper una restricción global); elegir 2.5 para precisión de timestamps, coreografía densa, kits de 50 referencias y herramientas de edición/blockout, y H3, Kling o Veo cuando pese más la coherencia cinematográfica por crédito.",
+   "alcance": "Seedance 2.5, §18 economía y elección de modelo",
+   "temas": [
+    "seleccion_modelo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "743b523fb224",
+   "enunciado": "Ejemplo: 'Riverside Farewell' (29 s de un solo plano), ejemplo oficial insignia de actuación emocional contenida, con ajuste global, estilismo de personaje, núcleo de actuación, negativos específicos y storyboard por etapas con estado emocional y subtexto; se copia la estructura.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; A. microactuación contenida",
+   "temas": [
+    "ejemplo_marca",
+    "emocion_sin_nombrar",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "b29d5655eeb4",
+   "enunciado": "Explicación: en el ejemplo cada etapa tiene un cambio de estado, directivas físicas y subtexto emocional, y la lista de prohibiciones nombra los modos exactos de colapso de esa escena.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; A. microactuación contenida",
+   "temas": [
+    "emocion_sin_nombrar",
+    "negativos"
+   ]
+  },
+  {
+   "id": "3e60fceb53ea",
+   "enunciado": "Ejemplo: persecución mecha sci-fi de 30 s en un plano, con régimen físico declarado al inicio, negativos contra la torsión blanda de la estructura, sin subtítulos ni BGM ni IP con copyright, y storyboard con timestamps donde cada beat narra una consecuencia física.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; B. física y prohibiciones",
+   "temas": [
+    "ejemplo_marca",
+    "fisica_consecuencia",
+    "negativos"
+   ]
+  },
+  {
+   "id": "5b461828a4be",
+   "enunciado": "Explicación: en el ejemplo se declara el régimen físico al inicio, cada beat narra una consecuencia y cada prohibición apunta a un fallo conocido de ese material exacto.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; B. física y prohibiciones",
+   "temas": [
+    "fisica_consecuencia",
+    "negativos"
+   ]
+  },
+  {
+   "id": "794ab69961b1",
+   "enunciado": "Ejemplo: heist de museo en un plano con 17 referencias (Jimeng), declarando escena y referencias por rol, ruta de cámara de @Image 16, beats con timestamps y sonido por marcadores `< >` y `( )`, cerrando con 'No subtitles, no logo, no watermark'.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "temas": [
+    "ejemplo_marca",
+    "referencias_roles",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "0836982acb6d",
+   "enunciado": "Explicación: las diecisiete referencias están ligadas a un rol por escena, la coreografía de cámara se aporta como diagrama de ruta y no como prosa y el sonido se diseña por beat con los marcadores dedicados.",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "temas": [
+    "referencias_roles",
+    "camara_movimiento",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "4d8eb8d5801a",
+   "enunciado": "Explicación: Seedance es un modelo de video de ByteDance con la capacidad única de generar varios shots distintos en UNA generación, el único modelo mayor que empaca un minimontaje en un clip de 5-10 s, con buen movimiento cinematográfico y fuerte en anuncios y narrativa corta.",
+   "alcance": "Seedance (familia), seedance.md, §1 qué es Seedance",
+   "temas": [
+    "capacidades_modelo",
+    "multishot"
+   ]
+  },
+  {
+   "id": "f963ddb88648",
+   "enunciado": "Especifica Seedance 1.0 Pro: 1080p, 5-10 s (API hasta 12 s) y multi-shot fuerte.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "capacidades_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "83eaff4da5d3",
+   "enunciado": "Especifica Seedance 1.0 Lite: 720p, más rápido y barato.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "capacidades_modelo",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "73c17f60a32d",
+   "enunciado": "Especifica Seedance 1.5 Pro: añade audio nativo y lip-sync.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "capacidades_modelo",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "8ffc552326d0",
+   "enunciado": "Especifica Seedance 2.0: mejor movimiento y audio, 9 presets de movimiento de cámara, soporte limitado de negative prompt, hasta 12 referencias con tags @, 4K nativo y color de 10 bits desde junio 2026; la versión Mini es ~2× más rápida y ~30% más barata para borradores y lotes.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "capacidades_modelo",
+    "parametros_tecnicos",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "af5d93c3801a",
+   "enunciado": "Especifica Seedance 2.5 (lanzada 2026-07-31): clip nativo de 30 s, hasta 60 s por extensión y 30-180 s en Ultra Long, 50 referencias multimodales, edición de video, blockout 3D de modelo blanco y humanos realistas con lip-sync en 11 idiomas; la referencia de producción completa es seedance-25.md.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "capacidades_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "3674e1433896",
+   "enunciado": "Especifica resoluciones (480p, 720p, 1080p; 2.0 añade 4K nativo; 2.5 entrega 480p/720p en Jimeng), aspect ratios (16:9, 4:3, 1:1, 3:4, 9:16, 21:9, 9:21) y frame rate de 24-30 fps.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "319d25a4745b",
+   "enunciado": "Elección de modelo dentro de la familia: arco continuo de 15-30 s, kits de muchas referencias y edición/extensión de metraje → 2.5 (el cuidado con rostros de 2.0 no aplica); drama centrado en personas en pipeline solo 2.0 → 1.5 Pro (2.0 filtra agresivamente rostros y contenido cercano a celebridades); escenas, arquitectura, producto y montaje en clips cortos → 2.0; borradores baratos → 2.0 Mini y re-renderizar en alto los elegidos.",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "temas": [
+    "seleccion_modelo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "770b33959632",
+   "enunciado": "Los parámetros CLI de Seedance 1.x/2.0 se añaden al final del prompt (ejemplo `--resolution 1080p --duration 5 --camerafixed false --seed 42`).",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI (solo 1.x/2.0)",
+   "temas": [
+    "parametros_tecnicos",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "ec9a679121c8",
+   "enunciado": "Especifica los parámetros CLI: `--resolution` (480p/720p/1080p), `--duration` (2 a 12 en Pro), `--camerafixed` (true bloquea la cámara, false permite movimiento) y `--seed` para reproducibilidad.",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI (solo 1.x/2.0)",
+   "temas": [
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "c098085bbaba",
+   "enunciado": "Los parámetros CLI no son sintaxis de 2.5: allí duración, aspect ratio y resolución se fijan en la página de generación o por API y no van en el prompt (excepción: Ultra Long reafirma duración y ratio al inicio).",
+   "alcance": "Seedance (familia), seedance.md, §3 parámetros CLI; aplica a 2.5",
+   "temas": [
+    "parametros_tecnicos",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "548e392acf3d",
+   "enunciado": "Ley de los detalles (leer primero): los detalles intensifican la emoción y la pereza mata el prompt.",
+   "alcance": "Seedance (familia), seedance.md, §4 la Details Law",
+   "temas": [
+    "tres_detalles"
+   ]
+  },
+  {
+   "id": "af35e87574cb",
+   "enunciado": "Seedance no renderiza abstracciones sino especificidades físicas: todo adjetivo debe ser un hecho sensorial, toda emoción un cuerpo, y cada shot debe tener al menos tres detalles concretos (una presión ambiental, una microacción física y un ancla sonora o motivo visual).",
+   "alcance": "Seedance (familia), seedance.md, §4 la Details Law",
+   "temas": [
+    "tres_detalles",
+    "emocion_sin_nombrar",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "617b4c3fdd72",
+   "enunciado": "Un shot sin ninguno de los tres detalles es relleno y debe eliminarse o reescribirse.",
+   "alcance": "Seedance (familia), seedance.md, §4 la Details Law",
+   "temas": [
+    "tres_detalles"
+   ]
+  },
+  {
+   "id": "d00f30043318",
+   "enunciado": "Están prohibidas las frases perezosas que producen papilla: 'cinematic, professional, high quality, masterpiece', 'beautiful lighting', 'epic scene', 'amazing visuals' y 'he is sad / he is angry' sin traducción física.",
+   "alcance": "Seedance (familia), seedance.md, §4 la Details Law",
+   "temas": [
+    "vocabulario_prohibido",
+    "emocion_sin_nombrar"
+   ]
+  }
+ ]
+}
