@@ -1,0 +1,569 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "vocabulario_prohibido",
+ "descripcion_tema": "palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "e3fad21fa7ee",
+   "alcance": "AI Video Storyboard Generator, flujo, paso 4, prompts de plano",
+   "enunciado": "Cada prompt de plano debe incluir el lenguaje visual compartido, duración y relación de aspecto exactas, vocabulario cinematográfico concreto, el cierre «cinematic 1080p, synchronized audio» y no usar trucos específicos de modelo."
+  },
+  {
+   "id": "f38cd7740a80",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 2; prompts cross-platform",
+   "enunciado": "El vocabulario baneado multiplataforma, como «slow motion», «cartoon», «anime» o «3D render», solo puede aparecer en el bloque NEGATIVE."
+  },
+  {
+   "id": "84b2e9411791",
+   "alcance": "Aurora Prompt Linter v1.0; Step 5 de prompt-production-protocol",
+   "enunciado": "El linter Aurora v1.0 bloquea la entrega de prompts con redundancia respecto a referencias, violaciones estructurales, vocabulario baneado o keywords obligatorias ausentes y es un gate obligatorio del paso 5 de prompt-production-protocol."
+  },
+  {
+   "id": "3011f07db739",
+   "alcance": "Aurora Prompt Linter v1.0; proyectos fuera de cycling, soccer y fitness",
+   "enunciado": "Las listas de vocabulario deben ampliarse cuando el proyecto use dominios distintos de los casos típicos de Aurora."
+  },
+  {
+   "id": "ce4fc81496fd",
+   "alcance": "Aurora Prompt Linter; MAIN y negative prompt",
+   "enunciado": "Los términos cross-platform vetados deben excluirse siempre de MAIN e incluirse en el bloque NEGATIVE."
+  },
+  {
+   "id": "1a53af1b778a",
+   "alcance": "Brand Lock > Voice rules",
+   "enunciado": "Ejemplo: prohíbe rayas largas, emojis en cuerpo de texto, exclamaciones en titulares, metáforas cliché y palabras hiperbólicas."
+  },
+  {
+   "id": "0a3b0778ac37",
+   "alcance": "Brand Lock Extractor, salida",
+   "enunciado": "La especificación de salida no debe incluir emojis ni adjetivos promocionales en voz propia y debe limitarse a reportar lo que muestran los activos."
+  },
+  {
+   "id": "dcc42bfff0ed",
+   "alcance": "Brand Lock: Acme SaaS (ejemplo), reglas de voz",
+   "enunciado": "Evitar lenguaje corporativo evasivo como «seek to», «look to» y «aim to»."
+  },
+  {
+   "id": "0a7702809440",
+   "alcance": "Brand Lock: Acme SaaS (ejemplo), reglas de voz",
+   "enunciado": "No comenzar ninguna frase con «Just» ni «Simply»."
+  },
+  {
+   "id": "76c9bf2a7bfa",
+   "alcance": "Brand Lock: Acme SaaS (ejemplo), reglas de voz",
+   "enunciado": "No usar palabras de exageración en la voz de marca."
+  },
+  {
+   "id": "c5b30bec6e3d",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, lista de prohibiciones",
+   "enunciado": "No usar la palabra «artesanal»."
+  },
+  {
+   "id": "fea3ea382233",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, reglas de voz",
+   "enunciado": "No usar signos de exclamación en ningún lugar."
+  },
+  {
+   "id": "39f1d8953720",
+   "alcance": "Brand packs, redacción",
+   "enunciado": "El brand pack debe describir la marca con atributos específicos y distintivos, no con adjetivos genéricos."
+  },
+  {
+   "id": "94c6980c28f2",
+   "alcance": "E3.5 dramaturgy §13",
+   "enunciado": "E3.5: se fijan los 5 anclas definitivos (emoción, motivo, objeto, quiebre, imagen final) con cero vocabulario prohibido; el objeto ancla es candidato a génesis."
+  },
+  {
+   "id": "41b683a0f833",
+   "alcance": "Etapa 1 — Territorios creativos",
+   "enunciado": "Cada territorio creativo debe presentarse en cuatro a seis líneas con nombre evocador, ángulo, tensión humana, textura sensorial sin vocabulario prohibido y riesgo."
+  },
+  {
+   "id": "71f00364d5b8",
+   "alcance": "Etapa 7, checklist maestro; dirección cinematográfica.",
+   "enunciado": "La dirección cinematográfica no debe contener vocabulario prohibido para superar el gate de la Etapa 7."
+  },
+  {
+   "id": "da55c2a3199a",
+   "alcance": "Etapa 7, checklist maestro; todos los prompts cuando la herramienta esté instalada.",
+   "enunciado": "Si aurora-prompt-linter está instalado, todos los prompts deben pasar el linter sin errores."
+  },
+  {
+   "id": "4340f68e6875",
+   "alcance": "GPT Image 2",
+   "enunciado": "GPT Image 2 degrada su resultado con elogios vagos; exige formulaciones precisas."
+  },
+  {
+   "id": "f1099a458d19",
+   "alcance": "GPT Image 2",
+   "enunciado": "Prohíbe cadenas de etiquetas de estilo (\"minimalist brutalist luxury photoreal\"); describir propiedades visuales concretas."
+  },
+  {
+   "id": "bf28e16ae7ca",
+   "alcance": "GPT Image 2",
+   "enunciado": "Prohíbe el lenguaje de mood que ahoga los requisitos funcionales; declarar directamente lo exigido (\"image must contain a transit kiosk\")."
+  },
+  {
+   "id": "52451de58cbe",
+   "alcance": "GPT Image 2",
+   "enunciado": "Prohíbe palabras como stunning, incredible, epic, gorgeous, masterpiece; usar hechos visuales concretos (overcast daylight, brushed aluminum, 50mm feel)."
+  },
+  {
+   "id": "33b0b303ae45",
+   "alcance": "GPT Image 2",
+   "enunciado": "Prohíbe referencias del tipo \"como en un anuncio de Apple\"; escribir hechos visuales concretos."
+  },
+  {
+   "id": "d345cefb6c23",
+   "alcance": "GPT Image 2, style transfer",
+   "enunciado": "En style transfer, nombrar propiedades visuales concretas de la referencia (paleta, bordes, silueta, sombras, planos) y no términos abstractos como \"minimalist\"."
+  },
+  {
+   "id": "57bdf7643aaa",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2)",
+   "enunciado": "La génesis sin referencias empieza por la clase de sujeto, que decide modelo y bloques, y exige leer image/SKILL.md, la arquitectura por secciones y el micro-gate de SW30 y aplicar el veto de vocabulario de ai-production-director §6.1."
+  },
+  {
+   "id": "cf29548eec24",
+   "alcance": "Midjourney v7",
+   "enunciado": "Limita a tres adjetivos por frase nominal en Midjourney."
+  },
+  {
+   "id": "9efd52cec8ca",
+   "alcance": "Midjourney v7",
+   "enunciado": "Prohíbe usar \"AI\" o \"rendered\" en prompts de Midjourney porque producen resultados estilizados con aspecto generado."
+  },
+  {
+   "id": "26d738c30fec",
+   "alcance": "Nano Banana",
+   "enunciado": "Prohíbe la sopa de etiquetas (\"cool, modern, 4k, cinematic\") en Nano Banana; escribir frases conectadas."
+  },
+  {
+   "id": "c04ae74c7ef3",
+   "alcance": "Nano Banana vs GPT Image 2",
+   "enunciado": "Palabras como stunning/epic/masterpiece son ignoradas por Nano Banana pero empeoran el resultado en GPT Image 2."
+  },
+  {
+   "id": "c54f349197b3",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Exige frases declarativas cortas y eliminar los adjetivos innecesarios antes de los sustantivos."
+  },
+  {
+   "id": "980c6ad8001c",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Exige priorizar datos concretos de origen, finca, región o fecha de tueste sobre palabras vagas de calidad."
+  },
+  {
+   "id": "0a8706bb7ae9",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Prohíbe usar las palabras «artisanal», «curated» y «elevated» en la voz de marca."
+  },
+  {
+   "id": "bab782ac8443",
+   "alcance": "Northwind Coffee Roasters, Brand Lock, reglas de voz",
+   "enunciado": "Prohíbe usar palabras promocionales como «best», «premium» y «game-changing»."
+  },
+  {
+   "id": "e4f23fca8e4e",
+   "alcance": "Prompts finales de video; aurora-prompt-linter si está instalado",
+   "enunciado": "El vocabulario prohibido de video o dramaturgy y del linter disponible prevalece sobre cualquier instrucción conflictiva, y resolución, formato, duración y audio deben indicarse como parámetros técnicos concretos del modelo destino."
+  },
+  {
+   "id": "ca25f26a1420",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige aplicar la Ley de Detalles y sustituir adjetivos como 'dramatic', 'intense', 'beautiful' por hechos físicos concretos."
+  },
+  {
+   "id": "91080510eda2",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Prohíbe frases perezosas como 'cinematic, professional, high quality, masterpiece', 'beautiful lighting', 'epic scene' y emociones nombradas sin traducción física."
+  },
+  {
+   "id": "80dfcaf81e5b",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige 'retaining real fine pores and skin texture' y lenguaje de producción en vez de 'hyperrealistic 8k' contra la piel plástica."
+  },
+  {
+   "id": "34224363e5da",
+   "alcance": "anclas",
+   "enunciado": "Un ancla nunca lleva vocabulario prohibido: cinematic, epic, stunning, masterpiece, beautiful lighting ni emociones nombradas sin cuerpo."
+  },
+  {
+   "id": "46cdda3a64f5",
+   "alcance": "aurora-prompt-linter",
+   "enunciado": "Un término vetado a menos de 50 caracteres de un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y no se marca."
+  },
+  {
+   "id": "7585c6ae0528",
+   "alcance": "aurora-prompt-linter v1.2-fupai",
+   "enunciado": "Un término vetado junto a un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y queda exento del veto."
+  },
+  {
+   "id": "475c5e8a21e3",
+   "alcance": "aurora-prompt-linter v1.2-fupai (hooks del repo), vocabulario P",
+   "enunciado": "Especifica la lista P ampliada (v1.2-fupai) de términos de personaje vetados en el MAIN cuando una referencia ff/lf carga esa categoría, añadiendo roles de dominio (nadador, wakeboarder, piloto, barista, músicos) y retirando sudor y mandíbula."
+  },
+  {
+   "id": "c2d1193f4be2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, BANNED",
+   "enunciado": "Prohíbe siempre en el MAIN los términos vacíos (cinematic, professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, incredible, gorgeous, dreamy, plastic skin, soft glow, etc.); una mención negada no cuenta."
+  },
+  {
+   "id": "f37166faf0f2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Especifica los términos de cámara lenta (slow motion, slowmo, slow-mo) que dan WARN en fotorreal y FAIL en tratamiento race."
+  },
+  {
+   "id": "47d827f37126",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "enunciado": "Los términos de cámara lenta con prefijo \"ultra-\" quedan exentos del veto."
+  },
+  {
+   "id": "e256ca71614d",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamiento fotorreal/race",
+   "enunciado": "Veta términos de estilo no fotográfico (anime, cartoon, 3D render, CGI, cel shading, pixar-style, claymation, ilustración vectorial) solo con tratamiento fotorreal o race; en ilustración o animación son legítimos."
+  },
+  {
+   "id": "092198635f48",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario L",
+   "enunciado": "Especifica la lista L ampliada de locaciones vetadas en el MAIN cuando hay referencia de locación, con términos de agua, automotriz, café, clima y salas de concierto."
+  },
+  {
+   "id": "4caf7acdd2e5",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario O",
+   "enunciado": "Especifica la lista O ampliada de vestuario vetado en el MAIN cuando hay referencia de outfit, con términos de agua, automotriz, café y música/ensamble."
+  },
+  {
+   "id": "1f1236650c36",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario PR",
+   "enunciado": "Especifica la lista PR ampliada de props vetados en el MAIN cuando hay referencia de prop, con términos de agua, automotriz, café e instrumentos musicales."
+  },
+  {
+   "id": "2576da1d98b2",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario S",
+   "enunciado": "Especifica la lista S de estilo (photorealistic, editorial, documentary, studio lighting) vetada en el MAIN con referencia de estilo; \"cinematic\" sale de esta lista y pasa a BANNED."
+  },
+  {
+   "id": "93053b069658",
+   "alcance": "aurora-prompt-linter, todas las plataformas",
+   "enunciado": "Prohíbe siempre en el prompt MAIN, en todas las plataformas, términos como slow motion, dreamy, cartoon, anime, 3D render, perfume ad, plastic skin, dreamlike y soft glow (permitidos solo en el negative)."
+  },
+  {
+   "id": "58e3356ddbf5",
+   "alcance": "aurora-prompt-linter, vocabulario L",
+   "enunciado": "Especifica la lista L (locación: estudio, gym, muros, suelos, ventanas, skyline, luz ambiente) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de locación los aporta."
+  },
+  {
+   "id": "270c245664cb",
+   "alcance": "aurora-prompt-linter, vocabulario O",
+   "enunciado": "Especifica la lista O (outfit: prendas y calzado) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de vestuario los aporta."
+  },
+  {
+   "id": "07d9700dc6b3",
+   "alcance": "aurora-prompt-linter, vocabulario P",
+   "enunciado": "Especifica la lista P (personaje: complexión, edad, pelo, género, sudor, etc.) cuyos términos quedan vetados en el prompt MAIN cuando una referencia carga esa categoría."
+  },
+  {
+   "id": "8de795317bc6",
+   "alcance": "aurora-prompt-linter, vocabulario PR",
+   "enunciado": "Especifica la lista PR (prop: balón y paneles) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de prop los aporta."
+  },
+  {
+   "id": "108e6010c88c",
+   "alcance": "aurora-prompt-linter, vocabulario S",
+   "enunciado": "Especifica la lista S (estilo: photorealistic, cinematic, editorial, documentary, studio lighting) cuyos términos quedan vetados en el MAIN cuando una referencia de estilo los aporta."
+  },
+  {
+   "id": "05f95d9ea461",
+   "alcance": "brand-lock de ejemplo WhyStrohm, never list",
+   "enunciado": "Se prohíben palabras de hype como 'game-changing', 'revolutionary', 'next-level' o 'comprehensive'."
+  },
+  {
+   "id": "4764b0b66240",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se prohíben matizadores como 'perhaps', 'maybe' o 'kind of' en copy declarativo."
+  },
+  {
+   "id": "2bb594281331",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se prohíben metáforas de negocio trilladas como 'move the needle' o 'low-hanging fruit'."
+  },
+  {
+   "id": "7515b5d281b6",
+   "alcance": "brand-lock de ejemplo WhyStrohm, reglas de voz",
+   "enunciado": "Se prohíben palabras de hype como 'game-changing', 'revolutionary', 'comprehensive', 'next-level' o 'leverage'."
+  },
+  {
+   "id": "2966839708e2",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §13",
+   "enunciado": "Explicación: ese set se puede boardear, promptear y montar con peso real, mejor que apilar 'cinematic, professional, high quality, masterpiece'."
+  },
+  {
+   "id": "fa1dffd117e1",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §2",
+   "enunciado": "Cada palabra vetada se sustituye por hechos físicos concretos; si no se puede, la escena no está pensada."
+  },
+  {
+   "id": "688bda4d1260",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §2 prohibido",
+   "enunciado": "Prohibido nombrar emociones sin cuerpo ('he is sad', 'she is angry', 'he is afraid')."
+  },
+  {
+   "id": "d0b755a2adcc",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §2 prohibido",
+   "enunciado": "Prohibido usar 'beautiful lighting', 'dynamic camera', 'intense moment', 'powerful scene'."
+  },
+  {
+   "id": "fce23e44f306",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §2 prohibido",
+   "enunciado": "Prohibido usar 'cinematic', 'professional', 'high quality', 'masterpiece', 'stunning', 'epic', 'amazing'."
+  },
+  {
+   "id": "9f3e52f8db43",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §2 prohibido",
+   "enunciado": "Se vetan palabras que marcan pereza del escritor por ser marcadores de detalle ausente."
+  },
+  {
+   "id": "41242ede7bb7",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §7",
+   "enunciado": "Ejemplo: mal 'movimiento de cámara cinematográfico deslizante'; bien 'push-in que empieza en \"no sé\" y se detiene en su mandíbula trabándose'."
+  },
+  {
+   "id": "1feceaf44c4c",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: la marca excluye sonrisas de stock, latte art decorativo, signos de exclamación y la palabra «artisanal»."
+  },
+  {
+   "id": "43fc0a6f264c",
+   "alcance": "gate de Etapa 3, Cinematic Direction",
+   "enunciado": "La dirección cinematográfica no debe usar vocabulario prohibido y debe justificar por escrito la razón dramática de cada decisión de cámara."
+  },
+  {
+   "id": "f7d110106ec2",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §7 reglas del still honesto",
+   "enunciado": "En el prompt de still hay que nombrar explícitamente el blur diferencial, dejar rostros fuera o fragmentados en silueta, traducir el audio en consecuencia física y evitar lo estéril nombrando grano, bloom, negros aplastados y un specular con una fuente dominante y ~70% sin luz."
+  },
+  {
+   "id": "a21237f6c38b",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "El vocabulario prohibido sigue bloqueando y la lista es ahora más larga."
+  },
+  {
+   "id": "e017264c67b5",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La exención de series_lock no cubre el vocabulario BANNED: solo se eximen P/O/L/PR/S, porque el vocabulario prohibido gana siempre."
+  },
+  {
+   "id": "c383faced13a",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no cuenta como violación de vocabulario prohibido o de estilo en el linter, aunque sigue siendo mala práctica en NB/GPT que cubre gate_image.py."
+  },
+  {
+   "id": "de13b72640a3",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P6",
+   "enunciado": "'cinematic' y términos como professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera o incredible pasan a vocabulario prohibido, con precedencia de ai-production-director §6.1."
+  },
+  {
+   "id": "801e9ea3d024",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P7",
+   "enunciado": "Los bans de estilo (anime, cartoon, 3D render) solo aplican en tratamiento fotorreal, y 'slow motion' pasa a advertencia en fotorreal, fallo en tratamiento race y queda permitido con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "74a6b681ad7e",
+   "alcance": "linter aurora v1.2-fupai, P11",
+   "enunciado": "Una mención negada ('no cartoon', 'not anime') no dispara BANNED ni vetos de estilo."
+  },
+  {
+   "id": "d3ff3b7ceee6",
+   "alcance": "linter aurora v1.2-fupai, parche P6",
+   "enunciado": "'cinematic' se prohíbe siempre y entra en la lista BANNED junto a professional, high quality, masterpiece, stunning, epic y similares; una mención negada no cuenta."
+  },
+  {
+   "id": "d9e8a6b904f1",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "'slow motion' deja de estar vetado globalmente: es aviso en fotorreal/ilustración/animación, fallo con tratamiento race, y se permite sin aviso con prefijo 'ultra-' o con OVERRIDE."
+  },
+  {
+   "id": "1e9305f61040",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "El tratamiento fotorreal (por defecto) veta anime/cartoon/3D render y avisa sobre slow motion; ilustración y animación levantan esos vetos; race mantiene los vetos y convierte slow motion en fallo."
+  },
+  {
+   "id": "23243a8baf39",
+   "alcance": "linter aurora v1.2-fupai, parche P7",
+   "enunciado": "Los términos anime/cartoon/3D render solo se vetan en tratamiento fotorreal o race; en ilustración o animación se levantan esos vetos y se ajusta la sección style."
+  },
+  {
+   "id": "a4e77be67b77",
+   "alcance": "linter aurora v1.2-fupai, pruebas P6",
+   "enunciado": "Ejemplo (prueba T08): 'cinematic' en el prompt falla con exit 1."
+  },
+  {
+   "id": "9a492782dcf2",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T09): 'anime' pasa con tratamiento ilustración y falla en fotorreal."
+  },
+  {
+   "id": "1c0e5dabbf6d",
+   "alcance": "linter aurora v1.2-fupai, pruebas P7",
+   "enunciado": "Ejemplo (prueba T10): 'ultra-slow motion' en Kling pasa sin aviso, 'slow motion' falla en race y avisa en fotorreal."
+  },
+  {
+   "id": "1ae486009624",
+   "alcance": "lints de anclas",
+   "enunciado": "El lint gate_dramaturgy verifica ausencia de vocabulario prohibido de video e imagen."
+  },
+  {
+   "id": "73c3794be8c5",
+   "alcance": "modo director",
+   "enunciado": "Usar una sola referencia de director dominante por escena traducida a cámara, luz, ritmo y blocking concretos; nunca apilar tres o más."
+  },
+  {
+   "id": "f69e1c358d9c",
+   "alcance": "prompt final de video; política de conflicto",
+   "enunciado": "En conflicto sobre la frase de cierre del prompt de video, gana la regla de vocabulario prohibido de video/dramaturgy y se anula la frase de cierre de AI Video Storyboard."
+  },
+  {
+   "id": "49547dd7e39c",
+   "alcance": "prompts de imagen (general)",
+   "enunciado": "Escribir el prompt en lenguaje natural descriptivo, no como lista de palabras sueltas del tipo \"Cool car, neon, city, night, 8k\"."
+  },
+  {
+   "id": "bd5377f5fe3c",
+   "alcance": "prompts de video, rostros",
+   "enunciado": "Prohíbe palabras de estilo como 'hyperrealistic 8k masterpiece' porque producen rostros con look de arte IA; usar lenguaje de producción."
+  },
+  {
+   "id": "3323e5118fbc",
+   "alcance": "redacción de prompts; las restricciones sobre lente aplican a Nano Banana y las de elogios a GPT Image 2",
+   "enunciado": "Se deben evitar etiquetas genéricas, elogios vagos, formulación negativa, comparaciones externas y parámetros numéricos de lente en prompts para Nano Banana."
+  },
+  {
+   "id": "081e51dea244",
+   "alcance": "research de campo, familia 01 agua en superficie (regla candidata)",
+   "enunciado": "Prohibido usar adjetivos decorativos (\"beautiful\") como sustituto de una instrucción funcional."
+  },
+  {
+   "id": "858094b65b35",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "Prohibido usar palabras ornamento (\"8K\", \"cinematic\", \"masterpiece\"); mover las variables a ingredientes fotográficos."
+  },
+  {
+   "id": "8eeca0f8033a",
+   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
+   "enunciado": "Se prefiere sol bajo, declarado con hora y dirección en el prompt y no con 'golden hour' suelto, porque con sol alto el agua pierde textura y el spray se quema."
+  },
+  {
+   "id": "382c216a4052",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "En un still se usa 'frozen mid-entry' o 'frozen at the instant the hands break the surface', nunca verbos de proceso como 'diving' o 'splashing'."
+  },
+  {
+   "id": "afad8aca2c49",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "La velocidad no se describe con adjetivos sino por su residuo: estela de polvo, fibras erizadas, gota alargada en el borde de fuga."
+  },
+  {
+   "id": "78b34163dcf2",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "La piel documental se describe con defectos concretos (rojeces, sudor, pigmento desigual, labios agrietados), nunca con \"imperfecciones sutiles\"."
+  },
+  {
+   "id": "882153d2096c",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Si la expresión se nombra (\"determinada\", \"intensa\"), sustituirla por señales físicas."
+  },
+  {
+   "id": "af2403331061",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "La paleta se describe con colores concretos, nunca \"cinematic colors\" (ej. rayo blanco azulado sobre nubes gris acero; amanecer ámbar con sombras azules)."
+  },
+  {
+   "id": "574d5410a375",
+   "alcance": "rúbrica de extracción de marca, identidad",
+   "enunciado": "Exige determinar la postura de voz a partir de longitud de frase, puntuación y elección léxica, y citar una oración representativa."
+  },
+  {
+   "id": "feb887adcc6b",
+   "alcance": "skill screenwriter",
+   "enunciado": "Se deben preferir detalles específicos ('weathered chrome') sobre genéricos ('old metal')."
+  },
+  {
+   "id": "2571f4e37c9a",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Se prohíbe copy decorativo como 'Moments matter' sobre b-roll."
+  },
+  {
+   "id": "6cd399e9cf9c",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "Ejemplo: descripción de sujeto incorrecta y poética ('A determined entrepreneur conquering the digital frontier')."
+  },
+  {
+   "id": "a4398109551e",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "Se prohíben adjetivos emocionales como 'determined' o 'passionate' en el sujeto porque producen estética de stock; se describe lo que ve la cámara."
+  },
+  {
+   "id": "6375ac05be98",
+   "alcance": "skill video, estilo de respuesta",
+   "enunciado": "Se evitan teoría larga, vaguedad, jerga decorativa, relleno tipo 'cinematic masterpiece', prompts sin cámara, luz ni continuidad, más de dos referencias de director y emociones abstractas sin traducción física."
+  },
+  {
+   "id": "3841d27800c2",
+   "alcance": "tarjeta de ancla D5",
+   "enunciado": "La dimensión D5 (paleta y grade) exige colores concretos (hex de brand-lock, color_grade verbatim o paleta nombrada) y bans repetidos, nunca \"cinematic colors\"."
+  },
+  {
+   "id": "e44940cb88df",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige sustituir cada término vacío por hechos físicos concretos."
+  },
+  {
+   "id": "bd4b4fec2711",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe descriptores vacíos como 'establishing wide shot', 'beautiful lighting', 'dramatic close-up' y exige sustituirlos por tres hechos físicos."
+  },
+  {
+   "id": "88989b8370e6",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe el relleno de etiquetas tipo 'masterpiece, 4k, cinematic' y exige frases cinematográficas completas como un brief a un director de foto."
+  },
+  {
+   "id": "9f98f26060b5",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe palabras que no renderizan: 'cinematic', 'masterpiece', 'stunning', 'epic', 'beautiful lighting', 'dynamic camera' y emociones nombradas sin cuerpo."
+  },
+  {
+   "id": "12ae68fc77e9",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige en la síntesis escribir solo palabras clave en inglés separadas por comas, describir estrictamente lo visto sin inventar objetos, sin relleno («The image shows...») y con orden de palabras estricto."
+  },
+  {
+   "id": "b706fcaeaf0f",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux se prohíbe escribir 'highly detailed, 4k, masterpiece', muletillas de Stable Diffusion que Flux ignora y que gastan tokens."
+  },
+  {
+   "id": "112c1405d835",
+   "alcance": "visual-prompt-forge, fallo 1",
+   "enunciado": "Explicación: el \"AI look\" (piel plástica, saturación excesiva, ojos simétricos, manos mal, composición de stock, luz pareja) lo causan adjetivos genéricos, muletillas de SD, falta de especificaciones fotográficas y no aplicar la never list."
+  },
+  {
+   "id": "bd396a286442",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video)",
+   "enunciado": "Se usa lenguaje de producción preciso: 'cinematic' no es una dirección; lente, movimiento y luz concretos sí."
+  },
+  {
+   "id": "50bc80d5eab2",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §7",
+   "enunciado": "Ejemplo: mal 'cinematic colors'; bien 'sombras azul-gris frías, piel desaturada, derrame verdoso de nevera, negro, sin amarillos cálidos'."
+  },
+  {
+   "id": "af22e5c6de72",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §7 disciplina de color",
+   "enunciado": "La paleta se define con colores concretos; nunca escribir 'cinematic colors'."
+  }
+ ]
+}

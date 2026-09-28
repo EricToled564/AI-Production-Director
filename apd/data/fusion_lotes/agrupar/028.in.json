@@ -1,0 +1,679 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "estructura_prompt_video",
+ "descripcion_tema": "esqueletos de prompt de video por modelo, bloques, orden, peso al inicio",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "2eb8bb615f2f",
+   "alcance": "AI Video Storyboard Generator, flujo, paso 3: Establish Visual Consistency Layer",
+   "enunciado": "Presenta la capa visual compartida como un bloque Visual Theme al inicio y exige que todos los prompts de plano la respeten."
+  },
+  {
+   "id": "e3fad21fa7ee",
+   "alcance": "AI Video Storyboard Generator, flujo, paso 4, prompts de plano",
+   "enunciado": "Cada prompt de plano debe incluir el lenguaje visual compartido, duración y relación de aspecto exactas, vocabulario cinematográfico concreto, el cierre «cinematic 1080p, synchronized audio» y no usar trucos específicos de modelo."
+  },
+  {
+   "id": "7e93631cc644",
+   "alcance": "AI Video Storyboard Generator, flujo, paso 4: Write Each Shot",
+   "enunciado": "Para cada plano, entrega propósito, intervalo temporal, composición, movimiento de cámara, iluminación, sujeto, acción, un prompt de 40 a 80 palabras con especificaciones técnicas y audio sincronizado, y una dirección de audio."
+  },
+  {
+   "id": "c4648c0ad47a",
+   "alcance": "E6.1 visual-prompt-forge",
+   "enunciado": "E6.1: el motion draft se hace desde shots.json y keyframes aprobados por adaptador (kling, veo, seedance, hailuo); _capabilities.json manda sobre el .md."
+  },
+  {
+   "id": "84fa9a5d67c3",
+   "alcance": "E6.2 video/kling, veo, seedance",
+   "enunciado": "E6.2: el borrador se reescribe a sintaxis del modelo como motion brief (cámara, blocking, performance, luz, física, audio) sin re-describir lo que fija el anchor."
+  },
+  {
+   "id": "9bb75174b902",
+   "alcance": "Etapa 6, Video Prompts",
+   "enunciado": "La Etapa 6 debe entregar prompts finales de video por shot con bloques de continuidad entre clips."
+  },
+  {
+   "id": "20ae6661b2b5",
+   "alcance": "Etapa 6, Video Prompts",
+   "enunciado": "La Etapa 6 debe estructurar prompts de movimiento desde el shot y anchor aprobados, usando la sintaxis del modelo destino y un motion brief que no redescriba la escena fija del anchor."
+  },
+  {
+   "id": "d18b95787693",
+   "alcance": "Etapa 7, checklist maestro; prompts de video.",
+   "enunciado": "Los prompts de video deben usar la sintaxis del modelo de destino y aprobar los dos checks de video."
+  },
+  {
+   "id": "ff3fb1a61455",
+   "alcance": "F6 — Research video + Prompts, Sección 4.8, I2V",
+   "enunciado": "Los prompts de video F6, especialmente I2V, no deben entregarse sin PASS del linter o overrides que cubran las violaciones."
+  },
+  {
+   "id": "c6977c9e5e94",
+   "alcance": "Integración visual-prompt-forge con video/image smixs",
+   "enunciado": "Visual-prompt-forge controla el flujo de datos y la revisión selectiva, mientras video e image smixs controlan el texto final, por lo que el borrador del forge se reescribe a sintaxis smixs y nunca al revés."
+  },
+  {
+   "id": "2f459be68334",
+   "alcance": "Kling 1.6-2.6",
+   "enunciado": "Especifica la fórmula de prompt de Kling 1.x-2.x: sujeto detallado + un verbo de movimiento + escena de 3-5 elementos + cámara + luz + atmósfera."
+  },
+  {
+   "id": "af2e9b531edf",
+   "alcance": "Kling 1.x-2.x",
+   "enunciado": "En Kling 1.x-2.x escribir en prosa fluida, no en tags fragmentados."
+  },
+  {
+   "id": "591359dac4a3",
+   "alcance": "Kling 1.x-2.x t2v",
+   "enunciado": "Especifica el esqueleto texto a video de Kling 1.x-2.x: sujeto con ancla de identidad, un verbo de movimiento, escena de 3-5 elementos, cámara, luz, atmósfera y campo negativo."
+  },
+  {
+   "id": "54021f5bd7d6",
+   "alcance": "Kling 3.0",
+   "enunciado": "Escribir cada capa del prompt de Kling 3.0 como prosa fluida con etiquetas explícitas."
+  },
+  {
+   "id": "d53e9ee501d2",
+   "alcance": "Kling 3.0",
+   "enunciado": "Especifica la estructura de cinco capas de Kling 3.0: Escena, Personajes, Acción, Cámara, Audio."
+  },
+  {
+   "id": "835341b0939d",
+   "alcance": "Kling 3.0",
+   "enunciado": "Explicación: Kling 3.0 entiende intención cinematográfica; los prompts deben leerse como direcciones de escena, no listas de objetos."
+  },
+  {
+   "id": "2d0766333785",
+   "alcance": "Kling 3.0",
+   "enunciado": "Para Kling 3.0 usar la estructura multishot en lugar de la fórmula 1.x-2.x."
+  },
+  {
+   "id": "d5198a62bd58",
+   "alcance": "Kling 3.0",
+   "enunciado": "Presentar cada personaje y objeto clave al inicio del prompt con identificadores únicos que se mantengan en todos los shots."
+  },
+  {
+   "id": "abc9281e4f74",
+   "alcance": "Kling 3.0 multishot",
+   "enunciado": "Ejemplo: prompt multishot de Kling 3.0 con personajes etiquetados, intención maestra, cinco shots con timecodes, cámara, luz y audio para una negociación tensa."
+  },
+  {
+   "id": "129b1c9fcb6d",
+   "alcance": "Kling 3.0 multishot diálogo",
+   "enunciado": "Ejemplo: prompt multishot con diálogo en Kling 3.0 de un interrogatorio de 12 s con personajes etiquetados, cuatro shots, voces en etiqueta, 'Immediately', luz fluorescente, audio sin música y campo negativo."
+  },
+  {
+   "id": "3d0ebce46e86",
+   "alcance": "Kling 3.0; motion brief",
+   "enunciado": "En Kling 3.0 el ancla entra como start_image (y opcional tail_image) con Elements de 4 vistas; el prompt pide preservar identidad, un movimiento de cámara primero, shots con timecodes y audio, en 20-40 palabras en I2V."
+  },
+  {
+   "id": "9d07788f57bd",
+   "alcance": "Kling i2v",
+   "enunciado": "Especifica el esqueleto imagen a video de Kling: preservar rasgo, un movimiento de cámara, uno o dos verbos, cue atmosférico y campo negativo."
+  },
+  {
+   "id": "4d5b1cf06c7a",
+   "alcance": "Kling image-to-video",
+   "enunciado": "Especifica el esqueleto de Kling imagen a video: preservar silueta/rasgo/etiqueta, un movimiento de cámara, uno o dos verbos de movimiento, cue atmosférico y campo negativo."
+  },
+  {
+   "id": "7aa2c7148322",
+   "alcance": "Kling text-to-video",
+   "enunciado": "Especifica el esqueleto de Kling texto a video: sujeto con ancla de identidad, movimiento, escena de 3-5 elementos, un movimiento de cámara con lente, luz, atmósfera y campo negativo."
+  },
+  {
+   "id": "e4f23fca8e4e",
+   "alcance": "Prompts finales de video; aurora-prompt-linter si está instalado",
+   "enunciado": "El vocabulario prohibido de video o dramaturgy y del linter disponible prevalece sobre cualquier instrucción conflictiva, y resolución, formato, duración y audio deben indicarse como parámetros técnicos concretos del modelo destino."
+  },
+  {
+   "id": "52acd7c0613b",
+   "alcance": "Seedance",
+   "enunciado": "Especifica el esqueleto de prompt de Seedance: Subject, Motion, Camera con shots y 'Cut to', Environment, Lighting, Style, Audio (1.5+), Continuity y flags de resolución/duración."
+  },
+  {
+   "id": "44a4fe70ca7c",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica los 11 bloques del esqueleto de producción: bloqueo de personaje, duración/género/montaje, historia, estilo visual, cámara, montaje, audio, timeline por plano, luz, composición con imagen final y specs de salida."
+  },
+  {
+   "id": "3776dbefb100",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige escribir en frases completas y no en etiquetas, y usar el esqueleto de 11 bloques para trabajo dramático, multishot o con personaje fijo."
+  },
+  {
+   "id": "2658ddf6624e",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige usar el esqueleto de 11 bloques en cualquier pieza dramática, anuncio multishot, videoclip o clip con personaje fijo, sin saltarse bloques porque cada uno evita un fallo."
+  },
+  {
+   "id": "1508be537f23",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige usar siempre el esqueleto de 11 bloques para trabajo dramático, multishot, con personaje fijo o clips unidos."
+  },
+  {
+   "id": "e261131794db",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Explicación: cada uno de los 11 bloques previene un fallo concreto (deriva de identidad, colapso en toma única, mezcla de tono, caos de lentes, audio desajustado, deriva de ritmo)."
+  },
+  {
+   "id": "2a71830f7d35",
+   "alcance": "Seedance (familia), ejemplo tragicomedia",
+   "enunciado": "Ejemplo: prompt completo del clip A con bloque anti-mush, bloqueo de personaje, estilo, cámara, montaje, audio, timeline de 5 planos, luz, composición y parámetros CLI."
+  },
+  {
+   "id": "66a6c4e70f75",
+   "alcance": "Seedance (familia), planos rápidos",
+   "enunciado": "Especifica el esqueleto antiguo de 6 pasos (sujeto, movimiento, cámara, entorno, luz, estilo, audio, continuidad) para planos rápidos no dramáticos o pruebas."
+  },
+  {
+   "id": "d276df8d5a49",
+   "alcance": "Seedance (familia), planos únicos de 5 s",
+   "enunciado": "Especifica la fórmula de seis pasos para clips de 5 s con una acción: sujeto, movimiento, cámara, entorno, luz, estilo."
+  },
+  {
+   "id": "b098f4ebb5e2",
+   "alcance": "Seedance 2.0 (ejemplo)",
+   "enunciado": "Ejemplo: prompt multi-shot de Seedance con tres cortes (estático, push lento, handheld sobre el hombro) y el ancla de personaje, entorno, luz y grade declarados una vez."
+  },
+  {
+   "id": "a7548af18570",
+   "alcance": "Seedance 2.0 / 2.5",
+   "enunciado": "Especifica que en 2.5 los timestamps se respetan al segundo y en 2.0 solo como pista de orden."
+  },
+  {
+   "id": "67bf3d307d05",
+   "alcance": "Seedance 2.0, multi-shot",
+   "enunciado": "El prompt multi-shot de Seedance enumera \"Shot 1/2/3\" con cámara y acción, seguido del ancla de personaje verbatim, entorno y luz de series_lock y grade de marca."
+  },
+  {
+   "id": "7f5680350075",
+   "alcance": "Seedance 2.0, shot único",
+   "enunciado": "El prompt de un solo shot en Seedance sigue el orden: movimiento de cámara al inicio, sujeto y acción, entorno y luz de series_lock, grade y mood de brand_lock."
+  },
+  {
+   "id": "9277e0f8cff0",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: plano secuencia de robo en museo con 17 referencias ligadas por rol, ruta de cámara por diagrama y sonido por beat."
+  },
+  {
+   "id": "e4ae55993d58",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: plano secuencia oficial 'Riverside Farewell' de 29 s con escena global, estilo de personaje, actuación contenida y etapas."
+  },
+  {
+   "id": "5424b695dec7",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Ejemplo: plano secuencia oficial de persecución de moto mecha con régimen físico declarado, negativos específicos y storyboard con timestamps."
+  },
+  {
+   "id": "36a1965781be",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica la fórmula base del prompt 2.5: sujeto + acción/evento + escena, estilo visual, plano/ángulo/movimiento/cortes y audio."
+  },
+  {
+   "id": "5b66ae356a4b",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica la fórmula de personaje realista: edad/etnia, piel, 3-4 detalles faciales, mirada, pelo, ropa, complexión/aura."
+  },
+  {
+   "id": "58304c0d533f",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica la plantilla de etapas: objetivo de generación, etapas con estado inicial/evento/estado final y bloque de consistencia."
+  },
+  {
+   "id": "80a918c0e34e",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que el resumen de una línea incluya sujeto, lugar, evento, género/estilo y tratamiento de cámara especial."
+  },
+  {
+   "id": "b884fd3b4a54",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que en 2.5 las ventanas de tiempo [0-4s] se respetan como timing al segundo, no solo como orden."
+  },
+  {
+   "id": "0ea2ac58526f",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige dividir el clip de 30 s en etapas consecutivas con un solo cambio de estado principal cada una y declarar siempre el estado final visible."
+  },
+  {
+   "id": "1d7e3208cf40",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige que la cola global repita las constantes (posición de cámara, entorno, sonido, luz) y las prohibiciones globales."
+  },
+  {
+   "id": "8219c604dd08",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige que la declaración de referencias liste cada asset por orden de subida con su rol (personaje, voz, movimiento, escena)."
+  },
+  {
+   "id": "feba56f28052",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige que la lista de prohibiciones sea específica a los modos de colapso de la escena y que tras cada directiva física se explique el subtexto emocional."
+  },
+  {
+   "id": "708e006f4028",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige que la trama por timeline detalle por beat el contenido positivo (imagen, cámara, acción, diálogo, SFX) y las prohibiciones locales."
+  },
+  {
+   "id": "bc4f667b2161",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige rangos de tiempo consecutivos sin solaparse, ventanas de ≥3 s, una acción y un movimiento de cámara por ventana, precisión al segundo solo donde importa y contenido proporcional al tiempo."
+  },
+  {
+   "id": "94ec689d7117",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige usar los marcadores sintácticos dedicados de 2.5 para audio, diálogo y texto en lugar de describir el audio en prosa suelta."
+  },
+  {
+   "id": "cca7e92233c6",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Explicación: en el ejemplo cada etapa tiene un cambio de estado, directivas físicas, subtexto y prohibiciones de los colapsos de esa escena."
+  },
+  {
+   "id": "b0846fee5843",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Permite omitir componentes y, para piezas largas o con muchas referencias, usa la macrofórmula: declaración de referencias + resumen de una línea + trama por timeline + cola global."
+  },
+  {
+   "id": "06314701affe",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Prohíbe poner duración, aspect ratio o resolución en el prompt de 2.5 (se fijan en la página o API), salvo en Ultra Long donde se repiten al inicio."
+  },
+  {
+   "id": "e37eb1ca4fb9",
+   "alcance": "Seedance 2.5 Ultra Long",
+   "enunciado": "Especifica el modo Ultra Long (30-180 s en una sola entrega), exige repetir duración y ratio al inicio y ofrece dos registros: con timestamps o flujo narrativo."
+  },
+  {
+   "id": "d496214952dc",
+   "alcance": "Seedance 2.5, piezas dramáticas de 30 s",
+   "enunciado": "Especifica el esqueleto anticolapso de tres módulos: capa de referencias, ajustes globales con prohibiciones y storyboard con timestamps."
+  },
+  {
+   "id": "4ac282db6552",
+   "alcance": "Seedance 2.5; motion brief",
+   "enunciado": "En Seedance 2.5 @Image 1 (primer frame) y @Image 2 (último frame) se declaran por separado con mismo ratio; el prompt va por etapas con un cambio de estado cada una, roles de referencias y qué ignorar."
+  },
+  {
+   "id": "4b236d567d0a",
+   "alcance": "Seedance, Veo, Kling",
+   "enunciado": "Usar estructura con timecodes en Seedance y Veo; Kling prefiere prosa fluida."
+  },
+  {
+   "id": "4abb902ab2fb",
+   "alcance": "Skill prompt-production-protocol, paso 5b; prompts visuales de Kling 3.0, Veo 3.1, Sora 2, GPT Image 2, Nano Banana Pro y Midjourney",
+   "enunciado": "Se debe ejecutar obligatoriamente el gate determinista antes de entregar cualquier prompt visual, salvo un override expreso válido solo para el turno actual."
+  },
+  {
+   "id": "361234855295",
+   "alcance": "Storyboard y shot cards frente a prompts finales; modelos sin archivo smixs",
+   "enunciado": "Los artefactos intermedios pueden usar prompts independientes del modelo, pero todo prompt final debe adoptar la sintaxis del modelo destino indicada por smixs o, si falta ese archivo, por el adaptador de visual-prompt-forge."
+  },
+  {
+   "id": "7415b522eb42",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería",
+   "enunciado": "Explicación: el Reel ilustra una estructura TikTok de seis planos con consistencia visual y sonora, cadencia de cinco segundos, arco emocional y vocabulario cinematográfico concreto para facilitar la generación y el montaje."
+  },
+  {
+   "id": "434cb3a2faaf",
+   "alcance": "Veo 3",
+   "enunciado": "El prompt de Veo 3 sigue el orden: movimiento de cámara al inicio, sujeto y acción, línea de diálogo entre comillas, entorno y luz de series_lock, dirección de audio y grade/mood de brand_lock."
+  },
+  {
+   "id": "ecc4778bb218",
+   "alcance": "Veo 3",
+   "enunciado": "En Veo 3 el movimiento de cámara es portante y, si hay diálogo, la línea hablada se escribe en el prompt porque es audio, no texto en pantalla."
+  },
+  {
+   "id": "cdebaa27810d",
+   "alcance": "Veo 3 (ejemplo)",
+   "enunciado": "Ejemplo: prompt completo de Veo 3 con cámara fija, fundador hablando a cámara, luz lateral, línea \"Audio:\" y grade cálido."
+  },
+  {
+   "id": "5c37db092760",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Ejemplo: plano héroe comercial de una mujer con taza de café, 85 mm, luz de ventana, audio, diálogo susurrado y SFX en 6 s."
+  },
+  {
+   "id": "d053dd38ad63",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica el esqueleto en prosa de Veo: sujeto y acción en entorno, cámara, luz, estilo, Audio:, Says: (máx. 8 s), SFX: y duración."
+  },
+  {
+   "id": "6ed5a45cc8b3",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica el esquema JSON completo de Veo: output, global_style, continuity (personajes, props, luz constante) y scenes con tiempos, plano, acción, entorno, luz y audio."
+  },
+  {
+   "id": "64c8f0450ef5",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica el orden: sujeto/acción + entorno + cámara/lente + luz + estilo + audio + duración."
+  },
+  {
+   "id": "226c6f012772",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica que Veo interpreta JSON, lo que evita que el tono contamine colores de objetos; usarlo en escenas complejas con continuidad estricta."
+  },
+  {
+   "id": "1fa1ee484def",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica que la versión JSON del esqueleto usa el esquema de la sección 6."
+  },
+  {
+   "id": "719d660f6afa",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica que no todo prompt de Veo necesita JSON; para clips simples la prosa es más rápida y a menudo mejor."
+  },
+  {
+   "id": "d8c31bfdc38e",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica usar JSON cuando el prompt en prosa cambiaba los colores del sujeto al añadir palabras de tono."
+  },
+  {
+   "id": "be4c62d62fbf",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica usar JSON cuando hay varias escenas en una generación."
+  },
+  {
+   "id": "039fdc62755c",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica usar JSON cuando props complejos deben mantener color y tamaño."
+  },
+  {
+   "id": "9928d583a238",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica usar JSON cuando se necesita continuidad estricta de personaje entre planos."
+  },
+  {
+   "id": "fab6d3312e01",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige comprimir a 50-100 palabras o pasar a JSON si el prompt es tan largo que el modelo elige partes."
+  },
+  {
+   "id": "042448c686bc",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige empezar el prompt por la cámara si se ignora la dirección de cámara."
+  },
+  {
+   "id": "3df8b4ee5b3f",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige empezar por sujeto y cámara y dejar los modificadores de calidad al final."
+  },
+  {
+   "id": "4bb7b711f46b",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige pasar a JSON y fijar el personaje en el bloque de continuidad si el color del personaje cambia al añadir palabras de tono."
+  },
+  {
+   "id": "0c642182de96",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige usar las etiquetas Audio:, Says:, SFX: para separar la dirección sonora de la visual y señalar que debe generarse audio."
+  },
+  {
+   "id": "3fd3d9bfb67f",
+   "alcance": "Veo 3.1; motion brief",
+   "enunciado": "En Veo 3.1 el ancla entra como First Frame con ingredients para personaje, locación y prop; el prompt corto dice \"maintain the subject from the first frame\" y solo evolución: movimiento, cámara, luz, audio."
+  },
+  {
+   "id": "6cdba2f147b0",
+   "alcance": "Veo JSON",
+   "enunciado": "Formato F: JSON de Veo escena por escena para continuidad compleja, según veo.md sección 6."
+  },
+  {
+   "id": "c379c3f0c064",
+   "alcance": "Veo JSON",
+   "enunciado": "Remite al esquema JSON completo de Veo en veo.md sección 6."
+  },
+  {
+   "id": "8a799fdd5db1",
+   "alcance": "Veo prosa",
+   "enunciado": "Especifica el esqueleto en prosa de Veo: sujeto y acción en entorno, cámara, luz, estilo, Audio, Says con diálogo de máximo 8 s, SFX y duración de 4/6/8 s."
+  },
+  {
+   "id": "fa1780da9ec9",
+   "alcance": "aurora-prompt-linter v1.2-fupai, casos de video 3a/3b/3c/4",
+   "enunciado": "Exige \"60fps\" y \"broadcast realism\" en casos de video con estética de transmisión deportiva."
+  },
+  {
+   "id": "f8eba1973bf3",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3a",
+   "enunciado": "En Kling 3.0 caso 3a (I2V solo primer frame) el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo y cláusula anti-morphing."
+  },
+  {
+   "id": "65377a8b9e6e",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3c",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento (@video, pose ref), orientación del personaje y cámara."
+  },
+  {
+   "id": "62bc70593cd4",
+   "alcance": "aurora-prompt-linter, casos 3a-3c sports broadcast",
+   "enunciado": "Exige incluir \"60fps\" y \"broadcast realism\" en los casos 3a/3b/3c con estética de transmisión deportiva."
+  },
+  {
+   "id": "1063dca01071",
+   "alcance": "capa 6; prompts de video; Seedance, Kling y Veo",
+   "enunciado": "Los archivos de modelo de la sub-skill video deben aportar sintaxis exacta para Seedance, Kling y Veo, protocolos de diálogo y modos de fallo, con autoridad sobre los prompts finales de video."
+  },
+  {
+   "id": "12bcda9cbdea",
+   "alcance": "capas 5–6; prompts",
+   "enunciado": "La sub-skill visual-prompt-forge debe convertir shots.json en borradores de prompts mediante adaptadores y revisar desde critique.json, con autoridad sobre la estructura shots-a-prompts y su loop de revisión."
+  },
+  {
+   "id": "f4fb35f9fbdb",
+   "alcance": "ejemplo de marca, cafetería, plano 1, 0-5 s",
+   "enunciado": "Ejemplo: el plano 1 usa un primerísimo primer plano cenital de agua vertiéndose sobre café en un V60, con acercamiento mínimo, contraluz cálida, vapor visible y una duración de 5 segundos en vertical 9:16."
+  },
+  {
+   "id": "40935647c725",
+   "alcance": "ejemplo de marca, cafetería, plano 2, 5-10 s",
+   "enunciado": "Ejemplo: el plano 2 establece la cafetería con un plano medio amplio y un dolly lento hacia delante, luz de ventana y farola cálida, interior vacío de madera y rayos de sol con motas de polvo, durante 5 segundos en vertical 9:16."
+  },
+  {
+   "id": "026f8c649b51",
+   "alcance": "ejemplo de marca, cafetería, plano 4, 15-20 s",
+   "enunciado": "Ejemplo: el plano 4 usa un macro de una mano vertiendo granos de café desde un saco de arpillera a una taza medidora de madera, con luz cálida direccional, sombras marcadas y duración de 5 segundos en vertical 9:16."
+  },
+  {
+   "id": "596b04dbb024",
+   "alcance": "fixes y esqueletos (fixes-and-skeletons.md, skill video), §2, Seedance",
+   "enunciado": "En Seedance se añaden marcadores explícitos 'Cut to.' o 'Camera cut to.' en el cuerpo del prompt."
+  },
+  {
+   "id": "bc161907d817",
+   "alcance": "formato de salida, prompt único",
+   "enunciado": "Formato A: entregar un único prompt listo para copiar con el esqueleto del modelo correspondiente."
+  },
+  {
+   "id": "6754b4cb668e",
+   "alcance": "keyframes de Nano Banana para video",
+   "enunciado": "El traspaso al modelo de video debe ser un motion brief (movimiento de cámara, sujeto y fondo, duración, framing lock, cambios prohibidos) que no vuelva a describir lo que ya está en el cuadro."
+  },
+  {
+   "id": "2c2db7371fc7",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R16, clips de video",
+   "enunciado": "Exige en prompts de clip solo Preserve-cues, roles de start/tail («The tail image defines X — inherit exactly»), movimiento puro, imagen final nombrada y negativos sin «no X» de máximo 8 ítems."
+  },
+  {
+   "id": "f69e1c358d9c",
+   "alcance": "prompt final de video; política de conflicto",
+   "enunciado": "En conflicto sobre la frase de cierre del prompt de video, gana la regla de vocabulario prohibido de video/dramaturgy y se anula la frase de cierre de AI Video Storyboard."
+  },
+  {
+   "id": "5a31c7764e52",
+   "alcance": "prompts de video",
+   "enunciado": "Ejemplo: 'Slow 50mm push-in. A man opens the fridge.' es correcto frente a poner la cámara al final del prompt."
+  },
+  {
+   "id": "4c89e0a4df12",
+   "alcance": "prompts de video",
+   "enunciado": "Si el modelo ignora la instrucción de cámara, moverla al inicio del prompt."
+  },
+  {
+   "id": "a50fb7ac9dc6",
+   "alcance": "prompts de video de 5 s",
+   "enunciado": "Dentro de cada prompt de 5 s usar timecodes para los beats internos."
+  },
+  {
+   "id": "6fe15e231acb",
+   "alcance": "prompts finales; política de conflicto",
+   "enunciado": "Los prompts agnósticos de modelo son solo intermedios; los prompts finales deben usar la sintaxis del modelo destino."
+  },
+  {
+   "id": "a5ede6b16a36",
+   "alcance": "resumen de propuestas, cambio 5, Sección 4.8",
+   "enunciado": "Explicación: la propuesta 5 añade el linter al paso final de F6 como cambio menor."
+  },
+  {
+   "id": "6a9883d096c4",
+   "alcance": "skill video, paso 2",
+   "enunciado": "Paso 2 obligatorio: leer universal-rules.md con las reglas U1–U12 comunes a todo modelo de video."
+  },
+  {
+   "id": "fa9375898ba6",
+   "alcance": "skill video, salida A",
+   "enunciado": "Formato A: un solo prompt listo para copiar, encabezado con nombre del modelo y parámetros."
+  },
+  {
+   "id": "cfd27b9b473a",
+   "alcance": "skill video, salida F Veo",
+   "enunciado": "Formato F: JSON escena por escena, solo para Veo."
+  },
+  {
+   "id": "9156da0802c3",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Ejemplo: contradicciones como 'still pond' + 'flowing water' o 'close-up' + 'wide landscape'."
+  },
+  {
+   "id": "63537986250d",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Especifica el esqueleto universal de capas: sujeto, acción, escena, cámara/lente, luz, estilo, sonido, duración/ratio, continuidad y negativos si el modelo los admite."
+  },
+  {
+   "id": "11e2248d4453",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Especifica que la declaración de prioridades pesa más que la disciplina de longitud: un prompt corto con prioridades supera a uno largo sin ellas."
+  },
+  {
+   "id": "06de179a7b2a",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Especifica que los esqueletos por modelo viven en sus archivos y que el de 11 bloques de Seedance sustituye al genérico en trabajo dramático o multishot."
+  },
+  {
+   "id": "a26b50e4a43f",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige empezar por sujeto y acción, poner cámara, luz y entorno en medio y los modificadores de estilo al final, porque el modelo atiende más al primer 30-40% de tokens."
+  },
+  {
+   "id": "fe4e9e89cdfd",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige que cada clip tenga un frame final claro porque el modelo usa el final como destino emocional."
+  },
+  {
+   "id": "2f19dc4d0225",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige, en prompts sobrecargados, declarar prioridades: sujeto central, planos clave, transiciones libres y frame final obligatorio."
+  },
+  {
+   "id": "f4e1e80e9865",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Explicación: las reglas universales aplican a todo generador de video porque todos premian la dirección física concreta y castigan abstracción, contradicciones y spam de palabras clave."
+  },
+  {
+   "id": "88989b8370e6",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe el relleno de etiquetas tipo 'masterpiece, 4k, cinematic' y exige frases cinematográficas completas como un brief a un director de foto."
+  },
+  {
+   "id": "0aaa687b2967",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Prohíbe las contradicciones en el prompt porque el modelo obedece la señal más fuerte y producen artefactos."
+  },
+  {
+   "id": "42c897080e8d",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Ejemplo: borrador Hailuo de un shot push con dolly lento hacia el fundador en su oficina minimalista."
+  },
+  {
+   "id": "233df97c648e",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "El prompt de Hailuo empieza por la oración de movimiento de cámara, luego sujeto y acción, entorno y luz de series_lock, y grade y mood de marca."
+  },
+  {
+   "id": "165002dd3c5b",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En video el movimiento de cámara es estructural; Hailuo comparte la anatomía de prompt de Kling y se diferencia en costo e intención de iterar."
+  },
+  {
+   "id": "bc5905dce41e",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 4 de iteración: arrastrar el prompt exacto al modelo final cambiando solo parámetros, gracias a la anatomía compartida de cinco capas."
+  },
+  {
+   "id": "715704919f3a",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Ejemplo: el ejemplo de Kling usa los mismos datos de shot que los de imagen con motion push."
+  },
+  {
+   "id": "05bf1e875918",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Ejemplo: prompt Kling con dolly lento hacia el fundador que se inclina y gira hacia la ventana, 50mm, grade cálido."
+  },
+  {
+   "id": "7b3b6e18f5af",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "El prompt de Kling sigue: movimiento de cámara explícito al inicio, sujeto y acción durante el clip, entorno y luz de series_lock, spec fotográfica y grade/mood de marca."
+  },
+  {
+   "id": "58efab113af5",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling el movimiento de cámara va primero, al revés que en imagen donde la cámara está implícita."
+  },
+  {
+   "id": "e5dafa4efa80",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling hay que describir qué hace el sujeto a lo largo de la duración del clip."
+  },
+  {
+   "id": "9fe98dc0b47f",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling no se pone el movimiento de cámara al final; se interpreta mejor como instrucción inicial."
+  },
+  {
+   "id": "de308ff32ddf",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Una composición estática no basta en video: la acción del sujeto en el tiempo distingue el prompt de video del de imagen."
+  },
+  {
+   "id": "a94ad4a921f3",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "enunciado": "Explicación: diferencias de sintaxis entre adaptadores: Midjourney en comas con flags, Flux en párrafos sin flags, GPT Image con saltos de párrafo y lenguaje espacial, Seedream el más corto, y los de video empiezan con el movimiento de cámara."
+  },
+  {
+   "id": "9c7f44cb1e2d",
+   "alcance": "visual-prompt-forge, adaptadores de video",
+   "enunciado": "Los adaptadores de movimiento veo (diálogo), seedance (multi-shot) y hailuo (iteración barata) siguen la misma anatomía de cinco capas que Kling y se eligen por necesidad."
+  },
+  {
+   "id": "8e3a8c9b53de",
+   "alcance": "visual-prompt-forge, capa 5",
+   "enunciado": "El adaptador controla el orden de palabras (Midjourney empieza por el sujeto, los de video por la cámara), la longitud, la sintaxis de parámetros y las fortalezas propias de cada modelo."
+  },
+  {
+   "id": "ce4e31739fcf",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §10 términos raros",
+   "enunciado": "Los términos de cinematografía poco comunes se conservan y se traducen a cambio observable: término, sujeto, cambio visual, relación FG/BG y dirección o velocidad."
+  },
+  {
+   "id": "23ebaf628476",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §8 por modelo (Veo, Seedance 1.5+, Kling)",
+   "enunciado": "En Veo el sonido va con sintaxis Audio:, SFX: o paréntesis; en Seedance 1.5+ en el cuerpo del prompt; en Kling solo ayuda al ritmo porque no genera audio."
+  }
+ ]
+}

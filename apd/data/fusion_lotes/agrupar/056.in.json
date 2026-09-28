@@ -1,0 +1,944 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "shots_json_schema",
+ "descripcion_tema": "shots.json, campos, schema, series_lock, rationale, run.json, versión",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "89feb7b04fc6",
+   "alcance": "Desde Etapa 4; shots.json y prompts",
+   "enunciado": "Desde la Etapa 4, shots.json es la fuente de verdad estructural y todo cambio creativo debe hacerse allí antes de propagarse, sin parchear prompts en contradicción con su shot."
+  },
+  {
+   "id": "eb7f201f5ad4",
+   "alcance": "E4",
+   "enunciado": "Desde E4 Shot Planning, shots.json es la fuente de verdad."
+  },
+  {
+   "id": "821ea86e0188",
+   "alcance": "E4.3 storyboard-architect",
+   "enunciado": "E4.3: la shot list produce shots[] con id, beat, tiempos, framing, angle, motion, subject, refs, vo y rationale, validada contra shots.schema.json sin propiedades adicionales."
+  },
+  {
+   "id": "133369c77abf",
+   "alcance": "E4.5 storyboard-architect",
+   "enunciado": "E4.5: el series lock (character, environment, lighting, color_grade) define qué génesis hacen falta, como mínimo personaje y entorno."
+  },
+  {
+   "id": "6f5635e1e030",
+   "alcance": "Etapa 4, Shot Planning",
+   "enunciado": "La Etapa 4 recibe el guion y el documento de dirección, y debe entregar storyboard.md, shots.json, text-overlays.json, run.json y brand-lock.snapshot.md."
+  },
+  {
+   "id": "c73457aac170",
+   "alcance": "Etapa 5, Anchor Images",
+   "enunciado": "La Etapa 5 genera borradores de imagen desde shots.json con visual-prompt-forge, aplica la sintaxis final autorizada por image, requiere generación del usuario y evalúa cada render con visual-asset-critic contra su shot."
+  },
+  {
+   "id": "8b33fdd79d7e",
+   "alcance": "Etapa 5, imágenes ancla",
+   "enunciado": "series_lock.json se extrae de shots.json (character, environment, lighting, color_grade), las mismas cadenas que forge exige verbatim."
+  },
+  {
+   "id": "9bb75174b902",
+   "alcance": "Etapa 6, Video Prompts",
+   "enunciado": "La Etapa 6 debe entregar prompts finales de video por shot con bloques de continuidad entre clips."
+  },
+  {
+   "id": "c4d55f4b9c7c",
+   "alcance": "Etapa 7, checklist maestro; shots.json y todos los shots.",
+   "enunciado": "shots.json debe validar sin errores con validate_shots.py y cada shot debe pasar una auditoría de tres detalles."
+  },
+  {
+   "id": "a7daf2e98d07",
+   "alcance": "Etapa 7, estructura del paquete de producción.",
+   "enunciado": "El production package debe organizarse en README, estrategia, guion, dirección, shots, anclas, prompts de video, entrega y brand-lock con los archivos especificados, siendo shots.json la fuente de verdad."
+  },
+  {
+   "id": "21baa1d284b4",
+   "alcance": "Etapa 7, reglas de trazabilidad; cambios que afecten un shot.",
+   "enunciado": "Si un prompt requiere cambiar encuadre, acción o luz fijados por su shot, se debe actualizar shots.json y regenerar los documentos posteriores, sin permitir contradicciones entre prompt y shot."
+  },
+  {
+   "id": "8905f58314d9",
+   "alcance": "Etapa 7, reglas de trazabilidad; shots.json.",
+   "enunciado": "Cada shot en shots.json debe referenciar su escena correspondiente del script mediante el campo scene o una nota."
+  },
+  {
+   "id": "33df9863d85c",
+   "alcance": "Etapa 7, reglas de trazabilidad; todos los prompts.",
+   "enunciado": "Todo prompt de imagen o video debe incluir su shot_id en un comentario."
+  },
+  {
+   "id": "b92c3acf8c10",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), entradas",
+   "enunciado": "La génesis recibe como entrada el series_lock de shots.json con personaje, entorno y luz."
+  },
+  {
+   "id": "d322bd192009",
+   "alcance": "Midjourney v7",
+   "enunciado": "La iluminación del prompt debe copiarse verbatim de series_lock.lighting."
+  },
+  {
+   "id": "546038ff4a2c",
+   "alcance": "Midjourney v7 (ejemplo de adaptador)",
+   "enunciado": "Ejemplo: datos de un shot (shot_03, MS, eye-level, estático, fundador frente al laptop) con rationale de espacio negativo para overlay de texto."
+  },
+  {
+   "id": "d5c1335e0d1a",
+   "alcance": "Midjourney v7 (ejemplo de adaptador)",
+   "enunciado": "Ejemplo: series lock con personaje (fundador de treinta y tantos, canas, crewneck marino), entorno de oficina minimalista, luz lateral natural y grade cálido fílmico."
+  },
+  {
+   "id": "c7a30a50f160",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Las entradas consecutivas de shots.json que comparten sujeto se agrupan en un solo prompt multi-shot de Seedance, referenciadas por rango de id en el comentario."
+  },
+  {
+   "id": "264820185765",
+   "alcance": "capa 4; shot planning",
+   "enunciado": "La sub-skill storyboard-architect debe producir storyboard.md, shots.json, text-overlays.json y run.json validados por schema, que desde esta capa son la fuente de verdad estructural."
+  },
+  {
+   "id": "1de02973e084",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "$schema_note es un texto opcional."
+  },
+  {
+   "id": "fe5c51c806a3",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "La raíz de la matriz de capacidades no admite campos fuera de $schema_note, version, matrix_last_reviewed y generators."
+  },
+  {
+   "id": "199f010645c3",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators es un array obligatorio con al menos un elemento."
+  },
+  {
+   "id": "4c7b91e92e41",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators[] no admite campos fuera de id, display_name, model_version, last_verified, prompt_style, max_prompt_words, supports_*, aspect_param, api_access y notes."
+  },
+  {
+   "id": "9df1a1b16279",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators[].id es obligatorio, en minúsculas/dígitos/guiones, y debe coincidir con el nombre de archivo .md del adaptador."
+  },
+  {
+   "id": "1eaa2975ed60",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "version es un texto obligatorio."
+  },
+  {
+   "id": "c082327b5a59",
+   "alcance": "critique.schema.json",
+   "enunciado": "La raíz de critique.json no admite campos fuera de version, meta, run_id, round, created_at, shot_id, brand_lock_ref/sha256, image_ref/sha256, prompt_ref/sha256, generator, model_version, seed, verdict, confidence, working e issues."
+  },
+  {
+   "id": "b6bd1d5ff4e2",
+   "alcance": "critique.schema.json",
+   "enunciado": "confidence es obligatorio y debe ser HIGH, MEDIUM o LOW."
+  },
+  {
+   "id": "0818a2cff7e0",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues es un array obligatorio."
+  },
+  {
+   "id": "6b5a6f9aa7b9",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[] no admite campos fuera de layer, severity, note, fix_type y fix."
+  },
+  {
+   "id": "680c1786b022",
+   "alcance": "critique.schema.json",
+   "enunciado": "meta es un objeto opcional de paso libre que los skills núcleo ignoran."
+  },
+  {
+   "id": "1016b80d8292",
+   "alcance": "critique.schema.json",
+   "enunciado": "shot_id es null (imagen suelta sin storyboard) o un id shot_NN."
+  },
+  {
+   "id": "b5b0e9184f0c",
+   "alcance": "critique.schema.json",
+   "enunciado": "verdict es obligatorio y debe ser ACCEPT, REVISE o REJECT."
+  },
+  {
+   "id": "ff35e6206b1c",
+   "alcance": "critique.schema.json",
+   "enunciado": "version es obligatorio y debe ser 1.0 o 1.1; los documentos 1.0 son legado sin prueba de lo revisado."
+  },
+  {
+   "id": "a72ccf06b60c",
+   "alcance": "desde Etapa 4 en adelante",
+   "enunciado": "Desde la Etapa 4, shots.json es la fuente de verdad y ningún prompt, imagen o revisión puede existir sin un shot ID."
+  },
+  {
+   "id": "877fd94a0fd2",
+   "alcance": "herramientas del repositorio, validación de esquemas e instancias",
+   "enunciado": "`validate_schemas.py` valida esquemas y no instancias; las instancias deben validarse con `validate_shots.py`."
+  },
+  {
+   "id": "e017264c67b5",
+   "alcance": "linter aurora v1.2-fupai",
+   "enunciado": "La exención de series_lock no cubre el vocabulario BANNED: solo se eximen P/O/L/PR/S, porque el vocabulario prohibido gana siempre."
+  },
+  {
+   "id": "fbb94f676649",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), SERIES_LOCK_KEYS",
+   "enunciado": "Especifica las claves del series_lock consideradas por el linter: character, environment, lighting y color_grade."
+  },
+  {
+   "id": "72c0160ce7f2",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P4",
+   "enunciado": "Los términos que forman parte de una cadena verbatim del series_lock (character, environment, lighting, color_grade) quedan exentos de la capa de redundancia del linter."
+  },
+  {
+   "id": "28038930db4e",
+   "alcance": "linter aurora v1.2-fupai, parche P4",
+   "enunciado": "Los términos que caen dentro de las cadenas series_lock verbatim quedan exentos del vocabulario de redundancia, y se avisa si una cadena no aparece verbatim."
+  },
+  {
+   "id": "da080e211bae",
+   "alcance": "linter aurora v1.2-fupai, pruebas P4",
+   "enunciado": "Ejemplo (prueba T06): 'gym' verbatim en series_lock pasa, y sin series_lock falla por redundancia de L."
+  },
+  {
+   "id": "2fa01a7c6a34",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R15",
+   "enunciado": "Exige que shots.json sea la fuente de verdad: todo cambio entra ahí primero y se propaga."
+  },
+  {
+   "id": "c6b452d4d6d9",
+   "alcance": "run.schema.json",
+   "enunciado": "La raíz de run.json no admite campos fuera de version, meta, run_id, created_at, shotkit_version, operator, project, inputs, generators y rounds."
+  },
+  {
+   "id": "c3f81179412d",
+   "alcance": "run.schema.json",
+   "enunciado": "created_at es obligatorio en ISO-8601 UTC y debe coincidir con el timestamp de run_id."
+  },
+  {
+   "id": "cc94cf4a8a2c",
+   "alcance": "run.schema.json",
+   "enunciado": "generators[] no admite campos fuera de id, model_version y capabilities_sha256."
+  },
+  {
+   "id": "86a2ff3a5b9d",
+   "alcance": "run.schema.json",
+   "enunciado": "generators[].id es obligatorio con patrón de minúsculas, dígitos y guiones."
+  },
+  {
+   "id": "5461464224b1",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs es obligatorio y registra cada archivo del run por ruta relativa y por hash."
+  },
+  {
+   "id": "b149e8dce517",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs no admite campos fuera de shots_ref, shots_sha256, text_overlays_ref, text_overlays_sha256, brand_lock_ref, brand_lock_sha256, brand_lock_source y brand_lock_configured."
+  },
+  {
+   "id": "b8b5433dd57d",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.shots_ref es obligatorio y no vacío."
+  },
+  {
+   "id": "d059c73c4bd6",
+   "alcance": "run.schema.json",
+   "enunciado": "inputs.shots_sha256 es obligatorio con 64 hex."
+  },
+  {
+   "id": "f184f5d55209",
+   "alcance": "run.schema.json",
+   "enunciado": "meta es un objeto opcional de paso libre que los skills núcleo ignoran."
+  },
+  {
+   "id": "a514e43664c6",
+   "alcance": "run.schema.json",
+   "enunciado": "project.framework es opcional y no vacío."
+  },
+  {
+   "id": "d1dd59930097",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[] no admite campos fuera de round, started_at, reason, prompts y post_only_shots."
+  },
+  {
+   "id": "98f99d579ffe",
+   "alcance": "run.schema.json",
+   "enunciado": "rounds[].prompts[] no admite campos fuera de generator, ref, sha256 y shot_ids."
+  },
+  {
+   "id": "d4ff13253324",
+   "alcance": "run.schema.json",
+   "enunciado": "run.json se escribe una vez al inicio del run y nunca se edita: fija cada entrada por hash, y todo lo posterior se direcciona por ronda e id de shot; lo valida validate_provenance.py."
+  },
+  {
+   "id": "4e7474b5eb76",
+   "alcance": "run.schema.json",
+   "enunciado": "run_id es obligatorio con formato timestamp UTC compacto, guion y 8 caracteres hex (ej. 20260730T142300Z-9f2c1ab4)."
+  },
+  {
+   "id": "1656e2dff675",
+   "alcance": "run.schema.json",
+   "enunciado": "shotkit_version es obligatorio con formato semver X.Y.Z."
+  },
+  {
+   "id": "2f03e29c8f6c",
+   "alcance": "shots.schema.json",
+   "enunciado": "El campo meta es un objeto opcional de paso libre que los skills núcleo ignoran."
+  },
+  {
+   "id": "5421b1d317d4",
+   "alcance": "shots.schema.json",
+   "enunciado": "El campo version de shots.json es obligatorio y debe ser 1.0, 1.1 o 1.2 (retrocompatibles)."
+  },
+  {
+   "id": "05cb456932f1",
+   "alcance": "shots.schema.json",
+   "enunciado": "La raíz de shots.json no admite campos fuera de version, meta, project, brand_lock_ref, series_lock y shots."
+  },
+  {
+   "id": "e4c90fe80be4",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[] no admite campos fuera de path, sha256, round, generator, model_version, seed, prompt_ref, prompt_sha256, critique_ref y accepted."
+  },
+  {
+   "id": "27dc1f2164a0",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].accepted es un booleano opcional."
+  },
+  {
+   "id": "c861373c4c10",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].critique_ref es opcional y apunta al critique.json que dio 'accepted'; un frame aceptado sin él es una aprobación sin fuente."
+  },
+  {
+   "id": "04bedb973836",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].generator es opcional y debe coincidir con un id de _capabilities.json."
+  },
+  {
+   "id": "1ae8833edf12",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].model_version es opcional y no vacío."
+  },
+  {
+   "id": "75c764d15a30",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].path es obligatorio, relativo a la raíz del directorio de salida."
+  },
+  {
+   "id": "c232c0e61568",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].prompt_ref es opcional y no vacío."
+  },
+  {
+   "id": "eaf213b99d7a",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].prompt_sha256 es opcional con 64 hex."
+  },
+  {
+   "id": "7c6386e9e47f",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].round es un entero opcional mayor o igual a 1."
+  },
+  {
+   "id": "4f815b995a81",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].seed es opcional: null, entero o texto."
+  },
+  {
+   "id": "42d9a1dc423f",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].sha256 es opcional con 64 hex; sin él, 'accepted' es solo una afirmación sobre un nombre de archivo."
+  },
+  {
+   "id": "e8bef97287fa",
+   "alcance": "shots.schema.json",
+   "enunciado": "brand_lock_ref es obligatorio y apunta a brand-lock.snapshot.md; el hash real vive en run.json:inputs.brand_lock_sha256."
+  },
+  {
+   "id": "c7d22ee5ffc2",
+   "alcance": "shots.schema.json",
+   "enunciado": "project.framework es opcional y nombra el framework de beats (pain-reframe-promise, hero-trilogy, founder-explainer, etc.)."
+  },
+  {
+   "id": "a10e90de8661",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock es un objeto obligatorio."
+  },
+  {
+   "id": "e17536ce5ea6",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock no admite campos fuera de character, environment, lighting y color_grade."
+  },
+  {
+   "id": "fce1dae225c8",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.character es obligatorio y no vacío."
+  },
+  {
+   "id": "e850b096edfc",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.color_grade es obligatorio y no vacío."
+  },
+  {
+   "id": "7f23523d7b6d",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.environment es obligatorio y no vacío."
+  },
+  {
+   "id": "b31201c45ef2",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.lighting es obligatorio y no vacío."
+  },
+  {
+   "id": "17384786c917",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots es un array obligatorio con al menos un elemento."
+  },
+  {
+   "id": "60c12b2f108f",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots.json es una lista de shots versionada, auditable y agnóstica de generador, de escritura única: el ciclo de QA nunca la modifica, y validate_shots.py verifica las reglas cruzadas."
+  },
+  {
+   "id": "cafa32243f61",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[] no admite campos fuera de id, beat, start, end, framing, angle, motion, depth_of_field, subject, environment_ref, lighting_ref, on_screen_text, vo, rationale y assets."
+  },
+  {
+   "id": "5e77bda1c7c3",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].angle es obligatorio y debe ser eye-level, high, low, overhead o dutch."
+  },
+  {
+   "id": "bc43459f14ce",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].assets es un objeto opcional con los frames del shot, leído por shots-to-html.py y validate_provenance.py, con la convención frames/round-N/{shot_id} como respaldo."
+  },
+  {
+   "id": "0eda76669895",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].assets no admite campos fuera de source y generated."
+  },
+  {
+   "id": "24a9b7f1d9ec",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].assets.generated es un array opcional de frames generados."
+  },
+  {
+   "id": "2b93c6d2e86a",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].assets.source es un array opcional de imágenes aportadas por el usuario que evitan la generación."
+  },
+  {
+   "id": "11b4cb9198aa",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].beat es obligatorio y no vacío."
+  },
+  {
+   "id": "dc40bd780a82",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].depth_of_field es opcional y debe ser shallow, deep o rack."
+  },
+  {
+   "id": "0eac71538d4b",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].end es obligatorio y debe ser mayor que start (lo verifica validate_shots.py)."
+  },
+  {
+   "id": "090df6139af8",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].environment_ref es opcional, por defecto series_lock.environment, y solo se sobrescribe con razón."
+  },
+  {
+   "id": "9ec4623168e5",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].framing es obligatorio y debe ser ECU, CU, MCU, MS, MLS, WS o EWS."
+  },
+  {
+   "id": "fe21a494137c",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].id es obligatorio con patrón shot_ seguido de 2 o 3 dígitos."
+  },
+  {
+   "id": "775b70fe8b2d",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].lighting_ref es opcional, por defecto series_lock.lighting, y solo se sobrescribe con razón."
+  },
+  {
+   "id": "afa3364d518b",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].motion es obligatorio y debe ser static, push, pull, pan-left, pan-right, tilt-up, tilt-down, handheld, orbit, whip o rack."
+  },
+  {
+   "id": "0fd8a04eb14d",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].on_screen_text es opcional: null, un id text_NN o un array de ids únicos de overlays."
+  },
+  {
+   "id": "d7031938d15e",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].rationale es obligatorio y no vacío."
+  },
+  {
+   "id": "f6416c598a65",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].start es un número obligatorio mayor o igual a 0."
+  },
+  {
+   "id": "bae5658bb7d8",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].subject es obligatorio y no vacío."
+  },
+  {
+   "id": "1f5a461694d0",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].vo es opcional: null o texto no vacío."
+  },
+  {
+   "id": "ec1564cd46ba",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "El objeto project es obligatorio."
+  },
+  {
+   "id": "d82e9bdb6d7e",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project no admite campos fuera de title, duration_s, aspect y framework."
+  },
+  {
+   "id": "9ff8edce13df",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project.aspect es obligatorio y debe ser 16:9, 9:16, 1:1, 4:5 o 21:9."
+  },
+  {
+   "id": "201e20bdb7ed",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project.duration_s es un número obligatorio."
+  },
+  {
+   "id": "52980383644d",
+   "alcance": "shots.schema.json y run.schema.json",
+   "enunciado": "project.title es obligatorio y no puede estar vacío."
+  },
+  {
+   "id": "a8e17a4c3659",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Cada ejecución debe producir exactamente run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md en el directorio de salida."
+  },
+  {
+   "id": "3da98410d9b4",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "El storyboard debe ser determinista y accionable por un editor, agencia o desarrollador sin preguntas adicionales."
+  },
+  {
+   "id": "151d946f3eb5",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "La salida del storyboard es una especificación, no un ejercicio de escritura creativa."
+  },
+  {
+   "id": "facee976a534",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Los storyboards nuevos deben usar version 1.2; 1.0 y 1.1 siguen válidos, pero el array en on_screen_text y el bloque assets con hashes requieren 1.2."
+  },
+  {
+   "id": "e0b158c11b1e",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Se deben leer los ejemplos para entender la calidad esperada, en especial los rationale; validan limpios y son la referencia de archivo aprobado."
+  },
+  {
+   "id": "ed7f6edb45a8",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "run.json debe escribirse una sola vez al final de la ejecución, con hashes de cada entrada como prueba de procedencia, y nunca editarse."
+  },
+  {
+   "id": "aeae90233769",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "shots.json debe validar contra templates/shots.schema.json con version, project, brand_lock_ref, series_lock y array de shots con sus campos."
+  },
+  {
+   "id": "9c91aa6ee650",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "storyboard.md debe seguir la plantilla templates/storyboard.md.tpl, que debe leerse antes de escribir."
+  },
+  {
+   "id": "764d4d6f94c1",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "text-overlays.json debe validar contra templates/text-overlays.schema.json, que debe leerse antes de escribir."
+  },
+  {
+   "id": "63800cb82e48",
+   "alcance": "skill storyboard-architect, beat-frameworks",
+   "enunciado": "Una estructura de beats custom debe documentarse en storyboard.md con el porqué en una frase y cada beat con nombre, propósito y duración."
+  },
+  {
+   "id": "7b4629be8ccc",
+   "alcance": "skill storyboard-architect, descripción",
+   "enunciado": "Explicación: el skill convierte un brief en storyboard con specs, timing, texto en pantalla y rationale, y produce run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md."
+  },
+  {
+   "id": "3fdf42a4cb8c",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Ejemplo: dos shots en shots.json que referencian el mismo on_screen_text 'text_02'."
+  },
+  {
+   "id": "594e8d08785f",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Ejemplo: overlay en text-overlays.json con shot_id como array de los dos shots."
+  },
+  {
+   "id": "55ba8af3306e",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Explicación: las reglas de composición del texto alimentan el campo position de cada overlay."
+  },
+  {
+   "id": "d373f7f54711",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "La persistencia del texto entre shots debe documentarse en el rationale con el tiempo de lectura que aporta."
+  },
+  {
+   "id": "999be1bc6a60",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "La reserva de espacio para el texto debe anotarse en el rationale del shot."
+  },
+  {
+   "id": "386fbac7dc05",
+   "alcance": "skill storyboard-architect, on-screen-text",
+   "enunciado": "Para apilar texto, ambos shots referencian el mismo id de overlay, con enter.at al inicio del primero y exit.at al final del segundo."
+  },
+  {
+   "id": "f129d1c44b63",
+   "alcance": "skill storyboard-architect, paso 2",
+   "enunciado": "Si ningún framework encaja se puede construir una estructura propia documentando el porqué en el rationale de storyboard.md."
+  },
+  {
+   "id": "7369dc2ca2d3",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo angle admite solo eye-level, high, low, overhead o dutch."
+  },
+  {
+   "id": "7514f5fec8aa",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo beat indica a qué beat sirve el shot."
+  },
+  {
+   "id": "d76296b3c304",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo depth_of_field es opcional y admite shallow, deep o rack."
+  },
+  {
+   "id": "390996b395ff",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo environment_ref referencia el lenguaje del series_lock y por defecto vale series_lock.environment."
+  },
+  {
+   "id": "2f9dc6a30555",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo framing admite solo ECU, CU, MCU, MS, MLS, WS o EWS."
+  },
+  {
+   "id": "7aa56c0ccefd",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo id debe ser secuencial y con ceros a la izquierda (shot_01, shot_02)."
+  },
+  {
+   "id": "516a2d99a5fc",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo lighting_ref referencia el lenguaje del series_lock y por defecto vale series_lock.lighting."
+  },
+  {
+   "id": "2b02ab2cfa1e",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo motion admite los once valores del enum del schema (static, push, pull, pans, tilts, handheld, orbit, whip, rack)."
+  },
+  {
+   "id": "89055c0c78e9",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo on_screen_text es null, un id de overlay o un array de ids si el shot lleva más de un overlay."
+  },
+  {
+   "id": "dac8e07a007a",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo rationale es una frase que explica por qué este shot en este momento."
+  },
+  {
+   "id": "05c9134d6182",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo subject describe de forma estructurada lo que aparece en cuadro."
+  },
+  {
+   "id": "1a8303ff6b52",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo vo contiene la línea de voz en off o null."
+  },
+  {
+   "id": "0f06d9de6489",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "Explicación: 'rack' en motion significa que el rack focus es el movimiento del shot y en depth_of_field que el foco cambia a mitad del shot."
+  },
+  {
+   "id": "c5ae07f81553",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "Los campos de shots.json deben usar exactamente los nombres del schema, que prohíbe propiedades adicionales, y el vocabulario de references/shot-grammar.md."
+  },
+  {
+   "id": "980e01a10a95",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "Los campos start y end son timestamps en segundos, con decimales permitidos, y end debe ser posterior a start."
+  },
+  {
+   "id": "63894c05fa7c",
+   "alcance": "skill storyboard-architect, paso 5",
+   "enunciado": "Entrada y salida de overlays tienen vocabularios de animación distintos según el schema, y si un shot lleva varios overlays todos sus ids deben listarse en on_screen_text."
+  },
+  {
+   "id": "0ad167b5f07e",
+   "alcance": "skill storyboard-architect, paso 5",
+   "enunciado": "Todo texto en pantalla debe ir como entrada de text-overlays.json con id, shot_id, contenido, fuente, posición, tamaño, peso, color hex de la paleta del brand-lock y animaciones de entrada y salida, nunca incrustado en la descripción visual."
+  },
+  {
+   "id": "55826f3e959f",
+   "alcance": "skill storyboard-architect, paso 6",
+   "enunciado": "Se deben definir anclas de entorno, luz y personaje en series_lock al inicio de shots.json para que los frames generados sean coherentes."
+  },
+  {
+   "id": "22d79d2aff6b",
+   "alcance": "skill storyboard-architect, paso 7",
+   "enunciado": "Cada shot debe llevar un rationale de una frase que justifique beat, encuadre y texto en pantalla; nunca se omite."
+  },
+  {
+   "id": "533be7ddefc9",
+   "alcance": "skill storyboard-architect, paso 9",
+   "enunciado": "run.json se escribe al final con run_id, created_at y el SHA-256 de shots.json, text-overlays.json y brand-lock.snapshot.md tal como quedaron."
+  },
+  {
+   "id": "0d9597261005",
+   "alcance": "skill storyboard-architect, paso 9",
+   "enunciado": "run_id debe ser el timestamp UTC compacto, un guion y 8 caracteres hex; brand_lock_configured es false si el snapshot es la plantilla sin llenar."
+  },
+  {
+   "id": "e46bf2d63726",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "Se debe revisar manualmente que cada rationale diga por qué, que series_lock sea reproducible, que los beats sigan el argumento del brief y que run.json tenga los hashes de lo entregado."
+  },
+  {
+   "id": "70b9273f8c5e",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "validate_shots.py comprueba schemas, tiempos sin huecos ni solapes que sumen la duración, referencias entre shots y overlays, timing de overlays dentro del shot, colores de la paleta y que brand_lock_ref exista."
+  },
+  {
+   "id": "606fcf0c17d4",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "Ejemplo: descripción de sujeto correcta ('Founder, mid-thirties, leaning forward at laptop, face partially turned to window light')."
+  },
+  {
+   "id": "e0ec45ffb76e",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El estilo de luz no se redefine por shot; se define una vez en series_lock.lighting."
+  },
+  {
+   "id": "4ba0e60c1323",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "En shots.json se deben usar exactamente los términos del vocabulario controlado, porque los generadores interpretan el lenguaje suelto de forma inconsistente."
+  },
+  {
+   "id": "11537d28574e",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "La descripción del sujeto debe ser estructurada, no poética: quién/qué, haciendo qué, y nota emocional o compositiva."
+  },
+  {
+   "id": "609ba49179d7",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "Una descripción de luz repetida entre shots debe moverse a series_lock y un color repetido entre storyboards al brand_lock."
+  },
+  {
+   "id": "2adfd5462ea3",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "brand_lock fija paleta, tipografía y never list para todo el proyecto, series_lock fija personaje, entorno, luz y grade del storyboard, y subject solo lo que cambia en cada shot."
+  },
+  {
+   "id": "633ad4f84ea3",
+   "alcance": "skill storyboard-architect, timing-rules, piezas de 30s",
+   "enunciado": "Un shot de más de 7 segundos en una pieza de 30 segundos debe justificarse en el rationale."
+  },
+  {
+   "id": "3be3317c7d99",
+   "alcance": "storyboard-architect, plantilla storyboard.md",
+   "enunciado": "Especifica la plantilla de storyboard.md: cabecera (duración, aspecto, framework de beats, brand lock, fecha), brief, series lock, shots con beat/subject/texto/VO/rationale, overlays con fuente, posición, color y animaciones, notas de handoff y traza de auditoría contra el snapshot de brand-lock."
+  },
+  {
+   "id": "0bea9c5c146d",
+   "alcance": "storyboard-html-preview, overlays de texto",
+   "enunciado": "Explicación: overlays es un arreglo porque un shot puede llevar varios overlays; un solo juego de campos dejaba el segundo overlay sin renderizar y sin aviso."
+  },
+  {
+   "id": "865552c4b2ee",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "La raíz de text-overlays.json no admite campos fuera de version y overlays."
+  },
+  {
+   "id": "0dbe1c661421",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays es un array obligatorio."
+  },
+  {
+   "id": "9fecbf6fc833",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[] no admite campos fuera de id, shot_id, content, font, size, weight, color, position, enter y exit."
+  },
+  {
+   "id": "9bf94847c6d1",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].enter no admite campos fuera de at y animation."
+  },
+  {
+   "id": "9bf89d22ce13",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].exit no admite campos fuera de at y animation."
+  },
+  {
+   "id": "1292a7382536",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].id es obligatorio con patrón text_ seguido de 2 o 3 dígitos."
+  },
+  {
+   "id": "edccaa227f14",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "overlays[].shot_id es obligatorio: un id de shot o un array de al menos 2 shots consecutivos para overlays persistentes."
+  },
+  {
+   "id": "2e67d42b5c0f",
+   "alcance": "text-overlays.schema.json",
+   "enunciado": "text-overlays.json define los textos en pantalla que se componen sobre las imágenes generadas y nunca se integran en los prompts."
+  },
+  {
+   "id": "3d8f40272270",
+   "alcance": "text-overlays.schema.json y run.schema.json",
+   "enunciado": "version es obligatorio y debe ser exactamente '1.0'."
+  },
+  {
+   "id": "685acd3e26f3",
+   "alcance": "track EXPRESS",
+   "enunciado": "En EXPRESS omite la estrategia formal y el guion, usa ai-video-storyboard para el shot list y pasa directamente a image o video para prompts, sin shots.json ni loop de crítica salvo petición del usuario."
+  },
+  {
+   "id": "13b34dad992e",
+   "alcance": "validate_shots.py",
+   "enunciado": "Ejemplo: comandos para validar un directorio de salida o shots.json, todos los ejemplos incluidos y la autoprueba."
+  },
+  {
+   "id": "6f9484783bb3",
+   "alcance": "validate_shots.py; shots.json y text-overlays.json del proyecto",
+   "enunciado": "El validador debe comprobar los esquemas y las reglas cruzadas de shots.json y text-overlays.json, incluyendo tiempos continuos, duración total, referencias bidireccionales, accesibilidad, ventanas temporales y colores de la paleta de marca."
+  },
+  {
+   "id": "d4856cab577a",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Antes de criticar hay que establecer la intención del shot a partir del rationale, subject, framing, angle y motion de shots.json, la intención declarada por el usuario o el beat que sirve."
+  },
+  {
+   "id": "c040e803179e",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Recomienda el ID de plano y shots.json; si faltan, pedir la intención del plano en una frase."
+  },
+  {
+   "id": "831a5a47805c",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Antes de componer se valida con tools/validate_shots.py output/."
+  },
+  {
+   "id": "20168a701423",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Explicación: descripción del skill visual-prompt-forge, que genera prompts por modelo desde shots.json y tiene un modo revisión que re-emite solo los shots fallidos."
+  },
+  {
+   "id": "94530db04f40",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Sin tools/ disponible, se lee el schema de ../storyboard-architect/templates/shots.schema.json y se verifica a mano; si no existe, se pide al usuario en vez de componer de memoria."
+  },
+  {
+   "id": "eb8333980445",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "El adaptador lee la seed del proyecto y la aplica a todos los prompts."
+  },
+  {
+   "id": "1b43c771c9ec",
+   "alcance": "visual-prompt-forge, Lock 4",
+   "enunciado": "La seed puede documentarse a nivel de proyecto en shots.json (project.seed)."
+  },
+  {
+   "id": "e76956e6ee1d",
+   "alcance": "visual-prompt-forge, Lock 7",
+   "enunciado": "Cuando un shot invierte la orientación (contraplano OTS), el rationale debe reconocer el cambio de lado de la luz para mantener la continuidad de escena."
+  },
+  {
+   "id": "43494d1460da",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "Para activar el modo 2 de Ideogram el shot debe llevar un flag de override explícito en el rationale."
+  },
+  {
+   "id": "605d1fdd3217",
+   "alcance": "visual-prompt-forge, capa 2",
+   "enunciado": "El series lock contiene ancla de personaje, entorno, montaje de luz y grade, idénticos en cada shot."
+  },
+  {
+   "id": "35c861586190",
+   "alcance": "visual-prompt-forge, capa 2",
+   "enunciado": "Explicación: el series lock responde a qué permanece igual a lo largo del storyboard."
+  },
+  {
+   "id": "93c5d3df3dbc",
+   "alcance": "visual-prompt-forge, capa 2",
+   "enunciado": "La capa 2 es el series lock, tomado de shots.json → series_lock y constante en todos los shots de un storyboard."
+  },
+  {
+   "id": "c79fe326a19e",
+   "alcance": "visual-prompt-forge, capa 3",
+   "enunciado": "Explicación: la capa de shot responde a qué es distinto en este shot concreto."
+  },
+  {
+   "id": "4e6041031ec6",
+   "alcance": "visual-prompt-forge, capa 3",
+   "enunciado": "La capa 3 es la especificación de shot, tomada de shots.json → shots[i] y variable por shot."
+  },
+  {
+   "id": "cbee32f81863",
+   "alcance": "visual-prompt-forge, capa 3",
+   "enunciado": "La especificación de shot contiene encuadre, ángulo, movimiento, sujeto, profundidad de campo y rationale como traza de auditoría."
+  },
+  {
+   "id": "9164f5d563db",
+   "alcance": "visual-prompt-forge, ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: series lock constante para todos los adaptadores (personaje, entorno, luz lateral cálida, grade fílmico con grano)."
+  },
+  {
+   "id": "b569aa02e9c9",
+   "alcance": "visual-prompt-forge, ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: shot_04 de shots.json (reframe, MCU, eye-level, push, DOF corta) donde solo cambia la expresión del fundador."
+  },
+  {
+   "id": "76568be83ac2",
+   "alcance": "visual-prompt-forge, fallo 7",
+   "enunciado": "Explicación: una imagen correcta que no cumple el brief se debe a un subject vago en shots.json, contexto del brief ausente o salida genérica del generador."
+  },
+  {
+   "id": "e0fb08b7e390",
+   "alcance": "visual-prompt-forge, fallo 7",
+   "enunciado": "Para ajustar al brief se precisa el campo subject, se añade al final una frase de intención y, en escenas complejas, una línea de \"qué transmite este shot\"."
+  },
+  {
+   "id": "a5bcb0c75ad4",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar el personaje se edita series_lock en shots.json y se actualizan todos los shots de ese storyboard sin tocar otros."
+  },
+  {
+   "id": "35bde05763df",
+   "alcance": "visual-prompt-forge, operación",
+   "enunciado": "Para cambiar un shot se edita solo su especificación sin afectar a los demás."
+  }
+ ]
+}

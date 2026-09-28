@@ -1,0 +1,1109 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "critica_qa",
+ "descripcion_tema": "crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post",
+ "ventana": "1 de 2",
+ "filas": [
+  {
+   "id": "837cee442524",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "El linter no inspecciona imágenes y depende de tags correctos, por lo que se debe revisar humanamente el tageo antes de ejecutarlo."
+  },
+  {
+   "id": "6100207f258a",
+   "alcance": "E5.7 visual-asset-critic",
+   "enunciado": "E5.7: visual-asset-critic produce critique.json con ACCEPT/REVISE/REJECT y severidades, validado con validate_critique y validate_provenance."
+  },
+  {
+   "id": "eba3a2513586",
+   "alcance": "Etapa 5, Anchor Images",
+   "enunciado": "La Etapa 5 debe entregar un plan de anchors con referencias de personaje, entorno y keyframes de shots clave, además de prompts finales y críticas por ronda."
+  },
+  {
+   "id": "c73457aac170",
+   "alcance": "Etapa 5, Anchor Images",
+   "enunciado": "La Etapa 5 genera borradores de imagen desde shots.json con visual-prompt-forge, aplica la sintaxis final autorizada por image, requiere generación del usuario y evalúa cada render con visual-asset-critic contra su shot."
+  },
+  {
+   "id": "482d6439634a",
+   "alcance": "Etapa 7, checklist maestro; anchors críticos.",
+   "enunciado": "Los anchors críticos deben obtener verdict ACCEPT en la crítica en un máximo de dos rondas."
+  },
+  {
+   "id": "a2709972052f",
+   "alcance": "GPT Image 2, grupo ensamble",
+   "enunciado": "La sola pasada con todos los maestros adjuntos es inferencia sin probar: dieciséis referencias aceptadas no garantizan dieciséis identidades, así que se verifica miembro por miembro (regla a prueba)."
+  },
+  {
+   "id": "f1344c8bc172",
+   "alcance": "Mapa del Spot Publicitario, subproceso POST.1",
+   "enunciado": "El subproceso POST.1 genera los clips a partir de los prompts de E6 y los verifica contra la shot card en encuadre, acción y luz antes de aprobarlos."
+  },
+  {
+   "id": "e8c5f05cabaf",
+   "alcance": "Mapa del Spot, génesis sin referencias (E5.2), salidas",
+   "enunciado": "La génesis entrega un render ACCEPT con su critique.json y su procedencia."
+  },
+  {
+   "id": "1cffdd1b1f87",
+   "alcance": "Nano Banana, infografías",
+   "enunciado": "Verificar siempre las cifras de infografías de Nano Banana porque pueden contener datos erróneos; el grounding ayuda pero no garantiza."
+  },
+  {
+   "id": "788e1faa72c3",
+   "alcance": "QA post-generación",
+   "enunciado": "QA de aspect ratio: se prefiere el ratio exacto; desviación de hasta 1% es corrección menor y mayor desviación es fallo bloqueante salvo aceptación del usuario."
+  },
+  {
+   "id": "e575d8093212",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige declarar las restricciones duras del mundo en la cola global y revisar toda la línea de tiempo en clips de más de 30 s, porque los errores de plausibilidad se esconden al final."
+  },
+  {
+   "id": "840a038b6ca5",
+   "alcance": "anclas con personas; crítica",
+   "enunciado": "Cada rostro legible es una identidad a sostener; los que no son héroes canonizados se convierten en silueta, espalda o desenfoque, o el ancla no pasa."
+  },
+  {
+   "id": "9a7859736838",
+   "alcance": "auditoría de prompts",
+   "enunciado": "Formato D: la auditoría de prompt devuelve seis secciones: qué funciona, qué rompe, dirección faltante, riesgos de continuidad, desajustes de modelo y versión mejorada lista para copiar."
+  },
+  {
+   "id": "2b452b48448f",
+   "alcance": "capa 5; QA",
+   "enunciado": "La sub-skill visual-asset-critic debe comparar cada render con su shot de origen y producir un critique.json accionable con autoridad para aceptar o rechazar renders."
+  },
+  {
+   "id": "7abcd0278b2d",
+   "alcance": "carreras",
+   "enunciado": "Explicación: el guardia anti-fake lista paneles de carrera que destruyen la credibilidad; además correr el checklist de animatic-keyframes.md §9."
+  },
+  {
+   "id": "e978e017bb4b",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Antes de enviar el board, correr los checklists de animatic-keyframes.md §9, dramaturgy.md §15 y universal-rules.md §13, sin saltar el chequeo de tres detalles."
+  },
+  {
+   "id": "c082327b5a59",
+   "alcance": "critique.schema.json",
+   "enunciado": "La raíz de critique.json no admite campos fuera de version, meta, run_id, round, created_at, shot_id, brand_lock_ref/sha256, image_ref/sha256, prompt_ref/sha256, generator, model_version, seed, verdict, confidence, working e issues."
+  },
+  {
+   "id": "408a326b89c5",
+   "alcance": "critique.schema.json",
+   "enunciado": "brand_lock_ref es la ruta del brand-lock contra el que se juzgó; si es null la confianza queda limitada a MEDIUM."
+  },
+  {
+   "id": "9504e855ad03",
+   "alcance": "critique.schema.json",
+   "enunciado": "brand_lock_sha256 es el SHA-256 del brand-lock leído y solo puede ser null si brand_lock_ref es null."
+  },
+  {
+   "id": "b6bd1d5ff4e2",
+   "alcance": "critique.schema.json",
+   "enunciado": "confidence es obligatorio y debe ser HIGH, MEDIUM o LOW."
+  },
+  {
+   "id": "c63899eeb1b7",
+   "alcance": "critique.schema.json",
+   "enunciado": "created_at es null o el instante ISO-8601 UTC con precisión de segundos y Z final en que se escribió la crítica."
+  },
+  {
+   "id": "711051986f03",
+   "alcance": "critique.schema.json",
+   "enunciado": "critique.json es el veredicto legible por máquina de un frame contra su shot y brand-lock; en 1.1 identifica frame, prompt y brand-lock por hash y ruta, y los campos de procedencia son obligatorios y anulables."
+  },
+  {
+   "id": "22dcb10cb124",
+   "alcance": "critique.schema.json",
+   "enunciado": "generator es el id del generador que produjo el frame, debe coincidir con _capabilities.json, o null si se desconoce."
+  },
+  {
+   "id": "b1d3d05bd367",
+   "alcance": "critique.schema.json",
+   "enunciado": "image_ref es la ruta del frame criticado, relativa a la raíz de salida."
+  },
+  {
+   "id": "7d6985e23a9c",
+   "alcance": "critique.schema.json",
+   "enunciado": "image_sha256 es el SHA-256 de los bytes revisados; si el archivo ya no coincide, el veredicto no lo describe."
+  },
+  {
+   "id": "0818a2cff7e0",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues es un array obligatorio."
+  },
+  {
+   "id": "6b5a6f9aa7b9",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[] no admite campos fuera de layer, severity, note, fix_type y fix."
+  },
+  {
+   "id": "adab66a2e331",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].fix es obligatorio y no vacío."
+  },
+  {
+   "id": "f4ad86e1c9f9",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].fix_type es obligatorio y debe ser prompt-level, post-level o re-roll."
+  },
+  {
+   "id": "b1ca756fff33",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].layer es obligatorio y debe ser Brand Lock, Series Lock, Shot Spec, Composition, Technical o Continuity."
+  },
+  {
+   "id": "39e54940f1f7",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].note es obligatorio y no vacío."
+  },
+  {
+   "id": "735f59b64da7",
+   "alcance": "critique.schema.json",
+   "enunciado": "issues[].severity es obligatorio (minor, major, blocking): un blocking fuerza REJECT, uno o dos major limitan a REVISE y tres o más major fuerzan REJECT, según validate_critique.py."
+  },
+  {
+   "id": "680c1786b022",
+   "alcance": "critique.schema.json",
+   "enunciado": "meta es un objeto opcional de paso libre que los skills núcleo ignoran."
+  },
+  {
+   "id": "854536572114",
+   "alcance": "critique.schema.json",
+   "enunciado": "model_version es null o el texto de versión de modelo vigente al generar, copiado de la matriz de capacidades."
+  },
+  {
+   "id": "f756617856b6",
+   "alcance": "critique.schema.json",
+   "enunciado": "prompt_ref es la ruta del prompt que generó el frame; si es null la confianza queda limitada a MEDIUM."
+  },
+  {
+   "id": "89290c8e5c6d",
+   "alcance": "critique.schema.json",
+   "enunciado": "prompt_sha256 es el SHA-256 del prompt y solo puede ser null si prompt_ref es null."
+  },
+  {
+   "id": "c6d25b70f0d6",
+   "alcance": "critique.schema.json",
+   "enunciado": "round es null o un entero desde 1; la ronda 1 es la primera pasada de generación."
+  },
+  {
+   "id": "5404351f6fe4",
+   "alcance": "critique.schema.json",
+   "enunciado": "run_id es null o coincide con run.json:run_id (timestamp UTC compacto, guion y 8 hex)."
+  },
+  {
+   "id": "b3d863b233de",
+   "alcance": "critique.schema.json",
+   "enunciado": "seed es null si el generador no expone semilla, o un entero o texto con la semilla usada."
+  },
+  {
+   "id": "1016b80d8292",
+   "alcance": "critique.schema.json",
+   "enunciado": "shot_id es null (imagen suelta sin storyboard) o un id shot_NN."
+  },
+  {
+   "id": "b5b0e9184f0c",
+   "alcance": "critique.schema.json",
+   "enunciado": "verdict es obligatorio y debe ser ACCEPT, REVISE o REJECT."
+  },
+  {
+   "id": "ff35e6206b1c",
+   "alcance": "critique.schema.json",
+   "enunciado": "version es obligatorio y debe ser 1.0 o 1.1; los documentos 1.0 son legado sin prueba de lo revisado."
+  },
+  {
+   "id": "6ecb16a2318a",
+   "alcance": "critique.schema.json",
+   "enunciado": "working es un array opcional de aciertos concretos: observaciones, no halagos."
+  },
+  {
+   "id": "f33de3c4769b",
+   "alcance": "crítica; tipo de acción A",
+   "enunciado": "Check del crítico para tipo A: tres detalles y vector de postura, o maestro declarado."
+  },
+  {
+   "id": "4ee80989377d",
+   "alcance": "crítica; tipo de acción B",
+   "enunciado": "Check del crítico para tipo B: estado posterior visible, blur diferencial y anatomía del pico al 100%."
+  },
+  {
+   "id": "981ebae5265a",
+   "alcance": "crítica; tipo de acción C",
+   "enunciado": "Check del crítico para tipo C: al menos 3 cues contados, rim barrido, asfalto con textura y rig montable."
+  },
+  {
+   "id": "0e2788da8936",
+   "alcance": "crítica; tipo de acción D",
+   "enunciado": "Check del crítico para tipo D: una sola fuente domina, sombras coherentes y atmósfera a contraluz."
+  },
+  {
+   "id": "c9730e1dd87c",
+   "alcance": "crítica; tipo de acción E",
+   "enunciado": "Check del crítico para tipo E: poder legible sin guion, eyelines, contacto correcto y luz continua en el contraplano."
+  },
+  {
+   "id": "835711e577c7",
+   "alcance": "crítica; tipo de acción F",
+   "enunciado": "Check del crítico para tipo F: rostros legibles iguales a héroes canonizados, cero clones y tres planos con trabajos distintos."
+  },
+  {
+   "id": "d74a390c4157",
+   "alcance": "ejemplo WhyStrohm explainer 60s",
+   "enunciado": "Ejemplo: nota de handoff para ejecutar visual-asset-critic por shot."
+  },
+  {
+   "id": "a0de243c6a14",
+   "alcance": "ejemplo WhyStrohm pitch 30s",
+   "enunciado": "Ejemplo: nota de handoff para QA ejecutando visual-asset-critic con la imagen generada y el id del shot."
+  },
+  {
+   "id": "94848598b3a4",
+   "alcance": "gate de Etapa 4, Shot Planning",
+   "enunciado": "El gate de Shot Planning exige validate_shots.py sin errores, six-point dramaturgy check y tres detalles por shot; todo shot sin detalles se elimina como filler."
+  },
+  {
+   "id": "9f423323180a",
+   "alcance": "gate de Etapa 5, Anchor Images",
+   "enunciado": "Cada anchor crítico debe obtener crítica ACCEPT en un máximo de dos rondas de revisión sobre los shots reprobados, y una tercera falla obliga a replantear el shot en vez del prompt."
+  },
+  {
+   "id": "aac55562e41a",
+   "alcance": "general (QA de assets generados)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks mecánicos de semánticos; edad, nacionalidad o etnia no son certificables visualmente."
+  },
+  {
+   "id": "f114c9b37133",
+   "alcance": "general (QA)",
+   "enunciado": "Prohíbe declarar exitoso un asset o modelo antes de la QA aplicable, separando checks deterministas de semánticos y marcando como no verificables visualmente los hechos que lo sean."
+  },
+  {
+   "id": "237511c9e7ca",
+   "alcance": "general (generación)",
+   "enunciado": "Los parámetros de entrega como el aspect ratio se fijan como parámetros duros del generador cuando la plataforma los expone, no solo en prosa, y se valida el archivo generado."
+  },
+  {
+   "id": "62622efc61b8",
+   "alcance": "general (geometría de escena)",
+   "enunciado": "Los objetos que la relación espacial fijada sitúa detrás de la cámara no deben aparecer; la geometría relativa a cámara es un invariante espacial crítico."
+  },
+  {
+   "id": "413178fb465f",
+   "alcance": "general (geometría espacial de escena)",
+   "enunciado": "Los objetos que la geometría fijada de la escena sitúa detrás de la cámara no deben aparecer en cuadro."
+  },
+  {
+   "id": "c2969d674a1b",
+   "alcance": "grupo ensamble EN.6",
+   "enunciado": "En ensamble, el crítico corre la capa de identidad por cada miembro contra su maestro y verifica lateralidad de manos e instrumentos; un rostro sin maestro es REJECT."
+  },
+  {
+   "id": "736158bbfffc",
+   "alcance": "imágenes humanas subacuáticas o split-level complejas (policy v3.2)",
+   "enunciado": "Los objetos detrás de la cámara en el punto de vista fijado no deben ser visibles; la visibilidad relativa a cámara es un invariante espacial crítico."
+  },
+  {
+   "id": "16fc5f9b6f51",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), regla R14",
+   "enunciado": "Exige validadores y techos de palabras en verde e inspección visual propia al 100% de rostros y manos antes de presentar; si algo falla no se entrega y se dice qué falló en una línea."
+  },
+  {
+   "id": "513904d46b28",
+   "alcance": "prompt-production-protocol; Step 5",
+   "enunciado": "En el Step 5 se debe ejecutar el checklist del caso, marcar cada ítem como Pass o Fail y revisar y reauditar antes de entregar si falla algún ítem crítico."
+  },
+  {
+   "id": "efc8ecb18e83",
+   "alcance": "regímenes 01 y 02, checklist del crítico",
+   "enunciado": "El crítico verifica un rig montable identificable."
+  },
+  {
+   "id": "122ee2f943a6",
+   "alcance": "research de campo, familia 02 ruptura de superficie (regla candidata)",
+   "enunciado": "Una o dos gotas sobre el domo fuera del sujeto son cue de realismo en split-level; un rastro sobre el rostro es defecto."
+  },
+  {
+   "id": "ba9c2938b202",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "Criterio del crítico: si la piel es cálida sin práctico visible, el agua debe virar a aqua/cian y los rayos a rojizo; piel cálida con agua azul pura y rayos blancos es incoherente."
+  },
+  {
+   "id": "83e7d158eb48",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "Explicación: desde abajo la superficie calma refleja al sujeto y el retrato aparece dos veces, lo cual es física legítima y no el fallo de dos superficies."
+  },
+  {
+   "id": "eca79204516c",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "Bajo luz dura con sombras nítidas y complejas hay que inspeccionar al 100% la coherencia geométrica de las sombras, donde más fallan los modelos de difusión."
+  },
+  {
+   "id": "e14570a64d76",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "Prohibido aceptar rayos o palas curvados en forma de hoz, artefacto de rolling shutter."
+  },
+  {
+   "id": "cd339674ad18",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "La inspección al 100% debe incluir la transición calcetín-zapatilla y la fusión ropa-piel."
+  },
+  {
+   "id": "6a52c99c2c0e",
+   "alcance": "research de campo, familia 08 multitud anónima (regla candidata)",
+   "enunciado": "El crítico debe buscar rostros de la masa que compartan estructura ósea y proporciones, no solo clones evidentes."
+  },
+  {
+   "id": "87e61534b48f",
+   "alcance": "research de campo, familia 08 multitud anónima (regla candidata)",
+   "enunciado": "Tras cualquier edición local en NBP el crítico debe volver a contar y revisar los rostros de fondo, porque la edición los regenera."
+  },
+  {
+   "id": "ad4fa1e31d14",
+   "alcance": "research de campo, familia 09 grupo ensamble (regla candidata)",
+   "enunciado": "Tras cada inserción el crítico debe re-verificar a todos los miembros ya colocados, no solo al nuevo."
+  },
+  {
+   "id": "14f89de19cc8",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica al menos tres cues de velocidad presentes y nombrables."
+  },
+  {
+   "id": "0e6b0c06d049",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica que estela y spray sean coherentes con la dirección de viaje declarada."
+  },
+  {
+   "id": "c0d1c70d9184",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica sin HDR sobrecocido y sin rostro pedido a través del spray."
+  },
+  {
+   "id": "5c7b40df5e14",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica spray con rim de contraluz y no masa gris."
+  },
+  {
+   "id": "736a4ff86beb",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica cuerpo con vector de maniobra y cuerda tensa si existe."
+  },
+  {
+   "id": "cbd503552277",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "La anatomía en el pico se audita al 100% de zoom: dedos alineados, muñecas y columna en línea."
+  },
+  {
+   "id": "f3a98bdae9f1",
+   "alcance": "régimen 02 ruptura de superficie, checklist del crítico",
+   "enunciado": "El crítico verifica blur diferencial y no uniforme."
+  },
+  {
+   "id": "bde5fb6af9ee",
+   "alcance": "régimen 02 ruptura de superficie, checklist del crítico",
+   "enunciado": "El crítico verifica el estado posterior visible: agua abierta y corona formada."
+  },
+  {
+   "id": "db17832ab442",
+   "alcance": "régimen 02 ruptura de superficie, checklist del crítico",
+   "enunciado": "El crítico verifica la anatomía del pico correcta al zoom."
+  },
+  {
+   "id": "d6d018d199c2",
+   "alcance": "régimen 02 ruptura de superficie, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica gotas arriba y burbujas abajo, nunca invertidas."
+  },
+  {
+   "id": "02d51675a553",
+   "alcance": "régimen 02 ruptura de superficie, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica una sola línea de superficie y refracción presente en lo sumergido."
+  },
+  {
+   "id": "30c2a9633050",
+   "alcance": "régimen 03 subacuático, checklist del crítico",
+   "enunciado": "El crítico verifica identidad sostenida por equipo y silueta, verbatim entre cuadros."
+  },
+  {
+   "id": "3f2739dde8ba",
+   "alcance": "régimen 03 subacuático, checklist del crítico",
+   "enunciado": "El crítico verifica una sola fuente dominante desde la superficie y prácticos visibles si hay más."
+  },
+  {
+   "id": "b526d9f34ee6",
+   "alcance": "régimen 03 subacuático, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica absorción de color coherente con la profundidad declarada."
+  },
+  {
+   "id": "2b42ded79923",
+   "alcance": "régimen 03 subacuático, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica burbujas verticales y racimo reciente si hay cambio de estado."
+  },
+  {
+   "id": "a497bae87430",
+   "alcance": "régimen 03 subacuático, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica partículas, haces o pérdida de contraste presentes."
+  },
+  {
+   "id": "46296856c0e0",
+   "alcance": "régimen 03 subacuático, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica pelo y tela flotando."
+  },
+  {
+   "id": "68f48bad5808",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico",
+   "enunciado": "El crítico verifica estado posterior visible con deformación y reacción del receptor."
+  },
+  {
+   "id": "13af204e2830",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico",
+   "enunciado": "El crítico verifica que no haya marcas en el objeto."
+  },
+  {
+   "id": "635eade2302e",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico",
+   "enunciado": "El crítico verifica specular y material legibles."
+  },
+  {
+   "id": "756bad183c1f",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico",
+   "enunciado": "El crítico verifica una sola lógica de blur, declarada y cumplida."
+  },
+  {
+   "id": "58fec8d72078",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica una referencia de escala en foco."
+  },
+  {
+   "id": "31d69dbb2a68",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica una sombra de contacto única."
+  },
+  {
+   "id": "4e81584f7413",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: dos a cuatro señales corporales y ninguna emoción nombrada."
+  },
+  {
+   "id": "c1e051baa895",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: estado posterior del umbral visible."
+  },
+  {
+   "id": "acc829850692",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: fase de contacto con el suelo coherente (a prueba)."
+  },
+  {
+   "id": "1f859a1d9d91",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: piel documental bajo luz dura y sudor como speculares."
+  },
+  {
+   "id": "048e63155394",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: rostro y manos correctos al 100%."
+  },
+  {
+   "id": "05f616e90729",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Checklist del crítico: sin texto ni logos en cinta o dorsal."
+  },
+  {
+   "id": "401000ca6c6f",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Hay que inspeccionar al 100% rostro y manos antes de presentar."
+  },
+  {
+   "id": "d97330565cb6",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: cada rostro legible corresponde a un maestro canonizado (N rostros, N coincidencias)."
+  },
+  {
+   "id": "9a8d8b160cb7",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: ningún clon, identidades distinguibles al zoom aunque la pose sea igual."
+  },
+  {
+   "id": "991a3da8b779",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: posiciones por ancla legible y nadie se movió entre inserciones."
+  },
+  {
+   "id": "2d0a11a5094e",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: una sola dirección de luz para todos."
+  },
+  {
+   "id": "3eef5cb43ea9",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "El crítico corre la capa de identidad una vez por miembro contra su maestro; un rostro sin maestro es REJECT, no REVISE."
+  },
+  {
+   "id": "2565834706fb",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Inspección al 100% de todos los rostros y manos antes de presentar: N miembros, N inspecciones."
+  },
+  {
+   "id": "fb6209c95202",
+   "alcance": "régimen grupo ensamble, still",
+   "enunciado": "Checklist del crítico: eyelines coordinadas según lo declarado."
+  },
+  {
+   "id": "583f68f06ecc",
+   "alcance": "régimen grupo ensamble, still",
+   "enunciado": "Checklist del crítico: instrumentos y manos con lateralidad correcta."
+  },
+  {
+   "id": "45b5185607b8",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: atmósfera a contraluz y una sola presión ambiental."
+  },
+  {
+   "id": "9606e4c90a1c",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: fenómeno completamente formado y su luz visible en el mundo."
+  },
+  {
+   "id": "103bf992ce6e",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: núcleo quemado con halación y sin HDR."
+  },
+  {
+   "id": "db21b4788ca2",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: personas en silueta o insertadas con referencia."
+  },
+  {
+   "id": "615f66edba08",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: superficies mojadas si llueve y perspectiva aérea si hay niebla (a prueba)."
+  },
+  {
+   "id": "aae4ee518634",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: una sola dirección de sombras."
+  },
+  {
+   "id": "fd8c02962e27",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: barrido coherente con la dirección del flujo si la masa se mueve (a prueba)."
+  },
+  {
+   "id": "653c6450d2e3",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: máximo tres héroes, cada uno con referencia y rol."
+  },
+  {
+   "id": "9d8ac28b04b2",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: ningún rostro legible que no sea un héroe canonizado."
+  },
+  {
+   "id": "bb2362630251",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: sin clones y con densidad desigual."
+  },
+  {
+   "id": "3bac99796ea2",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: sin texto legible en pancartas ni camisetas."
+  },
+  {
+   "id": "81009c7f4d66",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Checklist del crítico: tres planos con trabajos distintos."
+  },
+  {
+   "id": "d5afae3a4c3b",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "El crítico cuenta rostros legibles: cada uno debe corresponder a un héroe canonizado y los demás se convierten en silueta, espalda o desenfoque mediante edición."
+  },
+  {
+   "id": "1f6f8064395b",
+   "alcance": "régimen vehículo en movimiento (moto, bici, tren, lancha, dron, avión ligero), still",
+   "enunciado": "Checklist del crítico: inclinación y borde de neumático en moto, cadencia barrida en bici y discos en hélices (a prueba)."
+  },
+  {
+   "id": "f2c47423df87",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: deben estar presentes tres de los cinco cues de velocidad."
+  },
+  {
+   "id": "932d8ede872e",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: el rig de cámara debe ser montable."
+  },
+  {
+   "id": "51b76f4e8582",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: rim barrido y física visible en el chasis."
+  },
+  {
+   "id": "77cb57fa1fcd",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: sin marcas generadas."
+  },
+  {
+   "id": "fee681d2430c",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: un specular duro por panel y cálido solo puntual en registro race."
+  },
+  {
+   "id": "27dc1f2164a0",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].accepted es un booleano opcional."
+  },
+  {
+   "id": "c861373c4c10",
+   "alcance": "shots.schema.json",
+   "enunciado": "assets.generated[].critique_ref es opcional y apunta al critique.json que dio 'accepted'; un frame aceptado sin él es una aprobación sin fuente."
+  },
+  {
+   "id": "51b6c72a20a0",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Explicación: el ejemplo worked-run de visual-asset-critic muestra el árbol de salida tras generación y revisión con dos shots en dos rondas."
+  },
+  {
+   "id": "953f848b1017",
+   "alcance": "skill storyboard-html-preview, paso 1",
+   "enunciado": "Las entradas opcionales son run.json, storyboard.md, frames por ronda y críticas por ronda para badges de veredicto."
+  },
+  {
+   "id": "6db9098c783b",
+   "alcance": "skill video, salida D",
+   "enunciado": "Formato D: auditoría de prompt con qué funciona, qué rompe, dirección faltante, riesgos de continuidad, desajustes de modelo y versión reescrita."
+  },
+  {
+   "id": "10d68278ad55",
+   "alcance": "storyboard-html-preview, insignias de veredicto",
+   "enunciado": "Las insignias de veredicto (has_verdict, verdict, verdict_round, verdict_class) se toman de la crítica más reciente del shot y se omiten si no hay crítica."
+  },
+  {
+   "id": "44783bbe8f7f",
+   "alcance": "tarjeta de ancla D9",
+   "enunciado": "La dimensión D9 (ángulo y altura) se elige por la dinámica de poder del beat, nunca por variedad; dutch solo para un beat de inestabilidad y un ángulo distinto al spec es hard fail en la crítica."
+  },
+  {
+   "id": "685acd3e26f3",
+   "alcance": "track EXPRESS",
+   "enunciado": "En EXPRESS omite la estrategia formal y el guion, usa ai-video-storyboard para el shot list y pasa directamente a image o video para prompts, sin shots.json ni loop de crítica salvo petición del usuario."
+  },
+  {
+   "id": "06d808540b91",
+   "alcance": "validate_critique.py",
+   "enunciado": "Ejemplo: comandos para validar una crítica, todas las críticas de un directorio, los ejemplos y la autoprueba."
+  },
+  {
+   "id": "614afd1766de",
+   "alcance": "validate_critique.py; archivos de crítica",
+   "enunciado": "El validador debe comprobar una crítica contra critique.schema.json y contra dos invariantes que el esquema no puede expresar."
+  },
+  {
+   "id": "f94b023c570c",
+   "alcance": "validate_critique.py; críticas schema 1.1",
+   "enunciado": "Desde el esquema 1.1, toda procedencia debe asociar hash y ruta, image_ref no puede ser nulo, la confianza HIGH exige identificar plano, brand-lock y prompt, y el generador nombrado debe existir en la matriz de capacidades."
+  },
+  {
+   "id": "7ef9b30979f4",
+   "alcance": "validate_critique.py; críticas versión 1.0",
+   "enunciado": "Las críticas de versión 1.0 deben aprobar la validación con una advertencia porque contienen veredicto pero no procedencia de los bytes revisados."
+  },
+  {
+   "id": "12db23331a64",
+   "alcance": "validate_critique.py; veredicto de crítica",
+   "enunciado": "Una crítica debe recibir REJECT si tiene cualquier incidencia blocking o tres o más major, y no puede recibir ACCEPT si tiene una o dos incidencias major."
+  },
+  {
+   "id": "6be98ad998a4",
+   "alcance": "validate_provenance.py; condición de parada del pipeline",
+   "enunciado": "Con --require-accept, el pipeline solo debe terminar con código 0 si la cadena de procedencia está intacta y el último veredicto de cada plano es ACCEPT."
+  },
+  {
+   "id": "d4856cab577a",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Antes de criticar hay que establecer la intención del shot a partir del rationale, subject, framing, angle y motion de shots.json, la intención declarada por el usuario o el beat que sirve."
+  },
+  {
+   "id": "5aaf13ce00b1",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Cada capa de la crítica se califica como pass, soft fail o hard fail, y el veredicto agrega esas calificaciones."
+  },
+  {
+   "id": "c5f2d43b7808",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Considera útil el prompt original; si falta, inferirlo de la intención."
+  },
+  {
+   "id": "144b6068ee89",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Cuando ningún cambio de prompt ayuda porque el generador dio una mala muestra, se exige re-roll con presupuesto de 2 a 3 intentos."
+  },
+  {
+   "id": "e8fad963c886",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Ejemplo: crítica REVISE con puntos que funcionan, fallos (pelo, seis dedos, encuadre MS vs MCU), plan de revisión y confianza HIGH."
+  },
+  {
+   "id": "b26078bec3bf",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Ejemplo: examples/critique.accept.json y critique.revise.json muestran la versión 1.0 sin procedencia; examples/worked-run/critiques/ muestra la 1.1 con hashes."
+  },
+  {
+   "id": "6ee3ddc7f531",
+   "alcance": "visual-asset-critic",
+   "enunciado": "El veredicto ACCEPT corresponde cuando todas las capas pasan o fallan suavemente de forma corregible en post."
+  },
+  {
+   "id": "24a5d0557ecf",
+   "alcance": "visual-asset-critic",
+   "enunciado": "El veredicto REJECT corresponde cuando fallan tres o más capas o una capa crítica (Brand Lock, Series Lock) falla duro sin corrección clara."
+  },
+  {
+   "id": "569bdaa255d4",
+   "alcance": "visual-asset-critic",
+   "enunciado": "El veredicto REVISE corresponde cuando una o dos capas fallan duro con un camino de corrección claro."
+  },
+  {
+   "id": "b0f70ec11e49",
+   "alcance": "visual-asset-critic",
+   "enunciado": "En caso de duda, si la imagen está ~80% bien y el resto se corrige en post, se da ACCEPT con notas de post."
+  },
+  {
+   "id": "a8a1b3b45f64",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Especifica las secciones del markdown: veredicto ACCEPT/REVISE/REJECT, qué funciona (2-4), qué no (2-5, con capa citada), plan de revisión por tipo de arreglo y confianza."
+  },
+  {
+   "id": "50e207c3d912",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Especifica los disparadores: imagen subida con pregunta de calidad, comparar con storyboard, pedir revisión o QA con shots.json, o feedback editorial suelto."
+  },
+  {
+   "id": "99f9318d245e",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Especifica que el agente actúa como segundo ojo editorial estructurado sobre imágenes generadas."
+  },
+  {
+   "id": "e3526d3d041c",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Especifica que visual-asset-critic critica una imagen generada contra su plano de storyboard y su prompt, produciendo notas de revisión, y cuándo se activa."
+  },
+  {
+   "id": "1ff77a6d3863",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige guardar el JSON en output/critiques/round-{N}/{shot_id}.critique.json, un archivo por plano y ronda, nunca un nombre compartido."
+  },
+  {
+   "id": "38d878868b65",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige la imagen generada como insumo obligatorio; sin ella no se puede criticar."
+  },
+  {
+   "id": "e9cdd2a1135a",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige producir siempre dos artefactos: crítica en markdown y crítica JSON para que el pipeline pueda gatear por veredicto."
+  },
+  {
+   "id": "70b4d46b318a",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige que la crítica dé notas de revisión concretas y accionables a nivel de prompt o de post, nunca impresiones ni 'looks good'."
+  },
+  {
+   "id": "75ebd425d525",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Exige, si solo llega la imagen sin contexto, preguntar qué debía ser el plano; basta una frase."
+  },
+  {
+   "id": "da32f5ea0077",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Explicación: introduce los insumos que necesita la crítica."
+  },
+  {
+   "id": "de90057166cd",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Explicación: remite a references/critique-rubric.md como rúbrica completa por capas."
+  },
+  {
+   "id": "522b2f2c5bfd",
+   "alcance": "visual-asset-critic",
+   "enunciado": "La confianza HIGH solo procede cuando están disponibles la referencia de storyboard, el brand-lock y el prompt."
+  },
+  {
+   "id": "7ed756cc62df",
+   "alcance": "visual-asset-critic",
+   "enunciado": "La confianza LOW procede cuando solo se tiene la imagen y la intención es inferida."
+  },
+  {
+   "id": "78cbf39d8deb",
+   "alcance": "visual-asset-critic",
+   "enunciado": "La confianza MEDIUM procede cuando faltan algunas referencias pero la intención central es clara."
+  },
+  {
+   "id": "e8ef7322320c",
+   "alcance": "visual-asset-critic",
+   "enunciado": "La crítica debe declarar honestamente su nivel de incertidumbre."
+  },
+  {
+   "id": "4dce21a34e68",
+   "alcance": "visual-asset-critic",
+   "enunciado": "La crítica debe revisar la imagen por capas: Brand Lock, Series Lock, Shot Spec, composición, técnica y continuidad, según la rúbrica completa."
+  },
+  {
+   "id": "198d4dc00d9f",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Las correcciones de prompt deben ser específicas (qué texto añadir o cambiar y dónde), no un genérico 'cambia el prompt'."
+  },
+  {
+   "id": "1f747dd0ff92",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Los fallos conocidos del generador (manos, reflejos oculares, joyería) deben presentarse como tales y resolverse con re-roll o post, no con otro prompt."
+  },
+  {
+   "id": "2f5b911b5291",
+   "alcance": "visual-asset-critic",
+   "enunciado": "No se debe criticar lo que no se pidió; sugerir mejoras fuera del brief es scope creep."
+  },
+  {
+   "id": "36497a03f677",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Recomienda brand-lock.snapshot.md; si falta, criticar solo por méritos técnicos."
+  },
+  {
+   "id": "c040e803179e",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Recomienda el ID de plano y shots.json; si faltan, pedir la intención del plano en una frase."
+  },
+  {
+   "id": "7a77afdb0142",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Se prohíbe la crítica basada en sensaciones: cada observación debe referirse a algo concreto de la imagen."
+  },
+  {
+   "id": "df8ee096d06d",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Si la intención del shot no puede formularse en una frase, se debe preguntar en lugar de criticar a ciegas."
+  },
+  {
+   "id": "489c34d8feda",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Todo problema detectado debe mapearse a una corrección; la corrección a nivel de prompt debe especificar el cambio exacto y re-generar."
+  },
+  {
+   "id": "62e7087976cb",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Tras un REJECT no se ofrece modo revisión; se explica qué lo bloqueó y qué decisión requiere (spec, brand-lock o generador)."
+  },
+  {
+   "id": "cd8b7f653c91",
+   "alcance": "visual-asset-critic",
+   "enunciado": "Una corrección a nivel de post indica qué ajustar en composición o grade sin re-generar (p. ej., subir calidez +5)."
+  },
+  {
+   "id": "b2f1aa5e3ece",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Además del markdown, la crítica debe escribirse como output/critiques/round-{N}/{shot_id}.critique.json conforme al schema 1.1."
+  },
+  {
+   "id": "54238b85a6c8",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Cada issue debe llevar una severidad asignada de forma determinista desde la rúbrica de capas, porque el gate opera sobre ella."
+  },
+  {
+   "id": "77b0fe63522d",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Declarar confianza HIGH es un hecho verificable: validate_critique.py rechaza una crítica 1.1 con HIGH si shot_id, brand_lock_ref o prompt_ref son null."
+  },
+  {
+   "id": "ab2cd1848462",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El JSON de crítica debe mapear sección por sección el markdown de la crítica."
+  },
+  {
+   "id": "eb49581a8a70",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El campo shot_id lleva el shot, o null si es una imagen suelta sin storyboard."
+  },
+  {
+   "id": "57e1db91c372",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El veredicto del markdown debe elegirse con la misma regla derivada de severidades."
+  },
+  {
+   "id": "9236230a4f73",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "El veredicto se deriva de las severidades: cualquier blocking o tres+ major ⇒ REJECT; uno o dos major ⇒ REVISE; solo minor o ninguno ⇒ ACCEPT."
+  },
+  {
+   "id": "90d7e8c2f612",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "En la versión 1.1 toda la procedencia es obligatoria: el veredicto debe nombrar y hashear los bytes evaluados."
+  },
+  {
+   "id": "90971e84803b",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Explicación: la regla de tres major pasó de discrecional a umbral obligatorio que el validador hace cumplir, alineada con la rúbrica."
+  },
+  {
+   "id": "992c42b92193",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "La sección ## Confidence se mapea al campo confidence (HIGH/MEDIUM/LOW)."
+  },
+  {
+   "id": "083f7f3cd91c",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "La sección ## Verdict del markdown se mapea al campo verdict (ACCEPT/REVISE/REJECT)."
+  },
+  {
+   "id": "d58f8299ff74",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Los bullets de ## What's working se mapean a working[], una cadena por bullet."
+  },
+  {
+   "id": "1282cd0e42c6",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Severidad blocking: hard fail en capa crítica (Brand Lock/Series Lock) sin corrección clara, o defecto que inutiliza el asset."
+  },
+  {
+   "id": "7f56df9a6712",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Severidad major: hard fail con camino claro de corrección por cambio de prompt o re-roll."
+  },
+  {
+   "id": "d81c3fe48049",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Severidad minor: soft fail corregible en post, con fix_type post-level."
+  },
+  {
+   "id": "2cf79bbda78a",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "Todos los campos de procedencia son obligatorios y anulables: si falta un insumo se escribe null (p. ej., prompt_ref: null y bajar confianza a MEDIUM), nunca se omite la clave."
+  },
+  {
+   "id": "e613acf67714",
+   "alcance": "visual-asset-critic, critique JSON 1.1",
+   "enunciado": "What's not working y Revision plan se fusionan en issues[], cada issue con su capa/nota y su fix_type/fix."
+  },
+  {
+   "id": "1d54dcf4a519",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Cada issue debe etiquetarse con la capa a la que pertenece."
+  },
+  {
+   "id": "5d5b81b7f080",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Cada observación debe ser específica (p. ej., key light a la derecha de cámara vs izquierda en series_lock)."
+  },
+  {
+   "id": "69e8c8f57549",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, aspect ratio: pass si coincide con project.aspect, soft fail si cabe en un recorte, hard fail si es otro."
+  },
+  {
+   "id": "705609d21072",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, mood: pass si se lee el mood de marca, soft fail si es adyacente, hard fail si es otro mood."
+  },
+  {
+   "id": "3c039d2e7b56",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, never list: pass si no aparece nada de la lista, soft fail si aparece un ítem suave, hard fail con varias violaciones."
+  },
+  {
+   "id": "c411ef569ed7",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Brand Lock, paleta: pass si los colores vienen de la paleta, soft fail si están cerca, hard fail si no están en la paleta."
+  },
+  {
+   "id": "66bf0a8bc33c",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, dirección de luz: pass si coincide, soft fail con ángulo ligeramente distinto, hard fail si viene de la dirección equivocada."
+  },
+  {
+   "id": "8a437ec421f2",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, entorno: pass si coincide con series_lock, soft fail con ligera deriva, hard fail si es otro entorno."
+  },
+  {
+   "id": "6059a0293fdc",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, grade: pass si coincide, soft fail con ligera deriva tonal, hard fail si es otro grade."
+  },
+  {
+   "id": "887fd135701b",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, personaje: pass si se ven todos los rasgos del ancla, soft fail si uno menor falla, hard fail si es otra persona (edad, raza, complexión)."
+  },
+  {
+   "id": "2be9719d9edb",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Shot Spec, acción del sujeto: pass si coincide con subject, soft fail si es similar, hard fail si es una acción distinta."
+  },
+  {
+   "id": "ddae3f8a1f62",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Shot Spec, encuadre: pass si coincide con la spec, soft fail si está a un paso (MS vs MCU), hard fail si está a dos o más."
+  },
+  {
+   "id": "f028856783b1",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Shot Spec, profundidad de campo: pass si coincide, soft fail con leve variación, hard fail si es profunda cuando se pidió reducida."
+  },
+  {
+   "id": "c301b51a50c0",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Shot Spec, ángulo: pass si coincide, soft fail con leve variación, hard fail con ángulo equivocado (low cuando era eye-level)."
+  },
+  {
+   "id": "7e1d2d506cd0",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa composición, aire sobre la cabeza: pass si es apropiado, soft fail si es algo justo u holgado, hard fail si corta en la línea del pelo o sobra enormemente."
+  },
+  {
+   "id": "349dd2b1982e",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa composición, colocación del sujeto: pass si coincide con el rationale, soft fail si está algo desplazado, hard fail si tapa el área destinada al texto."
+  },
+  {
+   "id": "de8bc8dd2e7a",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa composición, espacio negativo para texto: pass si está reservado según spec, soft fail si es justo, hard fail si no cabe el overlay."
+  },
+  {
+   "id": "f03ed09825fd",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa composición, mirada: pass si mira donde se pretende, soft fail con leve desvío, hard fail si mira al lado equivocado."
+  },
+  {
+   "id": "e2fa81ebb5ee",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, entorno: pass si es el mismo espacio, soft fail con leve deriva, hard fail si es otro espacio."
+  },
+  {
+   "id": "4d49c027a240",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, grade: pass si es idéntico, soft fail con cambio sutil, hard fail si es visiblemente distinto."
+  },
+  {
+   "id": "fd5e14ef2e35",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, luz: pass si mantiene dirección y hora, soft fail con cambio sutil, hard fail si la dirección se invierte o salta la hora del día."
+  },
+  {
+   "id": "d59f805e9582",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, personaje: pass si es la misma persona y look, soft fail con leve deriva, hard fail si es claramente otra persona."
+  },
+  {
+   "id": "c3df486a8c66",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa técnica, anatomía: pass si es correcta, soft fail con rarezas menores, hard fail con errores mayores."
+  },
+  {
+   "id": "e9987ccd9178",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa técnica, artefactos de fondo: pass si está limpio, soft fail con rarezas menores, hard fail con texto distorsionado, objetos derretidos o geometría imposible."
+  }
+ ]
+}

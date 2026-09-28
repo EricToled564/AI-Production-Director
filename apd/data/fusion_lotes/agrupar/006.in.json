@@ -1,0 +1,789 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "camara_movimiento",
+ "descripcion_tema": "movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "72258458f99e",
+   "alcance": "AI Video Storyboard Generator, flujo, paso 3: Establish Visual Consistency Layer",
+   "enunciado": "Antes de escribir los planos, fija una capa visual compartida con paleta de color, iluminación, carácter de lente, look fílmico y lenguaje de movimiento."
+  },
+  {
+   "id": "e5dfa1f426d1",
+   "alcance": "Aurora Prompt Linter v1.0",
+   "enunciado": "No se deben marcar términos usados en contexto de movimiento o cámara ni como anclas direccionales."
+  },
+  {
+   "id": "4eb2283aea3c",
+   "alcance": "Aurora Prompt Linter v1.0; caso 3c I2V motion control",
+   "enunciado": "El caso 3c de imagen a video con control de movimiento admite un presupuesto de 50 a 90 palabras."
+  },
+  {
+   "id": "7c0d82fe4673",
+   "alcance": "Aurora Prompt Linter; detección de términos en prompts",
+   "enunciado": "El linter debe exentar términos usados tras contexto de cámara o preposiciones direccionales, aunque coincidan con vocabulario detectable."
+  },
+  {
+   "id": "6f659bc8394b",
+   "alcance": "Brand Lock > Motion language",
+   "enunciado": "Define en un párrafo cómo se comporta el movimiento en el contenido de la marca."
+  },
+  {
+   "id": "d78b38ce1479",
+   "alcance": "Brand Lock > Motion language",
+   "enunciado": "Ejemplo: usa movimientos de cámara mínimos y deliberados, planos estáticos o push-in lentos, cortes en acción y texto sin rebotes ni oscilaciones."
+  },
+  {
+   "id": "7e05c83f23a2",
+   "alcance": "Brand Lock Extractor; fuente PDF de brand book",
+   "enunciado": "Para un PDF de libro de marca, léelo para extraer hex exactos, tipografía y reglas de movimiento."
+  },
+  {
+   "id": "7a3da1a6dc8e",
+   "alcance": "Brand Lock de Acme SaaS (ejemplo), lenguaje de movimiento",
+   "enunciado": "Limitar el movimiento a fundidos sutiles de UI de 200 ms, cortes en beats lógicos, animaciones lineales de datos y push-in lentos en planos hero, sin rebotes, cámara en mano, whip pans ni transiciones salvo corte directo."
+  },
+  {
+   "id": "f5a87d7a6970",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, lenguaje de movimiento",
+   "enunciado": "Usar movimiento mínimo y pausado, planos estáticos o push-ins lentos, cortes sobre acción y tipografía fija, sin cortes rápidos, whip pans ni texto que rebote."
+  },
+  {
+   "id": "f55b0c62a777",
+   "alcance": "E3.3 dramaturgy §7, U5-U6",
+   "enunciado": "E3.3: un movimiento de cámara primario por shot con su razón escrita; sin razón, cámara estática (regla Fincher)."
+  },
+  {
+   "id": "76d7b001d2fa",
+   "alcance": "Etapa 3, Cinematic Direction",
+   "enunciado": "La Etapa 3 debe entregar dirección por escena con blocking, composición, cámara motivada, lente, luz, evolución de color, lenguaje de edición y cinco anclas de la pieza."
+  },
+  {
+   "id": "dbbcfb882e95",
+   "alcance": "Etapa 3, Cinematic Direction",
+   "enunciado": "La Etapa 3 usa la skill video, los archivos dramaturgy.md y universal-rules.md, y vocabulario de cámara y luz."
+  },
+  {
+   "id": "ed8dc67d2a8a",
+   "alcance": "Kling",
+   "enunciado": "Para deriva de cámara en escenas estáticas, escribir 'locked static frame' o 'camera fixed, no movement'."
+  },
+  {
+   "id": "1f8f2588c6fa",
+   "alcance": "Kling 3.0",
+   "enunciado": "Explicación: Kling 3.0 entiende plenamente lenguaje cinematográfico como shot-reverse-shot, POV, tracking y macro."
+  },
+  {
+   "id": "e81b174b3c6d",
+   "alcance": "Kling 3.0",
+   "enunciado": "Usar directamente el vocabulario cinematográfico que Kling 3.0 entiende (encuadres, cortes, movimientos, lentes, tempo), elegir el ángulo por la dinámica de poder y preferir presets Master Shot para movimientos estándar."
+  },
+  {
+   "id": "01b3128ba003",
+   "alcance": "Midjourney v7",
+   "enunciado": "El movimiento \"handheld\" se traduce en Midjourney como \"handheld documentary feel, slight motion blur\"."
+  },
+  {
+   "id": "6a180e13b781",
+   "alcance": "Midjourney v7",
+   "enunciado": "El movimiento \"push\" se traduce en Midjourney como \"dolly in, pushing forward\"."
+  },
+  {
+   "id": "fa1cd1732ee3",
+   "alcance": "Midjourney v7",
+   "enunciado": "El movimiento \"static\" se omite en el prompt de Midjourney porque estático es el valor por defecto."
+  },
+  {
+   "id": "8ad839a030e7",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el Hitchcock Zoom como 'dolly out while zooming in' para efecto de vértigo."
+  },
+  {
+   "id": "f1ff242983b4",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Crane/Aerial: escala épica, establecimiento."
+  },
+  {
+   "id": "fc3c619051ef",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Dolly In: empuja hacia el sujeto y crea tensión."
+  },
+  {
+   "id": "4d8301c3e76c",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Dolly Out: revela contexto alejándose."
+  },
+  {
+   "id": "034384bba1e1",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Handheld: documental, íntimo, UGC."
+  },
+  {
+   "id": "4e8690e91d19",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Pan Left/Right: revelación horizontal, paisaje, fila."
+  },
+  {
+   "id": "520fee1927bd",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Tilt Up/Down: revelación vertical."
+  },
+  {
+   "id": "5875bda3e205",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Tracking: sigue a un sujeto en movimiento."
+  },
+  {
+   "id": "ddc00d8ad86a",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Especifica el preset Zoom In/Out: tensión o detalle."
+  },
+  {
+   "id": "015e5805e854",
+   "alcance": "Seedance (familia)",
+   "enunciado": "Exige combinar movimientos de cámara con moderación porque varios en 5 s rara vez se resuelven limpiamente."
+  },
+  {
+   "id": "d53094e3eac6",
+   "alcance": "Seedance 1.x / 2.0",
+   "enunciado": "Especifica el plano estático mediante --camerafixed true."
+  },
+  {
+   "id": "2ae5c44dcf52",
+   "alcance": "Seedance 2.0",
+   "enunciado": "El campo motion de la gramática de plano se mapea directamente en Seedance, con un solo movimiento por corte."
+  },
+  {
+   "id": "24079d605e56",
+   "alcance": "Seedance 2.0",
+   "enunciado": "En Seedance el movimiento de cámara y la estructura de cortes son portantes: se describe la secuencia de planos, no un solo frame."
+  },
+  {
+   "id": "b836ffe9a616",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Prohíbe apilar dos movimientos de cámara dentro de un mismo corte en Seedance; un movimiento por corte."
+  },
+  {
+   "id": "6222668ac893",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica el vocabulario de planos, movimientos y ángulos que 2.5 entiende sin traducción."
+  },
+  {
+   "id": "1541558e33db",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Especifica que el blockout 3D en modelo blanco o placas de pantalla verde fija trayectoria de cámara, staging y blocking en 2.5."
+  },
+  {
+   "id": "1630731a8c31",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige 'one continuous shot, no cuts of any kind' y una trayectoria que no motive cortes; si se cuelan cortes, bajar a ventanas de 10-15 s."
+  },
+  {
+   "id": "9ce0331cac67",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Exige, para términos de cámara raros, conservar el término y traducirlo a cambio observable: término + sujeto + cambio visual + relación FG/BG + dirección o velocidad."
+  },
+  {
+   "id": "234157072269",
+   "alcance": "Seedance 2.5 blockout",
+   "enunciado": "Exige mapear cada primitiva del blockout a una referencia, excluir su estilo gris, evitar modelos con extremidades en blockout grueso y limpiar la captura del viewport."
+  },
+  {
+   "id": "b1184aedcb4e",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería, plano 5 (20-25 s)",
+   "enunciado": "El plano 5 debe mostrar a una clienta tomando café en la cafetería con encuadre medio sobre el hombro, descenso lento de cámara, contraluz de ventana cálido y duración vertical de 5 segundos."
+  },
+  {
+   "id": "f891d1b689eb",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería, plano 6 (25-30 s)",
+   "enunciado": "El plano 6 debe revelar la llamada a la acción con un plano medio amplio fijo del letrero de apertura y una mano colgando el cartel «OPEN»."
+  },
+  {
+   "id": "042448c686bc",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige empezar el prompt por la cámara si se ignora la dirección de cámara."
+  },
+  {
+   "id": "59c5359f126a",
+   "alcance": "adaptadores Hailuo 02 Pro y Veo 3",
+   "enunciado": "No se apilan dos movimientos de cámara: uno por shot."
+  },
+  {
+   "id": "b817e8b89244",
+   "alcance": "adaptadores Hailuo 02 Pro, Kling 3.0 y Veo 3",
+   "enunciado": "El campo motion de la gramática de shot se mapea directo al prompt de video, con un solo movimiento por shot."
+  },
+  {
+   "id": "4d7d80bad1f0",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion handheld se expresa como 'Handheld camera, subtle organic movement.'"
+  },
+  {
+   "id": "f3885af4275d",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion orbit se expresa como 'Camera orbits the subject slowly.'"
+  },
+  {
+   "id": "72116a984ba2",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion pan-left/pan-right se expresa como 'Camera pans smoothly left / right.'"
+  },
+  {
+   "id": "d818db3271ce",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion push/pull se expresa como 'Camera dollies forward / backward slowly.'"
+  },
+  {
+   "id": "0f050d4949f8",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion rack se expresa como 'Rack focus from foreground to background.'"
+  },
+  {
+   "id": "2f33f5281423",
+   "alcance": "adaptadores Hailuo 02 Pro, Seedance 2.0 y Veo 3",
+   "enunciado": "motion tilt-up/tilt-down se expresa como 'Camera tilts up / down.'"
+  },
+  {
+   "id": "9438b279671a",
+   "alcance": "adaptadores de video (Hailuo 02 Pro, Kling 3.0, Seedance 2.0, Veo 3)",
+   "enunciado": "motion static se expresa como 'Static camera, locked off.'"
+  },
+  {
+   "id": "bac4d41e4b9b",
+   "alcance": "adaptadores de video (Hailuo 02 Pro, Kling 3.0, Seedance 2.0, Veo 3)",
+   "enunciado": "motion whip se expresa como 'Fast whip pan with motion blur.'"
+  },
+  {
+   "id": "46cdda3a64f5",
+   "alcance": "aurora-prompt-linter",
+   "enunciado": "Un término vetado a menos de 50 caracteres de un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y no se marca."
+  },
+  {
+   "id": "43b2aa470e49",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: lenguaje de movimiento estático por defecto, solo push o pull lentos, cortes en acción, type-on para énfasis y transiciones de corte duro o disolvencia de 6 frames."
+  },
+  {
+   "id": "c025796d7b5f",
+   "alcance": "brand-lock de ejemplo WhyStrohm",
+   "enunciado": "Ejemplo: movimiento mínimo con estático por defecto, solo push/pull lentos, cortes en acción y transiciones de corte duro o disolvencia de 6 frames, sin wipes ni zooms."
+  },
+  {
+   "id": "d3cfceec6acd",
+   "alcance": "carreras",
+   "enunciado": "Familia 1 hostess-tray de perfil: montaje lateral junto a la puerta con mano en volante o rueda trasera y asfalto estriado."
+  },
+  {
+   "id": "0c4deaaddfb8",
+   "alcance": "carreras",
+   "enunciado": "Familia 2 POV bajo de capó/parachoques: asfalto bajo el morro, conos y marcas creciendo rápido, raya de carril estroboscópica."
+  },
+  {
+   "id": "71239ba51988",
+   "alcance": "carreras",
+   "enunciado": "Familia 3 cabina con montaje rígido: tablero, aguja y manos vibrando, espejo trémulo; nunca perfectamente estable."
+  },
+  {
+   "id": "28ebf55520ea",
+   "alcance": "carreras",
+   "enunciado": "Familia 4 tracking paralelo o joust: auto cámara al lado o de frente desplazado, carril rival en cuadro, luces como estrías."
+  },
+  {
+   "id": "5c5702ec5f57",
+   "alcance": "carreras",
+   "enunciado": "Prohíbe una cabina perfectamente estable; mostrar vibración e inclinar 1-3°."
+  },
+  {
+   "id": "65d43c5dc90b",
+   "alcance": "carreras",
+   "enunciado": "Si la cámara implícita no podría montarse físicamente en el auto, el panel se lee como render: bajarla a la altura del parachoques y atornillarla."
+  },
+  {
+   "id": "298405639cce",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Crash zoom en still: macro agresivo del detalle disparador con anillo de zoom blur en bordes y sujeto sobredimensionado al centro; tag Detail/Impact."
+  },
+  {
+   "id": "3aacc5d29ba6",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Cámara inquieta en still: nunca un panel perfectamente nivelado y limpio; hornear 1-3° de deriva, barrido de borde y micro-vibración; tag Pressure."
+  },
+  {
+   "id": "9f5b7d0062e2",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Explicación: la tabla de gramática de cámara resuelve cada movimiento nombrado en una composición fija, complementando las seis cues de animatic-keyframes.md."
+  },
+  {
+   "id": "e4b4947accb3",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Joust en still: casi de frente con el auto desplazado y un cono enorme borroso en el borde opuesto; reservarlo para el adelantamiento climático; tag Impact."
+  },
+  {
+   "id": "d1de00db5369",
+   "alcance": "carreras, keyframes",
+   "enunciado": "POV en still: manos y aro del volante en primer plano duro, instrumentos al medio y Tree o rival borroso al fondo con 24mm, o un montaje imposible; tag POV/Pressure."
+  },
+  {
+   "id": "e0aa76f1c79d",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Racionar la agresividad: un fisheye de parachoques, un crash zoom y un dutch en los beats de compromiso; un movimiento dominante por clip y el keyframe es el primer frame fijo."
+  },
+  {
+   "id": "91b4794c1256",
+   "alcance": "carreras, keyframes",
+   "enunciado": "Whip pan en still: frame de estrías horizontales entre dos paneles limpios con una forma apenas sobreviviente; tag Shift."
+  },
+  {
+   "id": "30eac74cb752",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Campo Cámara: estática, push-in, cámara en mano, tracking o whip-pan."
+  },
+  {
+   "id": "7ddf84dc86d7",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Campo Razón del movimiento: por qué se mueve la cámara, respondiendo '¿qué cambió?'."
+  },
+  {
+   "id": "35509efe9d5a",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §15",
+   "enunciado": "Check 4: ¿cada movimiento de cámara tiene razón motivada?"
+  },
+  {
+   "id": "41242ede7bb7",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §7",
+   "enunciado": "Ejemplo: mal 'movimiento de cámara cinematográfico deslizante'; bien 'push-in que empieza en \"no sé\" y se detiene en su mandíbula trabándose'."
+  },
+  {
+   "id": "9ffa91674820",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §7",
+   "enunciado": "Razones válidas para mover la cámara: una decisión, nueva información, presión que escala, lo que el personaje mira, un gesto que atrae el foco o un cambio del espacio."
+  },
+  {
+   "id": "2bc55869ac36",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §7 cámara motivada",
+   "enunciado": "Todo movimiento de cámara responde a '¿qué cambió?'; si nada cambió, la cámara queda estática."
+  },
+  {
+   "id": "4fc5159767cb",
+   "alcance": "ejemplo WhyStrohm explainer 60s",
+   "enunciado": "Ejemplo: shot_04 insight con push lento mientras la tesis se construye y la VO como elemento principal."
+  },
+  {
+   "id": "6fa89519f951",
+   "alcance": "ejemplo WhyStrohm explainer 60s",
+   "enunciado": "Ejemplo: shot_07 con pull lento que libera tensión y sin texto porque diluiría la VO."
+  },
+  {
+   "id": "39b164ec51ec",
+   "alcance": "ejemplo WhyStrohm pitch 30s",
+   "enunciado": "Ejemplo: shot_04 de reencuadre con push lento donde solo cambia la expresión y el texto coral aparece con type-on."
+  },
+  {
+   "id": "6d67e5121a35",
+   "alcance": "ejemplo de marca, tema visual aplicado a cada plano",
+   "enunciado": "Ejemplo: todos los planos deben usar cámara fija o acercamientos muy lentos y evitar la vibración de cámara en mano."
+  },
+  {
+   "id": "43fc0a6f264c",
+   "alcance": "gate de Etapa 3, Cinematic Direction",
+   "enunciado": "La dirección cinematográfica no debe usar vocabulario prohibido y debe justificar por escrito la razón dramática de cada decisión de cámara."
+  },
+  {
+   "id": "ee5e8757c9f0",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §7 animar el keyframe",
+   "enunciado": "Tras enlazar el vocabulario, el keyframe es el primer frame bloqueado que se entrega al modelo de video con un solo movimiento dominante por cada 5 s, nombrado en la sintaxis del modelo."
+  },
+  {
+   "id": "16d41751847f",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe",
+   "enunciado": "Debe nombrarse la cámara implícita de la que el still es primer frame, montable físicamente en el auto, sin god-angle."
+  },
+  {
+   "id": "da1313677f15",
+   "alcance": "modo director",
+   "enunciado": "Referencia Fincher: cámara precisa y motivada, sin deriva en mano, paleta fría."
+  },
+  {
+   "id": "60749c73c853",
+   "alcance": "modo director",
+   "enunciado": "Referencia Safdie: ansiedad, presión en mano y sonido superpuesto."
+  },
+  {
+   "id": "5a31c7764e52",
+   "alcance": "prompts de video",
+   "enunciado": "Ejemplo: 'Slow 50mm push-in. A man opens the fridge.' es correcto frente a poner la cámara al final del prompt."
+  },
+  {
+   "id": "4c89e0a4df12",
+   "alcance": "prompts de video",
+   "enunciado": "Si el modelo ignora la instrucción de cámara, moverla al inicio del prompt."
+  },
+  {
+   "id": "efc8ecb18e83",
+   "alcance": "regímenes 01 y 02, checklist del crítico",
+   "enunciado": "El crítico verifica un rig montable identificable."
+  },
+  {
+   "id": "a43cf3274f6b",
+   "alcance": "research de campo, familia 05 vehículo (regla candidata)",
+   "enunciado": "El rig POV debe nombrarse por lo que muestra: chest mount con manillar, manos y horquilla en cuadro; helmet o chin mount sigue la mirada con la bici fuera de cuadro."
+  },
+  {
+   "id": "bd60d5b6c5fd",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "La cámara debe poder montarse en un rig acuático real (torre de lancha, pole cam, carcasa a nivel del agua, dron bajo, mango de la cuerda); un ángulo imposible se lee como render."
+  },
+  {
+   "id": "0d592526035a",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "El rig debe existir: cámara en el chorro de entrada o en el fondo de la fosa sí; cámara flotando a mitad de la salpicadura no."
+  },
+  {
+   "id": "103cb382eccf",
+   "alcance": "régimen 02 ruptura de superficie [A PRUEBA]",
+   "enunciado": "El rig por defecto es carcasa a nivel exacto de la superficie o cámara baja de borde de piscina; para split-level, carcasa con domo semisumergido."
+  },
+  {
+   "id": "0645d06e18d2",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "La cámara implícita es descenso lento o avance en una sola dirección, con un solo movimiento por clip al animar."
+  },
+  {
+   "id": "1ea45d177d1a",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "El rig es una carcasa con domo, y la deformación gran angular y la leve viñeta del domo son texturas legítimas."
+  },
+  {
+   "id": "ea4c60b97908",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "El rig debe ser montable (cámara de alta velocidad en trípode al nivel del impacto o cámara robótica que sigue); una cámara girando alrededor del objeto en el aire se lee como render."
+  },
+  {
+   "id": "68fbe48b4b6b",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "La cámara implícita es crash zoom al detalle del impacto o freeze frame, y se nombra cuál."
+  },
+  {
+   "id": "24a917bc8dde",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Se elige y declara una sola lógica de blur: objeto nítido con fondo barrido (cámara que sigue) u objeto barrido con mundo nítido (cámara fija), nunca las dos."
+  },
+  {
+   "id": "939b39938354",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "El rig debe ser montable (cámara de meta a nivel de cinta, cable cam, cámara robótica); nunca una cámara flotando frente al atleta a media pista."
+  },
+  {
+   "id": "4bad0f24b336",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "La cámara implícita es freeze frame en la rotura o push-in que termina en la mandíbula."
+  },
+  {
+   "id": "4621078f4cdc",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "La cámara implícita es locked-off en trípode; al animar declarar \"locked static frame\" para que el modelo no invente cámara."
+  },
+  {
+   "id": "4f778a7c6a4b",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "El rig debe ser montable (grúa, dron, cámara de gradería, cable cam); una cámara dentro de la multitud a la altura de los ojos sin cuerpos que la tapen es irreal."
+  },
+  {
+   "id": "64536598970c",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "La cámara implícita tiene un solo movimiento: tracking lateral sobre la masa o descenso lento desde el aire."
+  },
+  {
+   "id": "932d8ede872e",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: el rig de cámara debe ser montable."
+  },
+  {
+   "id": "5cc052cfa0c0",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Hay que rotar entre las cinco familias de plano: perfil hostess-tray, POV bajo de capó, cabina con vibración, tracking paralelo o joust y proof shot lejano."
+  },
+  {
+   "id": "6463a785839a",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "La cámara debe ir donde un rig real puede atornillarse (parachoques, capó, hostess-tray, eje, cabina hard-mount); si no, se lee render."
+  },
+  {
+   "id": "69157b62312b",
+   "alcance": "régimen vehículo, bici y moto",
+   "enunciado": "En bici y moto el rig cercano es la cámara de casco o el chest mount, con POV de manillar y manos en primer plano duro (regla a prueba)."
+  },
+  {
+   "id": "78db9f93db29",
+   "alcance": "rúbrica de extracción de marca, lenguaje de movimiento",
+   "enunciado": "Define en un único párrafo coherente el movimiento de cámara, estilo de corte, animación de texto y ritmo a partir del motion existente, o usa un valor conservador coherente con la voz y marca `needs confirmation` si no existe."
+  },
+  {
+   "id": "afa3364d518b",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].motion es obligatorio y debe ser static, push, pull, pan-left, pan-right, tilt-up, tilt-down, handheld, orbit, whip o rack."
+  },
+  {
+   "id": "a930cba02a94",
+   "alcance": "skill screenwriter",
+   "enunciado": "Se prohíben direcciones de cámara ('CLOSE UP ON') en el guion; se describe la acción visible."
+  },
+  {
+   "id": "33424d7286b7",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Ejemplo: describir a Maya corriendo por un callejón con objetos que pasan borrosos para sugerir seguimiento."
+  },
+  {
+   "id": "b9692e6de435",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Ejemplo: describir el escritorio vacío y luego la puerta entreabierta para revelar información."
+  },
+  {
+   "id": "3380f726e221",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Ejemplo: describir la ciudad desde arriba y luego un globo rojo a nivel de calle para sugerir paso de plano general a detalle."
+  },
+  {
+   "id": "c62ff175b86d",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Explicación: la descripción de Maya corriendo implica un tracking shot que sigue al personaje."
+  },
+  {
+   "id": "003c4a594d10",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Explicación: la descripción de escritorio a puerta implica un paneo que revela información nueva."
+  },
+  {
+   "id": "7a214dc2ae95",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Sin direcciones técnicas de cámara, el movimiento de cámara puede sugerirse mediante la descripción visual y la estructura de escena."
+  },
+  {
+   "id": "d567cbe898c9",
+   "alcance": "skill screenwriter, técnicas avanzadas",
+   "enunciado": "Un párrafo continuo sugiere un único plano con movimiento de cámara continuo."
+  },
+  {
+   "id": "2b02ab2cfa1e",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo motion admite los once valores del enum del schema (static, push, pull, pans, tilts, handheld, orbit, whip, rack)."
+  },
+  {
+   "id": "ec54ab11411b",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El handheld da una sacudida orgánica sutil para sensación documental o urgencia."
+  },
+  {
+   "id": "5d0621205375",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El movimiento static es el valor por defecto; lo estático no es aburrido."
+  },
+  {
+   "id": "30520f528997",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El orbit rodea al sujeto y se usa en hero shots o revelación de producto."
+  },
+  {
+   "id": "d04979ee1c93",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El pan izquierda/derecha rota la cámara horizontalmente para recorrer el entorno."
+  },
+  {
+   "id": "119790497974",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El pull aleja la cámara y se usa para liberar tensión o contextualizar."
+  },
+  {
+   "id": "8396340a4a35",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El push acerca la cámara al sujeto y se usa para intensificar o revelar."
+  },
+  {
+   "id": "ad0d73db6592",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El tilt arriba/abajo rota la cámara verticalmente para revelar escala o detalle."
+  },
+  {
+   "id": "5e159b211107",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El whip es un paneo rápido como transición en cortes de beat de contenido rápido."
+  },
+  {
+   "id": "e169f89dd2c6",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "En stills generados el movimiento es sobre todo intención para el editor; en prompts de video (Kling, Veo, Seedance, Hailuo) se traduce directamente."
+  },
+  {
+   "id": "f94c52bb06a6",
+   "alcance": "skill video, paso 4",
+   "enunciado": "Para términos precisos de encuadre, lente, movimiento, luz o sonido se carga camera-lighting-vocabulary.md."
+  },
+  {
+   "id": "9539f15d80d7",
+   "alcance": "storyboards de película",
+   "enunciado": "Plantilla de storyboard de película con planos establishing, medio, primer plano y POV, estilo (boceto B/N, color, cinematográfico) y anotaciones de movimientos de cámara."
+  },
+  {
+   "id": "894601a18eab",
+   "alcance": "tarjeta de ancla D6",
+   "enunciado": "La dimensión D6 (cámara: encuadre, lente, DOF, cámara implícita) exige que el rig sea montable físicamente; el ángulo va en D9."
+  },
+  {
+   "id": "7972cb24316a",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Limita a un movimiento de cámara dominante por plano, con a lo sumo un microajuste sutil."
+  },
+  {
+   "id": "cb23313afa3a",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige identificar ángulo y punto de vista de cámara (picado, contrapicado, eye-level, dutch, subjetiva, POV, OTS) e imitación de movimiento (push-in, tracking)."
+  },
+  {
+   "id": "023282f20ac4",
+   "alcance": "visual-media",
+   "enunciado": "El pan es desplazamiento horizontal; se usa para seguir o presentar el entorno."
+  },
+  {
+   "id": "fbaf05c16c7b",
+   "alcance": "visual-media",
+   "enunciado": "El pull out revela el conjunto; se usa en cierres y transiciones."
+  },
+  {
+   "id": "a3ad04449d87",
+   "alcance": "visual-media",
+   "enunciado": "El push in da énfasis y acercamiento; se usa para revelar el punto clave."
+  },
+  {
+   "id": "cc35ca8814a6",
+   "alcance": "visual-media",
+   "enunciado": "El tilt es desplazamiento vertical; se usa para mostrar altura."
+  },
+  {
+   "id": "8c3869b5fc10",
+   "alcance": "visual-media",
+   "enunciado": "El track acompaña al sujeto; se usa en caminatas y persecuciones."
+  },
+  {
+   "id": "99b24dbae023",
+   "alcance": "visual-media",
+   "enunciado": "La cámara en mano aporta inmediatez y presencia; se usa en documental y tensión."
+  },
+  {
+   "id": "3be5c11cd2bb",
+   "alcance": "visual-media",
+   "enunciado": "La órbita es un giro de 360° alrededor del sujeto; se usa para momentos dramáticos."
+  },
+  {
+   "id": "889eb7cbff51",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, 'handheld' se expresa como 'Handheld camera with slight natural movement.'"
+  },
+  {
+   "id": "b46fdff883d9",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "En Flux, 'push' se expresa como 'Camera pushing slowly toward the subject.'"
+  },
+  {
+   "id": "165002dd3c5b",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En video el movimiento de cámara es estructural; Hailuo comparte la anatomía de prompt de Kling y se diferencia en costo e intención de iterar."
+  },
+  {
+   "id": "8d005672eb69",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Paso 2 de iteración: fijar el movimiento, encuadre y timing que mejor funcionen."
+  },
+  {
+   "id": "58efab113af5",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling el movimiento de cámara va primero, al revés que en imagen donde la cámara está implícita."
+  },
+  {
+   "id": "b2b4302d7a12",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling no se describe un movimiento más rápido de lo que permite la duración (un dolly lento en 1 s es jitter)."
+  },
+  {
+   "id": "d74712cb8089",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling no se piden varios movimientos de cámara en un shot; los compuestos fallan."
+  },
+  {
+   "id": "9fe98dc0b47f",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling no se pone el movimiento de cámara al final; se interpreta mejor como instrucción inicial."
+  },
+  {
+   "id": "fee2936808ac",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion handheld se expresa como 'Handheld camera, subtle organic movement, documentary feel.'"
+  },
+  {
+   "id": "2b1ab14d01b8",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion orbit se expresa como 'Camera orbits the subject in a slow circle.'"
+  },
+  {
+   "id": "2372791f3ce1",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion pan-left/right se expresa como 'Camera pans smoothly to the left / right.'"
+  },
+  {
+   "id": "602ef7169e02",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion pull se expresa como 'Camera dollies backward, pulling away from the subject.'"
+  },
+  {
+   "id": "f15953b1df00",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion push se expresa como 'Camera dollies forward slowly at a steady pace.'"
+  },
+  {
+   "id": "1f95dde61d33",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion rack se expresa como 'Rack focus shifts from foreground to background mid-shot.'"
+  },
+  {
+   "id": "513289581710",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En Kling, motion tilt-up/down se expresa como 'Camera tilts upward / downward.'"
+  },
+  {
+   "id": "0302afc2a239",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "En video el movimiento de cámara es estructural y el adaptador Kling se usa cuando el storyboard va a video."
+  },
+  {
+   "id": "bd396a286442",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video)",
+   "enunciado": "Se usa lenguaje de producción preciso: 'cinematic' no es una dirección; lente, movimiento y luz concretos sí."
+  },
+  {
+   "id": "0278ad2ec94b",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §10",
+   "enunciado": "Ejemplo: rack focus descrito como cambio suave de foco de las hojas en primer plano a la persona del fondo, con las hojas desenfocándose y el rostro pasando a nítido."
+  },
+  {
+   "id": "454410b7de1f",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §10",
+   "enunciado": "El mismo patrón aplica a snorricam, contra-zoom, tilt-shift, split diopter o speed ramps; se admiten valores numéricos, pero lo que guía al modelo es el resultado visible en palabras."
+  },
+  {
+   "id": "ce4e31739fcf",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §10 términos raros",
+   "enunciado": "Los términos de cinematografía poco comunes se conservan y se traducen a cambio observable: término, sujeto, cambio visual, relación FG/BG y dirección o velocidad."
+  },
+  {
+   "id": "79c56fd39c0c",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §2 movimiento",
+   "enunciado": "Especifica el vocabulario de movimiento de cámara: estática, push-in, pull-back, tracking, handheld, whip pan, snap zoom, rack focus, tilt, órbita, dolly, grúa, aéreo, dolly-zoom, FPV, one-take, bullet time y bounce speed ramp."
+  },
+  {
+   "id": "18f4155af740",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §2 regla universal",
+   "enunciado": "Un solo movimiento dominante por shot de 5 s y como máximo uno secundario sutil; las técnicas populares también requieren sujeto, punto de inicio y de fin."
+  }
+ ]
+}

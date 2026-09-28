@@ -1,0 +1,929 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "luz",
+ "descripcion_tema": "fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "e349ee490257",
+   "alcance": "Aurora Prompt Linter; prompt MAIN con referencias etiquetadas L",
+   "enunciado": "Si una referencia carga la categoría L de locación, se prohíbe describir en el prompt principal el suelo, las paredes, las ventanas, la iluminación o el ambiente."
+  },
+  {
+   "id": "8604db4ddb3f",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, dirección de color",
+   "enunciado": "Usar un etalonaje mate, de bajo contraste, con luz natural de ventana y calidez contenida, sin iluminación comercial brillante."
+  },
+  {
+   "id": "2aeee8752467",
+   "alcance": "Brand Lock: Northwind Coffee Roasters, lista de prohibiciones",
+   "enunciado": "No fotografiar productos brillantes sobre fondo blanco y usar únicamente acabado mate y luz natural."
+  },
+  {
+   "id": "379012ee4dc7",
+   "alcance": "Dimensional Translation › Architectural Visualization › Exterior",
+   "enunciado": "Genera una visualización exterior desde una elevación especificando hora, clima y contexto."
+  },
+  {
+   "id": "ae949a469407",
+   "alcance": "Dimensional Translation › Architectural Visualization › Interior",
+   "enunciado": "Genera un interior desde un plano especificando estancia, estética, iluminación y utilería."
+  },
+  {
+   "id": "ad3867a05868",
+   "alcance": "Dimensional Translation › Product 2D → 3D",
+   "enunciado": "Convierte un diseño plano en un mockup de producto 3D especificando material, iluminación y ángulo."
+  },
+  {
+   "id": "b492d01fbca8",
+   "alcance": "Image Editing › Lighting Control",
+   "enunciado": "Cambia la iluminación a la indicada manteniendo intactos el sujeto y la composición."
+  },
+  {
+   "id": "c1389ec194c8",
+   "alcance": "Image Editing › Lighting Control",
+   "enunciado": "Explicación: enumera vocabulario de iluminación como hora dorada, nublado difuso, noche de fuente única, contraluz de recorte y silueta."
+  },
+  {
+   "id": "b47cd500f1d2",
+   "alcance": "Image Editing › Object Addition",
+   "enunciado": "Añade el objeto indicado en la ubicación y escala definidas, igualando la iluminación existente."
+  },
+  {
+   "id": "2f1bec9fbcb1",
+   "alcance": "Image Editing › Physics-Aware; Nano Banana",
+   "enunciado": "Al llenar un vaso con líquido, añade refracción, menisco y condensación coherentes con la iluminación existente."
+  },
+  {
+   "id": "d322bd192009",
+   "alcance": "Midjourney v7",
+   "enunciado": "La iluminación del prompt debe copiarse verbatim de series_lock.lighting."
+  },
+  {
+   "id": "daffc71756f2",
+   "alcance": "Midjourney v7",
+   "enunciado": "Midjourney premia el vocabulario de iluminación específico (fuente, dirección, dureza, contraluz, haze), con ejemplos de frases concretas de luz."
+  },
+  {
+   "id": "b1184aedcb4e",
+   "alcance": "TikTok Reel de 30 s para apertura de cafetería, plano 5 (20-25 s)",
+   "enunciado": "El plano 5 debe mostrar a una clienta tomando café en la cafetería con encuadre medio sobre el hombro, descenso lento de cámara, contraluz de ventana cálido y duración vertical de 5 segundos."
+  },
+  {
+   "id": "201cf9426486",
+   "alcance": "anclas y clips derivados",
+   "enunciado": "La dirección de luz del ancla se mantiene en todos los clips (window-left sigue window-left)."
+  },
+  {
+   "id": "7515b1bf5276",
+   "alcance": "cambio de fondo de personaje",
+   "enunciado": "Al cambiar el fondo por otra escena se debe mantener la iluminación sobre el rostro."
+  },
+  {
+   "id": "227f304358f2",
+   "alcance": "campaña de chocolate de lujo",
+   "enunciado": "Especifica las variables del chocolate de lujo: superficie, mood y descripción de luz, paleta en hex, tipo de chocolate, textura interior, guarnición, disposición y modificadores de mood."
+  },
+  {
+   "id": "4f8f573f327c",
+   "alcance": "campaña retro de patinaje",
+   "enunciado": "Ejemplo: prompt en prosa de patinaje retro al sol con stock de película con grano, contraluz de hora dorada, sombra larga y energía de movimiento real en pelo y tela."
+  },
+  {
+   "id": "a9bf0fd19b0e",
+   "alcance": "carreras",
+   "enunciado": "El calor solo se permite como toxina puntual rodeada de frío; si el ámbar ocupa más de ~15% del cuadro, eliminarlo."
+  },
+  {
+   "id": "b0ab864372d4",
+   "alcance": "carreras",
+   "enunciado": "Paleta: blanco duro/mercurio sucio para presión clínica, como key sobre nudillos y borde metálico."
+  },
+  {
+   "id": "37c72a786d82",
+   "alcance": "carreras",
+   "enunciado": "Paleta: cian/teal eléctrico para adrenalina fría, como contraluz en humo, derrame en asfalto mojado y rim."
+  },
+  {
+   "id": "9188b4b883a1",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: asfalto mojado como espejo a altura de parachoques con prácticos reflejados como franjas verticales y lámparas reales medio fuera de cuadro."
+  },
+  {
+   "id": "9f31ca4bbe65",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: brillo del disco de freno como único elemento cálido en macro de rueda con todo lo demás azul acero."
+  },
+  {
+   "id": "11af89304989",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: contraluz duro blanco o cian que dibuja una línea en el borde metálico con la carrocería en sombra."
+  },
+  {
+   "id": "649678d3a93e",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: humo de neumático iluminado desde atrás con cian o blanco; el humo iluminado de frente es gris muerto."
+  },
+  {
+   "id": "f8936fd752bf",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: key duro a 45° sobre nudillos en la palanca, sudor como puntos speculares y fondo aplastado."
+  },
+  {
+   "id": "7c665b76a119",
+   "alcance": "carreras",
+   "enunciado": "Receta de luz: silueta a contraluz con un rim fino y un glint en la visera, sin rasgos."
+  },
+  {
+   "id": "e2d634905ab9",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 2 burnout: muro de humo a ras de suelo a contraluz cian duro, fuerza apenas contenida."
+  },
+  {
+   "id": "331acaa60dd5",
+   "alcance": "carreras drag",
+   "enunciado": "Ejemplo beat 6 cuenta ámbar: el Tree como cronómetro con tres ámbares secuenciales, única luz cálida narrativa."
+  },
+  {
+   "id": "6b73f204291a",
+   "alcance": "carreras drag",
+   "enunciado": "Receta de luz: el Christmas Tree como único key y reloj de la escena en tres etapas (azules, ámbares, verde) con match cut de formas redondas."
+  },
+  {
+   "id": "bcce1b0ec444",
+   "alcance": "carreras sin rostro",
+   "enunciado": "Sin rostros, la luz hace de actor: dejar ~70% del cuadro sin luz, un práctico motivado por panel y al menos un specular duro por panel."
+  },
+  {
+   "id": "13ae4a595622",
+   "alcance": "collage de campaña de 3 paneles",
+   "enunciado": "Para el tríptico usar 1536x1024 o 1024x1536 con GPT Image 2 medium (high si hay texto); asignar orden de paneles, unificar la luz y declarar la consistencia del sujeto."
+  },
+  {
+   "id": "fe94a975ae55",
+   "alcance": "cosmética de lujo, GPT Image 2",
+   "enunciado": "Especifica la plantilla de cosmética de lujo: estudio oscuro, humo bajo, una sola luz clave, condensación, acentos materiales, paleta restringida, sombra de contacto nítida; sin texto, manos, flare ni color fuera de paleta."
+  },
+  {
+   "id": "0e2788da8936",
+   "alcance": "crítica; tipo de acción D",
+   "enunciado": "Check del crítico para tipo D: una sola fuente domina, sombras coherentes y atmósfera a contraluz."
+  },
+  {
+   "id": "a7c9ca8b4fd9",
+   "alcance": "diseño de iluminación de escenas",
+   "enunciado": "Se debe indicar exactamente cómo está iluminada la escena."
+  },
+  {
+   "id": "334dc3219ebb",
+   "alcance": "diseño de iluminación de estudio para producto, retrato, belleza y moda",
+   "enunciado": "Ejemplo: los montajes de estudio incluyen iluminación de tres puntos con softboxes, una luz principal superior izquierda o una luz de aro frontal según el efecto buscado."
+  },
+  {
+   "id": "cc01b6d15a9a",
+   "alcance": "diseño de iluminación dramática",
+   "enunciado": "Ejemplo: los efectos dramáticos pueden especificarse mediante claroscuro, contraluz de hora dorada, luz de recorte, rayos volumétricos o subiluminación neón."
+  },
+  {
+   "id": "776d8c5ef434",
+   "alcance": "diseño de iluminación natural",
+   "enunciado": "Ejemplo: la iluminación natural puede especificarse como luz diurna nublada y difusa, sol moteado entre árboles o luz ambiente fría de hora azul."
+  },
+  {
+   "id": "3d2a17f098e2",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §11",
+   "enunciado": "Campo Luz/color: fría, contraste, parpadeo, sombra o paleta concreta."
+  },
+  {
+   "id": "a0244db5a57f",
+   "alcance": "dramaturgia (dramaturgy.md, skill video), §9",
+   "enunciado": "Ejemplo: luz cenital fría de oficina señala juicio."
+  },
+  {
+   "id": "4708f1013d5c",
+   "alcance": "editorial sportswear con blobs 3D",
+   "enunciado": "Especifica la plantilla de blobs 3D: estudio infinito, 3-5 blobs brillantes a distintas alturas con sombras de color, uno delante y otro detrás, luz fría direccional; blobs físicamente presentes, sin tocar al modelo, sin texto, logos ni blur."
+  },
+  {
+   "id": "111ca21e12d5",
+   "alcance": "ejemplo de hoja de marca de Northwind Coffee Roasters",
+   "enunciado": "Ejemplo: la fotografía de marca es mate, de bajo contraste y luz natural de ventana, con granos, manos y bolsas kraft, y excluye el producto brillante sobre fondo blanco."
+  },
+  {
+   "id": "814bf3b53689",
+   "alcance": "ejemplo de marca, tema visual aplicado a cada plano",
+   "enunciado": "Ejemplo: todos los planos deben usar contraluz dorada cálida motivada por ventana, sombras suaves y ninguna luz fluorescente dura."
+  },
+  {
+   "id": "776b87a907db",
+   "alcance": "ejemplo shotkit explainer 90s",
+   "enunciado": "Ejemplo: luz difusa pareja sin caída de sombra y grade plano de documento."
+  },
+  {
+   "id": "b51fa1c6e8e1",
+   "alcance": "ejemplos WhyStrohm 30s y 60s",
+   "enunciado": "Ejemplo: luz del series lock: luz lateral natural suave desde ventana a la izquierda de cámara, tarde cálida."
+  },
+  {
+   "id": "e494baee1de8",
+   "alcance": "etapa de preparación de prompts; paso 5 de lectura obligatoria",
+   "enunciado": "Antes de redactar un prompt, se debe leer creative-direction.md en el paso 5 para usar vocabulario preciso de iluminación, cámara, hardware, color y materialidad."
+  },
+  {
+   "id": "ba4c2db1225c",
+   "alcance": "general",
+   "enunciado": "Ejemplo: convierte un boceto en una visualización 3D indicando estilo, ángulo de cámara, iluminación y nivel de realismo o estilización."
+  },
+  {
+   "id": "7d2c15124668",
+   "alcance": "general",
+   "enunciado": "Ejemplo: convierte un plano de planta 2D en un tablero de diseño con una vista interior gran angular principal y tres renders secundarios, definiendo estilo, materiales, luz natural suave y acabado fotorrealista."
+  },
+  {
+   "id": "aaeb9238d04f",
+   "alcance": "general",
+   "enunciado": "La dirección creativa incluye controles de calidad de estudio para iluminación, cámara, color y materialidad."
+  },
+  {
+   "id": "f7d110106ec2",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §7 reglas del still honesto",
+   "enunciado": "En el prompt de still hay que nombrar explícitamente el blur diferencial, dejar rostros fuera o fragmentados en silueta, traducir el audio en consecuencia física y evitar lo estéril nombrando grano, bloom, negros aplastados y un specular con una fuente dominante y ~70% sin luz."
+  },
+  {
+   "id": "ba7750df84cf",
+   "alcance": "keyframes de animatic (animatic-keyframes.md), §9 checklist del keyframe (spot de carrera)",
+   "enunciado": "Se mantiene la paleta fría (acero, cian, magenta, blanco mercurio; rojo y verde acentos; ámbar ≤15% puntual), una fuente motivada, ~70% sin luz, un specular duro y textura nombrada."
+  },
+  {
+   "id": "c11165bd9ce0",
+   "alcance": "orden de bloques del still",
+   "enunciado": "El bloque de luz y paleta declara una fuente, su dirección, qué superficie rima, colores concretos y bans repetidos."
+  },
+  {
+   "id": "43e9ed37e235",
+   "alcance": "patrón Convenience Store Neon Portrait, GPT Image 2",
+   "enunciado": "Especifica las variables del retrato neón de tienda de conveniencia (tipo de tienda, color fluorescente, letrero y color neón con hex, pose, ropa, sensación de cámara) y recomienda GPT Image 2 con quality high por el render preciso de doble luz de color sobre la piel."
+  },
+  {
+   "id": "7699e90f06ea",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro",
+   "enunciado": "Exige el bloque light_hard en la sección de luz del maestro de rostro (luz dura rasante sin relleno) y prohíbe la luz suave de softbox en rostros por producir look plástico."
+  },
+  {
+   "id": "f20e7edc4fb7",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Exige añadir sobre el verbose estándar ocho capas de micro-detalle: desgaste de superficies, micro-texturas, partículas atmosféricas, comportamiento specular, caída de tela, sombras de contacto, reflejos ambientales y cues de movimiento."
+  },
+  {
+   "id": "b3babd9b36a9",
+   "alcance": "prompts de imagen, tipo Product/Commercial",
+   "enunciado": "Ejemplo: prompt de producto de reloj de lujo sobre losa de hormigón con luz dura única desde arriba a la derecha, esfera a las 10:10, degradado gris, formato 4:5."
+  },
+  {
+   "id": "94c9468ac2ea",
+   "alcance": "research de campo, familia 02 ruptura de superficie (regla candidata)",
+   "enunciado": "En split-level a contraluz hay que declarar un práctico sumergido (dos strobes bajo el agua), o la mitad inferior sale negra y el modelo la inventa."
+  },
+  {
+   "id": "6bf055de7e9e",
+   "alcance": "research de campo, familia 02 ruptura de superficie (regla candidata)",
+   "enunciado": "En split-level el sol va por defecto a la espalda de la cámara para minimizar el rango tonal."
+  },
+  {
+   "id": "807a1aa31bdd",
+   "alcance": "research de campo, familia 02 ruptura de superficie (regla candidata)",
+   "enunciado": "Para justificar una mitad sumergida bien expuesta con luz natural hay que declarar fondo claro y poca profundidad; si no, el agua va 1-2 pasos más oscura."
+  },
+  {
+   "id": "a251da9c8878",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "En cuadros de haces de luz: cámara en penumbra mirando a la luz, superficie fuera de cuadro y exposición alta; la condición física es superficie calma, sol fuerte y fondo oscuro, no turbidez."
+  },
+  {
+   "id": "03e072e5eb4b",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "En subacuático hay que pedir una sola fuente de luz consistente y textura de piel natural, evitando piel lisa, burbujas aleatorias y dirección de luz incoherente."
+  },
+  {
+   "id": "3de8376e5d66",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "Explicación: el backlight con luces de video detrás del sujeto produce un halo legítimo en cenotes, variante de la silueta con rim."
+  },
+  {
+   "id": "3b4e34fb5d98",
+   "alcance": "research de campo, familia 03 subacuático (regla candidata)",
+   "enunciado": "Prohibido añadir un práctico frontal en un cuadro de haces salvo que un sujeto en primer plano lo justifique."
+  },
+  {
+   "id": "eca79204516c",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "Bajo luz dura con sombras nítidas y complejas hay que inspeccionar al 100% la coherencia geométrica de las sombras, donde más fallan los modelos de difusión."
+  },
+  {
+   "id": "7327408c3357",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "Prohibido añadir sombra de contacto a un objeto en vuelo o a un contacto blando; ahí la sombra va proyectada y separada o se describe el hundimiento."
+  },
+  {
+   "id": "aaf357a4b2c9",
+   "alcance": "research de campo, familia 04 objeto balístico (regla candidata)",
+   "enunciado": "Prohibido pedir \"contact shadow\" a secas; describir la sombra estrecha, de borde suave, pegada a la línea de contacto y que se desvanece en corta distancia."
+  },
+  {
+   "id": "1dc939079a1b",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "Bajo luz dura la cara debe mostrar sombra pronunciada en un lado; una cara plana bajo sol intenso delata la IA."
+  },
+  {
+   "id": "df603f740e61",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "El prompt debe declarar el tipo de estadio: 4 postes da sombras múltiples duras, 6 postes o ring lighting da sombras suaves casi invisibles, y el centro del campo es la zona más iluminada."
+  },
+  {
+   "id": "2420d28b6603",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "El sudor se pide como \"sharp sweat highlights\" o gotas congeladas en el aire bajo luz dura única, nunca como piel mojada."
+  },
+  {
+   "id": "8b8032cc6a3f",
+   "alcance": "research de campo, familia 06 cuerpo en esfuerzo (regla candidata)",
+   "enunciado": "La luz del sujeto nítido y la del fondo barrido deben compartir fuente y temperatura, o se lee compuesto."
+  },
+  {
+   "id": "42c192283697",
+   "alcance": "research de campo, familia 07 luz y clima (regla candidata)",
+   "enunciado": "El rayo se describe por su aura y sus ramas de color, nunca por detalle en el núcleo, que siempre clipea."
+  },
+  {
+   "id": "d59fc7b10d1d",
+   "alcance": "research de campo, familia 07 luz y clima (regla candidata)",
+   "enunciado": "La dirección de la luz se declara por un ancla de la escena (ventana, farola, horizonte), nunca por left/right a secas."
+  },
+  {
+   "id": "4cd1166ad1af",
+   "alcance": "research de campo, familia 07 luz y clima (regla candidata)",
+   "enunciado": "La luz de contra para lluvia debe quedar oculta detrás del sujeto; si entra en cuadro, solo como flare controlado y declarado."
+  },
+  {
+   "id": "72cf54d2e937",
+   "alcance": "research de campo, familia 07 luz y clima (regla candidata)",
+   "enunciado": "Prohibido pedir reflejos en suelo mojado sin un práctico visible que los origine; cada franja de luz debe corresponder a una fuente en cuadro o justo fuera."
+  },
+  {
+   "id": "68e92768f3a5",
+   "alcance": "research de campo, familia 08 multitud anónima (regla candidata)",
+   "enunciado": "El público de concierto puede llevar rostros iluminados por el wash frontal si el beat lo pide, siguiendo anónimos; la silueta es el default, no una prohibición."
+  },
+  {
+   "id": "109d608a37a5",
+   "alcance": "research de campo, familia 08 multitud anónima (regla candidata)",
+   "enunciado": "Hay que declarar el tipo de instalación lumínica del estadio: torres de esquina dan sombras múltiples duras, anillo en cubierta sombras suaves; pedir sombras múltiples en estadio moderno es anacronismo."
+  },
+  {
+   "id": "5569ef16279d",
+   "alcance": "retrato a contraluz en hora dorada",
+   "enunciado": "Usar el retrato callejero a contraluz en hora dorada para retratos cálidos y emotivos con flare (editorial, marca personal, portadas)."
+  },
+  {
+   "id": "ec7fbafda095",
+   "alcance": "retrato a contraluz en hora dorada, GPT Image 2",
+   "enunciado": "Especifica la plantilla de contraluz dorado: sol detrás del sujeto a 5-10°, rim dorado, rostro iluminado por rebote más frío, bokeh cálido, 1-2 flares sutiles, sombra larga, piel con poros; rostro expuesto (no silueta), sin equipo, texto ni viñeta."
+  },
+  {
+   "id": "178e40c4304e",
+   "alcance": "retrato neón nocturno",
+   "enunciado": "Usar el retrato neón de tienda de conveniencia para retratos urbanos nocturnos con fluorescente y neón de color en tensión cromática sobre el rostro."
+  },
+  {
+   "id": "5d0e973efe8f",
+   "alcance": "retrato neón nocturno, GPT Image 2",
+   "enunciado": "Especifica la plantilla neón: sujeto en el umbral entre fluorescente interior y neón exterior con luz dividida en el rostro, bokeh de estantes, pavimento mojado con reflejos; rostro visible, sin fuentes extra, sin grade añadido ni blur."
+  },
+  {
+   "id": "88eafac62c73",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Con el rostro fragmentado por spray, gafas o casco, convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua."
+  },
+  {
+   "id": "8f893618cfd8",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "El spray solo se lee luminoso a contraluz o contraluz lateral; iluminado de frente es una masa gris muerta."
+  },
+  {
+   "id": "c3ffdd03e235",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "La superficie del agua refleja prácticos y sol como estrías largas: usar el reflejo como spine de composición con la fuente real medio fuera de cuadro."
+  },
+  {
+   "id": "b2d637be9b16",
+   "alcance": "régimen 01 agua en superficie",
+   "enunciado": "Las gotas congeladas se describen como constelación de puntos speculares con rim en el borde de ataque; sin rim el spray se lee como niebla blanca."
+  },
+  {
+   "id": "280bc670cfee",
+   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
+   "enunciado": "La piel y el neopreno mojados deben devolver speculares duros; sin ellos el cuerpo se lee seco y falso."
+  },
+  {
+   "id": "8eeca0f8033a",
+   "alcance": "régimen 01 agua en superficie [A PRUEBA]",
+   "enunciado": "Se prefiere sol bajo, declarado con hora y dirección en el prompt y no con 'golden hour' suelto, porque con sol alto el agua pierde textura y el spray se quema."
+  },
+  {
+   "id": "5c7b40df5e14",
+   "alcance": "régimen 01 agua en superficie, checklist del crítico",
+   "enunciado": "El crítico verifica spray con rim de contraluz y no masa gris."
+  },
+  {
+   "id": "ab0abf3986db",
+   "alcance": "régimen 01 agua en superficie, fallo conocido",
+   "enunciado": "Si el spray sale como nube blanca sin forma, pasar la fuente de luz detrás o al lado del spray."
+  },
+  {
+   "id": "66184d87c3ae",
+   "alcance": "régimen 02 ruptura de superficie",
+   "enunciado": "La corona y las gotas solo se leen a contraluz o con luz lateral dura; de frente son una mancha blanca sin volumen."
+  },
+  {
+   "id": "b350e18a928d",
+   "alcance": "régimen 02 ruptura de superficie [A PRUEBA]",
+   "enunciado": "En split-level se declara que el agua va uno o dos pasos más oscura que el aire, con cáusticas si hay sol, para que el modelo no unifique las mitades."
+  },
+  {
+   "id": "a27e5617d605",
+   "alcance": "régimen 02 ruptura de superficie, fallo conocido",
+   "enunciado": "Si la corona sale blanca y plana, mover la fuente de luz detrás del agua."
+  },
+  {
+   "id": "b9149b1626a7",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "El ángulo por defecto es low mirando a la superficie; eye-level lateral para exploración; el picado desde arriba pierde la luz."
+  },
+  {
+   "id": "411720677b8b",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Hasta el 70% del cuadro puede quedar en penumbra azul sin rellenar."
+  },
+  {
+   "id": "89de1a51813d",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "La superficie es la fuente dominante; toda luz adicional debe ser un práctico visible (linterna o foco del buzo), y su calidez cerca del sujeto es la única forma legítima de recuperar rojos."
+  },
+  {
+   "id": "a32721213146",
+   "alcance": "régimen 03 subacuático",
+   "enunciado": "Silueta contre-jour contra la superficie luminosa: cuerpo negro con rim y glint en la máscara."
+  },
+  {
+   "id": "0d635fb26e8c",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "El agua absorbe primero los rojos: a pocos metros piel y objetos rojos se ven pardos o grises salvo con luz artificial cercana; un rojo saturado en profundidad sin fuente es un error físico."
+  },
+  {
+   "id": "2bf83868c7db",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "El backscatter cerca de la lente existe siempre que hay luz frontal; un agua perfectamente limpia se lee como aire azul."
+  },
+  {
+   "id": "3628801c0b06",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "La luz entra desde la superficie y forma haces con una abertura o partículas; en un cenote los haces caen desde la boca de la caverna como única fuente motivada."
+  },
+  {
+   "id": "ba1e31af9428",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "Las cáusticas sobre el fondo o el sujeto son firma de superficie iluminada por sol; sin sol directo no hay cáusticas."
+  },
+  {
+   "id": "f485a21cac9d",
+   "alcance": "régimen 03 subacuático [A PRUEBA]",
+   "enunciado": "Los haces de luz solo existen con partículas; pedirlos sin partículas produce rayos dibujados."
+  },
+  {
+   "id": "3f2739dde8ba",
+   "alcance": "régimen 03 subacuático, checklist del crítico",
+   "enunciado": "El crítico verifica una sola fuente dominante desde la superficie y prácticos visibles si hay más."
+  },
+  {
+   "id": "6326e1fb81f8",
+   "alcance": "régimen 03 subacuático, fallo conocido",
+   "enunciado": "Dos direcciones de luz sin práctico visible son una contradicción: una fuente desde la superficie y, si hay otra, que se vea."
+  },
+  {
+   "id": "41d52389a865",
+   "alcance": "régimen 03 subacuático, fallo conocido [A PRUEBA]",
+   "enunciado": "Piel rosada y labios rojos a diez metros son imposibles sin práctico: declarar el viraje o añadir la linterna como fuente."
+  },
+  {
+   "id": "1a37a07ed321",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "El polvo, el spray o las astillas solo tienen volumen a contraluz."
+  },
+  {
+   "id": "84c2d329d9ff",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "La sombra de contacto ancla el objeto; sin ella o con sombra doble el objeto se lee compuesto."
+  },
+  {
+   "id": "2eefdb5c5cce",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Se usa luz dura lateral o contraluz para que se lea el material del objeto; la luz frontal pareja lo aplana."
+  },
+  {
+   "id": "d6df3ef47bd0",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Sombra de contacto suave y definida donde el objeto toca, con oclusión ambiental en el punto de deformación."
+  },
+  {
+   "id": "540118ad9a63",
+   "alcance": "régimen 04 objeto balístico",
+   "enunciado": "Un specular duro en el objeto es obligatorio para dar información de material y forma."
+  },
+  {
+   "id": "635eade2302e",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico",
+   "enunciado": "El crítico verifica specular y material legibles."
+  },
+  {
+   "id": "31d69dbb2a68",
+   "alcance": "régimen 04 objeto balístico, checklist del crítico [A PRUEBA]",
+   "enunciado": "El crítico verifica una sombra de contacto única."
+  },
+  {
+   "id": "c22529de5874",
+   "alcance": "régimen 04 objeto balístico, fallo conocido [A PRUEBA]",
+   "enunciado": "Si el objeto flota sin tocar, falta sombra de contacto y reacción de la superficie."
+  },
+  {
+   "id": "b8ecccfe119b",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "El sudor se describe como puntos speculares discretos bajo luz dura, no como piel mojada uniforme."
+  },
+  {
+   "id": "88042a98eaa3",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Los rostros llevan luz dura rasante sin relleno; la luz suave de softbox está prohibida en rostros porque produce look plástico."
+  },
+  {
+   "id": "34ee02538d4c",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Si la piel sale plástica bajo esfuerzo, volver a light_hard y skin_doc (luz demasiado suave o stock equivocado)."
+  },
+  {
+   "id": "64f6f5982334",
+   "alcance": "régimen cuerpo en el pico de esfuerzo, still",
+   "enunciado": "Usar un side light duro a 45 grados sobre la mano o el hombro que decide, con fondo aplastado."
+  },
+  {
+   "id": "19f91448c6e1",
+   "alcance": "régimen cuerpo en esfuerzo, estadio nocturno",
+   "enunciado": "En estadio nocturno hay que declarar las torres de luz como prácticos que producen sombras múltiples cortas, o el modelo pone una sola sombra larga de estudio (regla a prueba)."
+  },
+  {
+   "id": "c62fc1976afa",
+   "alcance": "régimen cuerpo en esfuerzo, estadio nocturno",
+   "enunciado": "Si aparece una sombra única de estudio en estadio nocturno, declarar las torres y las sombras múltiples (regla a prueba)."
+  },
+  {
+   "id": "2d0a11a5094e",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Checklist del crítico: una sola dirección de luz para todos."
+  },
+  {
+   "id": "d95e62a65a27",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Los instrumentos deben llevar specular (barniz, metal, cuerdas) para leer el material."
+  },
+  {
+   "id": "b49a4e4596c6",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Rostros con luz dura y piel documental en tratamiento documental o narrativo; en comercial, clean lighting pareja, pero la misma para todos."
+  },
+  {
+   "id": "81d0952caff5",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Si la luz cambia entre miembros, repetir la cadena de iluminación verbatim en cada inserción."
+  },
+  {
+   "id": "c68dbbaf825e",
+   "alcance": "régimen grupo ensamble (3 a 8 identidades), still",
+   "enunciado": "Una sola dirección de luz para todos los miembros, repitiendo verbatim la cadena de iluminación en cada inserción."
+  },
+  {
+   "id": "1f38cd894435",
+   "alcance": "régimen grupo ensamble, escenario",
+   "enunciado": "En escenario, un práctico dominante (foco o ventana) y el resto en penumbra, con fondo aplastado para que las figuras no compitan."
+  },
+  {
+   "id": "e443fdf4660e",
+   "alcance": "régimen luz y clima, lluvia",
+   "enunciado": "Si la lluvia sale uniforme sin contraluz, mover la fuente detrás de la lluvia y dejar gotas grandes en primer plano."
+  },
+  {
+   "id": "8d3eeaf85b00",
+   "alcance": "régimen luz y clima, rayo",
+   "enunciado": "Si el rayo es decorativo y no ilumina, declarar qué superficies reciben su luz y desde dónde (regla a prueba)."
+  },
+  {
+   "id": "9606e4c90a1c",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: fenómeno completamente formado y su luz visible en el mundo."
+  },
+  {
+   "id": "aae4ee518634",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Checklist del crítico: una sola dirección de sombras."
+  },
+  {
+   "id": "bb27d3cba3dc",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "El fenómeno domina y cualquier otra luz debe ser un práctico visible y subordinado (farola, ventana, faros)."
+  },
+  {
+   "id": "c2c415090705",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "El polvo y la ceniza se muestran a contraluz como partículas con rim en el borde de ataque."
+  },
+  {
+   "id": "7102491b6c42",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Explicación: en luz y clima el fenómeno es sujeto y fuente de luz; una sola fuente motivada domina, la atmósfera se lee a contraluz y el evento se boardea ya formado."
+  },
+  {
+   "id": "cad7d59f1091",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "La lluvia, la nieve y el polvo solo se leen a contraluz; de frente son gris muerto."
+  },
+  {
+   "id": "a594d5ecfc7c",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "La luz del fenómeno debe verse en el mundo (el rayo ilumina suelo y nubes, el amanecer proyecta sombras largas); un rayo que no ilumina nada es un dibujo."
+  },
+  {
+   "id": "158d0336a72a",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Las personas bajo el fenómeno se leen a contraluz como silueta con rim y un glint, sin rasgos."
+  },
+  {
+   "id": "64c7124cb3ef",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Si hay dos direcciones de sombra, eliminar la segunda fuente o hacerla práctico visible."
+  },
+  {
+   "id": "8cc7dc0d9f3e",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Todas las sombras responden a una sola dirección; dos soles o dos direcciones de sombra son contradicción."
+  },
+  {
+   "id": "c2f8a2692772",
+   "alcance": "régimen luz y clima, still",
+   "enunciado": "Un fenómeno de luz debe tener el núcleo quemado sin detalle, halo de halación y negros aplastados; pedir detalle en el núcleo del rayo produce ilustración."
+  },
+  {
+   "id": "9d3cefca7ac9",
+   "alcance": "régimen multitud anónima, concierto",
+   "enunciado": "En concierto una fuente escénica domina y el público queda como silueta con rim, con el 70% del cuadro sin luz."
+  },
+  {
+   "id": "7dde739becfc",
+   "alcance": "régimen multitud anónima, estadio nocturno",
+   "enunciado": "En estadio nocturno hay que declarar las torres de luz como prácticos que crean sombras múltiples y cortas (regla a prueba)."
+  },
+  {
+   "id": "5fbbe3f9e915",
+   "alcance": "régimen multitud anónima, exterior de día",
+   "enunciado": "En calle o manifestación de día, luz natural con una dirección; a contraluz la masa se vuelve siluetas y el polvo o humo gana volumen."
+  },
+  {
+   "id": "de09387f0135",
+   "alcance": "régimen multitud anónima, still",
+   "enunciado": "Las pantallas de teléfono en la gradería funcionan como campo de speculares fríos y motivo visual."
+  },
+  {
+   "id": "fee681d2430c",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "Checklist del crítico: un specular duro por panel y cálido solo puntual en registro race."
+  },
+  {
+   "id": "f8a82349ae9a",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "El humo, el polvo o el spray de rueda solo se muestran a contraluz."
+  },
+  {
+   "id": "4ea4ab18f85b",
+   "alcance": "régimen vehículo en movimiento, still",
+   "enunciado": "La luz debe ser specular y no ambiental: un specular duro en metal o goma por panel."
+  },
+  {
+   "id": "12088b6aaa8c",
+   "alcance": "régimen vehículo, registro race",
+   "enunciado": "En registro race el único cálido permitido es el calor (disco de freno o escape), puntual y rodeado de frío."
+  },
+  {
+   "id": "b31201c45ef2",
+   "alcance": "shots.schema.json",
+   "enunciado": "series_lock.lighting es obligatorio y no vacío."
+  },
+  {
+   "id": "775b70fe8b2d",
+   "alcance": "shots.schema.json",
+   "enunciado": "shots[].lighting_ref es opcional, por defecto series_lock.lighting, y solo se sobrescribe con razón."
+  },
+  {
+   "id": "7853b5dab8fb",
+   "alcance": "skill screenwriter",
+   "enunciado": "Cada línea de acción debe verificar en checklist luz, atmósfera, apariencia del personaje en su primera aparición, props, composición sugerida sin dirección técnica y colores/texturas."
+  },
+  {
+   "id": "8341f154aaa8",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Ejemplo: descripción visual por capas del robot en un almacén con luz dura de tarde y polvo en los haces."
+  },
+  {
+   "id": "5a92ebe1a6a9",
+   "alcance": "skill screenwriter, guía de integración con pipeline",
+   "enunciado": "Explicación: vocabulario de descriptores de luz por calidad, dirección, color e intensidad."
+  },
+  {
+   "id": "516a2d99a5fc",
+   "alcance": "skill storyboard-architect, paso 4 shots.json",
+   "enunciado": "El campo lighting_ref referencia el lenguaje del series_lock y por defecto vale series_lock.lighting."
+  },
+  {
+   "id": "e0ec45ffb76e",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "El estilo de luz no se redefine por shot; se define una vez en series_lock.lighting."
+  },
+  {
+   "id": "26c488990cc3",
+   "alcance": "skill storyboard-architect, shot-grammar",
+   "enunciado": "La cadena de luz del series_lock fluye automáticamente a cada prompt."
+  },
+  {
+   "id": "06a3011573b0",
+   "alcance": "tarjeta de ancla D4",
+   "enunciado": "La dimensión D4 (tratamiento artístico) decide film stock, dureza de luz, grano, proporción oscura del frame y si hay rostro visible."
+  },
+  {
+   "id": "0f7422bd781c",
+   "alcance": "tarjeta de ancla D7",
+   "enunciado": "La dimensión D7 (iluminación) fija: luz dura rasante en rostros documentales, atmósfera solo a contraluz, en cine una fuente dominante con ~70% sin luz y un specular, en comercial luz clean pareja."
+  },
+  {
+   "id": "17cf2d16e802",
+   "alcance": "tipo de acción D",
+   "enunciado": "Para fenómeno de luz o clima (tipo D): el evento completamente formado es la fuente motivada, con núcleo quemado, halación, mundo a contraluz y una sola presión ambiental."
+  },
+  {
+   "id": "d26bdaf6dc65",
+   "alcance": "tratamiento comercial pulido",
+   "enunciado": "Tratamiento comercial pulido: encuadre limpio con producto legible, luz clean three-point, paleta creamy o del brand-lock, digital limpio; prohíbe logo generado, texto en imagen, HDR y \"stunning\"."
+  },
+  {
+   "id": "d481eb98963d",
+   "alcance": "tratamiento documental",
+   "enunciado": "Tratamiento documental: 35mm handheld eye-level, luz dura rasante sin relleno, paleta desaturada, Kodak Tri-X con grano y rostros irregulares; prohíbe softbox, Portra en rostros, retoque y relleno suave."
+  },
+  {
+   "id": "8abe8827fed3",
+   "alcance": "tratamiento narrativo cinematográfico",
+   "enunciado": "Tratamiento narrativo cinematográfico: anamórfico 40-50mm, una fuente motivada con ~70% sin luz, paleta con hex y grade verbatim, Cinestill 800T; prohíbe la palabra \"cinematic\", luz pareja y más de dos referencias de director."
+  },
+  {
+   "id": "15b087d34b44",
+   "alcance": "video multiclip",
+   "enunciado": "Ejemplo: bloque de luz constante con key frío de nevera desde la derecha, rim cálido de ventana desde la izquierda y mismo ratio de contraste en cada shot."
+  },
+  {
+   "id": "1ca63e736bad",
+   "alcance": "video multiclip",
+   "enunciado": "Si la luz deriva entre clips, nombrar la fuente dominante y su dirección y repetirla verbatim en cada clip."
+  },
+  {
+   "id": "cb0473f03f8f",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige analizar el contraste óptico (Zheleznyakov): proporción de áreas iluminadas y en sombra, densidad de sombras y color local frente a color modificado por la luz (valeurs)."
+  },
+  {
+   "id": "bfb4d4aeb92e",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige analizar luz quebrada y reflejos: gobos, luz a través de persianas o follaje y reflejos de color de objetos vecinos sobre piel o ropa."
+  },
+  {
+   "id": "78d7108b03dd",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige analizar tonalidad y color: high-key/low-key, silueta, los 7 contrastes de Itten, balance de blancos y contraste de temperatura luz cálida/sombra fría."
+  },
+  {
+   "id": "bb20ca037aa7",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Exige identificar el esquema de luz: key, fill, contra/rim, modelado, Rembrandt, claroscuro, altura, dureza y tipo de fuente."
+  },
+  {
+   "id": "5d5b81b7f080",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Cada observación debe ser específica (p. ej., key light a la derecha de cámara vs izquierda en series_lock)."
+  },
+  {
+   "id": "66bf0a8bc33c",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa Series Lock, dirección de luz: pass si coincide, soft fail con ángulo ligeramente distinto, hard fail si viene de la dirección equivocada."
+  },
+  {
+   "id": "fd5e14ef2e35",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Capa continuidad, luz: pass si mantiene dirección y hora, soft fail con cambio sutil, hard fail si la dirección se invierte o salta la hora del día."
+  },
+  {
+   "id": "77a6c6ea6515",
+   "alcance": "visual-media",
+   "enunciado": "El contraluz produce silueta y halo; se usa para atmósfera o pieza artística."
+  },
+  {
+   "id": "5984fccd47fc",
+   "alcance": "visual-media",
+   "enunciado": "La hora azul da luz fría y enigmática para ciudad y nocturnas."
+  },
+  {
+   "id": "eebcf0bb7292",
+   "alcance": "visual-media",
+   "enunciado": "La hora dorada da luz cálida y suave para paisaje y retrato."
+  },
+  {
+   "id": "70d6a7acc73a",
+   "alcance": "visual-media",
+   "enunciado": "La luz cenital produce sombras duras; se recomienda evitar el mediodía."
+  },
+  {
+   "id": "6a2a1a9f362a",
+   "alcance": "visual-media",
+   "enunciado": "La luz frontal es plana y con pocas sombras; se usa para registro o foto de documento."
+  },
+  {
+   "id": "2a37ef5b2d2d",
+   "alcance": "visual-media",
+   "enunciado": "La luz lateral da volumen y sombras; se usa en retrato y arquitectura."
+  },
+  {
+   "id": "14e7141459fc",
+   "alcance": "visual-prompt-forge, Lock 3",
+   "enunciado": "La cadena series_lock.lighting debe repetirse verbatim en cada shot, en especial la dirección de luz; invertir ventana izquierda/derecha entre shots produce cortes evidentes."
+  },
+  {
+   "id": "e9d4ecf4104c",
+   "alcance": "visual-prompt-forge, Lock 7",
+   "enunciado": "Cada shot debe respetar la dirección de luz declarada en series_lock.lighting."
+  },
+  {
+   "id": "e76956e6ee1d",
+   "alcance": "visual-prompt-forge, Lock 7",
+   "enunciado": "Cuando un shot invierte la orientación (contraplano OTS), el rationale debe reconocer el cambio de lado de la luz para mantener la continuidad de escena."
+  },
+  {
+   "id": "12930a453ea8",
+   "alcance": "visual-prompt-forge, Lock 7",
+   "enunciado": "Invertir la dirección de luz sin rationale produce jump cuts visuales."
+  },
+  {
+   "id": "95efd39f8204",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "No se invierte la dirección de la luz entre shots consecutivos."
+  },
+  {
+   "id": "29b068c3c5b8",
+   "alcance": "visual-prompt-forge, fallo 4",
+   "enunciado": "Explicación: la inconsistencia de dirección de luz la causan parafrasear la luz, no marcar contraplanos en el rationale o la ambigüedad del generador."
+  },
+  {
+   "id": "c8ff4f65b7fb",
+   "alcance": "visual-prompt-forge, fallo 4",
+   "enunciado": "La deriva de luz se acepta editorialmente si es tan sutil que el grade la corrige."
+  },
+  {
+   "id": "d23109ab4367",
+   "alcance": "visual-prompt-forge, fallo 4",
+   "enunciado": "Para corregir la dirección de luz: cadena verbatim, dirección explícita (\"from camera-left\"), contraplanos marcados en el rationale y, en Flux y GPT Image, especificación fotográfica del key light."
+  },
+  {
+   "id": "90c1e99ae008",
+   "alcance": "visual-prompt-forge, fallos de consistencia",
+   "enunciado": "Sin bloqueo de luz hay saltos de hora del día y rupturas de eyeline."
+  },
+  {
+   "id": "7bed79543092",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §4 fuentes",
+   "enunciado": "Especifica fuentes de luz concretas de vocabulario (nevera, LED cenital, luna por ventana, neón, pantalla, faros, farola, fluorescente, práctico, vela, sodio, estrobo policial, etc.)."
+  },
+  {
+   "id": "6a5e60b570eb",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §5 dirección",
+   "enunciado": "Especifica direcciones de luz: cenital, lateral, contraluz, desde abajo, frontal suave, rim, relleno rebotado, key de ventana y práctico motivado visible."
+  },
+  {
+   "id": "26bbfd00f4e4",
+   "alcance": "vocabulario de cámara, luz, color y sonido (skill video), §6 cualidad",
+   "enunciado": "Especifica cualidades de luz: sombra dura, difusa, low-key, alto contraste, silueta, speculares, haze volumétrico, reflejos mojados, grades concretos, sobreexposición y negros aplastados."
+  }
+ ]
+}

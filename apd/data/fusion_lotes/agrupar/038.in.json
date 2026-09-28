@@ -1,0 +1,444 @@
+{
+ "paso": "agrupar",
+ "instrucciones": "Eres auditor de una base de reglas. Recibes TODOS los enunciados normativos de un tema (id | alcance |\nenunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén redactados distinto.\n- MISMA regla = misma obligación, prohibición, límite o instrucción, con el mismo alcance. Uno puede ser más\n  completo que otro (añade razón o ejemplo) y sigue siendo la misma regla.\n- Si el contenido normativo es idéntico pero el alcance declarado es otro modelo o caso, es \"misma_regla_otro_alcance\".\n- NO agrupes reglas que solo comparten tema, que tienen valores distintos (3-4 vs 5-7 elementos), o un ejemplo\n  con la regla que ilustra.\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\",\n\"regla\": \"la regla común en una frase\"}]}. Solo grupos de 2 o más ids del listado.",
+ "tema": "longitud_prompt",
+ "descripcion_tema": "número de palabras, elementos máximos, compresión, presupuesto",
+ "ventana": "1 de 1",
+ "filas": [
+  {
+   "id": "f00e2758ff04",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 10 v6.0; todos los casos",
+   "enunciado": "El máximo de palabras es un fallo bloqueante y el mínimo es una advertencia no bloqueante porque puede haber compresión intencional."
+  },
+  {
+   "id": "bd9eb51b8385",
+   "alcance": "Aurora Prompt Linter v1.0; Regla 3; casos I2V y T2I",
+   "enunciado": "El límite máximo de palabras es 90 para I2V y 130 para T2I, mientras que los mínimos no bloqueantes son 50 y 75 respectivamente."
+  },
+  {
+   "id": "daf4c8ff2900",
+   "alcance": "Aurora Prompt Linter v1.0; caso 1 T2I",
+   "enunciado": "El caso 1 de génesis texto a imagen admite un presupuesto de 75 a 130 palabras."
+  },
+  {
+   "id": "578d96f77852",
+   "alcance": "Aurora Prompt Linter v1.0; caso 2 image-with-refs",
+   "enunciado": "El caso 2 de ancla de imagen con referencias admite un presupuesto de 75 a 130 palabras."
+  },
+  {
+   "id": "614f32430d4f",
+   "alcance": "Aurora Prompt Linter v1.0; caso 3a I2V FF only",
+   "enunciado": "El caso 3a de imagen a video con solo first frame admite un presupuesto de 50 a 90 palabras."
+  },
+  {
+   "id": "f3190f7e1034",
+   "alcance": "Aurora Prompt Linter v1.0; caso 3b I2V FF + LF",
+   "enunciado": "El caso 3b de imagen a video con first frame y last frame admite un presupuesto de 50 a 90 palabras."
+  },
+  {
+   "id": "4eb2283aea3c",
+   "alcance": "Aurora Prompt Linter v1.0; caso 3c I2V motion control",
+   "enunciado": "El caso 3c de imagen a video con control de movimiento admite un presupuesto de 50 a 90 palabras."
+  },
+  {
+   "id": "e7ae4eaabe06",
+   "alcance": "Aurora Prompt Linter v1.0; caso 4 video con diálogo",
+   "enunciado": "El caso 4 de video con diálogo admite un presupuesto de 75 a 130 palabras."
+  },
+  {
+   "id": "ad9673b7ddf5",
+   "alcance": "Aurora Prompt Linter; MAIN",
+   "enunciado": "El linter bloquea siempre en MAIN las infracciones estructurales de conteo de palabras o ausencia de negative prompt."
+  },
+  {
+   "id": "43b0578a51e0",
+   "alcance": "Aurora Prompt Linter; MAIN y negative prompt",
+   "enunciado": "El conteo de palabras debe calcularse solo sobre MAIN y excluir el bloque negative prompt."
+  },
+  {
+   "id": "6c3aa750683f",
+   "alcance": "Aurora Prompt Linter; caso 4; MAIN",
+   "enunciado": "El caso 4 debe tener entre 75 y 130 palabras, con máximo bloqueante y mínimo solo de advertencia."
+  },
+  {
+   "id": "8f54a671d062",
+   "alcance": "Aurora Prompt Linter; casos 1 y 2; MAIN",
+   "enunciado": "Los casos 1 y 2 deben tener entre 75 y 130 palabras, con máximo bloqueante y mínimo solo de advertencia."
+  },
+  {
+   "id": "e5366417a0a6",
+   "alcance": "Aurora Prompt Linter; casos 3a, 3b y 3c; MAIN",
+   "enunciado": "Los casos 3a, 3b y 3c deben tener entre 50 y 90 palabras, con máximo bloqueante según la Regla 10 v6.0 y mínimo solo de advertencia."
+  },
+  {
+   "id": "dccfa910763d",
+   "alcance": "Etapa 5, imágenes ancla",
+   "enunciado": "Con exit 0 el prompt se entrega con el reporte adjunto; con exit 1 no se entrega y se itera; los avisos de palabras no se arreglan recortando el T1."
+  },
+  {
+   "id": "2cf723a82647",
+   "alcance": "Kling",
+   "enunciado": "Explicación: los modelos Kling difieren en cuántos elementos soportan; sobrecargar produce rostros derretidos, manos rotas o movimiento estático."
+  },
+  {
+   "id": "d3be3be06dac",
+   "alcance": "Kling",
+   "enunciado": "Prompts largos en Kling 1.x-2.x producen salidas derretidas; comprimir sin piedad; en 3.0 la estructura importa más que la longitud."
+  },
+  {
+   "id": "58cde21994ce",
+   "alcance": "Kling",
+   "enunciado": "Si la salida se derrite por exceso de elementos, recortar al número adecuado: 3-4 en Turbo, 5-7 en 2.6 Pro."
+  },
+  {
+   "id": "99bd26c80160",
+   "alcance": "Kling",
+   "enunciado": "Si la sobrecarga de elementos derrite las manos, simplificar, combinar elementos y cortar descripciones secundarias."
+  },
+  {
+   "id": "92c05bae6c78",
+   "alcance": "Kling 1.6",
+   "enunciado": "En Kling 1.6 usar prompts muy simples."
+  },
+  {
+   "id": "0d2884f997b1",
+   "alcance": "Kling 1.6",
+   "enunciado": "Kling 1.6 requiere prompts simples y mínimos."
+  },
+  {
+   "id": "6dfddaaa8a7c",
+   "alcance": "Kling 2.5 Turbo Pro",
+   "enunciado": "Kling 2.5 Turbo Pro admite como máximo 3-4 elementos distintos."
+  },
+  {
+   "id": "5c28ed02f805",
+   "alcance": "Kling 2.5 Turbo Pro",
+   "enunciado": "Kling 2.5 Turbo Pro: máximo 3-4 elementos y 50-80 palabras."
+  },
+  {
+   "id": "5a3820783339",
+   "alcance": "Kling 2.5 Turbo, Kling 1.6, i2v",
+   "enunciado": "Cuando el modelo rinde mejor con prompts cortos (Kling 2.5 Turbo, Kling 1.6, imagen a video), recortar siguiendo un orden definido."
+  },
+  {
+   "id": "847c6d92b3dd",
+   "alcance": "Kling 2.6 Pro",
+   "enunciado": "Kling 2.6 Pro: 5-7 elementos y 50-80 palabras."
+  },
+  {
+   "id": "2e5d299d6e0c",
+   "alcance": "Kling 3.0",
+   "enunciado": "Kling 3.0 admite prompts más largos; planear unas 30-60 palabras por shot con estructura explícita."
+  },
+  {
+   "id": "b450ae566ae2",
+   "alcance": "Kling 3.0 i2v",
+   "enunciado": "En imagen a video de Kling 3.0, la imagen ancla identidad, layout y texto; el prompt debe ser corto y describir cómo evoluciona la escena, no lo que contiene."
+  },
+  {
+   "id": "3d0ebce46e86",
+   "alcance": "Kling 3.0; motion brief",
+   "enunciado": "En Kling 3.0 el ancla entra como start_image (y opcional tail_image) con Elements de 4 vistas; el prompt pide preservar identidad, un movimiento de cámara primero, shots con timecodes y audio, en 20-40 palabras en I2V."
+  },
+  {
+   "id": "72d26f49b95b",
+   "alcance": "Kling campo negativo",
+   "enunciado": "Mantener corta la lista de negativos de Kling; listas largas reducen movimiento y detalle."
+  },
+  {
+   "id": "fd059fba969b",
+   "alcance": "Kling i2v",
+   "enunciado": "En imagen a video, prompt corto de 20-40 palabras centrado en movimiento, sin re-describir lo estático que el modelo ya ve."
+  },
+  {
+   "id": "66eaf409a35d",
+   "alcance": "Kling i2v, cualquier versión",
+   "enunciado": "En imagen a video de Kling, prompts de 20-40 palabras centrados en movimiento."
+  },
+  {
+   "id": "cf29548eec24",
+   "alcance": "Midjourney v7",
+   "enunciado": "Limita a tres adjetivos por frase nominal en Midjourney."
+  },
+  {
+   "id": "fc1587e255db",
+   "alcance": "Midjourney v7",
+   "enunciado": "Los prompts de Midjourney deben tener entre 40 y 80 palabras incluidos los parámetros; por encima de 100 palabras rinden peor."
+  },
+  {
+   "id": "9e76ce190c80",
+   "alcance": "Nano Banana (Gemini 2.5 Flash Image)",
+   "enunciado": "Los prompts de Nano Banana deben tener entre 60 y 120 palabras, más cortos que GPT Image y más largos que Midjourney."
+  },
+  {
+   "id": "f9409e0aa457",
+   "alcance": "SYSTEM PROMPT v6.1, Sección 5.5; prompts T2I e I2V",
+   "enunciado": "El linter debe actuar como gate duro para redundancia con referencias, límites de palabras, vocabulario baneado, negative prompt y keywords deportivas, permitiendo solo las exenciones y overrides específicos definidos."
+  },
+  {
+   "id": "ec0b240e432b",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Los prompts de Seedance deben tener entre 80 y 150 palabras; en multi-shot cada cláusula de shot es corta, con un movimiento de cámara y una acción por corte."
+  },
+  {
+   "id": "e8180a458c45",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Los prompts de Seedream deben tener entre 40 y 70 palabras, sin relleno."
+  },
+  {
+   "id": "05fdf3440236",
+   "alcance": "Seedream 4.5/4.0",
+   "enunciado": "Seedream exige prompts cortos y precisos; los prompts largos descriptivos se interpretan como pesos en competencia y producen papilla."
+  },
+  {
+   "id": "5908fbe1417e",
+   "alcance": "Veo 3",
+   "enunciado": "Los prompts de Veo 3 deben tener entre 80 y 150 palabras, dedicando el margen al timing de la acción y la dirección de audio, no a adjetivos."
+  },
+  {
+   "id": "a8effff5efdc",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Especifica 50-200 palabras como rango óptimo: más corto da libertad, más largo control con riesgo de contradicciones."
+  },
+  {
+   "id": "fab6d3312e01",
+   "alcance": "Veo 3 / 3.1",
+   "enunciado": "Exige comprimir a 50-100 palabras o pasar a JSON si el prompt es tan largo que el modelo elige partes."
+  },
+  {
+   "id": "ad5f21e593a6",
+   "alcance": "adaptadores de visual-prompt-forge",
+   "enunciado": "Los datos de capacidad por generador son canónicos en _capabilities.json; el rango de palabras del adaptador debe caber en el techo y, si discrepan, prevalece el JSON."
+  },
+  {
+   "id": "7e341d9895f7",
+   "alcance": "anclas con persona",
+   "enunciado": "Con persona el prompt ronda las 250 palabras; un slot de 300+ compite consigo mismo."
+  },
+  {
+   "id": "52c96fbec168",
+   "alcance": "aurora-prompt-linter v1.2-fupai",
+   "enunciado": "Limita el bloque negativo a un máximo de 8 ítems."
+  },
+  {
+   "id": "5adda93a80aa",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P1",
+   "enunciado": "Define rangos de palabras recomendados y techos por plataforma (Midjourney 40-80, Flux 80-150, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70, Kling 80-150 o 20-40 en I2V, Veo 80-150 o 50-100 en I2V, etc.) como referencia que nunca bloquea."
+  },
+  {
+   "id": "b8296d816a42",
+   "alcance": "aurora-prompt-linter v1.2-fupai, parche P1",
+   "enunciado": "El conteo de palabras nunca bloquea: da WARN con el presupuesto por plataforma y el techo de _capabilities.json en lugar del HARD FAIL original por encima de 130/90 palabras."
+  },
+  {
+   "id": "a304c86f55ea",
+   "alcance": "capabilities.schema.json",
+   "enunciado": "generators[].max_prompt_words es un entero obligatorio."
+  },
+  {
+   "id": "8affb3fc9114",
+   "alcance": "compresión de prompts de video",
+   "enunciado": "Al comprimir un prompt, preservar el esqueleto y eliminar el adorno."
+  },
+  {
+   "id": "0dcfeedfd7dd",
+   "alcance": "compresión de prompts de video",
+   "enunciado": "Especifica el orden de compresión: conservar continuidad de personaje, acción, timecodes, luz, cámara, gramática de montaje y sonido; eliminar filosofía, adjetivos extra y referencias a directores."
+  },
+  {
+   "id": "fd82a9054cd5",
+   "alcance": "decisiones de dirección del 2026-09-25 (base de reglas y pipeline)",
+   "enunciado": "Decisión 2: en el linter aurora el conteo de palabras nunca bloquea (solo advierte); siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas."
+  },
+  {
+   "id": "63321bb005de",
+   "alcance": "general",
+   "enunciado": "Cuando una regla puede codificarse se codifica, pero un límite de longitud es dirección y no bloqueo."
+  },
+  {
+   "id": "e23f10f32234",
+   "alcance": "general (longitud de prompts)",
+   "enunciado": "La longitud del prompt es aspiracional: fuera de rango solo avisa y bloquea exigiendo regenerar solo si supera 2× el máximo."
+  },
+  {
+   "id": "61a7380c2b2e",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), CASE_CONFIGS",
+   "enunciado": "Especifica los presupuestos de palabras de respaldo por caso: génesis y ancla con refs 75-130, I2V (3a/3b/3c) 50-90, video con diálogo 75-130."
+  },
+  {
+   "id": "ba413d6239ad",
+   "alcance": "linter aurora v1.2-fupai (copia parcheada del repo), parche P1",
+   "enunciado": "El conteo de palabras deja de ser fallo duro y pasa a advertencia con el presupuesto por plataforma como referencia (p. ej. kling 80-150, gpt-image 150-300, nano-banana 60-120, T1 ~250), usando el presupuesto original del caso solo si la plataforma no está en la tabla."
+  },
+  {
+   "id": "d9fe8cafdbb7",
+   "alcance": "linter aurora v1.2-fupai, Seedance 2.5",
+   "enunciado": "Para Seedance 2.5 se usa el presupuesto 80-150 palabras del adaptador de Seedance 2.0, sin inventar un rango, porque no se afirman límites de plataforma sin fuente."
+  },
+  {
+   "id": "c05588da565f",
+   "alcance": "linter aurora v1.2-fupai, parche P1",
+   "enunciado": "El presupuesto de palabras en I2V es por familia: Kling 20-40, Veo 50-100 y Seedance 80-150, y exceder genera solo aviso."
+  },
+  {
+   "id": "250b1f8e0f0e",
+   "alcance": "linter aurora v1.2-fupai, pruebas P1",
+   "enunciado": "Ejemplo (prueba T01): un T1 SW30 de ~250 palabras en nano_banana_pro caso 1 pasa con exit 0 y solo aviso de palabras."
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "lints de anclas; aurora-prompt-linter",
+   "enunciado": "El lint aurora en caso 1 (génesis) o caso 2 (ancla con refs) exige 75-130 palabras, negativo obligatorio y no re-describir categorías cubiertas por refs."
+  },
+  {
+   "id": "dd6528ce5dc7",
+   "alcance": "producción visual SW30 (skill produccion-visual-sw30), T1 maestro de rostro, GPT Image 2",
+   "enunciado": "Limita el prompt de maestro de rostro a unas 250 palabras; un slot de más de 300 palabras compite consigo mismo y causa artefactos en gpt-image-2."
+  },
+  {
+   "id": "edbc42fd3b48",
+   "alcance": "prompts con pose/técnica deportiva",
+   "enunciado": "Exige conservar una etiqueta de pose o técnica del dominio suficientemente específica en lugar de expandirla en anatomía especulativa, salvo que el adaptador lo requiera o la etiqueta falle."
+  },
+  {
+   "id": "a2682db6c09b",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Especifica el modo Cinematic Verbose, un nivel por encima del verbose estándar de 5-7 líneas, para máximo detalle en hero shots, key visuals y piezas centrales de campaña."
+  },
+  {
+   "id": "a83c23471e32",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Especifica usar Cinematic Verbose para el visual final de una campaña, no para iteraciones."
+  },
+  {
+   "id": "cf8d85d13053",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Especifica usar Cinematic Verbose para hero shots de landing o portada."
+  },
+  {
+   "id": "1c77e66bd670",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Especifica usar Cinematic Verbose para key visuals que se escalarán a todos los formatos."
+  },
+  {
+   "id": "81cd1222774b",
+   "alcance": "prompts de imagen, modo Cinematic Verbose",
+   "enunciado": "Especifica usar Cinematic Verbose para trabajo de portafolio donde cada píxel importa."
+  },
+  {
+   "id": "68f423ac9f4c",
+   "alcance": "prompts de imagen, modo Concise",
+   "enunciado": "Especifica el modo de detalle Concise: una sola frase para iteraciones rápidas (ejemplo de póster minimalista con manzana roja)."
+  },
+  {
+   "id": "513437123132",
+   "alcance": "prompts de imagen, modo Standard",
+   "enunciado": "Especifica el modo de detalle Standard: 1-2 párrafos que equilibran control y flexibilidad (ejemplo de auriculares con foco único y degradado hex, formato 16:9)."
+  },
+  {
+   "id": "34f2b7d187c2",
+   "alcance": "prompts de imagen, modo Verbose",
+   "enunciado": "Especifica el modo de detalle Verbose: máximo detalle para escenas complejas, con bloques de escenario, sujeto, atmósfera, ánimo, luz y formato (ejemplo de astronauta en estación espacial, 2.39:1)."
+  },
+  {
+   "id": "711d9b7c13d7",
+   "alcance": "prueba de clavado; prompts de pose",
+   "enunciado": "Explicación: las descomposiciones anatómicas verbosas degradaron la pose frente al lock de pose conciso en lenguaje del dominio dado por el usuario."
+  },
+  {
+   "id": "22d96a59d9f5",
+   "alcance": "régimen cuerpo en esfuerzo, template T1 con rostro",
+   "enunciado": "Con rostro, el prompt debe tener unas 250 palabras con los bloques light_hard, skin_doc, usecase_doc y clean_doc; un slot de más de 300 palabras compite consigo mismo."
+  },
+  {
+   "id": "0c0528e3d7aa",
+   "alcance": "skill screenwriter",
+   "enunciado": "La prosa debe ser escueta: cada palabra debe servir a la imagen."
+  },
+  {
+   "id": "11e2248d4453",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Especifica que la declaración de prioridades pesa más que la disciplina de longitud: un prompt corto con prioridades supera a uno largo sin ellas."
+  },
+  {
+   "id": "2f19dc4d0225",
+   "alcance": "todos los modelos de video",
+   "enunciado": "Exige, en prompts sobrecargados, declarar prioridades: sujeto central, planos clave, transiciones libres y frame final obligatorio."
+  },
+  {
+   "id": "5ba45ec3252d",
+   "alcance": "vision decomposer (image-to-prompt), skill image",
+   "enunciado": "Limita cada línea del log de análisis a 1-2 frases con solo los parámetros extraídos."
+  },
+  {
+   "id": "b026c8414d37",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "max_prompt_words es un techo; el rango del adaptador .md es el objetivo recomendado y, si hay contradicción real, prevalece el JSON."
+  },
+  {
+   "id": "444b10fafe2e",
+   "alcance": "visual-prompt-forge _capabilities.json, Flux 2 Pro",
+   "enunciado": "Flux 2 Pro usa lenguaje natural con techo de 150 palabras, sin negativos ni style ref, parámetro aspect_ratio; el texto en pantalla se compone aparte."
+  },
+  {
+   "id": "9e3fa7c7b5d5",
+   "alcance": "visual-prompt-forge _capabilities.json, GPT Image 1.5/2",
+   "enunciado": "GPT Image 1.5/2 usa prompt en párrafo con techo de 300 palabras, sin negativos, parámetro size; tolera más contexto y sirve para composiciones complejas."
+  },
+  {
+   "id": "343c8ca29fac",
+   "alcance": "visual-prompt-forge _capabilities.json, Midjourney v7",
+   "enunciado": "Midjourney v7 usa prompt de palabras clave con techo de 100 palabras (recomendado 40-80), no renderiza texto ni movimiento y admite --cref/--sref, negativos y --ar."
+  },
+  {
+   "id": "368612e84bc2",
+   "alcance": "visual-prompt-forge _capabilities.json, Seedream 4.5",
+   "enunciado": "Seedream 4.5 usa lenguaje natural con techo de 120 palabras, admite negativos y referencias, fuerte en fotorreal y texto bilingüe."
+  },
+  {
+   "id": "4d98ac5d3261",
+   "alcance": "visual-prompt-forge, adaptador Flux (Flux 2 Pro / 1.1 Pro / Dev)",
+   "enunciado": "Los prompts de Flux deben tener entre 80 y 150 palabras, sin relleno."
+  },
+  {
+   "id": "dd4399f89df1",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "En GPT Image se limita la escena a cinco o menos elementos distintos; más degrada la fidelidad."
+  },
+  {
+   "id": "b02acbf5a718",
+   "alcance": "visual-prompt-forge, adaptador GPT Image 1.5 / 2",
+   "enunciado": "Los prompts de GPT Image deben tener entre 150 y 300 palabras, usando el margen para descripciones espaciales."
+  },
+  {
+   "id": "f44fff6130dc",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "En Hailuo no se sobrepule el borrador: las palabras van a movimiento y encuadre, y el detalle fotográfico al re-roll final."
+  },
+  {
+   "id": "45290e7ab534",
+   "alcance": "visual-prompt-forge, adaptador Hailuo 02 Pro",
+   "enunciado": "Los prompts de Hailuo deben tener entre 60 y 120 palabras, magros porque se prueba movimiento y encuadre."
+  },
+  {
+   "id": "04487a0fe744",
+   "alcance": "visual-prompt-forge, adaptador Ideogram v3",
+   "enunciado": "Los prompts de Ideogram deben tener entre 60 y 120 palabras, y aún menos si llevan texto, porque más descripción aumenta el riesgo de texto omitido o deformado."
+  },
+  {
+   "id": "c48faeebcf4d",
+   "alcance": "visual-prompt-forge, adaptador Kling 3.0",
+   "enunciado": "Los prompts de Kling deben tener entre 80 y 150 palabras, sin relleno."
+  },
+  {
+   "id": "defa2c7ddbe3",
+   "alcance": "visual-prompt-forge, adaptador Midjourney v7",
+   "enunciado": "Midjourney requiere prompts cortos y de alta señal con apilado de adjetivos y vocabulario cinematográfico; los párrafos largos rinden peor."
+  },
+  {
+   "id": "8e3a8c9b53de",
+   "alcance": "visual-prompt-forge, capa 5",
+   "enunciado": "El adaptador controla el orden de palabras (Midjourney empieza por el sujeto, los de video por la cámara), la longitud, la sintaxis de parámetros y las fortalezas propias de cada modelo."
+  }
+ ]
+}
