@@ -359,7 +359,8 @@ def main():
     srv = ThreadingHTTPServer((host, port), H)
     ia = llm.estado()
     print(f"APD en http://{host}:{port}  ·  registro {_json_file('registro.json')['version']}  ·  modelo: "
-          f"{ia['proveedor']}{' (' + ia['modelo'] + ')' if ia['disponible'] else ' — ' + ia['motivo']}", flush=True)
+          f"{ia['proveedor']}{' (' + ia['modelo'] + (', esfuerzo ' + ia['esfuerzo'] if ia['esfuerzo'] else '') + ')' if ia['disponible'] else ' — ' + ia['motivo']}",
+          flush=True)
     try:
         srv.serve_forever()
     except KeyboardInterrupt:

@@ -69,6 +69,7 @@ class OpenAI(Proveedor):
         self.clave = os.environ.get("OPENAI_API_KEY", "")
         self.modelo = os.environ.get("OPENAI_MODEL", "gpt-6-astra")
         self.base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+        self.esfuerzo = os.environ.get("OPENAI_REASONING_EFFORT", "").strip().lower()  # low | medium | high; vacío = default del modelo
 
     def disponible(self):
         return bool(self.clave)
@@ -80,6 +81,8 @@ class OpenAI(Proveedor):
         body = {"model": self.modelo, "instructions": sistema,
                 "input": [{"role": "user", "content": contenido}], "max_output_tokens": 32000,
                 "prompt_cache_key": "apd-reglas"}
+        if self.esfuerzo:
+            body["reasoning"] = {"effort": self.esfuerzo}
         if json_mode:
             body["text"] = {"format": {"type": "json_object"}}
         t0 = time.time()
@@ -154,7 +157,7 @@ def fijar(p: Proveedor | None):
 
 def estado() -> dict:
     p = proveedor()
-    return {"proveedor": p.nombre, "modelo": p.modelo, "disponible": p.disponible(),
+    return {"proveedor": p.nombre, "modelo": p.modelo, "esfuerzo": getattr(p, "esfuerzo", "") or None, "disponible": p.disponible(),
             "motivo": "" if p.disponible() else getattr(p, "motivo", f"falta la clave de {p.nombre} en el entorno del servidor")}
 
 

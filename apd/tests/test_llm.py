@@ -91,6 +91,25 @@ class TestAdaptadores(unittest.TestCase):
         self.assertEqual(h["authorization"], "Bearer sk-prueba-local")
         self.assertEqual(vistos[0]["body"]["text"]["format"]["type"], "json_object")
         self.assertIn("instructions", vistos[0]["body"])
+        self.assertNotIn("reasoning", vistos[0]["body"])  # sin OPENAI_REASONING_EFFORT: default del modelo
+
+    def test_openai_esfuerzo_de_razonamiento(self):
+        os.environ["OPENAI_API_KEY"] = "sk-prueba-local"
+        os.environ["OPENAI_BASE_URL"] = self.url
+        os.environ["OPENAI_REASONING_EFFORT"] = "Medium"
+        os.environ["OPENAI_MODEL"] = "gpt-5.6-terra"
+        VISTO.clear()
+        try:
+            p = llm.OpenAI()
+            p.completar("sistema", "usuario")
+            est = (llm.fijar(p), llm.estado())[1]
+        finally:
+            for k in ("OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_REASONING_EFFORT", "OPENAI_MODEL"):
+                os.environ.pop(k)
+            llm.fijar(None)
+        self.assertEqual(VISTO[-1]["body"]["reasoning"], {"effort": "medium"})
+        self.assertEqual(VISTO[-1]["body"]["model"], "gpt-5.6-terra")
+        self.assertEqual((est["modelo"], est["esfuerzo"]), ("gpt-5.6-terra", "medium"))
 
     def test_anthropic(self):
         os.environ["ANTHROPIC_API_KEY"] = "sk-ant-prueba-local"

@@ -25,6 +25,7 @@ Con modelo (flujo automático de revisión por lotes y revisión semántica):
 ```bash
 export OPENAI_API_KEY=…          # o ANTHROPIC_API_KEY=…   (sólo en el entorno del servidor)
 export OPENAI_MODEL=gpt-6-astra  # opcional; ANTHROPIC_MODEL=claude-sonnet-5
+export OPENAI_REASONING_EFFORT=medium  # opcional: low | medium | high; sin definir = default del modelo
 python3 apd/server.py
 ```
 
