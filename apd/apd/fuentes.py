@@ -18,7 +18,8 @@ from pathlib import Path
 APD = Path(__file__).resolve().parent.parent          # .../apd
 REPO = APD.parent                                       # raíz del repo original
 DATA = APD / "data"
-CACHE = APD / ".cache"
+# En un servidor sin disco escribible (Vercel) la caché va a /tmp: APD_CACHE=/tmp/apd-cache
+CACHE = Path(os.environ["APD_CACHE"]) if os.environ.get("APD_CACHE") else APD / ".cache"
 ORIGINALES = APD / "originales"
 
 ZIP_NOMBRE = "AI_Production_Director_v3.4.0_COMPLETE.zip"
@@ -27,7 +28,8 @@ ZIP_SHA256 = "5c55b7886d7e8955be52144f002f1e8b0c8254de6ea846bfbb944fe5242111dc"
 PKG = CACHE / "pkg" / "AI_Production_Director_v3.4.0_COMPLETE"
 REPO_COMMIT = "e61005ddce19040ca6f913ee0b0de260de6b65f3"
 
-RULES_DB = DATA / "rules.sqlite"
+# APD_RULES_DB: copia ya construida (despliegue); si no, se reconstruye en data/ con el constructor original
+RULES_DB = Path(os.environ["APD_RULES_DB"]) if os.environ.get("APD_RULES_DB") else DATA / "rules.sqlite"
 HOOKS = REPO / ".claude" / "hooks"
 
 # Fuentes que el prompt de encargo nombra y que NO se entregaron como archivo.
