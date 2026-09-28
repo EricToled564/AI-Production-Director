@@ -1,0 +1,1086 @@
+{
+ "fusiones": [
+  {
+   "grupo": "DUP-0013.1.1",
+   "texto": "En cada adapter de visual-prompt-forge, documentar los parámetros del generador en una línea (o bloque) de comentario encima de cada prompt, seguida de `{prompt}`; en Flux, dentro del output `flux.txt`. Formato por adapter: GPT Image (1.5 / 2): `# shot_01, params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5`. Ideogram (v3): `# shot_01, params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193`. Seedream (4.5 / 4.0): `# shot_01, params: ar=9:16, seed=2840193, guidance=4.5, steps=28`. Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev): `# shot_01, params: ar=9:16, seed=2840193, upsampling=false`. Nano Banana (Gemini 2.5 Flash Image): `# shot_01, params: ar=9:16, n=1, ref=none (or list of refs)`. Kling 3.0: `# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png`. Seedance 2.0 (multi-shot): `# shot_02-shot_04. Seedance 2.0: ar=9:16, shots=3, multi-shot sequence`. Veo 3: `# shot_04. Veo 3: duration=8s, ar=9:16, generate_audio=true`.",
+   "cobertura": [
+    {
+     "id": "113963d3024b",
+     "elementos": [
+      "GPT Image 1.5/2: documentar en comentario con size, quality, style, model → línea GPT Image"
+     ]
+    },
+    {
+     "id": "154ff9394978",
+     "elementos": [
+      "Seedance 2.0: comentario shot_02-shot_04 con ar, shots=3, multi-shot → línea Seedance"
+     ]
+    },
+    {
+     "id": "461dcfe94d59",
+     "elementos": [
+      "Kling 3.0: parámetros como línea de comentario encima de cada prompt → primera frase y línea Kling",
+      "duration=5s, ar, cfg=0.5, start_image → línea Kling"
+     ]
+    },
+    {
+     "id": "7b93d2877baa",
+     "elementos": [
+      "Ideogram v3: bloque de comentario con ar, model=V_3, magic_prompt=OFF, style=DESIGN, seed → línea Ideogram"
+     ]
+    },
+    {
+     "id": "97e99cb80216",
+     "elementos": [
+      "Seedream: comentario con ar, seed, guidance=4.5, steps=28 → línea Seedream"
+     ]
+    },
+    {
+     "id": "9d399e42a2e8",
+     "elementos": [
+      "Flux: en output flux.txt, línea de comentario encima de cada prompt → primera frase",
+      "ar, seed, upsampling=false → línea Flux"
+     ]
+    },
+    {
+     "id": "a77ffabdc7d5",
+     "elementos": [
+      "Veo 3: comentario con duration=8s, ar, generate_audio=true → línea Veo"
+     ]
+    },
+    {
+     "id": "ce45b49455d1",
+     "elementos": [
+      "Nano Banana: comentario con ar, n=1, ref=none (or list of refs) → línea Nano Banana"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0014.1.1",
+   "texto": "Texto pequeño, denso o multi-font dentro del cuadro: el modelo es GPT Image 2 y `quality: high` es obligatorio (selección de modelo Nano Banana vs GPT Image 2, TL;DR; y reglas específicas de GPT Image 2, Text in Image).",
+   "cobertura": [
+    {
+     "id": "6431dc73c9dc",
+     "elementos": [
+      "tarea: texto pequeño denso en el cuadro → primera parte",
+      "modelo GPT Image 2 con quality: high → primera parte",
+      "alcance models.md TL;DR → paréntesis"
+     ]
+    },
+    {
+     "id": "9d5ecf236ef7",
+     "elementos": [
+      "pequeño/denso/multi-font → primera parte",
+      "quality: high obligatorio → primera parte",
+      "alcance gpt-image.md Text in Image → paréntesis"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0015.1.1",
+   "texto": "Seedance 2.0: su fortaleza (tabla de adapters de visual-prompt-forge, `adapters/seedance.md`) es video con movimiento y secuencias multi-shot. Sintaxis multi-shot (única): Seedance lee marcadores explícitos de corte dentro de un solo prompt y genera shots distintos conectados por cortes visibles; es su carta más fuerte. Usarlo cuando se necesita montaje en una sola generación.",
+   "cobertura": [
+    {
+     "id": "446259fe48a3",
+     "elementos": [
+      "archivo adapters/seedance.md, Seedance 2.0 → primera frase",
+      "strength: motion video, multi-shot sequences → primera frase"
+     ]
+    },
+    {
+     "id": "aed5af7a3c89",
+     "elementos": [
+      "lee marcadores de corte en un solo prompt → segunda frase",
+      "genera shots distintos con cortes visibles → segunda frase",
+      "su carta más fuerte → segunda frase",
+      "usar cuando se necesita montaje en una sola generación → tercera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0015.2.1",
+   "texto": "Adapter Seedance 2.0 (motion-aware video, multi-shot): es el modelo multi-shot; puede generar una secuencia corta de cortes en una sola generación manteniendo la consistencia de sujeto y entorno entre ellos. Usar el modo multi-shot sequence cuando 2–4 beats consecutivos del storyboard comparten un sujeto y se quiere continuidad, que se sientan como una toma continua; supera a coser cuatro clips independientes de Kling que derivan. Para un solo shot aislado, Kling es el default más simple.",
+   "cobertura": [
+    {
+     "id": "bd1b6bde05ae",
+     "elementos": [
+      "modelo multi-shot → primera frase",
+      "secuencia corta de cortes en una sola generación con consistencia de sujeto y entorno → primera frase",
+      "beats consecutivos con un sujeto, sensación de toma continua → segunda frase",
+      "mejor que coser cuatro clips Kling que derivan → segunda frase",
+      "shot aislado → Kling default → tercera frase"
+     ]
+    },
+    {
+     "id": "bc3c5608745b",
+     "elementos": [
+      "situación 2–4 beats consecutivos, mismo sujeto, continuidad → segunda frase",
+      "modo multi-shot sequence → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0016.1.1",
+   "texto": "SW30 regla crítica 1: un solo trabajo por generación. Con dos personajes: un sujeto por generación, o técnica de colocación probada; nunca \"a ver si sale\". Aplicado por régimen: 08 Multitud anónima: un sujeto por generación; nunca se pide a un modelo N rostros distintos desde texto. 09 Grupo ensamble: un miembro por inserción, nunca el grupo completo desde texto. Research de campo familia 06 (Cuerpo en el pico de esfuerzo, hallazgo nuevo 2): siempre un solo atleta por generación en sprint; una salida de tacos con varios corredores falla mucho más que un corredor solo [CAMPO: https://prompt-architects.com/blog/359-sports-and-action-motion-prompts] (C-14, [QUOTED]); refuerza `produccion-visual-sw30 R9`. [FUENTE: produccion-visual-sw30/SKILL.md R1]",
+   "cobertura": [
+    {
+     "id": "31df0fdf93e9",
+     "elementos": [
+      "regla 1 un solo trabajo por generación → primera frase",
+      "dos personajes: un sujeto por generación o técnica de colocación probada → segunda frase",
+      "nunca 'a ver si sale' → segunda frase"
+     ]
+    },
+    {
+     "id": "d5d2670f0604",
+     "elementos": [
+      "régimen 08: un sujeto por generación; nunca N rostros desde texto → régimen 08"
+     ]
+    },
+    {
+     "id": "9dc70c9b1f6a",
+     "elementos": [
+      "régimen 09: un solo trabajo, un miembro por inserción, nunca grupo completo desde texto → régimen 09"
+     ]
+    },
+    {
+     "id": "3dedce708eb3",
+     "elementos": [
+      "research 06 hallazgo 2: siempre un solo atleta por generación en sprint → research",
+      "salida de tacos con varios falla más → research",
+      "URL CAMPO, C-14, QUOTED → research",
+      "refuerza SW30 R9 → research"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0017.1.1",
+   "texto": "Parámetros numéricos del objetivo (50mm, 85mm, f/2.8, ISO 400): Nano Banana los ignora; no indicarlos en números y escribir de forma descriptiva: \"shallow depth of field\", \"wide-angle distortion\". GPT Image 2 admite \"50mm feel\" como look de alto nivel (high-level look), pero no como simulación física exacta. (Diferencias de sintaxis de prompt, aspecto cámara/lente, en models.md; checklist de elementos universales en prompt-framework.md; \"qué NO indicar\" en nano-banana.md.)",
+   "cobertura": [
+    {
+     "id": "0f7abaafad9d",
+     "elementos": [
+      "aspecto cámara/lente → primera frase",
+      "NB: no indicar números (50mm, f/2.8), NB ignora → primera frase",
+      "GPT Image 2: '50mm feel' como high-level look → segunda frase"
+     ]
+    },
+    {
+     "id": "74261d24eb5b",
+     "elementos": [
+      "parámetros 50mm, 85mm, f/2.8, ISO → primera frase",
+      "NB ignora números, escribir descriptivo 'shallow depth of field' → primera frase",
+      "GPT Image 2 '50mm feel' high-level look, no simulación física exacta → segunda frase"
+     ]
+    },
+    {
+     "id": "cee1aa9a093f",
+     "elementos": [
+      "no indicar 50mm, 85mm, f/2.8, ISO 400 → primera frase",
+      "NB ignora → primera frase",
+      "usar descripción 'shallow depth of field', 'wide-angle distortion' → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0017.2.1",
+   "texto": "Los valores numéricos de apertura y focal están permitidos, pero lo que realmente dirige al modelo es el resultado visible deseado expresado en palabras. En imagen (Creative Direction, Camera & Hardware): los parámetros de lente nombrados (50mm, f/2.8) son menos fiables que los términos descriptivos; preferir \"shallow depth of field\" a \"f/1.8\". En video general (vocabulario de cámara, traducción de términos poco comunes): mismo patrón para snorricam, variantes de contra-zoom, tilt-shift, split diopter y speed ramps con curvas específicas. En Seedance 2.5 (guías oficiales de ByteDance del 2026-07-31, lenguaje de cámara): los números de apertura y focal están permitidos, pero el resultado visible en palabras es lo que dirige al modelo.",
+   "cobertura": [
+    {
+     "id": "3fde769dd7da",
+     "elementos": [
+      "alcance imagen creative-direction Camera & Hardware → segunda frase",
+      "parámetros nombrados 50mm, f/2.8 menos fiables que términos descriptivos → segunda frase",
+      "preferir 'shallow depth of field' sobre 'f/1.8' → segunda frase"
+     ]
+    },
+    {
+     "id": "454410b7de1f",
+     "elementos": [
+      "alcance video, traducción de términos poco comunes → tercera frase",
+      "mismo patrón para snorricam, contra-zoom, tilt-shift, split diopter, speed ramps → tercera frase",
+      "números permitidos, resultado visible en palabras dirige → primera frase"
+     ]
+    },
+    {
+     "id": "55d5e546cba6",
+     "elementos": [
+      "alcance Seedance 2.5, guías oficiales 2026-07-31, camera language → cuarta frase",
+      "números permitidos, resultado en palabras dirige → cuarta frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0018.1.1",
+   "texto": "Las familias de patterns del skill image son plantillas de prompt reutilizables en las que cada pattern usa `{variables}` para personalizar, y todas usan por defecto GPT Image 2 (formato de 5 slots) salvo indicación contraria: Food & Beverage (fotografía de comida, campañas de bebidas, ilustración culinaria); Fashion Editorial (campañas de moda, lookbooks, shoots editoriales); Poster & Illustration (posters, art prints, collages de campaña, ilustraciones gráficas); Character Design (turnarounds de personaje, hojas de expresiones, variantes de outfit, formatos coleccionable/carta); Portrait & Cinema (retratos cinematográficos, fotografía atmosférica de personaje, retrato guiado por mood); UI Mockups & Social Media (anuncios de social media, assets de app store, mockups de dashboard, boards de análisis visual); E-Commerce Product Photography (anuncios de producto, packaging, visuales comerciales).",
+   "cobertura": [
+    {
+     "id": "26e2339409e2",
+     "elementos": [
+      "Food & Beverage: comida, bebidas, ilustración culinaria → lista",
+      "{variables}; default GPT Image 2 5-slot salvo nota → primera frase"
+     ]
+    },
+    {
+     "id": "3cf7257a5371",
+     "elementos": [
+      "Fashion Editorial: campañas, lookbooks, editoriales → lista",
+      "default GPT Image 2 5-slot → primera frase"
+     ]
+    },
+    {
+     "id": "4e1de6180d63",
+     "elementos": [
+      "Poster & Illustration: posters, art prints, collages, ilustraciones → lista",
+      "default → primera frase"
+     ]
+    },
+    {
+     "id": "588d4a3fe1ef",
+     "elementos": [
+      "Character Design: turnarounds, expression sheets, outfit variants, collectible/card → lista",
+      "default → primera frase"
+     ]
+    },
+    {
+     "id": "cfd1dc470912",
+     "elementos": [
+      "Portrait & Cinema: retratos cinematográficos, atmosférica, mood-driven → lista",
+      "default → primera frase"
+     ]
+    },
+    {
+     "id": "d4bd2b89ceb6",
+     "elementos": [
+      "UI Mockups & Social: social ads, app store, dashboard, visual analysis boards → lista",
+      "default → primera frase"
+     ]
+    },
+    {
+     "id": "ee6d82f1b646",
+     "elementos": [
+      "E-Commerce: product ads, packaging, visuales comerciales → lista",
+      "default → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0019.1.1",
+   "texto": "Régimen 07 (Luz y clima): un fenómeno de luz quema su núcleo: centro blanco sin detalle, halo de halación alrededor, negros aplastados en lo que no toca; pedir detalle en el núcleo del rayo es pedir una ilustración. Checklist del crítico: núcleo quemado con halación, sin HDR. [FUENTE: video/references/race-and-speed.md §7]",
+   "cobertura": [
+    {
+     "id": "c2f8a2692772",
+     "elementos": [
+      "ley 8: fenómeno de luz quema su núcleo → primera frase",
+      "centro blanco sin detalle, halación, negros aplastados → primera frase",
+      "detalle en el núcleo = ilustración → primera frase"
+     ]
+    },
+    {
+     "id": "103bf992ce6e",
+     "elementos": [
+      "checklist: núcleo quemado con halación, sin HDR → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0019.2.1",
+   "texto": "Régimen 06 (Cuerpo en el pico de esfuerzo): el sudor se describe como puntos speculares discretos bajo luz dura, no como piel mojada uniforme [FUENTE: video/references/race-and-speed.md §7]. Confirmado por el research de campo (familia 06, hallazgo nuevo 7): en campo el sudor se pide como \"sharp sweat highlights\" o \"sweat droplets frozen in the air near the fist\" bajo \"harsh single overhead light source\", nunca como piel mojada [CAMPO: https://www.media.io/ai-prompts/gemini-ai-runner-photo-prompts.html ; https://miraflow.ai/blog/ai-motion-blur-photo-prompts-2026] (C-21, C-28, [QUOTED]); confirma la regla FUENTE de sudor como speculares.",
+   "cobertura": [
+    {
+     "id": "b8ecccfe119b",
+     "elementos": [
+      "ley 4: sudor como puntos speculares discretos bajo luz dura → primera frase",
+      "no piel mojada uniforme → primera frase",
+      "FUENTE race-and-speed §7 → etiqueta"
+     ]
+    },
+    {
+     "id": "2420d28b6603",
+     "elementos": [
+      "frases de campo 'sharp sweat highlights', 'sweat droplets frozen in the air near the fist', 'harsh single overhead light source' → segunda frase",
+      "nunca piel mojada → segunda frase",
+      "URLs CAMPO, C-21, C-28, QUOTED → segunda frase",
+      "confirma la regla FUENTE → final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0020.1.1",
+   "texto": "El rostro se fija aparte y el cuadro de acción se inserta con referencia. Régimen 02 (Ruptura de superficie): el maestro de rostro se genera aparte y seco; el cuadro de ruptura se inserta con referencia sobre la placa de agua [FUENTE: produccion-visual-sw30/SKILL.md R7]. Régimen 01 (Agua en superficie): cuando la identidad del rider importa, la cara se fija en el maestro T1 y el cuadro de acción se inserta con referencia; nunca se pide identidad y spray en la misma génesis [FUENTE: produccion-visual-sw30/SKILL.md R1].",
+   "cobertura": [
+    {
+     "id": "b0ca69c8c442",
+     "elementos": [
+      "régimen 02 → alcance",
+      "maestro de rostro aparte y seco → régimen 02",
+      "cuadro de ruptura con referencia sobre placa de agua → régimen 02",
+      "FUENTE SW30 R7 → etiqueta"
+     ]
+    },
+    {
+     "id": "f1e37e0ce154",
+     "elementos": [
+      "régimen 01 → alcance",
+      "cuando la identidad del rider importa, cara fija en maestro T1 → régimen 01",
+      "cuadro de acción con referencia → régimen 01",
+      "nunca identidad y spray en la misma génesis → régimen 01",
+      "FUENTE SW30 R1 → etiqueta"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0021.1.1",
+   "texto": "Anclas de iluminación verbatim. Lock 3 de visual-prompt-forge (Verbatim lighting anchors): mismo principio que el ancla de personaje para `series_lock.lighting`; la dirección de la luz en particular es crítica: invertir ventana-izquierda a ventana-derecha entre shots produce cortes obvios donde no debería haberlos. Adapter Midjourney (v7), lenguaje de luz: tomarlo verbatim de `series_lock.lighting`. Fix de video cuando la luz deriva entre clips: nombrar la fuente dominante y su dirección y repetirla verbatim en cada clip.",
+   "cobertura": [
+    {
+     "id": "14e7141459fc",
+     "elementos": [
+      "Lock 3 mismo principio para series_lock.lighting → primera parte",
+      "dirección de luz crítica; flip window-left/right produce cortes obvios → primera parte"
+     ]
+    },
+    {
+     "id": "d322bd192009",
+     "elementos": [
+      "Midjourney v7: pull verbatim de series_lock.lighting → segunda parte"
+     ]
+    },
+    {
+     "id": "1ca63e736bad",
+     "elementos": [
+      "fallo: luz deriva entre clips → tercera parte",
+      "nombrar fuente dominante y dirección, repetir verbatim en cada clip → tercera parte"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0021.2.1",
+   "texto": "Régimen 09 (Grupo ensamble): una sola dirección de luz para todos los miembros; la inserción secuencial obliga a repetir verbatim la cadena de iluminación en cada paso o los miembros se leen pegados. Fallo conocido: la luz cambia entre miembros; corrección: repetir la cadena de iluminación verbatim en cada inserción. Checklist del crítico: una sola dirección de luz para todos. [FUENTE: visual-prompt-forge/references/consistency-locks.md Lock 3]",
+   "cobertura": [
+    {
+     "id": "c68dbbaf825e",
+     "elementos": [
+      "una sola dirección de luz para todos → primera frase",
+      "inserción secuencial obliga a repetir verbatim la cadena en cada paso o se leen pegados → primera frase"
+     ]
+    },
+    {
+     "id": "81d0952caff5",
+     "elementos": [
+      "fallo luz cambia entre miembros; repetir verbatim en cada inserción → segunda frase"
+     ]
+    },
+    {
+     "id": "2d0a11a5094e",
+     "elementos": [
+      "checklist una sola dirección de luz para todos → tercera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0022.1.1",
+   "texto": "Bloque de identidad según el rol de la referencia (decisión #3 de dirección del 2026-09-25, \"Bloque de identidad con referencia de persona adjunta\"; parche P3 de la copia parcheada del linter aurora v1.2-fupai). Contradicción detectada: el linter original banea los descriptores P/O siempre que un ref cargue P/O; en I2V eso es correcto (no re-describir el first frame), pero en caso 2 con refs `@img1` / Elements / `Image 1` es al revés: U7 y Seedance §10 exigen el identity block completo junto a la referencia. Opción elegida: por rol de la referencia. Keyframe de inicio o fin en imagen a video (rol ff/lf): no re-describir; los descriptores P/O siguen prohibidos (kling.md §3 \"Describe how the scene evolves from the image, not what is in the image\" y §10; veo.md §7 \"Do not re-describe static elements\"; seedance.md §13; SW30 R5 y R16). Referencia de personaje sin start frame, casos con @img, Elements o ancla con refs (rol character): los descriptores se permiten y el bloque de identidad es obligatorio, completo y verbatim (U7 \"Anchor identity at the START of every prompt\" y \"Identity block must include: face shape, eye color, skin tone. Hair … Exact clothing items. Distinctive accessories\"; seedance.md §10 \"The full identity block must follow the @img1 mention\"; forge SKILL.md Rule 3 y `consistency-locks.md` Lock 1). Parche P3: `--ref-role {ff,lf,character,location,prop,style}`; si no se pasa, se deriva del campo `role` de `refs.yaml` y del caso; con character, si faltan ≥3 de {pelo, ojos/piel, prenda, accesorio, rasgo distintivo} → WARN \"identity block absent\". Consecuencia operativa: resuelve la contradicción entre U7, Seedance §10, forge Rule 3 y Kling §10, Veo §7, Seedance §13, SW30 R5 y R16.",
+   "cobertura": [
+    {
+     "id": "b63bca3ae8aa",
+     "elementos": [
+      "#3 contradicción identity block por rol → primera frase",
+      "original banea P/O siempre; en I2V correcto; en caso 2 con @img1/Elements/Image 1 al revés, U7 y Seedance §10 exigen identity block → contradicción",
+      "parche P3 --ref-role {ff,lf,character,location,prop,style}; derivación de role de refs.yaml y del caso → parche P3",
+      "ff/lf: P/O prohibidos → rol ff/lf",
+      "character: permitidos y obligatorio; ≥3 faltantes → WARN 'identity block absent' → rol character y parche",
+      "fuentes kling §3 cita y §10, veo §7 cita, seedance §13, SW30 R5/R16, U7 cita identity block, seedance §10 cita, forge Rule 3, Lock 1 → paréntesis de fuentes"
+     ]
+    },
+    {
+     "id": "2531bcd20bce",
+     "elementos": [
+      "P3 --ref-role en docstring del linter parcheado → primera frase",
+      "prohibición P/O solo con ff/lf, fuentes kling §3/§10, veo §7, seedance §13, SW30 R5/R16 → rol ff/lf",
+      "character: identity block obligatorio; U7 'Anchor identity at the START of every prompt', seedance §10, forge Rule 3 / Lock 1 → rol character",
+      "≥3 de {pelo, ojos/piel, prenda, accesorio, rasgo distintivo} → WARN → parche P3"
+     ]
+    },
+    {
+     "id": "676e3aa7a62c",
+     "elementos": [
+      "decisión #3 del 2026-09-25 → primera frase",
+      "opción: por rol de la referencia → 'Opción elegida'",
+      "keyframe inicio/fin en I2V: no re-describir → rol ff/lf",
+      "referencia de personaje sin start frame, @img, Elements o ancla con refs: bloque completo y verbatim → rol character",
+      "consecuencia: resuelve contradicción entre U7, Seedance §10, forge Rule 3 y Kling §10, Veo §7, Seedance §13, SW30 R5 y R16 → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0022.2.1",
+   "texto": "Linter aurora (copia parcheada v1.2-fupai), rol de la referencia P3 con `--ref-role character`: los descriptores P/O en MAIN están permitidos y el identity block es obligatorio, con WARN si tiene menos de 3 grupos (`IDENTITY_BLOCK_MIN_GROUPS: 3` en `vocabularies.yaml`). Cuándo: caso 2 con `Image 1: face`, `@img1`, Elements, `--cref`.",
+   "cobertura": [
+    {
+     "id": "80d153a3d430",
+     "elementos": [
+      "--ref-role character → primera frase",
+      "descriptores P/O en MAIN permitidos → primera frase",
+      "identity block obligatorio, WARN si <3 grupos → primera frase",
+      "cuándo: caso 2 con Image 1: face, @img1, Elements, --cref → segunda frase"
+     ]
+    },
+    {
+     "id": "6044e30c4de1",
+     "elementos": [
+      "IDENTITY_BLOCK_MIN_GROUPS: 3 en vocabularies.yaml → paréntesis"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0023.1.1",
+   "texto": "Adapter Ideogram (v3): parámetro `magic_prompt` (campo de la API), por defecto `OFF` en trabajo de serie porque mata la consistencia. No confiar en magic_prompt: reescribe automáticamente y produce shots inconsistentes a lo largo de una serie.",
+   "cobertura": [
+    {
+     "id": "06d3f946d6bf",
+     "elementos": [
+      "magic_prompt en API field → primera frase",
+      "default OFF para series, kills consistency → primera frase"
+     ]
+    },
+    {
+     "id": "44f05640a0f6",
+     "elementos": [
+      "don't trust magic_prompt → segunda frase",
+      "auto-reescritura, shots inconsistentes en la serie → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0023.2.1",
+   "texto": "Adapter Hailuo 02 Pro (motion-aware video, budget iteration): parámetro `prompt_optimizer`, por defecto `false` en series. No activar el prompt optimizer en trabajo de serie: la auto-reescritura ayuda en piezas únicas (one-offs) pero rompe la consistencia shot a shot.",
+   "cobertura": [
+    {
+     "id": "9931113d8005",
+     "elementos": [
+      "prompt_optimizer default false para series → primera frase",
+      "auto-rewrite ayuda en one-offs pero rompe consistencia shot a shot → segunda frase"
+     ]
+    },
+    {
+     "id": "eaf7538203b6",
+     "elementos": [
+      "no activar el prompt optimizer en series → segunda frase",
+      "auto-rewrite rompe consistencia shot a shot → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0023.3.1",
+   "texto": "Adapter Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev): parámetro `prompt_upsampling` (campo de la llamada a la API), por defecto `false` en trabajo de serie porque las auto-reescrituras matan la consistencia. No activar prompt upsampling en trabajo de serie: la auto-reescritura de fal.ai produce shots inconsistentes.",
+   "cobertura": [
+    {
+     "id": "d4b0c712d0a3",
+     "elementos": [
+      "no activar prompt upsampling en series → segunda frase",
+      "auto-rewrite de fal.ai produce shots inconsistentes → segunda frase"
+     ]
+    },
+    {
+     "id": "f9a340f686f8",
+     "elementos": [
+      "prompt_upsampling en API call field → primera frase",
+      "default false para series, auto-rewrites kill consistency → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0024.1.1",
+   "texto": "\"Edit, don't re-roll\" (SW30 regla crítica 12; Golden Rules 3 de image; reglas de editing de Nano Banana): si el resultado es ≥80% correcto, pedir un cambio puntual, nunca re-tirar ni una nueva generación; hasta 3 ediciones apiladas. En Nano Banana, la Interactions API mantiene el contexto de sesión: hasta 3 ediciones consecutivas se apilan sin perder el original. Ejemplos de cambio puntual: \"Change lighting to sunset\"; \"Make text neon blue\"; \"Move chart to right third\". En el Mapa del Spot Publicitario es el subproceso E5.5 (Edición quirúrgica; autoridad: image/editing.md + SW30 R3, R12; entra: cuadro aprobado ≥80%; sale: cuadro corregido T5; gate: Edit, don't re-roll, hasta 3 ediciones apiladas).",
+   "cobertura": [
+    {
+     "id": "e6a6f22673fa",
+     "elementos": [
+      "regla 12 'Edit, don't re-roll' → primera frase",
+      "≥80% correcto → cambio puntual → primera frase",
+      "hasta 3 ediciones apiladas → primera frase",
+      "nunca re-tirar → primera frase"
+     ]
+    },
+    {
+     "id": "7be67314b2d6",
+     "elementos": [
+      "E5.5 Edición quirúrgica → frase final",
+      "autoridad image/editing.md + SW30 R3, R12 → frase final",
+      "entra cuadro ≥80%, sale corregido T5 → frase final",
+      "gate Edit, don't re-roll; hasta 3 apiladas → frase final"
+     ]
+    },
+    {
+     "id": "4e86d2fd321a",
+     "elementos": [
+      "Interactions API mantiene contexto; hasta 3 ediciones consecutivas se apilan sin perder el original → segunda frase",
+      "80% correcta → cambio puntual, no nueva generación → primera frase"
+     ]
+    },
+    {
+     "id": "8ba4140fa1a3",
+     "elementos": [
+      "Golden Rule 3: 80% correcta → cambio específico → primera frase",
+      "ejemplos 'Change lighting to sunset', 'Make text neon blue', 'Move chart to right third' → ejemplos"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0024.2.1",
+   "texto": "Cuando la generación está cerca, aceptar y resolver en post en vez de regenerar. Visual Asset Critic, Hard rule 5 (\"When in doubt, ACCEPT and recommend post\"): la generación es una etapa en un pipeline; si la imagen está 80% bien y el hueco se arregla en post, es un ACCEPT con notas de post; no mandar al usuario a regenerar cuando un editor lo resolvería en 90 segundos. Visual-prompt-forge, Failure 7 (\"Looks fine but doesn't match the brief\"): aceptar editorialmente cuando la generación está lo bastante cerca como para que el retoque llegue; no quemar créditos de API persiguiendo la perfección on-prompt.",
+   "cobertura": [
+    {
+     "id": "b0f70ec11e49",
+     "elementos": [
+      "Rule 5 When in doubt, ACCEPT and recommend post → segunda frase",
+      "generación es una etapa del pipeline → segunda frase",
+      "80% bien y arreglable en post → ACCEPT con notas de post → segunda frase",
+      "no regenerar si un editor lo hace en 90 segundos → segunda frase"
+     ]
+    },
+    {
+     "id": "2e923c288fa9",
+     "elementos": [
+      "Failure 7 'Looks fine but doesn't match the brief' → tercera frase",
+      "aceptar editorialmente cuando el retoque llega → tercera frase",
+      "no quemar créditos persiguiendo perfección on-prompt → tercera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0025.1.1",
+   "texto": "Revisión de delta mínimo (small-delta revision; Learning Registry v3.2 del AI Production Director, aprendizaje `lrn32_small_delta_revision`, efecto=REQUIRE, prioridad=915): al corregir un fallo localizado en un asset o prompt que por lo demás pasa, está aceptado o es fuerte, cambiar solo el/los elemento(s) fallido(s); no reescribir ni reinterpretar los locks no afectados. Motivo: las reescrituras verbosas repetidas degradaron la adherencia, mientras las ediciones locales preservaron las fortalezas. En el revision mode de visual-prompt-forge (Determinism, and its limits): lo que el formato no puede garantizar es el juicio intermedio; aplicar un campo `fix` implica leer una frase en inglés y editar prosa, así que hay que ceñirse a la edición más estrecha que satisfaga el fix y dejar cada otra capa byte-idéntica. Si te encuentras reescribiendo un prompt que la crítica no pidió tocar, para: eso es drift, y se leerá como un misterio seis shots después.",
+   "cobertura": [
+    {
+     "id": "f46ef1908218",
+     "elementos": [
+      "Learning Registry v3.2 punto 2 Small-delta revision → primera frase",
+      "corregir solo elementos fallidos cuando el resto pasa → primera frase"
+     ]
+    },
+    {
+     "id": "09c9fbf70132",
+     "elementos": [
+      "lrn32_small_delta_revision, REQUIRE, prioridad 915 → paréntesis",
+      "fallo localizado en asset aceptado o fuerte → cambiar solo lo fallido → primera frase",
+      "no reescribir ni reinterpretar locks no afectados → primera frase",
+      "motivo: reescrituras verbosas degradaron adherencia, ediciones locales preservaron fortalezas → segunda frase"
+     ]
+    },
+    {
+     "id": "af9e1fa061b0",
+     "elementos": [
+      "revision mode, Determinism and its limits → tercera frase",
+      "el formato no garantiza el juicio intermedio → tercera frase",
+      "aplicar fix = leer frase en inglés y editar prosa; edición más estrecha; resto byte-idéntico → tercera frase",
+      "si reescribes lo que la crítica no pidió, para: drift, misterio seis shots después → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0025.1.2",
+   "texto": "Delta mínimo en los templates v3.2. Underwater Human Reference Policy v3.2 (revisión de prompt): cuando el resultado existente es fuerte, usar deltas pequeños; no reescribir agua, iluminación, entorno, sujeto o pose cuando ya pasan. Surgical Image Edit Template v3.2: no re-tirar (reroll) ni reinterpretar las partes no afectadas de la imagen.",
+   "cobertura": [
+    {
+     "id": "71181702a11b",
+     "elementos": [
+      "alcance Underwater Human Reference Policy v3.2 → primera parte",
+      "resultado fuerte → small deltas → primera parte",
+      "no reescribir water, lighting, environment, subject, pose que ya pasan → primera parte"
+     ]
+    },
+    {
+     "id": "7e6bef922b08",
+     "elementos": [
+      "alcance Surgical Image Edit Template v3.2 → segunda parte",
+      "no reroll ni reinterpretar partes no afectadas → segunda parte"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0026.1.1",
+   "texto": "Vocabulario prohibido en video (lo no negociable de las reglas universales; segunda ley de dramaturgia, \"What is banned\"): palabras que no se renderizan y delatan pereza del escritor: \"cinematic\", \"professional\", \"high quality\", \"masterpiece\", \"stunning\", \"epic\", \"amazing\"; \"beautiful lighting\", \"dynamic camera\", \"intense moment\", \"powerful scene\"; \"he is sad\", \"she is angry\", \"he is afraid\" (emociones nombradas sin cuerpo).",
+   "cobertura": [
+    {
+     "id": "9f98f26060b5",
+     "elementos": [
+      "palabras que no renderizan y marcan pereza → primera frase",
+      "lista cinematic...amazing → lista",
+      "beautiful lighting, dynamic camera, intense moment, powerful scene → lista",
+      "he is sad/she is angry/he is afraid, emociones sin cuerpo → lista"
+     ]
+    },
+    {
+     "id": "fce23e44f306",
+     "elementos": [
+      "What is banned de dramaturgia → alcance",
+      "cinematic, professional, high quality, masterpiece, stunning, epic, amazing → lista"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0026.1.2",
+   "texto": "Mismo vocabulario prohibido en otros alcances. Seedance (ByteDance), The Details Law: fraseo perezoso vetado que produce papilla: \"cinematic, professional, high quality, masterpiece\"; \"beautiful lighting\"; \"epic scene\"; \"amazing visuals\"; \"he is sad / he is angry\" (sin traducción física). Flujo de Anclas Cinematográficas, \"Lo que un ancla nunca lleva\": vocabulario prohibido: cinematic, epic, stunning, masterpiece, beautiful lighting, emociones nombradas sin cuerpo.",
+   "cobertura": [
+    {
+     "id": "91080510eda2",
+     "elementos": [
+      "alcance Seedance Details Law → primera parte",
+      "banned lazy phrasing que produce mush → primera parte",
+      "lista cinematic, professional, high quality, masterpiece; beautiful lighting; epic scene; amazing visuals; he is sad / he is angry sin traducción física → primera parte"
+     ]
+    },
+    {
+     "id": "34224363e5da",
+     "elementos": [
+      "alcance flujo de anclas, Lo que un ancla nunca lleva → segunda parte",
+      "cinematic, epic, stunning, masterpiece, beautiful lighting, emociones sin cuerpo → segunda parte"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0027.1.1",
+   "texto": "Etapa 1 — Creative Strategy del AI Production Director: el módulo `creative-strategy.md` es la autoridad de la Etapa 1 del pipeline; no existe sub-skill instalada para estrategia creativa, así que el protocolo vive ahí. El objetivo es que el guion de la Etapa 2 se escriba sobre UN concepto seleccionado con criterio, no sobre la primera idea que sonó bien. Gate de la etapa: el usuario selecciona UN concepto; no se escribe una línea de guion con concepto abierto. El usuario puede pedir un híbrido: tratarlo como concepto nuevo con su propia card antes de avanzar.",
+   "cobertura": [
+    {
+     "id": "6484d36273e1",
+     "elementos": [
+      "gate: el usuario selecciona UN concepto → gate",
+      "no se escribe guion con concepto abierto → gate"
+     ]
+    },
+    {
+     "id": "59647b163c0f",
+     "elementos": [
+      "módulo es la autoridad de la Etapa 1 → primera frase",
+      "no hay sub-skill instalada; protocolo vive aquí → primera frase",
+      "guion de Etapa 2 sobre UN concepto seleccionado con criterio, no la primera idea → segunda frase"
+     ]
+    },
+    {
+     "id": "e644e660d0eb",
+     "elementos": [
+      "gate de la etapa: el usuario selecciona un concepto → gate",
+      "híbrido = concepto nuevo con su propia card antes de avanzar → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0027.2.1",
+   "texto": "Etapa 1 — Creative Strategy, matriz de selección (subproceso E1.4 del Mapa del Spot Publicitario; autoridad: creative-strategy.md; entra: cards; sale: matriz 1 a 5 + recomendación argumentada): presentar los conceptos en una matriz 1–5, sin promediar a ciegas; el usuario pondera. Gate: el usuario elige UN concepto.",
+   "cobertura": [
+    {
+     "id": "007f1c820c0f",
+     "elementos": [
+      "presentar conceptos en matriz 1–5 → primera frase",
+      "sin promediar a ciegas; el usuario pondera → primera frase"
+     ]
+    },
+    {
+     "id": "3e5b81185e44",
+     "elementos": [
+      "código E1.4 Matriz de selección → paréntesis",
+      "autoridad creative-strategy.md → paréntesis",
+      "entra cards; sale matriz 1 a 5 + recomendación argumentada → paréntesis",
+      "gate: usuario elige UN concepto → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0028.1.1",
+   "texto": "Nano Banana, flujo de resolución/costo (también en Golden Rules, optimización de costo en trabajo por lotes, y en el régimen 02 Ruptura de superficie como recorrido de costo): correr las variantes a `0.5K` Flash (o NB2 Lite a 1K) → selección → regenerar el ganador a `2K` o `4K`. [FUENTE del régimen 02: image/references/golden-rules.md]",
+   "cobertura": [
+    {
+     "id": "c522963bcfb4",
+     "elementos": [
+      "workflow: variantes a 0.5K flash (o NB2 Lite a 1K) → primera frase",
+      "selección → regenerar ganador a 2K/4K → primera frase"
+     ]
+    },
+    {
+     "id": "17e1280e02fc",
+     "elementos": [
+      "Golden Rules Cost Optimization batch → paréntesis",
+      "variantes a 0.5K Flash → selección → ganador a 2K/4K → primera frase"
+     ]
+    },
+    {
+     "id": "de971cad5404",
+     "elementos": [
+      "régimen 02 recorrido de costo → paréntesis",
+      "variantes 0.5K, selección, ganador a 2K o 4K → primera frase",
+      "FUENTE golden-rules → etiqueta"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0028.2.1",
+   "texto": "Recorrido de costo: exploración barata → final caro (Golden Rules de image, optimización de costo en trabajo por lotes, en ambos modelos). En el régimen 07 (Luz y clima): variantes baratas para elegir la forma del rayo o del cielo, final en alta. [FUENTE: image/references/golden-rules.md]",
+   "cobertura": [
+    {
+     "id": "cd043cd32be5",
+     "elementos": [
+      "en ambos casos: exploración barata → final caro → primera frase",
+      "alcance Golden Rules Cost Optimization → paréntesis"
+     ]
+    },
+    {
+     "id": "433dece3a66b",
+     "elementos": [
+      "régimen 07 → segunda frase",
+      "variantes baratas para forma del rayo o cielo, final en alta → segunda frase",
+      "FUENTE golden-rules → etiqueta"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0029.1.1",
+   "texto": "Veo 3 (Google) es el modelo cinematográfico de video con audio nativo sincronizado: el único generador importante que crea diálogo, SFX y música sincronizados con el video y hace lip-sync de forma nativa, y el único adapter de visual-prompt-forge que genera audio nativo sincronizado (habla, ambiente y efectos de sonido) en la misma pasada que el video (fortaleza en la tabla de adapters: motion video, dialogue/lipsync + native audio). Es el mejor para pulido comercial, narrativa con diálogo y audio cinematográfico; también tiene la mayor adherencia al prompt y el mayor realismo físico de los cuatro modelos de movimiento. Como es el único que renderiza movimiento de labios y voz sincronizados, la sintaxis de diálogo importa (crítica). Es el más caro: reservarlo para shots que realmente necesiten diálogo hablado, lipsync o audio integrado; para B-roll silencioso y movimientos de cámara, Kling es el default más barato.",
+   "cobertura": [
+    {
+     "id": "12571be4a39e",
+     "elementos": [
+      "modelo cinematográfico de Google con audio nativo sincronizado → primera frase",
+      "único que crea diálogo, SFX y música en sync y lip-sync nativo → primera frase",
+      "mejor para pulido comercial, narrativa con diálogo, audio cinematográfico → segunda frase"
+     ]
+    },
+    {
+     "id": "7dd4418a7eb5",
+     "elementos": [
+      "archivo adapters/veo.md, Veo 3, strength motion video, dialogue/lipsync + native audio → paréntesis"
+     ]
+    },
+    {
+     "id": "8d5391655e74",
+     "elementos": [
+      "único que renderiza labios y voz sincronizados → tercera frase",
+      "la sintaxis importa (critical) → tercera frase"
+     ]
+    },
+    {
+     "id": "d4563d5b0aba",
+     "elementos": [
+      "modelo de diálogo y lipsync → primera frase",
+      "único adapter con audio nativo sincronizado (speech, ambience, SFX) en la misma pasada → primera frase",
+      "mayor adherencia y realismo físico de los cuatro modelos de movimiento → segunda frase",
+      "el más caro; reservar para diálogo, lipsync o audio → frase final",
+      "B-roll silencioso y movimientos de cámara → Kling más barato → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0030.1.1",
+   "texto": "Adapters de video Hailuo 02 Pro, Kling 3.0 y Veo 3 de visual-prompt-forge: el campo `motion` de la shot grammar mapea directamente; un solo movimiento de cámara por shot. No apilar dos movimientos de cámara (Hailuo, Veo); en Kling, no pedir varios movimientos de cámara en un shot: elegir uno, los movimientos compuestos se rompen.",
+   "cobertura": [
+    {
+     "id": "b817e8b89244",
+     "elementos": [
+      "alcance Hailuo, Kling y Veo, Motion vocabulary → primera frase",
+      "campo motion mapea directamente → primera frase",
+      "one move per shot → primera frase"
+     ]
+    },
+    {
+     "id": "59c5359f126a",
+     "elementos": [
+      "alcance Hailuo y Veo pitfalls → segunda frase",
+      "don't stack two camera moves; one move per shot → segunda frase"
+     ]
+    },
+    {
+     "id": "d74712cb8089",
+     "elementos": [
+      "alcance Kling pitfalls → segunda frase",
+      "no múltiples movimientos en un shot; elegir uno; compound moves break → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0030.1.2",
+   "texto": "Adapter Seedance 2.0 (motion-aware video, multi-shot): el campo `motion` de la shot grammar mapea directamente; un solo movimiento por corte. No apilar dos movimientos de cámara dentro de un corte.",
+   "cobertura": [
+    {
+     "id": "2ae5c44dcf52",
+     "elementos": [
+      "campo motion mapea directamente → primera frase",
+      "one move per cut → primera frase"
+     ]
+    },
+    {
+     "id": "b836ffe9a616",
+     "elementos": [
+      "don't stack two camera moves inside one cut → segunda frase",
+      "one move per cut → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0032.1.1",
+   "texto": "Proporciones extremas 1:8, 8:1, 1:4, 4:1 (formatos largos horizontales/verticales: banners, scrolls, tiras de cómic): solo Nano Banana las soporta (Extreme Aspect Ratios, NB2 only). GPT Image 2 NO puede con extremos como 1:8 / 8:1 (su máximo es 3:1): ir a Nano Banana.",
+   "cobertura": [
+    {
+     "id": "dd4fb3675559",
+     "elementos": [
+      "tarea: formatos largos horizontales/verticales 1:8, 8:1, 4:1 → primera frase",
+      "modelo Nano Banana, solo NB soporta extremos → primera frase"
+     ]
+    },
+    {
+     "id": "2b1e0d9a7db1",
+     "elementos": [
+      "GPT Image 2 no puede 1:8 / 8:1 → segunda frase",
+      "ir a Nano Banana → segunda frase"
+     ]
+    },
+    {
+     "id": "e3af17a13df6",
+     "elementos": [
+      "NB gana en proporciones extremas 1:8, 8:1, 1:4, 4:1 → primera frase",
+      "banners, scrolls, comic strips → paréntesis",
+      "GPT Image 2 max 3:1 → segunda frase"
+     ]
+    },
+    {
+     "id": "234ee992c854",
+     "elementos": [
+      "Extreme Aspect Ratios NB2 only → primera frase",
+      "1:8, 8:1, 1:4, 4:1 para banners, scrolls, comic strips → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0033.1.1",
+   "texto": "Nano Banana, cuándo pasar de NB2 a NBP: NBP es más lento y más caro y en rostros a veces pierde frente a NB2; para una serie de retratos, probar primero ambos. Régimen 06 (Cuerpo en el pico de esfuerzo), modelo recomendado: rostros: probar NB2 y NBP, NBP a veces sostiene peor los rostros. [FUENTE: image/references/nano-banana.md]",
+   "cobertura": [
+    {
+     "id": "b70139617ac6",
+     "elementos": [
+      "NBP más lento y más caro → primera frase",
+      "en rostros a veces pierde frente a NB2 → primera frase",
+      "serie de retratos: probar ambos primero → primera frase"
+     ]
+    },
+    {
+     "id": "9b22ee2193e3",
+     "elementos": [
+      "régimen 06 → segunda frase",
+      "rostros: probar NB2 y NBP; NBP a veces sostiene peor → segunda frase",
+      "FUENTE nano-banana.md → etiqueta"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0034.1.1",
+   "texto": "Dramaturgia §9 (Environment plays): elegir una presión ambiental por escena y dejar que cargue la emoción; trasladado a un video corto, apoyarse en una sola presión ambiental. En el Mapa del Spot Publicitario es el subproceso E3.4 (Luz, color y ritmo de edición; autoridad: video/dramaturgy.md §9, §10 y §12; entra: escena; sale: presión ambiental, evolución de color, escalera de ritmo; gate: una presión ambiental por escena).",
+   "cobertura": [
+    {
+     "id": "c9d174c3069a",
+     "elementos": [
+      "una presión ambiental por escena que cargue la emoción → primera frase"
+     ]
+    },
+    {
+     "id": "6ba408a92f33",
+     "elementos": [
+      "en video corto apoyarse en una presión ambiental → primera frase"
+     ]
+    },
+    {
+     "id": "22101f9544cf",
+     "elementos": [
+      "E3.4 Luz, color y ritmo de edición → segunda frase",
+      "autoridad dramaturgy §9, §10, §12 → segunda frase",
+      "entra escena; sale presión ambiental, evolución de color, escalera de ritmo → segunda frase",
+      "gate una presión ambiental por escena → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0034.2.1",
+   "texto": "Una sola presión ambiental por panel. Régimen 07 (Luz y clima): rayo, o lluvia, o niebla; apilar humo, niebla y spray produce barro. Régimen 02 (Ruptura de superficie): la salpicadura ya es la atmósfera; no sumar niebla, lluvia o spray adicional. [FUENTE: video/references/race-and-speed.md §7]",
+   "cobertura": [
+    {
+     "id": "faab069e19df",
+     "elementos": [
+      "régimen 07 ley 7 → segunda frase",
+      "rayo, o lluvia, o niebla → segunda frase",
+      "apilar humo, niebla y spray produce barro → segunda frase"
+     ]
+    },
+    {
+     "id": "173f06326510",
+     "elementos": [
+      "régimen 02 luz → tercera frase",
+      "salpicadura ya es la atmósfera; no sumar niebla, lluvia o spray → tercera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0035.1.1",
+   "texto": "Nano Banana tiende al HDR sobrecocido / sobresaturación (fallo conocido): pedir \"natural contrast, no HDR look\". Por régimen: 01 Agua en superficie: el agua y el spray disparan la tendencia a sobrecocer el HDR. 03 Subacuático: el azul profundo dispara el HDR sobrecocido. 07 Luz y clima: sin HDR sobrecocido, los cielos de tormenta y los amaneceres disparan la sobresaturación; fallo conocido \"cielo HDR de postal\": pedir contraste natural y negros aplastados. [FUENTE: image/references/nano-banana.md]",
+   "cobertura": [
+    {
+     "id": "dbb2373404eb",
+     "elementos": [
+      "NB tiende a overcooked HDR / sobresaturación → primera frase",
+      "pedir 'natural contrast, no HDR look' → primera frase"
+     ]
+    },
+    {
+     "id": "657e5f60c64c",
+     "elementos": [
+      "régimen 03: azul profundo dispara HDR; pedir la frase → régimen 03"
+     ]
+    },
+    {
+     "id": "762d0ab4008a",
+     "elementos": [
+      "régimen 01: agua y spray disparan HDR; pedir la frase → régimen 01"
+     ]
+    },
+    {
+     "id": "85cc066edd95",
+     "elementos": [
+      "régimen 07 luz: sin HDR; tormenta y amaneceres disparan sobresaturación; pedir la frase → régimen 07"
+     ]
+    },
+    {
+     "id": "050f92fd2123",
+     "elementos": [
+      "régimen 07 fallo: cielo HDR de postal → contraste natural y negros aplastados → régimen 07"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0036.1.1",
+   "texto": "Visual Prompt Forge, Hard rule 3 (\"Series_lock anchors are verbatim\"): los strings `environment`, `lighting` y `color_grade` del series_lock fluyen a cada prompt verbatim; eso produce la consistencia visual entre shots, y si se parafrasean o varían, los shots dejan de coincidir. `validate_prompts.py` (Project checks en los tools de brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic y visual-prompt-forge) existe por este chequeo verbatim: la consistencia de la serie depende de que las anclas del series_lock lleguen sin editar a cada prompt, y es la regla más fácil de romper del kit, porque parafrasear un ancla es lo que se siente como escribir buena prosa. Una pasada cuidadosa de autoría sobre un storyboard de siete shots derivó en ella siete de siete veces con todos los demás validadores en verde, y lo mismo el fixture worked-run del repo.",
+   "cobertura": [
+    {
+     "id": "a54b47c3400e",
+     "elementos": [
+      "Rule 3 Series_lock anchors are verbatim → primera frase",
+      "environment, lighting, color_grade fluyen verbatim a cada prompt → primera frase",
+      "produce consistencia visual; parafrasear o variar → shots no coinciden → primera frase"
+     ]
+    },
+    {
+     "id": "ee6c7dbc63ff",
+     "elementos": [
+      "validate_prompts.py en los tools README de los cinco skills → segunda frase",
+      "el chequeo verbatim es la razón del archivo → segunda frase",
+      "anclas sin editar en cada prompt; regla más fácil de romper; parafrasear se siente buena prosa → segunda frase",
+      "storyboard de siete shots derivó 7/7 con validadores en verde; también el fixture worked-run → frase final"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0036.2.1",
+   "texto": "Layer 2 (Series Lock) de la anatomía de cinco capas: son las anclas fijadas para este storyboard concreto, con fuente `shots.json` → `series_lock`, constantes en todos los shots de ese storyboard. Contiene: ancla de personaje (quién está en cuadro, descrito idéntico en cada shot); descripción del entorno (dónde ocurre la acción, idéntica en cada shot); setup de iluminación (dirección, fuente, temperatura de color, idéntico en cada shot); color grade (look fílmico, idéntico en cada shot).",
+   "cobertura": [
+    {
+     "id": "605d1fdd3217",
+     "elementos": [
+      "character anchor idéntico cada shot → lista",
+      "environment idéntico → lista",
+      "lighting setup dirección, fuente, temperatura de color idéntico → lista",
+      "color grade filmic idéntico → lista"
+     ]
+    },
+    {
+     "id": "93c5d3df3dbc",
+     "elementos": [
+      "qué: anclas fijadas del storyboard → primera frase",
+      "fuente shots.json → series_lock → primera frase",
+      "constante en todos los shots de este storyboard → primera frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0037.1.1",
+   "texto": "Fórmula de escena (ley central de dramaturgia §1; subproceso E3.1 \"Fórmula de escena\" del Mapa del Spot Publicitario, autoridad video/dramaturgy.md §1, entra cada escena del script): antes de escribir un prompt, nombrar cada elemento en una frase: deseo, obstáculo, geometría, mirada y ritmo. Si no puedes (si falta uno), la escena no está lista.",
+   "cobertura": [
+    {
+     "id": "261c9730ab46",
+     "elementos": [
+      "E3.1 Fórmula de escena → paréntesis",
+      "autoridad dramaturgy §1; entra cada escena del script → paréntesis",
+      "sale deseo, obstáculo, geometría, mirada, ritmo en una frase → primera frase",
+      "gate: si falta uno, la escena no está lista → segunda frase"
+     ]
+    },
+    {
+     "id": "6db06fa6ae20",
+     "elementos": [
+      "antes de escribir un prompt, nombrar cada uno en una frase → primera frase",
+      "si no puedes, la escena no está lista → segunda frase"
+     ]
+    }
+   ]
+  },
+  {
+   "grupo": "DUP-0037.2.1",
+   "texto": "Una escena existe solo cuando están presentes los cinco elementos de la fórmula; si falta cualquiera, la escena se colapsa en decoración. Chequeo de dramaturgia antes de enviar cualquier prompt, pregunta 1: ¿está completa la fórmula de escena? (desire + obstacle + geometry + gaze + rhythm).",
+   "cobertura": [
+    {
+     "id": "3665c4dc5f92",
+     "elementos": [
+      "si falta un elemento, la escena colapsa en decoración → primera frase"
+     ]
+    },
+    {
+     "id": "4c636ff18836",
+     "elementos": [
+      "dramaturgy check pregunta 1: ¿fórmula completa? desire + obstacle + geometry + gaze + rhythm → segunda frase"
+     ]
+    },
+    {
+     "id": "df5dfe74be2b",
+     "elementos": [
+      "la escena existe solo con los cinco elementos → primera frase"
+     ]
+    }
+   ]
+  }
+ ]
+}
