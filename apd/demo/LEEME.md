@@ -50,4 +50,7 @@ La app bloquea hasta que el director:
 4. confirme la revisión de reglas heredada (Auditoría → «Confirmar herencia») o la vuelva a revisar;
 5. apruebe la redacción de cada texto (hash exacto).
 
+Además, E4 tiene abierto `c1d814f8c059` (forma del rostro, ronda 4): la corrección ya está en los datos de la
+app para proyectos nuevos; en este demo se dejó abierto a propósito para que se vea cómo bloquea un NO_CUMPLE.
+
 Eso es el comportamiento correcto, no una falla: son decisiones de dirección que la app no toma por su cuenta.

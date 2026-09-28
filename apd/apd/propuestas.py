@@ -46,7 +46,7 @@ CASTING_EJEMPLO = {
     "man": [
         {"edad": 28, "origen": "of Punjabi Indian descent",
          "personalidad": "jaw set, shoulders squared, head held level",
-         "rasgos": "square jaw, medium brown skin, dark brown eyes, short neat black beard, thick eyebrows, short side-parted black hair, a nose bridge with a slight bend to the right, navy cotton shirt collar",
+         "rasgos": "square face with a strong jaw, medium brown skin, dark brown eyes, short neat black beard, thick eyebrows, short side-parted black hair, a nose bridge with a slight bend to the right, navy cotton shirt collar",
          "instrumento": "second violin"},
         {"edad": 22, "origen": "of Norwegian descent",
          "personalidad": "broad toothy smile, crinkled eyes, head cocked back a little",
