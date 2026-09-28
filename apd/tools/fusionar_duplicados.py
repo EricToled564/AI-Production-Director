@@ -13,7 +13,8 @@ Dos formas de ejecutar cada paso:
 - por lotes en archivo: python3 tools/fusionar_duplicados.py lotes <paso>  escribe data/fusion_lotes/<paso>/NNN.in.json
   con instrucciones + datos; quien procese el lote (p. ej. un subagente) escribe NNN.out.json con el mismo formato
   JSON que devolvería la API; python3 tools/fusionar_duplicados.py importar <paso>  valida cada salida (ids completos,
-  temas de la lista, ids de grupo válidos) y la carga. Pasos por lotes: enunciar, agrupar, fusionar, verificar.
+  temas de la lista, ids de grupo válidos) y la carga. Pasos por lotes: enunciar, agrupar, refinar (parte los componentes grandes o mixtos
+  formados por encadenamiento en subgrupos de una sola regla), fusionar, verificar.
 Uso: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar|estado|lotes <paso>|importar <paso>
 """
 
@@ -119,6 +120,16 @@ enunciado). Encuentra los registros que establecen LA MISMA REGLA aunque estén 
   con la regla que ilustra.
 Devuelve JSON {"grupos": [{"ids": [...], "relacion": "misma_regla" | "misma_regla_otro_alcance",
 "regla": "la regla común en una frase"}]}. Solo grupos de 2 o más ids del listado."""
+
+SIS_REFINAR = """Recibes componentes de duplicados formados al unir grupos que compartían registros; por encadenamiento
+un componente puede mezclar reglas relacionadas pero DISTINTAS. Para cada componente, pártelo en subgrupos donde cada
+subgrupo sea UNA sola regla (misma obligación, prohibición, límite o instrucción; un miembro puede ser más completo o
+repetir la regla en un checklist, fallo conocido o resumen). Un miembro que no es la misma regla que ningún otro queda
+en "sueltos". No juntes una regla general con una variante que añade condiciones o valores propios, ni reglas de
+regímenes o modelos distintos salvo que el contenido normativo sea idéntico (entonces relacion = misma_regla_otro_alcance).
+Devuelve JSON {"componentes": [{"grupo": "DUP-....", "subgrupos": [{"ids": [...], "relacion": "misma_regla" |
+"misma_regla_otro_alcance", "regla": "la regla común en una frase"}], "sueltos": [ids]}]}; cada id del componente
+aparece exactamente una vez (en un subgrupo o en sueltos)."""
 
 SIS_FUSIONAR = """Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:
 - Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.
@@ -358,6 +369,15 @@ def cmd_lotes(a):
         for tema, k, n, v in ventanas_por_tema(c):
             lotes.append({"paso": "agrupar", "instrucciones": SIS_AGRUPAR, "tema": tema, "descripcion_tema": TEMAS.get(tema, ""),
                           "ventana": f"{k} de {n}", "filas": [{"id": r, "alcance": al, "enunciado": e} for r, al, e in v]})
+    elif a.paso == "refinar":
+        en = {r: (e, al) for r, e, al in c.execute("select registro_id, enunciado, alcance from registros_enunciado")}
+        items = []
+        for g, dd in grupos_actuales(c).items():
+            if len(dd["ids"]) >= 4 or dd["rel"] == "mixta":
+                miembros = [{"id": i, "alcance": en[i][1], "enunciado": en[i][0], "texto": texto[i][:1200]} for i in dd["ids"]]
+                items.append(({"grupo": g, "miembros": miembros}, sum(len(m["texto"].split()) + 30 for m in miembros)))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 30):
+            lotes.append({"paso": "refinar", "instrucciones": SIS_REFINAR, "componentes": lote})
     elif a.paso == "fusionar":
         hechos_f = {g for (g,) in c.execute("select grupo from registros_fusion where verificado = 1")}
         items = []
@@ -425,6 +445,21 @@ def cmd_importar(a):
                     c.execute("insert into _grupos_crudos values (?,?,?,?)",
                               (fin.name, json.dumps(ids), g.get("relacion", "misma_regla"), g.get("regla", "")))
                     n += 1
+        elif a.paso == "refinar":
+            out = {x.get("grupo"): x for x in r.get("componentes", [])}
+            for comp in lote["componentes"]:
+                g, ids = comp["grupo"], [m["id"] for m in comp["miembros"]]
+                x = out.get(g)
+                vistos = [i for sg in (x or {}).get("subgrupos", []) for i in sg.get("ids", [])] + list((x or {}).get("sueltos", []))
+                if x is None or sorted(vistos) != sorted(ids):
+                    errores.append(f"{fout.name}: {g} no reparte cada id exactamente una vez")
+                    continue
+                c.execute("delete from registros_grupo where grupo = ?", (g,))
+                for k, sg in enumerate([sg for sg in x["subgrupos"] if len(sg["ids"]) >= 2], 1):
+                    for i in sg["ids"]:
+                        c.execute("insert into registros_grupo values (?,?,?,?)",
+                                  (f"{g}.{k}", i, sg.get("relacion", "misma_regla"), sg.get("regla", "")))
+                n += 1
         elif a.paso == "fusionar":
             out = {x.get("grupo"): x for x in r.get("fusiones", [])}
             for item in lote["grupos"]:
@@ -471,7 +506,7 @@ def cmd_estado(_a):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar"])
-    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "fusionar", "verificar"])
+    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "fusionar", "verificar"])
     a = ap.parse_args()
     if a.accion in ("lotes", "importar"):
         if not a.paso:
