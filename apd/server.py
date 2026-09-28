@@ -88,9 +88,14 @@ def vista_proyecto(pid, n=None):
     mod = e["spec"]["comunes"]["modelo"]["valor"] or ""
     plantilla = PB.vista(e["spec"], fmt0 or ("nano-banana" if mod.startswith("nano-banana") else mod))
     reg = P.registro()
-    n_lotes = -(-len(reg.reglas) // RV.LOTE)
-    est = dict(RV.estimar(reg, n_lotes), perfiles=len(e["ledgers"]),
-               nota="Se revisan TODAS las reglas de cada perfil; el ahorro sólo viene de compartir perfil entre entregas, nunca de recortar reglas.")
+    modo = RV.modo_revision()
+    n_rev = max((sum(1 for d in led["decisiones"].values() if RV.abierta(d)) if modo == "abiertas" else len(reg.reglas))
+                for led in e["_ledgers_completos"].values()) if e.get("_ledgers_completos") else len(reg.reglas)
+    n_lotes = -(-n_rev // RV.LOTE)
+    est = dict(RV.estimar(reg, n_lotes, n_reglas=n_rev), perfiles=len(e["ledgers"]), modo=modo,
+               nota=(f"La selección mecánica ya decidió las {len(reg.reglas):,} reglas; el modelo sólo revisa las {n_rev} que quedaron "
+                     f"abiertas, en {RV.paralelo()} llamadas simultáneas (APD_REVISION=todas para revisar todo el medio).")
+               if modo == "abiertas" else "Se re-revisan TODAS las reglas del medio de cada perfil (APD_REVISION=todas).")
     return {"id": pid, "version": n, "estimacion": est, "plantilla": plantilla, "plantilla_info": e["spec"].get("plantilla_info"), "brief": e["brief"], "spec": e["spec"], "plan": e["plan"], "preflight": e["preflight"],
             "ledgers": e["ledgers"], "entregas": entregas, "diferencias": e.get("diferencias"),
             "versiones": ST.versiones(pid), "etapas": e.get("etapas", {}), "visual": vis,
