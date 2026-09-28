@@ -14,7 +14,8 @@ Dos formas de ejecutar cada paso:
   con instrucciones + datos; quien procese el lote (p. ej. un subagente) escribe NNN.out.json con el mismo formato
   JSON que devolvería la API; python3 tools/fusionar_duplicados.py importar <paso>  valida cada salida (ids completos,
   temas de la lista, ids de grupo válidos) y la carga. Pasos por lotes: enunciar, agrupar, refinar (parte los componentes grandes o mixtos
-  formados por encadenamiento en subgrupos de una sola regla), fusionar, verificar.
+  formados por encadenamiento en subgrupos de una sola regla), confirmar (cada grupo se revisa con el documento y la
+  ruta de encabezados de cada miembro, que fijan su alcance), fusionar, verificar.
 Uso: python3 tools/fusionar_duplicados.py enunciar|agrupar|fusionar|estado|lotes <paso>|importar <paso>
 """
 
@@ -131,11 +132,24 @@ Devuelve JSON {"componentes": [{"grupo": "DUP-....", "subgrupos": [{"ids": [...]
 "misma_regla_otro_alcance", "regla": "la regla común en una frase"}], "sueltos": [ids]}]}; cada id del componente
 aparece exactamente una vez (en un subgrupo o en sueltos)."""
 
+SIS_CONFIRMAR = """Recibes grupos de posibles duplicados. Cada miembro trae su documento de origen, la ruta de encabezados
+bajo la que está (skill › sección › subsección) y su texto completo. El encabezado dice el alcance real de la regla:
+modelo, régimen, etapa, tipo de pieza, caso, checklist o fallo conocido. Para cada grupo decide, leyendo texto Y
+encabezado, qué miembros son la misma regla:
+- misma_regla: misma exigencia con el mismo alcance (la misma regla repetida en otra sección, checklist o resumen).
+- misma_regla_otro_alcance: contenido normativo idéntico pero el encabezado la sitúa en otro modelo, régimen o caso.
+- Si el encabezado muestra que dos miembros regulan cosas distintas (otro paso, otro modelo con otro valor, un ejemplo
+  frente a la regla), sepáralos.
+Devuelve JSON {"componentes": [{"grupo": "...", "subgrupos": [{"ids": [...], "relacion": "misma_regla" |
+"misma_regla_otro_alcance", "regla": "la regla común en una frase, con su alcance"}], "sueltos": [ids]}]}; cada id del
+grupo aparece exactamente una vez."""
+
 SIS_FUSIONAR = """Fusiona registros que establecen la misma regla en UN registro. Reglas de la fusión:
 - Conserva cada exigencia, límite, valor, excepción, ejemplo corto y alcance de cada miembro; nada se pierde.
 - No agregues nada que no esté en algún miembro. Mantén términos técnicos y citas literales (entre comillas) tal
   como aparecen. Escribe en español; los términos y frases de prompt que deben ir en inglés se dejan en inglés.
-- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado.
+- Si los alcances difieren (misma regla para varios modelos), nómbralos todos en el registro fusionado. El alcance lo
+  dicen el documento y el encabezado de cada miembro (campo ubicaciones): consérvalo en el texto fusionado.
 Devuelve JSON {"texto": "registro fusionado", "cobertura": [{"id": "...", "elementos": ["cada exigencia del
 miembro y dónde quedó en el texto"]}]}"""
 
@@ -378,13 +392,27 @@ def cmd_lotes(a):
                 items.append(({"grupo": g, "miembros": miembros}, sum(len(m["texto"].split()) + 30 for m in miembros)))
         for lote in por_presupuesto(items, PALABRAS_LOTE, 30):
             lotes.append({"paso": "refinar", "instrucciones": SIS_REFINAR, "componentes": lote})
+    elif a.paso == "confirmar":
+        ubic: dict[str, list] = {}
+        for rid, arch, sec in c.execute("select registro_id, archivo, seccion from registros_fuente"):
+            ubic.setdefault(rid, []).append({"documento": arch, "encabezado": sec or ""})
+        items = []
+        for g, dd in grupos_actuales(c).items():
+            miembros = [{"id": i, "ubicaciones": ubic.get(i, []), "texto": texto[i][:2500]} for i in dd["ids"]]
+            items.append(({"grupo": g, "miembros": miembros},
+                          sum(len(m["texto"].split()) + 15 * len(m["ubicaciones"]) for m in miembros)))
+        for lote in por_presupuesto(items, PALABRAS_LOTE, 80):
+            lotes.append({"paso": "confirmar", "instrucciones": SIS_CONFIRMAR, "componentes": lote})
     elif a.paso == "fusionar":
         hechos_f = {g for (g,) in c.execute("select grupo from registros_fusion where verificado = 1")}
+        ubic = {}
+        for rid, arch, sec in c.execute("select registro_id, archivo, seccion from registros_fuente"):
+            ubic.setdefault(rid, []).append({"documento": arch, "encabezado": sec or ""})
         items = []
         for g, dd in grupos_actuales(c).items():
             if g in hechos_f:
                 continue
-            miembros = [{"id": i, "texto": texto[i]} for i in dd["ids"]]
+            miembros = [{"id": i, "ubicaciones": ubic.get(i, []), "texto": texto[i]} for i in dd["ids"]]
             previo = c.execute("select faltan from registros_fusion where grupo = ?", (g,)).fetchone()
             item = {"grupo": g, "relacion": dd["rel"], "regla_comun": dd["regla"], "miembros": miembros}
             if previo and previo[0] not in (None, "[]"):
@@ -398,6 +426,9 @@ def cmd_lotes(a):
         items = []
         for g, t, miembros in c.execute("select grupo, texto, miembros from registros_fusion where verificado is null"):
             orig = [{"id": i, "texto": texto[i]} for i in json.loads(miembros)]
+            for o in orig:
+                o["ubicaciones"] = [{"documento": a_, "encabezado": s_ or ""} for a_, s_ in c.execute(
+                    "select archivo, seccion from registros_fuente where registro_id = ?", (o["id"],))]
             items.append(({"grupo": g, "originales": orig, "fusionado": t},
                           sum(len(o["texto"].split()) for o in orig) + len(t.split())))
         for lote in por_presupuesto(items, PALABRAS_LOTE, 40):
@@ -445,7 +476,7 @@ def cmd_importar(a):
                     c.execute("insert into _grupos_crudos values (?,?,?,?)",
                               (fin.name, json.dumps(ids), g.get("relacion", "misma_regla"), g.get("regla", "")))
                     n += 1
-        elif a.paso == "refinar":
+        elif a.paso in ("refinar", "confirmar"):
             out = {x.get("grupo"): x for x in r.get("componentes", [])}
             for comp in lote["componentes"]:
                 g, ids = comp["grupo"], [m["id"] for m in comp["miembros"]]
@@ -506,7 +537,7 @@ def cmd_estado(_a):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["enunciar", "agrupar", "fusionar", "estado", "lotes", "importar"])
-    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "fusionar", "verificar"])
+    ap.add_argument("paso", nargs="?", choices=["enunciar", "agrupar", "refinar", "confirmar", "fusionar", "verificar"])
     a = ap.parse_args()
     if a.accion in ("lotes", "importar"):
         if not a.paso:
