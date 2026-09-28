@@ -33,6 +33,8 @@ async function init() {
   $('#ver').textContent = `registro ${S.cfg.registro}`;
   $('#ia').innerHTML = ia.disponible ? `${pill('modelo', 'ok')} ${esc(ia.proveedor)} · ${esc(ia.modelo)}`
     : `${pill('sin modelo', 'warn')} <span class="small">${esc(ia.motivo)} La revisión automática está desactivada; puede inspeccionar, decidir a mano o importar una revisión externa.</span>`;
+  if (S.cfg.falta_clave_app) $('#ia').innerHTML += `<div class="err small">Falta APP_PASSWORD en el entorno del servidor: la liga pública no abre la API hasta configurarla.</div>`;
+  else if (S.cfg.almacenamiento_temporal) $('#ia').innerHTML += `<div class="err small">Almacenamiento temporal: sin TURSO_DATABASE_URL y TURSO_AUTH_TOKEN los proyectos se pierden cuando el servidor se reinicia.</div>`;
   $('#btnNuevo').onclick = () => { S.pid = null; S.p = null; S.tab = 'brief'; render(); };
   await listar();
   try { const u = new URL(location); if (u.searchParams.get('p')) await abrir(u.searchParams.get('p')); } catch (e) {}
@@ -107,17 +109,20 @@ function vPlan() {
   const p = S.p, pl = p.plan;
   const amb = p.spec.ambiguedades || [];
   $('#main').innerHTML = cab('Plan', `Recorrido <b>${esc(pl.recorrido)}${pl.subtipo ? ' · ' + esc(pl.subtipo) : ''}${pl.track ? ' · track ' + esc(pl.track) : ''}</b> — ${esc(pl.motivo)}`) + `
-  ${p.plantilla ? `<div class="card"><h3>Brief en plantilla</h3>
-    ${p.plan_aprobado ? `<div class="okbox small">Plantilla y plan aprobados${p.aprobacion_plan?.aprobada ? ` por ${esc(p.aprobacion_plan.aprobada.autor)} (${esc(p.aprobacion_plan.aprobada.fecha)})` : ''}. Los prompts se compilaron y la auditoría automática ya corrió.</div>`
-      : `<div class="row"><button class="prim" id="aprPlan">Aprobar plantilla y plan → generar prompt</button><span class="small mute">Revise la tabla y corrija en Especificación lo que no le guste. Ningún prompt se genera antes de esta aprobación.</span></div>`}
-    ${p.plantilla_info?.modelo?.error ? `<div class="err small">El modelo no pudo rellenar la plantilla; se usaron las reglas deterministas. Motivo: <span class="mono small">${esc(p.plantilla_info.modelo.error)}</span></div>`
-      : p.plantilla_info?.modelo ? `<p class="small">${pill('modelo', 'ok')} rellenó ${(p.plantilla_info.modelo.campos || []).length} campos.</p>` : ''}
-    <p class="small mute">Bloques alineados con las facetas de la base de reglas y con los bloques del prompt. Cámara, luz, lugar y ángulo no se preguntan: se infieren de lo que diste y se pueden editar en Especificación. Nivel 0 = medio, 1 = tipo de pieza (cambiarlo re-revisa sólo reglas de ese medio), 2 = contenido de un bloque (cambio quirúrgico).</p>
-    <table><tr><th>Nivel</th><th>Bloque</th><th>Valor</th><th>Origen</th><th>Va al prompt en</th></tr>
-    ${p.plantilla.map(f => f.campos.map((c, i) => `<tr><td>${i ? '' : f.nivel}</td><td>${i ? '' : `<b>${esc(f.nombre)}</b>${f.faceta ? ` <span class="small mute mono">${esc(f.faceta)}</span>` : ''}`}<br><span class="small mono">${esc(c.campo)}</span></td>
-      <td class="small">${c.estado === 'OPEN' ? pill('falta', 'bad') : c.estado === 'NO_APLICA' ? pill('no aplica', '') : esc(Array.isArray(c.valor) ? c.valor.join(', ') : c.valor)}</td>
-      <td class="small" title="${esc(c.fuente || '')}">${c.origen ? pill(c.origen, /inferido|propuesta/.test(c.origen) ? 'info' : c.origen === 'brief' || c.origen === 'usuario' ? 'ok' : '') : ''}</td>
-      <td class="small mono">${esc((c.slot || []).join(', '))}</td></tr>`).join('')).join('')}</table></div>` : ''}
+  ${p.plantilla ? (() => {
+    const faltan = p.plantilla.flatMap(f => f.campos.filter(c => c.estado === 'OPEN').map(c => c.campo));
+    const val = c => c.valor == null ? '' : (typeof c.valor === 'object' ? (Array.isArray(c.valor) && c.valor.every(x => typeof x !== 'object') ? c.valor.join(', ') : JSON.stringify(c.valor)) : String(c.valor));
+    return `<div class="card"><h3>Brief en plantilla</h3>
+    ${p.plan_aprobado ? `<div class="okbox small">Aprobado${p.aprobacion_plan?.aprobada ? ` por ${esc(p.aprobacion_plan.aprobada.autor)}` : ''}. Puede seguir editando aquí: cada cambio recompila sólo su bloque del prompt.</div>`
+      : `<p class="small">Revise y corrija lo que quiera directamente en la tabla. Ningún prompt se genera hasta que apruebe.${faltan.length ? ` <b>Falta: ${esc(faltan.join(', '))}.</b>` : ''}</p>`}
+    ${p.plantilla_info?.modelo?.error ? `<div class="err small">El modelo no pudo rellenar la plantilla; se usaron las reglas deterministas. Motivo: <span class="mono small">${esc(p.plantilla_info.modelo.error)}</span></div>` : ''}
+    <table class="plantilla"><tr><th>Bloque</th><th>Valor</th><th>De dónde sale</th></tr>
+    ${p.plantilla.map(f => f.campos.map((c, i) => `<tr class="${c.estado === 'OPEN' ? 'falta' : ''}"><td>${i ? '' : `<b>${esc(f.nombre)}</b>`}${f.campos.length > 1 ? `<br><span class="small mute">${esc(c.campo)}</span>` : ''}</td>
+      <td><input type="text" data-pruta="${esc(c.ruta)}" data-orig="${esc(val(c))}" value="${esc(val(c))}" placeholder="${c.estado === 'OPEN' ? 'falta: escríbalo aquí' : c.estado === 'NO_APLICA' ? 'no aplica (puede escribir un valor)' : ''}"></td>
+      <td class="small" title="${esc(c.fuente || '')}">${c.estado === 'OPEN' ? pill('falta', 'bad') : c.origen ? pill(c.origen, /inferido|propuesta/.test(c.origen) ? 'info' : c.origen === 'brief' || c.origen === 'usuario' ? 'ok' : '') : ''}</td></tr>`).join('')).join('')}</table>
+    <div class="row" style="margin-top:10px"><button id="guardarPl">Guardar cambios</button>
+      ${p.plan_aprobado ? '' : `<button class="prim" id="aprPlan" ${faltan.length ? 'disabled title="Complete primero lo que falta"' : ''}>Aprobar y generar prompt</button>`}</div></div>`; })() : ''}
+  <details class="card"><summary><b>Detalle técnico del plan</b> <span class="small mute">(recorrido, etapas, subprocesos, entregables)</span></summary>
   ${amb.length ? `<div class="card"><h3>Falta y no se puede inferir (${amb.length})</h3><ul>${amb.map(a => `<li>${a.decisiva ? pill('decisiva', 'bad') : pill('abierta', 'warn')} <b>${esc(a.campo)}</b> — ${esc(a.motivo)}</li>`).join('')}</ul>
     ${p.propuestas.length ? `<div class="row"><button class="prim" id="acepta">Aceptar ${p.propuestas.length} propuestas</button><button id="verProp">Ver propuestas</button><span class="small mute">Las propuestas llevan su clase (fuente citada o creativa de la app). Puede editarlas en Especificación.</span></div>` : ''}</div>` : `<div class="okbox">Sin ambigüedades abiertas.</div>`}
   <div class="card"><h3>Etapas</h3><table><tr><th>Etapa</th><th>Aplica</th><th>Entra → sale</th><th>Gate</th><th>Razón</th></tr>
@@ -132,8 +137,16 @@ function vPlan() {
      <p class="small mute">${esc(pl.gates[0]?.fuente || '')}</p></div>` : ''}
   ${pl.recorrido === 'SPOT' ? `<div class="card"><h3>shots.json</h3><p class="small">Desde E4 shots.json es la fuente de verdad (APD §6.3). Cargue el archivo: se valida contra <span class="mono">shots.schema.json</span> original y cada shot produce un ancla FF y un clip vinculados.</p>
      <input type="file" id="shotsF" accept=".json"><div class="row"><label class="small">Modelo imagen <select id="shMi"><option>gpt-image-2</option><option>nano-banana-pro</option></select></label><label class="small">Modelo video <select id="shMv"><option>kling</option><option>veo</option><option>seedance</option></select></label><button id="shGo">Cargar shots</button></div></div>` : ''}
-  <div class="card"><h3>Entregables (${Object.keys(p.entregas).length})</h3><table>${Object.values(p.entregas).map(e => `<tr><td class="mono">${esc(e.id)}</td><td>${esc(e.casos.join('/'))}</td><td class="small">${esc(e.perfil_etiqueta)}</td><td class="small">${e.bloqueo ? pill('bloqueada', 'warn') + ' ' + esc(e.bloqueo) : pill('compilada', 'info')}</td></tr>`).join('')}</table></div>`;
-  const ap = $('#aprPlan'); if (ap) ap.onclick = async () => { ap.disabled = true; ap.textContent = 'Generando prompt y auditando…'; try { S.p = await api(`/api/proyectos/${S.pid}/aprobar-plan`, {method: 'POST', body: {}}); S.tab = 'prompts'; render(); } catch (x) { aviso(x.message); ap.disabled = false; } };
+  <div class="card"><h3>Entregables (${Object.keys(p.entregas).length})</h3><table>${Object.values(p.entregas).map(e => `<tr><td class="mono">${esc(e.id)}</td><td>${esc(e.casos.join('/'))}</td><td class="small">${esc(e.perfil_etiqueta)}</td><td class="small">${e.bloqueo ? pill('bloqueada', 'warn') + ' ' + esc(e.bloqueo) : pill('compilada', 'info')}</td></tr>`).join('')}</table></div></details>`;
+  const cambiosPlantilla = () => [...document.querySelectorAll('[data-pruta]')].filter(i => i.value.trim() !== i.dataset.orig.trim()).map(i => {
+    let v = i.value.trim();
+    if (/^[\[{]/.test(v)) { try { v = JSON.parse(v); } catch (e) {} }
+    return {ruta: i.dataset.pruta, valor: v === '' ? null : v};
+  });
+  const guardar = async () => { const c = cambiosPlantilla(); if (c.length) await api(`/api/proyectos/${S.pid}/campos`, {method: 'POST', body: {cambios: c, nota: 'edición en la plantilla'}}); return c.length; };
+  document.querySelectorAll('[data-pruta]').forEach(i => i.oninput = () => { const ap = $('#aprPlan'); if (ap) { ap.disabled = false; ap.title = ''; } });
+  const gp = $('#guardarPl'); if (gp) gp.onclick = async () => { gp.disabled = true; try { const n = await guardar(); await recargar(); aviso(n ? `${n} cambio(s) guardado(s).` : 'No hay cambios.', 'ok'); } catch (x) { aviso(x.message); gp.disabled = false; } };
+  const ap = $('#aprPlan'); if (ap) ap.onclick = async () => { ap.disabled = true; ap.textContent = 'Generando prompt y auditando…'; try { await guardar(); S.p = await api(`/api/proyectos/${S.pid}/aprobar-plan`, {method: 'POST', body: {}}); S.tab = 'prompts'; render(); } catch (x) { aviso(x.message); await recargar(); } };
   const a = $('#acepta'); if (a) a.onclick = async () => { await api(`/api/proyectos/${S.pid}/propuestas`, {method: 'POST', body: {}}); await recargar(); };
   const vp = $('#verProp'); if (vp) vp.onclick = () => modal(`<h3>Propuestas</h3><table><tr><th>Campo</th><th>Valor</th><th>Clase</th><th>Fuente</th></tr>${S.p.propuestas.map(x => `<tr><td class="mono">${esc(x.ruta)}</td><td>${esc(x.valor ?? x.estado)}</td><td>${pill(x.clase, x.clase === 'fuente' ? 'info' : 'warn')}</td><td class="small">${esc(x.fuente || x.motivo)}</td></tr>`).join('')}</table>`);
   document.querySelectorAll('[data-gate]').forEach(b => b.onclick = async () => { const art = prompt(`Artefacto aprobado para ${b.dataset.gate} (texto o referencia; queda con hash):`, ''); if (art === null) return; await api(`/api/proyectos/${S.pid}/gates`, {method: 'POST', body: {gate: b.dataset.gate, artefacto: art}}); await recargar(); });
@@ -181,23 +194,27 @@ function niveles(lib) {
 function vPrompts() {
   const e = S.p.entregas[S.ent];
   const lib = e.liberacion;
-  $('#main').innerHTML = cab('Prompt', 'Texto final renderizado desde bloques. Pase el cursor por un bloque para ver qué regla y qué campo lo respaldan.') + `
-  <div class="card"><div class="row">${selEntrega()} <span class="small mute">${esc(e.perfil_etiqueta)}</span></div>
-  ${e.bloqueo ? `<div class="err">No compilada: ${esc(e.bloqueo)}</div>` : `
-  ${niveles(lib)}
-  <div class="row"><b>Estado de liberación:</b> ${lib.liberable ? pill('LIBERABLE', 'ok') : pill('BLOQUEADA', 'bad')}<span class="small mute">Nunca se presenta como "fail free": son cuatro estados distintos.</span></div>
-  ${lib.bloqueos.length ? `<ul class="bloqueos small">${lib.bloqueos.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : ''}
-  <div class="grid2"><div><div class="lbl">Texto final <span class="mono">sha256 ${esc(e.hash.slice(0, 16))}…</span></div><div class="prompt" id="ptxt">${esc(e.texto)}</div>
-    <div class="row" style="margin-top:8px"><button class="prim" id="copiar" ${lib.liberable ? '' : 'disabled title="Bloqueado: ver lista"'}>Copiar prompt final</button>
+  $('#main').innerHTML = cab('Prompt', '') + `
+  <div class="card">${Object.keys(S.p.entregas).length > 1 ? `<div class="row">${selEntrega()}</div>` : `<div style="display:none">${selEntrega()}</div>`}
+  ${e.bloqueo ? `<div class="err">Aún no hay prompt: ${esc(e.bloqueo)}</div>` : `
+  <div class="prompt" id="ptxt">${esc(e.texto)}</div>
+  <div class="row" style="margin-top:8px"><button class="prim" id="copiar" ${lib.liberable ? '' : 'disabled title="Falta: ver abajo"'}>Copiar prompt final</button>
     <button id="aprobar" ${e.aprobacion && e.aprobacion.texto_hash === e.hash ? 'disabled' : ''}>Aprobar redacción</button>
-    <button id="copiarBorr">Copiar borrador (no liberado)</button></div></div>
-   <div><div class="lbl">Parámetros de la herramienta (fuera del texto)</div><table>${e.parametros.map(p => `<tr><td class="mono">${esc(p.nombre)}</td><td>${esc(Array.isArray(p.valor) ? p.valor.join('; ') : p.valor ?? '—')}</td><td class="small mute">${esc(p.fuente)}</td></tr>`).join('')}</table>
+    <button id="copiarBorr">Copiar borrador</button>
+    <span class="small mute">${e.parametros.filter(p => p.valor != null && p.valor !== '—').map(p => `${esc(p.nombre)}: ${esc(Array.isArray(p.valor) ? p.valor.join('; ') : p.valor)}`).join(' · ')}</span></div>
+  <div class="row" style="margin-top:6px">${lib.liberable ? pill('LISTO', 'ok') + ' <span class="small">listo para copiar y exportar</span>'
+    : pill('FALTA ' + lib.bloqueos.length, 'warn') + ` <span class="small">${esc(lib.bloqueos[0] || '')}${lib.bloqueos.length > 1 ? ` · y ${lib.bloqueos.length - 1} más` : ''}</span>`}</div>
+  <details class="small"><summary>Estados, parámetros y notas de entrega</summary>
+  ${niveles(lib)}
+  ${lib.bloqueos.length ? `<ul class="bloqueos small">${lib.bloqueos.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : ''}
+   <div class="lbl">Texto final <span class="mono">sha256 ${esc(e.hash.slice(0, 16))}…</span> · ${esc(e.perfil_etiqueta)}</div>
+   <div class="lbl">Parámetros de la herramienta (fuera del texto)</div><table>${e.parametros.map(p => `<tr><td class="mono">${esc(p.nombre)}</td><td>${esc(Array.isArray(p.valor) ? p.valor.join('; ') : p.valor ?? '—')}</td><td class="small mute">${esc(p.fuente)}</td></tr>`).join('')}</table>
    <p class="small mute" style="margin-top:6px">Formato ${esc(e.formato)} — ${esc(e.fuente_formato)}</p>
    <div class="lbl" style="margin-top:8px">Notas de entrega (fuera del cuerpo)</div>
    <div class="small">SKILL: ${esc(e.notas.micro_gate.SKILL)}<br>RIESGOS: ${esc(e.notas.micro_gate.RIESGOS)}<br>TÉCNICA: ${esc(e.notas.micro_gate['TÉCNICA'])}</div>
-   <p class="small mute">${esc(e.notas.advertencia)}</p></div></div>`}</div>
-  ${e.bloqueo ? '' : `<div class="card"><h3>Bloques (${e.bloques.length})</h3>${e.bloques.map(b => `<div class="bloque" data-b="${esc(b.id)}"><b>${esc(b.slot)}</b> <span class="small mute">campos: ${esc(b.campos.join(', ') || '—')} · reglas que satisface: ${b.satisface.length}</span><div class="small">${esc(b.texto)}</div></div>`).join('')}</div>
-  <div class="card"><h3>Vínculos</h3><pre class="mono small">${esc(JSON.stringify(e.vinculos, null, 1))}</pre></div>`}`;
+   <p class="small mute">${esc(e.notas.advertencia)}</p></details>`}</div>
+  ${e.bloqueo ? '' : `<details class="card"><summary><b>Bloques del prompt (${e.bloques.length})</b> <span class="small mute">qué campo y qué reglas respaldan cada parte</span></summary>${e.bloques.map(b => `<div class="bloque" data-b="${esc(b.id)}"><b>${esc(b.slot)}</b> <span class="small mute">campos: ${esc(b.campos.join(', ') || '—')} · reglas que satisface: ${b.satisface.length}</span><div class="small">${esc(b.texto)}</div></div>`).join('')}
+  <div class="lbl">Vínculos</div><pre class="mono small">${esc(JSON.stringify(e.vinculos, null, 1))}</pre></details>`}`;
   bindEnt();
   if (e.bloqueo) return;
   document.querySelectorAll('[data-b]').forEach(d => d.onclick = () => {

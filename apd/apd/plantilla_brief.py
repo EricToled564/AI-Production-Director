@@ -214,13 +214,13 @@ def vista(spec: dict, formato: str | None = None) -> list[dict]:
         campos = []
         for k in b["campos"]:
             f = spec["comunes"].get(k) or {}
-            campos.append({"campo": k, "valor": f.get("valor"), "estado": f.get("estado"), "origen": f.get("origen"),
-                           "fuente": f.get("fuente") or f.get("motivo"), "slot": slots.get(k, [])})
+            campos.append({"campo": k, "ruta": f"comunes.{k}", "valor": f.get("valor"), "estado": f.get("estado"),
+                           "origen": f.get("origen"), "fuente": f.get("fuente") or f.get("motivo"), "slot": slots.get(k, [])})
         for e in spec["entregas"]:
             for k in b.get("entrega", []):
                 f = e["campos"].get(k)
                 if f:
-                    campos.append({"campo": f"{e['id']}.{k}", "valor": f.get("valor"), "estado": f.get("estado"),
+                    campos.append({"campo": f"{e['id']}.{k}", "ruta": f"{e['id']}.{k}", "valor": f.get("valor"), "estado": f.get("estado"),
                                    "origen": f.get("origen"), "fuente": f.get("fuente") or f.get("motivo"), "slot": slots.get(k, [])})
         falta = [x["campo"] for x in campos if x["estado"] == "OPEN"]
         filas.append({"bloque": b["id"], "nombre": b["nombre"], "nivel": b["nivel"], "faceta": b["faceta"],

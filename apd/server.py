@@ -27,6 +27,8 @@ sys.path.insert(0, str(AQUI))
 from apd import datos, fuentes as F, ledger as L, llm, proyecto as P, registro as R, sintaxis as SX, store as ST  # noqa: E402
 
 WEB = AQUI / "web"
+# Desplegado en una liga pública (Vercel): la API exige APP_PASSWORD y los proyectos deben ir a Turso.
+PUBLICO = bool(os.environ.get("VERCEL"))
 TIPOS = {".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".mp4": "video/mp4",
          ".json": "application/json"}
@@ -185,6 +187,8 @@ class H(BaseHTTPRequestHandler):
 
     def _auth(self):
         clave = os.environ.get("APP_PASSWORD")
+        if PUBLICO and not clave:
+            return False  # liga pública sin contraseña: nadie puede gastar la clave del modelo
         return not clave or self.headers.get("x-app-password") == clave
 
     def _send(self, code, body, tipo="application/json; charset=utf-8", extra=None):
@@ -212,6 +216,8 @@ class H(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         ruta = u.path
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
+        if q.get("__ruta"):  # despliegue: vercel.json reenvía toda ruta a api/index.py con la original en __ruta
+            ruta = "/" + q.pop("__ruta").lstrip("/")
         try:
             if metodo == "GET" and (ruta == "/" or ruta.startswith("/web/")):
                 p = WEB / ("index.html" if ruta == "/" else ruta[5:])
@@ -219,17 +225,22 @@ class H(BaseHTTPRequestHandler):
                     return self._send(404, {"error": "no existe"})
                 return self._send(200, p.read_bytes(), TIPOS.get(p.suffix, "application/octet-stream"))
             if metodo == "GET" and ruta.startswith("/uploads/"):
-                p = (ST.UPLOADS / ruta.split("/")[-1])
-                if not p.resolve().is_relative_to(ST.UPLOADS.resolve()) or not p.is_file():
+                if not self._auth():
+                    return self._send(401, {"error": "contraseña incorrecta"})
+                data = ST.leer_archivo(ruta.split("/")[-1])
+                if data is None:
                     return self._send(404, {"error": "no existe"})
-                return self._send(200, p.read_bytes(), TIPOS.get(p.suffix, "application/octet-stream"))
+                return self._send(200, data, TIPOS.get(Path(ruta).suffix, "application/octet-stream"))
             if not ruta.startswith("/api/"):
                 return self._send(404, {"error": "ruta desconocida"})
             if ruta == "/api/config":
                 return self._send(200, {"ia": llm.estado(), "clave": bool(os.environ.get("APP_PASSWORD")), "claveOk": self._auth(),
-                                        "registro": _json_file("registro.json")["version"]})
+                                        "registro": _json_file("registro.json")["version"], "almacenamiento": ST.motor(),
+                                        "publico": PUBLICO, "falta_clave_app": PUBLICO and not os.environ.get("APP_PASSWORD"),
+                                        "almacenamiento_temporal": PUBLICO and ST.motor() != "turso"})
             if not self._auth():
-                return self._send(401, {"error": "contraseña incorrecta"})
+                return self._send(401, {"error": "falta configurar APP_PASSWORD en el servidor" if PUBLICO and not os.environ.get("APP_PASSWORD")
+                                        else "contraseña incorrecta"})
             return self._api(metodo, ruta, q)
         except PermissionError as ex:
             return self._send(409, {"error": "no liberable", "detalle": json.loads(str(ex)) if str(ex).startswith("{") else str(ex)})
@@ -255,7 +266,7 @@ class H(BaseHTTPRequestHandler):
             return self._send(200, ficha_regla(partes[1], q.get("pid"), q.get("perfil")))
         if metodo == "POST" and partes == ["importar-rules-sqlite"]:
             b = self._body()
-            tmp = F.DATA / "importado_tmp.sqlite"
+            tmp = Path(__import__("tempfile").gettempdir()) / "apd_importado_tmp.sqlite"
             tmp.write_bytes(base64.b64decode(b["data"]))
             rep = R.validar(tmp, esperado=b.get("esperado", R.CONTEO_DECLARADO))
             rep["comparacion_con_registro_vigente"] = comparar_import(tmp)
