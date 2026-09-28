@@ -66,7 +66,7 @@ NODE_PATH=$(npm root -g) node apd/tools/ui_aceptacion.cjs        # 29 comprobaci
 | `apd/apd/` | motor: `registro`, `spec`, `plan`, `ledger`, `conflictos`, `sintaxis`, `compilador`, `auditoria`, `revision`, `llm`, `proyecto`, `store` |
 | `apd/web/` | interfaz |
 | `apd/tests/` | pruebas |
-| `apd/demo/` | proyecto de demostración (quinteto, 11 versiones): base SQLite, exportación, prompts y auditorías — `APD_DB=apd/demo/demo.sqlite python3 apd/server.py` |
+| `apd/demo/` | proyecto de demostración (quinteto, 13 versiones): base SQLite, exportación, prompts y auditorías — `APD_DB=apd/demo/demo.sqlite python3 apd/server.py` |
 | `apd/evidencia/` | informes de ejecución (tests originales, pruebas de la app) |
 | `apd/CHECKLIST_CUMPLIMIENTO.md` | checklist con evidencia |
 
