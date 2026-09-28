@@ -181,7 +181,7 @@ ids exactos, sin duplicados ni inventados). Todos los veredictos y entradas est�
 | 1 | v6 | 22 / 21 / 13 / 14 / 19 | 10 NO_CUMPLE disputados con autoridad (salían del linter v1.1 sustituido: DECISIONES #2); el resto corregido en bloque fuente: contradicción de altura de cámara, negativos fuera de Constraints, meta del pipeline en el cuerpo, «photoreal», hex del fondo, material de prendas, rasgos de identidad, asimetría facial, mirada de E5 |
 | 2 | v8 | 1 / 1 / 1 / 1 / 6 | lean prose compartida corregida (encuadre duplicado, contexto del casting a notas, mirada de E4); los 5 restantes de E5 = CF-MOTOR-SW30 → conflicto para el director |
 | 3 | v11 | 0 / 0 / 2 / 4 / 1 | E3: tope de 130 palabras disputado con DECISIONES #2 + U-2026-09-28-LONGITUD; E4: «calm» nombra una emoción → corregido en v12–v13 (v12 chocaba con E1 en el umbral de genericidad de la regresión A7); `54a39fd24578` (stock documental) en E3, E4 y E5 queda **para el director**: los revisores discrepan (E1/E2 lo dieron por no aplicable al tratamiento comercial) |
-| 4 | v13 | E4: RONDA4 | sólo E4 (el cambio de v12–v13 invalidó sólo su revisión; E1, E2, E3 y E5 conservan la suya) |
+| 4 | v13 | E4: 1 (`c1d814f8c059`, falta la forma del rostro: «square jaw» no es forma de cara) — corregido en los datos de la app («square face with a strong jaw»); en el demo queda abierto y visible como ejemplo del bloqueo | sólo E4 (el cambio de v12–v13 invalidó sólo su revisión; E1, E2, E3 y E5 conservan la suya) |
 
 ## Decisiones que son del director (la app bloquea hasta que se tomen)
 
