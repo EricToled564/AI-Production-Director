@@ -289,6 +289,12 @@ def parse_md(doc: Doc, solo_secciones: re.Pattern | None = None):
             t = b["txt"]
             if sig["tipo"] in ("lista", "tabla", "codigo") and sig["sec"] == b["sec"] \
                     and (t.rstrip().rstrip("*_").rstrip().endswith(":") or palabras(t) <= 8):
+                if sig["tipo"] == "tabla":
+                    # la frase queda como registro propio; cada fila ya es entera con sus encabezados
+                    emitir(doc, b, None)
+                    emitir(doc, sig, None)
+                    k += 2
+                    continue
                 lead = t
                 n0 = len(doc.unidades)
                 emitir(doc, sig, lead)
@@ -357,6 +363,10 @@ def emitir(doc: Doc, b: dict, lead: str | None):
         if cortos:
             txt = "; ".join(re.sub(r"^\s*([-*+]|\d+[.)])\s+", "", it["txt"]) for it in items)
             doc.unidad("lista_vocabulario", items[0]["ini"], items[-1]["fin"], b["sec"], txt, lead)
+        elif lead:
+            # frase introductoria + su lista = una sola regla; la frase no se repite
+            doc.unidad("lista_con_introduccion", items[0]["ini"], items[-1]["fin"], b["sec"],
+                       "\n".join(it["txt"] for it in items), lead)
         else:
             for it in items:
                 doc.unidad("item", it["ini"], it["fin"], b["sec"], it["txt"], lead)
@@ -943,16 +953,25 @@ def consolidar(docs):
         for pos, k in enumerate(orden, 1):
             d.unidades[k]["parrafo"] = pos
         for u in d.unidades:
-            clave = norm(u["texto"])
+            # la misma regla escrita igual en varios documentos es UN registro con varias ubicaciones
+            clave = norm(u["contenido"])
             rid = hashlib.sha1(clave.encode()).hexdigest()[:12]
             f = {"archivo": d.ruta, "linea_ini": u["ini"], "linea_fin": u["fin"], "seccion": u["seccion"],
                  "parrafo": u["parrafo"], "total": len(d.unidades)}
             if rid in registros:
                 registros[rid]["fuentes"].append(f)
+                if u["seccion"] and u["seccion"] not in registros[rid]["secciones"]:
+                    registros[rid]["secciones"].append(u["seccion"])
             else:
-                registros[rid] = {"id": rid, "texto": u["texto"], "tipo": u["tipo"], "fuentes": [f],
-                                  "palabras": palabras(u["texto"])}
-    return list(registros.values())
+                registros[rid] = {"id": rid, "contenido": u["contenido"], "tipo": u["tipo"], "fuentes": [f],
+                                  "secciones": [u["seccion"]] if u["seccion"] else []}
+    out = []
+    for r in registros.values():
+        pref = f"[{' | '.join(r['secciones'])}] " if r["secciones"] else ""
+        r["texto"] = pref + r["contenido"]
+        r["palabras"] = palabras(r["texto"])
+        out.append(r)
+    return out
 
 
 def guardar(registros, docs, db_path: Path):

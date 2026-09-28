@@ -19,8 +19,23 @@ APD = Path(__file__).resolve().parents[1]
 
 # Columnas de catálogo, en el orden de decisión dictado por el usuario; valores posibles = propuesta a aprobar.
 CATALOGO = [
-    ("Fase del flujo", "E0 Brand Lock · E1 Estrategia creativa · E2 Guion · E3 Dirección cinematográfica · E4 Shot planning · "
-                       "E5 Anclas de imagen · E6 Prompts de video · E7 Paquete y entrega · POST Post-producción · TRANSVERSAL"),
+    # --- 1ª capa: el sistema de clasificación que ya define ai-production-director/SKILL.md ---
+    ("Etapa (director §3)", "0 Brand Lock · 1 Creative Strategy · 2 Screenwriting · 3 Cinematic Direction · 4 Shot Planning · "
+                            "5 Anchor Images · 6 Video Prompts · 7 Package & Delivery · Post-producción (production-package §3) · "
+                            "Gate final (aurora-prompt-linter) · Director (orquestación, todas las etapas)"),
+    ("Sub-skill con autoridad (director §1)", "brand-lock-extractor · creative-strategy.md · screenwriter · video/dramaturgia · "
+                            "storyboard-architect · ai-video-storyboard · image · visual-prompt-forge · visual-asset-critic · "
+                            "video/archivos de modelo · storyboard-html-preview · visual-media (solo §7) · aurora-prompt-linter · "
+                            "produccion-visual-sw30 · regímenes del repo · decisiones del usuario"),
+    ("Autoridad sobre (director §1)", "Parámetros de marca · Estrategia creativa · Estructura narrativa y diálogo · Dramaturgia y "
+                            "lenguaje de cámara · Fuente de verdad estructural · Shot list EXPRESS · Sintaxis final de prompts de imagen · "
+                            "Estructura shots→prompt y loop de revisión · Aceptar/rechazar renders · Sintaxis final de prompts de video · "
+                            "Formato de entrega visual · Proyectos de animación / material didáctico ES · Veto final sobre prompts"),
+    ("Track (director §2)", "EXPRESS · STANDARD · FILM · todos"),
+    ("Gate de la etapa (director §3)", "define o verifica el gate de su etapa · no"),
+    ("Precedencia en conflicto (director §6)", "6.1 vocabulario prohibido gana · 6.2 sintaxis final del modelo destino · "
+                            "6.3 shots.json fuente de verdad · 6.4 forge = flujo de datos, smixs = texto final · 6.5 atribución · no aplica"),
+    # --- 2ª capa: subprocesos (Mapa del Spot) y dimensiones dictadas por el usuario ---
     ("Subproceso", "E0.1–E0.4 · E1.1–E1.5 · E2.1–E2.4 · E3.1–E3.5 · E4.1–E4.6 · E5.1–E5.9 · E6.1–E6.6 · E7.1–E7.4 · POST.1–POST.2"),
     ("Medio", "imagen · video · ambos · documento de preproducción (texto) · proceso"),
     ("Tipo de creación (imagen)", "génesis sin referencias · maestro derivado con referencia (T2, variantes) · cuadro compuesto con "
@@ -50,7 +65,6 @@ CATALOGO = [
     ("Audio", "diálogo · VO · SFX · música · silencio · no aplica"),
     ("Texto en pantalla", "overlay compuesto en post · texto dentro de la imagen · sin texto · no aplica"),
     ("Formato y plataforma", "9:16 social · 16:9 · 1:1 · 4:5 · póster/impreso · slide · UI/app · no aplica"),
-    ("Track", "EXPRESS · STANDARD · FILM · todos"),
     ("Marca", "con brand-lock · logo o producto real · sin marca · no aplica"),
     ("Tipo de registro", "prohibición · obligación · recomendación · sintaxis/plantilla · límite o dato de plataforma · gate/verificación · "
                          "ejemplo · explicación"),
