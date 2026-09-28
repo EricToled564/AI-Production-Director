@@ -1,0 +1,193 @@
+# cwd: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect
+# env: FUPAI_SKILLS_ROOT=/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkg TMPDIR=/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/tmp
+# cmd: bash tools/check.sh
+# date: 2026-09-28T03:11:35Z
+
+shotkit checks, using Python 3.11.15
+
+FAIL  skills: frontmatter
+      ERROR: skills directory not found at /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills
+
+PASS  schemas: are valid schemas
+      Validating 3 schema file(s)
+      
+        ok    templates/run.schema.json
+        ok    templates/shots.schema.json
+        ok    templates/text-overlays.schema.json
+      
+      All schemas valid.
+
+PASS  capabilities: selftest
+        ok    selftest: prose advertising more words than the cap is caught
+        ok    selftest: prose inside the cap passes
+        ok    selftest: an undocumented aspect_param is caught
+        ok    selftest: en dash ranges parse
+        ok    selftest: notes citing more words than the cap are flagged
+        ok    selftest: prose with no word budget reports none
+      
+      Selftest passed.
+
+FAIL  capabilities: matrix
+      Validating capability matrix: skills/visual-prompt-forge/adapters/_capabilities.json
+      
+        FAIL  missing skills/visual-prompt-forge/adapters/_capabilities.json
+      
+      FAILED: 1 error(s) in capability matrix.
+
+PASS  brand-lock: selftest
+        ok    selftest: a complete brand-lock passes
+        ok    selftest: a snapshot with no header is rejected
+        ok    selftest: a snapshot with a full instant header passes
+        ok    selftest: a snapshot with a malformed date is rejected
+        ok    selftest: a snapshot missing its source header is rejected
+        ok    selftest: placeholders pass as a template
+        ok    selftest: placeholders fail under --require-configured
+        ok    selftest: a missing section is caught
+        ok    selftest: a missing palette role warns
+      
+      Selftest passed.
+
+FAIL  brand-lock: packs
+      Validating 4 brand-lock file(s)
+      
+        ok    brand-packs/_template.md
+        warn  brand-packs/_template.md: typography declares no display font in a readable form; expected ``**Display font:** `Font Name Weight` `` with the name backticked immediately after the label
+        warn  brand-packs/_template.md: typography declares no body font in a readable form; expected ``**Body font:** `Font Name Weight` `` with the name backticked immediately after the label
+        warn  brand-packs/_template.md: palette contains template placeholders (#______); fine for a template, not for production work
+        FAIL  brand-packs/whystrohm.md
+              - file does not exist: brand-packs/whystrohm.md
+        FAIL  brand-packs/examples/saas-clean.md
+              - file does not exist: brand-packs/examples/saas-clean.md
+        FAIL  skills/brand-lock-extractor/examples/brand-lock.md
+              - file does not exist: skills/brand-lock-extractor/examples/brand-lock.md
+      
+      FAILED: 3 error(s) across brand-lock files.
+
+PASS  brand-lock: snapshots
+      Validating 3 snapshot file(s)
+      
+        ok    examples/30s-pain-proof-promise/brand-lock.snapshot.md
+        ok    examples/60s-founder-explainer/brand-lock.snapshot.md
+        ok    examples/shotkit-explainer/brand-lock.snapshot.md
+      
+      All snapshot files valid (0 warning(s)).
+
+PASS  shots: selftest
+        ok    selftest: end not after start is caught
+        ok    selftest: gap between shots is caught
+        ok    selftest: overlap between shots is caught
+        ok    selftest: span disagrees with duration is caught
+        ok    selftest: dangling on_screen_text is caught
+        ok    selftest: unreachable overlay is caught
+        ok    selftest: overlay outside its shot window is caught
+        ok    selftest: off-palette overlay color is caught
+        ok    selftest: accepted frame with no critique_ref is caught
+        ok    selftest: unknown generator id is caught
+        ok    selftest: 1.2 feature used in a 1.0 file is caught
+        ok    selftest: a clean shot list passes
+      
+      Selftest passed.
+
+FAIL  shots: bundled examples
+      ERROR: no bundled examples found under /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/storyboard-architect/examples
+
+FAIL  shots: worked run
+        FAIL  skills/visual-asset-critic/examples/worked-run
+              - no shots.json found at this path
+
+FAIL  prompts: selftest
+        FAIL  selftest: a compliant full pass passes -> ["flux.txt: header names generator 'flux', which is not an id in _capabilities.json"]
+        ok    selftest: a paraphrased anchor is caught
+        ok    selftest: a missing shot in a full pass is caught
+        ok    selftest: an aspect mismatch is caught
+        ok    selftest: an over-ceiling prompt is caught
+        ok    selftest: an unknown shot id is caught
+        ok    selftest: a duplicate shot block is caught
+        ok    selftest: an empty prompt body is caught
+        ok    selftest: overlay copy inside a prompt is caught
+        FAIL  selftest: revision subset flagged -> ["revised-flux.txt: header names generator 'flux', which is not an id in _capabilities.json"]
+      
+      Selftest FAILED.
+
+FAIL  prompts: worked run
+      Validating prompt files for 1 target(s)
+      
+        FAIL  skills/visual-asset-critic/examples/worked-run
+              - not a file or directory: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/examples/worked-run
+      
+      FAILED: 1 error(s) across prompt files.
+
+FAIL  critique: selftest
+      Traceback (most recent call last):
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_critique.py", line 385, in <module>
+          sys.exit(main())
+                   ^^^^^^
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_critique.py", line 341, in main
+          return selftest()
+                 ^^^^^^^^^^
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_critique.py", line 293, in selftest
+          validator = Draft202012Validator(_load_schema())
+                                           ^^^^^^^^^^^^^^
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_critique.py", line 62, in _load_schema
+          raise RuntimeError(err)
+      RuntimeError: file does not exist: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/templates/critique.schema.json
+
+FAIL  critique: fixtures
+      ERROR: schema not found at /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/templates/critique.schema.json
+
+FAIL  provenance: selftest
+        FAIL  selftest: the bundled worked run should be clean, got: ['not a directory: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/examples/worked-run']
+        ok    selftest: every shot in the worked run ends on ACCEPT
+      Traceback (most recent call last):
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_provenance.py", line 550, in <module>
+          sys.exit(main())
+                   ^^^^^^
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_provenance.py", line 484, in main
+          return selftest()
+                 ^^^^^^^^^^
+        File "/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/tools/validate_provenance.py", line 400, in selftest
+          shutil.copytree(WORKED_RUN, scratch)
+        File "/usr/lib/python3.11/shutil.py", line 571, in copytree
+          with os.scandir(src) as itr:
+               ^^^^^^^^^^^^^^^
+      FileNotFoundError: [Errno 2] No such file or directory: '/tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/examples/worked-run'
+
+FAIL  provenance: worked run
+      Validating provenance for 1 output tree(s)
+      
+        FAIL  skills/visual-asset-critic/examples/worked-run
+              - not a directory: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/examples/worked-run
+      
+      FAILED: 1 provenance error(s).
+
+FAIL  preview renderer: selftest
+      ERROR: file does not exist: /tmp/claude-0/-home-user-AI-Production-Director/4f9228ba-c36b-512f-a3d1-ea1ba5e4ecb6/scratchpad/origtests2/pkgrun/skills/storyboard-architect/skills/visual-asset-critic/examples/worked-run/shots.json
+
+FAIL  prompt helper: selftest
+        ok    selftest: standard file yields both shots
+        ok    selftest: revision file yields its shot
+        ok    selftest: legacy revision header is tolerated
+        ok    selftest: fix annotations stay out of the copied prompt
+        ok    selftest: fix annotations are captured for display
+        ok    selftest: a file with no shot blocks yields nothing
+        FAIL  selftest: bundled fixture missing: prompts/round-1/flux.txt
+        FAIL  selftest: bundled fixture missing: prompts/round-2/revised-flux.txt
+      
+      Selftest FAILED.
+
+─────────────────────────────────────────
+5 passed, 13 failed
+failed: skills: frontmatter
+failed: capabilities: matrix
+failed: brand-lock: packs
+failed: shots: bundled examples
+failed: shots: worked run
+failed: prompts: selftest
+failed: prompts: worked run
+failed: critique: selftest
+failed: critique: fixtures
+failed: provenance: selftest
+failed: provenance: worked run
+failed: preview renderer: selftest
+failed: prompt helper: selftest
+# EXIT: 1
