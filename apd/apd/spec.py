@@ -22,7 +22,7 @@ import copy
 import re
 import unicodedata
 
-CAMPOS_IMAGEN = ["objetivo", "medio", "modelo", "tipo_tarea", "sujeto", "identidad", "accion", "camara",
+CAMPOS_IMAGEN = ["objetivo", "medio", "modelo", "tipo_tarea", "sujeto", "identidad", "accion", "pose", "camara",
                  "angulo", "lente", "encuadre", "foco", "luz", "fondo", "textura", "tratamiento",
                  "color", "referencias", "restricciones", "formato", "calidad"]
 CAMPOS_VIDEO_EXTRA = ["movimiento", "duracion", "continuidad", "audio"]
@@ -283,7 +283,17 @@ def analizar_determinista(brief: dict) -> dict:
                                      "string quartet": "members of a string quartet"}.get(ctx.group(1), ctx.group(1)),
                                     origen="brief", valor_brief=ctx.group(1))
 
+    # pose/colocación visible en el still: aurora (vocabularies.yaml:516) exige la sección action_or_pose en GPT Image caso 1;
+    # no bloquea el preflight (una pieza puede no tener pose) pero se infiere siempre que haya sujeto
+    comunes["pose"]["prompt_required"] = False
+    comunes["pose"]["motivo"] = "pose o colocación del sujeto en el cuadro (se infiere; aurora action_or_pose)"
+    if casos == ["T1"]:
+        comunes["pose"] = campo(None, estado="NO_APLICA", origen="derivado", prompt_required=False,
+                                motivo="maestro de identidad: la postura va por entrega en 'personalidad' (Expression and posture)")
     # campos que no aplican al medio
+    if medio == "video":
+        comunes["pose"] = campo(None, estado="NO_APLICA", origen="derivado", prompt_required=False,
+                                motivo="video: lo que hace el sujeto va en accion_video")
     if medio == "imagen":
         for k in CAMPOS_VIDEO_EXTRA:
             comunes[k] = campo(None, estado="NO_APLICA", origen="derivado", prompt_required=False,
@@ -300,7 +310,7 @@ def analizar_determinista(brief: dict) -> dict:
 
     if casos == ["T5"]:
         comunes["cambio"] = campo(None, estado="OPEN", motivo="un solo cambio concreto por iteración (gpt-image.md Editing: 'Один edit за итерацию')")
-        for k in ("sujeto", "identidad", "encuadre", "angulo", "camara", "fondo", "luz", "textura", "color", "tratamiento"):
+        for k in ("sujeto", "identidad", "pose", "encuadre", "angulo", "camara", "fondo", "luz", "textura", "color", "tratamiento"):
             comunes[k] = campo(None, estado="NO_APLICA", origen="derivado", prompt_required=False,
                                motivo="edición: lo que no cambia va en Preserve, no se re-describe (SW30 R3/R5)")
     else:
