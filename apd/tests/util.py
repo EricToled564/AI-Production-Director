@@ -12,7 +12,9 @@ _tmp = tempfile.mkdtemp(prefix="apd-test-")
 os.environ["APD_DB"] = str(Path(_tmp) / "proyectos.sqlite")
 os.environ.setdefault("APD_LLM", "none")
 
-from apd import store as ST  # noqa: E402
+from apd import datos, fuentes as F, store as ST  # noqa: E402
+if not F.RULES_DB.exists() or not (F.DATA / "registro.json").exists():
+    datos.construir()  # clon recién descargado: mismo paso que hace server.py al arrancar
 ST.DB = Path(os.environ["APD_DB"])
 from apd import proyecto as P, llm  # noqa: E402
 

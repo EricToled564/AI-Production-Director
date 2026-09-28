@@ -6,8 +6,13 @@ un texto cuyo hash coincide con el auditado. No genera imágenes ni video.
 
 ## 1. Arrancar (≈1 minuto)
 
-Requisitos: Python 3.11+. Opcional: `pip install jsonschema` (valida `shots.json` contra el esquema
-original en spots).
+Requisitos: Python 3.11+ (probado con 3.11 y 3.14) y dos paquetes, listados en `apd/requirements.txt`:
+PyYAML (lo usa el linter aurora original en cada auditoría) y jsonschema (valida `shots.json` en spots y anclas).
+En Ubuntu/WSL: `sudo apt install python3-yaml python3-jsonschema`; en otro entorno: `pip install -r apd/requirements.txt`.
+
+En Windows use WSL (Ubuntu), no Python nativo: el `rule_registry.py` original calcula los ids con la ruta del
+archivo y en Windows la ruta lleva `\`, así que los 1,398 ids cambiarían. Clone la rama `main`:
+`git clone -b main https://github.com/EricToled564/AI-Production-Director.git`.
 
 ```bash
 cd AI-Production-Director
