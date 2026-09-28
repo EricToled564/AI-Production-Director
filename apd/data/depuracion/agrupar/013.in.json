@@ -1,0 +1,1239 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "conducta_agente",
+ "descripcion_tema": "cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar",
+ "filas": [
+  {
+   "id": "03fa6710832f",
+   "alcance": "Decisiones de dirección de Eric Toledano del 2026-09-25",
+   "enunciado": "Las decisiones de dirección las tomó Eric Toledano una por una el 25 de septiembre de 2026, no se reabren en medio de un proyecto y solo se cambian en este documento con fecha.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "f3dcf37941f1",
+   "alcance": "Kling (Kuaishou), kling.md §2; todas las versiones de Kling",
+   "enunciado": "Exige preguntar la versión de Kling del usuario si hay duda, porque el protocolo de prompting difiere entre 1.x-2.x (secciones 4-9) y 3.0 (sección 3).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "e4f35fa51d92",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), aprendizaje 14",
+   "enunciado": "Sin fuga de atributos entre tareas: una tarea nueva no hereda demografía, nacionalidad, etnia, género, vestuario, marca ni otros locks de contenido de una tarea previa salvo herencia explícita en el brief actual.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2 › Trial-specific observations preserved as tests/evidence"
+    }
+   ]
+  },
+  {
+   "id": "c965812b1ab3",
+   "alcance": "Overlay production-learnings.v3.2.json (reglas aprendidas, ensayo de clavado)",
+   "enunciado": "Regla lrn32_qa_before_claim (REQUIRE, prioridad 970, etapas qa/delivery, validador de proceso): no declarar exitoso un asset o modelo antes del QA aplicable, separar checks deterministas de checks visuales semánticos y marcar los hechos del brief no verificables visualmente en lugar de darlos por PASS.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+     "encabezado": "production-learnings.v3.2.json › lrn32_qa_before_claim"
+    }
+   ]
+  },
+  {
+   "id": "504560af75a2",
+   "alcance": "Overlay production-learnings.v3.4.json (control de brief congelado)",
+   "enunciado": "Regla lrn34_required_fields_resolved (REQUIRE, prioridad 1000, etapas prompt/generation/qa, validador determinista): se bloquea la compilación del prompt mientras haya un campo requerido relevante sin resolver; resolverlo desde una fuente autorizada o preguntar al usuario antes de compilar.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.4.json",
+     "encabezado": "production-learnings.v3.4.json › lrn34_required_fields_resolved"
+    }
+   ]
+  },
+  {
+   "id": "eed7f59b1539",
+   "alcance": "Política composition-only-source: imagen aportada solo como referencia de composición, sin pedir generación de referencia",
+   "enunciado": "Cuando el usuario aporta una imagen solo para seguir su composición, inspeccionarla y extraer únicamente hechos espaciales (formato, altura y ángulo de cámara, ubicación y escala del sujeto, espacio negativo, vector de acción, capas, props, profundidad de campo, bandas de horizonte), registrarlos como COMPOSITION LOCKS, no adjuntar la imagen al generador, no copiar identidad, rostro, vestuario, logos, marcas, texturas ni firmas de IA salvo petición, compilar una escena nueva y dejar que los locks de la tarea actual anulen el contexto previo.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/templates/v3.2/composition-only-source.md",
+     "encabezado": "Composition-only source policy"
+    }
+   ]
+  },
+  {
+   "id": "b5b9742f45b1",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), decisiones fuera de la spec",
+   "enunciado": "Decisión 7: el presupuesto de Seedance 2.5 usa 80-150 del adaptador de Seedance 2.0 con nota de que seedance-25.md no fija cifra; se descartó inventar un rango porque SW30 R19 prohíbe afirmar límites de plataforma sin fuente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "405406d36501",
+   "alcance": "Rúbrica de extracción de brand-lock (brand-lock-extractor), sección Palette",
+   "enunciado": "Nunca adivinar un hex: si no se puede leer o muestrear, se estima, se marca needs confirmation y se indica al usuario qué rol verificar (Regla 1 del SKILL).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "encabezado": "Extraction rubric › Palette"
+    }
+   ]
+  },
+  {
+   "id": "31391964143b",
+   "alcance": "Rúbrica de extracción de brand-lock (brand-lock-extractor), sección Typography, fuente screenshots",
+   "enunciado": "En screenshots la fuente se identifica a ojo solo si hay confianza; si no, se marca needs confirmation y no se inventa un nombre plausible (Regla 2).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ]
+  },
+  {
+   "id": "a737e31abdfe",
+   "alcance": "Rúbrica, agregación del veredicto",
+   "enunciado": "Los soft fails se anotan pero no cambian el veredicto por sí solos; si hay tres o más, revisar de nuevo, porque un cúmulo suele esconder un hard fail que se minimizó.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Aggregating verdict"
+    }
+   ]
+  },
+  {
+   "id": "46853aa2d34a",
+   "alcance": "Rúbrica, speed bumps",
+   "enunciado": "No acumular críticas una vez fijado el veredicto: si se rechaza, listar los issues que impulsan el rechazo y no cada preocupación cosmética.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Speed bumps to remember"
+    }
+   ]
+  },
+  {
+   "id": "80a53a859465",
+   "alcance": "Rúbrica, speed bumps",
+   "enunciado": "No criticar lo que no se pidió: si el spec no pedía mood cinematográfico, no decir que podría serlo más.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Speed bumps to remember"
+    }
+   ]
+  },
+  {
+   "id": "51c018bba12e",
+   "alcance": "Rúbrica, speed bumps",
+   "enunciado": "Ser específico siempre: 'la luz está mal' no es crítica, mientras que 'la key está a la derecha pero series_lock dice izquierda' sí lo es.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Speed bumps to remember"
+    }
+   ]
+  },
+  {
+   "id": "7688db646aba",
+   "alcance": "Seedance (familia), seedance.md, §17 Seedance 2.5",
+   "enunciado": "Todo lo específico de 2.5 vive en seedance-25.md (fórmulas oficiales, marcadores `( ) < > { } 【 】`, disciplina de 50 slots, etapas y estados finales, edición, extensión, Ultra Long, blockout/green screen y ejemplos); para cualquier tarea de producción 2.5 leer ese archivo antes de redactar el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 17. Seedance 2.5 → read `seedance-25.md`"
+    }
+   ]
+  },
+  {
+   "id": "9a593d8e2532",
+   "alcance": "Skill image, SKILL.md",
+   "enunciado": "El cuerpo de SKILL.md es deliberadamente delgado para que no se pueda simular un resultado leyéndolo solo; las reglas reales viven únicamente en los archivos de referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2"
+    }
+   ]
+  },
+  {
+   "id": "322f0d4acb35",
+   "alcance": "Skill image, SKILL.md, Step 1, models.md",
+   "enunciado": "Si el usuario nombró un modelo se confirma y se procede; si no, se elige con la tabla de models.md y se declara la elección en la cabecera de la salida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)"
+    }
+   ]
+  },
+  {
+   "id": "e231e82e52a0",
+   "alcance": "Skill image, SKILL.md, Step 2",
+   "enunciado": "El archivo del modelo es innegociable; saltárselo es la mayor causa de prompts débiles.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ]
+  },
+  {
+   "id": "5160eccd7ff3",
+   "alcance": "Skill image, SKILL.md, sección Mandatory reading order",
+   "enunciado": "Antes de producir cualquier prompt hay que leer en orden los archivos de referencia; escribir directo desde el cuerpo del skill produjo resultados perezosos y genéricos, porque cada modelo tiene su propia física y las reglas comunes se vuelven mush sin sintaxis específica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ]
+  },
+  {
+   "id": "0da9c0ca265e",
+   "alcance": "Skill video, role-modes, modo Director, referencias de estilo",
+   "enunciado": "Usar una sola referencia de director dominante por escena, traducida a cámara, luz, ritmo y blocking concretos, y nunca apilar tres o más referencias.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 1. Director mode › Style references"
+    }
+   ]
+  },
+  {
+   "id": "619f0a291aef",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), introducción",
+   "enunciado": "Leer universal-rules después de dramaturgy.md y antes de cualquier archivo específico de modelo; la sintaxis del modelo se apoya sobre estas reglas y no las reemplaza.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model"
+    }
+   ]
+  },
+  {
+   "id": "b6ec01121484",
+   "alcance": "Skill visual-asset-critic, entradas",
+   "enunciado": "Si solo se recibe la imagen sin contexto, se pregunta una sola cosa: qué se suponía que era este shot; una frase basta para anclar la crítica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "4f4bd8fac62d",
+   "alcance": "Skill visual-asset-critic, general",
+   "enunciado": "El crítico actúa como segundo ojo editorial sobre imágenes generadas, con una pasada estructurada de revisión que atrapa lo que un creador cansado pasa por alto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic"
+    }
+   ]
+  },
+  {
+   "id": "5cbae42158c4",
+   "alcance": "Skill visual-asset-critic, general",
+   "enunciado": "La salida del crítico debe ser una crítica con notas de revisión concretas y accionables, a nivel de prompt o de post, no impresiones ni 'se ve bien'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic"
+    }
+   ]
+  },
+  {
+   "id": "3f7ff4894c9a",
+   "alcance": "Skill visual-asset-critic, handoff",
+   "enunciado": "No auto-revisar: el usuario elige, y la crítica escrita es lo que cierra ese bucle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Handoff"
+    }
+   ]
+  },
+  {
+   "id": "415faa0301da",
+   "alcance": "Skill visual-asset-critic, hard rule 1",
+   "enunciado": "Regla 1: nada de críticas por sensaciones; 'se ve genial' o 'se siente raro' sin especificar no es crítica, y toda observación debe referirse a algo concreto de la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 1. No vibes-based critique"
+    }
+   ]
+  },
+  {
+   "id": "45f93d1ecf0b",
+   "alcance": "Skill visual-asset-critic, hard rule 3",
+   "enunciado": "Regla 3: no criticar lo que no se pidió; si la generación entregó exactamente el brief, notar que el cuarto podría ser más interesante es scope creep.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 3. Don't critique what wasn't asked"
+    }
+   ]
+  },
+  {
+   "id": "db40a9d6e2cd",
+   "alcance": "Skill visual-asset-critic, paso 1",
+   "enunciado": "Si no se puede establecer la intención en una frase, se pregunta; no se critica a ciegas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 1. Establish intent"
+    }
+   ]
+  },
+  {
+   "id": "3b240e18d8c8",
+   "alcance": "Skill visual-asset-critic, paso 5",
+   "enunciado": "Paso 5: la confianza debe ser honesta sobre la incertidumbre.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ]
+  },
+  {
+   "id": "92568cb17fc4",
+   "alcance": "Skill visual-prompt-forge, hard rule 4",
+   "enunciado": "Regla 4: los adapters son la fuente de verdad de la sintaxis; si el entrenamiento dice --style 4a y el adapter dice --style raw, gana el adapter.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 4. Adapters are the source of truth on syntax"
+    }
+   ]
+  },
+  {
+   "id": "56a5ed0da179",
+   "alcance": "Skill visual-prompt-forge, modo revisión, salida",
+   "enunciado": "Al terminar la revisión se informa qué shots se revisaron, cuáles solo necesitan post, cuáles fueron rechazados y cuáles ya estaban ACCEPT; luego el usuario genera y vuelve a correr visual-asset-critic.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Output"
+    }
+   ]
+  },
+  {
+   "id": "0274de265517",
+   "alcance": "Skill visual-prompt-forge, modo revisión, workflow",
+   "enunciado": "Revisión, paso 3: detenerse ante REJECT; no se re-emite prompt, se listan los shots rechazados, lo que dijo el crítico y se pregunta al usuario, pues cambiar el shot spec, el brand-lock o el generador son decisiones por encima de este skill.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow"
+    }
+   ]
+  },
+  {
+   "id": "b07317863f91",
+   "alcance": "Skill visual-prompt-forge, paso 1",
+   "enunciado": "Si falta el brand-lock o shots.json no valida, se para y se avisa al usuario; no se forjan prompts con datos incompletos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "ba46d44aff1a",
+   "alcance": "Skill visual-prompt-forge, paso 1",
+   "enunciado": "Si tools/ no está disponible, se lee el esquema de ../storyboard-architect/templates/shots.schema.json y se comprueba a mano; si los skills no están lado a lado, se pide el esquema al usuario en vez de componer de memoria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "892ddb90fff0",
+   "alcance": "Skill visual-prompt-forge, paso 2",
+   "enunciado": "Cada adapter documenta estilo de prompt, sintaxis de parámetros y trampas del generador, y es obligatorio leerlo antes de escribir prompts; no se adivina desde el entrenamiento porque la sintaxis ha cambiado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  },
+  {
+   "id": "66fe69b1f405",
+   "alcance": "Skill visual-prompt-forge, paso 5",
+   "enunciado": "Paso 5: informar al usuario dónde están los archivos y ofrecer el siguiente paso, que es hacer QA de los renders con visual-asset-critic.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 5. Hand off"
+    }
+   ]
+  },
+  {
+   "id": "64e0e5324da9",
+   "alcance": "Veo, veo.md, §6 prompts JSON; cuándo usarlo",
+   "enunciado": "No todo prompt de Veo requiere JSON; para clips simples la prosa es más rápida y a menudo mejor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ]
+  },
+  {
+   "id": "58d3a75a2ce3",
+   "alcance": "general (consistency-locks de visual-prompt-forge), qué no funciona",
+   "enunciado": "Prohíbe confiar en trucos que no arreglan la consistencia: añadir 'consistent character' o 'same person', numerar shots en el prompt, párrafos largos de personaje (pasadas 4-5 características se pierden detalles) o pedir 'exactamente igual', pues se reduce la deriva, no se elimina.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › What doesn't work"
+    }
+   ]
+  },
+  {
+   "id": "5a734f4db0e7",
+   "alcance": "skill ai-production-director, creative-strategy.md, etapa 1 (matriz de selección)",
+   "enunciado": "Debajo de la matriz se debe dar una recomendación argumentada en un párrafo que nombre el trade-off; recomendar es parte del trabajo, decidir es del usuario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ]
+  },
+  {
+   "id": "7ff1676f21f2",
+   "alcance": "skill ai-production-director, general",
+   "enunciado": "El director de producción no escribe guiones, prompts ni storyboards desde cero: clasifica el proyecto y elige track, secuencia etapas cargando la sub-skill correcta, custodia los gates, resuelve conflictos con las reglas de la sección 6 y mantiene trazabilidad de todo artefacto hasta el concepto aprobado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director"
+    }
+   ]
+  },
+  {
+   "id": "fada1e6413e0",
+   "alcance": "skill ai-production-director, general",
+   "enunciado": "Explicación: el anti-patrón que el skill combate es pedir guion y prompts en un solo paso, que produce prompts sin dramaturgia, consistencia ni trazabilidad; el pipeline debe producir un paquete de producción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director"
+    }
+   ]
+  },
+  {
+   "id": "33fcb451163c",
+   "alcance": "skill ai-production-director, general",
+   "enunciado": "Nunca se debe preguntar al usuario lo que el brief o los artefactos previos ya responden.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ]
+  },
+  {
+   "id": "1bc8c0860bdd",
+   "alcance": "skill ai-production-director, referencias, etapa 1",
+   "enunciado": "Explicación: references/creative-strategy.md contiene el protocolo completo de la Etapa 1 (territorios, big ideas, concept cards, matriz, dirección narrativa) y se debe leer SIEMPRE al ejecutar esa etapa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 9. Referencias de este skill"
+    }
+   ]
+  },
+  {
+   "id": "485694c5c301",
+   "alcance": "skill ai-production-director, referencias, etapa 7",
+   "enunciado": "Explicación: references/production-package.md contiene la spec del Final AI Video Production Package, reglas de trazabilidad y checklist maestro, y se debe leer SIEMPRE al ejecutar la Etapa 7.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 9. Referencias de este skill"
+    }
+   ]
+  },
+  {
+   "id": "567e406da9f4",
+   "alcance": "skill ai-production-director, sección 6",
+   "enunciado": "Las reglas de resolución de conflictos son decisiones tomadas y se aplican sin reabrir el debate en medio de un proyecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos"
+    }
+   ]
+  },
+  {
+   "id": "6f647973ebb4",
+   "alcance": "skill ai-production-director, sección 8 (degradación)",
+   "enunciado": "Si una sub-skill no está instalada se debe decir en una línea y aplicar el sustituto (brand-lock a Visual Theme ligero, storyboard-architect a ai-video-storyboard con IDs manuales, critic a checklist manual, linter a los dos checks de video); los tools de shotkit requieren pyyaml y jsonschema.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 8. Degradación"
+    }
+   ]
+  },
+  {
+   "id": "074620b97d0e",
+   "alcance": "skill ai-production-director, selección de track",
+   "enunciado": "El proyecto se clasifica en el primer mensaje; si el brief no da los datos, se pregunta UNA sola vez y todo junto: plataforma y duración, marca/cliente, objetivo, deadline y si existen assets de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ]
+  },
+  {
+   "id": "8b5ec432a7b8",
+   "alcance": "skill ai-production-director, selección de track",
+   "enunciado": "Se debe anunciar el track elegido y el plan de etapas en una línea antes de arrancar, y si el usuario ya trae artefactos de etapas previas, entrar al pipeline en la etapa correspondiente sin repetir trabajo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 2. Selección de track"
+    }
+   ]
+  },
+  {
+   "id": "696d9300acc0",
+   "alcance": "skill ai-production-director, todas las etapas",
+   "enunciado": "Al ejecutar una etapa se debe leer el SKILL.md de la sub-skill correspondiente y seguir su protocolo completo, sin trabajar de memoria sobre lo que se recuerda que dice.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ]
+  },
+  {
+   "id": "6748e7fd4d18",
+   "alcance": "skill ai-production-director, todas las etapas (claude.ai)",
+   "enunciado": "Al entrar a una etapa en claude.ai se nombra la sub-skill, se lee su SKILL.md y los references que su protocolo exija, y se ejecuta su protocolo completo, no un resumen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 5. Ejecución por etapa — regla de carga"
+    }
+   ]
+  },
+  {
+   "id": "a90b94ff0437",
+   "alcance": "skill ai-production-director, track EXPRESS",
+   "enunciado": "En EXPRESS solo el shot list requiere OK antes de escribir prompts.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ]
+  },
+  {
+   "id": "76f790fafeaf",
+   "alcance": "skill ai-production-director, tracks STANDARD y FILM",
+   "enunciado": "En STANDARD/FILM los gates 1 (selección de concepto), 2 (script) y 4 (storyboard) requieren OK explícito del usuario; los demás avanzan solos salvo instrucción contraria, y al cerrar cada gate se entrega el artefacto y se anuncia la siguiente etapa en una línea.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ]
+  },
+  {
+   "id": "420ff9268b3a",
+   "alcance": "skill ai-video-storyboard (paso 1, brief intake)",
+   "enunciado": "En el intake se hacen en un solo mensaje cinco preguntas (plataforma y duración, tema, tono de marca, CTA final, restricciones duras) y se aceptan respuestas cortas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 1 — Brief Intake"
+    }
+   ]
+  },
+  {
+   "id": "d28175819cb2",
+   "alcance": "skill ai-video-storyboard (paso 1, brief intake)",
+   "enunciado": "Si el usuario ya dio parte de las respuestas del intake, se omiten esas preguntas y se confirma el resto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 1 — Brief Intake"
+    }
+   ]
+  },
+  {
+   "id": "94e84cd0316a",
+   "alcance": "skill aurora-prompt-linter (override)",
+   "enunciado": "Frases genéricas sin scope específico (\"hazlo de todas formas\", \"déjalo\", \"ready to copy paste\", \"dale\") NO cuentan como override.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ]
+  },
+  {
+   "id": "90df0d8fa4f4",
+   "alcance": "skill aurora-prompt-linter (override)",
+   "enunciado": "Si una violación es legítima, el usuario puede autorizarla únicamente de forma expresa y por escrito en el turno actual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Mecanismo de override"
+    }
+   ]
+  },
+  {
+   "id": "490d32b4f86b",
+   "alcance": "skill aurora-prompt-linter (por qué existe)",
+   "enunciado": "Explicación: el linter existe porque el agente olvida la regla de describir menos lo que HAY y más cómo EVOLUCIONA bajo presión de iteración (4 errores documentados el 2026-05-27); la memoria falla, el código no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Por qué existe"
+    }
+   ]
+  },
+  {
+   "id": "584ba6b9f1b7",
+   "alcance": "skill aurora-prompt-linter, references/README.md (override)",
+   "enunciado": "Ejemplo: frases genéricas sin scope específico (\"hazlo de todas formas\", \"déjalo\", \"ready to copy paste\") no son overrides válidos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ]
+  },
+  {
+   "id": "1562d5b54839",
+   "alcance": "skill aurora-prompt-linter, references/README.md (override)",
+   "enunciado": "Una violación legítima solo se puede autorizar por escrito en el turno actual y únicamente con autorización expresa y específica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Override mechanism"
+    }
+   ]
+  },
+  {
+   "id": "fee0af3b5617",
+   "alcance": "skill aurora-prompt-linter, references/README.md (por qué existe)",
+   "enunciado": "Explicación: el linter existe porque el agente repitió tres veces el error de describir en el prompt lo ya visible en los refs; v6.0 §5.4 lo prohíbe pero se olvida bajo presión, así que el enforcement pasa de memoria a regla determinista en código.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Por qué existe"
+    }
+   ]
+  },
+  {
+   "id": "927d956540dc",
+   "alcance": "skill aurora-prompt-linter, references/skill_update_step5.md (razón del cambio)",
+   "enunciado": "Explicación: razón del cambio; la sesión del 2026-05-27 documentó 4 errores repetidos de sobre-descripción en I2V y el linter mueve el enforcement de la memoria al código.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "encabezado": "Edit propuesta al skill `prompt-production-protocol` — Step 5 › Razón del cambio"
+    }
+   ]
+  },
+  {
+   "id": "61cb8b0c70ac",
+   "alcance": "skill aurora-prompt-linter, references/system_prompt_v6_1_rule28.md (aprobación)",
+   "enunciado": "Cada cambio de la propuesta puede aprobarse o rechazarse individualmente, y se recomienda aprobar el bundle completo porque los 9 cambios forman una unidad coherente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Aprobación"
+    }
+   ]
+  },
+  {
+   "id": "0328baa92a3d",
+   "alcance": "skill aurora-prompt-linter, references/system_prompt_v6_1_rule28.md (cambio 1, Regla 28), todos los casos",
+   "enunciado": "Regla 28: para todos los casos (1/2/3a/3b/3c/4) ejecutar el linter al final del Step 4 con prompt, refs tageadas, case_type y mensaje del usuario; con FAIL sin overrides que cubran las violaciones no se entrega, se incluye el reporte en el output, el override exige la sintaxis OVERRIDE en el turno actual, las frases genéricas no cuentan y las autorizaciones no persisten.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 1 — Nueva Regla 28 › Texto a añadir"
+    }
+   ]
+  },
+  {
+   "id": "3c18cb811906",
+   "alcance": "skill aurora-prompt-linter, references/system_prompt_v6_1_rule28.md (cambio 2, sección 1.3)",
+   "enunciado": "Principio de enforcement determinista: cuando una regla puede codificarse debe codificarse, porque la memoria del agente falla bajo presión y el código no; una regla con linter determinista gana sobre la regla en prosa si ambas dicen lo mismo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 2 — Actualizar Sección 1.3 (Principios fundamentales) › Texto a añadir al final de Sección 1.3"
+    }
+   ]
+  },
+  {
+   "id": "4f68688b0249",
+   "alcance": "skill aurora-prompt-linter, references/system_prompt_v6_1_rule28.md (cambio 6, sección 5.5)",
+   "enunciado": "Edit propuesta del sistema (cambio 6): nueva sub-sección 5.5 que establece el linter determinista como gate duro (redundancia por categoría, word count máx 130 T2I y 90 I2V, vocabulario baneado en MAIN, negative prompt obligatorio, keywords sports broadcast y exenciones), con override solo por autorización escrita expresa en el turno actual con scope específico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/system_prompt_v6_1_rule28.md",
+     "encabezado": "Edit propuesta al system prompt v6.0 — Regla 28 + ajustes › Cambio 6 — Sección 5 (Aprendizajes validados) — Nueva sub-sección 5.5"
+    }
+   ]
+  },
+  {
+   "id": "cfc1f803d3fc",
+   "alcance": "skill brand-lock-extractor, SKILL.md (cuándo usar)",
+   "enunciado": "Si el usuario solo tiene una idea vaga, sin assets ni descripción, no está extrayendo sino creando: se le remite a brand-packs/_template.md y se le ayuda a llenarla directamente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › When to use"
+    }
+   ]
+  },
+  {
+   "id": "ffe9f6765a65",
+   "alcance": "skill brand-lock-extractor, SKILL.md (inputs)",
+   "enunciado": "Se necesita como mínimo una fuente; si el usuario no ofrece ninguna se le hace una sola pregunta: \"What can I work from, a website URL, a brand book PDF, screenshots, or a short description?\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "ab27bc5d007b",
+   "alcance": "skill brand-lock-extractor, SKILL.md (introducción)",
+   "enunciado": "El skill extrae y no inventa: cada valor se muestrea de un asset real o se marca como estimación que el usuario debe confirmar, porque un hex equivocado dicho con seguridad es peor que una conjetura marcada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor"
+    }
+   ]
+  },
+  {
+   "id": "267aa8a2d886",
+   "alcance": "skill brand-lock-extractor, SKILL.md (paso 1, reunir material)",
+   "enunciado": "Se informa al usuario qué se está extrayendo y no se hacen preguntas de seguimiento todavía: primero se extrae y los huecos se confirman al final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 1. Gather the source material"
+    }
+   ]
+  },
+  {
+   "id": "5afe896a16c2",
+   "alcance": "skill brand-lock-extractor, SKILL.md (reglas duras, regla 6)",
+   "enunciado": "Regla 6: sin emojis ni hype; la salida es una especificación clínica sin emojis y sin adjetivos de marketing sobre la marca en voz propia, reportando solo lo que muestran los assets.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Hard rules › Rule 6. No emojis, no hype"
+    }
+   ]
+  },
+  {
+   "id": "671139f4b904",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "La salida no es un ejercicio de escritura creativa: es una especificación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect"
+    }
+   ]
+  },
+  {
+   "id": "487bfe0d8091",
+   "alcance": "skill storyboard-architect, handoff",
+   "enunciado": "No ejecutar automáticamente esos pasos siguientes: el usuario elige.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Handoff"
+    }
+   ]
+  },
+  {
+   "id": "f1b3d69aab4b",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Explicación: se necesitan ciertos insumos y, si falta alguno, se debe preguntar antes de redactar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "ee35183f9ffe",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo aspect ratio: obligatorio (16:9, 9:16 o 1:1); si falta, preguntar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "6afc71aed459",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo brief (problema, audiencia, objetivo): obligatorio; si falta, preguntar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "5e4c1242761b",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo duración total: obligatorio; si falta, preguntar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "5fd81d98fbec",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo estilo de voiceover (VO presente, solo texto en pantalla o captions): opcional; preguntar si no está claro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "b30a5ef5d3f1",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo framework de beats: opcional; si falta, sugerir uno según el brief.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "a0d82b7009ab",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo generador(es) objetivo para los prompts posteriores: opcional; si falta, anotar como 'to be specified'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "5d232e91f01e",
+   "alcance": "skill storyboard-architect, insumos",
+   "enunciado": "Insumo ruta del brand-lock: opcional; si falta, usar brand-packs/_template.md y señalar la carencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "8a0af3d5da7e",
+   "alcance": "skill storyboard-architect, quality bar",
+   "enunciado": "Si el validador falla, corregir antes de dar por terminado; un validador en verde con un rationale sin leer no es un storyboard terminado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "ff718fefe370",
+   "alcance": "skill storyboard-architect, references/beat-frameworks.md, Custom",
+   "enunciado": "El framework Custom es un último recurso y no un primer movimiento, porque los frameworks estándar existen porque funcionan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/beat-frameworks.md",
+     "encabezado": "Beat Frameworks › Custom"
+    }
+   ]
+  },
+  {
+   "id": "96968382534d",
+   "alcance": "skill storyboard-architect, workflow",
+   "enunciado": "Seguir la secuencia de pasos del workflow sin saltarse ninguno, aunque el brief parezca simple.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow"
+    }
+   ]
+  },
+  {
+   "id": "2009c66b63be",
+   "alcance": "skill storyboard-architect, workflow, paso 3",
+   "enunciado": "No pelear contra el framework: si el brief y la duración discrepan, exponer el desacuerdo antes de redactar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 3. Block out timing"
+    }
+   ]
+  },
+  {
+   "id": "8b1f36792703",
+   "alcance": "skill storyboard-html-preview, reglas duras, regla 2",
+   "enunciado": "Excepción de la regla 2: si el usuario lo pide explícitamente (por ejemplo 'hazlo bonito, estoy online'), se acepta Tailwind por CDN; el default es no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 2. No external dependencies at runtime"
+    }
+   ]
+  },
+  {
+   "id": "3af8485e192e",
+   "alcance": "skill storyboard-html-preview, workflow, paso 4",
+   "enunciado": "Para copia impresa de un solo archivo sin carpetas, la skill puede ofrecer incrustar los frames en base64; preguntar al usuario cuál prefiere si hay frames.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "322786336f17",
+   "alcance": "skill video",
+   "enunciado": "Explicación: un cuadro bello sin dramaturgia es papel tapiz y un prompt limpio sin detalles es papilla; el oficio vive en los archivos de referencia y el cuerpo de SKILL.md es delgado a propósito para que no se pueda fingir un resultado leyéndolo solo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "AI Director, Screenwriter & Editor"
+    }
+   ]
+  },
+  {
+   "id": "e2ce0e7cabc5",
+   "alcance": "skill video, estilo de respuesta final",
+   "enunciado": "Ante duda sobre un detalle específico del modelo, releer el archivo del modelo antes de escribir el prompt final, porque no cuesta nada y evita mala salida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Final response style"
+    }
+   ]
+  },
+  {
+   "id": "b98e73f61e21",
+   "alcance": "skill video, estilo de respuesta final",
+   "enunciado": "Estilo de respuesta: evitar teoría larga si no se pide, lecciones académicas, inspiración vaga, jerga decorativa, relleno tipo 'cinematic masterpiece', prompts sin cámara y luz, prompts sin continuidad, apilar más de dos referencias de director y emociones abstractas sin traducción física.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Final response style"
+    }
+   ]
+  },
+  {
+   "id": "c12935e2bacc",
+   "alcance": "skill video, estilo de respuesta final",
+   "enunciado": "Estilo de respuesta: preferir prompts listos para copiar, secciones claramente rotuladas, lenguaje de producción, dirección de cámara y luz motivada, bloques de continuidad estrictos, sintaxis específica del modelo y arreglos directos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Final response style"
+    }
+   ]
+  },
+  {
+   "id": "292264ddb274",
+   "alcance": "skill video, orden de lectura obligatorio",
+   "enunciado": "Lectura obligatoria: los intentos de escribir prompts directo desde el cuerpo de la skill dieron resultados flojos y propensos a papilla; el proceso vive solo en los archivos de referencia, que se cargan en orden antes de producir, y saltarse un paso degrada el resultado en silencio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ]
+  },
+  {
+   "id": "30df553a192b",
+   "alcance": "skill video, orden de lectura obligatorio",
+   "enunciado": "Para cada solicitud de prompt de video, cargar los archivos de referencia en el orden indicado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ]
+  },
+  {
+   "id": "f6386a04706d",
+   "alcance": "skill video, paso 3",
+   "enunciado": "Para una comparación más detallada (largo máximo de clip, audio, métodos de bloqueo de personaje, motion brush) leer el archivo del modelo elegido y no cargar los tres.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ]
+  },
+  {
+   "id": "002c239e18d0",
+   "alcance": "skill video, paso 5",
+   "enunciado": "Si algún shot falla, corregirlo antes de enviar; es el paso que el usuario ha tenido que exigir repetidamente y no se omite.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check"
+    }
+   ]
+  },
+  {
+   "id": "541453d5010c",
+   "alcance": "skill video, salida",
+   "enunciado": "El idioma de salida por defecto sigue al usuario, pero el prompt de IA final va en inglés salvo que se pida otra cosa, porque Seedance, Kling y Veo rinden mejor en inglés.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Output"
+    }
+   ]
+  },
+  {
+   "id": "db6b0b861b88",
+   "alcance": "skill video, salida",
+   "enunciado": "Elegir el formato de salida que realmente pide la solicitud y usar A por defecto si no está claro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Output"
+    }
+   ]
+  },
+  {
+   "id": "cec86e8cfa68",
+   "alcance": "skills/image, prompt-framework › Output Structure",
+   "enunciado": "Exige declarar en Assumptions lo que el agente asumió cuando el usuario no lo especificó.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Output Structure"
+    }
+   ]
+  },
+  {
+   "id": "cdf7014d0ad4",
+   "alcance": "skills/image, prompt-framework › Output Structure",
+   "enunciado": "Exige entregar los Parameters solo si no son estándar: aspect ratio si no es 1:1 y resolución si se necesita 2K/4K.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Output Structure"
+    }
+   ]
+  },
+  {
+   "id": "ae402a8722d0",
+   "alcance": "skills/image, prompt-framework › Output Structure",
+   "enunciado": "Exige que al crear un prompt la salida incluya primero el Prompt, listo para usar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Output Structure"
+    }
+   ]
+  },
+  {
+   "id": "4685d544b812",
+   "alcance": "skills/image, text-rendering › Tips",
+   "enunciado": "Consejo: aportar contenido propio (artículo, transcripción, notas) es más preciso que depender solo de la búsqueda.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Tips"
+    }
+   ]
+  },
+  {
+   "id": "482b1819a43d",
+   "alcance": "skills/image, vision-decomposer (introducción)",
+   "enunciado": "Exige un proceso de dos pasos estrictos: no saltar el Paso 1 ni improvisar el Paso 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis"
+    }
+   ]
+  },
+  {
+   "id": "c992e74169ac",
+   "alcance": "skills/image, vision-decomposer (introducción)",
+   "enunciado": "Instruye adoptar el rol de Vision Agent profesional y hacer un análisis cinematográfico, psicológico y óptico-colorimétrico profundo de la imagen para traducirlo a un prompt detallado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis"
+    }
+   ]
+  },
+  {
+   "id": "6b95726f4cc0",
+   "alcance": "skills/image, vision-decomposer › Output Protocol",
+   "enunciado": "Exige que la respuesta a una imagen del usuario (o ingeniería inversa) se entregue en dos bloques.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL"
+    }
+   ]
+  },
+  {
+   "id": "4a6b57743c9d",
+   "alcance": "skills/image, vision-decomposer › Output Protocol › Block 1",
+   "enunciado": "Bloque 1, Brief Analysis Log: cuatro líneas con Subject & Blocking, Environment & Depth, Lighting & Contrast y Tech & Optics.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL › Block 1 — Brief Analysis Log"
+    }
+   ]
+  },
+  {
+   "id": "c0bacd197724",
+   "alcance": "skills/image, vision-decomposer › Output Protocol › Block 1",
+   "enunciado": "Limita cada línea del log a 1-2 frases con solo los parámetros extraídos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL › Block 1 — Brief Analysis Log"
+    }
+   ]
+  },
+  {
+   "id": "ff237829062b",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Micro-gate",
+   "enunciado": "Micro-gate obligatorio antes de gastar créditos y de entregar un prompt visual: la respuesta abre con exactamente 3 líneas (SKILL leído en este turno, RIESGOS con la línea que los mitiga, TÉCNICA probada con fuente o \"no encontrada\"); una entrega sin cabecera es inválida y generar sin preflight de costo está prohibido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › MICRO-GATE (obligatorio en los dos puntos de no retorno)"
+    }
+   ]
+  },
+  {
+   "id": "22c8d03b358f",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Pregunta de avance",
+   "enunciado": "Gate de entrega: ninguna respuesta es satisfactoria mientras la respuesta honesta a \"¿utilizaste de forma exhaustiva y correcta todas las reglas del skill aplicables a este caso?\" no sea SÍ sin matices.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › PREGUNTA DE AVANCE (gate de entrega, antes del micro-gate)"
+    }
+   ]
+  },
+  {
+   "id": "9d4c6e9aff94",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Pregunta de avance",
+   "enunciado": "Reglas de uso de la pregunta de avance: responderla antes de entregar; si es NO no se entrega y se leen los archivos faltantes; prohibido un SÍ falso o con matices; \"exhaustiva\" es leer completos todos los archivos aplicables; \"correcta\" es verificar con lint o contrastar regla por regla; ante duda leer \"cuándo cargar\"; se puede preguntar al usuario solo por dirección creativa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › PREGUNTA DE AVANCE (gate de entrega, antes del micro-gate)"
+    }
+   ]
+  },
+  {
+   "id": "9e41d5aa7d43",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R13",
+   "enunciado": "Regla 13: máximo 2 intentos por método; a la segunda falla se cambia de método con causa declarada o se detiene y consulta, nunca una tercera vuelta de lo mismo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "6b55afe45001",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R17",
+   "enunciado": "Regla 17: las entregas se hacen en unidades chicas con OK de dirección (el delta, no el paquete) y una regla nueva de dirección se aplica a todos los prompts.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "d2425f43249c",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R18",
+   "enunciado": "Regla 18: en las respuestas el dato o entregable va en la primera línea, sin adulación ni evaluación de las acciones de Eric salvo que la pida, y un error se corrige en una línea sin disculpas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "3bcff42da25c",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R19",
+   "enunciado": "Regla 19: prohibido afirmar capacidades, límites o hechos de plataforma sin verificarlos en ese turno; lo no verificado se etiqueta como inferencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "7104c34cbd9e",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R20",
+   "enunciado": "Regla 20: /research solo para problemas genuinamente nuevos, /briefing solo al retomar tras días fuera y /handoff al cerrar sesión, ninguno por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,907 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "piel_rostro_realismo",
+ "descripcion_tema": "piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico",
+ "filas": [
+  {
+   "id": "429523879cab",
+   "alcance": "Adapter Flux",
+   "enunciado": "Flux premia prompts en lenguaje natural que suenen a un fotógrafo competente; interpreta oraciones completas y las relaciones espaciales mejor que Midjourney, y se elige sobre Midjourney cuando el brief pide 'parece una fotografía real' y no 'parece diseñado'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+    }
+   ]
+  },
+  {
+   "id": "818caedf8ae6",
+   "alcance": "Adapter Flux, patrón de composición",
+   "enunciado": "La línea de cierre 'Photorealistic, natural skin texture, no AI artifacts' reduce de forma notable el aspecto de IA en Flux y se incluye en todo prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition pattern"
+    }
+   ]
+  },
+  {
+   "id": "e3fddcfa354f",
+   "alcance": "Adapter Flux, pitfalls",
+   "enunciado": "No omitir la línea de cierre fotorrealista: el ancla 'no AI artifacts' reduce medible el aspecto de IA.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "89c3f627925e",
+   "alcance": "Adapter GPT Image, parámetros",
+   "enunciado": "GPT Image, style: natural para fotorreal y vivid para estilizado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "0c2aa5c2f642",
+   "alcance": "Adapter GPT Image, pitfalls",
+   "enunciado": "El 'look de IA' de GPT Image es real: la línea de cierre 'natural skin texture, no AI rendering artifacts' ayuda pero no lo arregla del todo, y para fotorrealismo puro Flux sigue siendo más fuerte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "f2b13a2cf572",
+   "alcance": "Adapter Ideogram v3, cuándo no usarlo",
+   "enunciado": "No usar Ideogram para escenas fotorrealistas con personas: Flux es mejor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ]
+  },
+  {
+   "id": "b8c9e415021d",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --style: raw por defecto para fotorrealismo (raw, 4a, 4b, 4c); se omite para la estética por defecto de Midjourney.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "975c5e012104",
+   "alcance": "Adapter Midjourney v7, pitfalls",
+   "enunciado": "No usar 'AI' ni 'rendered' en Midjourney: produce salidas estilizadas que parecen generadas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "7c6b0516af96",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 4, tratamiento Documental",
+   "enunciado": "Tratamiento Documental: 35mm natural, handheld con micro-shake, eye-level y encuadre imperfecto (1 a 3° de deriva), luz dura rasante sin relleno con fuentes prácticas reales, paleta desaturada (Deakins natural o Fincher cold), stock Kodak Tri-X con grano fino a medio pesado en sombra y halación en prácticas, rostros irregulares con defectos concretos de piel y poros con sombra; prohibido softbox, Portra en rostros, retoque y relleno suave.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 4 · dimensiones D4 a D7: Tratamiento artístico: defaults de cámara, luz, paleta y textura"
+    }
+   ]
+  },
+  {
+   "id": "70ed381e0ba3",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 5 (D8, modelo y resolución por combinación), rostro humano",
+   "enunciado": "Para rostro humano, maestro o keyframe con cara: probar NB2 y NBP y usar GPT Image 2 quality high para piel e identidad (NBP a veces sostiene peor las caras que NB2, GPT Image 2 tiene la mejor identity preservation en edición); NB 0.5K para variantes y 2K o 4K para el ganador, GPT low a high.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "3d3259111d51",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 6 (cuando hay persona: bloques SW30 encima)",
+   "enunciado": "Usar los bloques nombrados light_hard, skin_doc, usecase_doc, clean_doc, idlock, contact_* y autocontain_*.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+    }
+   ]
+  },
+  {
+   "id": "19b4b7cc66ff",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 6 (orden de bloques para un still cinematográfico)",
+   "enunciado": "Séptimo bloque, regla de rostro: sin rostro, fragmentado o con maestro canonizado adjunto.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Orden de bloques para un still cinematográfico"
+    }
+   ]
+  },
+  {
+   "id": "169537429a63",
+   "alcance": "Flujo de Anclas Cinematográficas, tarjeta de ancla (paso 1), dimensión D4",
+   "enunciado": "D4 Tratamiento artístico (documental, narrativo cinematográfico, comercial pulido, race/kinetic, UGC, animación): decide film stock, dureza de luz, grano, cuánto del frame queda a oscuras y si hay rostro visible.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "c5b5d6036ed2",
+   "alcance": "Flujo de Anclas Cinematográficas, tarjeta de ancla (paso 1), dimensión D7",
+   "enunciado": "D7 Iluminación (fuente motivada, dirección, dureza, ratio iluminado, specular): rostros documentales con luz dura rasante, atmósfera solo a contraluz, cine con una fuente dominante, ~70% sin luz y un specular, comercial con luz clean y pareja.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "94be1266e11e",
+   "alcance": "Flujo del spot, Nivel 4 (subflujo atómico de génesis sin referencias), Lo que cambia por clase, Persona",
+   "enunciado": "Por clase, persona exige template T1 obligatorio, grounding inútil y probar NB2 y NBP.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que cambia por clase"
+    }
+   ]
+  },
+  {
+   "id": "74100c25b46d",
+   "alcance": "Investigación de campo, familia 02 ruptura de superficie, split-level (candidata con fuente Ikelite)",
+   "enunciado": "Una o dos gotas sobre el domo fuera del sujeto son cue de realismo en split-level; un rastro de gotas sobre el rostro es defecto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/02-agua-ruptura.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 02 · Ruptura de superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "43d27d3d8dd7",
+   "alcance": "Investigación de campo, familia 03 subacuático (candidata con fuentes vibemeai y media.io); confirma U8",
+   "enunciado": "Pedir una sola fuente de luz consistente y textura de piel natural; los fallos típicos son piel demasiado lisa, burbujas aleatorias y dirección de luz que no coincide.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/03-subacuatico.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "fc4897ba3990",
+   "alcance": "Investigación de campo, familia 03 subacuático, criterio para el crítico (candidata con fuente DAN)",
+   "enunciado": "Criterio del crítico: si la piel es cálida sin práctico visible, el agua debe virar a aqua/cian y los rayos de sol a rojizo; piel cálida con agua azul pura y rayos blancos es incoherente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/03-subacuatico.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 03 · Subacuático › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "d813646aa0c1",
+   "alcance": "Investigación de campo, familia 06 cuerpo en el pico de esfuerzo (candidata con fuente aivideobootcamp); NBP y GPT Image 2",
+   "enunciado": "Tensión con una regla FUENTE: un A/B fechado (2026-04-22) da a Nano Banana Pro la victoria en piel, poros y gotas y a GPT Image 2 la tipografía, así que el flujo de campo es NBP para la placa fotográfica y GPT para el texto; no refuta la regla FUENTE de GPT Image 2 para piel pero merece prueba propia.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos"
+    }
+   ]
+  },
+  {
+   "id": "bec948bf1441",
+   "alcance": "Investigación de campo, familia 06 cuerpo en el pico de esfuerzo (candidata con fuente rosagranados)",
+   "enunciado": "Bajo luz dura la cara debe mostrar sombra pronunciada de un lado; una cara plana bajo sol intenso delata la IA y confirma la regla FUENTE de luz dura rasante.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos"
+    }
+   ]
+  },
+  {
+   "id": "00e3caa3446a",
+   "alcance": "Investigación de campo, familia 06 cuerpo en el pico de esfuerzo (candidata con fuentes media.io y miraflow)",
+   "enunciado": "El sudor se pide como \"sharp sweat highlights\" o gotas congeladas en el aire bajo \"harsh single overhead light source\", nunca como piel mojada; confirma la regla FUENTE de sudor como speculares.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos"
+    }
+   ]
+  },
+  {
+   "id": "a8d46a69f414",
+   "alcance": "Régimen 01 agua en superficie, luz",
+   "enunciado": "Piel y neopreno mojados devuelven speculares duros; un cuerpo mojado sin brillos speculares se lee seco y falso (regla A PRUEBA).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "encabezado": "Agua en superficie › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "655710159ae7",
+   "alcance": "Régimen 01 agua en superficie, personas",
+   "enunciado": "El rostro suele quedar fragmentado por spray, gafas o casco: convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+     "encabezado": "Agua en superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "7ae92dcef252",
+   "alcance": "Régimen 03 subacuático, fallos conocidos",
+   "enunciado": "Piel rosada y labios rojos a diez metros son un color físicamente imposible sin práctico: declarar el viraje o añadir la linterna como fuente (regla A PRUEBA).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "7718d52d67f0",
+   "alcance": "Régimen 03 subacuático, personas",
+   "enunciado": "La piel bajo el agua se describe con su viraje real, cálida solo bajo la linterna; skin_doc sigue aplicando en textura, no en color (regla A PRUEBA).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "b263e512fc6d",
+   "alcance": "Régimen 05 vehículo en movimiento, personas",
+   "enunciado": "Sin rostro, o rostro fragmentado por casco, visera y reflejos; la emoción va en nudillos, pedal y aguja.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "b64606049e3f",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo",
+   "enunciado": "Explicación: en el régimen de cuerpo en esfuerzo el cuerpo humano es el objeto que cambia de estado y el rostro suele ser visible, por lo que aplican íntegros el template de piel documental de SW30 y la ley de los tres detalles.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo"
+    }
+   ]
+  },
+  {
+   "id": "1bfb93797d57",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, checklist del crítico",
+   "enunciado": "Checklist del crítico: piel documental bajo luz dura y sudor como speculares.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 9. Checklist del crítico"
+    }
+   ]
+  },
+  {
+   "id": "4ab8db0e173b",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, fallos conocidos; template T1 de SW30",
+   "enunciado": "Si la piel sale plástica bajo esfuerzo, la luz es demasiado suave o el stock equivocado: volver a light_hard y skin_doc.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "343b5e0d7749",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, ley física 4",
+   "enunciado": "El sudor se describe como puntos speculares discretos bajo luz dura, no como piel mojada uniforme.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ]
+  },
+  {
+   "id": "f76850524169",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, luz; template T1 de SW30",
+   "enunciado": "Iluminar los rostros con luz dura rasante y sin relleno, para que los poros proyecten sombra; la luz suave de softbox produce el look plástico y está prohibida en rostros.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "174bdac27329",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, luz; template T1 de SW30",
+   "enunciado": "Piel documental con defectos concretos (rojeces, sudor, pigmento desigual, labios agrietados), nunca 'imperfecciones sutiles'.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "8f1a920f7ff4",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, luz; template T1 de SW30",
+   "enunciado": "Usar stock documental de reportaje; Portra suaviza la piel y está prohibido en rostros.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "180f14012e4e",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, modelo recomendado; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 con quality high para piel, identidad y textura de tela.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "36e59ee30180",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo, personas; template T1 de SW30",
+   "enunciado": "La cara irregular y asimétrica es la que se lee real; la simétrica es maniquí, más aún bajo esfuerzo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "0798ba094357",
+   "alcance": "Régimen 07 luz y clima, luz",
+   "enunciado": "Las personas bajo el fenómeno se leen a contraluz: silueta con rim y un glint, sin rasgos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+     "encabezado": "Luz y clima › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "0b262a7aafe2",
+   "alcance": "Régimen 07 luz y clima, personas",
+   "enunciado": "Con lluvia, piel y ropa mojadas devuelven speculares y el pelo se pega; declararlo o el sujeto se lee seco bajo la lluvia (regla A PRUEBA).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+     "encabezado": "Luz y clima › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "2ed9631451c2",
+   "alcance": "Régimen 09 grupo ensamble, luz; template T1 de SW30",
+   "enunciado": "Rostros con luz dura modelando y piel documental cuando el tratamiento es documental o narrativo; en comercial, clean lighting pareja, pero la misma para todos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "70db8df356dc",
+   "alcance": "Rúbrica, capa 5 Técnica",
+   "enunciado": "Capa 5, ojos: pasa si son simétricos y enfocados, soft fail con ligera asimetría, hard fail con ojos torcidos o reflejos erróneos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ]
+  },
+  {
+   "id": "258a26a5687a",
+   "alcance": "Rúbrica, capa 5 Técnica",
+   "enunciado": "Capa 5, textura de piel: pasa si es natural, soft fail si es algo plástica, hard fail si tiene plástico de IA marcado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ]
+  },
+  {
+   "id": "13aa90fba7ee",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "enunciado": "En Seedance 2.5 los humanos realistas son una característica destacada y no un riesgo (poros reales, microactuación contenida, lip-sync multilingüe en 11 idiomas); la precaución con rostros de la era 2.0 no aplica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+    }
+   ]
+  },
+  {
+   "id": "f3e9862003cd",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "enunciado": "Falla de piel plástica: usar 'Retaining real fine pores and skin texture' y lenguaje de producción en lugar de 'hyperrealistic 8k'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Plastic AI skin"
+    }
+   ]
+  },
+  {
+   "id": "faf328268793",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "enunciado": "Añadir siempre el sufijo de fidelidad 'retaining real fine pores and skin texture' (opcionalmente pecas o imperfecciones), la corrección oficial contra la piel plástica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "a08147b3d72c",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "enunciado": "La fórmula de humano realista sirve también para personajes animados cambiando el registro de textura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "131a76de9269",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "enunciado": "Los detalles faciales deben ser 3-4 puntos concretos: forma de ojos, arco superciliar, puente nasal, labios, mandíbula.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "36f294c284e0",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "enunciado": "Mirada/alma es la emoción que cargan los ojos, separada de la geometría facial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "5aaecf10a155",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista",
+   "enunciado": "Para una transición emocional bastan 2-4 señales observables (ojos, tensión de cejas, boca, respiración, tragar, manos); más se lee como sobreactuación y las palabras de emoción abstractas dejan demasiado margen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "fd34c2e36338",
+   "alcance": "Seedance 2.5, §8 fórmula de humano realista (anti-AI-face)",
+   "enunciado": "Fórmula de humano realista: personaje = edad/etnia + tono y textura de piel + 3-4 detalles faciales + mirada/alma + peinado/color + ropa/tela + complexión/emoción/aura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 8. Realistic human formula (anti-AI-face)"
+    }
+   ]
+  },
+  {
+   "id": "2822ca372316",
+   "alcance": "Skill image, references/characters.md, Expression Control",
+   "enunciado": "Ejemplo: frases de control de expresión manteniendo identidad (excited and surprised, thoughtful gazing left, confident smile con contacto visual).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Expression Control"
+    }
+   ]
+  },
+  {
+   "id": "6dce5ac41699",
+   "alcance": "Skill image, references/creative-direction.md, Camera & Hardware",
+   "enunciado": "Especificar el tipo de cámara cambia el ADN visual de la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "encabezado": "Creative Direction › Camera & Hardware"
+    }
+   ]
+  },
+  {
+   "id": "4a2713248e7a",
+   "alcance": "Skill image, references/creative-direction.md, Materiality & Texture",
+   "enunciado": "Definir la composición física de los sujetos: no nombrar la cosa, describir de qué está HECHA.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "encabezado": "Creative Direction › Materiality & Texture"
+    }
+   ]
+  },
+  {
+   "id": "08c3e0fe094e",
+   "alcance": "Skill image, references/creative-direction.md, Materiality & Texture (tabla Vague / Specific)",
+   "enunciado": "Ejemplo: en vez de \"skin\", \"weathered, sun-damaged skin, deep expression lines\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "encabezado": "Creative Direction › Materiality & Texture"
+    }
+   ]
+  },
+  {
+   "id": "0ac5afe8200a",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Use-Case Templates, Photoreal Editorial",
+   "enunciado": "Ejemplo: plantilla Photoreal Editorial de 5 slots (escena, sujeto, detalles como sensación de lente, fuente de luz, desgaste e imperfecciones, uso editorial, constraints de sin glamurización, sin retoque pesado, sin brillo de estudio).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Photoreal Editorial"
+    }
+   ]
+  },
+  {
+   "id": "ea22cf444736",
+   "alcance": "Skill image, references/multi-panel.md, 2. 2x2 Editorial Portrait Grid, Template",
+   "enunciado": "Ejemplo: plantilla 2x2 de retratos editoriales (misma persona con identidad y vestuario consistentes; arriba-izquierda frontal, arriba-derecha macro, abajo-izquierda contrapicado, abajo-derecha perfil; luz consistente y piel realista sin airbrush; constraints de misma persona, sin cambios de vestuario, sin extras ni texto).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)"
+    }
+   ]
+  },
+  {
+   "id": "79a1748f4c81",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Когда переключаться NB2 → NBP",
+   "enunciado": "Cambiar de NB2 a NBP para fotorrealismo con trabajo muy fino de materiales y luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ]
+  },
+  {
+   "id": "9cfae78ea82e",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Когда переключаться NB2 → NBP",
+   "enunciado": "NBP es más lento y caro y a veces pierde frente a NB2 en rostros; para una serie de retratos probar primero ambos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ]
+  },
+  {
+   "id": "76cc67cf2b07",
+   "alcance": "Skill image, references/patterns/fashion-editorial.md, 2x2 Editorial Portrait Grid",
+   "enunciado": "Ejemplo: plantilla 2x2 de moda (lienzo blanco con divisores finos, mismo fondo con leve variación de ángulo; headshot frontal con butterfly lighting, tres cuartos con luz de llave lateral, perfil con rim, momento candid; color science de film stock y sin suavizado de piel con poros visibles; constraints de persona idéntica, sin cambios de maquillaje, sin texto ni marcas de agua, fondos cohesivos).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "encabezado": "Fashion Editorial Patterns › 2x2 Editorial Portrait Grid"
+    }
+   ]
+  },
+  {
+   "id": "ed5b4579a4f0",
+   "alcance": "Video de carreras y velocidad (race-and-speed), §7; recetas de iluminación",
+   "enunciado": "Receta de luz 'Hard key on the working hand' (Detail/Pressure): una sola fuente dura a 45° del lado de cámara sobre los nudillos en la palanca, con sombras de dedos rastrillando la piel, sudor como puntos speculares discretos, venas como relieves y fondo aplastado; el nudillo blanqueado es el miedo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)"
+    }
+   ]
+  },
+  {
+   "id": "a3f5cc600ec3",
+   "alcance": "Video, animatic-keyframes §9, checklist",
+   "enunciado": "Exige que el panel no tenga rostro o que lo tenga fragmentado más allá de lo útil (solo silueta o reflejo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "a60601c6c8cc",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo Rostros de aspecto IA",
+   "enunciado": "Prohíbe palabras de estilo como \"hyperrealistic 8k masterpiece\" para evitar rostros de aspecto IA, porque empujan al modelo hacia territorio de arte IA, y exige lenguaje de producción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Weird AI-looking faces"
+    }
+   ]
+  },
+  {
+   "id": "99ff512d15b1",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo Rostros de aspecto IA; ejemplo",
+   "enunciado": "Ejemplo: cláusula de lenguaje de producción contra rostros artificiales (\"Shot on 50mm, natural skin texture, motivated lighting, documentary feel\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Weird AI-looking faces"
+    }
+   ]
+  },
+  {
+   "id": "36fad8954426",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 1",
+   "enunciado": "Indica aceptar el AI look en edición cuando el brief es de contenido estilizado donde el realismo no es la meta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 1. The \"AI look\""
+    }
+   ]
+  },
+  {
+   "id": "0c05d47cfcd0",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 1 (AI look)",
+   "enunciado": "Describe el Failure 1, el 'AI look': síntomas (piel plástica, colores sobresaturados, ojos demasiado simétricos, manos mal, composición stock, luz pareja) y causas (adjetivos genéricos, muletillas de Stable Diffusion en otros generadores, falta de especificidad fotográfica, never list sin aplicar).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 1. The \"AI look\""
+    }
+   ]
+  },
+  {
+   "id": "50ae1cbd5b0c",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 1; Flux, GPT Image",
+   "enunciado": "Prescribe arreglos de prompt para el AI look: lente y apertura concretas, referencia de stock o cámara, cierre 'natural skin texture, no AI rendering artifacts' (Flux, GPT Image), aplicar la never list del brand-lock y usar Flux 2 Pro o Midjourney v7 en hero shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 1. The \"AI look\""
+    }
+   ]
+  },
+  {
+   "id": "ff8bca07f82d",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Nano Banana Pro caso 1",
+   "enunciado": "Define las secciones requeridas de Nano Banana Pro caso 1 en el repo (sujeto, acción, ubicación, composición, estilo, sin números de lente): sujeto, acción/pose, entorno, estilo, luz y detalles.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+    }
+   ]
+  },
+  {
+   "id": "cae1f11c855f",
+   "alcance": "secciones requeridas del linter aurora para Nano Banana Pro, caso 1 (génesis text-to-image) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt Nano Banana Pro caso 1: sujeto, acción/pose, entorno, estilo, luz y detalles (skin texture, pores, asymmetry).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+    }
+   ]
+  },
+  {
+   "id": "bc638cfa0376",
+   "alcance": "skill brand-lock-extractor, brand-packs/examples/saas-clean.md (Acme SaaS, ejemplo) y snapshots WhyStrohm (Never list)",
+   "enunciado": "Ejemplo: entrada de never list \"never use AI uncanny faces\", presente en Acme SaaS y en los snapshots de brand-lock de WhyStrohm de varios ejemplos de storyboard y del worked-run del critic.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+     "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "d7a89b3741d5",
+   "alcance": "skill brand-lock-extractor, examples/brand-lock.md (Northwind Coffee Roasters, ejemplo) (Never list)",
+   "enunciado": "Ejemplo: never list de Northwind, nunca usar sonrisas de stock ni fotografía lifestyle posada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ]
+  },
+  {
+   "id": "2b0e354e8c09",
+   "alcance": "skills brand-lock-extractor y storyboard-architect, brand-packs/_template.md (Never list)",
+   "enunciado": "Ejemplo: entradas de never list de la plantilla (sin estética de stock, sin rostros AI uncanny, sin sobresaturar, sin gritar en el copy, sin iconos clip-art), con la indicación de añadir más y más específicas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Never list"
+    }
+   ]
+  },
+  {
+   "id": "acf3c62a2d98",
+   "alcance": "skills/image, patrón Portrait & Cinema Golden Hour Street Backlit (GPT Image 2)",
+   "enunciado": "Plantilla de cinco slots para retrato a contraluz en golden hour con rim light dorado, relleno por rebote, flare hexagonal sutil, piel con poros; constraints: rostro visible y bien expuesto (no silueta), sin reflectores ni starburst, sin texto ni viñeta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/portrait-cinema.md",
+     "encabezado": "Portrait & Cinema Patterns › Golden Hour Street Backlit Portrait"
+    }
+   ]
+  },
+  {
+   "id": "fab671090a89",
+   "alcance": "skills/image, prompt-framework › Examples by Type › Photorealistic",
+   "enunciado": "Ejemplo: prompt fotorrealista de un pescador curtido al amanecer, con contexto, fondo neblinoso y mood documental.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Examples by Type › Photorealistic"
+    }
+   ]
+  },
+  {
+   "id": "9515ed36de24",
+   "alcance": "skills/image, prompt-framework › Task Types (tabla)",
+   "enunciado": "Define el tipo Photorealistic (fotos de personas, productos, escenas), cuyos elementos clave son iluminación, materiales y atmósfera.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Task Types (Навыки)"
+    }
+   ]
+  },
+  {
+   "id": "aca5e1da8b4c",
+   "alcance": "skills/image, vision-decomposer › STEP 1 › 1. Subject",
+   "enunciado": "Analizar quién o qué es el sujeto: vestuario preciso (época, estilo, materiales), edad, textura de piel, maquillaje o tono y microexpresiones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › STEP 1 — DEEP DECOMPOSITION › 1. Subject — psychology and mise-en-scène"
+    }
+   ]
+  },
+  {
+   "id": "03a7eb82f8a8",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R14",
+   "enunciado": "Regla 14: validadores del paquete y techos de palabras en verde antes de entregar, e inspección visual propia con zoom al 100% de rostros y manos; si algo falla no se entrega, se repite y se dice qué falló en una línea.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "5a6ed0a43ffa",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1",
+   "enunciado": "Explicación: la dirección canonizó el template de maestro de rostro T1 (2026-08-25) y todo maestro se instancia con cuatro bloques obligatorios; el motor lanza TemplateViolation si se sustituye alguno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "375bf9e88f8d",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1 (T1 rostro)",
+   "enunciado": "Bloque obligatorio clean_doc del T1: anti-belleza explícito (no beauty retouching, no skin smoothing, no even complexion, no soft fill light).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "49c5e61d38fe",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1 (T1 rostro)",
+   "enunciado": "Bloque obligatorio light_hard del T1: luz dura sin relleno y rasante para que los poros proyecten sombra; la luz suave de softbox está prohibida en rostros por producir el look plástico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "8b55fcb2ba4e",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1 (T1 rostro)",
+   "enunciado": "Bloque obligatorio skin_doc del T1: describir defectos concretos de la piel (rojeces, descamación, sudor, pigmento desigual, pelos de barba, labios agrietados) y no \"imperfecciones sutiles\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "1c8924060539",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1 (T1 rostro)",
+   "enunciado": "Bloque obligatorio usecase_doc del T1: fotografía documental Kodak Tri-X de reportaje; Kodak Portra está prohibido en rostros porque suaviza la piel y contradice los poros.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "a39f2cc2362a",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Template canónico T1 (T1 rostro)",
+   "enunciado": "Exige en el slot de rasgos describir una cara irregular (nariz con caballete, cicatriz, ojos hundidos, asimetrías), porque la cara regular y simétrica se lee como maniquí.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  }
+ ]
+}

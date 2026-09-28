@@ -1,0 +1,2178 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "referencias_roles",
+ "descripcion_tema": "imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs",
+ "filas": [
+  {
+   "id": "faa0ddb8b324",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --cref: URL de imagen de referencia de personaje, se usa cuando existe ancla de personaje y se empareja con --cw.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "b45cd2ff2513",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --cw (0-100): peso de personaje, 50 por defecto; 100 es coincidencia estricta y 0 solo ropa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "f01b535229fc",
+   "alcance": "Adapter Midjourney v7, parámetros",
+   "enunciado": "Midjourney, --sref: URL de imagen de referencia de estilo, se usa cuando existe ancla de estilo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ]
+  },
+  {
+   "id": "d9c043b948eb",
+   "alcance": "Adapter Nano Banana, parámetros",
+   "enunciado": "Nano Banana, referenceImages: arreglo opcional de imágenes en base64.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "0a5ee0dbf482",
+   "alcance": "Decisiones de dirección de Eric Toledano del 2026-09-25 (decisión 3); resuelve contradicciones entre U7, Seedance, forge, Kling, Veo y SW30",
+   "enunciado": "Decisión 3: el bloque de identidad con referencia de persona depende del rol de la referencia; con keyframe de inicio o fin en imagen a video no se re-describe, y con referencia de personaje sin start frame, casos con @img, Elements o ancla con refs va el bloque completo y verbatim.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "6ad6dc553eb9",
+   "alcance": "Flujo de Anclas Cinematográficas, grupo ensamble (todas las identidades en un frame), paso EN.3",
+   "enunciado": "EN.3: inserción secuencial de un miembro por generación sobre la placa con \"use only the person from image N, keep the world and the people already placed untouched\" y posición por ancla, adjuntando la placa acumulada más el maestro del miembro, con cada referencia con rol explícito y nunca en forma colectiva.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+    }
+   ]
+  },
+  {
+   "id": "5c6dd928f165",
+   "alcance": "Flujo de Anclas Cinematográficas, grupo ensamble (todas las identidades en un frame), paso EN.4; NB2, NBP y GPT Image 2",
+   "enunciado": "EN.4: alternativa en una sola generación cuando el modelo lo permite (todos los maestros adjuntos con rol nombrado: Image 1 base, Image 2 miembro A, Image 3 miembro B), con más miembros que referencias de personaje del modelo (NB2 4, NBP 5, GPT Image 2 hasta 16) se usan subgrupos o inserción secuencial, y el resultado se verifica miembro por miembro porque la pasada única es inferencia hasta probarla.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+    }
+   ]
+  },
+  {
+   "id": "852fd3e18ab6",
+   "alcance": "Flujo de Anclas Cinematográficas, grupo ensamble (todas las identidades en un frame), paso EN.7; Kling 3.0 Omni, Seedance 2.5, Veo",
+   "enunciado": "EN.7: en video usar un Element por miembro en Kling 3.0 Omni o una @Image por miembro en Seedance 2.5 con rol individual y un prompt que lleve solo acción y cámara; límites: Kling degrada con muchos elements, Seedance 2.5 admite hasta 30 imágenes y Veo ingredients no tiene límite documentado.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+    }
+   ]
+  },
+  {
+   "id": "c9f74e00039d",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 3 (D2 × D3, tratamiento de personas), diagrama de flujo",
+   "enunciado": "Diagrama de decisión por número de personas del ancla: placa de entorno, sujeto canonizado más placa, con contacto (placa, inserto A, inserto B, manos nombradas y anatomía fijada por el keyframe), grupo ensamble (génesis T1 luego T2 por miembro, placa con anclas, inserción secuencial; una pasada solo si miembros ≤ referencias de personaje del modelo: NB2 4, NBP 5, GPT Image 2 hasta 16 con rol, verificando miembro por miembro; si no, subgrupos o inserción secuencial, nunca N rostros desde texto) y multitud anónima (placa sin rostros legibles, FG textura, MG héroes, BG escala, diferenciación forzada, crítico que cuenta rostros: multitud a silueta, ensamble REJECT).",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción"
+    }
+   ]
+  },
+  {
+   "id": "92b5730fdaa5",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 6 (cuando hay persona: bloques SW30 encima)",
+   "enunciado": "Todo \"same X\" exige que ambos referentes estén adjuntos en ese prompt.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+    }
+   ]
+  },
+  {
+   "id": "96cacfe1847f",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 7 (handoff al video: motion brief); Seedance 2.5",
+   "enunciado": "Seedance 2.5 recibe @Image 1 como primer frame y @Image 2 como último frame declarados por separado con el mismo ratio (hasta 30 imágenes por rol); el prompt va por etapas consecutivas con un cambio de estado por etapa, estado final visible, rol de cada referencia y qué ignorar.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "7159aea9dfdd",
+   "alcance": "Flujo de Anclas Cinematográficas, roles de un ancla",
+   "enunciado": "Rol Environment ref: placa de entorno vacía cuyo texto es series_lock.environment verbatim.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "8d446beef7a1",
+   "alcance": "Flujo de Anclas Cinematográficas, roles de un ancla",
+   "enunciado": "Rol Hero o macro: producto, objeto ancla o inserto de detalle.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "d9ff076ef538",
+   "alcance": "Flujo de Anclas Cinematográficas, roles de un ancla",
+   "enunciado": "Rol Keyframe FF: primer frame del clip que fija identidad, layout y texto en imagen, con el prompt de video describiendo solo cómo evoluciona.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "5e0536181252",
+   "alcance": "Flujo de Anclas Cinematográficas, roles de un ancla; Kling Elements",
+   "enunciado": "Rol Character ref: maestro de identidad con vistas front, three-quarter, profile y back para Kling Elements, luz pareja sin sombras duras que se confundan con rasgos, fondo limpio, 1080p o más y sin texto.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "e934c2285b4a",
+   "alcance": "Flujo de Anclas Cinematográficas, tarjeta de ancla (paso 1), dimensión D1",
+   "enunciado": "D1 Rol del ancla (character ref, environment ref, keyframe FF, keyframe LF, hero/macro, motif insert): decide qué se fija, qué modelo de video la recibe y si necesita pareja FF/LF con el mismo ratio.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "d51f8f983c22",
+   "alcance": "Flujo de Anclas Cinematográficas, tarjeta de ancla (paso 1), dimensión D3",
+   "enunciado": "D3 Número de sujetos (0 placa, 1, 2 sin contacto, 2 con contacto, grupo ensamble 3 a 8 con identidades reconocibles, multitud anónima de más de 6 sin rostros legibles): decide cuántas generaciones, en qué orden y con qué referencias y roles; ensamble y multitud son técnicas distintas, no dos tamaños de la misma.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "04e7f6afe150",
+   "alcance": "Flujo del spot publicitario, Nivel 2 (subprocesos por etapa), Nivel 3b (cadena de dependencia de génesis)",
+   "enunciado": "Explicación: nada que lleve referencia puede existir antes de un activo sin referencia; cada clase siembra una rama distinta y las ramas se cruzan en los cuadros compuestos.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 3b · cadena de dependencia: Todo lo visual nace de una génesis"
+    }
+   ]
+  },
+  {
+   "id": "75ad1c07e545",
+   "alcance": "Flujo del spot publicitario, Nivel 2 (subprocesos por etapa), etapa E6.3, video",
+   "enunciado": "E6.3 arma los bloques de continuidad de la secuencia de clips repitiendo la identidad completa en cada prompt y dando a cada asset un rol explícito (video/universal-rules U7 y U13).",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "414cfec6d904",
+   "alcance": "Flujo del spot, Nivel 4 (subflujo atómico de génesis sin referencias), Lo que NO entra aquí",
+   "enunciado": "Queda fuera de la génesis los logos y etiquetas de marca reales, que van por el flujo con referencia.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+    }
+   ]
+  },
+  {
+   "id": "518ca00c97d4",
+   "alcance": "Flujo del spot, Nivel 4 (subflujo atómico de génesis sin referencias), Lo que NO entra aquí",
+   "enunciado": "Queda fuera de la génesis sin referencias el uso de referencias adjuntas, que corresponde de T2 en adelante.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+    }
+   ]
+  },
+  {
+   "id": "ec1d4e770aa8",
+   "alcance": "Flujo del spot, taxonomía de génesis (Nivel 3), clase Animal (categoría aurora P)",
+   "enunciado": "Animal: NB2 con grounding para la anatomía correcta de la especie y NBP para física compleja; sin template de identidad en SW30, la consistencia va solo por refs de personaje (NB2 hasta 4, NBP hasta 5) y anatomía y pelaje se auditan como manos y rostros.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+    }
+   ]
+  },
+  {
+   "id": "6cc40a6af164",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble (candidata con fuente ud.hk)",
+   "enunciado": "Más referencias no es mejor: nunca adjuntar del mismo miembro fotos con luz y expresión dispares; empezar con una referencia limpia y escalar a varias solo si el rostro no se sostiene.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "f8d421d9fef0",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble (candidata con fuentes replicate y queststudio)",
+   "enunciado": "Etiquetar a cada persona por número o nombre visible en su hoja de referencia y usar esa etiqueta en el prompt, nunca \"la mujer del fondo\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "31b6fc2a2b39",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble (lead SNIPPET-ONLY); NBP y GPT Image",
+   "enunciado": "Lead sin leer (solo snippet): r/aiArt reporta que NBP supera a GPT Image en consistencia de identidad en una rejilla de 9 miradas, y r/StableDiffusion 1wetnrt describe un flujo de Multi Reference Shot con referencias separadas para luz, composición y blocking; quedan como pistas para el ejercicio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "a5e781abe107",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble, inserción de cuerpo entero (candidata con fuente de YouTube)",
+   "enunciado": "Para una inserción de cuerpo entero adjuntar una hoja lado a lado (rostro en primer plano y cuerpo entero con vestuario) y no solo el maestro de rostro, porque con solo la cara el modelo adivina el cuerpo y los detalles derivan (tatuajes desplazados).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "00c1f39fde8b",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble; Nano Banana (candidata con fuente ud.hk)",
+   "enunciado": "Nunca describir el rostro en texto cuando ya viaja en la referencia: la descripción facial larga compite con la imagen y produce un \"blended stranger\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "844ffb01f254",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble; Nano Banana Pro (candidata con fuentes Google)",
+   "enunciado": "Contar el presupuesto de referencias de NBP en identidades y no en imágenes (14 imágenes de entrada, 5 identidades); el resto del cupo es para props, escenario y estilo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "bdc416265768",
+   "alcance": "Kling (Kuaishou), kling.md §11",
+   "enunciado": "Fix para caída de calidad de imagen al activar Elements o referencias en Kling: reducir a las referencias esenciales, preferir etiquetas [Character A: ...] en clips únicos y aceptar que los elementos compran consistencia y no fidelidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Image quality drops when Elements / references are enabled"
+    }
+   ]
+  },
+  {
+   "id": "b268c87e33c8",
+   "alcance": "Kling (Kuaishou), kling.md §11; Kling 1.x-2.x",
+   "enunciado": "Fix para rostro que cambia entre generaciones en Kling: subir 3-4 imágenes de referencia a la Element Library y usar Bind Elements en los ajustes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Character face changes between generations"
+    }
+   ]
+  },
+  {
+   "id": "1561d55cbdb8",
+   "alcance": "Kling (Kuaishou), kling.md §2, Kling 2.6 Pro",
+   "enunciado": "Kling 2.6 Pro: 5-7 elementos, Motion Control y Element Binding para consistencia de personaje.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "fd93f8800769",
+   "alcance": "Kling (Kuaishou), kling.md §2, Kling 3.0 Omni (junio 2026)",
+   "enunciado": "Kling 3.0 Omni (junio 2026): buque insignia de referencia y edición (alias API o3), con mejor comprensión de entradas, pipeline de edición de 3-15 s con 4K de entrada y salida y Elements 3.0 con vinculación de voz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "18a4902a7f7c",
+   "alcance": "Kling (Kuaishou), kling.md §3 (Kling 3.0), tabla vs 2.x; Kling 1.x-2.6 vs 3.0",
+   "enunciado": "Capacidad: el etiquetado de personajes en Kling 1.x-2.6 va por Element Library e imágenes de referencia, y en 3.0 por etiquetas en el prompt [Character A: ...] (aún acepta referencias).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+    }
+   ]
+  },
+  {
+   "id": "1f5e266d69ff",
+   "alcance": "Kling (Kuaishou), kling.md §7 (Element Library y Element Binding, 1.x-2.x)",
+   "enunciado": "Exige, para consistencia de personaje entre generaciones en Kling, subir 3-4 imágenes de referencia del personaje desde distintos ángulos a la Element Library.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "687f552fd8b0",
+   "alcance": "Kling (Kuaishou), kling.md §7, Elements 3.0; Kling 3.0 Omni",
+   "enunciado": "Regla de Elements 3.0 en Kling 3.0 Omni: un elemento de personaje toma un video de 3-8 s o hasta 4 imágenes multiángulo más vinculación de voz opcional (audio de 5-30 s) sin re-describir la voz, se define una vez y se etiqueta en prosa (@Grace), sostiene 3+ personajes solo si cada uno tiene su elemento y degrada la calidad de imagen al activarse, por lo que se usa solo cuando importa la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x) › Elements 3.0 (Omni)"
+    }
+   ]
+  },
+  {
+   "id": "36f7e61a912a",
+   "alcance": "Kling (Kuaishou), kling.md §7, reglas de imagen fuente; Kling 1.x-2.x",
+   "enunciado": "Reglas de la imagen fuente para elementos: 1080p o más, luz pareja evitando sombras duras (que la IA confunde con rasgos permanentes), sin texto ni marcas de agua, fondo limpio, sujeto centrado y buen contraste.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "759ecbada307",
+   "alcance": "Kling (Kuaishou), kling.md §7, ángulos requeridos; Kling 1.x-2.x",
+   "enunciado": "Exige que las imágenes de la Element Library cubran los ángulos frente, perfil y tres cuartos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "1f8a03456db0",
+   "alcance": "Kling (Kuaishou), kling.md §7; Kling 3.0",
+   "enunciado": "Establece que en Kling 3.0 la Element Library aún funciona, pero las etiquetas [Character A: ...] en el prompt suelen bastar por sí solas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "edf3d06c3320",
+   "alcance": "Kling (Kuaishou), kling.md §7; imagen a video, Kling 1.x-2.x",
+   "enunciado": "Exige activar \"Bind Elements\" en los ajustes de imagen a video para bloquear rasgos, dando un ancla visual que sobrevive a paneos y cambios de luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "f1b3a1bb7693",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), aprendizaje 13",
+   "enunciado": "Las fuentes solo de composición se abstraen y no se adjuntan: si el usuario pide seguir o estudiar la composición, convertir la fuente en una especificación de composición y generar sin imágenes de referencia salvo que se pida su uso explícito.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2 › Trial-specific observations preserved as tests/evidence"
+    }
+   ]
+  },
+  {
+   "id": "66a8552ee8ce",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), aprendizaje 4",
+   "enunciado": "Aislar el rol de la referencia: una referencia de física del agua controla solo la física del agua y las dimensiones ignoradas no deben filtrarse a pose, encuadre, identidad, entorno ni color.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2"
+    }
+   ]
+  },
+  {
+   "id": "d96696fd0ab0",
+   "alcance": "Learning Registry v3.2 (aprendizajes del ensayo de clavado olímpico de plataforma 10 m), observaciones del ensayo",
+   "enunciado": "Observación del ensayo: una referencia parcial de agua fue útil cuando su rol y sus dimensiones ignoradas eran explícitos.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/LEARNING_REGISTRY_v3.2.md",
+     "encabezado": "AI Production Director — Learning Registry v3.2 › Trial-specific observations preserved as tests/evidence"
+    }
+   ]
+  },
+  {
+   "id": "1d7c1f7a693a",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), CHAR_ROLES (P3)",
+   "enunciado": "Constante CHAR_ROLES: los roles de referencia de personaje son CHARACTER, CHAR, ELEMENT, IMG, CREF, REF, OMNI, IDENTITY y @IMG.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › CHAR_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "30b6da56ddd8",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), FF_ROLES (P3)",
+   "enunciado": "Constante FF_ROLES: los roles de primer frame son FF, START, FIRST, FIRST_FRAME y START_IMAGE.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › FF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "0263e0a3777b",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), LF_ROLES (P3)",
+   "enunciado": "Constante LF_ROLES: los roles de último frame son LF, TAIL, LAST, LAST_FRAME, TAIL_IMAGE, END y END_FRAME.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › LF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "10881494877f",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), REF_ROLES",
+   "enunciado": "Constante REF_ROLES: los roles de referencia válidos del linter son ff, lf, character, location, prop y style.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › REF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "c5a8407f908f",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), parche P12",
+   "enunciado": "Parche P12: si una referencia carga S (estilo), el vocabulario de estilo queda prohibido en MAIN y la sección style requerida se dispensa con un WARN informativo, por no restatar lo que la referencia ya define (U13, seedance-25 §5, Lock 6).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "aa27ff46db74",
+   "alcance": "Linter aurora prompt_linter.py v1.2-fupai (copia parcheada en el repo), parche P3",
+   "enunciado": "Parche P3: el identity block se rige por el rol de la referencia (--ref-role); la prohibición de descriptores P/O solo aplica con rol ff/lf (imagen a video) y con rol character el identity block es obligatorio, con WARN \"identity block absent\" si faltan 3 o más de {pelo, ojos/piel, prenda, accesorio, rasgo distintivo}.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "c6cb1aaab16d",
+   "alcance": "Mapa del Spot Publicitario, nivel 2 (subprocesos por etapa), E5.3",
+   "enunciado": "Subproceso E5.3 Maestros derivados con referencia (image/characters.md, SW30 R5 y R6): desde la génesis canonizada salen el maestro de cuerpo T2, variantes de pose y vestuario y el animal en otras poses, con herencia mínima (same face and clothes más deltas).",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "5f4dae992fa7",
+   "alcance": "Mapa del Spot Publicitario, nivel 2 (subprocesos por etapa), E5.4",
+   "enunciado": "Subproceso E5.4 Cuadros con referencias (image, SW30 R2, R7, R9): con sujeto y placa canonizados salen el cuadro de 1 sujeto T3, de 2 sujetos T4 y el producto en escena, con mundos por dos pasos y posición por ancla legible de la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "74a8f272da04",
+   "alcance": "Overlay production-learnings.v3.2.json (reglas aprendidas, ensayo de clavado)",
+   "enunciado": "Regla lrn32_reference_role_isolation (REQUIRE, prioridad 940, cuando hay referencias): una referencia solo controla su rol declarado, y lo excluido de ese rol no debe copiarse a identidad, pose, cámara, encuadre, entorno, color u otras dimensiones fijadas.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+     "encabezado": "production-learnings.v3.2.json › lrn32_reference_role_isolation"
+    }
+   ]
+  },
+  {
+   "id": "49171d24e78d",
+   "alcance": "Overlay production-learnings.v3.2.json (reglas aprendidas, ensayo de clavado) (v3.2.1)",
+   "enunciado": "Regla lrn321_composition_abstraction_no_ref (REQUIRE, prioridad 955, etapas brief/prompt/generation, validador de proceso): cuando el usuario aporta una imagen solo para seguir o estudiar su composición, traducirla a una especificación abstracta y compilar el prompt desde ella sin adjuntar la imagen como referencia salvo petición explícita.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/.claude/rules/v3/learned/production-learnings.v3.2.json",
+     "encabezado": "production-learnings.v3.2.json › lrn321_composition_abstraction_no_ref"
+    }
+   ]
+  },
+  {
+   "id": "eed7f59b1539",
+   "alcance": "Política composition-only-source: imagen aportada solo como referencia de composición, sin pedir generación de referencia",
+   "enunciado": "Cuando el usuario aporta una imagen solo para seguir su composición, inspeccionarla y extraer únicamente hechos espaciales (formato, altura y ángulo de cámara, ubicación y escala del sujeto, espacio negativo, vector de acción, capas, props, profundidad de campo, bandas de horizonte), registrarlos como COMPOSITION LOCKS, no adjuntar la imagen al generador, no copiar identidad, rostro, vestuario, logos, marcas, texturas ni firmas de IA salvo petición, compilar una escena nueva y dejar que los locks de la tarea actual anulen el contexto previo.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/templates/v3.2/composition-only-source.md",
+     "encabezado": "Composition-only source policy"
+    }
+   ]
+  },
+  {
+   "id": "6a245285fdcf",
+   "alcance": "Principios de trabajo surgidos de la sesión de decisiones del 2026-09-25",
+   "enunciado": "Un producto con logo o etiqueta real no nace de texto sino de un flujo con referencia.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+    }
+   ]
+  },
+  {
+   "id": "2d11321137d4",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), contradicción 11, parche P12",
+   "enunciado": "Contradicción 11 (S vs secciones requeridas): con ref de estilo, photorealistic/documentary/editorial quedan prohibidos y la sección style los exige; el parche P12 dispensa la sección style cuando S está cubierta por refs y lo reporta como WARN informativo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "d108e47c4dd5",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), contradicción 3, parche P3",
+   "enunciado": "Contradicción 3 (identity block por rol de referencia): el original banea descriptores P/O con cualquier ref; el parche P3 añade --ref-role: con ff/lf siguen prohibidos, con character se permiten y el identity block es obligatorio (WARN si faltan 3 o más grupos).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "155fd6645b87",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), decisiones fuera de la spec",
+   "enunciado": "Decisión 10: --ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O, porque el identity block de U7 no tiene sentido para una placa o un prop.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "32992db00d58",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), decisiones fuera de la spec",
+   "enunciado": "Decisión 5: la sección style se dispensa cuando S está cubierta (P12) en lugar de sacar photorealistic/documentary/editorial de S, porque U13 exige no restatar lo que define la referencia.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "349713d8298f",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), invocación Etapa 5",
+   "enunciado": "Etapa 5 (imágenes ancla, casos 1 y 2), paso 1: refs.yaml se escribe desde el plan de anchors, cada referencia con role (CHARACTER, LOCATION, PROP, STYLE) y tags (P1, O1, L1, PR1, S1).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "6bca679404ac",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), invocación Etapa 6",
+   "enunciado": "Etapa 6 (video, casos 3 y 4), paso 1: refs.yaml con la imagen aprobada como role: FF (y LF/TAIL si hay tail image) y tags de lo que esa imagen ya fija, normalmente P, O, L, PR.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "107e003280cf",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), mapeo de casos (P9)",
+   "enunciado": "Mapeo de casos: los alias T3, T4, T5 y ANCLA/ANCHOR corresponden al caso 2 (Etapa 5): cuadro de 1 persona, 2 personas o edición quirúrgica con refs Image N / @img.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "86f4e16f7985",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), pruebas",
+   "enunciado": "Prueba T16: ref con S y prompt sin palabras de estilo da exit 0 con la sección style dispensada; sin ref S da exit 1 (P12).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "717da42e9ef5",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), rol de la referencia (P3)",
+   "enunciado": "Establece que si no se pasa --ref-role se deriva del campo role de refs.yaml (FF, LF, TAIL, CHARACTER, ELEMENT, IMG...) y, en su defecto, del caso (video → ff; 1/2 → character).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "6672bd9e95da",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), rol de la referencia (P3); character",
+   "enunciado": "Rol de referencia character: los descriptores P/O están permitidos y el identity block es obligatorio (WARN si hay menos de 3 grupos), en caso 2 con Image 1: face, @img1, Elements o --cref.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "197cea2793d0",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), rol de la referencia (P3); ff/lf",
+   "enunciado": "Rol de referencia ff/lf: los descriptores P/O en el MAIN están prohibidos (FAIL) y el identity block no aplica, en los casos 3a/3b/3c/4 donde la imagen ancla identidad y vestuario.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "2842b9ea59aa",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), rol de la referencia (P3); location/prop/style",
+   "enunciado": "Roles location/prop/style: los descriptores P/O están permitidos (WARN si además hay tags P/O) y el identity block no aplica; L/PR/S se rigen por sus tags.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "c28fd0f1ea29",
+   "alcance": "Régimen 08 multitud anónima, checklist del crítico",
+   "enunciado": "Checklist del crítico: máximo tres héroes, cada uno con referencia y rol.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 9. Checklist del crítico"
+    }
+   ]
+  },
+  {
+   "id": "e66d45bbd930",
+   "alcance": "Régimen 08 multitud anónima, modelo recomendado; Seedance 2.0 (video)",
+   "enunciado": "Seedance 2.0 filtra rostros humanos de forma agresiva, lo que ayuda en video de multitud siempre que los héroes vayan por referencia en 2.5, 1.5 Pro, Kling o Veo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "835382e93602",
+   "alcance": "Régimen 08 multitud anónima, personas",
+   "enunciado": "Máximo tres héroes con identidad, cada uno insertado con su referencia y su rol explícito, nunca en forma colectiva.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "2193b686d5a6",
+   "alcance": "Régimen 08 multitud anónima, personas; animación (Kling)",
+   "enunciado": "Al animar, tres o más personajes distintos solo se sostienen si cada uno tiene su propio element o referencia; la masa no los tiene y debe seguir sin rostro.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "ee552226e780",
+   "alcance": "Régimen 09 grupo ensamble, fallos conocidos",
+   "enunciado": "Si dos miembros convergen en la misma cara, dar a cada uno su propia referencia y forzar diferenciación de rasgos y ropa.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "a44f9758aca5",
+   "alcance": "Régimen 09 grupo ensamble, fallos conocidos; video",
+   "enunciado": "En video, si tres o más personajes se funden, dar un element o una referencia individual por miembro, nunca dos personajes con una sola descripción.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "7eff2b377d64",
+   "alcance": "Régimen 09 grupo ensamble, ley física 5",
+   "enunciado": "Toda comparación 'same X' exige ambos referentes adjuntos en ese prompt: la autocontención vale para cada inserción.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ]
+  },
+  {
+   "id": "d98cc2ea2997",
+   "alcance": "Régimen 09 grupo ensamble, ley física 6",
+   "enunciado": "Cada referencia lleva rol explícito e individual ('Image 2 is member A, use only appearance, hair and outfit'), nunca la forma colectiva 'images 2 to 6 define five members'.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ]
+  },
+  {
+   "id": "2cfc94c829a8",
+   "alcance": "Régimen 09 grupo ensamble, modelo recomendado; GPT Image 2",
+   "enunciado": "GPT Image 2 acepta hasta dieciséis referencias con rol nombrado y es el modelo para un ensamble de más de cinco cuando se intenta una sola pasada.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "84b6014f269e",
+   "alcance": "Régimen 09 grupo ensamble, modelo recomendado; GPT Image 2",
+   "enunciado": "La regla de una sola pasada con todos los maestros adjuntos es inferencia hasta probarla: dieciséis referencias aceptadas no garantizan dieciséis identidades sostenidas, por lo que se verifica miembro por miembro (regla A PRUEBA).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "5740953d5420",
+   "alcance": "Régimen 09 grupo ensamble, modelo recomendado; Nano Banana Pro y NB2",
+   "enunciado": "Nano Banana Pro acepta hasta cinco referencias de personaje y NB2 hasta cuatro; por encima de ese número, usar subgrupos o inserción secuencial.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "243b2c23ffff",
+   "alcance": "Seedance (familia), seedance.md, §10 sintaxis @img1; 2.0",
+   "enunciado": "Ejemplo: fórmula de bloqueo de personaje 'Use @img1 as the main character reference and preserve the exact same man across the whole clip: <bloque de identidad completo>. No nudity. No glasses (unless in reference). No extra characters.'",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ]
+  },
+  {
+   "id": "2d4efeed7f1a",
+   "alcance": "Seedance (familia), seedance.md, §10 sintaxis @img1; 2.0 y 2.5",
+   "enunciado": "Reglas de @img1: el bloque de identidad completo debe seguir a la mención de @img1 (la imagen sola deriva), repetirlo en cada clip de una secuencia unida, etiquetar cada referencia múltiple con su rol, declarar en prosa el rol de @Video1 y @Audio1, y respetar los límites (12 archivos en 2.0: 9 imágenes, 3 videos, 3 audios; hasta 50 en 2.5).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ]
+  },
+  {
+   "id": "fab35a6d8aad",
+   "alcance": "Seedance (familia), seedance.md, §10 sintaxis de referencia de personaje @img1; 2.0",
+   "enunciado": "Seedance 2.0 acepta imágenes de referencia en línea con @img1, @img2, etc., para bloquear la apariencia del protagonista en todos los shots de un clip y entre varios clips unidos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 10. `@img1` character reference syntax"
+    }
+   ]
+  },
+  {
+   "id": "8ffc552326d0",
+   "alcance": "Seedance (familia), seedance.md, §2 versiones y specs",
+   "enunciado": "Especifica Seedance 2.0: mejor movimiento y audio, 9 presets de movimiento de cámara, soporte limitado de negative prompt, hasta 12 referencias con tags @, 4K nativo y color de 10 bits desde junio 2026; la versión Mini es ~2× más rápida y ~30% más barata para borradores y lotes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "0dd9ade795b7",
+   "alcance": "Seedance 2.5 (ByteDance), guías oficiales 2026-07-31",
+   "enunciado": "Explicación: seedance-25.md se lee después de seedance.md y cubre lo que aporta 2.5 (fórmulas oficiales de prompt, sistema de 50 slots de referencia, edición de video, extensión, modo ultra largo y pipeline de blockout), según las guías oficiales Dreamina/Jimeng del 2026-07-31 verificadas con pruebas de practicantes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31)"
+    }
+   ]
+  },
+  {
+   "id": "82c9dda94cfe",
+   "alcance": "Seedance 2.5, §1 qué cambia",
+   "enunciado": "Seedance 2.5 admite 50 referencias multimodales (30 imágenes, 10 videos, 10 audios) con rol por activo, y entiende qué activo es responsable de personaje, escena, prop, movimiento de cámara o ritmo solo si se le dice.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+    }
+   ]
+  },
+  {
+   "id": "7831ffd967f8",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "Para editar un video existente en 2.5 (cambiar sujeto, fondo, quitar marca de agua, cambiar idioma hablado) usar el patrón canónico de bloques [Edit Goal], [Source Video Role], [Target Material Role], [Edit Scope] y [Content to Preserve], dejando todo lo demás en su lugar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "f5643777abf1",
+   "alcance": "Seedance 2.5, §15 blockout y green screen",
+   "enunciado": "Blockout como rey de la controlabilidad: bloquear espacio, cámara y staging en 3D antes y dejar que el modelo renderice materiales y luz; en blockout grueso mapear cada primitiva a una referencia, excluir el estilo de render y evitar modelos con extremidades o alas, y en blockout fino limpiar antes la captura del viewport (trayectorias, ejes, controladores, frustums); el grueso funciona mejor hoy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 15. Blockout and green screen"
+    }
+   ]
+  },
+  {
+   "id": "a90307d1117f",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "enunciado": "En secuencias multi-keyframe usar 'Use @Image 1 through @Image N as keyframes in this order', un estado clave por imagen; las imágenes independientes alinean mejor que un grid y los keyframes controlan orden de etapas y estados clave, no cuadros exactos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "9b988122c06a",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "enunciado": "First + last frame funciona en modo omni-reference declarando cada ancla por separado ('@Image 1 is the first frame... @Image 2 is the last frame...') y nunca conjuntamente, con el mismo aspect ratio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "28f37d0a3089",
+   "alcance": "Seedance 2.5, §16 grids de storyboard y keyframes",
+   "enunciado": "Un grid de storyboard como input (una imagen, ≤15 paneles oficiales, línea limpia, poco texto) exige declarar el orden de lectura y excluir su estilo de línea, etiquetas y personajes placeholder, seguido de 'Shot 1: ... Shot N: ...'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "7807334065c1",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "enunciado": "Falla del mismo personaje en dos estados que aparece en el momento equivocado: los slots pre/post transformación confunden al modelo; vincular cada estado a su rango de tiempo y presupuestar re-rolls, el enlace más frágil de 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Same character in two states appears at the wrong time"
+    }
+   ]
+  },
+  {
+   "id": "b43d1d580dfd",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones; gemelos",
+   "enunciado": "Falla gemelos/mezcla de rostros en escenas de varias personas: corregir con vinculación por sujeto (§5) más diferenciación explícita ('movements not synchronized; clothing colors, hairstyles and facial features distinct; no identical clones in the background').",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Twins / face-blending in multi-person scenes"
+    }
+   ]
+  },
+  {
+   "id": "794ab69961b1",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "enunciado": "Ejemplo: heist de museo en un plano con 17 referencias (Jimeng), declarando escena y referencias por rol, ruta de cámara de @Image 16, beats con timestamps y sonido por marcadores `< >` y `( )`, cerrando con 'No subtitles, no logo, no watermark'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)"
+    }
+   ]
+  },
+  {
+   "id": "0836982acb6d",
+   "alcance": "Seedance 2.5, §19 ejemplos oficiales; C. orquestación de referencias",
+   "enunciado": "Explicación: las diecisiete referencias están ligadas a un rol por escena, la coreografía de cámara se aporta como diagrama de ruta y no como prosa y el sonido se diseña por beat con los marcadores dedicados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › C. Reference orchestration — museum heist one-take (17 refs, translated from the Jimeng manual cases)"
+    }
+   ]
+  },
+  {
+   "id": "17e711da771d",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de imágenes por solicitud: 9 en 2.0 y 30 en 2.5 (cada una ≤4K y ≤30 MB).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "881dbac10975",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de referencias de audio: 3 clips y ≤15 s en 2.0; 10 clips y ≤30 s en total en 2.5, con entrada solo de audio ahora permitida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "9b7af7be9252",
+   "alcance": "Seedance 2.5, §2 specs y límites duros",
+   "enunciado": "Especifica el límite de referencias de video: 3 clips y ≤15 s en total en 2.0; 10 clips, cada uno de 2-30 s y ≤30 s en total, en 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+    }
+   ]
+  },
+  {
+   "id": "79a7e5a019d2",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "enunciado": "Cualquier componente de la fórmula base puede omitirse; para trabajo largo o con muchas referencias usar la macrofórmula: declaración de referencias + resumen de una línea + trama por línea de tiempo + cola global.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "5151d3dc9e02",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "enunciado": "La declaración de referencias lista cada activo por orden de subida junto con su rol (personaje, voz, movimiento, escena).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "5bcf24a0ddde",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "enunciado": "Re-mencionar con @ el mismo activo varias veces a lo largo del prompt, porque según la guía oficial las menciones repetidas aumentan la precisión.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "9d694461fb77",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Ejemplo: plantilla de Subject Profile para un personaje recurrente (apariencia y ropa por @Image, prop fijo, locaciones, referencias de movimiento y exclusiones).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "22d90de5ca10",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "El mismo personaje en dos estados (antes/después de una transformación) requiere dos slots de imagen separados, cada uno ligado a su rango de tiempo; es el enlace más frágil, así que se presupuestan re-rolls.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "3213b5649051",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "El sentido de los 50 slots no es volcar activos: el rol de cada material debe escribirse en el prompt, sin depender de etiquetas de texto dentro de las imágenes ni hacer que el modelo infiera el mapeo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "0c274ccca7e8",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Explicación: introduce los puntos óptimos oficiales de estabilidad de las referencias (mejor frente a posible pero inestable).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "68a58dd2deb3",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Hojas multivista: con ≤5 sujetos cualquier formato sirve; con más de 5 solo vista única, y imágenes separadas por vista superan a un collage.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "d1f387917610",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Plantilla de rol: '@Image 1 defines <sujeto>'s <apariencia, ropa, estructura o material>; @Video 1 defines <movimiento, cámara o ritmo>; @Audio 1 defines <voz, diálogo, ambiente o música> del personaje o tipo de sonido'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "afa21a3c99bf",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Punto óptimo: 1-5 sujetos en una referencia de video/audio es lo mejor; 6-10 es posible pero inestable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "9a493c78d656",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Punto óptimo: 1-8 sujetos entre las imágenes de referencia es lo mejor; 9-12 es posible pero inestable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "4f7cd56fce31",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Punto óptimo: clips de referencia de 5-10 s por sujeto; más largos son posibles pero inestables.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "0ecd5081474e",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Reglas de referencias: vincular cada sujeto individualmente (prohibido el patrón '@Images 1 through 4 define four characters respectively'), añadir exclusiones para todo lo que pueda filtrarse, no re-describir lo que una referencia ya define y usar un Subject Profile para personajes recurrentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "c0119632db6f",
+   "alcance": "Seedance 2.5, §5 disciplina de referencias",
+   "enunciado": "Seleccionar las referencias por escena y no todas a la vez, con el formato 'Scene 1 | Use: <lista>. Event: ... End state: ...'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "82ce126f7152",
+   "alcance": "Seedance 2.5, §7 esqueleto anticolapso",
+   "enunciado": "Ejemplo/especifica: esqueleto oficial anticolapso de tres módulos (capa de referencia, ajustes globales con prohibiciones, storyboard con timestamps) para trabajo dramático de 30 s, más ligero que el esqueleto de 11 bloques.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 7. The anti-collapse skeleton (3 modules)"
+    }
+   ]
+  },
+  {
+   "id": "433ca4b5afda",
+   "alcance": "Skill image, SKILL.md, Step 2, modelo Nano Banana",
+   "enunciado": "Paso 2, leer el archivo del modelo elegido: para Nano Banana, nano-banana.md (image grounding para lugares reales, ratios extremos 1:8, 8:1, 4:1, thinking mode, JSON para 5+ elementos, hasta 14 referencias, y por qué no escribir números 50mm, f-stop, ISO).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ]
+  },
+  {
+   "id": "1984a8c026c7",
+   "alcance": "Skill image, references/characters.md",
+   "enunciado": "Ejemplo: en Nano Banana se pueden usar hasta 14 imágenes de referencia (6 de alta fidelidad) para bloquear identidad entre escenas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency"
+    }
+   ]
+  },
+  {
+   "id": "16d3db740bfb",
+   "alcance": "Skill image, references/characters.md, Brand Asset Generation",
+   "enunciado": "Ejemplo: plantilla de generación de assets de marca desde un producto de referencia (mantener consistencia, variar ángulos, luz y contexto, generar uno a la vez).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Brand Asset Generation"
+    }
+   ]
+  },
+  {
+   "id": "93dc7112964f",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Ejemplo: plantilla de estilo como referencia (crear nuevo contenido con el estilo visual exacto, igualando colores, texturas y mood).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "8b94e29219b6",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Ejemplo: plantilla de producto como referencia (colocar el producto en un nuevo contexto igualando luz y perspectiva).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "462505f18d34",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Ejemplo: plantilla de rostro o personaje como referencia (usar la cara, mantener rasgos exactamente iguales, cambiar expresión, pose o entorno).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "faf9968d4a8b",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Ejemplo: plantilla de varias referencias a la vez (Image 1 rostro, Image 2 vestuario, Image 3 fondo, con instrucción de combinación explícita).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "2b678fb23e8a",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Ejemplo: plantilla para encajar contenido en un diseño existente (adjuntar diseño, crear siguiendo layout y estilo exactos, reemplazar un elemento, mantener colores, tipografía y composición).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "9d1875cbda7d",
+   "alcance": "Skill image, references/golden-rules.md, Reference Images",
+   "enunciado": "Límites de referencias multi-imagen: Nano Banana hasta 14 y GPT Image 2 hasta 16, indexando cada imagen con su rol.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Reference Images"
+    }
+   ]
+  },
+  {
+   "id": "7a5f143e2fb6",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Multi-Image",
+   "enunciado": "Con varias imágenes de referencia (hasta 16) indexar con rol y no solo con número (Image 1 escena base, Image 2 referencia de chaqueta, Image 3 referencia de luz).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Multi-Image — до 16 рефов"
+    }
+   ]
+  },
+  {
+   "id": "35fb00a91b2d",
+   "alcance": "Skill image, references/gpt-image.md (GPT Image 2), Style Transfer",
+   "enunciado": "En style transfer no escribir términos abstractos (minimalist, editorial); nombrar propiedades visuales concretas de la referencia: paleta, tratamiento de bordes, silueta, manejo de sombras y lógica de planos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Style Transfer"
+    }
+   ]
+  },
+  {
+   "id": "a50c4011088e",
+   "alcance": "Skill image, references/models.md, Costo",
+   "enunciado": "Costo orientativo: Nano Banana Pro cuesta unos 0.15 USD por imagen; para escenas complejas y hasta 14 referencias.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+    }
+   ]
+  },
+  {
+   "id": "fe689a9d3dcc",
+   "alcance": "Skill image, references/models.md, Diferencias de sintaxis",
+   "enunciado": "Referencias múltiples: Nano Banana hasta 14 indexadas; GPT Image 2 hasta 16 indexadas con rol (\"Image 1: base\", \"Image 2: jacket reference\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+    }
+   ]
+  },
+  {
+   "id": "6b0068cbd173",
+   "alcance": "Skill image, references/models.md, TL;DR",
+   "enunciado": "Render desde 14 o más referencias: Nano Banana Pro (hasta 14) o GPT Image 2 (hasta 16).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "c9c44676adb8",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Multi-Reference",
+   "enunciado": "Ejemplo: prompt multi-referencia con imágenes indexadas (rostro, vestuario, fondo), combinando rostro de Image 1, estilo de vestuario de Image 2 y escenario de Image 3 e igualando luz y perspectiva.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ]
+  },
+  {
+   "id": "fb81abde985f",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Multi-Reference (лимиты по тирам)",
+   "enunciado": "Límite de referencias de consistencia de personaje por tier: NB2 Lite ninguna, NB2 hasta 4, NBP hasta 5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ]
+  },
+  {
+   "id": "a5bdc8bb2cc0",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Multi-Reference (лимиты по тирам)",
+   "enunciado": "Límite de referencias de estilo por tier: solo NBP admite hasta 3; NB2 Lite y NB2 ninguna.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ]
+  },
+  {
+   "id": "611b0556736a",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Multi-Reference (лимиты по тирам)",
+   "enunciado": "Límite multi-referencia de objetos de alta fidelidad por tier: NB2 Lite hasta 14, NB2 hasta 10, NBP hasta 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ]
+  },
+  {
+   "id": "3223ac7df9ba",
+   "alcance": "Skill image, references/nano-banana.md (Nano Banana), Когда переключаться NB2 → NBP",
+   "enunciado": "Cambiar de NB2 a NBP cuando se necesita el máximo de referencias con desglose por roles (6 objetos, 5 personajes y 3 estilos).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ]
+  },
+  {
+   "id": "91d63f9db086",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §14 U13 disciplina de rol de referencia",
+   "enunciado": "Los límites y plantillas específicos por modelo viven en sus archivos; seedance-25.md §5 tiene el sistema más completo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  },
+  {
+   "id": "bf6a50093e8b",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §14 U13 disciplina de rol de referencia",
+   "enunciado": "Más activos no es más control: el control viene de la claridad de rol y los activos sin asignar se filtran al cuadro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  },
+  {
+   "id": "6990e65c2d04",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §14 U13 disciplina de rol de referencia",
+   "enunciado": "No re-declarar lo que una referencia ya define: si una referencia de video lleva el movimiento, nombrar solo los atributos a heredar, porque re-describir cada acción pelea con la referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  },
+  {
+   "id": "64539d677446",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §14 U13 disciplina de rol de referencia",
+   "enunciado": "U13 disciplina de rol de referencia: donde un modelo acepta activos de referencia (Seedance @Image/@Video/@Audio, Kling Element Binding y Omni, Veo ingredients), cada activo debe llevar un rol explícito en el prompt (qué define y qué ignorar, p. ej. 'Do not use the image background').",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  },
+  {
+   "id": "aa0ae2147e58",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §14 U13 disciplina de rol de referencia",
+   "enunciado": "Vincular cada sujeto individualmente ('<Character A> corresponds to @Image 1 — use only the appearance, hairstyle, and clothing') y nunca la forma colectiva '@Images 1 through 4 define four characters respectively'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  },
+  {
+   "id": "1d2c850bfb5a",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §8 U7 ancla de consistencia",
+   "enunciado": "Sintaxis específica para bloquear personaje: Seedance con @img1 más bloque de identidad, Kling 1.x-2.x con Element Binding de 3-4 imágenes, Kling 3.0 con etiquetas [Character A: <identidad>] opcionalmente con Element Library, y Veo con reference ingredients o JSON de identidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+    }
+   ]
+  },
+  {
+   "id": "6f4fc87fe558",
+   "alcance": "Underwater Human Reference Policy v3.2, sección Reference roles",
+   "enunciado": "Cada referencia tiene un solo rol y dimensiones ignoradas explícitas (p. ej. REF1 = solo física del agua; ignorar identidad, pose, encuadre, cámara, entorno, color), y no se debe tomar una dimensión ignorada aunque la imagen la haga saliente.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/templates/v3.2/underwater-human-reference-policy.md",
+     "encabezado": "Underwater Human Reference Policy v3.2 › Reference roles"
+    }
+   ]
+  },
+  {
+   "id": "d9449fb87e4f",
+   "alcance": "Underwater Human Reference Policy v3.2; imágenes humanas subacuáticas o split-level complejas",
+   "enunciado": "La Underwater Human Reference Policy se usa para imágenes humanas complejas bajo el agua o en split-level.",
+   "ubicaciones": [
+    {
+     "documento": "pkg/repo/templates/v3.2/underwater-human-reference-policy.md",
+     "encabezado": "Underwater Human Reference Policy v3.2"
+    }
+   ]
+  },
+  {
+   "id": "db2e6ef0c409",
+   "alcance": "Veo 3.1, reference ingredients",
+   "enunciado": "Ejemplo: prompt de ingredientes que etiqueta reference_1, reference_2 y reference_3 como personaje, locación y objeto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ]
+  },
+  {
+   "id": "e241faf72e61",
+   "alcance": "Veo 3.1, reference ingredients",
+   "enunciado": "Usar ingredientes de referencia cuando se necesita un personaje concreto en un lugar concreto con un objeto concreto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ]
+  },
+  {
+   "id": "bb55872b6167",
+   "alcance": "Veo 3.1, reference ingredients",
+   "enunciado": "Veo 3.1 permite subir varias imágenes de referencia (personaje, locación, objeto) y etiquetarlas en el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ]
+  },
+  {
+   "id": "458af3069496",
+   "alcance": "Veo, veo.md, §2 versiones y specs",
+   "enunciado": "Especifica Veo 3.1: añade image-to-video con First Frame, audio mejorado, reference ingredients y mayor coherencia de movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "799628e67d5c",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo El rostro cambia; Kling",
+   "enunciado": "Exige, para Kling, usar Element Binding con 3-4 imágenes de referencia (frente, perfil y tres cuartos) contra el cambio de rostro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots"
+    }
+   ]
+  },
+  {
+   "id": "5d3f23cef03d",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo Gemelos; U13",
+   "enunciado": "Fix para gemelos: ligar cada sujeto a su propia referencia individual (U13) y luego forzar diferenciación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Twins / face-blending in multi-person scenes"
+    }
+   ]
+  },
+  {
+   "id": "f83a33337876",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5",
+   "enunciado": "Define el flujo de referencia: generar primero el hero shot, usarlo como referencia de todos los shots siguientes, y en cada prompt incluir el ancla de personaje verbatim más el enlace de la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "54998239ebec",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5",
+   "enunciado": "Establece que la imagen de referencia es el lock más eficaz para la consistencia de personaje en 2026 y debe usarse siempre que el storyboard muestre a la misma persona en varios shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "3fb943e1fc86",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Ideogram",
+   "enunciado": "En Ideogram la referencia se pasa con el parámetro omni-reference y la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "228c3439fc22",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Midjourney",
+   "enunciado": "En Midjourney la referencia se pasa con --cref {url} --cw 50 (peso 50 = solo rasgos, no vestuario).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "8d6125ded1aa",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Midjourney v7, Ideogram v3, Nano Banana",
+   "enunciado": "Lock 5: en Midjourney v7, Ideogram v3 y Nano Banana se puede pasar una imagen de referencia junto al prompt para anclar personaje o estilo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "03b515f7e575",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 5; Nano Banana",
+   "enunciado": "En Nano Banana la referencia se pasa con el arreglo referenceImages.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 5. Reference images (`--cref`, omni-reference, image-to-image)"
+    }
+   ]
+  },
+  {
+   "id": "68dec4eae3b2",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 6",
+   "enunciado": "Explica que una referencia de estilo consistente en todos los shots produce continuidad estética aunque cambien personajes o entornos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 6. Style references"
+    }
+   ]
+  },
+  {
+   "id": "90a3eec1dcdd",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 6; Midjourney, Ideogram, Flux",
+   "enunciado": "Lock 6: con un estilo visual distintivo (stock de película, escuela de luz, teoría de color) se usa una imagen de referencia de estilo: --sref en Midjourney, parámetro de style reference en Ideogram, y en Flux (sin soporte directo) el estilo se incorpora al prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 6. Style references"
+    }
+   ]
+  },
+  {
+   "id": "77de85441c13",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Explicación: sin imagen de referencia, la interpretación del personaje es laxa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "8e9fd188d301",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 2; Midjourney",
+   "enunciado": "Prescribe arreglos contra la deriva: verificar la cadena verbatim, añadir 1-2 rasgos específicos, usar referencia tras el primer shot logrado, bloquear seed y, en Midjourney, --cref con --cw 50.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 2. Character drift across shots"
+    }
+   ]
+  },
+  {
+   "id": "a7965bf9ac77",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas GPT Image 2 caso 2",
+   "enunciado": "Define las secciones requeridas de GPT Image 2 caso 2 en el repo: roles de referencia, sujeto/acción, cámara/lente, luz, consistencia de estilo y constraints_slot.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__2"
+    }
+   ]
+  },
+  {
+   "id": "69a08200a9c7",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Kling 3.0 caso 3c",
+   "enunciado": "Define las secciones requeridas de Kling 3.0 caso 3c según kling.md §9 (el prompt se centra solo en la descripción del sujeto): escena, referencia de movimiento, orientación del personaje y cámara.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+    }
+   ]
+  },
+  {
+   "id": "9ed3f4e9fc7e",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Nano Banana 2 caso 2",
+   "enunciado": "Define las secciones requeridas de Nano Banana 2 caso 2: roles de referencia, sujeto/acción, cámara/lente, luz y ancla de colocación.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__2"
+    }
+   ]
+  },
+  {
+   "id": "f48ac8ec7a03",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Nano Banana Pro caso 2",
+   "enunciado": "Define las secciones requeridas de Nano Banana Pro caso 2 según el patrón multi-referencia '[Image 1: face] ... Combine': roles de referencia, sujeto/acción, cámara/lente, luz y ancla de colocación.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__2"
+    }
+   ]
+  },
+  {
+   "id": "75af670435b9",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Seedance 2.5 caso 3a",
+   "enunciado": "Define las secciones requeridas de Seedance 2.5 caso 3a según seedance-25.md (fórmula oficial, roles de referencia, end state, marcadores): rol de referencia, sujeto/acción, cámara, marcadores de audio y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3a"
+    }
+   ]
+  },
+  {
+   "id": "d4c9fffa6b8f",
+   "alcance": "linter aurora del repo, .claude/hooks/aurora/vocabularies.yaml v1.2-fupai, secciones requeridas Seedance 2.5 caso 3b",
+   "enunciado": "Define las secciones requeridas de Seedance 2.5 caso 3b según seedance-25.md §16 (declarar cada ancla por separado) y §10 transiciones: rol de referencia, sujeto/acción, cámara, transición y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3b"
+    }
+   ]
+  },
+  {
+   "id": "d53b84492fd9",
+   "alcance": "secciones requeridas del linter aurora para GPT Image 1.5, caso 2 (imagen ancla) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt GPT Image 1.5 caso 2: roles de referencia, preservación facial (preserve exact facial, jawline, skin texture), sujeto/acción, cámara/lente y luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_1_5__2"
+    },
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_1_5__2"
+    }
+   ]
+  },
+  {
+   "id": "34311f14407f",
+   "alcance": "secciones requeridas del linter aurora para GPT Image 2, caso 2 (imagen ancla) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt GPT Image 2 caso 2 (imagen ancla): roles de referencia, sujeto/acción, cámara/lente, luz y consistencia de estilo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__2"
+    }
+   ]
+  },
+  {
+   "id": "082937d80408",
+   "alcance": "secciones requeridas del linter aurora para Kling 3.0, caso 3c (motion control) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt Kling 3.0 caso 3c (motion control): escena, referencia de movimiento (@video, mocap), orientación del personaje y cámara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+    }
+   ]
+  },
+  {
+   "id": "0b3a5ed6634c",
+   "alcance": "secciones requeridas del linter aurora para Nano Banana Pro, caso 2 (imagen ancla) (v1.1)",
+   "enunciado": "Define las secciones requeridas de un prompt Nano Banana Pro caso 2: roles de referencia, sujeto/acción, cámara/lente, luz y ancla de colocación (on the, beside, in front of...).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/scripts/vocabularies.yaml",
+     "encabezado": "skills/aurora-prompt-linter/scripts/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__2"
+    }
+   ]
+  },
+  {
+   "id": "fcd96e2f126b",
+   "alcance": "shots.schema.json de storyboard-architect, shots[].assets.source",
+   "enunciado": "Define shots[].assets.source como arreglo de imágenes aportadas por el usuario para el shot (se omite la generación), como strings o como objetos con ruta relativa a la raíz de salida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › shots[].assets.source"
+    }
+   ]
+  },
+  {
+   "id": "e8d1f02927c8",
+   "alcance": "skill aurora-prompt-linter",
+   "enunciado": "Explicación: el linter es un gate determinista entre el drafting y la entrega que mueve la regla de no redescribir lo que está en los refs de la memoria del agente a código ejecutable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter"
+    }
+   ]
+  },
+  {
+   "id": "c35a6c48b0e9",
+   "alcance": "skill aurora-prompt-linter (categorías)",
+   "enunciado": "Ejemplo: categoría L del linter (locación: piso, paredes, ventanas, lighting, ambiente) se banea en MAIN si un ref carga L.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ]
+  },
+  {
+   "id": "a7aa844fa201",
+   "alcance": "skill aurora-prompt-linter (categorías)",
+   "enunciado": "Ejemplo: categoría PR del linter (prop: balón, objeto interactuado) se banea en MAIN si un ref carga PR.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ]
+  },
+  {
+   "id": "e48f3cdc62a7",
+   "alcance": "skill aurora-prompt-linter (categorías)",
+   "enunciado": "Ejemplo: categoría S del linter (estilo: render, paleta, aesthetic) se banea en MAIN si un ref carga S.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Categorías que detecta"
+    }
+   ]
+  },
+  {
+   "id": "0402358189a6",
+   "alcance": "skill aurora-prompt-linter (cómo invocarlo)",
+   "enunciado": "Procedimiento de invocación del linter: etiquetar refs por categoría (P/O/L/PR/S) en un refs.yaml, escribir el draft con negative prompt, capturar el mensaje del usuario para parsear OVERRIDEs, ejecutar prompt_linter.py con caso y flags, y solo entregar con exit 0 (PASS) incluyendo el reporte; con exit 1 (FAIL) no se entrega y se itera.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Cómo invocarlo"
+    }
+   ]
+  },
+  {
+   "id": "a94c6c98831f",
+   "alcance": "skill aurora-prompt-linter (exenciones automáticas)",
+   "enunciado": "El linter no marca un término cuando aparece en contexto de motion/cámara (p. ej. \"studio\" tras \"camera\") ni tras un anchor direccional (away from, toward, off, over, behind, across, past, onto, into, above, below, beside).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Exenciones automáticas"
+    }
+   ]
+  },
+  {
+   "id": "e60d1390f19b",
+   "alcance": "skill aurora-prompt-linter, SKILL.md (limitaciones v1.0)",
+   "enunciado": "Limitación conocida v1.0: el linter no ve las imágenes y depende de los tags declarados por el agente, por lo que un mal tag falla en silencio; el agente debe re-verificar tags antes de invocar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": "Aurora Prompt Linter › Limitaciones conocidas v1.0"
+    }
+   ]
+  },
+  {
+   "id": "8325c6e9f450",
+   "alcance": "skill aurora-prompt-linter, references/README.md (casos soportados)",
+   "enunciado": "Ejemplo: caso 2 del linter, ancla image-with-refs, presupuesto de 75-130 palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Casos soportados"
+    }
+   ]
+  },
+  {
+   "id": "d2d8aaae0e97",
+   "alcance": "skill aurora-prompt-linter, references/README.md (formato de refs.yaml)",
+   "enunciado": "Cada ref se etiqueta en refs.yaml con las categorías que carga (P, O, L, PR) y su rol FF, LF o MR (motion ref).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ]
+  },
+  {
+   "id": "2c246a74379d",
+   "alcance": "skill aurora-prompt-linter, references/README.md (formato de refs.yaml)",
+   "enunciado": "Explicación: las categorías de tags son P (personaje/sujeto), O (outfit), L (locación), PR (prop) y S (estilo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ]
+  },
+  {
+   "id": "60b81655eb9e",
+   "alcance": "skill aurora-prompt-linter, references/README.md (formato de refs.yaml)",
+   "enunciado": "Si una categoría tiene al menos un ref, sus descriptores estáticos quedan baneados en el MAIN prompt, y las categorías sin ref siguen siendo describibles.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Formato de refs.yaml"
+    }
+   ]
+  },
+  {
+   "id": "2a9f7d06dcac",
+   "alcance": "skill aurora-prompt-linter, references/README.md (limitaciones, roadmap v1.1+)",
+   "enunciado": "Limitación conocida: el linter no ve las imágenes y depende de los tags, por lo que un mal tag falla en silencio; mitigación con revisión humana del tag antes de correr.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Limitaciones conocidas v1.0 (roadmap v1.1+)"
+    }
+   ]
+  },
+  {
+   "id": "fee0af3b5617",
+   "alcance": "skill aurora-prompt-linter, references/README.md (por qué existe)",
+   "enunciado": "Explicación: el linter existe porque el agente repitió tres veces el error de describir en el prompt lo ya visible en los refs; v6.0 §5.4 lo prohíbe pero se olvida bajo presión, así que el enforcement pasa de memoria a regla determinista en código.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Por qué existe"
+    }
+   ]
+  },
+  {
+   "id": "7543b9776579",
+   "alcance": "skill aurora-prompt-linter, references/README.md (reglas que aplica)",
+   "enunciado": "Regla 1 del linter, redundancia por categoría: si un ref carga la categoría X, no se describe X en MAIN.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ]
+  },
+  {
+   "id": "cfd608feaf2b",
+   "alcance": "skill aurora-prompt-linter, references/README.md (reglas que aplica)",
+   "enunciado": "Regla 6 del linter, exenciones: los términos en contexto de motion/cámara o como anchor direccional (away from her face, across the climbing wall) no se marcan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/aurora-prompt-linter/references/README.md",
+     "encabezado": "Aurora Prompt Linter v1.0 › Reglas que aplica"
+    }
+   ]
+  },
+  {
+   "id": "886822fb1f7a",
+   "alcance": "skill video, paso 3, selector",
+   "enunciado": "Selector: Seedance 2.5 para producción (30 s de una pasada, kits de 50 referencias, edición de video y re-render parcial, extensión, Ultra Long de 30-180 s, blockout 3D o green screen, @Image N, marcadores de diálogo con llaves) se lee en seedance.md más seedance-25.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ]
+  },
+  {
+   "id": "7b05ed700c6f",
+   "alcance": "skills/image, prompt-framework › Task Types (tabla)",
+   "enunciado": "Define el tipo Style Transfer (transferir estilo), que requiere una referencia más contenido nuevo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Task Types (Навыки)"
+    }
+   ]
+  },
+  {
+   "id": "abad16fa328c",
+   "alcance": "skills/image, structural control (introducción)",
+   "enunciado": "Explicación: las imágenes de entrada controlan la composición (boceto a final, wireframes, grillas).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control"
+    }
+   ]
+  },
+  {
+   "id": "ee6a80c1cc6e",
+   "alcance": "skills/image, structural control › Composition Templates",
+   "enunciado": "Indica usar una referencia para layouts de revista, composiciones de póster, plantillas de redes sociales y estructuras de presentación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Composition Templates"
+    }
+   ]
+  },
+  {
+   "id": "1fb4bb7377ad",
+   "alcance": "skills/image, structural control › Composition Templates",
+   "enunciado": "Plantilla de prompt para seguir la composición de una imagen de referencia reemplazando elementos por contenido nuevo y manteniendo proporciones y jerarquía visual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Composition Templates"
+    }
+   ]
+  },
+  {
+   "id": "5370709893d9",
+   "alcance": "skills/image, structural control › Layout Guidance",
+   "enunciado": "Explicación: las imágenes de referencia pueden controlar dónde se ubican los elementos, qué proporciones usar, cómo fluye el texto y qué áreas se enfatizan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Layout Guidance"
+    }
+   ]
+  },
+  {
+   "id": "4029bae764d8",
+   "alcance": "skills/image, structural control › Precision Control",
+   "enunciado": "Frases de control de precisión: posicionar el texto exactamente donde indica el boceto, seguir la estructura de grilla, igualar el layout con precisión y mantener las proporciones de la referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Precision Control"
+    }
+   ]
+  },
+  {
+   "id": "2996c5134b6c",
+   "alcance": "skills/image, structural control › Sketch → Final",
+   "enunciado": "Explicación: los layouts dibujados a mano se convierten en assets pulidos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Sketch → Final"
+    }
+   ]
+  },
+  {
+   "id": "f518ed1247b6",
+   "alcance": "skills/image, structural control › Sketch → Final",
+   "enunciado": "Plantilla de prompt para convertir un boceto en asset final: seguir el boceto exactamente, el boceto define composición, colocación y posición del texto, con calidad declarada y texto exacto entre comillas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Sketch → Final"
+    }
+   ]
+  },
+  {
+   "id": "64eb01f1d9fd",
+   "alcance": "skills/image, structural control › Wireframe → Mockup",
+   "enunciado": "Explicación: permite obtener diseños UI/UX a partir de wireframes toscos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Wireframe → Mockup"
+    }
+   ]
+  },
+  {
+   "id": "14af88d62605",
+   "alcance": "skills/image, structural control › Wireframe → Mockup",
+   "enunciado": "Plantilla de prompt para convertir wireframes en mockup: seguir la estructura del wireframe con precisión, con contenido placeholder o realista y estilo de UI o brand guidelines.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Wireframe → Mockup"
+    }
+   ]
+  },
+  {
+   "id": "21f8cd5791f4",
+   "alcance": "skills/image, text-rendering › Tips",
+   "enunciado": "Consejo de edición iterativa: pedir \"Leave everything else exactly the same, but change [X]\" y anotar la imagen descargada para subirla de nuevo como referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Tips"
+    }
+   ]
+  },
+  {
+   "id": "84e58fbd0f1c",
+   "alcance": "skills/image, text-rendering › Tips",
+   "enunciado": "Consejo: dibujar un boceto de layout y subirlo con el prompt \"Use layout from attached image\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Tips"
+    }
+   ]
+  },
+  {
+   "id": "64bd68d7bc80",
+   "alcance": "skills/image, vision-decomposer (introducción)",
+   "enunciado": "Indica cuándo usar esta referencia: cuando el usuario pide analizar una imagen y convertirla en un prompt (transferencia de estilo, mood reference, image to prompt, reverse-engineer).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis"
+    }
+   ]
+  },
+  {
+   "id": "baa6e7ff29c9",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R4",
+   "enunciado": "Regla 4: toda comparación (\"same X\") exige adjuntar ambos referentes en ese mismo prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "912aa85cd9c4",
+   "alcance": "skills/produccion-visual-sw30/SKILL.md › Reglas críticas R5",
+   "enunciado": "Regla 5: herencia mínima, \"same face and clothes\" más solo los deltas y cero re-descripción de lo que la referencia ya muestra.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "26af6f367ab6",
+   "alcance": "visual-prompt-forge, capabilities.schema.json (matriz de capacidades de generadores)",
+   "enunciado": "supports_character_ref indica con un booleano si el generador admite referencia de personaje.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "encabezado": "capabilities.schema.json › generators[].supports_character_ref"
+    }
+   ]
+  },
+  {
+   "id": "8e27e8bd5468",
+   "alcance": "visual-prompt-forge, capabilities.schema.json (matriz de capacidades de generadores)",
+   "enunciado": "supports_style_ref indica con un booleano si el generador admite referencia de estilo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/capabilities.schema.json",
+     "encabezado": "capabilities.schema.json › generators[].supports_style_ref"
+    }
+   ]
+  }
+ ]
+}

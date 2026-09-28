@@ -1,0 +1,1208 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "continuidad_multiclip",
+ "descripcion_tema": "continuidad entre clips, repetir bloque, luz constante, empalme de clips",
+ "filas": [
+  {
+   "id": "e29b390895a8",
+   "alcance": "Adapter Hailuo 02 Pro, parámetros",
+   "enunciado": "Hailuo, prompt_optimizer: false para series, porque la reescritura automática ayuda a piezas sueltas pero rompe la consistencia entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "b1474571f519",
+   "alcance": "Adapter Hailuo 02 Pro, pitfalls",
+   "enunciado": "No activar el prompt optimizer en trabajo de serie, porque la reescritura automática rompe la consistencia entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "aa65ea972419",
+   "alcance": "Adapter Ideogram v3, parámetros",
+   "enunciado": "Ideogram, magic_prompt: campo API en OFF para series, porque mata la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "871a5ad230c6",
+   "alcance": "Adapter Kling 3.0, continuidad entre shots",
+   "enunciado": "Aun con start frame fijo, cada clip de Kling es una generación nueva y hay que planear una pasada editorial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "5ecd73b55383",
+   "alcance": "Adapter Kling 3.0, continuidad entre shots",
+   "enunciado": "En Kling no se invierte la dirección de la luz entre shots consecutivos (window-left sigue siendo window-left).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "ce5d145d410e",
+   "alcance": "Adapter Kling 3.0, continuidad entre shots",
+   "enunciado": "En Kling se repite el ancla de personaje del series_lock verbatim en cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "5ef2c785426d",
+   "alcance": "Adapter Kling 3.0, continuidad entre shots",
+   "enunciado": "Para encadenar una secuencia en Kling se usa start_image con el frame final aceptado del shot anterior.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "591dd069fef2",
+   "alcance": "Adapter Midjourney v7, lenguaje de luz",
+   "enunciado": "En Midjourney el vocabulario de luz se toma verbatim de series_lock.lighting.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Lighting language"
+    }
+   ]
+  },
+  {
+   "id": "eef5c2202799",
+   "alcance": "Flujo de Anclas Cinematográficas, lo que el video hereda",
+   "enunciado": "La dirección de luz se hereda: window-left se queda window-left en todos los clips.",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "0b36e99117b6",
+   "alcance": "Flujo de Anclas Cinematográficas, paso 4 (D4 a D7, tratamiento artístico)",
+   "enunciado": "El tratamiento fija los valores por defecto de cámara, luz, paleta y textura y lo prohibido; se declara una vez por proyecto y se repite verbatim en cada ancla, porque cambiarlo a mitad de serie produce el fallo 6 del forge (la serie que se siente distinta con todos los locks puestos).",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 4 · dimensiones D4 a D7: Tratamiento artístico: defaults de cámara, luz, paleta y textura"
+    }
+   ]
+  },
+  {
+   "id": "75ad1c07e545",
+   "alcance": "Flujo del spot publicitario, Nivel 2 (subprocesos por etapa), etapa E6.3, video",
+   "enunciado": "E6.3 arma los bloques de continuidad de la secuencia de clips repitiendo la identidad completa en cada prompt y dando a cada asset un rol explícito (video/universal-rules U7 y U13).",
+   "ubicaciones": [
+    {
+     "documento": "apd/originales/flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "171b496a50c5",
+   "alcance": "Investigación de campo, familia 09 grupo ensamble, secuencias largas (candidata con fuente flowith)",
+   "enunciado": "En secuencias largas re-anclar al maestro original por capítulos en lugar de encadenar siempre sobre la última salida.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "df8d27fc00f7",
+   "alcance": "Kling (Kuaishou), kling.md §10, imagen a video",
+   "enunciado": "Exige incluir pistas de continuidad explícitas en imagen a video de Kling, porque responde bien a instrucciones \"preserve X\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "8b3efca44887",
+   "alcance": "README de tools, copia idéntica en cinco skills (brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic, visual-prompt-forge), sección validate_prompts.py",
+   "enunciado": "Explicación: el check verbatim justifica el archivo, porque la consistencia de serie depende de que los anchors del series_lock lleguen sin editar a cada prompt y parafrasear un anchor es lo más fácil de romper; una pasada cuidadosa derivó 7 de 7 veces con los demás validadores en verde.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "2cc378db7d3b",
+   "alcance": "README del linter aurora del repo (.claude/hooks/aurora, v1.2-fupai), contradicción 4, parche P4",
+   "enunciado": "Contradicción 4 (series_lock verbatim vs L): forge exige entorno/luz/grade verbatim mientras el original banea esos términos; el parche P4 con --series-lock exime los términos que caen dentro de esas cadenas exactas y avisa si una cadena no aparece verbatim.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "d3a6bd9b2a79",
+   "alcance": "Régimen 09 grupo ensamble, fallos conocidos",
+   "enunciado": "Si la luz cambia entre miembros, repetir la cadena de iluminación verbatim en cada inserción.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "54cd46b72018",
+   "alcance": "Régimen 09 grupo ensamble, luz",
+   "enunciado": "Una sola dirección de luz para todos los miembros; la inserción secuencial obliga a repetir verbatim la cadena de iluminación en cada paso o los miembros se leen pegados.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "23dc6f472259",
+   "alcance": "Rúbrica, capa 2 Series Lock",
+   "enunciado": "Capa 2, color grade: pasa si coincide con series_lock, soft fail con ligera deriva tonal, hard fail si el grade es distinto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ]
+  },
+  {
+   "id": "4b7fc20e56e7",
+   "alcance": "Rúbrica, capa 2 Series Lock",
+   "enunciado": "Capa 2, dirección de luz: pasa si coincide con series_lock, soft fail si el ángulo difiere levemente, hard fail si la luz viene de la dirección equivocada (ruptura de continuidad).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ]
+  },
+  {
+   "id": "612d6beeede7",
+   "alcance": "Rúbrica, capa 2 Series Lock",
+   "enunciado": "Capa 2, entorno: pasa si coincide con series_lock, soft fail con ligera deriva, hard fail si el entorno es otro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ]
+  },
+  {
+   "id": "e449c634abdb",
+   "alcance": "Rúbrica, capa 2 Series Lock",
+   "enunciado": "Un hard fail en Series Lock da REJECT (ruptura de continuidad) o REVISE si hay un fix específico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ]
+  },
+  {
+   "id": "122fc5919d79",
+   "alcance": "Rúbrica, capa 6 Continuidad",
+   "enunciado": "Capa 6, coincidencia de color grade: pasa si es idéntico, soft fail con cambio sutil, hard fail si es visiblemente distinto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ]
+  },
+  {
+   "id": "5a9d3bbb9618",
+   "alcance": "Rúbrica, capa 6 Continuidad",
+   "enunciado": "Capa 6, continuidad de entorno: pasa si es el mismo espacio, soft fail con ligera deriva, hard fail si es otro espacio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ]
+  },
+  {
+   "id": "4964b0e1bf51",
+   "alcance": "Rúbrica, capa 6 Continuidad",
+   "enunciado": "Capa 6, continuidad de luz: pasa si tiene la misma dirección y hora del día, soft fail con cambio sutil, hard fail si la dirección se invierte o la hora salta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ]
+  },
+  {
+   "id": "57760c0c854a",
+   "alcance": "Rúbrica, capa 6 Continuidad",
+   "enunciado": "Capa 6, continuidad de personaje: pasa si es la misma persona con el mismo look, soft fail con ligera deriva, hard fail si es claramente otra persona.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ]
+  },
+  {
+   "id": "893267811bff",
+   "alcance": "Rúbrica, capa 6 Continuidad",
+   "enunciado": "Los hard fails de continuidad rompen el storyboard; se resuelven con REVISE comprobando que los anclas verbatim estén en el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ]
+  },
+  {
+   "id": "066ae646cfd0",
+   "alcance": "Seedance (familia), seedance.md, §16 ejemplo trabajado",
+   "enunciado": "Los Clips B y C siguen la misma estructura con su propio párrafo de historia, lista de shots e imagen final, y los bloques de bloqueo de personaje y estilo visual se repiten textualmente en cada clip porque Seedance no tiene memoria entre generaciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)"
+    }
+   ]
+  },
+  {
+   "id": "005632495113",
+   "alcance": "Seedance (familia), seedance.md, §16 ejemplo trabajado 3x5 s; 1.x/2.0",
+   "enunciado": "Un relato de 15 s nunca es un solo prompt sino tres prompts autocontenidos de 5 s, cada uno con el bloqueo de personaje completo, el estilo visual completo, el bloque de audio completo y una función dramática distinta, unidos en el editor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips"
+    }
+   ]
+  },
+  {
+   "id": "f9053caacd6a",
+   "alcance": "Seedance (familia), seedance.md, §7 timeline de 5 segundos; 1.x/2.0",
+   "enunciado": "Para clips de 10 s duplicar la estructura o insertar una pausa antes del clímax (la pausa gana a la velocidad); para historias de 15 s o más dividir en 3 clips de 5 s y unirlos en el editor, porque Seedance es más fiable en generaciones cortas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 7. The 5-second shot timeline (rhythm template)"
+    }
+   ]
+  },
+  {
+   "id": "db27383bf995",
+   "alcance": "Seedance 2.5, §12 edición de video",
+   "enunciado": "La sustitución de sujeto añade un bloque [Timeline Inheritance] (el objetivo hereda apariencia, movimiento, oclusión y salida del original con su tiempo, duración, trayectoria y cambios de velocidad) y cierra con la cláusula de conservar todo lo demás de @Video 1 sin cambios.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 12. Video editing (partial re-render)"
+    }
+   ]
+  },
+  {
+   "id": "4b5ed110e0d7",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "enunciado": "Ejemplo/patrón de extensión hacia adelante: el primer cuadro del segmento continúa desde el último de @Video 1, se mantiene continuidad de pose, props, fondo, cámara, luz y dirección, y cada sujeto sigue siendo la misma instancia continua sin duplicarse ni dividirse.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension"
+    }
+   ]
+  },
+  {
+   "id": "f35ef50fbf70",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "enunciado": "Ejemplo: prompt mínimo de extensión probado por la comunidad que fija identidad, estructura facial, proporciones, luz, estilo y espacio, y cambia solo el movimiento de cámara sin rediseñar personaje ni acción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension"
+    }
+   ]
+  },
+  {
+   "id": "431d1528bf4b",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "enunciado": "En extensión hacia atrás describir los eventos previos y definir el primer cuadro de @Video 1 como estado final explícito de la extensión; marcar los materiales exclusivos del video fuente ('X must not appear early') o los personajes posteriores se filtran al pasado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension"
+    }
+   ]
+  },
+  {
+   "id": "ccbb85aa7af1",
+   "alcance": "Seedance 2.5, §13 extensión de video",
+   "enunciado": "Explicación: los cuadros frontera conectan visualmente, no idénticos al píxel.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 13. Video extension"
+    }
+   ]
+  },
+  {
+   "id": "c804e7149426",
+   "alcance": "Seedance 2.5, §14 modo Ultra Long",
+   "enunciado": "Planificar el ritmo de antemano en Ultra Long, sin timestamps o cadena de beats la segunda mitad deriva; el pipeline genera por segmentos usando los últimos ~3 s como referencia del siguiente, por lo que un segmento débil se propaga, y en Xiaoyunque la re-toma de segmento regenera solo un tramo malo dejando lo demás idéntico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 14. Ultra Long mode (30-180s)"
+    }
+   ]
+  },
+  {
+   "id": "73bbe4d1b4ee",
+   "alcance": "Seedance 2.5, §17 fallos y correcciones",
+   "enunciado": "Falla de plausibilidad en contexto largo: pasados 30 s el modelo puede colocar un objeto plausible en un lugar imposible; declarar las restricciones duras del mundo en la cola global y verificar toda la línea de tiempo antes de entregar, porque los errores se esconden en la segunda mitad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Long-context plausibility slips"
+    }
+   ]
+  },
+  {
+   "id": "479940cb3f5c",
+   "alcance": "Seedance 2.5, §3 fórmula oficial de prompt",
+   "enunciado": "La cola global reafirma los globales que deben mantenerse (posición de cámara, entorno, sonido, iluminación) y repite las prohibiciones globales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "7ba5ba9f23d6",
+   "alcance": "Seedance 2.5, §6 estructura de 30 s",
+   "enunciado": "Ejemplo: esqueleto por etapas con [Generation Goal], [Stage 1..3] (estado inicial, evento primario, estado final) y [Maintain Consistency] para identidad, conteo, ropa, propiedad de props, dirección espacial y relaciones de audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 6. The 30-second structure: stages and end states"
+    }
+   ]
+  },
+  {
+   "id": "1ef0d3a37848",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §11 U10 disciplina de duración",
+   "enunciado": "U10 disciplina de duración: la mayoría de modelos trabajan con clips de 5-10 s y las narrativas largas viven en varios clips unidos en el editor; no meter una historia de 30 s en un prompt de 5 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ]
+  },
+  {
+   "id": "8aa6994ecda1",
+   "alcance": "Skill video, universal-rules (todos los modelos de video), §8 U7 ancla de consistencia de personaje",
+   "enunciado": "U7: anclar la identidad al INICIO de cada prompt y, en secuencias multi-clip, repetir el bloque de identidad completo en cada prompt, porque los generadores no tienen memoria entre generaciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 8. U7. Character consistency anchor"
+    }
+   ]
+  },
+  {
+   "id": "c7f9d0ab386d",
+   "alcance": "Skill visual-prompt-forge, archivos de referencia",
+   "enunciado": "Referencia: references/consistency-locks.md explica cómo series_lock previene la deriva entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Reference files"
+    }
+   ]
+  },
+  {
+   "id": "90d687aae8d4",
+   "alcance": "Skill visual-prompt-forge, hard rule 3",
+   "enunciado": "Regla 3: las cadenas environment, lighting y color_grade del series_lock fluyen verbatim en cada prompt; parafrasear o variar rompe la consistencia entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  },
+  {
+   "id": "3a8643d605c7",
+   "alcance": "Skill visual-prompt-forge, hard rule 3",
+   "enunciado": "Verbatim significa la cadena completa sin editar, no 'la misma idea en mejor prosa'; reescribirla con fluidez es deriva que solo se ve al alinear varios shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  },
+  {
+   "id": "74495978d63c",
+   "alcance": "Veo, veo.md, §6 prompts JSON",
+   "enunciado": "Veo interpreta JSON estructurado, lo que evita el 'concept bleed' (describir el ánimo cambia colores de objetos); usar JSON para escenas complejas con estricta necesidad de continuidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique)"
+    }
+   ]
+  },
+  {
+   "id": "b26f73ebf4f9",
+   "alcance": "Veo, veo.md, §6 prompts JSON; cuándo usarlo",
+   "enunciado": "Usar JSON cuando hay props complejos que deben conservar color y tamaño.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ]
+  },
+  {
+   "id": "781ab740c208",
+   "alcance": "Video, camera-lighting-vocabulary §7; secuencias multiclip",
+   "enunciado": "Exige obedecer estrictamente un color que el usuario prohíbe y repetir la prohibición en cada clip de una secuencia multiclip.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/camera-lighting-vocabulary.md",
+     "encabezado": "Camera, lighting, color, sound vocabulary › 7. Color discipline"
+    }
+   ]
+  },
+  {
+   "id": "905b8c6ac37c",
+   "alcance": "Video, dramaturgy.md §4, Regla de Seis, ítem 5",
+   "enunciado": "Quinta prioridad de corte de Murch (5%): plano 2D, es decir que el corte respete el eje de dirección en pantalla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 4. Walter Murch Rule of Six"
+    }
+   ]
+  },
+  {
+   "id": "e920ecd0eb3e",
+   "alcance": "Video, dramaturgy.md §4, Regla de Seis, ítem 6",
+   "enunciado": "Sexta prioridad de corte de Murch (4%): espacio 3D, es decir que el corte respete la geometría del lugar real.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 4. Walter Murch Rule of Six"
+    }
+   ]
+  },
+  {
+   "id": "60ac4830abd3",
+   "alcance": "Video, fixes-and-skeletons.md §1 (checklist de continuidad)",
+   "enunciado": "Lista de continuidad a verificar antes de enviar un prompt: mismo personaje y ropa nombrada exactamente, lógica de locación, progresión de estado del objeto, sin personajes, texto ni logos no deseados, edad/cuerpo/rostro consistentes, sin acción mano-objeto imposible, sin instrucciones vagas de cámara o luz, sin apilar directores, sin contradicciones, paleta con colores concretos e imagen final explícita.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+    }
+   ]
+  },
+  {
+   "id": "269806edf6e5",
+   "alcance": "Video, fixes-and-skeletons.md §1, checklist de continuidad",
+   "enunciado": "Exige corregir antes de enviar si falta algún ítem del checklist de continuidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+    }
+   ]
+  },
+  {
+   "id": "a08719a1477f",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo El objeto desaparece",
+   "enunciado": "Exige describir la progresión de estado del objeto en una frase (p. ej. la salchicha va de refrigerador a olla a tenedor a piso).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Object disappears mid-scene"
+    }
+   ]
+  },
+  {
+   "id": "1e3f3d3e79a1",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo El objeto desaparece",
+   "enunciado": "Fix para el objeto que desaparece a mitad de escena: seguir el objeto de forma continua para que el mismo objeto permanezca visible o claramente implícito en cada beat.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Object disappears mid-scene"
+    }
+   ]
+  },
+  {
+   "id": "6d486740c5d6",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo El rostro cambia entre shots",
+   "enunciado": "Fix para el rostro que cambia entre shots: preservar el personaje exacto (forma de rostro, ojos, pelo, ropa, estilo de expresión) repitiendo el bloque de identidad completo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Character face changes between shots"
+    }
+   ]
+  },
+  {
+   "id": "e3894ed1cb9c",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo La luz deriva entre clips",
+   "enunciado": "Fix para luz que deriva entre clips: nombrar la fuente dominante y su dirección y repetirlas textualmente en cada clip.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Lighting drifts between clips"
+    }
+   ]
+  },
+  {
+   "id": "30eb87426d36",
+   "alcance": "Video, fixes-and-skeletons.md §2, fallo La luz deriva; ejemplo",
+   "enunciado": "Ejemplo: cláusula de luz constante (luz fría del refrigerador como clave desde la derecha del cuadro, derrame cálido de ventana como rim desde la izquierda, misma relación de contraste en cada shot).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Lighting drifts between clips"
+    }
+   ]
+  },
+  {
+   "id": "56f4fc988fb9",
+   "alcance": "Video, fixes-and-skeletons.md §6, formato B",
+   "enunciado": "Define el formato B (multi-clip): secuencia de prompts autocontenidos que repiten el bloque de continuidad completo y se etiquetan Clip 1 / 5, Clip 2 / 5, etc.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format B. Multi-clip prompts"
+    }
+   ]
+  },
+  {
+   "id": "21934f9ab1b9",
+   "alcance": "Video, fixes-and-skeletons.md §6, formato B; multiclip",
+   "enunciado": "Exige añadir entre clips una nota de una línea que explique cómo empalman (p. ej. el clip 1 termina con la mano entrando al refrigerador y el clip 2 abre con la mano ya dentro y la misma luz).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format B. Multi-clip prompts"
+    }
+   ]
+  },
+  {
+   "id": "65373c0ea5d6",
+   "alcance": "Video, fixes-and-skeletons.md §6, formato F; Veo",
+   "enunciado": "Define el formato F (Veo JSON): JSON escena por escena para continuidad compleja, según veo.md sección 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 6. Output format templates › Format F. Veo JSON"
+    }
+   ]
+  },
+  {
+   "id": "4da44a7478a7",
+   "alcance": "Video, patterns-and-genres.md §3 (estructura de historia multi-clip)",
+   "enunciado": "Explicación: los generadores de video IA no tienen memoria entre generaciones, así que los videos largos viven en varios clips unidos en la edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure"
+    }
+   ]
+  },
+  {
+   "id": "be963674d68b",
+   "alcance": "Video, patterns-and-genres.md §3, continuidad entre clips",
+   "enunciado": "Exige que el primer beat del clip N+1 coincida con el último del clip N (personaje en la misma pose, misma luz y temperatura de color) para que empalmen limpio en el editor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › Continuity across clips"
+    }
+   ]
+  },
+  {
+   "id": "8248ae28e641",
+   "alcance": "Video, patterns-and-genres.md §3, continuidad entre clips, ejemplo",
+   "enunciado": "Ejemplo: el clip 1 termina con él metiendo la mano al refrigerador y el clip 2 abre con su mano dentro a la misma altura y luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › Continuity across clips"
+    }
+   ]
+  },
+  {
+   "id": "55d2b0e4c406",
+   "alcance": "Video, patterns-and-genres.md §3, divisiones por defecto",
+   "enunciado": "Divisiones por defecto de duración en clips de 5 s: 10 s en 2 clips, 15 s en 3, 30 s en 6, 45 s en 9 y 60 s en 12.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › Default splits"
+    }
+   ]
+  },
+  {
+   "id": "e206517857ba",
+   "alcance": "Video, patterns-and-genres.md §3, qué debe repetir cada clip",
+   "enunciado": "Exige que cada clip sea autocontenido y repita el bloque de continuidad, porque el modelo no tiene memoria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat"
+    }
+   ]
+  },
+  {
+   "id": "0ea3582f7bed",
+   "alcance": "Video, patterns-and-genres.md §3, qué debe repetir cada clip",
+   "enunciado": "Exige repetir el bloque en absolutamente cada clip aunque parezca repetitivo, porque esa repetición es lo único que mantiene la consistencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat"
+    }
+   ]
+  },
+  {
+   "id": "3d8d2164f1ee",
+   "alcance": "Video, patterns-and-genres.md §3, qué debe repetir cada clip",
+   "enunciado": "Lista lo que cada clip debe repetir: identidad del personaje, prendas exactamente nombradas, descripción de la locación, estilo visual, lenguaje de cámara dominante, lógica de luz, reglas de continuidad y paleta con colores específicos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › What every clip must repeat"
+    }
+   ]
+  },
+  {
+   "id": "f6feac420da9",
+   "alcance": "ejemplo storyboard WhyStrohm, 30s, series lock",
+   "enunciado": "Ejemplo: ancla de ambiente del series lock: oficina en casa minimalista, paredes blancas, escritorio de roble, una planta, sin desorden decorativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "3d14459a4e50",
+   "alcance": "ejemplo storyboard WhyStrohm, 30s, series lock",
+   "enunciado": "Ejemplo: ancla de color grade del series lock: filmico cálido, sombras teal apagadas, ligero grano, luces crema y sombras azul marino nunca aplastadas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Series lock"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "c97b8437a044",
+   "alcance": "ejemplo storyboard WhyStrohm, 30s, series lock",
+   "enunciado": "Ejemplo: ancla de luz del series lock: luz lateral natural suave, ventana grande a la izquierda de cámara, golden hour cálida de tarde y caída de sombras suave.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Series lock"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "4c37bd547518",
+   "alcance": "ejemplo storyboard WhyStrohm, 30s, series lock",
+   "enunciado": "Ejemplo: ancla de personaje del series lock: fundador de treinta y tantos, pelo sal y pimienta, suéter azul marino, postura calmada, trabajando en laptop.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "df66c8f83a39",
+   "alcance": "ejemplo storyboard WhyStrohm, founder explainer 60s, series lock",
+   "enunciado": "Ejemplo: ancla de ambiente del series lock: oficina en casa minimalista, paredes blancas, escritorio de roble, una planta, tarde avanzada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "f8e0da595274",
+   "alcance": "ejemplo storyboard WhyStrohm, founder explainer 60s, series lock",
+   "enunciado": "Ejemplo: ancla de personaje del series lock: fundador de treinta y tantos, pelo sal y pimienta, suéter azul marino, hablando directo a cámara con postura calmada y autoritaria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "1c02e680d646",
+   "alcance": "ejemplo storyboard shotkit explainer, 90s, series lock",
+   "enunciado": "Ejemplo: series lock de ambiente: dashboard de grado operador con lienzo crema, encabezados en JetBrains Mono, cuerpo en Inter y un solo acento coral por beat.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "499ee4d514ce",
+   "alcance": "ejemplo storyboard shotkit explainer, 90s, series lock",
+   "enunciado": "Ejemplo: series lock de color grade: luces crema (#F5F0E8), sombras tinta (#2A2A32) y coral (#D94F3A) reservado para beats de firma, sin deriva de saturación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "3e3abe49b2c7",
+   "alcance": "ejemplo storyboard shotkit explainer, 90s, series lock",
+   "enunciado": "Ejemplo: series lock de luz: difusa pareja, sin caída de sombras, gradación plana de documento operador en todo el film.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "048adf63ebad",
+   "alcance": "ejemplo storyboard shotkit explainer, 90s, series lock",
+   "enunciado": "Ejemplo: series lock de personaje: sin sujeto humano, explainer guiado por tipografía con estética de documento controlado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Series lock"
+    }
+   ]
+  },
+  {
+   "id": "2fdf0e8e48cb",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 2",
+   "enunciado": "Lock 2: la cadena de series_lock.environment es idéntica en cada prompt de shot; el sujeto del shot describe solo lo que cambia dentro del entorno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 2. Verbatim environment anchors"
+    }
+   ]
+  },
+  {
+   "id": "aacba58d09f0",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 3",
+   "enunciado": "Lock 3: la cadena de series_lock.lighting es idéntica en cada shot; la dirección de la luz es crítica, pues invertir ventana izquierda/derecha entre shots produce cortes obvios donde no debería haberlos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 3. Verbatim lighting anchors"
+    }
+   ]
+  },
+  {
+   "id": "b073baeb6349",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 7",
+   "enunciado": "Advierte que invertir la dirección de la luz sin rationale produce jump cuts visuales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 7. Lighting direction continuity"
+    }
+   ]
+  },
+  {
+   "id": "42d0e01056de",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 7",
+   "enunciado": "Exige que cuando un shot invierte la orientación del personaje (over-the-shoulder reverse) el rationale reconozca el cambio de dirección de la luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 7. Lighting direction continuity"
+    }
+   ]
+  },
+  {
+   "id": "b45c1a6863cf",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 7",
+   "enunciado": "Lock 7: si series_lock.lighting fija una dirección (por ejemplo ventana a la izquierda), la luz de cada shot debe respetarla; violarlo rompe las escenas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 7. Lighting direction continuity"
+    }
+   ]
+  },
+  {
+   "id": "c124d51537ef",
+   "alcance": "general (consistency-locks de visual-prompt-forge), Lock 8",
+   "enunciado": "Lock 8: la cadena series_lock.color_grade fluye verbatim a cada prompt igual que personaje, entorno y luz; grades distintos entre shots se leen como escenas diferentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 8. Color grade flow-through"
+    }
+   ]
+  },
+  {
+   "id": "b8787d718b9f",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Exige bloquear en el prompt, porque cada uno de esos fallos es un problema de producción que edición no puede arreglar del todo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "cb17ba9f0f92",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Explicación: sin lock de color grade, hay latigazo tonal entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "414297cf1f87",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Explicación: sin lock de entorno, la escena salta entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "d7a3a90cc11c",
+   "alcance": "general (consistency-locks de visual-prompt-forge), fallos por lock ausente",
+   "enunciado": "Explicación: sin lock de luz, hay saltos de hora del día y rupturas de eyeline.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Failure modes when locks are missing"
+    }
+   ]
+  },
+  {
+   "id": "7e4274f2113f",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 4 (dirección de luz)",
+   "enunciado": "Describe el Failure 4, inconsistencia de dirección de luz: síntomas (luz de ventana izquierda en un shot y derecha en el siguiente) y causas (luz parafraseada, reverse angles sin marcar en rationale, ambigüedad del generador).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ]
+  },
+  {
+   "id": "3b80ad76feee",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 6",
+   "enunciado": "Indica aceptar en edición cuando la sensación dispar está bajo el umbral de ruido del medio, como social de cortes rápidos con shots de menos de 2 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ]
+  },
+  {
+   "id": "29d2f6b0d8a3",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 6",
+   "enunciado": "Prescribe arreglos de serie: auditar cada prompt contra series_lock y brand-lock con verificación verbatim, verificar aspect ratio idéntico y fijar los adjetivos de mood de marca, el mismo conjunto en cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ]
+  },
+  {
+   "id": "47e938badfc9",
+   "alcance": "general (failure-modes de visual-prompt-forge), Failure 6 (serie dispar)",
+   "enunciado": "Describe el Failure 6, serie que se siente 'distinta' aunque haya locks: síntoma (storyboard inconexo) y causas (lenguaje de grade que deriva, deriva de aspect ratio, adjetivos de mood cambiantes).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ]
+  },
+  {
+   "id": "ad9f851d740e",
+   "alcance": "general (prompt-anatomy de visual-prompt-forge), Layer 2",
+   "enunciado": "Explicación: el series_lock hace que el shot 1 y el shot 7 se sientan la misma pieza; sin él cada frame parece otra producción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ]
+  },
+  {
+   "id": "4a9794db4f69",
+   "alcance": "shots.schema.json de storyboard-architect, series_lock.environment",
+   "enunciado": "Define series_lock.environment como string obligatorio no vacío.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › series_lock.environment"
+    }
+   ]
+  },
+  {
+   "id": "a3c9cb2b3568",
+   "alcance": "shots.schema.json de storyboard-architect, shots[].environment_ref",
+   "enunciado": "Define shots[].environment_ref como string cuyo valor por defecto es 'series_lock.environment', a sobrescribir solo con razón.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/templates/shots.schema.json",
+     "encabezado": "shots.schema.json › shots[].environment_ref"
+    }
+   ]
+  },
+  {
+   "id": "37d0bd2520b2",
+   "alcance": "skill ai-production-director, etapa 6",
+   "enunciado": "Salida de la Etapa 6: prompts de video finales por shot, con continuity blocks entre clips.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ]
+  },
+  {
+   "id": "9b7ae9796fbf",
+   "alcance": "skill ai-video-storyboard (overview)",
+   "enunciado": "Explicación: los generadores producen clips de 5-15 s y el skill cierra la brecha con un shot-list storyboard de prompts por shot con lenguaje visual compartido, para que el video ensamblado parezca una sola pieza.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Overview"
+    }
+   ]
+  },
+  {
+   "id": "af691def8ded",
+   "alcance": "skill ai-video-storyboard (overview)",
+   "enunciado": "La consistencia visual entre shots importa más que la perfección de un shot individual: un set mediocre pero consistente edita bien y seis shots hermosos pero dispares no.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Overview"
+    }
+   ]
+  },
+  {
+   "id": "d257df135e0f",
+   "alcance": "skill ai-video-storyboard (paso 3, capa de consistencia visual)",
+   "enunciado": "Antes de escribir cualquier shot se fija el lenguaje visual compartido: paleta (3-5 hex o nombres), estilo de luz, carácter de lente, film look y lenguaje de movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+    }
+   ]
+  },
+  {
+   "id": "e3d40303bdc2",
+   "alcance": "skill ai-video-storyboard (paso 3, capa de consistencia visual)",
+   "enunciado": "El lenguaje visual compartido se escribe como bloque Visual Theme al inicio de la salida y el prompt de cada shot debe respetarlo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 3 — Establish Visual Consistency Layer"
+    }
+   ]
+  },
+  {
+   "id": "2f91ce51af26",
+   "alcance": "skill ai-video-storyboard, ejemplo tiktok-reel-30s-coffee (why this works)",
+   "enunciado": "Ejemplo: sección Why This Works del reel de cafetería que justifica la estructura Hook-Setting-Human-Detail-Atmosphere-CTA, la consistencia visual por paleta, luz, lente y grano, el pacing de 5 s por shot, el arco emocional y por qué los prompts con vocabulario cinematográfico concreto funcionan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Why This Works"
+    }
+   ]
+  },
+  {
+   "id": "e91796ada2eb",
+   "alcance": "skill storyboard-architect, references/shot-grammar.md, estilo de luz",
+   "enunciado": "La cadena de series_lock fluye automáticamente a cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ]
+  },
+  {
+   "id": "e15b207af24d",
+   "alcance": "skill storyboard-architect, references/shot-grammar.md, estilo de luz",
+   "enunciado": "No redefinir la luz en cada shot: definirla una sola vez en series_lock.lighting (ejemplos: luz lateral natural suave, luz cenital dura de fuente única o mixta con acentos de neón).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ]
+  },
+  {
+   "id": "2b45b8b352b0",
+   "alcance": "skill storyboard-architect, references/shot-grammar.md, subject vs series_lock vs brand_lock",
+   "enunciado": "Distribución de información: brand_lock es lo fijo en todo el proyecto (paleta, tipografía, never list), series_lock lo fijo en este storyboard (ancla de personaje, ambiente, luz, color grade) y subject lo que cambia en este shot (acción, expresión, composición específica).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ]
+  },
+  {
+   "id": "a17cc447a0bd",
+   "alcance": "skill storyboard-architect, references/shot-grammar.md, subject vs series_lock vs brand_lock",
+   "enunciado": "Si se repite la misma descripción de luz entre shots, pertenece a series_lock; si se repite la misma descripción de color entre storyboards, pertenece a brand_lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ]
+  },
+  {
+   "id": "390996b395ff",
+   "alcance": "skill storyboard-architect, shots.json, campo environment_ref",
+   "enunciado": "Campo environment_ref: referencia el lenguaje del series-lock, por defecto series_lock.environment.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "9dc1f62bf9b4",
+   "alcance": "skill storyboard-architect, workflow, paso 6",
+   "enunciado": "Paso 6: definir anclas de ambiente, luz y personaje que valgan para todos los shots en series_lock, al inicio de shots.json; sin ellas la generación de imagen produce frames incoherentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 6. Lock the series"
+    }
+   ]
+  },
+  {
+   "id": "2d8892610a3a",
+   "alcance": "skill video, paso 4",
+   "enunciado": "Paso 4, lectura por tarea: para continuidad multi-clip, arreglar un prompt roto o fallos conocidos (one-take, deriva de rostro, manos derretidas, diálogo demasiado rápido) cargar fixes-and-skeletons.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)"
+    }
+   ]
+  },
+  {
+   "id": "ddb5971ede67",
+   "alcance": "skill video, salida",
+   "enunciado": "Formato B, prompts multi-clip: secuencia de prompts autocontenidos, cada uno repitiendo el bloque completo de identidad, estilo y continuidad (universal-rules.md U7).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Output"
+    }
+   ]
+  },
+  {
+   "id": "093c24a00fdf",
+   "alcance": "skill video, salida",
+   "enunciado": "Formato F, JSON (solo Veo): continuidad estructurada escena por escena, descrita en veo.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Output"
+    }
+   ]
+  }
+ ]
+}
