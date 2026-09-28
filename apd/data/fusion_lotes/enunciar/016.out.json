@@ -1,0 +1,788 @@
+{
+ "registros": [
+  {
+   "id": "cbee32f81863",
+   "enunciado": "La especificación de shot contiene encuadre, ángulo, movimiento, sujeto, profundidad de campo y rationale como traza de auditoría.",
+   "alcance": "visual-prompt-forge, capa 3",
+   "temas": [
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "c79fe326a19e",
+   "enunciado": "Explicación: la capa de shot responde a qué es distinto en este shot concreto.",
+   "alcance": "visual-prompt-forge, capa 3",
+   "temas": [
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "8eedfcad258a",
+   "enunciado": "La capa 4 es el texto en pantalla, tomado de text-overlays.json y compuesto tras la generación; nunca aparece en los prompts de imagen salvo en Ideogram modo 2 con override explícito.",
+   "alcance": "visual-prompt-forge, capa 4",
+   "temas": [
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "48c9afe07aa0",
+   "enunciado": "Explicación: el texto va en capa aparte por editabilidad, porque ningún generador iguala la tipografía profesional, porque el texto animado requiere herramientas de motion y porque solo el compuesto usa las fuentes y colores exactos de marca.",
+   "alcance": "visual-prompt-forge, capa 4",
+   "temas": [
+    "texto_en_pantalla",
+    "postproduccion",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "d8c8a348aba6",
+   "enunciado": "La capa 5 es el adaptador del generador, tomado de adapters/{generator}.md y variable según el generador destino.",
+   "alcance": "visual-prompt-forge, capa 5",
+   "temas": [
+    "estructura_prompt_imagen",
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "19eb4cedda98",
+   "enunciado": "El adaptador es la única capa que el skill aplica; las capas 1-4 son entradas y la 5 las convierte en una cadena específica del generador.",
+   "alcance": "visual-prompt-forge, capa 5",
+   "temas": [
+    "estructura_prompt_imagen",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "8e3a8c9b53de",
+   "enunciado": "El adaptador controla el orden de palabras (Midjourney empieza por el sujeto, los de video por la cámara), la longitud, la sintaxis de parámetros y las fortalezas propias de cada modelo.",
+   "alcance": "visual-prompt-forge, capa 5",
+   "temas": [
+    "estructura_prompt_imagen",
+    "estructura_prompt_video",
+    "longitud_prompt"
+   ]
+  },
+  {
+   "id": "ef37d5e48f13",
+   "enunciado": "Las capas 1-3 alimentan el adaptador (capa 5) que produce el prompt del generador, mientras la capa 4 de texto va a un pipeline de composición separado.",
+   "alcance": "visual-prompt-forge, composición de capas",
+   "temas": [
+    "estructura_prompt_imagen",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "0d0d23c38916",
+   "enunciado": "El adaptador toma de las capas 1-3 y produce una cadena; la capa 4 de texto corre en paralelo y nunca entra al prompt.",
+   "alcance": "visual-prompt-forge, composición de capas",
+   "temas": [
+    "texto_en_pantalla",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "25f1da3bb27d",
+   "enunciado": "Para cambiar el color de marca se edita brand-lock.md y se actualizan todos los prompts de todos los storyboards sin buscar y reemplazar.",
+   "alcance": "visual-prompt-forge, operación",
+   "temas": [
+    "marca_brandlock",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "a5bcb0c75ad4",
+   "enunciado": "Para cambiar el personaje se edita series_lock en shots.json y se actualizan todos los shots de ese storyboard sin tocar otros.",
+   "alcance": "visual-prompt-forge, operación",
+   "temas": [
+    "shots_json_schema",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "35bde05763df",
+   "enunciado": "Para cambiar un shot se edita solo su especificación sin afectar a los demás.",
+   "alcance": "visual-prompt-forge, operación",
+   "temas": [
+    "shots_json_schema",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "6cf101120126",
+   "enunciado": "Para cambiar de generador se cambia el adaptador, con los mismos datos de shot y sin editar brand-lock ni series_lock.",
+   "alcance": "visual-prompt-forge, operación",
+   "temas": [
+    "seleccion_modelo",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "e7e73126d93a",
+   "enunciado": "Para auditar un render se consulta brand-lock.snapshot.md y la versión contra la que se construyó el storyboard.",
+   "alcance": "visual-prompt-forge, operación",
+   "temas": [
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "3d40db51edb5",
+   "enunciado": "Explicación: las salvaguardas en código superan a las de intuición; cada capa tiene un trabajo, los cambios son quirúrgicos y las salidas reproducibles.",
+   "alcance": "visual-prompt-forge, general",
+   "temas": [
+    "trazabilidad_procedencia",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "50a6479cce7c",
+   "enunciado": "Especifica la plantilla de brand-lock.md: identidad, paleta hex por rol (solo esos hex permitidos), tipografía con la fuente en backticks, adjetivos de mood, never list, aspect ratios, dirección de grade, lenguaje de movimiento, reglas de voz, notas de extracción (inferido / por confirmar) y metadatos de versión.",
+   "alcance": "brand-lock-extractor, plantilla brand-lock.md",
+   "temas": [
+    "marca_brandlock",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "3be3317c7d99",
+   "enunciado": "Especifica la plantilla de storyboard.md: cabecera (duración, aspecto, framework de beats, brand lock, fecha), brief, series lock, shots con beat/subject/texto/VO/rationale, overlays con fuente, posición, color y animaciones, notas de handoff y traza de auditoría contra el snapshot de brand-lock.",
+   "alcance": "storyboard-architect, plantilla storyboard.md",
+   "temas": [
+    "shots_json_schema",
+    "entrega_paquete",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "07d9700dc6b3",
+   "enunciado": "Especifica la lista P (personaje: complexión, edad, pelo, género, sudor, etc.) cuyos términos quedan vetados en el prompt MAIN cuando una referencia carga esa categoría.",
+   "alcance": "aurora-prompt-linter, vocabulario P",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "270c245664cb",
+   "enunciado": "Especifica la lista O (outfit: prendas y calzado) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de vestuario los aporta.",
+   "alcance": "aurora-prompt-linter, vocabulario O",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "58e3356ddbf5",
+   "enunciado": "Especifica la lista L (locación: estudio, gym, muros, suelos, ventanas, skyline, luz ambiente) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de locación los aporta.",
+   "alcance": "aurora-prompt-linter, vocabulario L",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "8de795317bc6",
+   "enunciado": "Especifica la lista PR (prop: balón y paneles) cuyos términos quedan vetados en el prompt MAIN cuando una referencia de prop los aporta.",
+   "alcance": "aurora-prompt-linter, vocabulario PR",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "108e6010c88c",
+   "enunciado": "Especifica la lista S (estilo: photorealistic, cinematic, editorial, documentary, studio lighting) cuyos términos quedan vetados en el MAIN cuando una referencia de estilo los aporta.",
+   "alcance": "aurora-prompt-linter, vocabulario S",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "93053b069658",
+   "enunciado": "Prohíbe siempre en el prompt MAIN, en todas las plataformas, términos como slow motion, dreamy, cartoon, anime, 3D render, perfume ad, plastic skin, dreamlike y soft glow (permitidos solo en el negative).",
+   "alcance": "aurora-prompt-linter, todas las plataformas",
+   "temas": [
+    "vocabulario_prohibido",
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "62bc70593cd4",
+   "enunciado": "Exige incluir \"60fps\" y \"broadcast realism\" en los casos 3a/3b/3c con estética de transmisión deportiva.",
+   "alcance": "aurora-prompt-linter, casos 3a-3c sports broadcast",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "759912407824",
+   "enunciado": "Exige un negative prompt en todos los casos.",
+   "alcance": "aurora-prompt-linter, todos los casos",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "46cdda3a64f5",
+   "enunciado": "Un término vetado a menos de 50 caracteres de un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y no se marca.",
+   "alcance": "aurora-prompt-linter",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "11db95b506b8",
+   "enunciado": "En GPT Image 2 caso 1 (génesis texto-a-imagen) el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, cámara o lente, luz y anti-estilo, detectadas por palabras clave.",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "49eea291584e",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener secciones de sujeto, estilo, composición, luz, relación de aspecto y calidad (--v/--style/--q/--stylize).",
+   "alcance": "aurora-prompt-linter, Midjourney caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "0071353ecbdb",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener secciones de sujeto, acción o pose, entorno, estilo, luz y detalles de textura (piel, tela, asimetría, poros).",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "5c6da21a90e8",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (image 1, ref), sujeto-acción, cámara o lente, luz y consistencia de estilo (preserve, same style).",
+   "alcance": "aurora-prompt-linter, GPT Image 2 caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "8515c9ca1187",
+   "enunciado": "En GPT Image 1.5 caso 2 (imagen ancla) el MAIN debe contener roles de referencia (incluida face strip), preservación facial explícita, sujeto-acción, cámara o lente y luz.",
+   "alcance": "aurora-prompt-linter, GPT Image 1.5 caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "ac617cc1938f",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara o lente, luz y ancla de colocación espacial (on the, beside, between...).",
+   "alcance": "aurora-prompt-linter, Nano Banana Pro caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "f8eba1973bf3",
+   "enunciado": "En Kling 3.0 caso 3a (I2V solo primer frame) el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo y cláusula anti-morphing.",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "dbc1e6d487bf",
+   "enunciado": "En Veo 3.1 caso 3a (I2V solo primer frame) el MAIN debe contener sujeto-acción, timing o beat, cámara, estilo y una pista de física (gravedad, momento, trayectoria).",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "3ab59a9aefae",
+   "enunciado": "En Kling 3.0 caso 3b (I2V primer y último frame) el MAIN debe contener escena o movimiento, transición FF→LF, cámara, estilo y anti-morphing.",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3b",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "64600a82d2d2",
+   "enunciado": "En Veo 3.1 caso 3b (I2V primer y último frame) el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing.",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 3b",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "65377a8b9e6e",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento (@video, pose ref), orientación del personaje y cámara.",
+   "alcance": "aurora-prompt-linter, Kling 3.0 caso 3c",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "607dab0950cb",
+   "enunciado": "En Veo 3.1 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo entre comillas, tono o acento, timing y especificaciones de audio.",
+   "alcance": "aurora-prompt-linter, Veo 3.1 caso 4",
+   "temas": [
+    "validacion_gates",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "f0d939d13274",
+   "enunciado": "En Sora 2 caso 4 (video con diálogo) el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio.",
+   "alcance": "aurora-prompt-linter, Sora 2 caso 4",
+   "temas": [
+    "validacion_gates",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "475c5e8a21e3",
+   "enunciado": "Especifica la lista P ampliada (v1.2-fupai) de términos de personaje vetados en el MAIN cuando una referencia ff/lf carga esa categoría, añadiendo roles de dominio (nadador, wakeboarder, piloto, barista, músicos) y retirando sudor y mandíbula.",
+   "alcance": "aurora-prompt-linter v1.2-fupai (hooks del repo), vocabulario P",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "69f1818f842f",
+   "enunciado": "Los términos de micro-acción corporal (sudor, mandíbula, nudillos, respiración, tendón, venas, parpadeo) nunca cuentan como re-descripción del personaje aunque haya referencia.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P5",
+   "temas": [
+    "validacion_gates",
+    "emocion_sin_nombrar",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "4caf7acdd2e5",
+   "enunciado": "Especifica la lista O ampliada de vestuario vetado en el MAIN cuando hay referencia de outfit, con términos de agua, automotriz, café y música/ensamble.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario O",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "092198635f48",
+   "enunciado": "Especifica la lista L ampliada de locaciones vetadas en el MAIN cuando hay referencia de locación, con términos de agua, automotriz, café, clima y salas de concierto.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario L",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "1f1236650c36",
+   "enunciado": "Especifica la lista PR ampliada de props vetados en el MAIN cuando hay referencia de prop, con términos de agua, automotriz, café e instrumentos musicales.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario PR",
+   "temas": [
+    "vocabulario_prohibido",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "2576da1d98b2",
+   "enunciado": "Especifica la lista S de estilo (photorealistic, editorial, documentary, studio lighting) vetada en el MAIN con referencia de estilo; \"cinematic\" sale de esta lista y pasa a BANNED.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, vocabulario S",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "c2d1193f4be2",
+   "enunciado": "Prohíbe siempre en el MAIN los términos vacíos (cinematic, professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, incredible, gorgeous, dreamy, plastic skin, soft glow, etc.); una mención negada no cuenta.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, BANNED",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "e256ca71614d",
+   "enunciado": "Veta términos de estilo no fotográfico (anime, cartoon, 3D render, CGI, cel shading, pixar-style, claymation, ilustración vectorial) solo con tratamiento fotorreal o race; en ilustración o animación son legítimos.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamiento fotorreal/race",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates",
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "f37166faf0f2",
+   "enunciado": "Especifica los términos de cámara lenta (slow motion, slowmo, slow-mo) que dan WARN en fotorreal y FAIL en tratamiento race.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "47d827f37126",
+   "enunciado": "Los términos de cámara lenta con prefijo \"ultra-\" quedan exentos del veto.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "fa1780da9ec9",
+   "enunciado": "Exige \"60fps\" y \"broadcast realism\" en casos de video con estética de transmisión deportiva.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, casos de video 3a/3b/3c/4",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_video"
+   ]
+  },
+  {
+   "id": "dd48d0564bc0",
+   "enunciado": "Define por plataforma si el bloque negativo es obligatorio: requerido en Kling y Seedance 2.5; opcional (framing positivo) en Seedance, GPT Image, Nano Banana, Veo, Midjourney, Flux, Ideogram, Seedream y Hailuo.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P2",
+   "temas": [
+    "negativos",
+    "validacion_gates",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "52c96fbec168",
+   "enunciado": "Limita el bloque negativo a un máximo de 8 ítems.",
+   "alcance": "aurora-prompt-linter v1.2-fupai",
+   "temas": [
+    "negativos",
+    "longitud_prompt"
+   ]
+  },
+  {
+   "id": "5adda93a80aa",
+   "enunciado": "Define rangos de palabras recomendados y techos por plataforma (Midjourney 40-80, Flux 80-150, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70, Kling 80-150 o 20-40 en I2V, Veo 80-150 o 50-100 en I2V, etc.) como referencia que nunca bloquea.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P1",
+   "temas": [
+    "longitud_prompt",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6044e30c4de1",
+   "enunciado": "Exige que el bloque de identidad contenga al menos 3 grupos de rasgos.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "temas": [
+    "consistencia_identidad",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "ee39bbfd73f5",
+   "enunciado": "Define los grupos de rasgos del bloque de identidad: pelo, ojos y piel, prenda, accesorio y rasgo distintivo, cada uno con sus palabras clave.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P3",
+   "temas": [
+    "consistencia_identidad",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "7585c6ae0528",
+   "enunciado": "Un término vetado junto a un prefijo de cámara o movimiento (camera, shot, lens, pans, dollies, etc.) se considera contexto de cámara y queda exento del veto.",
+   "alcance": "aurora-prompt-linter v1.2-fupai",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "503aaba8a724",
+   "enunciado": "En tratamientos de ilustración y animación se reemplazan los patrones de estilo y detalle por vocabulario propio y se eliminan las secciones anti-estilo y cierre fotorreal.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, P7 tratamientos ilustración/animación",
+   "temas": [
+    "animacion_ilustracion",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "63a4afcd983d",
+   "enunciado": "En GPT Image 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, cámara, luz, anti-estilo y los slots \"Use case:\" y \"Constraints:\" del formato de 5 slots.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "25a0fef32203",
+   "enunciado": "En Midjourney caso 1 el MAIN debe contener sujeto, estilo, composición, luz, relación de aspecto y parámetro de calidad.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Midjourney caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "4edc399784f1",
+   "enunciado": "En Nano Banana Pro caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, sin números de lente.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "d4fd413a5bba",
+   "enunciado": "En Nano Banana 2 caso 1 el MAIN debe contener sujeto, acción o pose, entorno, estilo, luz y detalles de textura, igual que NBP en lenguaje natural.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "8caa623dd5ff",
+   "enunciado": "En Flux caso 1 el MAIN debe contener sujeto, acción o pose, entorno, luz, especificación fotográfica (shot on, mm, f/, DOF) y cierre fotorreal.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Flux caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "061dcf08e53b",
+   "enunciado": "En Ideogram caso 1 (modo compuesto) el MAIN debe contener sujeto, entorno, luz y composición con espacio negativo.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Ideogram caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "17bdfde9b359",
+   "enunciado": "En Seedream caso 1 el MAIN debe contener sujeto, encuadre, entorno, luz y estilo fotorreal.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedream caso 1",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "1e2955c62581",
+   "enunciado": "En GPT Image 2 caso 2 (imagen ancla) el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz, consistencia de estilo (preserve, keep) y el slot \"Constraints:\".",
+   "alcance": "aurora-prompt-linter v1.2-fupai, GPT Image 2 caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "7077d4bcb711",
+   "enunciado": "En Nano Banana Pro caso 2 el MAIN debe contener roles de referencia (image N, @img), sujeto-acción, cámara, luz y ancla de colocación espacial.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana Pro caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "f963cf9426a4",
+   "enunciado": "En Nano Banana 2 caso 2 el MAIN debe contener roles de referencia, sujeto-acción, cámara, luz y ancla de colocación espacial.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Nano Banana 2 caso 2",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "96b39d99ba52",
+   "enunciado": "En Kling 3.0 caso 3a el MAIN debe contener escena o movimiento, sujeto-acción, cámara, estilo realista y anti-morphing (incluido \"preserve\").",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "96f1f3840ba7",
+   "enunciado": "En Veo 3.1 caso 3a el MAIN debe contener sujeto-acción, timing, cámara, estilo o \"maintain the subject\" y una pista de física.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "ded49c910223",
+   "enunciado": "En Seedance caso 3a el MAIN debe contener sujeto-acción, cámara y audio en el cuerpo del prompt.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "c091ec497b2a",
+   "enunciado": "En Seedance 2.5 caso 3a el MAIN debe contener rol de la referencia (@image, first frame), sujeto-acción, cámara, marcadores de audio y estado final.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "2b8faa1d4388",
+   "enunciado": "En Hailuo caso 3a el MAIN debe contener frase de cámara, sujeto-acción, cambio de luz y mood.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Hailuo caso 3a",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "9984b52109d3",
+   "enunciado": "En Kling 3.0 caso 3b el MAIN debe contener escena o movimiento, transición FF→LF (tail image, last frame), cámara, estilo y anti-morphing.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3b",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "f2287b490734",
+   "enunciado": "En Veo 3.1 caso 3b el MAIN debe contener transición FF→LF, timing, cámara, pista de física y anti-morphing o \"maintain the subject\".",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 3b",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "db4aed3f9ec2",
+   "enunciado": "En Seedance 2.5 caso 3b el MAIN debe declarar por separado las anclas de primer y último frame, sujeto-acción, cámara, transición y estado final.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 3b",
+   "temas": [
+    "validacion_gates",
+    "i2v_keyframes",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "663bd1b7dc9e",
+   "enunciado": "En Kling 3.0 caso 3c (motion control) el MAIN debe contener escena, referencia de movimiento, orientación del personaje y cámara, centrándose en la descripción del sujeto.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 3c",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "2e4beae856ab",
+   "enunciado": "En Kling 3.0 caso 4 (diálogo) el MAIN debe contener etiquetas de personaje, lista de shots, diálogo entre comillas, etiqueta de voz, enlace temporal y línea de audio.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Kling 3.0 caso 4",
+   "temas": [
+    "validacion_gates",
+    "audio_dialogo",
+    "multishot"
+   ]
+  },
+  {
+   "id": "b8288490f388",
+   "enunciado": "En Veo 3.1 caso 4 el MAIN debe contener sujeto-acción, diálogo, tono o acento, timing y especificaciones de audio (incluidas etiquetas SFX).",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Veo 3.1 caso 4",
+   "temas": [
+    "validacion_gates",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "5b6701ceae11",
+   "enunciado": "En Seedance 2.5 caso 4 el MAIN debe contener marcadores de diálogo con llaves, refuerzo del idioma del diálogo, sujeto-acción, cámara y estado final.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, Seedance 2.5 caso 4",
+   "temas": [
+    "validacion_gates",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "566f2deb2904",
+   "enunciado": "Explicación: la copia parcheada v1.2-fupai del linter aurora amplía el vocabulario y resuelve contradicciones a favor de la fuente, sin tocar el original, con la misma interfaz y exit codes más las opciones --ref-role, --series-lock y --treatment.",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "8ed5ae081215",
+   "enunciado": "Especifica la estructura de .claude/hooks/aurora/: prompt_linter.py con changelog de parches, vocabularies.yaml, README y tests con 18 pruebas y fixtures.",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "c1b57b1a4d8d",
+   "enunciado": "La copia parcheada del linter requiere Python 3.11 y pyyaml, nada más.",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "01432b8a6b8a",
+   "enunciado": "Explicación: la copia existe porque el linter original, calibrado para un flujo anterior, bloquea prompts que los skills actuales exigen y deja pasar palabras que prohíben; cada parche cita su fuente.",
+   "alcance": "aurora-prompt-linter v1.2-fupai (repo)",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "b8296d816a42",
+   "enunciado": "El conteo de palabras nunca bloquea: da WARN con el presupuesto por plataforma y el techo de _capabilities.json en lugar del HARD FAIL original por encima de 130/90 palabras.",
+   "alcance": "aurora-prompt-linter v1.2-fupai, parche P1",
+   "temas": [
+    "longitud_prompt",
+    "validacion_gates"
+   ]
+  }
+ ]
+}
