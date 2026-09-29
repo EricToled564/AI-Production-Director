@@ -1,0 +1,2232 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "texto_en_pantalla",
+ "descripcion_tema": "texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura",
+ "filas": [
+  {
+   "id": "a7ee3023349d",
+   "alcance": "Adapter Flux (Flux 2 Pro, 1.1 Pro, Dev) de visual-prompt-forge",
+   "enunciado": "No incluir contenido de texto en el prompt de Flux, aunque Flux 2 lo maneje mejor que 1.1; componer el texto aparte para poder editarlo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "df9e7903ad84",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge, sección Text rendering",
+   "enunciado": "En storyboard el texto por defecto sigue siendo compuesto en post, conservando el patrón de flag de override del adapter Ideogram.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+    }
+   ]
+  },
+  {
+   "id": "a36a65ed4c44",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge, sección Text rendering",
+   "enunciado": "GPT Image renderiza texto en imagen con cerca de 95% de precisión; cuando se requiere texto: poner el texto exacto entre comillas dobles rectas, indicar la posición, indicar el carácter tipográfico aproximado y limitar a un elemento de texto por prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+    }
+   ]
+  },
+  {
+   "id": "d99068a36684",
+   "alcance": "Adapter Hailuo 02 Pro de visual-prompt-forge",
+   "enunciado": "No incluir contenido de texto en el prompt de Hailuo; los captions se componen en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "0aa9b5e755c8",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "El adapter de Ideogram tiene dos modos: compuesto (por defecto) y texto en imagen (override).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3)"
+    }
+   ]
+  },
+  {
+   "id": "a6b60635a93f",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "Ideogram es el único generador que renderiza texto dentro de imágenes de forma fiable y se usa cuando el texto como imagen es el entregable (pósters, tiles sociales, señalética, empaques); para lo demás se prefiere Flux o Midjourney y se compone el texto aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3)"
+    }
+   ]
+  },
+  {
+   "id": "8c3011bee2b2",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "Ideogram maneja cómodamente 60-120 palabras y los prompts con texto deben ser aún más cortos, porque más descripción alrededor de la instrucción de texto aumenta la probabilidad de que el render omita o deforme el copy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Length"
+    }
+   ]
+  },
+  {
+   "id": "5cb5d9f24542",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "La especialidad de Ideogram es el texto: si el brief no necesita texto en imagen, elegirlo es usar la herramienta equivocada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ]
+  },
+  {
+   "id": "40be298cd6df",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "No apilar varios elementos de texto en un prompt de Ideogram: uno funciona bien, dos es lotería y tres está roto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "8adbd948a790",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "No usar el Modo 2 de Ideogram sin el override en rationale, porque el texto en imagen por defecto causa doble texto (compuesto más generado) que destruye la composición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "c12b4c4009a5",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "No usar fuentes cursivas o decorativas en Ideogram, que también falla con ellas; las sans-serif y serif limpias son fiables.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "098af7511cdb",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "Si no hay flag de override en rationale, se usa por defecto el Modo 1 de Ideogram.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ]
+  },
+  {
+   "id": "abc41c129f8c",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 1",
+   "enunciado": "Ejemplo: patrón del Modo 1 de Ideogram igual al de Flux, sin texto en el prompt y con cierre de composición limpia con espacio negativo para el overlay de texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Composition pattern (Mode 1, composited)"
+    }
+   ]
+  },
+  {
+   "id": "d58afe65873b",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 1",
+   "enunciado": "Modo 1 (compuesto, por defecto): generar la imagen limpia y componer el texto en post, con sintaxis igual a Flux; se usa cuando se elige Ideogram por calidad general y no por texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 1: Composited (default)"
+    }
+   ]
+  },
+  {
+   "id": "87d39048ca93",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "Ejemplo: patrón de composición del Modo 2 de Ideogram con texto exacto, posición, estilo de fuente y color hex o nombrado de brand-lock, y cierre de mood de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Composition pattern (Mode 2, text-in-image)"
+    }
+   ]
+  },
+  {
+   "id": "5da4c99ce842",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "Ejemplo: patrón de sintaxis del Modo 2 de Ideogram con sujeto, entorno y luz, el texto exacto entre comillas con su posición y estilo de fuente, y cierre de mood de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Syntax pattern (Mode 2)"
+    }
+   ]
+  },
+  {
+   "id": "fa3ace0553d8",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "En Ideogram el texto exacto debe ir entre comillas dobles rectas, porque las interpreta como objetivo de renderizado de texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Syntax pattern (Mode 2)"
+    }
+   ]
+  },
+  {
+   "id": "b6867214509a",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "Modo 2 (texto en imagen): se usa cuando el texto en pantalla debe aparecer como parte de la imagen (titular de póster, letrero, etiqueta), y es el único caso en que el prompt de un generador contiene el texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ]
+  },
+  {
+   "id": "e5fe4eddba9c",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "Para activar el Modo 2 el shot debe llevar un flag de override explícito en rationale (por ejemplo 'Text-in-image override: poster shot, headline must render as part of composition').",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ]
+  },
+  {
+   "id": "9940c40e00d5",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2, Example",
+   "enunciado": "Ejemplo: prompt del Modo 2 de Ideogram para un póster de lanzamiento con el texto 'built different' en Inter Black, azul #0F1F3A sobre crema #F5F0E8.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Example (Mode 2)"
+    }
+   ]
+  },
+  {
+   "id": "bf7d8f4de4be",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "No incluir contenido de texto en el prompt de Kling: el texto en video es poco fiable y se compone o anima en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3f3192574f29",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge, Output handoff",
+   "enunciado": "Los clips generados son materia prima y aún requieren ensamblaje editorial al timing del storyboard, compositing de text-overlays.json, grade y audio (VO, música, diseño de sonido), y esto se debe decir en el handoff.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "4c4e3984ea41",
+   "alcance": "GPT Image 2; ajustes de quality",
+   "enunciado": "quality: high para texto pequeño o denso, infografías, retratos, ediciones sensibles a identidad y assets de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+    }
+   ]
+  },
+  {
+   "id": "a4aed7b9c280",
+   "alcance": "GPT Image 2; plantillas por caso de uso",
+   "enunciado": "Plantilla Marketing Creative con texto: escena, sujeto, detalles, audiencia, texto exacto con fuente/color/posición y constraints sin texto extra, duplicado, marcas de agua ni logos ajenos, en quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Marketing Creative with Text"
+    }
+   ]
+  },
+  {
+   "id": "cdbe907eb090",
+   "alcance": "GPT Image 2; plantillas por caso de uso",
+   "enunciado": "Plantilla UI Mockup: describir la pantalla como si existiera (no concept art), con jerarquía, elementos reales, copy exacto entre comillas, sin lenguaje de boceto ni Lorem Ipsum, quality high para texto pequeño.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › UI Mockup"
+    }
+   ]
+  },
+  {
+   "id": "2d197c6d738f",
+   "alcance": "GPT Image 2; ruteo",
+   "enunciado": "Para fotorrealismo con tipografía fina o UI usar GPT Image 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "b3cc87e99aef",
+   "alcance": "GPT Image 2; ruteo",
+   "enunciado": "Para poligrafía de marca y pósters con texto EXACTO usar GPT Image 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "f9dd383d3b57",
+   "alcance": "GPT Image 2; ruteo",
+   "enunciado": "Para texto pequeño y denso en el cuadro usar GPT Image 2 con quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "256041a1e554",
+   "alcance": "GPT Image 2; texto",
+   "enunciado": "GPT Image 2 gana en texto fino en cuadro (pies de foto, leyendas, notas, layouts multi-fuente), más nítido en quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в"
+    }
+   ]
+  },
+  {
+   "id": "80819aff442c",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Escribir el texto literal entre comillas dobles o en MAYÚSCULAS.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "0cab1b0b37ae",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Especificar explícitamente fuente, tamaño, color y posición del texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "85d04288bd1f",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Para palabras complejas y marcas, deletrear letra por letra.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "8a381a11694d",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Para texto pequeño ilegible añadir «100 percent readable and physically believable».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "7d5ffe6827dc",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Proteger contra basura con «no extra words, no duplicate text, no watermarks».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "b689d296b8e3",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Texto pequeño, denso o multi-fuente exige quality: high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "cb6e511e663f",
+   "alcance": "Imagen; ejemplo de tipo Text Rendering",
+   "enunciado": "Ejemplo: prompt de póster motivacional de gimnasio con texto entre comillas (peso, color y posición por línea), ícono mínimo y formato 9:16.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Examples by Type › Text Rendering"
+    }
+   ]
+  },
+  {
+   "id": "e303c34fcf00",
+   "alcance": "Imagen; patrón App Store Screenshot; GPT Image 2",
+   "enunciado": "Plantilla de prompt de 5 slots para una captura de App Store con marco de dispositivo realista, titular de 2-3 palabras por línea, sombra suave del color del degradado y restricciones: bisel físicamente exacto, UI coherente, titular sin solapar el dispositivo, solo degradado y un único dispositivo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "encabezado": "UI Mockups & Social Media Patterns › App Store Screenshot"
+    }
+   ]
+  },
+  {
+   "id": "d1467ff92337",
+   "alcance": "Imagen; patrón Emerald Street Fashion Poster; GPT Image 2 (quality high)",
+   "enunciado": "Lista las variables clave del póster de moda (color de fondo, modelo, vestuario, pose, título y subtítulo, tipografía, colores, detalles de tela, acentos gráficos) y recomienda GPT Image 2 con quality high por el render tipográfico y la superposición figura-tipo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+    }
+   ]
+  },
+  {
+   "id": "caf61f54373d",
+   "alcance": "Imagen; patrón Emerald Street Fashion Poster; GPT Image 2 (quality high)",
+   "enunciado": "Plantilla de prompt de 5 slots para un póster de moda con fondo plano de color, título extra-bold en la mitad superior, modelo a cuerpo entero en picado inverso que solapa las letras, luz plana nublada, texto exacto y restricciones de legibilidad (una letra tapada como máximo 40%), quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+    }
+   ]
+  },
+  {
+   "id": "911034b0cd53",
+   "alcance": "Imagen; patrón Instagram Story Ad 9:16; GPT Image 2",
+   "enunciado": "Plantilla de prompt de 5 slots para un anuncio de Instagram Story 9:16 con degradado, producto centrado, dos paneles glassmorphism, titular, zona de CTA del 15% inferior y restricciones de legibilidad móvil, sin texto en el 5% inferior y máximo tres elementos de acento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "encabezado": "UI Mockups & Social Media Patterns › Instagram Story Ad (9:16)"
+    }
+   ]
+  },
+  {
+   "id": "10545905b54c",
+   "alcance": "Imagen; patrón Lavender Smartphone Hero Ad; GPT Image 2 (quality high)",
+   "enunciado": "Plantilla de prompt de 5 slots para un hero de smartphone flotante sobre degradado suave con formas 3D desenfocadas, titular y subtítulo entre comillas, y restricciones de pantalla nítida, degradado sin banding, proporciones reales del dispositivo, texto exacto y quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/poster-illustration.md",
+     "encabezado": "Poster & Illustration Patterns › Lavender Smartphone Hero Ad"
+    }
+   ]
+  },
+  {
+   "id": "756bc80a42c1",
+   "alcance": "Imagen; patrón Social Media Feed Post 1:1; GPT Image 2",
+   "enunciado": "Plantilla de prompt de 5 slots para un post cuadrado con fondo limpio, texto principal centrado con márgenes de 10%, elemento de apoyo, franja de marca, paleta restringida y restricciones: legible a 320px, máximo dos tamaños de tipo, contraste WCAG AA.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "encabezado": "UI Mockups & Social Media Patterns › Social Media Feed Post (1:1)"
+    }
+   ]
+  },
+  {
+   "id": "0be6e399265f",
+   "alcance": "Imagen; patrón Social Media Feed Post 1:1; GPT Image 2 (quality high)",
+   "enunciado": "Lista las variables clave del post de feed (tipo, contenido, texto, fuente, colores, fondo, marca, paleta, elemento de apoyo) y recomienda GPT Image 2 con quality high porque el layout es de mucho texto y la legibilidad a tamaño pequeño es crítica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ui-social.md",
+     "encabezado": "UI Mockups & Social Media Patterns › Social Media Feed Post (1:1)"
+    }
+   ]
+  },
+  {
+   "id": "974a0a51e573",
+   "alcance": "Imagen; slides, contraste y color",
+   "enunciado": "Evitar el blanco puro #fff sobre negro y usar #f5f5f5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Contrast & Color"
+    }
+   ]
+  },
+  {
+   "id": "d9d5b82bd48b",
+   "alcance": "Imagen; slides, contraste y color",
+   "enunciado": "Mantener un contraste mínimo de 4.5:1.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Contrast & Color"
+    }
+   ]
+  },
+  {
+   "id": "5add929ec539",
+   "alcance": "Imagen; slides, límites de contenido",
+   "enunciado": "Limitar cada diapositiva a un máximo de 5 puntos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Content Limits"
+    }
+   ]
+  },
+  {
+   "id": "4fc41e079926",
+   "alcance": "Imagen; slides, límites de contenido",
+   "enunciado": "Limitar los bloques de texto a 15-20 palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Content Limits"
+    }
+   ]
+  },
+  {
+   "id": "2357e9c00dca",
+   "alcance": "Imagen; slides, límites de contenido",
+   "enunciado": "Usar título con lista o con párrafo, pero no ambos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Content Limits"
+    }
+   ]
+  },
+  {
+   "id": "5e0805f583fa",
+   "alcance": "Imagen; slides, tipo Hero Title (Dark)",
+   "enunciado": "Plantilla de diapositiva de título oscura: degradado de un tono oscuro a #0a0a0a, bruma sutil en el borde inferior, título extra-bold blanco muy grande en el tercio superior, subtítulo fino y atenuado cinco veces más pequeño, formato 16:9.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Slide Types › Hero Title (Dark)"
+    }
+   ]
+  },
+  {
+   "id": "964dd9e300b9",
+   "alcance": "Imagen; slides, tipografía",
+   "enunciado": "Jerarquía tipográfica en el prompt: hero extremadamente grande dominando el tercio superior, primario grande, secundario 3-5 veces más pequeño que el hero, footer mínimo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Typography"
+    }
+   ]
+  },
+  {
+   "id": "73295eb36b7e",
+   "alcance": "Imagen; slides, tipografía",
+   "enunciado": "Tipografía de slides: título 44-54 pt bold, subtítulo 28-36 pt medium, texto 18-24 pt regular (mínimo 18 para legibilidad); sans-serif como base (Inter, Helvetica, Roboto) y serif solo como acento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Typography"
+    }
+   ]
+  },
+  {
+   "id": "1f29fb956b7b",
+   "alcance": "Imagen; slides, tipografía",
+   "enunciado": "Vocabulario de tipografía para el prompt: pesos thin, regular, medium, bold, extra bold, y posiciones como «upper third», «left aligned 10% margin» o «centered».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Typography"
+    }
+   ]
+  },
+  {
+   "id": "87d75cbd4dc4",
+   "alcance": "Imagen; tabla de tipos de tarea, general",
+   "enunciado": "Tipo Text Rendering: se usa para texto dentro de la imagen, y sus claves son comillas exactas, posición y peso.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Task Types (Навыки)"
+    }
+   ]
+  },
+  {
+   "id": "5df8ee9e7339",
+   "alcance": "Lo que un ancla nunca lleva; general",
+   "enunciado": "Un ancla nunca lleva texto en pantalla: va en una capa separada, text-overlays.json.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva"
+    }
+   ]
+  },
+  {
+   "id": "b5d7904f6bdf",
+   "alcance": "Midjourney v7 (adaptador de visual-prompt-forge), errores a evitar",
+   "enunciado": "Prohíbe incluir el contenido de texto (on_screen_text) en el prompt; se compone aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "299ad5cf8194",
+   "alcance": "Modelo D8 para texto legible; GPT Image 2",
+   "enunciado": "Para etiqueta de producto, UI o texto pequeño legible usar GPT Image 2 quality high (texto denso multi-font, hasta 2560×1440) y solo el final en high.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "3dfea5362e96",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe incluir contenido de texto en prompts de imagen NB porque su render de texto es mediocre; se compone aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "4b7f689c740a",
+   "alcance": "Nano Banana vs GPT Image 2; sintaxis",
+   "enunciado": "Texto en imagen: Nano Banana lo recibe entre comillas con fuente y posición; GPT Image 2 entre comillas o ALL CAPS más «no extra words / no duplicate text».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+    }
+   ]
+  },
+  {
+   "id": "0acf446839a3",
+   "alcance": "Nano Banana, texto",
+   "enunciado": "Fallo conocido: el texto pequeño se emborrona a 1K; para texto denso usar 2K+ o GPT Image 2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ]
+  },
+  {
+   "id": "890775ddadba",
+   "alcance": "Nano Banana, texto",
+   "enunciado": "Nano Banana es estado del arte en renderizado de texto en más de 100 idiomas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ]
+  },
+  {
+   "id": "0850da1125ad",
+   "alcance": "Nano Banana, texto",
+   "enunciado": "Nano Banana permite texto en varios idiomas dentro de un mismo cuadro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ]
+  },
+  {
+   "id": "acb65d7580c5",
+   "alcance": "Nano Banana, texto",
+   "enunciado": "Se puede nombrar la fuente tipográfica en el prompt (Century Gothic 12px, Brush Script, Impact, Heavy blocky sans-serif).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ]
+  },
+  {
+   "id": "c5f052252713",
+   "alcance": "Nano Banana, texto",
+   "enunciado": "Truco para texto complejo: pedir primero al modelo que escriba el texto y luego, en otro prompt, insertarlo en la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ]
+  },
+  {
+   "id": "04bf34a707ad",
+   "alcance": "Nivel 4, génesis sin referencias, lo que no entra aquí",
+   "enunciado": "El texto en pantalla no entra en la génesis: va en una capa separada, text-overlays.json.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+    }
+   ]
+  },
+  {
+   "id": "0b20adb3b04d",
+   "alcance": "Patrón fashion editorial Streetwear Poster; GPT Image 2 quality high",
+   "enunciado": "Define las variables clave del póster streetwear (titular, subtítulo, colores, estilo tipográfico, outfit, posición, luz, grano) y recomienda GPT Image 2 con quality high por el render de texto y la interacción de profundidad modelo-tipografía.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+    }
+   ]
+  },
+  {
+   "id": "590b021b4be9",
+   "alcance": "Patrón fashion editorial: Streetwear Poster with Oversized Typography",
+   "enunciado": "Usar el póster streetwear de tipografía sobredimensionada para lanzamientos, ediciones limitadas o campañas urbanas donde el texto domina la composición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+    }
+   ]
+  },
+  {
+   "id": "6fe4d3e43411",
+   "alcance": "Patrón fashion editorial: Streetwear Poster, prompt de imagen",
+   "enunciado": "Ejemplo: plantilla de prompt de cinco slots para un póster streetwear con titular tipográfico que ocupa dos tercios y el modelo intercalado delante y detrás de las letras, exigiendo texto legible, ortografía exacta del titular y quality high.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/fashion-editorial.md",
+     "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+    }
+   ]
+  },
+  {
+   "id": "5f765b46bf04",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo (still, imagen)",
+   "enunciado": "Cinta, dorsal y patrocinadores van sin texto ni logo generado; se componen en post.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "344118a1a118",
+   "alcance": "Régimen 08 multitud anónima",
+   "enunciado": "Pancartas, camisetas y pantallas no llevan texto legible: el texto se compone en post o se evita porque el modelo lo deforma.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ]
+  },
+  {
+   "id": "7ae401324596",
+   "alcance": "Régimen 08 multitud anónima, checklist",
+   "enunciado": "Checklist del crítico: sin texto legible en pancartas ni camisetas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 9. Checklist del crítico"
+    }
+   ]
+  },
+  {
+   "id": "e767825ba2f2",
+   "alcance": "Régimen 08 multitud anónima, fallos conocidos",
+   "enunciado": "Fallo de texto inventado en pancartas: quitar toda mención de texto del prompt y componer en post.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "2128a9db2ce9",
+   "alcance": "Régimen 08 multitud anónima; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 quality high si hay objetos del héroe con detalle fino, sin texto en pancartas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "5b19c7430098",
+   "alcance": "Régimen 09 grupo ensamble; GPT Image 2",
+   "enunciado": "Usar GPT Image 2 quality high para identidad y para partituras, logos de instrumento o UI, sin texto generado.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "d11ee082acba",
+   "alcance": "Seedance 1.5/2.0 (comillas) y 2.5 (marcadores)",
+   "enunciado": "Reglas de audio: el diálogo va entre comillas dobles en 1.5/2.0 (en 2.5 con marcadores { } para diálogo, < > SFX, ( ) música y 【 】 títulos), se indica la entrega, las líneas son cortas porque los monólogos largos pierden sincronía, se escribe 'no music' si no se quiere música y los subtítulos se piden como texto en el borde inferior sincronizado con la voz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 14. Audio (1.5+)"
+    }
+   ]
+  },
+  {
+   "id": "7dc880d0f4d8",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe incluir contenido de texto en el prompt; los captions se componen en post desde text-overlays.json.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3b0e77cfd717",
+   "alcance": "Seedance 2.5, fallos y soluciones, subtítulos o BGM no deseados",
+   "enunciado": "Contra subtítulos o BGM aleatorios: \"Pure video, no subtitles, no background music\", fiable en 2.5, repetido en la cola global.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Random subtitles or unwanted BGM"
+    }
+   ]
+  },
+  {
+   "id": "90d913719127",
+   "alcance": "Seedance 2.5, marcadores de sintaxis",
+   "enunciado": "Los subtítulos y títulos se marcan entre corchetes 【 】, por ejemplo 【Chapter One: Departure】.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 4. Syntax markers for audio, dialogue and text"
+    }
+   ]
+  },
+  {
+   "id": "b5f5febe8886",
+   "alcance": "Seedream 4.5/4.0, adaptador de visual-prompt-forge, cuándo no usarlo",
+   "enunciado": "Prohíbe usar Seedream para diseños con mucho texto; se usa Ideogram o GPT Image.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › When Seedream is the wrong choice"
+    }
+   ]
+  },
+  {
+   "id": "719dd832e77a",
+   "alcance": "Seedream 4.5/4.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe incluir contenido de texto en el prompt porque el render de texto es pobre; se compone aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "4029bae764d8",
+   "alcance": "Skill image, control estructural, Precision Control",
+   "enunciado": "Frases de control de precisión para el prompt: posicionar el texto donde indica el boceto, seguir exactamente la rejilla, igualar el layout y mantener las proporciones de la referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Precision Control"
+    }
+   ]
+  },
+  {
+   "id": "f518ed1247b6",
+   "alcance": "Skill image, control estructural, Sketch → Final",
+   "enunciado": "Ejemplo: plantilla de prompt boceto a final, donde el boceto define composición, colocación de elementos y posición del texto, con calidad indicada y texto exacto renderizado donde se marque.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Sketch → Final"
+    }
+   ]
+  },
+  {
+   "id": "fed15d19e7ec",
+   "alcance": "Skill image, slides, layout Brutalist",
+   "enunciado": "Reglas del brutalismo: mantener navegación y jerarquía claras, la legibilidad pesa más que la expresión y aplicarlo con selectividad (colores vivos o fuentes enormes, no ambos).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Layout Systems › Brutalist"
+    }
+   ]
+  },
+  {
+   "id": "8b5ba549133f",
+   "alcance": "Skill image, texto e infografías, estructura de prompt",
+   "enunciado": "Ejemplo: plantilla de prompt de infografía educativa (tema, audiencia, contenido, título entre comillas, estilo visual, layout, formato).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Prompt Structure"
+    }
+   ]
+  },
+  {
+   "id": "9370412f2923",
+   "alcance": "Skill image, texto en imagen e infografías; Nano Banana y GPT Image 2",
+   "enunciado": "Explicación: estilos, tipos de layout y ejemplos de texto en imagen valen para ambos modelos, pero difieren en render: Nano Banana es SOTA en 100+ idiomas, admite varios idiomas en un cuadro y fuentes nombradas; GPT Image 2 requiere EXACT TEXT entre comillas o en mayúsculas, 'no extra words / no duplicate text' y quality high para texto pequeño.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics"
+    }
+   ]
+  },
+  {
+   "id": "79435ea44f34",
+   "alcance": "Skill image, texto en imagen, Text-First Hack",
+   "enunciado": "Explicación: generar primero el texto produce tipografía más nítida y precisa que meterlo todo en un solo prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Text-First Hack"
+    }
+   ]
+  },
+  {
+   "id": "af52ddabec72",
+   "alcance": "Skill image, texto en imagen, Text-First Hack",
+   "enunciado": "Para texto complejo en imágenes, generar primero el texto (pedir al modelo que lo redacte o refine) y luego pedir la imagen con ese texto exacto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Text-First Hack"
+    }
+   ]
+  },
+  {
+   "id": "f47a7ffa76e2",
+   "alcance": "Skill image, texto en imagen, control de fuentes",
+   "enunciado": "Controlar la tipografía describiendo su estilo o nombrando la fuente directamente (ej.: sans-serif blanca en negrita, Century Gothic 12px, Brush Script, Impact, Century Gothic fina).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Font Control"
+    }
+   ]
+  },
+  {
+   "id": "6272c25ffd52",
+   "alcance": "Skill image, texto en imagen, multilingüe/localización",
+   "enunciado": "Ejemplo: prompt multi-idioma en una imagen con tres líneas de texto en fuentes distintas y traducción posterior al coreano y árabe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Multilingual / Localization"
+    }
+   ]
+  },
+  {
+   "id": "ea8acbbd7b3e",
+   "alcance": "Skill image, texto en imagen, multilingüe/localización",
+   "enunciado": "Soporta más de 10 idiomas por dos vías: escribir el prompt en el idioma destino, o escribirlo en uno y especificar el idioma de render (ej.: 'Render all text in Korean').",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Multilingual / Localization"
+    }
+   ]
+  },
+  {
+   "id": "4685d544b812",
+   "alcance": "Skill image, texto en imagen, tips",
+   "enunciado": "Aportar contenido propio (texto de artículo, transcripción, notas) es más preciso que depender solo de la búsqueda.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Tips"
+    }
+   ]
+  },
+  {
+   "id": "ebbd2b2ca171",
+   "alcance": "Subprocesos por etapa, E4.4",
+   "enunciado": "E4.4 mantiene el texto en pantalla en una capa separada, text-overlays.json, y nunca dentro de la descripción visual.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "2a5840d25f53",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe poner texto en pantalla en el prompt: las líneas habladas sí valen, pero los captions renderizados vienen de text-overlays.json en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3a72a45093bf",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, introducción",
+   "enunciado": "Especifica que en Veo la cámara es determinante y, cuando hay diálogo, la línea hablada se escribe en el prompt (único caso donde va texto en el prompt, por ser audio y no texto en pantalla).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ]
+  },
+  {
+   "id": "8ee224aa94e1",
+   "alcance": "Video; Seedance 2.5, Veo, Seedance 1.x/2.0 y Kling",
+   "enunciado": "La prohibición de subtítulos y música es fiable en Seedance 2.5 y Veo; en Seedance 1.x/2.0 y Kling se debe evitar además mencionar texto en pantalla o música no deseados, porque mencionarlos los invoca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Random subtitles or unwanted background music"
+    }
+   ]
+  },
+  {
+   "id": "4b5502c43c25",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), _template.md, Typography",
+   "enunciado": "Máximo dos fuentes para trabajo de producción; tres solo si una se reserva para código o datos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ]
+  },
+  {
+   "id": "4a7ad3e97893",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), _template.md, Typography",
+   "enunciado": "Poner el nombre y peso de la fuente entre backticks inmediatamente tras la etiqueta (p. ej. `Inter Black 900`), porque la vista previa HTML y el chequeo de fuente de overlays leen ese valor y lo anterior es prosa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ]
+  },
+  {
+   "id": "8494b8777a63",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), _template.md, Voice rules",
+   "enunciado": "Reglas de voz: restricciones a nivel de copy que aplican a la voz en off y al texto en pantalla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "23925e159509",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "enunciado": "Nunca animar el texto con rebote o bamboleo; solo type-on, fade o hard cut.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "c6fcfde9e2fa",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "enunciado": "Nunca usar emojis en el copy de cuerpo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "67c7f4bf7bd0",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "enunciado": "Nunca usar rayas largas (em dashes) en el copy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "b064947c9bde",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "enunciado": "Nunca usar signos de exclamación en los titulares.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "05eacbe444d2",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "enunciado": "Nunca usar viñetas en el copy narrativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "591dadc8f532",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Typography",
+   "enunciado": "Ejemplo: tipografía de WhyStrohm con Inter Black 900 para display, Inter Medium 500 para cuerpo y JetBrains Mono Regular para código y datos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Typography"
+    },
+    {
+     "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Typography"
+    }
+   ]
+  },
+  {
+   "id": "3999058dc1bf",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Never list",
+   "enunciado": "Nunca usar rayas largas (em dashes) en el copy; solo puntos, comas y punto y coma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Never list"
+    }
+   ]
+  },
+  {
+   "id": "199416bc7488",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Typography",
+   "enunciado": "Ejemplo: la tipografía de producción de WhyStrohm usa dos fuentes y la mono solo para contenido técnico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Typography"
+    }
+   ]
+  },
+  {
+   "id": "899b31afe982",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "enunciado": "El punto coral (`.`) en líneas de firma es una elección tipográfica, no puntuación, y se aplica solo al final de frases héroe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "fd738c50b75a",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "enunciado": "Sin emojis en el copy de cuerpo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "9bf2a5537f04",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "enunciado": "Sin signos de exclamación en los titulares.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+     "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "5987d148ae23",
+   "alcance": "brand-lock-extractor, sección Voice rules",
+   "enunciado": "Las reglas de voz son restricciones de copy para VO y texto en pantalla, formuladas como reglas de autoría, extraídas de patrones observados y hechas ejecutables y no aspiracionales, pues se vuelven restricciones de prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "encabezado": "Extraction rubric › Voice rules"
+    }
+   ]
+  },
+  {
+   "id": "77e2de9f9e52",
+   "alcance": "critique-rubric, Capa 4 Composición",
+   "enunciado": "Rúbrica Composición, espacio negativo para texto: pasa si se reserva según spec, soft fail si se reserva pero justo, hard fail si no hay espacio y el overlay no cabe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ]
+  },
+  {
+   "id": "6817625abe3c",
+   "alcance": "critique-rubric, Capa 4 Composición",
+   "enunciado": "Rúbrica Composición, ubicación del sujeto: pasa si coincide con el rationale, soft fail si está algo desplazado (tercio izquierdo vs derecho), hard fail si el sujeto bloquea donde iba el texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ]
+  },
+  {
+   "id": "1bf6853392b8",
+   "alcance": "critique-rubric, Capa 5 Técnica",
+   "enunciado": "Rúbrica Técnica, artefactos de fondo: pasa si está limpio, soft fail con rarezas menores, hard fail con texto distorsionado, objetos derretidos o geometría imposible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ]
+  },
+  {
+   "id": "2894f30ac684",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: overlays de texto: 'Slow morning' en 0-1 s abajo al centro y 'Opening Saturday · @yourshop' en 25-30 s, en negrita y centrado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "96ada55c2686",
+   "alcance": "general (skill image, ambas familias de modelos); edición, localización",
+   "enunciado": "Plantilla de adaptación cultural de un anuncio: nuevo fondo, texto traducido y mantener elementos de marca y composición base.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Localization"
+    }
+   ]
+  },
+  {
+   "id": "ffc6ec94ba4c",
+   "alcance": "general (skill image, ambas familias de modelos); edición, localización",
+   "enunciado": "Plantilla de localización: traducir todo el texto del idioma origen al destino, mantener lo demás igual y conservar estilo tipográfico, tamaño y posición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Localization"
+    }
+   ]
+  },
+  {
+   "id": "0502976f8640",
+   "alcance": "general (skill image, ambas familias de modelos); plantilla de prompt",
+   "enunciado": "Plantilla de prompt: Create [TIPO] for [CONTEXTO], fondo con hex y atmósfera, elemento héroe detallado, tipografía línea por línea, elementos adicionales, mood y formato.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Prompt Template"
+    }
+   ]
+  },
+  {
+   "id": "ae8d8bc1d2f5",
+   "alcance": "general (skill image, ambas familias de modelos); regla 7",
+   "enunciado": "Todo texto a renderizar va entre comillas, con peso tipográfico (bold, thin) y posición (upper third, centered) especificados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 7. Quote Text Exactly"
+    }
+   ]
+  },
+  {
+   "id": "50dd9ac1c3c6",
+   "alcance": "skill image, characters.md, Viral Thumbnails",
+   "enunciado": "Ejemplo: plantilla de miniatura viral con persona de Image 1 (rostro igual con expresión cambiada, pose, objeto, flecha de color, titular en estilo pop con contorno blanco, fondo desenfocado, alta saturación y contraste).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Viral Thumbnails"
+    }
+   ]
+  },
+  {
+   "id": "5fd81d98fbec",
+   "alcance": "skill storyboard-architect, tabla de inputs",
+   "enunciado": "El estilo de voiceover (VO, solo texto en pantalla o captions) es opcional; se pregunta si no está claro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "5375d68abe59",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_01",
+   "enunciado": "Ejemplo: shot_01 (hook, 0.0-2.0 s, MCU, estático) con el fundador mirando a cámara y texto \"Your content feels random.\"; el rationale justifica el contacto visual directo y el encuadre estático.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_01 · 0.0–2.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "88f03ac3b7fe",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_06",
+   "enunciado": "Ejemplo: shot_06 (promise, 20.0-26.0 s, MCU, estático) con el fundador calmado y texto \"30 minutes a week...\"; el rationale lo presenta como el después de la misma persona, más tranquila.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_06 · 20.0–26.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "fc8ee5494681",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_07",
+   "enunciado": "Ejemplo: shot_07 (cta, 26.0-30.0 s, MS, estático) con la URL whystrohm.com/scan en lower-third; el rationale justifica el plano más abierto para dar aire al texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_07 · 26.0–30.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "3c24176cd015",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_03",
+   "enunciado": "Ejemplo: shot_03 (stakes, ECU en los ojos) con VO y texto \"It's missing infrastructure.\"; el rationale usa el ECU para el momento de realización y el texto para reforzar la línea clave.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_03 · 8.0–14.0s · ECU · static"
+    }
+   ]
+  },
+  {
+   "id": "499edf590d86",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_05",
+   "enunciado": "Ejemplo: shot_05 (insight, MS) con el fundador señalando la pantalla y texto \"Extract. Lock. Compound.\"; el rationale muestra el artefacto y mantiene legible la pantalla con DOF profundo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_05 · 24.0–32.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "f03f93bbf07f",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_06",
+   "enunciado": "Ejemplo: shot_06 (proof, MCU) con VO de cifras y texto de estadísticas en upper-third; el rationale usa el callout para que el espectador absorba visualmente mientras la voz confirma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_06 · 32.0–42.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "6c2b6e5058d8",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_08",
+   "enunciado": "Ejemplo: shot_08 (cta, MCU estático) con VO y URL whystrohm.com/scan en lower-third; el rationale mantiene la URL en pantalla el tiempo de leerla dos veces.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_08 · 50.0–60.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "edbf0658a2bb",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_01",
+   "enunciado": "Ejemplo: shot_01 (pain, 0-12 s, WS) con el brief vago tecleándose y un chaos cut a cuatro generadores en cuadrícula 2x2; el rationale nombra el fallo de brief vago más model-roulette igual a deriva de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_01: 0.0 to 12.0s. WS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "157f8dfc8ac2",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_06",
+   "enunciado": "Ejemplo: shot_06 (promise, 80-90 s, WS) con el comando de instalación en type-on y el tagline en Inter italic; el rationale reduce el CTA a un solo comando sin fricción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_06: 80.0 to 90.0s. WS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "093402c5d8c2",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json (array requiere versión 1.2)",
+   "enunciado": "El campo `on_screen_text` de un shot es null, un id de text-overlay, o un array de ids cuando el shot lleva más de un overlay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "0c84f5381e27",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5 (capa de texto), text-overlays.json",
+   "enunciado": "Todo texto en pantalla se registra como entrada de `text-overlays.json` (id, shot_id, content, font, position, size, weight, color hex del palette del brand-lock, enter, exit) y nunca se integra en la descripción visual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 5. Separate the text layer"
+    }
+   ]
+  },
+  {
+   "id": "e08674c2f624",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5, text-overlays.json",
+   "enunciado": "Los vocabularios de animación de enter y exit son distintos y `templates/text-overlays.schema.json` es la autoridad; un shot con varios overlays debe listar todos sus ids en el array `on_screen_text` o los extra no se renderizan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 5. Separate the text layer"
+    }
+   ]
+  },
+  {
+   "id": "6112e3b2e5cd",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, advertencias de validate_shots.py",
+   "enunciado": "El validador solo advierte (no falla) en juicios discutibles: copy de overlay repetido en el subject, hex crudo en un subject, ids fuera de orden cronológico o fuente de overlay no declarada en el brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "2098d867d6d5",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, validate_shots.py",
+   "enunciado": "`validate_shots.py` comprueba reglas mecánicas: esquemas, tiempos sin huecos ni solapes que cuadran con la duración, resolución de overlays y shots, timing de overlays dentro del shot, colores dentro del palette del brand-lock y que `brand_lock_ref` exista.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "9cacab8ca7f5",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "enunciado": "Ejemplo: `examples/shotkit-explainer/` contiene el explainer de 90 segundos, incluido un shot con dos overlays.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Examples"
+    }
+   ]
+  },
+  {
+   "id": "5cdffdf3529b",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, text-overlays.json",
+   "enunciado": "`text-overlays.json` debe validar contra `templates/text-overlays.schema.json`, leído antes de escribir.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `text-overlays.json`"
+    }
+   ]
+  },
+  {
+   "id": "fa2363a791a1",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla es una decisión de carga: por defecto preguntar si el shot necesita texto para funcionar, y si lo visual ya lleva el significado, el texto lo diluye.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text"
+    }
+   ]
+  },
+  {
+   "id": "cdd1f3eda181",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla se justifica como puntuación de beat: una palabra o frase que cae sobre un golpe de música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "0d68b06b3d15",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla se justifica en entornos de reproducción automática sin sonido, como los feeds sociales, donde sustituye a la voz en off.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "beb1249cb272",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla se justifica para cifras o pruebas, porque los números se fijan visualmente mejor que auditivamente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "4605e6aaa226",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla se justifica para el CTA, la acción que se quiere que tome el espectador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "f44806d8d319",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "El texto en pantalla se justifica por compresión de concepto: una frase corta pega más fuerte que cuatro segundos de narración.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ]
+  },
+  {
+   "id": "98ef891d80ef",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "Explicación: las reglas de composición del texto alimentan el campo position de cada overlay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules"
+    }
+   ]
+  },
+  {
+   "id": "d231b5e577c2",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "No poner texto de relleno: si el shot no lo necesita, se deja limpio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ]
+  },
+  {
+   "id": "3d1a2e68fb85",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "No repetir nombres de producto por todo el video como texto de marca, porque el lockup del logo en el CTA ya lo cubre.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ]
+  },
+  {
+   "id": "4fe645b0b291",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "No usar texto decorativo sobre b-roll (por ejemplo \"Moments matter\"); se corta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ]
+  },
+  {
+   "id": "a9882299faf1",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "No usar texto que repita la voz en off: si la voz lo dice, el texto es ruido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ]
+  },
+  {
+   "id": "3e560027aac7",
+   "alcance": "storyboard-architect, texto en pantalla, animación",
+   "enunciado": "Animar el texto de forma limpia por defecto: ganchos con hard-cut de entrada y salida, reencuadres con fade de 0.2 s, subtítulos persistentes con slide-up y slide-down, CTA con type-on o slide-up.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Animation"
+    }
+   ]
+  },
+  {
+   "id": "2fd756bfb3d4",
+   "alcance": "storyboard-architect, texto en pantalla, animación",
+   "enunciado": "No apilar animaciones: elegir una por overlay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Animation"
+    }
+   ]
+  },
+  {
+   "id": "e98662534875",
+   "alcance": "storyboard-architect, texto en pantalla, composición consciente del espacio negativo",
+   "enunciado": "Cuando un shot lleva texto en pantalla, el sujeto debe reservar espacio para él, y esto se aplica en el storyboard, no en la generación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ]
+  },
+  {
+   "id": "6e37194cf8a3",
+   "alcance": "storyboard-architect, texto en pantalla, composición consciente del espacio negativo",
+   "enunciado": "La composición del sujeto libera la zona del texto: texto en tercio derecho, tercio derecho libre; texto en tercio inferior, sujeto en los dos tercios superiores; texto centrado, sujeto encuadrado en el espacio negativo alrededor del centro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ]
+  },
+  {
+   "id": "21e1b74d1380",
+   "alcance": "storyboard-architect, texto en pantalla, composición consciente del espacio negativo",
+   "enunciado": "Registrar en el rationale del shot qué zona reserva para el texto (por ejemplo \"MCU left-third subject, reserves right-third for text_03\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ]
+  },
+  {
+   "id": "29b473e95de2",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición center: para un titular display, un concepto único y entrada y salida en corte seco.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "73d87e33010c",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición left-third: cuando el sujeto está cargado a la derecha del encuadre.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "691bb7928483",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición lower-third: para subtítulo o sustituto de VO, persistente entre shots.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "dbd83e6aea21",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición personalizada {x: %, y: %}: solo cuando ninguna posición estándar sirve.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "c12fc7302065",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición right-third: cuando el sujeto está cargado a la izquierda del encuadre.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "17c8fdb3efc8",
+   "alcance": "storyboard-architect, texto en pantalla, posiciones del overlay (campo position)",
+   "enunciado": "Posición upper-third: para destacar una cifra o información secundaria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ]
+  },
+  {
+   "id": "bf80d4e909a3",
+   "alcance": "storyboard-architect, texto en pantalla, regla de \"leer dos veces\"",
+   "enunciado": "El texto debe permanecer en pantalla el tiempo suficiente para leerse dos veces; se calcula y se verifica, no se estima a ojo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › The \"read twice\" rule"
+    }
+   ]
+  },
+  {
+   "id": "bbf26547423f",
+   "alcance": "storyboard-architect, texto en pantalla, reglas de color",
+   "enunciado": "El color de cada overlay debe ser un hex presente en la paleta del brand-lock; si se quiere otro, se cambia el estilo del overlay o la composición del shot, no se amplía la paleta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Color rules"
+    }
+   ]
+  },
+  {
+   "id": "8be3e8da00eb",
+   "alcance": "storyboard-architect, texto en pantalla, reglas de tipografía",
+   "enunciado": "Cada campo font debe referir una tipografía definida en el brand-lock, con un máximo de dos fuentes por proyecto (display y body).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Typography rules"
+    }
+   ]
+  },
+  {
+   "id": "570b3b212f90",
+   "alcance": "storyboard-architect, texto en pantalla, tamaños del overlay (1080p)",
+   "enunciado": "Tamaño body (32 a 48 px a 1080p): para texto tipo subtítulo persistente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "628a5d8bbfb0",
+   "alcance": "storyboard-architect, texto en pantalla, tamaños del overlay (1080p)",
+   "enunciado": "Tamaño caption (20 a 28 px a 1080p): para avisos legales y atribuciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "3ce449ed5202",
+   "alcance": "storyboard-architect, texto en pantalla, tamaños del overlay (1080p)",
+   "enunciado": "Tamaño display (96 a 144 px a 1080p): para beats de gancho o héroe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "d6d24bf4a35b",
+   "alcance": "storyboard-architect, texto en pantalla, tamaños del overlay (1080p)",
+   "enunciado": "Tamaño headline (56 a 80 px a 1080p): para beats de reencuadre.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ]
+  },
+  {
+   "id": "b5ad9051769c",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Documentar en el rationale la persistencia del texto entre shots y el tiempo de lectura que da (por ejemplo 4.8 s para 16 palabras).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "84436ceba73b",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Ejemplo: en shots.json, shot_03 y shot_04 referencian el mismo on_screen_text \"text_02\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "f60e5b96ad1f",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Ejemplo: en text-overlays.json, el overlay text_02 lista shot_id como arreglo [\"shot_03\", \"shot_04\"].",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "7dbb6a666061",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "El texto puede persistir a través de shots consecutivos, útil cuando tarda más en leerse que la duración de un shot o para anclarlo mientras cambian las imágenes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "0ca8d4c7bbe6",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Para apilar texto, ambos shots referencian el mismo ID on_screen_text, con enter.at alineado al inicio del primer shot y exit.at al final del segundo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "860e0a62301d",
+   "alcance": "storyboard-architect, timing-rules, matemática de duración del texto",
+   "enunciado": "Multiplicar por 2 el tiempo de lectura para la regla de leer dos veces, de modo que una frase de 6 palabras necesita mínimo 2.4 s en pantalla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ]
+  },
+  {
+   "id": "eb1a77f3812b",
+   "alcance": "storyboard-architect, timing-rules, matemática de duración del texto",
+   "enunciado": "No subtemporizar el texto, que es el fallo de storyboard más común.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ]
+  },
+  {
+   "id": "8de931e78e09",
+   "alcance": "storyboard-architect, timing-rules, matemática de duración del texto",
+   "enunciado": "Referencia de velocidad de lectura: palabra corta (5 caracteres o menos) 0.6 s, frase corta (hasta 6 palabras) 1.2 s, oración (hasta 14 palabras) 2.4 s, oración larga (15 a 25 palabras) 4.0 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ]
+  },
+  {
+   "id": "d9954ddf9981",
+   "alcance": "storyboard-architect, timing-rules, matemática de duración del texto",
+   "enunciado": "Si el shot dura 2 s y el texto es de 14 palabras, resolverlo acortando el texto, llevándolo a través de dos shots consecutivos o alargando el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ]
+  },
+  {
+   "id": "3f3c5518e3d1",
+   "alcance": "storyboard-architect, timing-rules, matemática de duración del texto",
+   "enunciado": "Un overlay de texto debe estar en pantalla lo bastante para leerse dos veces, porque los espectadores hojean y la vista no siempre se fija en el primer frame.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ]
+  },
+  {
+   "id": "85a9e9068952",
+   "alcance": "storyboard-architect, timing-rules, validación de timing",
+   "enunciado": "Antes de dar por terminado, validar el timing: la suma de duraciones iguala la del proyecto con margen de 0.1 s, ningún shot con start >= end ni solapado, el primero empieza en 0.0, el último termina al final, y cada overlay entra y sale dentro de su shot (o pasa a un shot sucesor marcado) con duración mínima de leer dos veces.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › Validating timing"
+    }
+   ]
+  },
+  {
+   "id": "c77e674b5cc7",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Explicación: los overlays son un arreglo porque shots.json permite varios por shot; un solo juego de campos overlay_* solo podía contener uno y el segundo se perdía sin aviso.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "aae16ed88854",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Para overlays de texto, establecer has_overlays: true y un arreglo overlays en el shot, cada entrada con id, content, font, weight, color, size, position_class, position_label, enter_at, enter_animation, exit_at y exit_animation, que la plantilla itera con {{#each overlays}}.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "539ef040ada9",
+   "alcance": "storyboard-html-preview, paso 5 renderizar overlays",
+   "enunciado": "Explicación: el render visual de overlays da al revisor una idea del frame compuesto final antes de la composición definitiva.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually"
+    }
+   ]
+  },
+  {
+   "id": "b8a3a90c06c7",
+   "alcance": "storyboard-html-preview, paso 5 renderizar overlays",
+   "enunciado": "Para cada shot con referencia on_screen_text, el HTML muestra el texto en la fuente de marca aproximada (o respaldo visible), la posición indicada visualmente y la información de timing de entrada y salida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually"
+    }
+   ]
+  },
+  {
+   "id": "f83970dad68f",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Todo prompt se compone de cinco capas: Brand Lock, Series Lock, Shot Spec, Text Layer (nunca en el prompt, se compone aparte) y Generator Adapter.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › The five-layer prompt anatomy"
+    }
+   ]
+  },
+  {
+   "id": "30006d101ab0",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "enunciado": "Adaptador ideogram.md: Ideogram v3, para texto en imagen solo como override.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Adapters"
+    }
+   ]
+  },
+  {
+   "id": "6bc44e553881",
+   "alcance": "visual-prompt-forge, capa 4 Text Layer",
+   "enunciado": "Explicación: el texto es una capa separada por editabilidad (se revisa sin regenerar), calidad (Ideogram y GPT Image quedan por debajo de herramientas de diseño), animación (requiere After Effects/Remotion/CapCut) y control de marca (fuentes y colores exactos).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ]
+  },
+  {
+   "id": "6d5c84d5b274",
+   "alcance": "visual-prompt-forge, capa 4 Text Layer; excepción Ideogram Modo 2",
+   "enunciado": "El texto en pantalla se compone después de generar, proviene de text-overlays.json y nunca aparece en los prompts de imagen, salvo Ideogram Modo 2 con override explícito.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ]
+  },
+  {
+   "id": "9bf984750322",
+   "alcance": "visual-prompt-forge, composición de capas",
+   "enunciado": "Explicación: el adaptador toma las capas 1-3 y produce la cadena; la capa 4 corre en paralelo y nunca entra en el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+    }
+   ]
+  },
+  {
+   "id": "f3ebaf363488",
+   "alcance": "visual-prompt-forge, composición de capas",
+   "enunciado": "Explicación: el prompt de un shot se compone alimentando las capas 1 (marca), 2 (serie) y 3 (shot) al adaptador de la capa 5, mientras la capa 4 (texto) va a un pipeline de composición aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+    }
+   ]
+  },
+  {
+   "id": "05269d29e8ba",
+   "alcance": "visual-prompt-forge, ejemplo one-shot-all-adapters (general)",
+   "enunciado": "Especifica que el contenido de texto en pantalla no va en ningún prompt, aunque el shot tenga overlay; se compone aparte según el modelo de cinco capas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+     "encabezado": "One Shot, All Adapters › What's not in any prompt"
+    }
+   ]
+  },
+  {
+   "id": "5384fd52b5d1",
+   "alcance": "visual-prompt-forge, ejemplo one-shot-all-adapters (general)",
+   "enunciado": "Explicación: disciplina de separación de tareas: el generador de imagen maneja la imagen, el compositor el texto, y ninguno hace el trabajo del otro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+     "encabezado": "One Shot, All Adapters › What's not in any prompt"
+    }
+   ]
+  },
+  {
+   "id": "343796a77251",
+   "alcance": "visual-prompt-forge, imagen, fallo 3 (texto en imagen)",
+   "enunciado": "Explicación: el texto dentro de la imagen sale mal (erratas, kerning, fuente equivocada, elementos que compiten) cuando se puso en el prompt en vez de componerlo aparte, se eligió un generador inadecuado o hay varios textos en un mismo prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ]
+  },
+  {
+   "id": "bddaa24e67a1",
+   "alcance": "visual-prompt-forge, imagen, fallo 3 (texto en imagen)",
+   "enunciado": "Se acepta editorialmente el texto horneado en la imagen solo cuando el entregable lo exige de verdad y la salida de Ideogram es lo bastante cercana para retocarla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ]
+  },
+  {
+   "id": "70a6e342ec77",
+   "alcance": "visual-prompt-forge, imagen, fallo 3 (texto en imagen); Ideogram v3 para el caso in-image",
+   "enunciado": "No poner texto en el prompt y componerlo aparte desde text-overlays.json; si debe ir en la imagen (póster) usar Ideogram v3 con flag de override explícito, un solo elemento de texto por prompt y fuentes simples (sans-serif o serif limpia), pues cursivas y decorativas fallan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ]
+  },
+  {
+   "id": "fc6f4c685527",
+   "alcance": "visual-prompt-forge, imagen, fallo 5 (composición sin espacio para texto)",
+   "enunciado": "Explicación: el texto planeado en un tercio del cuadro queda tapado por el sujeto cuando el shot no incluía nota de espacio negativo y el generador centra al sujeto por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ]
+  },
+  {
+   "id": "5309575327e3",
+   "alcance": "visual-prompt-forge, imagen, fallo 5 (composición sin espacio para texto)",
+   "enunciado": "Se acepta editorialmente la imagen que ya es buena reposicionando el overlay de texto para que encaje con la composición real.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ]
+  },
+  {
+   "id": "0601e8823d49",
+   "alcance": "visual-prompt-forge, imagen, fallo 5; porcentajes específicos de GPT Image",
+   "enunciado": "Para reservar espacio al texto: añadir nota de composición explícita (sujeto en el tercio izquierdo, dos tercios derechos abiertos), usar porcentajes en GPT Image (\"sujeto en el 30% izquierdo del cuadro\") y volver a generar con la composición explícita.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ]
+  },
+  {
+   "id": "7427e278e336",
+   "alcance": "visual-prompt-forge, paso 3",
+   "enunciado": "Para cada shot y cada generador: tomar paleta, mood y never list del brand-lock; character, environment y lighting del series_lock; framing, angle, motion y subject del shot; eliminar cualquier referencia a on_screen_text; aplicar la sintaxis del adaptador y añadir parámetros del generador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 3. Compose per shot"
+    }
+   ]
+  },
+  {
+   "id": "94dbf71300ce",
+   "alcance": "visual-prompt-forge, regla 1; excepción Ideogram",
+   "enunciado": "Regla 1: el texto nunca va en el prompt; si el shot tiene on_screen_text, el prompt no contiene su contenido y el texto se compone aparte; solo Ideogram es excepción, como override explícito señalado en el rationale.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 1. Text is never in the prompt"
+    }
+   ]
+  }
+ ]
+}

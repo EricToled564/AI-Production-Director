@@ -1,0 +1,2175 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "herramientas_codigo",
+ "descripcion_tema": "instalación, uso y mantenimiento de herramientas, scripts, CI",
+ "filas": [
+  {
+   "id": "8c0aac18e292",
+   "alcance": "Adapter Flux (Flux 2 Pro, 1.1 Pro, Dev) de visual-prompt-forge, acceso API",
+   "enunciado": "Flux tiene varias superficies de API: fal.ai (más rápida y estable, todas las variantes), Replicate (más modelos, algo más lenta), BFL directa (oficial, requiere su clave) y WaveSpeedAI (interfaz unificada).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › API access"
+    }
+   ]
+  },
+  {
+   "id": "973afe2ac9ce",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge, acceso API",
+   "enunciado": "GPT Image es solo de OpenAI a Q2 2026, usa el endpoint estándar images.generate, cuesta aproximadamente 0.04-0.08 USD por imagen según tamaño y calidad, y ChatGPT Plus o superior da acceso por UI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › API access"
+    }
+   ]
+  },
+  {
+   "id": "b841024b7857",
+   "alcance": "Consulta de la base de reglas por facetas D1-D9",
+   "enunciado": "Explicación: las dimensiones de la tarjeta de ancla son facetas de consulta de la base de reglas, de modo que un brief como clavadista documental con keyframe FF para Kling filtra por D1, D2, D3, D4, D8 y D9 y trae solo las reglas pertinentes en vez del catálogo entero.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "7c2c3cd9e4cf",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 1",
+   "enunciado": "Decisión 1: las familias de régimen físico, el vocabulario ampliado del linter y su copia parcheada viven en el repo (.claude/rules/regimenes/ y .claude/hooks/aurora/) y rule_registry.py lee esa carpeta además de los skills instalados; se empaquetará como skill al canonizarse.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "05305b087a33",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 2 (linter aurora)",
+   "enunciado": "Decisión 2: el linter aurora es una copia parcheada en el repo donde el conteo de palabras nunca bloquea (solo advierte con el presupuesto de la plataforma), y siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "a4ea94e1e18f",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 4 (taxonomía de la base)",
+   "enunciado": "Decisión 4: la taxonomía de la base de reglas amplía el caso con LUGAR, EDIF, ANIMAL, OBJ, MULTITUD y ENSAMBLE y clasifica la tarea por subproceso (E0.1 a POST.2); las 852 clasificaciones existentes se importan tal cual y los códigos nuevos pasan por el clasificador de dos capas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "90fddc2d47e1",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 5 (tarjeta de ancla)",
+   "enunciado": "Decisión 5: la tarjeta de ancla se guarda como las nueve dimensiones D1 a D9, facetas multivalor de cada regla, mediante una pasada de clasificación adicional sobre reglas de imagen y video.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "793f7394a56c",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 6 (embeddings)",
+   "enunciado": "Decisión 6: el modelo de embeddings es intfloat/multilingual-e5-large local, sin API key, con la tabla abierta a añadir OpenAI después; cubre inglés, español y ruso.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "1232faa5cee6",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 9 (clasificación sin NotebookLM)",
+   "enunciado": "Decisión 9: NotebookLM sale del flujo por completo y clasifica un clasificador de dos capas (determinista por ruta y regex, más similitud vectorial con confianza) con auditoría de Eric en hoja xlsx cuyo veredicto manda; se retiran el servidor MCP, los scripts nblm_*, rule_export.py y el corpus, y se conserva rule_answer_check.py.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "e740dc703768",
+   "alcance": "Frontmatter de archivos de régimen y extractor",
+   "enunciado": "Cada archivo de régimen declara en su frontmatter las facetas de la tarjeta de ancla (d2_accion, d3_sujetos, d4_tratamiento, d8_modelo, d9_angulo), que el extractor hereda a todas sus reglas salvo que una regla las sobrescriba con {d9: low} al inicio de la línea.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/README.md",
+     "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Archivos"
+    }
+   ]
+  },
+  {
+   "id": "08caa4a71600",
+   "alcance": "GPT Image 2; edición",
+   "enunciado": "El endpoint de edición es openai/gpt-image-2/edit en fal.ai o su equivalente en la API de OpenAI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+    }
+   ]
+  },
+  {
+   "id": "6a7771da2426",
+   "alcance": "Imagen; sintaxis de plantillas parametrizadas, general",
+   "enunciado": "Las variables se escriben como {name, default=\"value\"}: si no se da valor se usa el default, y sin default la variable es obligatoria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Parameterized Templates › Синтаксис"
+    }
+   ]
+  },
+  {
+   "id": "e686368159e0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 5 con --case T3, --platform nano_banana_pro, --ref-role character, --series-lock y --overrides.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "934386d7a28e",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 6 con --case CLIP-FF-LF, --platform kling_3.0, --series-lock y --overrides.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "aaf94b1533b9",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --case",
+   "enunciado": "Decisión 8: un alias desconocido de --case devuelve exit 2 (error de uso) y no un reporte FAIL, conservando el contrato de argparse choices= del original.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "1c42bf6eec3a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, vocabulario L/PR/O",
+   "enunciado": "Decisión 9: el vocabulario nuevo evita términos de una sola palabra con colisión conocida (stage, counter, cup) y usa formas compuestas (concert stage, bar counter, coffee cup), porque la exención direccional no cubre esos contextos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "717da42e9ef5",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), derivación de --ref-role",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml (FF, LF, TAIL, CHARACTER, ELEMENT, IMG…) y, en su defecto, del caso (video → ff; casos 1/2 → character).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "be644ce2f6e0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9)",
+   "enunciado": "En los alias de caso son indiferentes las mayúsculas, guiones y guiones bajos, y un alias desconocido sale con código 2.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "ff5850f2e43a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "enunciado": "Diseño del hook Stop gate_aurora.py (no cableado): lee el payload del hook, extrae los bloques de prompt visual del último mensaje, resuelve caso y plataforma desde la cabecera (si no, no opina), usa refs.yaml y series_lock.json del run activo, traduce linter 1 a exit 2 y 0 a exit 0, se registra en hooks.Stop tras gate_dramaturgy.py y reutiliza el contador anti-bucle (MAX_CONSECUTIVE_BLOCKS = 3).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)"
+    }
+   ]
+  },
+  {
+   "id": "174669d4cc4c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "enunciado": "Explicación: el hook Stop no está hecho; la copia es una herramienta invocable a mano y desde el pipeline, y el hook será el siguiente paso cuando el cableado de caso/plataforma desde la cabecera esté validado en sesiones reales.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)"
+    }
+   ]
+  },
+  {
+   "id": "ad45f8bf2a77",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "enunciado": "Ejemplo: comandos para correr la suite de pruebas del linter (18 pruebas, exit 0 si pasan todas) con y sin VERBOSE=1.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "2f15ea639ce1",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "enunciado": "Prueba T15: --json sigue produciendo las claves originales.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "eebb1f5bdcba",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P9/P10",
+   "enunciado": "Prueba T12: --case T1 resuelve a 1, CLIP-FF a 3a y CLIP-DIALOGO a 4 (snapshot kling_3.0__4), y un alias desconocido da exit 2 (parches P9, P10).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "208ac2b9839d",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, fixtures",
+   "enunciado": "Explicación: los fixtures prompt_GOOD.txt, prompt_BAD.txt, refs_session.yaml y override_msg.txt se reconstruyeron según references/README.md del skill porque el paquete instalado no trae los test_* que ese README lista.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "7c3bbd0bd530",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), salida --json",
+   "enunciado": "La salida --json mantiene las claves originales intactas y añade case_alias, treatment, ref_role, ref_role_source, word_budget_source, negative_policy, negative_marker, series_lock_keys y linter_version.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "798fc6684e77",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), snapshots de plataformas",
+   "enunciado": "Parche P10: se añaden snapshots para las plataformas omitidas (flux, ideogram, seedream, nano_banana_2, seedance, seedance_2.5, hailuo, kling_3.0 caso 4), con resolución por familia, reconocimiento de marcadores negativos y vocabulario L/PR/O ampliado.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "56c9e1bebc89",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), uso por línea de comandos",
+   "enunciado": "Ejemplo: invocación de prompt_linter.py con --prompt, --refs, --case CLIP-FF, --platform kling_3.0, --ref-role ff, --series-lock, --treatment fotorreal, --overrides y flags opcionales --sports-broadcast y --json.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso"
+    }
+   ]
+  },
+  {
+   "id": "ed53f517efc0",
+   "alcance": "Nivel 2, subprocesos por etapa, general",
+   "enunciado": "Cada subproceso lleva un código que puede ser el valor de la dimensión tarea en la base de reglas, y su entrada y salida son las declaradas por la skill dueña.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "962bdd91cd11",
+   "alcance": "Nivel 3, taxonomía de génesis, base de reglas, dimensión caso",
+   "enunciado": "Explicación: la taxonomía de casos de la base solo tenía T1 y T2 para personas y PROD para el resto, por lo que la dimensión caso debe ampliarse con LUGAR, EDIF, ANIMAL y OBJ antes de clasificar, para no mezclar el grounding con las reglas de producto.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 3 · taxonomía de génesis: Qué puede ser un activo génesis y qué reglas cambian por clase"
+    }
+   ]
+  },
+  {
+   "id": "05b25d7f0886",
+   "alcance": "Nivel 4, génesis sin referencias, base de reglas, dimensiones tarea y caso",
+   "enunciado": "Consecuencia para la base de reglas: la dimensión tarea usa los códigos de subproceso E0.1 a POST.2 y la dimensión caso se amplía con LUGAR, EDIF, ANIMAL y OBJ además de T1 a T5 y PROD, de modo que un brief de landmark filtra por E5.2 + EDIF y uno de rostro por E5.2 + T1.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Lo que NO entra aquí"
+    }
+   ]
+  },
+  {
+   "id": "54d9fe5bb782",
+   "alcance": "Reglas de régimen y extractor rule_registry",
+   "enunciado": "La etiqueta de origen va al final de la línea normativa entre corchetes, una sola por línea; el extractor la separa del texto y calcula el id sobre el texto sin etiqueta para que canonizar no lo cambie.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/README.md",
+     "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas › Etiquetas de origen"
+    }
+   ]
+  },
+  {
+   "id": "2df05d4816fc",
+   "alcance": "Seedance 2.5, blockout y pantalla verde",
+   "enunciado": "Notas de pipeline de blockout: plugins de Blender/Maya (Blender ≥3.6), escenario 3D de Xiaoyunque sin paquete 3D, diagrama de ruta de cámara como referencia de imagen y pantalla verde en ambos sentidos; desambiguar primitivas por texto y no por color.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 15. Blockout and green screen"
+    }
+   ]
+  },
+  {
+   "id": "6f647973ebb4",
+   "alcance": "Skill ai-production-director, sección 8, degradación",
+   "enunciado": "Si una sub-skill no está instalada no se improvisa su oficio en silencio: se avisa en una línea y se aplica el sustituto (brand-lock ausente a Visual Theme ligero, architect a ai-video-storyboard con IDs manuales, critic a checklist manual, linter a los dos checks de video); las tools de shotkit requieren pyyaml y jsonschema.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 8. Degradación"
+    }
+   ]
+  },
+  {
+   "id": "bd2c7751e7b9",
+   "alcance": "Skill image, control estructural, Pixel Art",
+   "enunciado": "Consejo: extraer programáticamente los colores de las celdas para matrices LED.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/structural.md",
+     "encabezado": "Structural Control › Pixel Art"
+    }
+   ]
+  },
+  {
+   "id": "6c937a5e73c3",
+   "alcance": "Skill produccion-visual-sw30, motor de plantillas",
+   "enunciado": "template_engine.py es obligatorio para construir cualquier prompt visual (se instancia con build(...)) y lanza TemplateViolation si falta una sección obligatoria, se añade una no declarada, una sección de BLOCKS llega como texto suelto, falta Notes o se cuela metadato (Model/Quality/Size/Aspect ratio) en el cuerpo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Motor de plantillas — el molde se cumple por código, no por disciplina"
+    }
+   ]
+  },
+  {
+   "id": "20dfdd9d63bb",
+   "alcance": "Skill produccion-visual-sw30, procedimiento ante un cambio",
+   "enunciado": "El cambio en un bloque se propaga automáticamente a todos los briefs que usan ese bloque.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Ante un cambio"
+    }
+   ]
+  },
+  {
+   "id": "98c973fac982",
+   "alcance": "Skill produccion-visual-sw30, sistema de cobertura de reglas",
+   "enunciado": "Explicación: el catálogo de reglas salía de la memoria y cubría 12% de los enunciados; la cadena corregida usa rule_registry.py (extrae mecánicamente los 209 enunciados), rule_ledger.py (exige disposición CHECK o NA con razón por regla, código 1 si queda PENDING) y audit_gi2.py (verifica prompts por columna).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Sistema de cobertura de reglas — la fuente manda, no la memoria"
+    }
+   ]
+  },
+  {
+   "id": "4ef52a61601d",
+   "alcance": "Skill produccion-visual-sw30, sistema de cobertura de reglas",
+   "enunciado": "Gate de cobertura: el builder corre rule_ledger.py antes de emitir y si no cierra al 100% dispuesto no hay archivo de prompts; estado actual 124 aplicables, 100 con verificación, 24 excluidas con razón, 0 pendientes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Sistema de cobertura de reglas — la fuente manda, no la memoria"
+    }
+   ]
+  },
+  {
+   "id": "e3ef4bb6dd93",
+   "alcance": "Skill produccion-visual-sw30, verificación mecánica",
+   "enunciado": "El lint del builder rompe la compilación ante cualquier desviación de la plantilla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)"
+    }
+   ]
+  },
+  {
+   "id": "f065c865f8b7",
+   "alcance": "Skill produccion-visual-sw30, verificación mecánica",
+   "enunciado": "audit_gi2.py valida 15 columnas: slots, anti-slop, ratio estándar, metadatos fuera del prompt, Notes, cámara con los 5 efectos ópticos (compresión, bokeh/wash, viñeta, halación, grano), mood, color, identity-lock, texto de marca, framing positivo, mirada y manos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)"
+    }
+   ]
+  },
+  {
+   "id": "d7d8628fcb31",
+   "alcance": "Subprocesos por etapa, E6.5",
+   "enunciado": "E6.5 pasa el prompt por aurora-prompt-linter con refs.yaml y caso, y debe dar PASS con prompt_linter.py exit 0.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "680bfc546a90",
+   "alcance": "Subprocesos por etapa, E7.2",
+   "enunciado": "E7.2 genera el preview de cliente con storyboard-html-preview como preview.html single-file offline, verificado con shots-to-html.py --selftest y sin CDN.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "3ca6f6f1b437",
+   "alcance": "Tools README compartido por cinco skills (brand-lock-extractor, storyboard-architect, storyboard-html-preview, visual-asset-critic, visual-prompt-forge)",
+   "enunciado": "Explicación: las tools son ayudantes en Python que mantienen honesto el repo, validan la salida de un proyecto real y renderizan previews sin invocar a Claude.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools"
+    }
+   ]
+  },
+  {
+   "id": "49f1840c30f0",
+   "alcance": "Tools README compartido por cinco skills, ejecución completa",
+   "enunciado": "Ejemplo: ejecutar todos los checks con ./tools/check.sh, con opción --quiet para solo líneas pass/fail y PYTHON=python3.12 para elegir intérprete.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "b78fca2a8563",
+   "alcance": "Tools README compartido por cinco skills, ejecución completa",
+   "enunciado": "Explicación: check.sh es exactamente lo que ejecuta CI, así que una corrida local en verde implica un PR en verde.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "4e3f91635392",
+   "alcance": "Tools README compartido por cinco skills, requisitos",
+   "enunciado": "Explicación: aparte de esas dependencias solo se usa la biblioteca estándar, sin pandas ni numpy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    }
+   ]
+  },
+  {
+   "id": "aaa07d41b696",
+   "alcance": "Tools README compartido por cinco skills, requisitos",
+   "enunciado": "Requisito: instalar las dependencias con pip install pyyaml jsonschema.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Requirements"
+    }
+   ]
+  },
+  {
+   "id": "5581b0d36d07",
+   "alcance": "Tools README compartido por cinco skills, validadores",
+   "enunciado": "Cada validador incluye un --selftest que construye fixtures fallidos y falla si el check no los detecta, porque un validador que deja de detectar en silencio es peor que ninguno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "053684f76685",
+   "alcance": "Tools README compartido, copy-prompt.py",
+   "enunciado": "Ejemplo: comandos de copy-prompt.py sobre archivos de prompts, con --shot, --list y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ]
+  },
+  {
+   "id": "67cd3ebf7613",
+   "alcance": "Tools README compartido, copy-prompt.py",
+   "enunciado": "copy-prompt.py usa solo biblioteca estándar: pbcopy en macOS, xclip o xsel en Linux y clip en Windows.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ]
+  },
+  {
+   "id": "93e51af3b144",
+   "alcance": "Tools README compartido, copy-prompt.py; visual-prompt-forge",
+   "enunciado": "copy-prompt.py lee las dos formas de archivo que escribe la forja; las líneas de comentario dentro de un bloque de shot son anotaciones y nunca llegan al portapapeles, incluidas las notas # fix de los archivos de revisión.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ]
+  },
+  {
+   "id": "596399cc5d9f",
+   "alcance": "Tools README compartido, módulos internos",
+   "enunciado": "Explicación: los módulos internos no son puntos de entrada; _shotkit.py concentra hashing, run ids, parseo del brand-lock y rutas del árbol de salida, y _template.py es el motor de plantillas con solo el subconjunto que usa preview.html.tpl.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Internal modules"
+    }
+   ]
+  },
+  {
+   "id": "cb3fda8cf1aa",
+   "alcance": "Tools README compartido, project check validate_critique.py",
+   "enunciado": "validate_critique.py valida una crítica contra critique.schema.json y contra dos invariantes que el schema no puede expresar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "5f82a4053f47",
+   "alcance": "Tools README compartido, project check validate_prompts.py",
+   "enunciado": "Ejemplo: comandos de validate_prompts.py sobre un output, un archivo de prompts, los ejemplos y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "11effd23f447",
+   "alcance": "Tools README compartido, project check validate_prompts.py",
+   "enunciado": "El ancla de personaje es una advertencia y no un error, porque un shot sin personas puede omitirla legítimamente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "8b3efca44887",
+   "alcance": "Tools README compartido, project check validate_prompts.py; series_lock",
+   "enunciado": "Explicación: el check verbatim es la razón de ser del archivo, pues la consistencia de serie depende de que los anclajes de series_lock lleguen sin editar a cada prompt y parafrasearlos es lo más fácil de romper (siete de siete shots derivaron con los demás validadores en verde).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "78cd9d3a55e2",
+   "alcance": "Tools README compartido, project check validate_prompts.py; visual-prompt-forge",
+   "enunciado": "validate_prompts.py valida los archivos de prompts de visual-prompt-forge contra shots.json y la matriz de capacidades: cabecera completa, generator id, aspect, techo max_prompt_words, cobertura de shots, bloques duplicados y las dos reglas duras de la forja (sin copy de texto en pantalla dentro del prompt; environment, lighting y color_grade verbatim).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "e2963509a03e",
+   "alcance": "Tools README compartido, project check validate_provenance.py",
+   "enunciado": "validate_provenance.py recorre un árbol de salida y recalcula cada hash registrado para responder si un veredicto sigue describiendo el archivo que revisó.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ]
+  },
+  {
+   "id": "bfeed2a388f3",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "Ejemplo: comandos de validate_shots.py sobre un output, un shots.json, los ejemplos incluidos y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "f6f784774995",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py emite advertencias para juicios: copy de overlay repetido en el subject de un shot, hex crudo en un subject, ids de shot fuera de orden cronológico y fuente que el brand-lock no declara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "8f7082efb6b3",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py valida shots.json y text-overlays.json como instancias y aplica reglas cruzadas: end posterior a start, sin huecos ni solapes, span igual a project.duration_s, referencias de overlays resueltas en ambos sentidos, cada overlay alcanzable, timing dentro de la ventana del shot y colores de overlay presentes en la paleta del brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "c3e1b1492015",
+   "alcance": "Tools README compartido, rendering copy-prompt.py",
+   "enunciado": "copy-prompt.py envía al portapapeles el prompt de un shot para pegarlo en la UI de un generador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ]
+  },
+  {
+   "id": "58daf3aff91f",
+   "alcance": "Tools README compartido, rendering shots-to-html.py",
+   "enunciado": "Ejemplo: shots-to-html.py renderiza una carpeta de salida en un único preview.html, con opciones --inline-images, --out, --rendered-at y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ]
+  },
+  {
+   "id": "4df8ba1bfc29",
+   "alcance": "Tools README compartido, repo check validate_brand_lock.py",
+   "enunciado": "Ejemplo: comandos de validate_brand_lock.py sobre un brand-pack, con --require-configured, --snapshot, --snapshots y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ]
+  },
+  {
+   "id": "604f06b713de",
+   "alcance": "Tools README compartido, repo check validate_brand_lock.py",
+   "enunciado": "Un brand-pack puede ser plantilla sin rellenar, pero un snapshot no; --snapshot exige además las cabeceras snapshot taken y source, preferiblemente con instante UTC completo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ]
+  },
+  {
+   "id": "bff6cea436e5",
+   "alcance": "Tools README compartido, repo check validate_brand_lock.py",
+   "enunciado": "validate_brand_lock.py comprueba que un brand-lock tenga todas las secciones y campos de Identity requeridos, que su paleta declare los cinco roles que el preview HTML mapea a variables CSS y que las fuentes estén en el formato con backticks que leen las tools.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ]
+  },
+  {
+   "id": "a6cca3d43969",
+   "alcance": "Tools README compartido, repo check validate_capabilities.py",
+   "enunciado": "Ejemplo: comandos python tools/validate_capabilities.py y con --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ]
+  },
+  {
+   "id": "653bfb7d4088",
+   "alcance": "Tools README compartido, repo check validate_capabilities.py",
+   "enunciado": "Explicación: los checks de prosa existen porque la matriz y los adapters habían divergido en tres lugares aunque cada archivo repetía que el JSON manda.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ]
+  },
+  {
+   "id": "a2a94d5da69e",
+   "alcance": "Tools README compartido, repo check validate_capabilities.py; matriz de visual-prompt-forge",
+   "enunciado": "validate_capabilities.py contrasta la matriz de capacidades de generadores (_capabilities.json) con su schema y con la prosa de los adapters: cada id tiene su .md, ningún adapter anuncia más palabras que su max_prompt_words, cada adapter documenta el aspect_param, ningún notes cita más palabras que su techo, y avisa si pasan 120 días sin frescura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ]
+  },
+  {
+   "id": "58d6a869869f",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "Ejemplo: comando python tools/validate_schemas.py.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "1ea989a6fae6",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "Explicación: validate_schemas.py valida esquemas y no instancias; las instancias se validan con validate_shots.py.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "0ae7e0aba006",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "validate_schemas.py comprueba que cada archivo *.schema.json sea JSON Schema válido (Draft 2020-12) y lleve $id, title y description.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "77161f64c348",
+   "alcance": "Tools README compartido, repo check validate_skills.py",
+   "enunciado": "Ejemplo: comando python tools/validate_skills.py.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    }
+   ]
+  },
+  {
+   "id": "f761b04fc372",
+   "alcance": "Tools README compartido, repo check validate_skills.py",
+   "enunciado": "validate_skills.py comprueba que cada SKILL.md de skills/ tenga el frontmatter YAML requerido, un name igual a su directorio y una description sustancial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    }
+   ]
+  },
+  {
+   "id": "1a4bd4dacd90",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, conectarla a tools/check.sh, que es lo que llama CI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "bd0324f27617",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, darle un --selftest que demuestre que el check se dispara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "3fa2b51f6c44",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, documentarla en este README.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "15fa94e68c9b",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, hacerla ejecutable con chmod +x.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "92fb7ef3837e",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, incluir un docstring de uso al inicio del archivo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "5a763327bb3d",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Mantener las tools ligeras en dependencias: PyYAML, jsonschema y la biblioteca estándar son la base.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "a2ca91907aec",
+   "alcance": "Tools README compartido, sección Project checks",
+   "enunciado": "Explicación: los project checks se ejecutan contra el directorio de salida de un proyecto y no contra el repo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    }
+   ]
+  },
+  {
+   "id": "152e16b567c5",
+   "alcance": "Tools README compartido, shots-to-html.py",
+   "enunciado": "--rendered-at fija la marca de tiempo del render para que la salida sea reproducible; CI vuelve a renderizar cada preview incluido con valor fijo y falla si cambia un byte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ]
+  },
+  {
+   "id": "49f6b00ae9c3",
+   "alcance": "Tools README compartido, shots-to-html.py",
+   "enunciado": "Todo lo interpolado en el preview se escapa como HTML, porque subjects y rationales son prosa generada por modelo y un solo signo menor bastaba para romper la página.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ]
+  },
+  {
+   "id": "f5332ef9f953",
+   "alcance": "Tools README compartido, shots-to-html.py; storyboard-html-preview",
+   "enunciado": "Explicación: shots-to-html.py renderiza la plantilla preview.html.tpl de storyboard-html-preview mediante el motor _template.py, tras haber construido antes su HTML en línea con riesgo de divergencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ]
+  },
+  {
+   "id": "7b2e61b11f1a",
+   "alcance": "Tools README compartido, validate_critique.py",
+   "enunciado": "Ejemplo: comandos de validate_critique.py sobre una crítica, un árbol de salida, los ejemplos y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "085dab44a484",
+   "alcance": "Tools README compartido, validate_provenance.py",
+   "enunciado": "Ejemplo: comandos de validate_provenance.py sobre un output, con --require-accept, --json y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ]
+  },
+  {
+   "id": "143933d8dae2",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches)",
+   "enunciado": "Explicación: el aurora prompt_linter v1.2-fupai es una copia parcheada del linter v1.1 del skill aurora-prompt-linter, con vocabulario ampliado y contradicciones resueltas a favor de la fuente; conserva la CLI y los exit codes 0/1/2 y añade --ref-role, --series-lock y --treatment.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "1cff1a7b03ba",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P10",
+   "enunciado": "P10: se amplía el vocabulario L/PR/O (agua, automotriz, café/interior, clima, música) y los snapshots de secciones para seedance_2.5, flux, ideogram, hailuo, seedream, nano_banana_2 y kling 3.0 caso 4, y se reconocen Negative field., [Negative Prompts] y Constraints:.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "4be652c08e64",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P9",
+   "enunciado": "P9: los casos del pipeline se mapean a los del linter (T1/T2/placa a 1; T3/T4/T5 con refs a 2; CLIP I2V a 3a/3b/3c; CLIP con diálogo a 4) y --case acepta ambos alfabetos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "922bbcd50ba8",
+   "alcance": "aurora prompt_linter.py, CASE_ALIASES (P9)",
+   "enunciado": "Define CASE_ALIASES (P9), que traduce los alias del pipeline (T1, T2, PLACA, T3 a T5, CLIP, CLIP-FF, CLIP-DIALOGO, etc.) a los casos 1, 2, 3a, 3b, 3c y 4 del linter.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › CASE_ALIASES"
+    }
+   ]
+  },
+  {
+   "id": "8d9d53182d42",
+   "alcance": "aurora prompt_linter.py, CASE_CONFIGS (P1)",
+   "enunciado": "Define CASE_CONFIGS con los casos del linter (1 génesis, 2 anchor con refs, 3a/3b/3c I2V, 4 video con diálogo) y sus presupuestos de palabras originales v1.1: (75,130) para 1, 2 y 4, y (50,90) para 3a, 3b y 3c, como referencia de respaldo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › CASE_CONFIGS"
+    }
+   ]
+  },
+  {
+   "id": "e33caed2abf3",
+   "alcance": "aurora prompt_linter.py, I2V_CASES",
+   "enunciado": "Define I2V_CASES como los casos de imagen a video del linter: 3a, 3b y 3c.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › I2V_CASES"
+    }
+   ]
+  },
+  {
+   "id": "ab1cd489b5cf",
+   "alcance": "aurora prompt_linter.py, VIDEO_CASES",
+   "enunciado": "Define VIDEO_CASES como los casos de video del linter: 3a, 3b, 3c y 4.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › VIDEO_CASES"
+    }
+   ]
+  },
+  {
+   "id": "0a5825c9d87e",
+   "alcance": "aurora prompt_linter.py, constante LINTER_VERSION",
+   "enunciado": "Especifica la versión del linter como LINTER_VERSION = \"v1.2-fupai\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › LINTER_VERSION"
+    }
+   ]
+  },
+  {
+   "id": "b4bec04a4354",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), contribuir",
+   "enunciado": "Explicación: se aceptan PRs con nuevos ejemplos de brand pack que llenen huecos, abriendo antes un issue con la plantilla brand-pack-request.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "encabezado": "Brand Packs › Contributing examples"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "encabezado": "Brand Packs › Contributing examples"
+    }
+   ]
+  },
+  {
+   "id": "06b1cb1e3bae",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), ejemplos",
+   "enunciado": "Explicación: más brand packs de ejemplo llegarán en la v2.0.0 y se aceptan PRs.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "encabezado": "Brand Packs › Examples"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "encabezado": "Brand Packs › Examples"
+    }
+   ]
+  },
+  {
+   "id": "acc42d47f000",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), generar desde activos",
+   "enunciado": "Para extracción masiva o programática desde muchas URLs, usar media-tsunami (extractor open source de voz de marca de WhyStrohm), que produce un brand-lock.md en el mismo formato.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/README.md",
+     "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+    }
+   ]
+  },
+  {
+   "id": "c0e2802dd415",
+   "alcance": "linter Aurora v1.2-fupai, copia en el repo",
+   "enunciado": "Explicación: esta copia parcheada (v1.2-fupai) del linter del skill aurora-prompt-linter conserva su interfaz y exit codes (0 PASS, 1 FAIL, 2 uso), añade las opciones --ref-role, --series-lock y --treatment, y resuelve las contradicciones a favor de la fuente sin tocar el original.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ]
+  },
+  {
+   "id": "7261b2c93c11",
+   "alcance": "linter Aurora v1.2-fupai, estructura de archivos",
+   "enunciado": "Explicación: la carpeta .claude/hooks/aurora/ contiene prompt_linter.py, vocabularies.yaml, README.md y tests con run.sh (18 pruebas, exit 0 si todas pasan) y fixtures.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ]
+  },
+  {
+   "id": "e7219970f76d",
+   "alcance": "linter Aurora v1.2-fupai, motivación de la copia",
+   "enunciado": "Explicación: la copia existe porque el original, calibrado para un flujo anterior, bloquea prompts que los skills actuales exigen y deja pasar palabras que prohíben; las doce contradicciones se resuelven con parches respaldados por archivo y sección, sin criterio del agente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Por qué existe esta copia"
+    }
+   ]
+  },
+  {
+   "id": "0eb1f1ac3ed4",
+   "alcance": "linter Aurora v1.2-fupai, requisitos de instalación",
+   "enunciado": "El linter Aurora requiere Python 3.11 y pyyaml, y nada más.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ]
+  },
+  {
+   "id": "10881494877f",
+   "alcance": "linter aurora (prompt_linter.py)",
+   "enunciado": "El linter aurora reconoce seis roles de referencia válidos: ff, lf, character, location, prop y style.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › REF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "3f6d37fa7dd9",
+   "alcance": "linter aurora (prompt_linter.py)",
+   "enunciado": "El linter aurora reconoce solo cuatro tratamientos visuales válidos: fotorreal, ilustracion, animacion y race.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › TREATMENTS"
+    }
+   ]
+  },
+  {
+   "id": "9382ce9840b5",
+   "alcance": "linter aurora, detección de redundancia",
+   "enunciado": "Limitación: el linter no detecta sinónimos (p. ej. \"tank top\" en la ref y \"athletic shirt\" en el prompt no se consideran redundantes); la tabla de sinónimos queda en el roadmap v1.1.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "206319d47666",
+   "alcance": "linter aurora, parseo de overrides (sin cambios desde v1.1)",
+   "enunciado": "Un override válido se expresa con la sintaxis \"OVERRIDE: término - razón\" en el mensaje del usuario.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › OVERRIDE_PATTERN"
+    }
+   ]
+  },
+  {
+   "id": "a9a273ef369f",
+   "alcance": "linter aurora, regla P10, plataformas de imagen y video",
+   "enunciado": "Define la tabla de familias de plataforma (P10) con un patrón regex por familia (nano-banana, gpt-image, midjourney, flux, ideogram, seedream, kling, veo, seedance, hailuo, sora) para asignar la clave de snapshot por defecto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › FAMILY_PATTERNS"
+    }
+   ]
+  },
+  {
+   "id": "8606ae46ea40",
+   "alcance": "linter aurora, reglas P2 y P10; el slot Constraints solo en la familia gpt-image",
+   "enunciado": "El linter separa el prompt en bloque principal (MAIN) y bloque negativo mediante marcadores como \"[negative prompt]\" o \"negative:\", y en la familia gpt-image el slot \"Constraints:\" cuenta como bloque negativo; además cuenta palabras, parsea ítems negativos y busca términos con límites de palabra.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › NEGATIVE_MARKER"
+    }
+   ]
+  },
+  {
+   "id": "43db14646de1",
+   "alcance": "linter aurora, scripts/vocabularies.yaml",
+   "enunciado": "Limitación: las listas de vocabulario están calibradas para casos típicos de Aurora (ciclismo, fútbol, fitness) y deben ampliarse si el proyecto usa otros dominios como cocina o automotriz.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "f5a4a96a91f3",
+   "alcance": "skill ai-video-storyboard, licencia",
+   "enunciado": "Explicación: la licencia del skill es MIT, de uso libre comercial o personal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › License"
+    }
+   ]
+  },
+  {
+   "id": "df518fb15982",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "El mensaje del usuario del turno actual debe capturarse en un archivo de texto para que el linter pueda parsear los OVERRIDEs.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "401505f3f796",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "Paso del procedimiento: ejecutar el linter sobre el draft (el comando se muestra a continuación).",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "d85c8deadac0",
+   "alcance": "skill visual-asset-critic, Paso 6; procedencia",
+   "enunciado": "Ejemplo: comando shasum -a 256 para calcular los hashes del fotograma, el prompt y el snapshot de brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "cadd94bd1699",
+   "alcance": "skill visual-asset-critic, Paso 7",
+   "enunciado": "Alternativamente se revisa todo el árbol con tools/validate_provenance.py output/, que además recalcula cada hash contra los archivos en disco.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "3cee2e6ae56b",
+   "alcance": "skill visual-asset-critic, Paso 7",
+   "enunciado": "Un JSON válido por esquema no equivale a pasar el gate: se ejecuta tools/validate_critique.py sobre el archivo de crítica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "ce81f9213414",
+   "alcance": "storyboard-architect (SKILL.md), Paso 8, snapshot del brand-lock",
+   "enunciado": "Se ejecuta `tools/validate_brand_lock.py --snapshot <path>` para comprobar las dos líneas de cabecera del snapshot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 8. Snapshot the brand-lock"
+    }
+   ]
+  },
+  {
+   "id": "44b27fb49f92",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9 (run.json)",
+   "enunciado": "Ejemplo: comando `shasum -a 256` sobre shots.json, text-overlays.json y brand-lock.snapshot.md para obtener los hashes de run.json.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 9. Write run.json"
+    }
+   ]
+  },
+  {
+   "id": "f0eb884b92e7",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar",
+   "enunciado": "La barra de calidad se comprueba ejecutando los validadores (`validate_shots.py`, `validate_brand_lock.py --snapshot`, `validate_provenance.py`) y no revisando la lista a ojo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "a27a5c151152",
+   "alcance": "storyboard-html-preview, barra de calidad",
+   "enunciado": "El renderizador CLI comprueba la mitad mecánica de esa lista contra sí mismo con python tools/shots-to-html.py --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "78fce4242ffa",
+   "alcance": "storyboard-html-preview, ejemplos",
+   "enunciado": "Abrir los ejemplos en el navegador para calibrar la calidad; los cuatro se re-renderizan en CI con marcas de tiempo fijas y el build falla si la salida cambia, así que sirven de prueba de regresión del skill.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Examples"
+    }
+   ]
+  },
+  {
+   "id": "9224e63f8136",
+   "alcance": "storyboard-html-preview, paso 1 leer entradas",
+   "enunciado": "Validar antes de renderizar con python tools/validate_shots.py output/ y detenerse si falla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "e4e992d90188",
+   "alcance": "storyboard-html-preview, paso 3 generar el HTML",
+   "enunciado": "Usar templates/preview.html.tpl como plantilla estructural y leerla antes de generar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 3. Generate the HTML"
+    }
+   ]
+  },
+  {
+   "id": "933a996b2759",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Convención de banderas de plantilla: por shot establecer exactamente una de has_image: true con image_path cuando hay frame, o has_no_image: true cuando no lo hay (tarjeta marcador).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "53a5da97cd1e",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Escapar todo: sujetos, rationales, líneas de VO y texto de overlay son prosa generada por modelo que entra en contextos de texto y de atributo, y tools/shots-to-html.py escapa cada sustitución por defecto y reserva la salida cruda solo para el CSS incrustado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "0f4ffec00d0f",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Explicación: la plantilla usa dos bloques {{#if}} paralelos en vez de {{#if}}/{{else}} para que el renderizado sea portable entre motores de plantillas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "3c0c6fb203dc",
+   "alcance": "storyboard-html-preview, plantillas",
+   "enunciado": "Plantillas del skill: templates/preview.html.tpl (estructura), templates/styles.css.tpl (CSS a incrustar) y templates/print.css.tpl (reglas de impresión).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Templates"
+    }
+   ]
+  },
+  {
+   "id": "a3831231758c",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "Ejecutar el validador en lugar de revisar a ojo: validate_prompts.py sobre output/ y copy-prompt.py con --list sobre el archivo de la ronda.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "2002ee86044f",
+   "alcance": "visual-prompt-forge, modo revisión, salida",
+   "enunciado": "La cabecera de bloque debe empezar con el id del shot como en una pasada completa, porque copy-prompt.py identifica bloques por el id al inicio de la línea y una cabecera que empezara con Revision of lo dejaba ilegible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Output"
+    }
+   ]
+  },
+  {
+   "id": "759bc299a513",
+   "alcance": "visual-prompt-forge, paso 4",
+   "enunciado": "Explicación: las líneas # son comentarios y el usuario copia solo el cuerpo; tools/copy-prompt.py trata un comentario que nombra un shot como cabecera de bloque y cualquier otro comentario interno como anotación que no copia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 4. Write output files"
+    }
+   ]
+  },
+  {
+   "id": "12d8d8efc38a",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "enunciado": "Ejemplo: comando para calcular los SHA-256 de los archivos de la ronda: shasum -a 256 output/prompts/round-1/*.txt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json"
+    }
+   ]
+  },
+  {
+   "id": "cba2acb97391",
+   "alcance": "visual-prompt-forge, paso 5",
+   "enunciado": "Ejemplo: el helper tools/copy-prompt.py copia al portapapeles prompts individuales, por archivo o con --shot para un shot concreto de una ronda de revisión.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 5. Hand off"
+    }
+   ]
+  },
+  {
+   "id": "4de3d23cbd2e",
+   "alcance": "visual-prompt-forge, paso 5",
+   "enunciado": "Explicación: el helper de copia es opcional; los .txt se pueden leer directamente y sirve sobre todo cuando el operador alterna entre terminal y la UI del generador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 5. Hand off"
+    }
+   ]
+  },
+  {
+   "id": "ec0725249107",
+   "alcance": "visual-prompt-forge, regla 3",
+   "enunciado": "La regla de verbatim se hace cumplir con python tools/validate_prompts.py output/ y no se confía a la disciplina del autor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  }
+ ]
+}

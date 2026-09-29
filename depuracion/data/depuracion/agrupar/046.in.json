@@ -1,0 +1,612 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "postproduccion",
+ "descripcion_tema": "edición, grade, audio en post, export, specs de plataforma",
+ "filas": [
+  {
+   "id": "df9e7903ad84",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge, sección Text rendering",
+   "enunciado": "En storyboard el texto por defecto sigue siendo compuesto en post, conservando el patrón de flag de override del adapter Ideogram.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+    }
+   ]
+  },
+  {
+   "id": "d99068a36684",
+   "alcance": "Adapter Hailuo 02 Pro de visual-prompt-forge",
+   "enunciado": "No incluir contenido de texto en el prompt de Hailuo; los captions se componen en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3e7653e08b69",
+   "alcance": "Adapter Hailuo 02 Pro de visual-prompt-forge, Output handoff",
+   "enunciado": "La salida de Hailuo es un borrador para elegir el shot y el entregable sale de la regeneración final; si una toma se conserva, se trata como cualquier clip con ensamblaje editorial, texto compuesto, grade y audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "d58afe65873b",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 1",
+   "enunciado": "Modo 1 (compuesto, por defecto): generar la imagen limpia y componer el texto en post, con sintaxis igual a Flux; se usa cuando se elige Ideogram por calidad general y no por texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 1: Composited (default)"
+    }
+   ]
+  },
+  {
+   "id": "bf7d8f4de4be",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "No incluir contenido de texto en el prompt de Kling: el texto en video es poco fiable y se compone o anima en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3f3192574f29",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge, Output handoff",
+   "enunciado": "Los clips generados son materia prima y aún requieren ensamblaje editorial al timing del storyboard, compositing de text-overlays.json, grade y audio (VO, música, diseño de sonido), y esto se debe decir en el handoff.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "871a5ad230c6",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge, continuidad entre shots",
+   "enunciado": "Aun con frame inicial bloqueado, cada clip de Kling es una generación nueva, por lo que hay que planear una pasada editorial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "78d54c7ca1a8",
+   "alcance": "Etapa 7, 07-delivery/post-production.md",
+   "enunciado": "El checklist de post-producción se adapta al proyecto con specs concretos sin placeholders: generar shots, verificar clips contra su shot card, ensamblar en el NLE, grade de consistencia, transiciones definidas, audio, overlays según text-overlays.json, export según plataforma y QA final contra los 5 anclas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 3. Checklist de post-producción (07-delivery/post-production.md)"
+    }
+   ]
+  },
+  {
+   "id": "16ae0b0c5506",
+   "alcance": "Lo que un ancla nunca lleva; general",
+   "enunciado": "Un ancla nunca lleva logos ni lettering de marca generados: solo se heredan de un asset aprobado o se componen en post.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva"
+    }
+   ]
+  },
+  {
+   "id": "fecf21990892",
+   "alcance": "Régimen 05 vehículo; video, modelo Kling",
+   "enunciado": "Al animar en Kling, generar la acción rápida en lento y acelerarla en post para evitar morphing.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "a3ab1b2ec05b",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Especifica generar por separado y ensamblar en edición los beats con sujetos o locaciones distintos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "764cde0e4779",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, entrega",
+   "enunciado": "Especifica que la salida multi-shot de Seedance requiere recorte editorial al timing exacto, composición de texto, grade y audio, y que hay que declararlo en el handoff.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "63dd84a1846e",
+   "alcance": "Skill ai-production-director, etapa 7",
+   "enunciado": "Etapa 7: la salida es el Final AI Video Production Package (spec en la referencia) más un checklist de postproducción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 7 — Package & Delivery"
+    }
+   ]
+  },
+  {
+   "id": "16ca73d0b5cb",
+   "alcance": "Skill image, storyboards, Sprite Sheets",
+   "enunciado": "Consejo: extraer las celdas del sprite sheet para crear un GIF.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/storyboards.md",
+     "encabezado": "Storyboards & Sequential Art › Sprite Sheets"
+    }
+   ]
+  },
+  {
+   "id": "9f0ada043edf",
+   "alcance": "Subprocesos por etapa, E7.3",
+   "enunciado": "E7.3 escribe post-production.md con specs concretos de audio, grade y plataforma, sin placeholders (production-package.md §3).",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "1306a7bbf224",
+   "alcance": "Subprocesos por etapa, POST",
+   "enunciado": "POST queda fuera del pipeline de prompts y lo ejecuta el editor con el checklist.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "d3d0aa76b02b",
+   "alcance": "Subprocesos por etapa, POST.1",
+   "enunciado": "POST.1 genera los clips desde los prompts de E6 y los verifica contra la shot card (encuadre, acción, luz) hasta dejarlos aprobados.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "311b256a53eb",
+   "alcance": "Subprocesos por etapa, POST.2",
+   "enunciado": "POST.2 ensambla, gradúa, añade audio y overlays y exporta el master por plataforma, con QA final contra los 5 anclas.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "af7c69b5787a",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, dirección de audio",
+   "enunciado": "Exige poner generate_audio=false y omitir la sección de audio cuando el brand-lock o storyboard es dueño del audio (VO y música en post), para que Veo no invente una pista competidora.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Audio direction"
+    }
+   ]
+  },
+  {
+   "id": "928ddcdda102",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, entrega",
+   "enunciado": "Especifica que los clips Veo llegan con audio y requieren ensamblaje al timing, composición de texto, grade y una decisión de audio (conservar la pista nativa o silenciarla y usar VO y música), declarada en el handoff.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Output handoff"
+    }
+   ]
+  },
+  {
+   "id": "c7462d7c0059",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe que el audio automático de Veo choque con una cama de audio en post: cada shot tiene un solo dueño del sonido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3c64bf028966",
+   "alcance": "Video; Kling 3.0 API (fal/oficial)",
+   "enunciado": "El parámetro generate_audio es booleano y no existe un interruptor de «sin música»: el modelo pone música incluso con negative prompt, así que para audio limpio se genera con audio apagado o se quita la pista en post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "9b1d56d52ee6",
+   "alcance": "Video; Kling, fallo de morphing en movimiento rápido",
+   "enunciado": "Contra el morphing en movimiento rápido, se genera la acción en cámara lenta y se acelera en post, porque el modelo mantiene la geometría con movimiento interno más lento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Morphing artifacts on fast motion"
+    }
+   ]
+  },
+  {
+   "id": "80c9f09dd127",
+   "alcance": "Video; Kling, fallo de música no deseada",
+   "enunciado": "Como pedir «no music» por negativo es poco fiable, se genera con generate_audio apagado y se añade el sonido en post o se quita la pista de música.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Music appears even though the prompt says \"no music\""
+    }
+   ]
+  },
+  {
+   "id": "4da44a7478a7",
+   "alcance": "Video; estructura multi-clip",
+   "enunciado": "Explicación: los generadores de video AI no tienen memoria entre generaciones, por lo que los videos largos se construyen con varios clips unidos en la edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure"
+    }
+   ]
+  },
+  {
+   "id": "49e520263c11",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: aplicar un LUT cálido consistente, como emulación de Kodak Portra 400 o 'Teal & Orange: Warm'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "8017606ac8cb",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: capa de BGM con una sola pista de guitarra acústica a unos 85 BPM, libre de Artlist o Epidemic Sound.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "6c18cbee1334",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: ensamblar en CapCut o Descript por ser lo más simple para el flujo de TikTok.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "a7c82745d3ad",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: exportar en 9:16, 1080x1920, 30 fps, H.264 con bitrate objetivo de 12 Mbps.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "337e630b623e",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: primer ítem del checklist de postproducción: generar los 6 shots con la herramienta de video preferida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "79fa29106be3",
+   "alcance": "ejemplo TikTok 30 s café (skill ai-video-storyboard), checklist de postproducción",
+   "enunciado": "Ejemplo: subir a TikTok con los hashtags #coffeeshop #specialtycoffee #openingsoon #grandopening #coffeelover.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md",
+     "encabezado": "30s TikTok Reel — Coffee Shop Opening › Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "8084492752c0",
+   "alcance": "skill ai-video-storyboard, Paso 6, video multi-shot",
+   "enunciado": "Cerrar el storyboard con un Post-Production Checklist accionable: generar los N shots, ensamblar en editor, aplicar LUT o grade, transiciones, BGM, overlays de texto y exportar con la especificación de plataforma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 6 — Add Post-Production Checklist"
+    }
+   ]
+  },
+  {
+   "id": "9dc38cd8f58b",
+   "alcance": "skill visual-asset-critic, Hard rule 5",
+   "enunciado": "Regla 5: ante la duda se hace ACCEPT y se recomienda post; una imagen 80% correcta con la brecha corregible en post no se devuelve a regenerar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 5. When in doubt, ACCEPT and recommend post"
+    }
+   ]
+  },
+  {
+   "id": "9a4cc4ba64af",
+   "alcance": "skill visual-asset-critic, Paso 3",
+   "enunciado": "El fix a nivel de post se aplica en composición y debe especificar qué cambiar (ej. subir calidez +5 sin regenerar).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 3. Map issues to fixes"
+    }
+   ]
+  },
+  {
+   "id": "446c17bc39a1",
+   "alcance": "skill visual-asset-critic, Paso 6; severidad",
+   "enunciado": "Severidad minor: soft-fail en cualquier capa corregible en post, con fix_type post-level.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "b686d808bfac",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Contraste: es la distancia entre luces y sombras y sirve para ganar volumen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "544048d070fb",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Curvas: ajuste fino; una curva en S da más contraste.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "e5f679664389",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Exposición: controla el brillo general y sirve, por ejemplo, para levantar una toma subexpuesta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "59a30ab78687",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Saturación: intensidad de color; se desatura para lograr un look cinematográfico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "85ab368e910b",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Temperatura: eje frío/cálido; se usa cálido para calidez emocional.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "4ca647214d6a",
+   "alcance": "skill visual-media (general), colorización",
+   "enunciado": "Tinte: eje verde/magenta, útil para corregir tonos de piel.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Fundamentos de colorización"
+    }
+   ]
+  },
+  {
+   "id": "5fe3c0683808",
+   "alcance": "skill visual-media (general), flujo de producción de video",
+   "enunciado": "Explicación: las tres etapas de producción (preproducción 30%, rodaje 20%, postproducción 50%) con sus tareas típicas: guion y storyboard, dirección y captura, edición, color, sonido y VFX.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Producción de video › Flujo de producción"
+    }
+   ]
+  },
+  {
+   "id": "5a728debb379",
+   "alcance": "skill visual-media (general), formato corto",
+   "enunciado": "Douyin: duración óptima de 15 a 60 s, formato 9:16, carácter de contenido local.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "3aec88ec5d05",
+   "alcance": "skill visual-media (general), formato corto",
+   "enunciado": "Reels: duración óptima de 15 a 90 s, formato 9:16, carácter de cuidado y estética.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "070d388a0df0",
+   "alcance": "skill visual-media (general), formato corto",
+   "enunciado": "Shorts: duración óptima de 15 a 60 s, formato 9:16, carácter de divulgación y humor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "f87df49a10a4",
+   "alcance": "skill visual-media (general), formato corto",
+   "enunciado": "TikTok: duración óptima de 15 a 60 s, formato 9:16, carácter de entretenimiento y retos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Contenido de formato corto › Perfil de cada plataforma"
+    }
+   ]
+  },
+  {
+   "id": "32ba7ce7e67d",
+   "alcance": "skill visual-media (general), herramientas",
+   "enunciado": "Ejemplo: equipo de captura recomendado: cámaras Sony A7, Canon R y Fujifilm; celulares iPhone Pro y Pixel; estabilizadores DJI RS y Zhiyun.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Herramientas recomendadas › Equipo de captura"
+    }
+   ]
+  },
+  {
+   "id": "1dffc5e354a4",
+   "alcance": "skill visual-media (general), herramientas",
+   "enunciado": "Ejemplo: software de VFX recomendado: After Effects y Motion.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Herramientas recomendadas › Software de edición"
+    }
+   ]
+  },
+  {
+   "id": "e6d7a737e1e7",
+   "alcance": "skill visual-media (general), herramientas",
+   "enunciado": "Ejemplo: software de edición ligero recomendado: CapCut, iMovie y Filmora.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Herramientas recomendadas › Software de edición"
+    }
+   ]
+  },
+  {
+   "id": "ec1660506a2e",
+   "alcance": "skill visual-media (general), herramientas",
+   "enunciado": "Ejemplo: software de edición profesional recomendado: Premiere Pro, DaVinci Resolve y Final Cut.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Herramientas recomendadas › Software de edición"
+    }
+   ]
+  },
+  {
+   "id": "4663618ad227",
+   "alcance": "skill visual-media (general), postproducción y edición",
+   "enunciado": "Explicación: principios de edición: corte en movimiento, corte en reposo, regla de los 180 grados y J-cut/L-cut, que aumentan la fluidez.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-media/SKILL.md",
+     "encabezado": "Creación Visual — Visual Media › Postproducción y edición › Ritmo de edición"
+    }
+   ]
+  },
+  {
+   "id": "6bc44e553881",
+   "alcance": "visual-prompt-forge, capa 4 Text Layer",
+   "enunciado": "Explicación: el texto es una capa separada por editabilidad (se revisa sin regenerar), calidad (Ideogram y GPT Image quedan por debajo de herramientas de diseño), animación (requiere After Effects/Remotion/CapCut) y control de marca (fuentes y colores exactos).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ]
+  },
+  {
+   "id": "092945fa4d91",
+   "alcance": "visual-prompt-forge, imagen, criterio de parada de iteración",
+   "enunciado": "Dejar de iterar prompts cuando hay tres señales: 5 o más re-rolls del mismo shot sin mejora (elegir otro shot o generador), retoques de una sola palabra a ciegas (pasar a refinamiento imagen a imagen con Nano Banana o a post) o imagen 80% correcta con brecha editorial (enviar a post).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › When to stop iterating prompts"
+    }
+   ]
+  },
+  {
+   "id": "e6a037bdc9a2",
+   "alcance": "visual-prompt-forge, imagen, fallo 4 (inconsistencia de luz)",
+   "enunciado": "Se acepta editorialmente la deriva de luz cuando es tan sutil que el color grading la corrige.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ]
+  },
+  {
+   "id": "db657a30ec47",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "enunciado": "Un shot cuyos problemas son todos post-level no lleva prompt nuevo: se omite del archivo revisado y su id se añade a post_only_shots en la nueva ronda de run.json, porque decirlo en el chat no lo registra.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Revision mode (closing the QA loop) › Workflow"
+    }
+   ]
+  }
+ ]
+}

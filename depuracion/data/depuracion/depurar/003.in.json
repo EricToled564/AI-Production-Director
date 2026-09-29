@@ -1,0 +1,1466 @@
+{
+ "instrucciones": "Eliminas duplicados SIN reescribir nada. Cada grupo trae registros originales (texto literal completo,\ndocumento, encabezado y contexto). Decide qué originales se CONSERVAN tal cual y cuáles se ELIMINAN:\n- Un original se elimina solo si TODO su contenido (cada exigencia, prohibición, valor, número, cita literal,\n  excepción, ejemplo y alcance, incluido el que da su encabezado) ya está en UN conservado, que indicas en\n  \"contenido_en\".\n- Si dos registros dicen lo mismo pero cada uno tiene algo propio, se conservan los dos. En la duda, se conserva.\n- El grupo puede mezclar reglas distintas: esas se conservan todas.\nDevuelve JSON {\"grupos\": [{\"grupo\": \"...\", \"conservar\": [ids], \"eliminar\": [{\"id\": \"...\", \"contenido_en\": \"id\",\n\"razon\": \"...\"}]}]}; cada id del grupo aparece exactamente una vez y \"contenido_en\" es un id conservado del grupo.",
+ "grupos": [
+  {
+   "grupo": "G0015",
+   "miembros": [
+    {
+     "id": "0ecd5081474e",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "113-118",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+      }
+     ],
+     "texto": "Rules:\n\n- **Bind each subject individually.** `<Character A> corresponds to @Image 1. Use only the appearance, hairstyle, and clothing.` The officially forbidden pattern: \"@Images 1 through 4 define four characters respectively\" — it never states which is which.\n- **Add exclusions** for anything that could bleed in: \"Do not use the image background.\" / \"Do not use the people in the image.\" / \"Do not use the person's identity, clothing, or scene from the video.\"\n- **Do not restate what a reference already defines.** If a reference video defines the motion, state only which attributes to inherit — re-describing every action conflicts with the reference.\n- **Subject Profile** for a recurring character:"
+    },
+    {
+     "id": "2193b686d5a6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "69-69",
+       "encabezado": "Multitud anónima › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- Al animar, tres o más personajes distintos solo se sostienen si cada uno tiene su propio element o referencia; la masa no los tiene y por eso debe seguir sin rostro. [FUENTE: video/references/kling.md §7]"
+    },
+    {
+     "id": "5d3f23cef03d",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "lineas": "131-131",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Twins / face-blending in multi-person scenes"
+      }
+     ],
+     "texto": "Fix. Bind each subject to its own reference individually (see `universal-rules.md` U13), then force differentiation."
+    },
+    {
+     "id": "620fcc5d1415",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "305-305",
+       "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Two similar characters blend features in one frame"
+      }
+     ],
+     "texto": "Fix. Give each character its own element (or its own labeled identity block). Never let two speaking characters share one visual description."
+    },
+    {
+     "id": "687f552fd8b0",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "230-235",
+       "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x) › Elements 3.0 (Omni)"
+      }
+     ],
+     "texto": "On 3.0 Omni the element system got deeper:\n\n- A character element takes either a **3-8s video** (the model extracts both appearance and voice) or up to **4 multi-angle stills** (front, three-quarter, profile, back), plus optional **voice binding** (5-30s audio clip). Once bound, the voice belongs to the subject — do not re-describe it in the prompt.\n- Define a character / product / location **once** as an element, then tag it in prose: `@Grace picks up the folder`. The prompt carries only action and camera; identity lives in the element.\n- Holds 3+ distinct characters in frame without feature blending — but only if **each** has its own element.\n- Cost of the feature: several practitioners report visible image-quality degradation the moment elements/references are enabled. Use elements only when consistency actually matters; for one-off clips, in-prompt labels are cleaner."
+    },
+    {
+     "id": "852fd3e18ab6",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "214-214",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción › Grupo ensamble: todas las identidades en un frame"
+      }
+     ],
+     "texto": "EN.7\nVideo: un Element por miembro en Kling 3.0 Omni, o una @Image por miembro en Seedance 2.5 con rol individual; el prompt lleva solo acción y cámara\nkling §7 3+ personajes solo si cada uno tiene su element · seedance-25 §5 · U13\nKling: degradación de calidad con muchos elements; Seedance 2.5 hasta 30 imágenes; Veo ingredients sin límite documentado",
+     "contexto": "Paso | Qué se hace | Regla que lo sostiene | Límite duro"
+    },
+    {
+     "id": "a44f9758aca5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "78-78",
+       "encabezado": "Grupo ensamble › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- En video, tres o más personajes se funden: un element o una referencia individual por miembro, nunca dos personajes con una sola descripción. [FUENTE: video/references/kling.md §7]"
+    },
+    {
+     "id": "aa0ae2147e58",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "168-168",
+       "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+      }
+     ],
+     "texto": "- Bind each subject individually: \"<Character A> corresponds to @Image 1 — use only the appearance, hairstyle, and clothing.\" Never the collective form \"@Images 1 through 4 define four characters respectively\" — it does not state which is which."
+    },
+    {
+     "id": "d98cc2ea2997",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "32-32",
+       "encabezado": "Grupo ensamble › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "6. Cada referencia lleva rol explícito e individual: \"Image 2 is member A, use only appearance, hair and outfit\"; nunca la forma colectiva \"images 2 to 6 define five members\". [FUENTE: video/references/universal-rules.md U13]"
+    },
+    {
+     "id": "ee552226e780",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "74-74",
+       "encabezado": "Grupo ensamble › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- Dos miembros convergen en la misma cara: cada uno con su propia referencia y forzar diferenciación de rasgos y ropa. [FUENTE: video/references/fixes-and-skeletons.md §2]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0016",
+   "miembros": [
+    {
+     "id": "25256734eda6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "47-47",
+       "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- El humo, el polvo o el spray de rueda solo a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "4146d9b57017",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "43-43",
+       "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- La corona y las gotas solo se leen a contraluz o con luz lateral dura; iluminarlas de frente produce una mancha blanca sin volumen. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "455163a4a5ca",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "lineas": "177-177",
+       "encabezado": "Race, speed and faceless kinetic montage › 7. Light & color for speed without faces › Concrete lighting recipes (drop-in for the format-C Light column: source · direction · quality · what it rims)"
+      }
+     ],
+     "texto": "- **Backlit smoke** [Pressure/Establish]: hard cyan or mercury-white punching *through* tire smoke from behind; volumetric shafts, the car a dark mass dissolving into glowing haze, red tail-light bleed inside the smoke for the danger accent. Front-lit smoke is dead gray nothing — always rim it from behind."
+    },
+    {
+     "id": "59579241d74d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "74-74",
+       "encabezado": "Luz y clima › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- Lluvia uniforme sobre todo el cuadro sin contraluz: mover la fuente detrás de la lluvia y dejar el primer plano con gotas grandes. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "5e28165ca26f",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "74-74",
+       "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- Corona blanca y plana: luz frontal; mover la fuente detrás del agua. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "6f422b108cb3",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "30-30",
+       "encabezado": "Luz y clima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "4. La lluvia, la nieve y el polvo solo se leen a contraluz; iluminados de frente son gris muerto. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "8adb5e9d9e10",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "75-75",
+       "encabezado": "Agua en superficie › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- El spray sale como nube blanca sin forma: está iluminado de frente; pasar la fuente detrás o al lado del spray. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "a483e55ef84b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "45-45",
+       "encabezado": "Objeto balístico › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- El polvo, el spray o las astillas solo tienen volumen a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "a9dc1c207afd",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "45-45",
+       "encabezado": "Agua en superficie › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- El spray solo se lee luminoso a contraluz o a contraluz lateral; el spray frontal es una masa gris muerta, igual que el humo frontal. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "b05fbb6ce423",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "84-84",
+       "encabezado": "Agua en superficie › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Spray con rim de contraluz, no masa gris. [FUENTE: video/references/race-and-speed.md §7]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0017",
+   "miembros": [
+    {
+     "id": "2eaaa40b20b7",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "120-120",
+       "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+      }
+     ],
+     "texto": "**Workflow:** прогон вариантов на `0.5K` flash (или NB2 Lite на 1K) → отбор → переген победителя на `2K`/`4K`."
+    },
+    {
+     "id": "36c53ee6ba05",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+       "lineas": "62-62",
+       "encabezado": "Luz y clima › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Recorrido de costo: variantes baratas para elegir la forma del rayo o del cielo, final en alta. [FUENTE: image/references/golden-rules.md]"
+    },
+    {
+     "id": "45edc2567fed",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "12-12",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Дешёвая массовая генерация | **Nano Banana 2 Lite** или **gpt-image-1-mini** |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    },
+    {
+     "id": "5c83024ef907",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "79-79",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "- **GPT Image 2:** прогон на `quality: low` → отбор → переген на `medium` или `high`."
+    },
+    {
+     "id": "62efed3f9473",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "60-60",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "| Nano Banana 2 Lite | ~$0.034/img | Только 1K, ~4 сек. Черновики и массовые батчи |",
+     "contexto": "| Модель | Цена | Заметки |\n|--------|------|---------|"
+    },
+    {
+     "id": "76b59a27bfd7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "59-59",
+       "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- Recorrido de costo: variantes a 0.5K, selección, regeneración del ganador a 2K o 4K. [FUENTE: image/references/golden-rules.md]"
+    },
+    {
+     "id": "8c9f82b73ade",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "250-250",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "Serie de muchas variantes o exploración\nNB2 Lite o gpt-image-1-mini\nReconocimiento barato, final caro\nLite solo 1K",
+     "contexto": "Situación | Modelo | Por qué según la fuente | Resolución y costo"
+    },
+    {
+     "id": "9b405d5caccf",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "7-7",
+       "encabezado": "Nano Banana — Specific Rules"
+      }
+     ],
+     "texto": "| **NB2 Lite** | `gemini-3.1-flash-lite-image` | Самая быстрая и дешёвая ($0.034, ~4 сек), только 1K. Черновики, массовые батчи |",
+     "contexto": "| Тир | Model ID | Роль |\n|-----|----------|------|"
+    },
+    {
+     "id": "d3b4e661476d",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "78-78",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "- **Nano Banana:** прогон вариантов на `0.5K` Flash → отбор → переген победителя на `2K`/`4K`."
+    },
+    {
+     "id": "d3bfafc81060",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "81-81",
+       "encabezado": "Golden Rules › Cost Optimization (Batch Work)"
+      }
+     ],
+     "texto": "В обоих случаях: дешёвая разведка → дорогой финал."
+    }
+   ]
+  },
+  {
+   "grupo": "G0018",
+   "miembros": [
+    {
+     "id": "084be0886a89",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "39-39",
+       "encabezado": "Agua en superficie › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cue por defecto: sujeto nítido contra superficie de agua barrida en el sentido del viaje, con el spray en blur parcial. [FUENTE: video/references/animatic-keyframes.md §4]"
+    },
+    {
+     "id": "2c456b09858d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "38-38",
+       "encabezado": "Vehículo en movimiento › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cue por defecto: héroe nítido y mundo barrido en el eje de viaje, con una referencia cercana alargada en varilla de luz. [FUENTE: video/references/animatic-keyframes.md §4]"
+    },
+    {
+     "id": "52b3f27bb41c",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "84-84",
+       "encabezado": "Multitud anónima › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Barrido coherente con la dirección del flujo si la masa se mueve. [A PRUEBA]"
+    },
+    {
+     "id": "60d852bb1552",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "77-77",
+       "encabezado": "Multitud anónima › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- Multitud nítida y héroe borroso: la lógica de blur se invirtió; héroe nítido, masa barrida. [FUENTE: video/references/animatic-keyframes.md §4]"
+    },
+    {
+     "id": "86761597898a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "40-40",
+       "encabezado": "Multitud anónima › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Manifestación o maratón: la masa barrida en el sentido del flujo y un solo héroe o un solo objeto nítido en plano medio. [FUENTE: video/references/animatic-keyframes.md §4]"
+    },
+    {
+     "id": "b5e3db183227",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "33-33",
+       "encabezado": "Multitud anónima › 2. Leyes físicas que el still debe evidenciar"
+      }
+     ],
+     "texto": "6. Una multitud en movimiento, manifestación o carrera callejera, se trata como textura con las cues de velocidad: barrido direccional coherente con la dirección declarada del flujo. [A PRUEBA]"
+    },
+    {
+     "id": "cc9f8d1082c2",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "39-39",
+       "encabezado": "Objeto balístico › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cue por defecto en vuelo: sharp-subject contra fondo barrido con macro y foco muy corto. [FUENTE: video/references/animatic-keyframes.md §4]"
+    },
+    {
+     "id": "ea181cf645de",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "lineas": "93-93",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 4. Composing a still that reads as MOTION"
+      }
+     ],
+     "texto": "| **Directional motion-blur smear** | Background streaked along the travel axis, subject sharp. Guardrail, lane stripes, tree lamps pulled into horizontal light-rods. | tracking pass, POV launch, the whip-pan aftermath |",
+     "contexto": "| Cue | What it is in a still | Renders the implied move |\n|---|---|---|"
+    },
+    {
+     "id": "ef94c67fbcbf",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "lineas": "39-39",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cue por defecto en sprint lateral: atleta nítido y carril barrido con las líneas del suelo como varillas de luz. [FUENTE: video/references/animatic-keyframes.md §4]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0019",
+   "miembros": [
+    {
+     "id": "09e44c43a766",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "100-102",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Tratamiento (P7)"
+      }
+     ],
+     "texto": "`--treatment fotorreal` (default) banea anime/cartoon/3D render y avisa sobre slow motion.\n`ilustracion` y `animacion` levantan esos bans y ajustan la sección `style`. `race` mantiene\nlos bans fotorreal y convierte slow motion en FAIL (`race-and-speed.md` ley 1)."
+    },
+    {
+     "id": "2c57b9426e91",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "61-70",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P7  Bans de estilo condicionados al tratamiento (--treatment). anime / cartoon /\n    3D render y similares solo se banean en fotorreal: image/references/patterns/\n    character-design.md (\"Anime-Style Character Card\", \"clean cel-shaded anime\"),\n    multi-panel.md (\"Pixar-style 3D\", \"anime cel shading\"), editing.md (\"vibrant\n    anime\") los usan de forma legítima. \"slow motion\" deja de ser BANNED global:\n    WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing;\n    dramaturgy §7 exige razón), FAIL con --treatment race (race-and-speed.md §1\n    ley 1 \"never CGI-clean or sped-up... Over-crank... drain all threat\"),\n    permitido sin aviso con prefijo \"ultra-\" (kling.md §3 tempo words:\n    \"ultra-slow motion (2-3s feel)\") o con OVERRIDE."
+    },
+    {
+     "id": "2ffd32d24989",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "372-377",
+       "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_TERMS"
+      }
+     ],
+     "texto": "SLOW_MOTION_TERMS:\n  - slow motion\n  - slow-motion\n  - slowmo\n  - slow-mo\n  - slow mo"
+    },
+    {
+     "id": "48559b81f12b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "378-383",
+       "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_ALLOWED_PREFIXES"
+      }
+     ],
+     "texto": "SLOW_MOTION_ALLOWED_PREFIXES:\n  - \"ultra-\"\n  - \"ultra \"\n\n# ---------- REQUIRED por caso ----------\n# Keywords obligatorios cuando el caso aplica (solo casos de video 3a/3b/3c/4 — P8)."
+    },
+    {
+     "id": "5bb14e744a32",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "494-510",
+       "encabezado": "hooks vocabularies.yaml › TREATMENT_SECTION_OVERRIDES"
+      }
+     ],
+     "texto": "TREATMENT_SECTION_OVERRIDES:\n  ilustracion:\n    style: [illustration, illustrated, anime, cel, cel-shaded, watercolor, watercolour, vector, line art, ink, painterly, comic, graphic novel, flat color, flat colour, gouache, pencil]\n    anti_style: null\n    details: [line weight, brushwork, texture, palette, shading, hatching, fabric, fine detail, pattern]\n    photoreal_closing: null\n  animacion:\n    style: [3d, pixar, pixar-style, cel, cel-shaded, anime, stop motion, claymation, cgi, rendered, toon, stylized, stylised, low poly, hand-drawn]\n    anti_style: null\n    details: [texture, shading, palette, subsurface, fabric, fine detail, rig, squash, stretch]\n    photoreal_closing: null\n\n# ---------- REQUIRED_SECTIONS_BY_PLATFORM_CASE ----------\n# Secciones obligatorias que debe contener el MAIN prompt por plataforma + caso. Cada sección\n# tiene patrones (case-insensitive, substring). PRESENTE si AL MENOS UNO matchea. Falta = FAIL.\n# Convención de keys: <platform>__<case>. Si no hay snapshot → WARN \"honor system\".\n# \"cinematic\" ya no aparece en ningún patrón (P6)."
+    },
+    {
+     "id": "6d0c4d8099aa",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "44-44",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 7 | **slow motion.** BANNED global en el original. `kling.md` lo recomienda como técnica anti-morphing y define \"ultra-slow motion\" como palabra de tempo que el modelo obedece; `race-and-speed` lo prohíbe de verdad (ley 1). | P7 — deja de ser BANNED global: **WARN** en fotorreal/ilustración/animación (pide causa), **FAIL** con `--treatment race`, **permitido sin aviso** con prefijo `ultra-` o con `OVERRIDE: slow motion - <razón>`. | `kling.md` §3 tempo words (\"ultra-slow motion (2-3s feel)\") y §11 (\"Generate the action in slow motion and speed it up in post\"); `dramaturgy.md` §7 (toda decisión de cámara con razón); `race-and-speed.md` §1 ley 1 (\"never CGI-clean or sped-up … Over-crank … drain all threat\"). |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    },
+    {
+     "id": "a90ff8494c6d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "240-242",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+      }
+     ],
+     "texto": "6. **`--treatment race` existe como cuarto valor** aunque la spec lo enuncia como\n   `{fotorreal,ilustracion,animacion}`: la spec misma pide \"salvo `--treatment race`\" para slow\n   motion, y no hay otra forma de expresarlo. `race` hereda los bans de fotorreal."
+    },
+    {
+     "id": "bf84786d089c",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "351-371",
+       "encabezado": "hooks vocabularies.yaml › STYLE_BANNED_FOTORREAL"
+      }
+     ],
+     "texto": "STYLE_BANNED_FOTORREAL:\n  - anime\n  - anime-style\n  - cartoon\n  - cartoonish\n  - 3D render\n  - 3D rendered\n  - 3D-rendered\n  - CGI look\n  - cel shading\n  - cel-shaded\n  - cel shaded\n  - pixar-style\n  - pixar style\n  - claymation\n  - vector illustration\n  - flat illustration\n\n# ---------- SLOW MOTION (P7) ----------\n# WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing; dramaturgy §7 pide razón),\n# FAIL con --treatment race (race-and-speed.md §1 ley 1), exento con prefijo \"ultra-\" (kling.md §3 tempo)."
+    },
+    {
+     "id": "fb8ab12c23e6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "45-45",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 8 | **anime / cartoon / 3D render.** BANNED global en el original. Los patterns del skill `image` los usan de forma legítima (character cards anime, grids Pixar-style). | P7 — `--treatment {fotorreal,ilustracion,animacion,race}` (default fotorreal). `STYLE_BANNED_FOTORREAL` solo aplica en fotorreal/race. En ilustración/animación además se sustituyen los patrones de la sección `style` (`TREATMENT_SECTION_OVERRIDES`) y se retira `anti_style`. | `image/references/patterns/character-design.md` (\"Anime-Style Character Card\", \"clean cel-shaded anime\"); `multi-panel.md` (\"Pixar-style 3D\", \"anime cel shading\"); `editing.md` (\"vibrant anime\"); `dimensional.md` (\"photorealistic 3D render\"). |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0020",
+   "miembros": [
+    {
+     "id": "0b20adb3b04d",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/fashion-editorial.md",
+       "lineas": "71-73",
+       "encabezado": "Fashion Editorial Patterns › Streetwear Poster with Oversized Typography"
+      }
+     ],
+     "texto": "**Key levers:** `{HEADLINE_TEXT}` (brand name, drop name), `{SUBHEAD_TEXT}` (date, \"LIMITED DROP\", collection name), `{background_color}` (off-white #F5F1EB, concrete gray #8C8C8C, matte black #0D0D0D), `{text_color}` (#000000, #FF3333, #FFFFFF), `{font_style}` (sans-serif like Druk Wide, slab-serif, stencil), `{streetwear_outfit}`, `{model_position}` (center-left, right third), `{lighting_type}` (harsh direct flash, soft window light), `{grain_intensity}` (subtle film grain, heavy 35mm grain)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text rendering and model-type depth interplay"
+    },
+    {
+     "id": "0be6e399265f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ui-social.md",
+       "lineas": "47-49",
+       "encabezado": "UI Mockups & Social Media Patterns › Social Media Feed Post (1:1)"
+      }
+     ],
+     "texto": "**Key levers:** `{post_type}` (quote card, product feature, announcement, stat highlight), `{content_description}`, `{primary_text}`, `{primary_font}` (geometric sans-serif, modern serif, handwritten accent), `{text_color}` (#FFFFFF on dark, #1A1A1A on light), `{bg_color}` / `{bg_treatment}`, `{accent_color}`, `{brand_name}`, `{brand_mark}`, `{palette}` (e.g. navy #1B2A4A, gold #C9A84C, white #FFFFFF), `{supporting_element}` (product photo, icon illustration, data number in large type)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text-heavy layout; legibility at small sizes is critical"
+    },
+    {
+     "id": "3dcce9ff5d08",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ui-social.md",
+       "lineas": "73-75",
+       "encabezado": "UI Mockups & Social Media Patterns › App Store Screenshot"
+      }
+     ],
+     "texto": "**Key levers:** `{device_type}` (iPhone 16 Pro, Pixel 9, Galaxy S25), `{app_name}`, `{screen_description}` (brief: what the screen shows), `{screen_content}` / `{ui_description}` (detailed: specific UI elements visible), `{ui_style}` (iOS native, Material 3, custom dark theme), `{feature_headline}`, `{headline_font}` (SF Pro Display, condensed geometric), `{headline_position}` (above, below), `{headline_color}`, `{subheadline}`, `{gradient_top}` / `{gradient_bottom}` (e.g. #1A1A2E to #0D0D1A for dark, #F0F4FF to #FFFFFF for light)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — device bezel precision, small UI text, and headline legibility all demand high quality"
+    },
+    {
+     "id": "82da88d3a585",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ecommerce.md",
+       "lineas": "72-74",
+       "encabezado": "E-Commerce Product Photography Patterns › 9-Panel TVC Storyboard Grid"
+      }
+     ],
+     "texto": "**Key levers:** `{product_name}`, `{protagonist}` (woman in her 30s, young couple, family), `{setting}` (bright kitchen, outdoor terrace, urban cafe), `{emotion}` (satisfied, surprised, relaxed), `{beauty_surface}` (white marble, gradient gray), `{tagline}`, `{duration}` (15, 30)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — grid precision and text in panel 9"
+    },
+    {
+     "id": "a479b51a5d2f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ui-social.md",
+       "lineas": "21-23",
+       "encabezado": "UI Mockups & Social Media Patterns › Instagram Story Ad (9:16)"
+      }
+     ],
+     "texto": "**Key levers:** `{product_name}`, `{product_description}` (shape, material, color), `{gradient_top}` / `{gradient_bottom}` (e.g. #6C3CE1 violet to #1A1A2E dark navy, #FF6B6B coral to #FFE66D warm yellow), `{headline_text}`, `{headline_font}` (bold condensed sans-serif, rounded geometric), `{subtext}`, `{cta_text}` (e.g. \"Swipe Up\", \"Shop Now\", \"Learn More\"), `{accent_elements}` (translucent spheres, soft light flares, floating geometric shards)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — headline text legibility and glassmorphism transparency effects need precision"
+    },
+    {
+     "id": "ad37333d1988",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/poster-illustration.md",
+       "lineas": "80-82",
+       "encabezado": "Poster & Illustration Patterns › Lavender Smartphone Hero Ad"
+      }
+     ],
+     "texto": "**Key levers:** `{device_name}`, `{color_light}` / `{color_dark}` (lavender #E6D5F5 to #7B4FA0, mint #D0F0E0 to #1B7A5A, coral #FFDDD2 to #C44536), `{device_finish}` (matte aluminum, polished titanium, frosted glass back), `{screen_content}` (a clean home screen with app icons, a camera app showing a landscape, a gradient wallpaper), `{accent_shapes}` (spheres, rounded pills, soft cubes, torus rings), `{accent_shape_color}` — same family as background but slightly lighter or more saturated, `{accent_size}` (golf-ball to grapefruit), `{HEADLINE}` / `{SUBHEADLINE}`, `{headline_color}` (white #FFFFFF, dark tint of the color family), `{color_family}` (lavender-purple, sage-green, warm terracotta), `{tilt_angle}` (5-15), `{horizontal_position}` (left third, center, right third)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text rendering, screen content legibility, device accuracy"
+    },
+    {
+     "id": "d1467ff92337",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/poster-illustration.md",
+       "lineas": "101-103",
+       "encabezado": "Poster & Illustration Patterns › Emerald Street Fashion Poster"
+      }
+     ],
+     "texto": "**Key levers:** `{background_color}` (emerald #006B3F, cobalt #0047AB, saffron #F4C430, hot pink #FF1493), `{model_description}`, `{outfit_description}` (oversized leather trench + chunky sneakers, cropped bomber + wide-leg trousers + platform boots), `{pose_description}` (wide stance with arms crossed, one hand adjusting collar, walking stride caught mid-step), `{MAIN_TITLE}` / `{SUBTITLE}`, `{title_font_style}` (geometric sans-serif, grotesque, stencil cut), `{title_color}` (#FFFFFF, #000000, cream #FFF5E1), `{subtitle_color}` (same as title but at 60% opacity), `{fabric_details}` (visible grain in leather, corduroy ridges, denim selvedge edge), `{graphic_accents}` (none, thin white border 20px from edge, small logo mark at bottom-left)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — typography rendering and figure-type layering"
+    },
+    {
+     "id": "da17955fc3fc",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ui-social.md",
+       "lineas": "102-104",
+       "encabezado": "UI Mockups & Social Media Patterns › Dashboard Design Mockup"
+      }
+     ],
+     "texto": "**Key levers:** `{theme_mode}` (dark / light), `{design_system}` (minimal flat, glassmorphism cards, shadowed Material), `{dashboard_title}`, `{data_domain}` (SaaS revenue, e-commerce orders, marketing campaign, IoT sensor monitoring), `{sidebar_bg}` (#0F1117 dark, #FFFFFF light), `{accent_color}` (#6366F1 indigo, #10B981 emerald, #F59E0B amber), `{nav_items}` (Dashboard, Analytics, Users, Settings, Reports), `{num_kpis}` (3-5), `{chart_1_type}` / `{chart_2_type}` (line chart, grouped bar chart, donut chart, area chart), `{chart_1_colors}` / `{chart_2_colors}` (hex values), `{card_bg}` (#1E1E2E dark card, #FFFFFF light card), `{secondary_widget}`\n\n**Recommended model:** GPT Image 2 (`quality: high`) — dense text (labels, numbers, navigation), precise chart rendering, and small UI elements require high fidelity"
+    },
+    {
+     "id": "ef13d79f7697",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ui-social.md",
+       "lineas": "133-135",
+       "encabezado": "UI Mockups & Social Media Patterns › Personal Color Analysis Board"
+      }
+     ],
+     "texto": "**Key levers:** `{subject_description}` (age, skin tone, hair color, eye color — needed for accurate seasonal analysis), `{season_type}` (Warm Spring, Cool Summer, Warm Autumn, Cool Winter — or sub-seasons like Soft Autumn, Bright Winter), `{palette_colors}` (12 hex values matching the season, e.g. Warm Autumn: rust #B7410E, olive #708238, mustard #E1AD01, burgundy #722F37...), `{num_palette}` (12), `{flattering_color}` / `{unflattering_color}` (specific colors with hex), `{good_label}` / `{bad_label}` (e.g. \"Warm Coral\" / \"Cool Pink\"), `{num_recs}` (4-6), `{rec_items}` (scarf in olive, blazer in navy, lipstick in warm rose, eyeglass frames in tortoise)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — color accuracy of palette swatches is critical, plus small text labels throughout"
+    }
+   ]
+  },
+  {
+   "grupo": "G0021",
+   "miembros": [
+    {
+     "id": "11acda7f6824",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "42-46",
+       "encabezado": "Adapter: Ideogram (v3) › Parameters"
+      }
+     ],
+     "texto": "Document in comment block:\n```\n# shot_01, params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193\n{prompt}\n```"
+    },
+    {
+     "id": "1c993df87f70",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "24-27",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+      }
+     ],
+     "texto": "```\n# shot_01 (draft). Hailuo 02 Pro: duration=6s, ar=9:16, optimizer=false\n{prompt}\n```"
+    },
+    {
+     "id": "38d5c8790497",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "30-33",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+      }
+     ],
+     "texto": "```\n# shot_02-shot_04. Seedance 2.0: ar=9:16, shots=3, multi-shot sequence\n{prompt}\n```"
+    },
+    {
+     "id": "438f1b28ca36",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "30-34",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+      }
+     ],
+     "texto": "Document:\n```\n# shot_01, params: ar=9:16, seed=2840193, guidance=4.5, steps=28\n{prompt}\n```"
+    },
+    {
+     "id": "6964088e6347",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "24-27",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+      }
+     ],
+     "texto": "```\n# shot_04. Veo 3: duration=8s, ar=9:16, generate_audio=true\n{prompt}\n```"
+    },
+    {
+     "id": "9546b9189618",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "30-34",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+      }
+     ],
+     "texto": "Document in comment:\n```\n# shot_01, params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5\n{prompt}\n```"
+    },
+    {
+     "id": "c7bfb9847aeb",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "28-33",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+      }
+     ],
+     "texto": "Document parameters as a comment line above each prompt:\n\n```\n# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png\n{prompt}\n```"
+    },
+    {
+     "id": "e731c8e46cd4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "27-32",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+      }
+     ],
+     "texto": "In the `flux.txt` output, document parameters as a comment line above each prompt:\n\n```\n# shot_01, params: ar=9:16, seed=2840193, upsampling=false\n{prompt}\n```"
+    },
+    {
+     "id": "ebcda316709b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "34-38",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+      }
+     ],
+     "texto": "Document:\n```\n# shot_01, params: ar=9:16, n=1, ref=none (or list of refs)\n{prompt}\n```"
+    }
+   ]
+  },
+  {
+   "grupo": "G0022",
+   "miembros": [
+    {
+     "id": "13ed770549a4",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "lineas": "54-54",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Rig montable: cámara de foto de meta a nivel de la cinta, cable cam sobre el carril, cámara robótica en la línea; nunca una cámara flotando frente al atleta a media pista. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "3af1cb7b71b5",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "127-127",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+      }
+     ],
+     "texto": "D6\nCámara\nencuadre ECU a EWS · lente 24, 35, 50, 85, 100 macro, anamórfico 40 · DOF shallow, deep, rack · cámara implícita\nLa cámara implícita es el movimiento del que este still es el primer frame; el rig debe poder montarse físicamente. El ángulo va aparte, en D9\nshot-grammar · camera-lighting §1-3 · animatic §6 · race-and-speed §2",
+     "contexto": "# | Dimensión | Valores posibles | Qué decide | Fuente"
+    },
+    {
+     "id": "651a0852471e",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "52-52",
+       "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- El rig debe existir: una cámara dentro del chorro de entrada o en el fondo de la fosa mirando hacia arriba son montajes reales; una cámara flotando a mitad de la salpicadura no. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "6de35cef9324",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "51-51",
+       "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- La cámara va donde un rig real puede atornillarse: parachoques, capó, hostess-tray, eje, cabina hard-mount; si no, se lee render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "7b9fcb5cebcb",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "53-53",
+       "encabezado": "Multitud anónima › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Rig montable: grúa, dron, cámara de gradería, cable cam sobre el campo; una cámara dentro de la multitud a la altura de los ojos sin cuerpos que la tapen es irreal. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "927f3bea678b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/race-and-speed.md",
+       "lineas": "44-45",
+       "encabezado": "Race, speed and faceless kinetic montage › 2. Four schools worth stealing"
+      }
+     ],
+     "texto": "**Race-truth (Frankenheimer, Lelouch, Mangold/Papamichael, Howard/Dod Mantle, Refn).** Speed is a fact you earn by putting the camera where a real rig could bolt — bumper, hood lip, hostess-tray, axle, cabin. Low, wide and close, hard-mounted without vibration isolation so \"cheeks shake\", asphalt streaking in frame as the speedometer, mini-cams next to pistons and swelling tires for \"an electron-microscope view of the car at its limit\". Refn's cocoon: silence and stillness inside the shell, chaos outside, so the launch detonates. Refuse the crank — *Grand Prix* oiled tires for real smoke rather than fake the burnout.\n→ **Rule:** if the implied camera could not physically mount on the car, the panel reads as render — drop it to bumper height and bolt it on."
+    },
+    {
+     "id": "9be7f4b88811",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "53-53",
+       "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- Rig montable: cámara de alta velocidad en trípode al nivel del impacto, o cámara robótica que sigue; una cámara que gira alrededor del objeto en el aire no existe en el rodaje real y se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "c8869330ac2b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/01-agua-superficie.md",
+       "lineas": "52-52",
+       "encabezado": "Agua en superficie › 5. Cámara, ángulo y rig montable"
+      }
+     ],
+     "texto": "- La cámara debe poder montarse en un rig real: torre de la lancha, pole cam desde la embarcación, carcasa a nivel del agua, dron bajo o cámara en el mango de la cuerda; un ángulo que ningún rig acuático puede ocupar se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+    },
+    {
+     "id": "ca4812357c19",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "lineas": "224-224",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+      }
+     ],
+     "texto": "- [ ] **Implied camera named** — the move this still is the first frame of, physically mountable on the car (no god-angle render)."
+    }
+   ]
+  },
+  {
+   "grupo": "G0023",
+   "miembros": [
+    {
+     "id": "256041a1e554",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "32-32",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в"
+      }
+     ],
+     "texto": "- **Тонкий текст в кадре.** Маленькие подписи, легенды, footnotes, multi-font layouts. На `quality: high` рендерит чётче."
+    },
+    {
+     "id": "299ad5cf8194",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "248-248",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "Etiqueta de producto, UI, texto pequeño legible\nGPT Image 2 quality high\nTexto denso y multi-font; hasta 2560×1440\nSolo el final en high",
+     "contexto": "Situación | Modelo | Por qué según la fuente | Resolución y costo"
+    },
+    {
+     "id": "2adcc4f3e67b",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "65-65",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "| GPT Image 2 (`high`) | дороже | Маленький текст, brand-sensitive, photorealism |",
+     "contexto": "| Модель | Цена | Заметки |\n|--------|------|---------|"
+    },
+    {
+     "id": "2d197c6d738f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "13-13",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Фотореализм с тонкой типографикой/UI | **GPT Image 2** |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    },
+    {
+     "id": "4c4e3984ea41",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "47-47",
+       "encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency"
+      }
+     ],
+     "texto": "| `quality: high` | Маленький/плотный текст, infographics, портреты, identity-sensitive edits, brand assets |",
+     "contexto": "| Setting | Когда |\n|---------|-------|"
+    },
+    {
+     "id": "87b3195535a5",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "18-18",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Storyboard с фокусом на типографике | **GPT Image 2** |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    },
+    {
+     "id": "b3cc87e99aef",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "16-16",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Брендовая полиграфия / постеры с EXACT TEXT | **GPT Image 2** |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    },
+    {
+     "id": "b689d296b8e3",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "74-74",
+       "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+      }
+     ],
+     "texto": "- Маленький/плотный/multi-font → `quality: high` обязательно."
+    },
+    {
+     "id": "f9dd383d3b57",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "15-15",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Маленький плотный текст в кадре | **GPT Image 2** (`quality: high`) |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0024",
+   "miembros": [
+    {
+     "id": "102865f2604b",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "26-26",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в"
+      }
+     ],
+     "texto": "- **Экстремальные пропорции.** 1:8, 8:1, 1:4, 4:1 — баннеры, скроллы, комикс-стрипы. У GPT Image 2 max 3:1."
+    },
+    {
+     "id": "234ee992c854",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "43-43",
+       "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+      }
+     ],
+     "texto": "1:8, 8:1, 1:4, 4:1 — для баннеров, скроллов, комикс-стрипов."
+    },
+    {
+     "id": "2db58982d135",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "93-93",
+       "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+      }
+     ],
+     "texto": "Aspect ratio: se genera en el ratio destino, nunca se recorta después de animar."
+    },
+    {
+     "id": "7d86910cd8a6",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/prompt-framework.md",
+       "lineas": "107-107",
+       "encabezado": "Prompt Framework › Quick Decision Tree"
+      }
+     ],
+     "texto": "> Image grounding (поиск реальных мест в интернете) и экстремальные ratio (1:8, 8:1, 4:1) — только Nano Banana. См. [nano-banana.md](nano-banana.md)."
+    },
+    {
+     "id": "b9d93377f723",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "251-251",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+      }
+     ],
+     "texto": "Aspect ratio del clip\nEl del proyecto, desde el primer intento\nCampaña vertical se genera en 9:16; recortar después de animar es un punto de fallo silencioso; FF y LF mismo ratio\nGPT máx 3:1; extremos 1:8 y 8:1 solo NB",
+     "contexto": "Situación | Modelo | Por qué según la fuente | Resolución y costo"
+    },
+    {
+     "id": "cb6af1bafab0",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "65-65",
+       "encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)"
+      }
+     ],
+     "texto": "> Экстрим вроде 1:8 / 8:1 GPT Image 2 НЕ умеет — иди в Nano Banana."
+    },
+    {
+     "id": "d64fea9f22be",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "129-129",
+       "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+      }
+     ],
+     "texto": "- **Aspect ratio сразу целевой.** Кампании нужен вертикальный ролик — генери 9:16, а не кропай после анимации (тихая точка отказа)."
+    },
+    {
+     "id": "f8fe4a8a4414",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "11-11",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+      }
+     ],
+     "texto": "| Длинные горизонтальные/вертикальные форматы (1:8, 8:1, 4:1) | **Nano Banana** (только NB поддерживает экстрим) |",
+     "contexto": "| Задача | Модель |\n|--------|--------|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0025",
+   "miembros": [
+    {
+     "id": "107e003280cf",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "79-79",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `T3`, `T4`, `T5`, `ANCLA` / `ANCHOR` | `2` | Etapa 5 | cuadro 1 persona, 2 personas, edición quirúrgica — con refs `Image N` / `@img` |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    },
+    {
+     "id": "1111957ec468",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "82-82",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `CLIP-MC`, `CLIP-MOTION`, `MOTION-CONTROL` | `3c` | Etapa 6 | Kling Motion Control (§9) |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    },
+    {
+     "id": "4be652c08e64",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "75-78",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P9  Casos del pipeline mapeados a los del linter: T1/T2/placa → 1; T3/T4/T5 con\n    refs → 2; CLIP I2V → 3a/3b/3c; CLIP con diálogo → 4. Fuente: SW30\n    \"ARQUITECTURA POR SECCIONES\" (tipos T1..T5), ai-production-director Etapa 5\n    (casos de imagen) y Etapa 6 (clips). --case acepta ambos alfabetos."
+    },
+    {
+     "id": "52b1d24dca11",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "78-78",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `T1`, `T2`, `PLACA` / `PLATE`, `GENESIS` | `1` | Etapa 5 (anchors) | maestro de rostro, maestro de cuerpo, placa vacía (SW30 R7) — sin refs |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    },
+    {
+     "id": "6846e8f6492a",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "80-80",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `CLIP-FF`, `CLIP`, `I2V`, `CLIP-I2V` | `3a` | Etapa 6 (video prompts) | image-to-video con first frame |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    },
+    {
+     "id": "922bbcd50ba8",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "191-200",
+       "encabezado": "aurora prompt_linter.py › CASE_ALIASES"
+      }
+     ],
+     "texto": "# P9 — pipeline aliases → linter cases. Keys are upper-case with '-' separators.\nCASE_ALIASES = {\n    \"1\": \"1\", \"T1\": \"1\", \"T2\": \"1\", \"PLACA\": \"1\", \"PLATE\": \"1\", \"GENESIS\": \"1\", \"T2I\": \"1\",\n    \"2\": \"2\", \"T3\": \"2\", \"T4\": \"2\", \"T5\": \"2\", \"ANCLA\": \"2\", \"ANCHOR\": \"2\",\n    \"3A\": \"3a\", \"CLIP\": \"3a\", \"CLIP-FF\": \"3a\", \"CLIP-I2V\": \"3a\", \"I2V\": \"3a\", \"FF\": \"3a\",\n    \"3B\": \"3b\", \"CLIP-FF-LF\": \"3b\", \"CLIP-LF\": \"3b\", \"FF-LF\": \"3b\", \"CLIP-TAIL\": \"3b\",\n    \"3C\": \"3c\", \"CLIP-MC\": \"3c\", \"CLIP-MOTION\": \"3c\", \"MOTION-CONTROL\": \"3c\", \"MC\": \"3c\",\n    \"4\": \"4\", \"CLIP-DIALOGO\": \"4\", \"CLIP-DIALOG\": \"4\", \"CLIP-DIALOGUE\": \"4\",\n    \"DIALOGO\": \"4\", \"DIALOGUE\": \"4\", \"CLIP-DIAL\": \"4\",\n}"
+    },
+    {
+     "id": "e42776a696d0",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "83-83",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `CLIP-DIALOGO`, `CLIP-DIALOG`, `CLIP-DIALOGUE` | `4` | Etapa 6 | Kling 3.0 P1–P4, Veo `Says:`, Seedance 2.5 `{ }` |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    },
+    {
+     "id": "f2d06042e60d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "81-81",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+      }
+     ],
+     "texto": "| `CLIP-FF-LF`, `CLIP-LF`, `CLIP-TAIL` | `3b` | Etapa 6 | first + tail image (Kling start/tail; Seedance 2.5 first & last) |",
+     "contexto": "| Del pipeline | Linter | Etapa del director | Notas |\n|---|---|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0026",
+   "miembros": [
+    {
+     "id": "1285e3c81acf",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "154-158",
+       "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+      }
+     ],
+     "texto": "Before returning the final prompt to the user, audit every shot. Each shot must carry at least one of each:\n\n1. Environmental pressure (lighting, weather, surface, sound of the room).\n2. Physical micro-action on the body (jaw, hand, breath, eye, gesture).\n3. Sound anchor or recurring visual motif tied to the emotional spine."
+    },
+    {
+     "id": "337f05957898",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "348-348",
+       "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+      }
+     ],
+     "texto": "2. Does every shot pass the three-detail check? (environmental pressure + physical micro-action + sound or visual motif)"
+    },
+    {
+     "id": "77e58413cfd3",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "31-35",
+       "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+      }
+     ],
+     "texto": "Every shot in every prompt owns at least three concrete physical details:\n\n1. **One environmental pressure.** Cold blue refrigerator light. Steam off boiling water. Wet asphalt. Flickering fluorescent. Dripping tap. Curtain breathing in the AC. (Kurosawa: weather is a character. See `dramaturgy.md` §9.)\n2. **One physical micro-action.** Jaw locks. Knuckles whiten on the fork. Lips press into a line. He swallows hard. Fingers curl against the doorframe. (Show, not tell — the body is the only place where feelings render.)\n3. **One sound anchor or visual motif.** Stomach growl at 2.3s. Reflection in a darkened phone screen. Rain on the same windowpane. A single fluorescent flicker before each cut."
+    },
+    {
+     "id": "af35e87574cb",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "62-66",
+       "encabezado": "Seedance reference (ByteDance) › 4. The Details Law (read this first)"
+      }
+     ],
+     "texto": "Seedance does not render abstractions. It renders **physical specifics**. Every adjective must be a sensory fact. Every emotion must be a body. Every shot must own at least three concrete details:\n\n1. **One environmental pressure.** Cold blue refrigerator light. Steam off boiling water. Wet asphalt. Flickering fluorescent. Dripping tap. Curtain breathing in the AC.\n2. **One physical micro-action.** Jaw locks. Finger taps the counter. Knuckles whiten on the fork. Lips press into a line. He swallows hard.\n3. **One sound anchor or visual motif.** Stomach growl at 2.3s. Reflection in the dark phone screen. Rain hitting the same windowpane."
+    },
+    {
+     "id": "c2401432766f",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+       "lineas": "40-40",
+       "encabezado": "Cuerpo en el pico de esfuerzo › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cada shot carga tres detalles: presión ambiental, micro-acción del cuerpo, motivo o ancla sonora prompteada como consecuencia física. [FUENTE: video/references/dramaturgy.md §2]"
+    },
+    {
+     "id": "de8d8c00cda4",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "51-55",
+       "encabezado": "Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt. › The three-detail rule"
+      }
+     ],
+     "texto": "For each shot in the storyboard or prompt, before it is sent, the writer commits to:\n\n1. **Environmental pressure.** A physical fact about the space that carries the emotion. Cold refrigerator light. Wet asphalt. Flickering ceiling tube. Steam from the kettle. Rain on one specific windowpane. A buzzing AC unit. Tight corridor walls. Mirror reflection. (See §9 — Environment plays.)\n2. **Physical micro-action on the body.** The emotion translated into the actor's body. Jaw locks. Knuckles whiten. Lips press flat. Eyes drop a quarter-inch. He swallows hard. Fingers curl against the doorframe. The actor's body is the only place where feelings render — names of feelings do not.\n3. **Sound anchor or visual motif.** A recurring perceptual hook tied to the spine of the piece. Stomach growl repeated three times. Reflection in dark glass on every transition. The same musical sting at every Crack beat. The clock's second hand. Footsteps in an empty corridor."
+    },
+    {
+     "id": "e8b923de852f",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/dramaturgy.md",
+       "lineas": "47-47",
+       "encabezado": "Dramaturgy, detail, montage › 2. Second law. Details intensify emotion. Laziness kills the prompt."
+      }
+     ],
+     "texto": "> Every shot owns three concrete physical details: one environmental pressure, one physical micro-action, one sound or visual motif anchor."
+    },
+    {
+     "id": "f7ae3b735daa",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "41-41",
+       "encabezado": "Multitud anónima › 3. Cue de movimiento congelado por defecto"
+      }
+     ],
+     "texto": "- Cada panel carga sus tres detalles aunque no haya rostro: presión ambiental de la masa, micro-acción en el héroe, motivo repetido en la multitud. [FUENTE: video/references/dramaturgy.md §2]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0027",
+   "miembros": [
+    {
+     "id": "1413c2680f63",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "11-14",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Syntax pattern"
+      }
+     ],
+     "texto": "Single shot:\n```\n{Camera motion sentence, leading.} {Subject and action.} {Environment and lighting from series_lock.} {Color grade and mood from brand_lock.}\n```"
+    },
+    {
+     "id": "17415de0c779",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "11-13",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Syntax pattern"
+      }
+     ],
+     "texto": "```\n{Camera motion sentence, leading.} {Subject and action over the duration.} {Environment and lighting from series_lock.} {Color grade and mood from brand_lock.}\n```"
+    },
+    {
+     "id": "7508e059357d",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "11-13",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Syntax pattern"
+      }
+     ],
+     "texto": "```\n{Camera motion sentence, explicit, leading.} {Subject and action over the duration.} {Environment and lighting from series_lock.} {Photographic spec.} {Color grade and mood from brand_lock.}\n```"
+    },
+    {
+     "id": "93fca4e5421c",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/fixes-and-skeletons.md",
+       "lineas": "114-114",
+       "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Model ignores camera instruction"
+      }
+     ],
+     "texto": "Fix. Move camera to the front of the prompt."
+    },
+    {
+     "id": "d9db3d1d2c72",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "15-15",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Syntax pattern"
+      }
+     ],
+     "texto": "Camera motion goes **first**. This is the inverse of image generators where camera is implied. With video the camera's behaviour is the first thing the model must understand."
+    },
+    {
+     "id": "ddf2713d9341",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "11-13",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Syntax pattern"
+      }
+     ],
+     "texto": "```\n{Camera motion sentence, leading.} {Subject and action over the duration.} {Dialogue line, in quotes, if any.} {Environment and lighting from series_lock.} {Audio direction.} {Color grade and mood from brand_lock.}\n```"
+    },
+    {
+     "id": "f26e89f315fd",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "80-80",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't put camera motion at the end.** Kling parses motion best as the leading instruction."
+    },
+    {
+     "id": "fd3f3bc8d5f0",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "lineas": "211-211",
+       "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Camera direction ignored"
+      }
+     ],
+     "texto": "Fix. Lead the prompt with camera. \"Wide aerial shot\" at the start beats \"cinematic camera work\" in the middle."
+    }
+   ]
+  },
+  {
+   "grupo": "G0028",
+   "miembros": [
+    {
+     "id": "1beae795a162",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "88-88",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+      }
+     ],
+     "texto": "- **Skill:** `storyboard-architect` (STANDARD/FILM) o `ai-video-storyboard` (EXPRESS)."
+    },
+    {
+     "id": "2fa01a7c6a34",
+     "ubicaciones": [
+      {
+       "documento": "skills/produccion-visual-sw30/SKILL.md",
+       "lineas": "142-142",
+       "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+      }
+     ],
+     "texto": "15. shots.json es la fuente de verdad: todo cambio entra ahí primero y se propaga."
+    },
+    {
+     "id": "89b98454943c",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/production-package.md",
+       "lineas": "47-47",
+       "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+      }
+     ],
+     "texto": "4. Cambios: si un prompt necesita cambiar algo que su shot fija (encuadre, acción, luz), el cambio se hace en shots.json y se regenera hacia abajo. El paquete nunca contiene un prompt que contradiga su shot."
+    },
+    {
+     "id": "b12289ccacb9",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "33-33",
+       "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+      }
+     ],
+     "texto": "| `ai-video-storyboard` | 4 · Shot planning (EXPRESS) | Shot list ligero por cadencia de plataforma | Solo track EXPRESS |",
+     "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+    },
+    {
+     "id": "ebe56fc9f00a",
+     "ubicaciones": [
+      {
+       "documento": "flujo-spot.html",
+       "lineas": "114-114",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E4\nShot Planning · desde aquí shots.json es la fuente de verdad",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "f949e2b10c17",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "129-129",
+       "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.3 Fuente de verdad estructural"
+      }
+     ],
+     "texto": "De la Etapa 4 en adelante: `shots.json`. Un cambio creativo se hace primero en shots.json y se propaga hacia abajo; nunca se parcha un prompt de forma que contradiga su shot."
+    },
+    {
+     "id": "f96c1041bb51",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "32-32",
+       "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+      }
+     ],
+     "texto": "| `storyboard-architect` (shotkit) | 4 · Shot planning | storyboard.md + shots.json + text-overlays.json + run.json, validados por schema | **Fuente de verdad estructural** desde aquí |",
+     "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+    },
+    {
+     "id": "fdb3986eb120",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "91-91",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+      }
+     ],
+     "texto": "- Desde aquí, **shots.json es la fuente de verdad**. Ningún prompt, imagen o revisión existe sin shot ID."
+    }
+   ]
+  }
+ ]
+}

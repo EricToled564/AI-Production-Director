@@ -1,0 +1,1849 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "ea95b6e1027a",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "130-131",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "9. Contactos entre personas: \"a natural high five\" — la anatomía la fija el keyframe\n   aprobado, nunca la asignación de manos por texto."
+  },
+  {
+   "id": "3bef9c23ecb1",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "132-133",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "10. Logos solo heredados de asset aprobado o descripción canónica del brand-lock; los\n    cuerpos nunca tapan logo ni lettering en frames congelados."
+  },
+  {
+   "id": "e680a0717510",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "134-134",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "11. Lo aprobado se canoniza con hash y se EDITA desde ahí; lo caro nunca se regenera."
+  },
+  {
+   "id": "000dc8fbf639",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "135-136",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "12. \"Edit, don't re-roll\": resultado ≥80% correcto → cambio puntual (hasta 3 ediciones\n    apiladas), nunca re-tirar."
+  },
+  {
+   "id": "9e41d5aa7d43",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "137-138",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "13. Máximo 2 intentos por método. A la 2ª falla: cambio de método con causa declarada, o\n    alto y consulta. Nunca tercera vuelta de lo mismo."
+  },
+  {
+   "id": "03a7eb82f8a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "139-141",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "14. Validadores del paquete y techos de palabras en verde antes de entregar; inspección\n    visual propia (zooms 100% de rostros y manos) antes de presentar. Si algo falla: no se\n    entrega, se repite — y se dice qué falló en una línea."
+  },
+  {
+   "id": "2fa01a7c6a34",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "142-142",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "15. shots.json es la fuente de verdad: todo cambio entra ahí primero y se propaga."
+  },
+  {
+   "id": "c7ad8cba68eb",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "143-144",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "16. Clips: solo Preserve-cues, roles de start/tail (\"The tail image defines X — inherit\n    exactly\"), movimiento puro, imagen final nombrada; negativos sin \"no X\", ≤8 ítems."
+  },
+  {
+   "id": "6b55afe45001",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "145-146",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "17. Entregas en unidades chicas con OK de dirección; se entrega el delta, no el paquete.\n    Una regla nueva de dirección se aplica a TODOS los prompts, no a la mitad."
+  },
+  {
+   "id": "d2425f43249c",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "147-148",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "18. Respuestas: el dato o entregable en la primera línea. Cero adulación y cero evaluación\n    de las acciones de Eric salvo que la pida. Error = una línea de corrección, sin disculpas."
+  },
+  {
+   "id": "3bcff42da25c",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "149-150",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "19. Prohibido afirmar capacidades, límites o hechos de plataforma sin verificarlos en este\n    turno (leer la fuente o buscar); lo no verificado se etiqueta como inferencia."
+  },
+  {
+   "id": "7104c34cbd9e",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "lineas": "151-152",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ],
+   "texto": "20. /research solo para problemas genuinamente nuevos; /briefing solo al retomar tras días\n    fuera; /handoff al cerrar sesión. Ninguno por default."
+  },
+  {
+   "id": "4c352906bdbd",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "3-10",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: >\n  Transform creative ideas into professional, production-ready screenplays optimized for AI video generation pipelines. Converts raw concepts into structured scene-by-scene narratives with rich visual descriptions, proper screenplay formatting, and XML-tagged output for seamless integration with image/video generation tools (imagine, arch-v).\n  \n  USE WHEN: Converting story ideas into screenplay format, preparing content for AI video pipelines, structuring narratives for 5-10 minute short films, generating visual-rich scene descriptions for image generation. Use this even when the user doesn't say \"screenplay\" explicitly — e.g. \"break this idea into scenes\" or \"write the script for this short film.\"\n  \n  WORKFLOW: Raw idea → Scene breakdown → Visual enhancement → Professional formatting → XML-tagged markdown output\n  \n  OUTPUT: Markdown document with XML-wrapped scenes, rich visual descriptions, proper screenplay elements (sluglines, action, dialogue), and metadata for pipeline processing."
+  },
+  {
+   "id": "25b5d7f9ee04",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "17-17",
+     "encabezado": "Screenwriter Skill › Overview"
+    }
+   ],
+   "texto": "This skill transforms creative concepts into professional screenplay documents optimized for AI-powered video production pipelines. It bridges the gap between raw story ideas and production-ready scripts by generating structured, visual-rich narratives in industry-standard screenplay format."
+  },
+  {
+   "id": "79628c2a182c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "19-26",
+     "encabezado": "Screenwriter Skill › Overview"
+    }
+   ],
+   "texto": "**Pipeline Position:** `diverse-content-gen` → **screenwriter** → `imagine` → `arch-v`\n\n**Key Capabilities:**\n- Convert raw ideas into structured scene-by-scene narratives\n- Generate rich visual descriptions optimized for image generation\n- Apply professional screenplay formatting (sluglines, action lines, dialogue)\n- Output XML-tagged markdown for easy parsing\n- Optimize pacing for 5-10 minute short films (8-15 scenes typical)"
+  },
+  {
+   "id": "ec2d4aab40bb",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "33-33",
+     "encabezado": "Screenwriter Skill › Core Workflow › 1. Analyze Input Concept"
+    }
+   ],
+   "texto": "- Extract key story beats from raw ideas"
+  },
+  {
+   "id": "2933493f6319",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "34-34",
+     "encabezado": "Screenwriter Skill › Core Workflow › 1. Analyze Input Concept"
+    }
+   ],
+   "texto": "- Identify characters, locations, emotional arc"
+  },
+  {
+   "id": "86c3a97bc66c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "35-35",
+     "encabezado": "Screenwriter Skill › Core Workflow › 1. Analyze Input Concept"
+    }
+   ],
+   "texto": "- Determine story structure (beginning, middle, end)"
+  },
+  {
+   "id": "c566fd802f3e",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "38-38",
+     "encabezado": "Screenwriter Skill › Core Workflow › 2. Generate Scene Breakdown"
+    }
+   ],
+   "texto": "- Convert story beats into discrete scenes"
+  },
+  {
+   "id": "3b0fb6ed0c42",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "39-39",
+     "encabezado": "Screenwriter Skill › Core Workflow › 2. Generate Scene Breakdown"
+    }
+   ],
+   "texto": "- Establish scene count (aim for 8-15 scenes for 5-10 min films)"
+  },
+  {
+   "id": "c7491bb3185c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "40-40",
+     "encabezado": "Screenwriter Skill › Core Workflow › 2. Generate Scene Breakdown"
+    }
+   ],
+   "texto": "- Define scene purpose and emotional progression"
+  },
+  {
+   "id": "a7f2d9e78480",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "43-46",
+     "encabezado": "Screenwriter Skill › Core Workflow › 3. Write Professional Screenplay"
+    }
+   ],
+   "texto": "- Apply industry-standard formatting\n- Write visual-rich action lines\n- Include dialogue when narratively essential\n- Maintain consistent character descriptions"
+  },
+  {
+   "id": "a4f730f86c5d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "49-49",
+     "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+    }
+   ],
+   "texto": "- Wrap each scene in XML tags with metadata"
+  },
+  {
+   "id": "ec39c0ebdd7f",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "50-50",
+     "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+    }
+   ],
+   "texto": "- Include scene numbers, locations, key visuals"
+  },
+  {
+   "id": "5bd5c97dfd05",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "51-51",
+     "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+    }
+   ],
+   "texto": "- Format for easy pipeline parsing"
+  },
+  {
+   "id": "253bbd9effda",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "59-62",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Scene Structure (Master Scene Heading)"
+    }
+   ],
+   "texto": "**Slugline Format:**\n```\nINT/EXT. LOCATION - TIME\n```"
+  },
+  {
+   "id": "897b5633c2d7",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "64-67",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Scene Structure (Master Scene Heading)"
+    }
+   ],
+   "texto": "**Components:**\n- **INT/EXT:** Interior or Exterior\n- **LOCATION:** Specific place (be descriptive but concise)\n- **TIME:** DAY, NIGHT, DAWN, DUSK, CONTINUOUS"
+  },
+  {
+   "id": "328c81d98071",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "69-74",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Scene Structure (Master Scene Heading)"
+    }
+   ],
+   "texto": "**Examples:**\n```\nEXT. WASTELAND - DAWN\nINT. ABANDONED SUBWAY STATION - NIGHT\nEXT. ROOFTOP GARDEN - GOLDEN HOUR\n```"
+  },
+  {
+   "id": "bfe4d4958851",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "76-80",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Scene Structure (Master Scene Heading)"
+    }
+   ],
+   "texto": "**Guidelines:**\n- Always use ALL CAPS for sluglines\n- Use hyphens to separate elements\n- Be specific with locations (aids visual generation)\n- Time should suggest lighting/mood"
+  },
+  {
+   "id": "b9131d9dbbf5",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "84-92",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Action Lines (Visual Description)"
+    }
+   ],
+   "texto": "**Purpose:** Describe what the audience sees on screen. This is CRITICAL for image generation.\n\n**Visual-Rich Writing Principles:**\n1. **Show, Don't Tell:** Write what's visible, not internal thoughts\n2. **Sensory Details:** Include lighting, atmosphere, textures, colors\n3. **Present Tense:** Always write in present tense\n4. **Active Voice:** Use strong, active verbs\n5. **Specific Props:** Name objects that matter visually\n6. **Atmosphere:** Set mood through environmental details"
+  },
+  {
+   "id": "dd9921ee2c75",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "94-97",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Action Lines (Visual Description)"
+    }
+   ],
+   "texto": "**Example - Weak:**\n```\nA robot walks through the city. It's sad.\n```"
+  },
+  {
+   "id": "d761a268b4fb",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "99-102",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Action Lines (Visual Description)"
+    }
+   ],
+   "texto": "**Example - Strong:**\n```\nA BOXY ROBOT (Unit-7, weathered chrome with a single blue optical sensor) rolls through fog-shrouded streets. Neon signs flicker overhead, casting pink and cyan reflections on wet pavement. The robot's movements are slow, deliberate—almost hesitant.\n```"
+  },
+  {
+   "id": "6c1a2f11901d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "104-110",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Action Lines (Visual Description)"
+    }
+   ],
+   "texto": "**Visual Enhancement Checklist:**\n- [ ] Lighting described (natural/artificial, quality, color)\n- [ ] Atmosphere/mood established (fog, rain, dust, clarity)\n- [ ] Character appearance detailed (first appearance only)\n- [ ] Props/objects specified (important visual elements)\n- [ ] Composition suggested (without technical camera direction)\n- [ ] Colors/textures mentioned when relevant"
+  },
+  {
+   "id": "2d335c120f1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "114-117",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Character Introduction"
+    }
+   ],
+   "texto": "**First Appearance - Detailed:**\n```\nSARAH (28, sharp eyes, wearing a weathered leather jacket over faded jeans) enters the frame. Her dark hair is pulled back, revealing a small scar above her left eyebrow.\n```"
+  },
+  {
+   "id": "2409297f1c8c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "119-122",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Character Introduction"
+    }
+   ],
+   "texto": "**Subsequent Appearances - Brief:**\n```\nSarah checks her watch.\n```"
+  },
+  {
+   "id": "ff09e2612240",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "124-128",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Character Introduction"
+    }
+   ],
+   "texto": "**Guidelines:**\n- Character names in ALL CAPS on first appearance only\n- Include: age (if relevant), key physical traits, wardrobe\n- Focus on visual identifiers for consistent image generation\n- Avoid excessive detail—just enough for visual consistency"
+  },
+  {
+   "id": "bd2788ae316c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "132-137",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Dialogue (Use Sparingly)"
+    }
+   ],
+   "texto": "**Format:**\n```\nCHARACTER NAME\n(parenthetical - optional)\nDialogue goes here.\n```"
+  },
+  {
+   "id": "a9435f8a2a29",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "139-144",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Dialogue (Use Sparingly)"
+    }
+   ],
+   "texto": "**Guidelines for Short Films:**\n- Use dialogue ONLY when essential to story\n- Favor visual storytelling over talking\n- Keep lines concise (max 3-4 lines per block)\n- Parentheticals only for critical tone/action\n- Character names centered, ALL CAPS"
+  },
+  {
+   "id": "8caafa8af833",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "146-151",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Dialogue (Use Sparingly)"
+    }
+   ],
+   "texto": "**Example:**\n```\nUNIT-7 (robotic voice, soft)\nOrganic life form detected.\nProbability of survival: low.\n```"
+  },
+  {
+   "id": "c78fabe90dd2",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "155-160",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Transitions (Minimal Use)"
+    }
+   ],
+   "texto": "**Common Transitions:**\n- `FADE IN:` - Opening of screenplay only\n- `CUT TO:` - Scene change (usually implied, use for emphasis)\n- `SMASH CUT TO:` - Abrupt, jarring transition\n- `DISSOLVE TO:` - Passage of time\n- `FADE OUT.` - End of screenplay"
+  },
+  {
+   "id": "22c88754491e",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "162-162",
+     "encabezado": "Screenwriter Skill › Screenplay Format Standards › Transitions (Minimal Use)"
+    }
+   ],
+   "texto": "**Modern Best Practice:** Most transitions are IMPLIED. Use sparingly, only for specific narrative effect."
+  },
+  {
+   "id": "e24d57f69db9",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "170-192",
+     "encabezado": "Screenwriter Skill › XML Output Format › Scene Tag Structure"
+    }
+   ],
+   "texto": "Each scene wrapped in XML with metadata for pipeline processing:\n\n```xml\n<scene number=\"1\" duration=\"30-45s\">\n  <slugline>EXT. WASTELAND - DAWN</slugline>\n  <location>Wasteland</location>\n  <time>Dawn</time>\n  <characters>Unit-7</characters>\n  <mood>desolate, lonely</mood>\n  <key_visuals>\n    <visual>post-apocalyptic wasteland with ruined skyscrapers</visual>\n    <visual>boxy robot with single blue optical sensor</visual>\n    <visual>dust and smog atmosphere, weak pale sun</visual>\n  </key_visuals>\n  <action>\nGray dust covers everything. Skeletal remains of skyscrapers pierce the horizon. The sun, pale and weak, struggles through thick smog.\n\nA ROBOT (Unit-7, boxy frame with single blue optical sensor) rolls across cracked asphalt. Its treads leave marks in the dust—the only sign of life.\n\nThe robot stops at a pile of rubble, extending a mechanical arm to sort through debris. Methodical. Purposeful. Lonely.\n  </action>\n</scene>\n```"
+  },
+  {
+   "id": "aac6d3c1a649",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "196-196",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `number`: Scene sequence number (1, 2, 3...)"
+  },
+  {
+   "id": "24fba28e20c3",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "197-197",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `duration`: Estimated screen time (for 5-10 min total)"
+  },
+  {
+   "id": "653b4f1c02f0",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "198-198",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `slugline`: Master scene heading"
+  },
+  {
+   "id": "03f3ef899701",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "199-199",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `location`: Extracted location name"
+  },
+  {
+   "id": "4a25417f8739",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "200-200",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `time`: Time of day"
+  },
+  {
+   "id": "d8a2a777cff0",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "201-201",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `characters`: Comma-separated character list"
+  },
+  {
+   "id": "23ca749a12b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "202-202",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `mood`: Emotional tone/atmosphere"
+  },
+  {
+   "id": "55990627dea4",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "203-203",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `key_visuals`: Array of specific visual elements for image generation"
+  },
+  {
+   "id": "0a9453a61f75",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "204-204",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `action`: The full action/description text"
+  },
+  {
+   "id": "eade229780cf",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "205-205",
+     "encabezado": "Screenwriter Skill › XML Output Format › Metadata Fields"
+    }
+   ],
+   "texto": "- `dialogue` (optional): Character dialogue if present"
+  },
+  {
+   "id": "4a27804239e1",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "212-214",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Scene Count Guidelines"
+    }
+   ],
+   "texto": "- **5 minutes:** 6-10 scenes\n- **7 minutes:** 10-12 scenes\n- **10 minutes:** 12-15 scenes"
+  },
+  {
+   "id": "7e6eb1f7b1c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "216-216",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Scene Count Guidelines"
+    }
+   ],
+   "texto": "**Average:** ~30-60 seconds per scene"
+  },
+  {
+   "id": "34d4835c0120",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "220-222",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Three-Act Structure (Compressed)"
+    }
+   ],
+   "texto": "**Act 1 - Setup (20-25%):** 2-3 scenes\n- Establish world, character, situation\n- Inciting incident"
+  },
+  {
+   "id": "506cab2ca652",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "224-226",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Three-Act Structure (Compressed)"
+    }
+   ],
+   "texto": "**Act 2 - Confrontation (50-60%):** 4-8 scenes\n- Development, obstacles, rising tension\n- Midpoint twist or escalation"
+  },
+  {
+   "id": "da4ff1a4bfa0",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "228-230",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Three-Act Structure (Compressed)"
+    }
+   ],
+   "texto": "**Act 3 - Resolution (20-25%):** 2-3 scenes\n- Climax and resolution\n- Emotional payoff"
+  },
+  {
+   "id": "7d4fe6675aea",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "233-233",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+    }
+   ],
+   "texto": "- **Open strong:** Hook audience in first 10-15 seconds"
+  },
+  {
+   "id": "27978a573a44",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "234-234",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+    }
+   ],
+   "texto": "- **Visual variety:** Alternate between wide/close, action/stillness"
+  },
+  {
+   "id": "d4c26ab427db",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "235-235",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+    }
+   ],
+   "texto": "- **Emotional beats:** Each scene should shift emotional state"
+  },
+  {
+   "id": "425001e309d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "236-236",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+    }
+   ],
+   "texto": "- **Build tension:** Escalate stakes scene-by-scene"
+  },
+  {
+   "id": "8787ce86234c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "237-237",
+     "encabezado": "Screenwriter Skill › Short Film Structure (5-10 Minutes) › Pacing Tips"
+    }
+   ],
+   "texto": "- **Satisfying end:** Clear resolution, even if bittersweet"
+  },
+  {
+   "id": "d0b469ac4dbd",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "244-244",
+     "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+    }
+   ],
+   "texto": "- **Consistent naming:** Use same character names throughout"
+  },
+  {
+   "id": "41a2884a134c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "245-245",
+     "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+    }
+   ],
+   "texto": "- **Rich visuals:** Every scene needs 3-5 key_visuals for image generation"
+  },
+  {
+   "id": "2e3aff6942ea",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "246-246",
+     "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+    }
+   ],
+   "texto": "- **Parseable format:** Maintain strict XML structure"
+  },
+  {
+   "id": "f4859ae6466b",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "247-247",
+     "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+    }
+   ],
+   "texto": "- **Duration estimates:** Help pipeline plan total video length"
+  },
+  {
+   "id": "1ae1c03d3d16",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "250-250",
+     "encabezado": "Screenwriter Skill › Best Practices › For Quality Output"
+    }
+   ],
+   "texto": "- **Visual storytelling:** Show emotions through actions, not dialogue"
+  },
+  {
+   "id": "f80e07b4b4c7",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "251-251",
+     "encabezado": "Screenwriter Skill › Best Practices › For Quality Output"
+    }
+   ],
+   "texto": "- **Specific details:** \"weathered chrome\" beats \"old metal\""
+  },
+  {
+   "id": "2b6bac82e7df",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "252-252",
+     "encabezado": "Screenwriter Skill › Best Practices › For Quality Output"
+    }
+   ],
+   "texto": "- **Atmospheric writing:** Set mood through environment"
+  },
+  {
+   "id": "70088f226d02",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "253-253",
+     "encabezado": "Screenwriter Skill › Best Practices › For Quality Output"
+    }
+   ],
+   "texto": "- **Lean prose:** Each word should serve the image"
+  },
+  {
+   "id": "3c7fee6be49d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "256-256",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ],
+   "texto": "- ❌ **Vague descriptions:** \"A person walks\" → ✅ \"A weathered woman in her 50s trudges through snow\""
+  },
+  {
+   "id": "6c86c1f081f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "257-257",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ],
+   "texto": "- ❌ **Telling emotions:** \"She feels sad\" → ✅ \"Tears streak her dusty cheeks\""
+  },
+  {
+   "id": "5383ce87f6f8",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "258-258",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ],
+   "texto": "- ❌ **Camera directions:** \"CLOSE UP ON\" → ✅ \"The crack in the glass spreads\""
+  },
+  {
+   "id": "73474a977eb6",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "259-259",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ],
+   "texto": "- ❌ **Over-dialogue:** Short films need visual storytelling"
+  },
+  {
+   "id": "fc53dfb5f197",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "260-260",
+     "encabezado": "Screenwriter Skill › Best Practices › Common Pitfalls to Avoid"
+    }
+   ],
+   "texto": "- ❌ **Inconsistent character names:** Stick to ONE name per character"
+  },
+  {
+   "id": "bc630efc1394",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "267-268",
+     "encabezado": "Screenwriter Skill › Additional Resources › Pipeline Integration Guide"
+    }
+   ],
+   "texto": "For detailed guidance on metadata standards, visual optimization, and integration with imagine/arch-v:\n- [references/pipeline-integration.md](references/pipeline-integration.md)"
+  },
+  {
+   "id": "32855412a66b",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "lineas": "271-272",
+     "encabezado": "Screenwriter Skill › Additional Resources › Advanced Techniques"
+    }
+   ],
+   "texto": "For sophisticated screenwriting techniques, camera movement hints, and pacing optimization:\n- [references/advanced-techniques.md](references/advanced-techniques.md)"
+  },
+  {
+   "id": "1e86e32668b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "3-3",
+     "encabezado": "Advanced Screenwriting Techniques"
+    }
+   ],
+   "texto": "This reference covers sophisticated techniques for elevating screenplay quality and preparing for downstream video generation (arch-v integration)."
+  },
+  {
+   "id": "4d37dfdc8556",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "16-16",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V)"
+    }
+   ],
+   "texto": "While avoiding technical camera directions in action lines, you can *suggest* camera movement through visual description and scene structure."
+  },
+  {
+   "id": "f4780624c1fd",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "20-25",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "**Wide Establishing → Close Detail:**\n```\nThe city sprawls below—a concrete jungle of steel and glass.\n\nAt street level, a single red balloon floats past graffitied walls.\n```"
+  },
+  {
+   "id": "18619e38207a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "26-26",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "*Implies: Wide establishing shot → close-up detail*"
+  },
+  {
+   "id": "0263c9ed6a22",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "28-31",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "**Following Movement:**\n```\nMaya runs down the alley, her footsteps echoing off brick walls. Trash cans blur past. The exit ahead grows larger.\n```"
+  },
+  {
+   "id": "30ebf5438a3b",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "32-32",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "*Implies: Tracking shot following character*"
+  },
+  {
+   "id": "468ac49cd71a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "34-39",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "**Revealing Information:**\n```\nThe desk is empty. Coffee still steaming. Papers scattered.\n\nThe door stands ajar, revealing darkness beyond.\n```"
+  },
+  {
+   "id": "36158801d45c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "40-40",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Suggesting Camera Movement Through Description"
+    }
+   ],
+   "texto": "*Implies: Pan from desk to door, revealing new information*"
+  },
+  {
+   "id": "7294741e7f1c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "44-55",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Scene Structure for Camera Flow"
+    }
+   ],
+   "texto": "**Short Paragraphs = Multiple Shots:**\nBreaking action into short paragraphs suggests multiple camera setups:\n\n```\nThe warehouse is silent.\n\nA shadow moves across the floor.\n\nSarah freezes, hand on her weapon.\n\nThe shadow stops.\n```"
+  },
+  {
+   "id": "5b166e649c1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "57-62",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Scene Structure for Camera Flow"
+    }
+   ],
+   "texto": "**Continuous Paragraph = Single Shot:**\nOne paragraph suggests continuous camera movement:\n\n```\nSarah enters the warehouse, weapon drawn. She moves along the wall, checking corners. The shadow crosses her path. She spins, aiming into darkness.\n```"
+  },
+  {
+   "id": "e85a8eec36f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "70-74",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Subtext Over Direct Statement"
+    }
+   ],
+   "texto": "**❌ On-the-nose:**\n```\nJOHN\nI'm angry at you for lying to me.\n```"
+  },
+  {
+   "id": "cd39e6bbbc5c",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "76-81",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Subtext Over Direct Statement"
+    }
+   ],
+   "texto": "**✅ Subtext:**\n```\nJOHN\n(barely looking at her)\nCoffee's cold.\n```"
+  },
+  {
+   "id": "f11b383c6e19",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "85-92",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Character Voice Consistency"
+    }
+   ],
+   "texto": "Each character should have distinct speech patterns:\n\n**Marcus (technical, precise):**\n```\nMARCUS\nProbability of success: 47 percent.\nMargin of error: plus or minus 3.\n```"
+  },
+  {
+   "id": "960a0fc82755",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "94-98",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Character Voice Consistency"
+    }
+   ],
+   "texto": "**Sarah (emotional, intuitive):**\n```\nSARAH\nWe'll make it work. We always do.\n```"
+  },
+  {
+   "id": "77e38a0eed5a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "102-108",
+     "encabezado": "Advanced Screenwriting Techniques › Dialogue Polish Techniques › Dialogue Rhythm"
+    }
+   ],
+   "texto": "Vary sentence length for natural flow:\n\n```\nELENA\nThree years. That's how long I waited.\nFor what? This?\n```"
+  },
+  {
+   "id": "ee8c22faca7a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "116-123",
+     "encabezado": "Advanced Screenwriting Techniques › Pacing Optimization › Scene Length Variation"
+    }
+   ],
+   "texto": "Alternate between long and short scenes for rhythm:\n\n**Pattern Example:**\n- Scene 1: 60s (long, establishing)\n- Scene 2: 30s (short, tense)\n- Scene 3: 45s (medium, development)\n- Scene 4: 30s (short, action)\n- Scene 5: 90s (long, climax)"
+  },
+  {
+   "id": "33c36c296bdc",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "127-134",
+     "encabezado": "Advanced Screenwriting Techniques › Pacing Optimization › Tension Escalation"
+    }
+   ],
+   "texto": "Each scene should raise stakes or tension incrementally:\n\n**Scene 1:** Character wants something\n**Scene 2:** Obstacle appears\n**Scene 3:** Obstacle worsens\n**Scene 4:** New complications\n**Scene 5:** Crisis point\n**Scene 6:** Resolution"
+  },
+  {
+   "id": "c2026daf9a75",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "138-144",
+     "encabezado": "Advanced Screenwriting Techniques › Pacing Optimization › Visual Momentum"
+    }
+   ],
+   "texto": "Alternate visual energy levels:\n\n```\nScene A: Still, contemplative (character alone, quiet)\nScene B: Dynamic, energetic (chase, conflict, movement)\nScene C: Medium tempo (conversation, planning)\n```"
+  },
+  {
+   "id": "2fdb1aa06371",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "152-158",
+     "encabezado": "Advanced Screenwriting Techniques › Advanced Visual Storytelling › Using Objects as Story Beats"
+    }
+   ],
+   "texto": "Let objects carry narrative weight:\n\n**The Flower Example:**\n- Scene 1: Flower is vibrant, yellow\n- Scene 3: Flower petals drooping\n- Scene 5: Single petal falls\n- Scene 7: Flower completely wilted"
+  },
+  {
+   "id": "49a68928b527",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "162-168",
+     "encabezado": "Advanced Screenwriting Techniques › Advanced Visual Storytelling › Environmental Storytelling"
+    }
+   ],
+   "texto": "Show passage of time or change through environment:\n\n```\nScene 1: \"Sunlight streams through clean windows\"\nScene 5: \"Dust motes drift through afternoon light\"\nScene 10: \"Shadows lengthen across abandoned chairs\"\n```"
+  },
+  {
+   "id": "eca988606c12",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "172-176",
+     "encabezado": "Advanced Screenwriting Techniques › Advanced Visual Storytelling › Color Progression"
+    }
+   ],
+   "texto": "Use color to track emotional/narrative arc:\n\n**Beginning:** Warm, golden tones (hope)\n**Middle:** Desaturated, gray (struggle)\n**End:** Cool blue light (resolution/melancholy)"
+  },
+  {
+   "id": "45afa8a65ee5",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "184-188",
+     "encabezado": "Advanced Screenwriting Techniques › Short Film Specific Techniques › Economy of Storytelling"
+    }
+   ],
+   "texto": "Every scene must serve multiple purposes:\n- Advance plot\n- Reveal character\n- Build world\n- Create emotion"
+  },
+  {
+   "id": "04b043b3c4cc",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "190-198",
+     "encabezado": "Advanced Screenwriting Techniques › Short Film Specific Techniques › Economy of Storytelling"
+    }
+   ],
+   "texto": "**Example Scene Serving 4 Purposes:**\n```\nScene: Robot discovers flower\n\nPurpose 1 (Plot): Introduces story catalyst\nPurpose 2 (Character): Shows robot's capacity for wonder\nPurpose 3 (World): Reveals post-apocalyptic setting\nPurpose 4 (Emotion): Creates hope/fragility contrast\n```"
+  },
+  {
+   "id": "cc73e11b4f2a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "202-207",
+     "encabezado": "Advanced Screenwriting Techniques › Short Film Specific Techniques › Opening Hook Strategies"
+    }
+   ],
+   "texto": "First 10-15 seconds must grip audience:\n\n**Visual Hook:** Striking, unusual image\n**Question Hook:** Raise mystery to be solved\n**Action Hook:** Start mid-event\n**Emotion Hook:** Immediate emotional connection"
+  },
+  {
+   "id": "05d44862aeb2",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "lineas": "211-216",
+     "encabezado": "Advanced Screenwriting Techniques › Short Film Specific Techniques › Ending Impact"
+    }
+   ],
+   "texto": "Strong endings for short films:\n\n**Circular:** Return to opening image, transformed\n**Revelation:** Final scene reveals new understanding\n**Resonance:** Emotionally satisfying moment\n**Question:** Leave audience pondering"
+  },
+  {
+   "id": "32ce80adafdd",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "3-3",
+     "encabezado": "Pipeline Integration Guide"
+    }
+   ],
+   "texto": "This reference provides detailed guidance for integrating screenwriter output with downstream AI tools (imagine, arch-v) in video generation pipelines."
+  },
+  {
+   "id": "f5bec2bb329d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "20-30",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Completeness"
+    }
+   ],
+   "texto": "Every scene MUST include all required metadata fields for reliable pipeline processing:\n\n**Required Fields:**\n- `number`: Integer, sequential scene numbering\n- `slugline`: Full scene heading (INT/EXT. LOCATION - TIME)\n- `location`: Extracted location name for tracking\n- `time`: Time of day (affects lighting in image generation)\n- `characters`: All characters present in scene\n- `mood`: Emotional tone/atmosphere descriptor\n- `key_visuals`: 3-5 specific visual elements\n- `action`: Full action/description text"
+  },
+  {
+   "id": "554ca1e170ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "32-34",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Completeness"
+    }
+   ],
+   "texto": "**Optional Fields:**\n- `dialogue`: Include only if dialogue exists\n- `duration`: Scene duration estimate (helpful for pacing)"
+  },
+  {
+   "id": "c3616f1010f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "38-45",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Quality Guidelines"
+    }
+   ],
+   "texto": "**Location Specificity:**\n```xml\n<!-- ❌ Too vague -->\n<location>Building</location>\n\n<!-- ✅ Specific and descriptive -->\n<location>Abandoned Subway Station</location>\n```"
+  },
+  {
+   "id": "98ae9a4012ee",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "47-51",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Quality Guidelines"
+    }
+   ],
+   "texto": "**Mood Descriptors:**\nUse 1-3 adjectives that guide visual tone:\n- Good: \"tense, claustrophobic\"\n- Good: \"serene, hopeful\"\n- Avoid: \"the character feels anxious\" (this describes internal state, not mood)"
+  },
+  {
+   "id": "94a979fcf5ec",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "53-60",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Quality Guidelines"
+    }
+   ],
+   "texto": "**Character Lists:**\n```xml\n<!-- Single character -->\n<characters>Unit-7</characters>\n\n<!-- Multiple characters -->\n<characters>Sarah, Marcus, Tech-Bot</characters>\n```"
+  },
+  {
+   "id": "158125ea0b41",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "68-73",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Visual Element Extraction"
+    }
+   ],
+   "texto": "The `key_visuals` array should contain discrete, image-generation-friendly descriptions:\n\n**Example Scene Action:**\n```\nA BOXY ROBOT (Unit-7, weathered chrome with a single blue optical sensor) rolls through fog-shrouded streets. Neon signs flicker overhead, casting pink and cyan reflections on wet pavement.\n```"
+  },
+  {
+   "id": "f0c8d8706e92",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "75-82",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Visual Element Extraction"
+    }
+   ],
+   "texto": "**Extracted key_visuals:**\n```xml\n<key_visuals>\n  <visual>boxy robot with weathered chrome body and single blue optical sensor</visual>\n  <visual>fog-shrouded cyberpunk street with flickering neon signs</visual>\n  <visual>pink and cyan neon reflections on wet pavement</visual>\n</key_visuals>\n```"
+  },
+  {
+   "id": "968ee02ac6fd",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "86-91",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Visual Description Best Practices"
+    }
+   ],
+   "texto": "**Composition Elements:**\n- Subject: Main focus (character, object)\n- Setting: Environment and background\n- Lighting: Light quality, direction, color\n- Atmosphere: Weather, air quality, mood\n- Details: Significant props or textures"
+  },
+  {
+   "id": "32bc684f556d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "93-100",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Visual Description Best Practices"
+    }
+   ],
+   "texto": "**Example - Layered Visual:**\n```\nSubject: \"weathered robot with blue optical sensor\"\nSetting: \"abandoned industrial warehouse, broken windows\"\nLighting: \"harsh afternoon sunlight streaming through gaps\"\nAtmosphere: \"dust particles floating in light beams\"\nDetails: \"rusted machinery, scattered tools\"\n```"
+  },
+  {
+   "id": "1d1f375566ac",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "104-108",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Color and Lighting Vocabulary"
+    }
+   ],
+   "texto": "**Color Descriptors:**\n- Warm: amber, golden, crimson, burnt orange\n- Cool: azure, ice blue, slate gray, mint\n- Neon: electric pink, cyan, magenta, lime\n- Natural: earth tones, moss green, sand, clay"
+  },
+  {
+   "id": "5de8241ae01e",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "110-114",
+     "encabezado": "Pipeline Integration Guide › Imagine-Ready Visual Descriptions › Color and Lighting Vocabulary"
+    }
+   ],
+   "texto": "**Lighting Descriptors:**\n- Quality: soft, harsh, diffused, dappled, dramatic\n- Direction: overhead, backlighting, side-lit, rim light\n- Color: warm glow, cool blue, golden hour, neon-lit\n- Intensity: dim, bright, shadowy, high-contrast"
+  },
+  {
+   "id": "b20637424613",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "122-126",
+     "encabezado": "Pipeline Integration Guide › Character Consistency Tracking › First Appearance Template"
+    }
+   ],
+   "texto": "Establish complete visual identity on first appearance:\n\n```\nCHARACTER NAME (age if relevant, defining physical trait, primary wardrobe)\n```"
+  },
+  {
+   "id": "d74ad3bc0db3",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "128-133",
+     "encabezado": "Pipeline Integration Guide › Character Consistency Tracking › First Appearance Template"
+    }
+   ],
+   "texto": "**Examples:**\n```\nMAYA (early 30s, kind eyes, wearing a faded denim jacket and cargo pants)\nCOMMANDER REED (50s, grizzled with close-cropped gray hair, military uniform with rank insignia)\nTHE STRANGER (tall figure in a long black coat, face obscured by wide-brimmed hat)\n```"
+  },
+  {
+   "id": "998e97ef2e94",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "137-141",
+     "encabezado": "Pipeline Integration Guide › Character Consistency Tracking › Subsequent References"
+    }
+   ],
+   "texto": "After first appearance, use consistent identifiers:\n\n**Preferred Pattern:**\n- Use character name only: \"Maya checks her phone\"\n- Add action-relevant details: \"Maya pulls her jacket tighter against the wind\""
+  },
+  {
+   "id": "187faacca1c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "143-145",
+     "encabezado": "Pipeline Integration Guide › Character Consistency Tracking › Subsequent References"
+    }
+   ],
+   "texto": "**Avoid:**\n- Re-describing appearance: \"Maya, the woman in the denim jacket...\"\n- Changing character names: \"Maya\" → \"the woman\" → \"she\""
+  },
+  {
+   "id": "80ef9b813e7a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "149-154",
+     "encabezado": "Pipeline Integration Guide › Character Consistency Tracking › Character Tracking Checklist"
+    }
+   ],
+   "texto": "For each character, track:\n- [ ] Full name and any aliases\n- [ ] Age or age range\n- [ ] Key physical identifiers (height, build, distinctive features)\n- [ ] Primary wardrobe (consistent across scenes unless story requires change)\n- [ ] Unique mannerisms or movement style"
+  },
+  {
+   "id": "c084904b2c93",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "162-167",
+     "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Sequential Numbering"
+    }
+   ],
+   "texto": "Number scenes sequentially from 1 to N:\n```xml\n<scene number=\"1\" ...>\n<scene number=\"2\" ...>\n<scene number=\"3\" ...>\n```"
+  },
+  {
+   "id": "1e53d515f21d",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "169-169",
+     "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Sequential Numbering"
+    }
+   ],
+   "texto": "**No Scene 0:** Start at 1, not 0 (industry standard)"
+  },
+  {
+   "id": "b4697c5fcb21",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "173-175",
+     "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Scene Splits and Inserts"
+    }
+   ],
+   "texto": "If a scene needs to be split or inserted during revision:\n- Option A: Renumber all subsequent scenes\n- Option B: Use fractional numbering (1, 2, 2A, 3...)"
+  },
+  {
+   "id": "e2422d7b3fef",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "177-177",
+     "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Scene Splits and Inserts"
+    }
+   ],
+   "texto": "For pipeline simplicity, prefer Option A (complete renumbering)."
+  },
+  {
+   "id": "b00f376d1eaf",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "185-187",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Per-Scene Duration"
+    }
+   ],
+   "texto": "Estimate based on scene complexity:\n\n**30-45 seconds:** Simple scenes"
+  },
+  {
+   "id": "1fa0e049652b",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "188-190",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Per-Scene Duration"
+    }
+   ],
+   "texto": "- Single action\n- Minimal dialogue\n- One primary visual"
+  },
+  {
+   "id": "602c83deb1ad",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "192-195",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Per-Scene Duration"
+    }
+   ],
+   "texto": "**45-60 seconds:** Standard scenes\n- Multiple actions or dialogue exchanges\n- 2-3 visual beats\n- Character interaction"
+  },
+  {
+   "id": "92609edde814",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "197-200",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Per-Scene Duration"
+    }
+   ],
+   "texto": "**60-90 seconds:** Complex scenes\n- Extended dialogue\n- Multiple visual beats\n- Scene climax or key moment"
+  },
+  {
+   "id": "6d68c709cfcf",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "204-212",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Total Film Duration"
+    }
+   ],
+   "texto": "Track cumulative duration across all scenes:\n\n```\nScene 1: 30s\nScene 2: 45s\nScene 3: 40s\n...\nTotal: 8 minutes 20 seconds\n```"
+  },
+  {
+   "id": "d382e90c5d7f",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "214-214",
+     "encabezado": "Pipeline Integration Guide › Duration Estimation Guidelines › Total Film Duration"
+    }
+   ],
+   "texto": "Adjust scene count or duration to hit target length (5-10 min)."
+  },
+  {
+   "id": "779d5daff842",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "222-225",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › XML Well-Formedness"
+    }
+   ],
+   "texto": "Ensure valid XML structure:\n- All opening tags have closing tags\n- Proper nesting (no overlapping tags)\n- Special characters escaped (&lt; &gt; &amp;)"
+  },
+  {
+   "id": "cb0fd9a5d919",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "229-234",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ],
+   "texto": "**❌ Missing closing tag:**\n```xml\n<scene number=\"1\">\n  <action>Text here\n</scene>\n```"
+  },
+  {
+   "id": "dbf90139582a",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "236-241",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ],
+   "texto": "**✅ Properly closed:**\n```xml\n<scene number=\"1\">\n  <action>Text here</action>\n</scene>\n```"
+  },
+  {
+   "id": "fd7f1e9c34c5",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "243-246",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ],
+   "texto": "**❌ Unescaped special characters:**\n```xml\n<action>She thinks: \"I'm < 10 years old\"</action>\n```"
+  },
+  {
+   "id": "c36c3d9f445e",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "248-251",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ],
+   "texto": "**✅ Properly escaped:**\n```xml\n<action>She thinks: \"I'm &lt; 10 years old\"</action>\n```"
+  },
+  {
+   "id": "357530501ec2",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "lineas": "257-266",
+     "encabezado": "Pipeline Integration Guide › Pipeline Handoff Checklist"
+    }
+   ],
+   "texto": "Before passing screenplay to next pipeline stage:\n\n- [ ] All scenes have complete metadata\n- [ ] key_visuals array populated (3-5 per scene)\n- [ ] Character names consistent throughout\n- [ ] XML well-formed and parseable\n- [ ] Total duration within target range (5-10 min)\n- [ ] Scene numbers sequential with no gaps\n- [ ] Visual descriptions rich and specific\n- [ ] No technical camera directions (use visual descriptions instead)"
+  },
+  {
+   "id": "e42d708dfd74",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Turn a creative brief into a production-grade storyboard with shot specs, timing, on-screen text, and per-shot rationale. Use when the user describes a video brief, plans a video, references shots or beats, scripts a social video, or hands over a creative concept to break into scenes. Produces run.json, storyboard.md, shots.json, text-overlays.json, and brand-lock.snapshot.md. Pairs with visual-prompt-forge, visual-asset-critic, storyboard-html-preview."
+  },
+  {
+   "id": "da92c8bb4704",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "8-8",
+     "encabezado": "Storyboard Architect"
+    }
+   ],
+   "texto": "You are turning a creative brief into a deterministic storyboard. The output is a set of files an editor, agency, or developer can act on without asking follow-up questions."
+  },
+  {
+   "id": "671139f4b904",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "10-10",
+     "encabezado": "Storyboard Architect"
+    }
+   ],
+   "texto": "This is not a creative-writing exercise. The output is a spec."
+  },
+  {
+   "id": "3deb9fd4fcd9",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "14-20",
+     "encabezado": "Storyboard Architect › When to use"
+    }
+   ],
+   "texto": "Trigger this skill when the user:\n\n- Describes a video they want to make (\"30-second explainer for...\", \"TikTok ad about...\")\n- Asks to storyboard, plan shots, break out beats, write a shot list\n- Hands over a script, brief, or concept document expecting structured pre-production output\n- Mentions a beat framework by name (Hero Trilogy, Pain-Proof-Promise, etc.)\n- References an existing brand-lock file or pack"
+  },
+  {
+   "id": "39bd4e9c189b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "22-22",
+     "encabezado": "Storyboard Architect › When to use"
+    }
+   ],
+   "texto": "If the user only wants prompts for an image generator (no narrative structure), use `visual-prompt-forge` directly instead."
+  },
+  {
+   "id": "f0c3daf92cbf",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "26-35",
+     "encabezado": "Storyboard Architect › What you produce"
+    }
+   ],
+   "texto": "For every storyboard run, create this exact set of files in the working output directory:\n\n```\noutput/\n├── run.json                   # Run identity + every input pinned by content hash\n├── storyboard.md              # Human-readable, structured per shot\n├── shots.json                 # Machine-readable, schema in templates/shots.schema.json\n├── text-overlays.json         # On-screen text + timing\n└── brand-lock.snapshot.md     # Frozen copy of the brand-lock used (audit trail)\n```"
+  },
+  {
+   "id": "eb64df8c28f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "37-40",
+     "encabezado": "Storyboard Architect › What you produce"
+    }
+   ],
+   "texto": "`run.json` is what makes the rest of the tree auditable later. A filename says nothing\nabout the bytes behind it, so the snapshot sitting next to a set of frames is not proof\nthat it is the snapshot they were built from. The hashes in `run.json` are that proof.\nWrite it once, at the end of the run, and never edit it."
+  },
+  {
+   "id": "b2bf596dbbc1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "42-42",
+     "encabezado": "Storyboard Architect › What you produce"
+    }
+   ],
+   "texto": "If the user asks for image prompts or HTML preview, hand off to `visual-prompt-forge` or `storyboard-html-preview`, those skills consume `shots.json` directly. Don't try to do their job here."
+  },
+  {
+   "id": "f1b3d69aab4b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "46-46",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "You need these. If any are missing, ask before drafting."
+  },
+  {
+   "id": "6afc71aed459",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "50-50",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Brief (problem, audience, goal) | Yes | Ask |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "5e4c1242761b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "51-51",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Total duration | Yes | Ask |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "ee35183f9ffe",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "52-52",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Aspect ratio | Yes | Ask (16:9, 9:16, 1:1) |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "b30a5ef5d3f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "53-53",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Beat framework | No | Suggest based on brief |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "5d232e91f01e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "54-54",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Brand-lock file path | No | Use `brand-packs/_template.md` and flag the gap |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "5fd81d98fbec",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "55-55",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Voiceover style (VO present, on-screen only, captions) | No | Ask if unclear |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "a0d82b7009ab",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "56-56",
+     "encabezado": "Storyboard Architect › Inputs"
+    }
+   ],
+   "texto": "| Target generator(s) for downstream prompts | No | Note as \"to be specified\" |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "96968382534d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "60-60",
+     "encabezado": "Storyboard Architect › Workflow"
+    }
+   ],
+   "texto": "Follow this sequence. Don't skip steps even if the brief seems simple."
+  },
+  {
+   "id": "31cab4580a92",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "64-72",
+     "encabezado": "Storyboard Architect › Workflow › Step 1. Read the brand-lock"
+    }
+   ],
+   "texto": "If a brand-lock file path is provided, read it first. Extract:\n\n- Palette (hex)\n- Typography\n- Mood descriptors\n- \"Never\" list (what this brand will never do visually)\n- Motion language\n- Voice tone\n- Aspect-ratio preferences"
+  },
+  {
+   "id": "a026ac8e2c05",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "74-74",
+     "encabezado": "Storyboard Architect › Workflow › Step 1. Read the brand-lock"
+    }
+   ],
+   "texto": "If no brand-lock is provided, copy `brand-packs/_template.md` into the output as `brand-lock.snapshot.md` with a note: `# UNCONFIGURED, using template defaults. Recommend providing a real brand-lock for production work.`"
+  },
+  {
+   "id": "6bf6c4d862cb",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "78-83",
+     "encabezado": "Storyboard Architect › Workflow › Step 2. Pick the beat framework"
+    }
+   ],
+   "texto": "Read `references/beat-frameworks.md`. Pick the one that matches the brief. Common cases:\n\n- Pain-reframe-promise → conversion content\n- Hero Trilogy → product hero films\n- Founder Explainer → personal-brand content\n- Content Spiral → kinetic typography / opinion pieces"
+  },
+  {
+   "id": "8f0f31b20128",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "85-85",
+     "encabezado": "Storyboard Architect › Workflow › Step 2. Pick the beat framework"
+    }
+   ],
+   "texto": "If none fit cleanly, build a custom beat structure but document why in `storyboard.md` rationale section."
+  },
+  {
+   "id": "c276057fb654",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "89-94",
+     "encabezado": "Storyboard Architect › Workflow › Step 3. Block out timing"
+    }
+   ],
+   "texto": "Read `references/timing-rules.md` for the math. Default cadence:\n\n- Hook beat: 0–2 seconds\n- Pain/setup: 2–6 seconds (for 30s) or 2–10 seconds (for 60s)\n- Proof/reframe: middle third\n- Promise/CTA: final 4–6 seconds"
+  },
+  {
+   "id": "2009c66b63be",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "96-96",
+     "encabezado": "Storyboard Architect › Workflow › Step 3. Block out timing"
+    }
+   ],
+   "texto": "Don't fight the framework. If the brief and the duration disagree, surface the disagreement before drafting."
+  },
+  {
+   "id": "19b209ae0476",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "100-103",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "Read `references/shot-grammar.md` for controlled vocabulary. The field names below are\nthe schema's field names. `templates/shots.schema.json` sets `additionalProperties:\nfalse`, so a near-miss like `environment` instead of `environment_ref` is a validation\nfailure, not a synonym."
+  },
+  {
+   "id": "7aa56c0ccefd",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "105-105",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `id`, sequential, zero-padded (`shot_01`, `shot_02`...)"
+  },
+  {
+   "id": "7514f5fec8aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "106-106",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `beat`, which beat this shot serves"
+  },
+  {
+   "id": "980e01a10a95",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "107-107",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `start` / `end`, timestamps in seconds, decimal allowed. `end` must be after `start`"
+  },
+  {
+   "id": "513867353364",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "108-108",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `framing`, ECU / CU / MCU / MS / MLS / WS / EWS"
+  },
+  {
+   "id": "7369dc2ca2d3",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "109-109",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `angle`, eye-level / high / low / overhead / dutch"
+  },
+  {
+   "id": "8582673635b9",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "110-112",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `motion`, static / push / pull / pan-left / pan-right / tilt-up / tilt-down /\n  handheld / orbit / whip / rack. All eleven are legal; the schema enum is the\n  authority and `references/shot-grammar.md` explains when each earns its keep"
+  },
+  {
+   "id": "d76296b3c304",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "113-113",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `depth_of_field`, optional, shallow / deep / rack"
+  },
+  {
+   "id": "05c9134d6182",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "lineas": "114-114",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ],
+   "texto": "- `subject`, what's in frame, structured"
+  }
+ ]
+}

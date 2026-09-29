@@ -1,0 +1,2269 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "shots_json_schema",
+ "descripcion_tema": "shots.json, campos, schema, series_lock, rationale, run.json, versión",
+ "filas": [
+  {
+   "id": "8adbd948a790",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "No usar el Modo 2 de Ideogram sin el override en rationale, porque el texto en imagen por defecto causa doble texto (compuesto más generado) que destruye la composición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "098af7511cdb",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "Si no hay flag de override en rationale, se usa por defecto el Modo 1 de Ideogram.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ]
+  },
+  {
+   "id": "e5fe4eddba9c",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge, Modo 2",
+   "enunciado": "Para activar el Modo 2 el shot debe llevar un flag de override explícito en rationale (por ejemplo 'Text-in-image override: poster shot, headline must render as part of composition').",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ]
+  },
+  {
+   "id": "78243f26ee0b",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "El parámetro start_image de Kling es opcional: para imagen a video se pasa un still aceptado de los assets de shots.json para fijar el frame inicial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "c4d55f4b9c7c",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: shots.json validado con validate_shots.py limpio y auditoría de 3 detalles por shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "e91b49f3cee2",
+   "alcance": "Etapa 7, estructura del paquete",
+   "enunciado": "Ejemplo: estructura de carpetas del production-package (00-README a 07-delivery más brand-lock.md), con strategy, script, direction, shots (shots.json como fuente de verdad), anchors, video-prompts y delivery.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 1. Estructura del paquete"
+    }
+   ]
+  },
+  {
+   "id": "89b98454943c",
+   "alcance": "Etapa 7, reglas de trazabilidad",
+   "enunciado": "Si un prompt necesita cambiar algo que su shot fija (encuadre, acción, luz), el cambio se hace en shots.json y se regenera hacia abajo; el paquete nunca contiene un prompt que contradiga su shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ]
+  },
+  {
+   "id": "bfa5c99a4443",
+   "alcance": "Etapa 7, reglas de trazabilidad",
+   "enunciado": "Todo prompt, de imagen o de video, lleva su shot_id en un comentario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ]
+  },
+  {
+   "id": "e09aed024dc2",
+   "alcance": "Etapa 7, reglas de trazabilidad",
+   "enunciado": "Todo shot de shots.json referencia su escena del script mediante el campo scene o una nota.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ]
+  },
+  {
+   "id": "b2007b3ced0f",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Action: el evento físico exacto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "eba05eb346f4",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Beat: qué cambia en la historia aquí.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "d19af6bf4ff0",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Camera: estática, push-in, handheld, tracking o whip-pan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "b5c95428cf25",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Composition: centro, borde, espacio negativo, reflejo, silueta u obstrucción en primer plano.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "c400b7969aad",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Cut type: match cut, smash cut, cut on action, J-cut o L-cut.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "3c45999e5f07",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Duration: duración del shot (0.5 s, 1 s, 3 s).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "6232b3a04250",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Emotion: miedo, vergüenza, ira, culpa, decisión, alivio, etc.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "fa1c91de331f",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Eye trace: dónde debe caer la mirada del espectador en los primeros 0.3 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "422152b43193",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Frame: wide, medium, close-up o macro insert.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "8794e8e061d2",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Light / color: frío, contraste, parpadeo, sombra o paleta específica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "ea53324b714b",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Movement reason: por qué se mueve la cámara aquí, respondiendo \"¿qué cambió?\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "301e51a7f29c",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Production note: utilería, locación o dirección de actor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "f8079dcbabdd",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Shot ID (01, 02, 03).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "8023169ddda0",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Campo de la ficha de shot, Sound: respiración, golpe de bajo, ruido de calle, timbre de teléfono o silencio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "ca81d3696e89",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Para cada shot del storyboard llenar todos los campos de la ficha; los campos vacíos revelan dirección ausente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "78511288c23b",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Si una ficha de shot tiene campos vacíos, llenarlos o descartar el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "73cb97ea1a81",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5, series_lock.json se extrae de shots.json (series_lock.character/environment/lighting/color_grade), las mismas cadenas que forge exige verbatim.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "2cc378db7d3b",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), redundancia vs series_lock",
+   "enunciado": "Parche P4: con --series-lock los términos de redundancia que caigan dentro de las cadenas exactas de series_lock quedan exentos, y se avisa (WARN) si una cadena no aparece verbatim porque validate_prompts.py la bloqueará.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "5df8ee9e7339",
+   "alcance": "Lo que un ancla nunca lleva; general",
+   "enunciado": "Un ancla nunca lleva texto en pantalla: va en una capa separada, text-overlays.json.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que un ancla nunca lleva"
+    }
+   ]
+  },
+  {
+   "id": "13e6fe15200f",
+   "alcance": "Midjourney v7 (adaptador de visual-prompt-forge), ejemplo",
+   "enunciado": "Ejemplo: datos de shot (shot_03, MS, eye-level, static) con sujeto y rationale que sirven de entrada para el prompt Midjourney.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Example"
+    }
+   ]
+  },
+  {
+   "id": "b92c3acf8c10",
+   "alcance": "Nivel 4, génesis sin referencias, entradas",
+   "enunciado": "Entrada de la génesis: el series_lock de shots.json con personaje, entorno y luz.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Entradas de la génesis"
+    }
+   ]
+  },
+  {
+   "id": "3817ea8b1722",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Exige mapear las entradas consecutivas de shots.json que comparten sujeto a un solo prompt multi-shot, referenciándolas por rango de ids en el comentario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "fdb3986eb120",
+   "alcance": "Skill ai-production-director, desde etapa 4",
+   "enunciado": "Desde la etapa 4 shots.json es la fuente de verdad y ningún prompt, imagen o revisión existe sin shot ID.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ]
+  },
+  {
+   "id": "d0e455f73473",
+   "alcance": "Skill ai-production-director, etapa 4",
+   "enunciado": "Etapa 4: la entrada es script más documento de dirección, y la salida es storyboard.md, shots.json, text-overlays.json, run.json y brand-lock.snapshot.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ]
+  },
+  {
+   "id": "1beae795a162",
+   "alcance": "Skill ai-production-director, etapa 4",
+   "enunciado": "Etapa 4: la skill es storyboard-architect en STANDARD/FILM o ai-video-storyboard en EXPRESS.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ]
+  },
+  {
+   "id": "119a9bb1fe05",
+   "alcance": "Skill ai-production-director, etapa 4",
+   "enunciado": "Gate de la etapa 4: validate_shots.py limpio, six-point dramaturgy check y auditoría de 3 detalles por shot (presión ambiental, micro-acción física, ancla de sonido/motivo); un shot con cero detalles es filler y se elimina.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ]
+  },
+  {
+   "id": "f96c1041bb51",
+   "alcance": "Skill ai-production-director, mapa de sub-skills, etapa 4",
+   "enunciado": "Ejemplo: storyboard-architect cubre la etapa 4 (Shot planning) con storyboard.md, shots.json, text-overlays.json y run.json validados por schema, y es la fuente de verdad estructural desde esa etapa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ]
+  },
+  {
+   "id": "f949e2b10c17",
+   "alcance": "Skill ai-production-director, sección 6.3, desde etapa 4",
+   "enunciado": "Desde la etapa 4 la fuente de verdad es shots.json: un cambio creativo se hace primero allí y se propaga hacia abajo, y nunca se parcha un prompt de modo que contradiga su shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 6. Reglas de resolución de conflictos › 6.3 Fuente de verdad estructural"
+    }
+   ]
+  },
+  {
+   "id": "54b8523b5efc",
+   "alcance": "Subprocesos por etapa, E4.3",
+   "enunciado": "E4.3 escribe la shot list con campos id, beat, start/end, framing, angle, motion, subject, refs, vo y rationale, validada por shots.schema.json con additionalProperties false.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "ebbd2b2ca171",
+   "alcance": "Subprocesos por etapa, E4.4",
+   "enunciado": "E4.4 mantiene el texto en pantalla en una capa separada, text-overlays.json, y nunca dentro de la descripción visual.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "0314053f050a",
+   "alcance": "Subprocesos por etapa, E4.5",
+   "enunciado": "E4.5 define el series lock (character, environment, lighting, color_grade) a partir de los anclas de E3, y con él qué génesis hacen falta: personaje y entorno como mínimo.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "6c224396585c",
+   "alcance": "Subprocesos por etapa, E4.6",
+   "enunciado": "E4.6 produce rationale, storyboard.md, brand-lock.snapshot.md y run.json con SHA-256, validados con validate_shots.py, validate_brand_lock.py y validate_provenance.py.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "ebe56fc9f00a",
+   "alcance": "Subprocesos por etapa, Etapa E4",
+   "enunciado": "E4 es el Shot Planning y desde ahí shots.json es la fuente de verdad.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "8b3efca44887",
+   "alcance": "Tools README compartido, project check validate_prompts.py; series_lock",
+   "enunciado": "Explicación: el check verbatim es la razón de ser del archivo, pues la consistencia de serie depende de que los anclajes de series_lock lleguen sin editar a cada prompt y parafrasearlos es lo más fácil de romper (siete de siete shots derivaron con los demás validadores en verde).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "bfeed2a388f3",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "Ejemplo: comandos de validate_shots.py sobre un output, un shots.json, los ejemplos incluidos y --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "f6f784774995",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py emite advertencias para juicios: copy de overlay repetido en el subject de un shot, hex crudo en un subject, ids de shot fuera de orden cronológico y fuente que el brand-lock no declara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "8f7082efb6b3",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py valida shots.json y text-overlays.json como instancias y aplica reglas cruzadas: end posterior a start, sin huecos ni solapes, span igual a project.duration_s, referencias de overlays resueltas en ambos sentidos, cada overlay alcanzable, timing dentro de la ventana del shot y colores de overlay presentes en la paleta del brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "1ea989a6fae6",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "Explicación: validate_schemas.py valida esquemas y no instancias; las instancias se validan con validate_shots.py.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "0ae7e0aba006",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "validate_schemas.py comprueba que cada archivo *.schema.json sea JSON Schema válido (Draft 2020-12) y lleve $id, title y description.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "8f714e7ceb2a",
+   "alcance": "Tools README compartido, validate_critique.py, schema versión 1.1",
+   "enunciado": "Reglas de procedencia desde la versión de schema 1.1: un hash sin su ruta no es referencia, image_ref no puede ser null, confianza HIGH exige identificar shot, brand-lock y prompt, y un generador nombrado debe existir en la matriz de capacidades.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "740197cf4603",
+   "alcance": "Tools README compartido, validate_critique.py, versión 1.0",
+   "enunciado": "Las críticas versión 1.0 aún pasan con una advertencia, porque llevan veredicto pero no forma de atarlo a los bytes revisados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "dd065ad8d5e0",
+   "alcance": "Veo 3.1, prompts JSON",
+   "enunciado": "Ejemplo: esquema JSON completo de Veo 3.1 con output, global_style, continuity y scenes con shot, action, environment, lighting y audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › Full schema"
+    }
+   ]
+  },
+  {
+   "id": "d5d1469e367c",
+   "alcance": "critique-rubric, Capa 3 Shot Spec",
+   "enunciado": "Rúbrica Shot Spec, acción del sujeto: pasa si coincide con la descripción de subject, soft fail si hace algo parecido pero algo distinto, hard fail si hace la acción equivocada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ]
+  },
+  {
+   "id": "d40a1aac0155",
+   "alcance": "linter aurora, regla P4 (series lock)",
+   "enunciado": "El series lock (P4) se compone de cuatro claves: character, environment, lighting y color_grade.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › SERIES_LOCK_KEYS"
+    }
+   ]
+  },
+  {
+   "id": "b9a1308fa89c",
+   "alcance": "skill ai-video-storyboard, formato de salida",
+   "enunciado": "La salida final es un único documento Markdown con cabecera, tema visual compartido, lista de N shots, checklist de postproducción y racional creativo ('Why This Works').",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Output Format"
+    }
+   ]
+  },
+  {
+   "id": "2fa01a7c6a34",
+   "alcance": "skill produccion-visual-sw30, regla crítica (general)",
+   "enunciado": "shots.json es la fuente de verdad: todo cambio entra ahí primero y luego se propaga.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "2e3aff6942ea",
+   "alcance": "skill screenwriter, buenas prácticas de integración con el pipeline",
+   "enunciado": "Se mantiene una estructura XML estricta para que el formato sea parseable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Best Practices › For Pipeline Integration"
+    }
+   ]
+  },
+  {
+   "id": "e24d57f69db9",
+   "alcance": "skill screenwriter, formato de salida XML",
+   "enunciado": "Cada escena se envuelve en XML con metadatos (number, duration, slugline, location, time, characters, mood, key_visuals, action) para el procesamiento del pipeline.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › XML Output Format › Scene Tag Structure"
+    }
+   ]
+  },
+  {
+   "id": "a4f730f86c5d",
+   "alcance": "skill screenwriter, paso 4 (salida XML)",
+   "enunciado": "En la salida cada escena se envuelve en etiquetas XML con metadatos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Core Workflow › 4. Output XML-Tagged Markdown"
+    }
+   ]
+  },
+  {
+   "id": "554ca1e170ff",
+   "alcance": "skill screenwriter, referencia pipeline-integration",
+   "enunciado": "Campos opcionales de la escena: dialogue (solo si existe diálogo) y duration (estimación de duración, útil para el ritmo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Completeness"
+    }
+   ]
+  },
+  {
+   "id": "c084904b2c93",
+   "alcance": "skill screenwriter, referencia pipeline-integration",
+   "enunciado": "Las escenas se numeran secuencialmente de 1 a N.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Scene Numbering Conventions › Sequential Numbering"
+    }
+   ]
+  },
+  {
+   "id": "f5bec2bb329d",
+   "alcance": "skill screenwriter, referencia pipeline-integration",
+   "enunciado": "Toda escena debe incluir los campos obligatorios de metadatos (number, slugline, location, time, characters, mood, key_visuals de 3-5 elementos y action) para un procesamiento confiable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Scene Metadata Standards › Metadata Completeness"
+    }
+   ]
+  },
+  {
+   "id": "da92c8bb4704",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "El storyboard-architect convierte un brief en un storyboard determinista cuya salida es un conjunto de archivos accionables por editor, agencia o desarrollador sin preguntas de seguimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect"
+    }
+   ]
+  },
+  {
+   "id": "f0c3daf92cbf",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "En cada corrida se crea en el directorio de salida el conjunto exacto de archivos run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › What you produce"
+    }
+   ]
+  },
+  {
+   "id": "671139f4b904",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Explicación: la tarea no es un ejercicio de escritura creativa; la salida es una especificación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect"
+    }
+   ]
+  },
+  {
+   "id": "e42d708dfd74",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "Metadatos del skill storyboard-architect: convierte un brief creativo en un storyboard de producción con especificaciones de shots, tiempos, texto en pantalla y justificación por shot, y produce run.json, storyboard.md, shots.json, text-overlays.json y brand-lock.snapshot.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "frontmatter › description"
+    }
+   ]
+  },
+  {
+   "id": "eb64df8c28f5",
+   "alcance": "skill storyboard-architect",
+   "enunciado": "run.json hace auditable el árbol de salida porque fija cada input por hash de contenido; se escribe una sola vez al final de la corrida y nunca se edita.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › What you produce"
+    }
+   ]
+  },
+  {
+   "id": "7369dc2ca2d3",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo angle toma valores eye-level / high / low / overhead / dutch.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "7514f5fec8aa",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo beat indica a qué beat sirve el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "d76296b3c304",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo depth_of_field es opcional y toma valores shallow / deep / rack.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "513867353364",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo framing toma valores ECU / CU / MCU / MS / MLS / WS / EWS.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "7aa56c0ccefd",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo id es secuencial y con ceros a la izquierda (shot_01, shot_02...).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "8582673635b9",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo motion admite once valores legales (static, push, pull, pan-left, pan-right, tilt-up, tilt-down, handheld, orbit, whip, rack); el enum del schema es la autoridad y shot-grammar.md explica cuándo usar cada uno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "05c9134d6182",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "El campo subject describe de forma estructurada lo que está en cuadro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "980e01a10a95",
+   "alcance": "skill storyboard-architect, paso 4 (campos de shots.json)",
+   "enunciado": "Los campos start y end son marcas de tiempo en segundos (se permiten decimales) y end debe ser posterior a start.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "19b209ae0476",
+   "alcance": "skill storyboard-architect, paso 4 (lista de shots)",
+   "enunciado": "Se lee references/shot-grammar.md y se usan los nombres de campo del schema, que tiene additionalProperties false, de modo que una variante como 'environment' en vez de 'environment_ref' falla la validación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "5ec95c682f0b",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard)",
+   "enunciado": "La ficha de keyframe es una ficha específica para stills con tres campos nuevos (cámara implícita, emoción vía objeto, movimiento como still) y debe llenarse completa antes de generar, porque los campos vacíos revelan dirección faltante.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 2. The keyframe card"
+    }
+   ]
+  },
+  {
+   "id": "f8217af6adaa",
+   "alcance": "skill visual-asset-critic, Paso 1",
+   "enunciado": "Paso 1: se establece la intención del shot a partir del campo rationale, sus campos subject/framing/angle/motion, la intención declarada del usuario y el beat que sirve.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 1. Establish intent"
+    }
+   ]
+  },
+  {
+   "id": "879f9aef88f3",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "Introduce el mapeo sección por sección del markdown al esquema JSON.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "3e4503dce617",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "La sección Confidence se mapea al campo confidence del JSON (HIGH/MEDIUM/LOW).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "4638a09cdbc8",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "La sección Verdict del markdown se mapea al campo verdict del JSON (ACCEPT/REVISE/REJECT).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "ca028501c0c6",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "Los bullets de What's working se mapean al arreglo working[] del JSON, una cadena cada uno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "7deef25d598d",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "What's not working y Revision plan se fusionan en issues[]: cada issue lleva su capa y nota de \"not working\" y su fix_type y fix de la línea correspondiente del plan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "6815aadd324b",
+   "alcance": "skill visual-asset-critic, Paso 6; procedencia",
+   "enunciado": "Los campos run_id y round se toman de run.json y del directorio de ronda donde se escribe.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "dc5bb5f2b7d9",
+   "alcance": "skill visual-asset-critic, Paso 6; procedencia",
+   "enunciado": "created_at es un instante UTC con formato YYYY-MM-DDThh:mm:ssZ.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "15e779ba094f",
+   "alcance": "skill visual-asset-critic, Paso 6; procedencia",
+   "enunciado": "shot_id es el shot revisado, o null si es una imagen suelta sin storyboard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "ba8501e9f824",
+   "alcance": "skill visual-asset-critic, Paso 6; schema 1.1",
+   "enunciado": "Todos los campos de procedencia son obligatorios y anulables: null registra que un insumo no estaba disponible, mientras que omitir la clave no registra nada; sin prompt se escribe prompt_ref: null y se baja la confianza a MEDIUM.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "c5fe1fb2281a",
+   "alcance": "skill visual-asset-critic, Paso 6; schema 1.1",
+   "enunciado": "Tras el markdown se escribe también el JSON de crítica conforme a templates/critique.schema.json versión 1.1, para que un bucle de QA (ej. modo revisión de visual-prompt-forge) actúe sin parsear prosa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "4be69bfeb08a",
+   "alcance": "skill visual-asset-critic, Paso 7; ejemplos",
+   "enunciado": "Ejemplo: examples/critique.accept.json y critique.revise.json muestran la forma en versión 1.0 (válida, sin procedencia) y examples/worked-run/critiques/ muestra la 1.1 con hashes reales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "ff2b3416864f",
+   "alcance": "skill visual-asset-critic, entradas",
+   "enunciado": "Shot ID y shots.json son recomendados; si faltan se pide la intención del shot en una frase.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ]
+  },
+  {
+   "id": "f8c53f582091",
+   "alcance": "skill visual-asset-critic, salidas",
+   "enunciado": "Cada revisión produce siempre dos artefactos: una crítica en markdown legible (superficie principal) y un JSON de crítica legible por máquina para que el pipeline decida por el veredicto; el JSON nunca reemplaza al markdown.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › What you produce"
+    }
+   ]
+  },
+  {
+   "id": "5375d68abe59",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_01",
+   "enunciado": "Ejemplo: shot_01 (hook, 0.0-2.0 s, MCU, estático) con el fundador mirando a cámara y texto \"Your content feels random.\"; el rationale justifica el contacto visual directo y el encuadre estático.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_01 · 0.0–2.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "b9ff0f55b3b1",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_02",
+   "enunciado": "Ejemplo: shot_02 (pain, 2.0-7.0 s, MS, estático) con el fundador desplazando el feed social; el rationale explica el ángulo alto, el DOF profundo y la reserva del espacio para el texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_02 · 2.0–7.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "97caeac6e018",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_03",
+   "enunciado": "Ejemplo: shot_03 (pain, 7.0-11.0 s, ECU) con la mano congelada sobre el trackpad y sin texto; el rationale la presenta como símbolo de parálisis.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_03 · 7.0–11.0s · ECU · static"
+    }
+   ]
+  },
+  {
+   "id": "c53a6110e07d",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_04",
+   "enunciado": "Ejemplo: shot_04 (reframe, 11.0-16.0 s, MCU, push) con la expresión cambiando de cansada a clara y texto \"You don't have a content problem...\"; el rationale explica el push lento y que solo cambia la expresión.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_04 · 11.0–16.0s · MCU · push"
+    }
+   ]
+  },
+  {
+   "id": "2164f48aa171",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_05",
+   "enunciado": "Ejemplo: shot_05 (proof, 16.0-20.0 s, MS) con el fundador señalando un pipeline kanban; el rationale muestra el sistema y no el resultado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_05 · 16.0–20.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "88f03ac3b7fe",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_06",
+   "enunciado": "Ejemplo: shot_06 (promise, 20.0-26.0 s, MCU, estático) con el fundador calmado y texto \"30 minutes a week...\"; el rationale lo presenta como el después de la misma persona, más tranquila.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_06 · 20.0–26.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "fc8ee5494681",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_07",
+   "enunciado": "Ejemplo: shot_07 (cta, 26.0-30.0 s, MS, estático) con la URL whystrohm.com/scan en lower-third; el rationale justifica el plano más abierto para dar aire al texto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md",
+     "encabezado": "WhyStrohm. The Content Infrastructure Pitch › Shots › shot_07 · 26.0–30.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "e9e458a32646",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_01",
+   "enunciado": "Ejemplo: shot_01 (hook, MCU) con VO y texto \"Most founders treat content like a hobby.\"; el rationale describe un hook provocador pero calmado donde la voz lleva el filo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_01 · 0.0–2.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "50496d158341",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_02",
+   "enunciado": "Ejemplo: shot_02 (stakes, MS) con VO y sin texto en pantalla; el rationale explica el plano más abierto para que se lea el gesto y que la voz hace el trabajo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_02 · 2.0–8.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "3c24176cd015",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_03",
+   "enunciado": "Ejemplo: shot_03 (stakes, ECU en los ojos) con VO y texto \"It's missing infrastructure.\"; el rationale usa el ECU para el momento de realización y el texto para reforzar la línea clave.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_03 · 8.0–14.0s · ECU · static"
+    }
+   ]
+  },
+  {
+   "id": "e44ea6b8d7e0",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_04",
+   "enunciado": "Ejemplo: shot_04 (insight, MCU, push) con VO y sin texto; el rationale indica push lento mientras se construye la tesis y la voz como elemento principal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_04 · 14.0–24.0s · MCU · push"
+    }
+   ]
+  },
+  {
+   "id": "499edf590d86",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_05",
+   "enunciado": "Ejemplo: shot_05 (insight, MS) con el fundador señalando la pantalla y texto \"Extract. Lock. Compound.\"; el rationale muestra el artefacto y mantiene legible la pantalla con DOF profundo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_05 · 24.0–32.0s · MS · static"
+    }
+   ]
+  },
+  {
+   "id": "f03f93bbf07f",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_06",
+   "enunciado": "Ejemplo: shot_06 (proof, MCU) con VO de cifras y texto de estadísticas en upper-third; el rationale usa el callout para que el espectador absorba visualmente mientras la voz confirma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_06 · 32.0–42.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "a32cce87574b",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_07",
+   "enunciado": "Ejemplo: shot_07 (insight, MS, pull) con VO y sin texto; el rationale usa el pull lento para liberar tensión y evita texto que diluiría la tesis.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_07 · 42.0–50.0s · MS · pull"
+    }
+   ]
+  },
+  {
+   "id": "6c2b6e5058d8",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_08",
+   "enunciado": "Ejemplo: shot_08 (cta, MCU estático) con VO y URL whystrohm.com/scan en lower-third; el rationale mantiene la URL en pantalla el tiempo de leerla dos veces.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md",
+     "encabezado": "WhyStrohm. How The System Actually Works › Shots › shot_08 · 50.0–60.0s · MCU · static"
+    }
+   ]
+  },
+  {
+   "id": "edbf0658a2bb",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_01",
+   "enunciado": "Ejemplo: shot_01 (pain, 0-12 s, WS) con el brief vago tecleándose y un chaos cut a cuatro generadores en cuadrícula 2x2; el rationale nombra el fallo de brief vago más model-roulette igual a deriva de marca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_01: 0.0 to 12.0s. WS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "0dd33d17fdda",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_02",
+   "enunciado": "Ejemplo: shot_02 (reframe, 12-30 s, MS) con cinco capas apiladas (brand lock, series lock, shot spec, text layer, generator adapter); el rationale usa el stack como diagrama que explica la arquitectura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_02: 12.0 to 30.0s. MS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "ca85638eccef",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_03",
+   "enunciado": "Ejemplo: shot_03 (proof-1, 30-50 s, MS, push) con panel dividido brief/output donde se ensambla el árbol de archivos; el rationale lo presenta como el momento central de build.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_03: 30.0 to 50.0s. MS. eye-level. push."
+    }
+   ]
+  },
+  {
+   "id": "34866ba57b2c",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_04",
+   "enunciado": "Ejemplo: shot_04 (proof-2, 50-65 s, MCU, push) con wipe coral que revela el preview HTML en un iframe; el rationale indica que se muestra el entregable real, no un mock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_04: 50.0 to 65.0s. MCU. eye-level. push."
+    }
+   ]
+  },
+  {
+   "id": "9a48e1d98c50",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_05",
+   "enunciado": "Ejemplo: shot_05 (proof-3, 65-80 s, MS) con una tarjeta de shot y siete adaptadores de generador en abanico; el rationale demuestra que el agnosticismo de modelo es estructural.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_05: 65.0 to 80.0s. MS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "157f8dfc8ac2",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_06",
+   "enunciado": "Ejemplo: shot_06 (promise, 80-90 s, WS) con el comando de instalación en type-on y el tagline en Inter italic; el rationale reduce el CTA a un solo comando sin fricción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/examples/shotkit-explainer/storyboard.md",
+     "encabezado": "shotkit. The Explainer. › Shots › shot_06: 80.0 to 90.0s. WS. eye-level. static."
+    }
+   ]
+  },
+  {
+   "id": "390996b395ff",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4 (shot list), shots.json",
+   "enunciado": "Cada shot incluye el campo `environment_ref`, que referencia el lenguaje del series lock y por defecto vale `series_lock.environment`.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "516a2d99a5fc",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4 (shot list), shots.json",
+   "enunciado": "Cada shot incluye el campo `lighting_ref`, que referencia el lenguaje del series lock y por defecto vale `series_lock.lighting`.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "b3eab3405666",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, campos motion y depth_of_field de shots.json",
+   "enunciado": "Explicación: `rack` significa cosas distintas según el campo; como `motion` indica que el rack focus es el movimiento del shot y como `depth_of_field` indica que el foco cambia a mitad del shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "dac8e07a007a",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json",
+   "enunciado": "El campo `rationale` de cada shot es una frase que explica por qué ese shot en ese momento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "1a8303ff6b52",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json",
+   "enunciado": "El campo `vo` de un shot contiene la línea de voz en off o null.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "093402c5d8c2",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json (array requiere versión 1.2)",
+   "enunciado": "El campo `on_screen_text` de un shot es null, un id de text-overlay, o un array de ids cuando el shot lleva más de un overlay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "0c84f5381e27",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5 (capa de texto), text-overlays.json",
+   "enunciado": "Todo texto en pantalla se registra como entrada de `text-overlays.json` (id, shot_id, content, font, position, size, weight, color hex del palette del brand-lock, enter, exit) y nunca se integra en la descripción visual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 5. Separate the text layer"
+    }
+   ]
+  },
+  {
+   "id": "e08674c2f624",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5, text-overlays.json",
+   "enunciado": "Los vocabularios de animación de enter y exit son distintos y `templates/text-overlays.schema.json` es la autoridad; un shot con varios overlays debe listar todos sus ids en el array `on_screen_text` o los extra no se renderizan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 5. Separate the text layer"
+    }
+   ]
+  },
+  {
+   "id": "9dc1f62bf9b4",
+   "alcance": "storyboard-architect (SKILL.md), Paso 6 (series lock)",
+   "enunciado": "Se definen anclas de entorno, luz y personaje válidas para todos los shots en `series_lock` al inicio de `shots.json`; sin ellas la generación de imagen produce frames incoherentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 6. Lock the series"
+    }
+   ]
+  },
+  {
+   "id": "41bb6223e561",
+   "alcance": "storyboard-architect (SKILL.md), Paso 7 (rationale)",
+   "enunciado": "Todo shot lleva una rationale de una frase (por qué ese beat, ese encuadre, ese texto) como rastro de auditoría, y no se omite.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 7. Write rationale"
+    }
+   ]
+  },
+  {
+   "id": "ba7bb0b46889",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9 (run.json)",
+   "enunciado": "Al final, tras cerrar los otros cuatro archivos, se completa `run.json` con `run_id`, `created_at` y el SHA-256 de `shots.json`, `text-overlays.json` y `brand-lock.snapshot.md` tal como se escribieron.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 9. Write run.json"
+    }
+   ]
+  },
+  {
+   "id": "b543c4c4f8fe",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9, run.json",
+   "enunciado": "El `run_id` es el timestamp UTC compacto, un guion y 8 caracteres hex (p. ej. `20260730T142300Z-9f2c1ab4`) para evitar colisiones, y `brand_lock_configured` es false cuando el snapshot es un template sin rellenar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 9. Write run.json"
+    }
+   ]
+  },
+  {
+   "id": "02ea9ab34179",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, checklist manual",
+   "enunciado": "El agente debe verificar a mano lo que el validador no cubre: rationales que expliquen el porqué, anclas de series_lock reproducibles, beats acordes al argumento del brief y run.json con hashes de los archivos entregados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "2098d867d6d5",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, validate_shots.py",
+   "enunciado": "`validate_shots.py` comprueba reglas mecánicas: esquemas, tiempos sin huecos ni solapes que cuadran con la duración, resolución de overlays y shots, timing de overlays dentro del shot, colores dentro del palette del brand-lock y que `brand_lock_ref` exista.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "a6033c14a4e4",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, shots.json",
+   "enunciado": "`shots.json` debe validar contra `templates/shots.schema.json` (leído antes de escribir) con la estructura version, project, brand_lock_ref, series_lock y shots con sus campos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `shots.json`"
+    }
+   ]
+  },
+  {
+   "id": "0a4261ba0295",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, storyboard.md",
+   "enunciado": "`storyboard.md` se escribe con el template `templates/storyboard.md.tpl`, leído antes de escribir.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `storyboard.md`"
+    }
+   ]
+  },
+  {
+   "id": "006d06b45a11",
+   "alcance": "storyboard-architect (SKILL.md), shots.json, versionado",
+   "enunciado": "Los storyboards nuevos usan versión `1.2` de shots.json; `1.0` y `1.1` siguen siendo válidos, pero el array en `on_screen_text` y el bloque `assets` con hash requieren `1.2`.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `shots.json`"
+    }
+   ]
+  },
+  {
+   "id": "55a2b67ae9b3",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json)",
+   "enunciado": "Usar exactamente los términos del vocabulario controlado en shots.json, porque los generadores interpretan el lenguaje suelto de forma inconsistente y el vocabulario fijo sobrevive a la traducción.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar"
+    }
+   ]
+  },
+  {
+   "id": "183d6e203e00",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), descripción del sujeto",
+   "enunciado": "Describir el sujeto de forma estructurada y no poética, con el patrón [quién/qué], [haciendo qué], [nota emocional o compositiva].",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ]
+  },
+  {
+   "id": "763ce9dae073",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), descripción del sujeto",
+   "enunciado": "Ejemplo (bueno): \"Founder, mid-thirties, leaning forward at laptop, face partially turned to window light\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ]
+  },
+  {
+   "id": "446a8e54dec6",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre CU (close-up): la cabeza, o la mano completa sobre un objeto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "6bc1153d84b8",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre ECU (extreme close-up): ojos, manos o un solo detalle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "e00a60da3a48",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre EWS (extreme wide shot): sujeto pequeño dentro del entorno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "71c667efe170",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre MCU (medium close-up): cabeza y hombros.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "2c5e4053a459",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre MLS (medium long shot): cuerpo completo con entorno mínimo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "99f29eee3a2e",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre MS (medium shot): de la cintura hacia arriba.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "e0e883e79ee7",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), encuadre",
+   "enunciado": "Código de encuadre WS (wide shot): cuerpo completo con el entorno presente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ]
+  },
+  {
+   "id": "e91796ada2eb",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), estilo de luz (series_lock)",
+   "enunciado": "La cadena de iluminación de series_lock fluye automáticamente a cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ]
+  },
+  {
+   "id": "e15b207af24d",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), estilo de luz (series_lock)",
+   "enunciado": "No redefinir la iluminación por shot: definirla una vez en series_lock.lighting (por ejemplo luz lateral natural suave, luz cenital dura de una fuente, prácticos mixtos con neón).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ]
+  },
+  {
+   "id": "2262c89b2e3f",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento handheld: temblor orgánico sutil, para sensación documental o urgencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "0e06b865a1b0",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento orbit: la cámara rodea al sujeto, para planos héroe o revelado de producto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "b7f74a3704f7",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento pan-left / pan-right: la cámara rota en horizontal, para recorrer el entorno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "1620beec328a",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento pull: la cámara se aleja, para liberar o contextualizar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "61cf8bbd2334",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento push: la cámara avanza hacia el sujeto, para construir intensidad o revelar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "464c35198f7e",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento static (sin movimiento): es el valor por defecto y no es aburrido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "60d0d9d3bf21",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento tilt-up / tilt-down: la cámara rota en vertical, para revelar escala o detalle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "88dcb85f5885",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), movimiento de cámara",
+   "enunciado": "Movimiento whip: paneo rápido usado como transición, para cortes al ritmo en contenido rápido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ]
+  },
+  {
+   "id": "cdb46d51e776",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), profundidad de campo",
+   "enunciado": "Profundidad de campo deep: todo en foco.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ]
+  },
+  {
+   "id": "fd11479b3399",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), profundidad de campo",
+   "enunciado": "Profundidad de campo rack: el foco cambia durante el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ]
+  },
+  {
+   "id": "5334820bc7cf",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), profundidad de campo",
+   "enunciado": "Profundidad de campo shallow: sujeto nítido y fondo desenfocado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ]
+  },
+  {
+   "id": "2b45b8b352b0",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), subject vs series_lock vs brand_lock",
+   "enunciado": "Repartir el contenido por nivel: brand_lock fija lo de todo el proyecto (paleta, tipografía, lista never), series_lock lo de este storyboard (ancla de personaje, entorno, luz, grade) y subject lo que cambia en cada shot (acción, expresión, composición).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ]
+  },
+  {
+   "id": "a17cc447a0bd",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), subject vs series_lock vs brand_lock",
+   "enunciado": "Si se repite la misma descripción de luz entre shots, pertenece a series_lock; si se repite la misma descripción de color entre storyboards, pertenece a brand_lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ]
+  },
+  {
+   "id": "d97caf264b61",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), ángulo",
+   "enunciado": "Ángulo dutch: inclinado, transmite tensión e inquietud.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ]
+  },
+  {
+   "id": "12757e0cd251",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), ángulo",
+   "enunciado": "Ángulo eye-level: neutro y por defecto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ]
+  },
+  {
+   "id": "c1d14b59e2e2",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), ángulo",
+   "enunciado": "Ángulo high: el sujeto se siente más pequeño y vulnerable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ]
+  },
+  {
+   "id": "ba1884af7a2d",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), ángulo",
+   "enunciado": "Ángulo low: el sujeto se siente poderoso y dominante.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ]
+  },
+  {
+   "id": "8e922ecf53d0",
+   "alcance": "storyboard-architect, shot-grammar (vocabulario controlado de shots.json), ángulo",
+   "enunciado": "Ángulo overhead: efecto distante, esquemático e instructivo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ]
+  },
+  {
+   "id": "98ef891d80ef",
+   "alcance": "storyboard-architect, texto en pantalla",
+   "enunciado": "Explicación: las reglas de composición del texto alimentan el campo position de cada overlay.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules"
+    }
+   ]
+  },
+  {
+   "id": "21e1b74d1380",
+   "alcance": "storyboard-architect, texto en pantalla, composición consciente del espacio negativo",
+   "enunciado": "Registrar en el rationale del shot qué zona reserva para el texto (por ejemplo \"MCU left-third subject, reserves right-third for text_03\").",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ]
+  },
+  {
+   "id": "b5ad9051769c",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Documentar en el rationale la persistencia del texto entre shots y el tiempo de lectura que da (por ejemplo 4.8 s para 16 palabras).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "84436ceba73b",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Ejemplo: en shots.json, shot_03 y shot_04 referencian el mismo on_screen_text \"text_02\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "f60e5b96ad1f",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Ejemplo: en text-overlays.json, el overlay text_02 lista shot_id como arreglo [\"shot_03\", \"shot_04\"].",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "7dbb6a666061",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "El texto puede persistir a través de shots consecutivos, útil cuando tarda más en leerse que la duración de un shot o para anclarlo mientras cambian las imágenes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "0ca8d4c7bbe6",
+   "alcance": "storyboard-architect, texto en pantalla, texto persistente entre shots",
+   "enunciado": "Para apilar texto, ambos shots referencian el mismo ID on_screen_text, con enter.at alineado al inicio del primer shot y exit.at al final del segundo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ]
+  },
+  {
+   "id": "8d2cb7f7df43",
+   "alcance": "storyboard-architect, timing-rules",
+   "enunciado": "El ritmo se calcula, no se siente: usar estas duraciones como valores por defecto y salirse solo con razón documentada en el rationale.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules"
+    }
+   ]
+  },
+  {
+   "id": "bee6a4980720",
+   "alcance": "storyboard-architect, timing-rules, duración de shots, piezas de 30 s",
+   "enunciado": "Justificar en el rationale cualquier shot de más de 7 segundos en una pieza de 30 segundos, porque los shots largos no son malos pero los injustificados sí.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ]
+  },
+  {
+   "id": "9c59f85ac75d",
+   "alcance": "storyboard-html-preview, paso 1 leer entradas",
+   "enunciado": "Entradas opcionales: run.json (id y fecha de ejecución, si falta la página dice \"not recorded\"), storyboard.md (contexto narrativo y brief), frames/round-N y critiques/round-N/*.critique.json (insignias de veredicto).",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "7b8e96e7283f",
+   "alcance": "storyboard-html-preview, paso 1 leer entradas",
+   "enunciado": "Entradas requeridas del skill: shots.json, text-overlays.json y brand-lock.snapshot.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "c77e674b5cc7",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Explicación: los overlays son un arreglo porque shots.json permite varios por shot; un solo juego de campos overlay_* solo podía contener uno y el segundo se perdía sin aviso.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "aae16ed88854",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Para overlays de texto, establecer has_overlays: true y un arreglo overlays en el shot, cada entrada con id, content, font, weight, color, size, position_class, position_label, enter_at, enter_animation, exit_at y exit_animation, que la plantilla itera con {{#each overlays}}.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "14eb49cf553d",
+   "alcance": "storyboard-html-preview, qué produce",
+   "enunciado": "Ejemplo: estructura de output/ con run.json, storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md, frames/round-N/ y critiques/round-N/ como entradas, y preview.html como lo que produce el skill.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ]
+  },
+  {
+   "id": "946c07c223eb",
+   "alcance": "storyboard-html-preview, qué produce",
+   "enunciado": "Si hay frames generados, el HTML los referencia por rutas relativas y resuelve el frame de cada shot en este orden: entrada de shot.assets.generated marcada accepted: true, la entrada más reciente, frames/round-{mayor}/{shot_id}.{ext}, y generated/{shot_id}.{ext} del layout plano anterior a 3.0.0.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ]
+  },
+  {
+   "id": "ae8f264c6675",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Antes de componer se debe validar la entrada con python tools/validate_shots.py output/.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "51bbfaa0b28a",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Las entradas necesarias son shots.json (obligatorio), brand-lock.snapshot.md (obligatorio) y los generadores objetivo (obligatorio, preguntar si no se especifican).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "ba46d44aff1a",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Si no hay tools/, leer el esquema en ../storyboard-architect/templates/shots.schema.json y verificar a mano; si los skills no están juntos, pedir el esquema al usuario en vez de componer de memoria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "2942c48f08d6",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "validate_prompts.py comprueba la parte mecánica: cabecera completa, generador válido, aspecto igual al del proyecto, techo de palabras, cobertura de shots, sin bloques duplicados, ausencia de texto en pantalla (regla 1), anclajes verbatim (regla 3) y lógica de shot de la regla 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "39b1eb138cfb",
+   "alcance": "visual-prompt-forge, bloqueos de consistencia (general, todos los generadores), Lock 4 seed",
+   "enunciado": "Ejemplo: documentar el seed a nivel de proyecto en shots.json (project.seed).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "bd1a8836f2b0",
+   "alcance": "visual-prompt-forge, bloqueos de consistencia (general, todos los generadores), Lock 4 seed",
+   "enunciado": "Especifica que el adaptador lee el seed del proyecto y lo aplica a cada prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 4. Seed locking"
+    }
+   ]
+  },
+  {
+   "id": "42d0e01056de",
+   "alcance": "visual-prompt-forge, bloqueos de consistencia (general, todos los generadores), Lock 7",
+   "enunciado": "Exige que, cuando un shot invierte la orientación del personaje (OTS reverse), el rationale reconozca el volteo de luz manteniendo la continuidad de escena.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › Lock 7. Lighting direction continuity"
+    }
+   ]
+  },
+  {
+   "id": "05648e4f7773",
+   "alcance": "visual-prompt-forge, capa 2 Series Lock",
+   "enunciado": "Explicación: el series_lock contiene ancla de personaje, entorno, setup de luz (dirección, fuente, temperatura) y grade, descritos de forma idéntica en cada shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ]
+  },
+  {
+   "id": "ad9f851d740e",
+   "alcance": "visual-prompt-forge, capa 2 Series Lock",
+   "enunciado": "Explicación: el series_lock hace que el shot 1 y el 7 se sientan de la misma pieza; sin él cada cuadro parece de una producción distinta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ]
+  },
+  {
+   "id": "c29d1042ecc9",
+   "alcance": "visual-prompt-forge, capa 2 Series Lock",
+   "enunciado": "Explicación: la capa 2 (Series Lock) fija las anclas de un storyboard concreto, viene de shots.json → series_lock y es constante en todos los shots de ese storyboard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ]
+  },
+  {
+   "id": "ab849364e85d",
+   "alcance": "visual-prompt-forge, capa 3 Shot Spec",
+   "enunciado": "Explicación: el Shot Spec contiene encuadre, ángulo, movimiento, sujeto de ese shot, profundidad de campo y rationale (rastro de auditoría).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ]
+  },
+  {
+   "id": "f2fb66e84830",
+   "alcance": "visual-prompt-forge, capa 3 Shot Spec",
+   "enunciado": "Explicación: la capa 3 (Shot Spec) contiene las variables por shot, viene de shots.json → shots[i] y varía en cada shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ]
+  },
+  {
+   "id": "d50374397beb",
+   "alcance": "visual-prompt-forge, capa 3 Shot Spec",
+   "enunciado": "Explicación: la capa Shot Spec responde qué es distinto en ese shot concreto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ]
+  },
+  {
+   "id": "753f4472e0c6",
+   "alcance": "visual-prompt-forge, ejemplo one-shot-all-adapters (WhyStrohm)",
+   "enunciado": "Ejemplo: shot_04 del pitch de 30s (reframe, MCU, eye-level, push, shallow DOF) con sujeto y rationale.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+     "encabezado": "One Shot, All Adapters › The source shot"
+    }
+   ]
+  },
+  {
+   "id": "034dd37bb7ec",
+   "alcance": "visual-prompt-forge, imagen, fallo 4; especificación fotográfica para Flux y GPT Image",
+   "enunciado": "Para corregir la luz inconsistente: verificar que la cadena de iluminación sea verbatim en todos los prompts, declarar la dirección explícita (\"from camera-left\"), marcar en el rationale los contracampos y cambiar la luz solo en ese shot, y en Flux y GPT Image añadir la especificación fotográfica (key light camera-left a 45 grados).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ]
+  },
+  {
+   "id": "853aed5e01c7",
+   "alcance": "visual-prompt-forge, imagen, fallo 7 (no coincide con el brief)",
+   "enunciado": "Para alinear con el brief: afinar el campo subject del shot (qué debe sentir o notar la audiencia), cerrar el prompt con una frase de intención (\"el momento del reconocimiento\") y en escenas complejas añadir una línea de \"qué transmite este shot\".",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 7, \"Looks fine but doesn't match the brief\""
+    }
+   ]
+  },
+  {
+   "id": "ca2b7bc0e30c",
+   "alcance": "visual-prompt-forge, imagen, fallo 7 (se ve bien pero no coincide con el brief)",
+   "enunciado": "Explicación: una imagen técnicamente buena que no captura el brief se debe a un campo subject vago en shots.json, a no llevar el contexto del brief al prompt o a que el generador produce salida genérica competente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 7, \"Looks fine but doesn't match the brief\""
+    }
+   ]
+  },
+  {
+   "id": "d099543faf79",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "enunciado": "El array rounds es la única parte escribible de run.json; todo lo demás quedó fijado cuando lo escribió el architect.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json"
+    }
+   ]
+  },
+  {
+   "id": "629e42df828f",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "enunciado": "Tras escribir los archivos, añadir una entrada al array rounds de run.json con número de ronda, started_at, reason y, por archivo, generador, ruta, SHA-256 y ids de shots cubiertos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 4b. Append the round to run.json"
+    }
+   ]
+  },
+  {
+   "id": "e0b9bbd88942",
+   "alcance": "visual-prompt-forge, ventajas operativas de las capas",
+   "enunciado": "Explicación: cambiar el personaje se hace editando series_lock en shots.json, lo que actualiza todos los shots de ese storyboard sin tocar otros.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ]
+  },
+  {
+   "id": "1b94a059ff03",
+   "alcance": "visual-prompt-forge, ventajas operativas de las capas",
+   "enunciado": "Explicación: cambiar un shot se hace editando solo su spec, sin afectar a los demás.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ]
+  }
+ ]
+}
