@@ -1,0 +1,711 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "edicion_imagen",
+ "descripcion_tema": "edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting",
+ "filas": [
+  {
+   "id": "fe806b860b15",
+   "alcance": "Bloques SW30 cuando hay persona; general",
+   "enunciado": "Con persona, ensamblar el prompt con los slots P (scene, subject, details, mood, usecase, constraints) o E (change, preserve, constraints).",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+    }
+   ]
+  },
+  {
+   "id": "08caa4a71600",
+   "alcance": "GPT Image 2; edición",
+   "enunciado": "El endpoint de edición es openai/gpt-image-2/edit en fal.ai o su equivalente en la API de OpenAI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+    }
+   ]
+  },
+  {
+   "id": "d0b2b71428a9",
+   "alcance": "GPT Image 2; edición",
+   "enunciado": "GPT Image 2 gana en conservar identidad al editar (ropa, clima, fondo): cara, pose y geometría no derivan, y la lógica change/preserve funciona como contrato.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в"
+    }
+   ]
+  },
+  {
+   "id": "ae4f97edccba",
+   "alcance": "GPT Image 2; edición, lógica de dos columnas",
+   "enunciado": "Plantilla de edit de dos columnas: Change (un solo cambio concreto), Preserve (cara, identidad, pose, luz, encuadre, fondo, geometría, texto, layout) y Constraints (sin objetos extra, sin rediseño, sin drift).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+    }
+   ]
+  },
+  {
+   "id": "3d65942a8e2e",
+   "alcance": "GPT Image 2; edición, lógica de dos columnas",
+   "enunciado": "Reglas de edit: un edit por iteración, repetir el preserve list en cada iteración para evitar deriva, listar explícitamente lo que NO se toca y opcionalmente usar mask_image_url.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+    }
+   ]
+  },
+  {
+   "id": "a8bc7412e11d",
+   "alcance": "GPT Image 2; edición, patrones",
+   "enunciado": "Patrones de edit para GPT Image 2: virtual try-on, eliminación de objeto (input_fidelity high solo en 1.5/1; en gpt-image-2 es alta por defecto), cambio de luz/clima e intercambio de interior, cada uno con su lista de qué preservar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны"
+    }
+   ]
+  },
+  {
+   "id": "83c840d3b335",
+   "alcance": "GPT Image 2; estrategia de iteración",
+   "enunciado": "Ante deriva, volver a enumerar los invariantes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+    }
+   ]
+  },
+  {
+   "id": "d2737ae666b8",
+   "alcance": "GPT Image 2; estrategia de iteración",
+   "enunciado": "Un solo cambio por ronda (más cálida la luz, quitar árbol extra, restaurar fondo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+    }
+   ]
+  },
+  {
+   "id": "867f04b03aaa",
+   "alcance": "GPT Image 2; ruteo",
+   "enunciado": "Para edición precisa con preservación (try-on, swap, clima) usar GPT Image 2, con la mejor preservación de identidad en edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR"
+    }
+   ]
+  },
+  {
+   "id": "80d9fc770806",
+   "alcance": "Imagen; tabla de tipos de tarea, general",
+   "enunciado": "Tipo Editing: se usa para modificar una imagen existente, y lo clave son instrucciones concretas de qué cambiar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Task Types (Навыки)"
+    }
+   ]
+  },
+  {
+   "id": "35f365b2edbe",
+   "alcance": "Investigación de campo familia 08 (multitud anónima), hallazgo nuevo",
+   "enunciado": "Los rostros deformados del fondo en planos abiertos se reparan con restauración facial localizada (GFPGAN/CodeFormer o inpainting de región), nunca regenerando la placa entera.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/08-multitud-anonima.md",
+     "encabezado": "Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "68cc77fe680a",
+   "alcance": "Investigación de campo familia 08 (multitud anónima), hallazgo nuevo, Nano Banana Pro en edición",
+   "enunciado": "Nunca dar por fija la multitud de fondo tras una edición: cualquier edición local de NBP regenera los rostros del fondo, así que tras insertar cada héroe el crítico debe recontar y revisar los rostros de fondo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/08-multitud-anonima.md",
+     "encabezado": "Investigación de campo — Familia 08: Multitud anónima › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "00f488953c00",
+   "alcance": "Investigación de campo familia 09 (grupo ensamble), hallazgo nuevo",
+   "enunciado": "Nunca corregir dos regiones en la misma instrucción; cambiar una región por vez, porque una instrucción grande invita al modelo a redibujar lo que ya estaba bien.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/09-grupo-ensamble.md",
+     "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "6e5ef531d4ec",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, ejemplo imagen a imagen",
+   "enunciado": "Ejemplo: prompt NB de imagen a imagen que cambia solo el ángulo de cabeza y la mirada del fundador preservando cara, ropa, entorno y luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Example (image-to-image variant)"
+    }
+   ]
+  },
+  {
+   "id": "878ffdff0756",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Exige incluir la cláusula 'preserve' en imagen a imagen; sin ella NB trata la referencia como inspiración suelta y se desvía.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "b802d9d2999c",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe apilar varias modificaciones en un prompt imagen a imagen: un cambio por pasada da resultados más limpios.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "d73a6532c756",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, flujo de variantes",
+   "enunciado": "Ejemplo: formato de nano-banana.txt con el prompt de texto a imagen y, comentada, la plantilla de variante (Reference, Modify, Preserve, Change).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+    }
+   ]
+  },
+  {
+   "id": "be7cd65225ae",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, flujo de variantes",
+   "enunciado": "Exige que al generar prompts NB en nano-banana.txt se incluyan el prompt de texto a imagen y un comentario con plantilla de modificación para variantes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+    }
+   ]
+  },
+  {
+   "id": "a0da580f06b8",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, flujo de variantes",
+   "enunciado": "Explicación: flujo de variantes: generar el héroe en Midjourney o Flux, pasarlo a NB con prompts de variación, obtener 4-8 variantes para selección editorial y componer el texto sobre la elegida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Variant-generation workflow"
+    }
+   ]
+  },
+  {
+   "id": "e254d3348e6c",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, introducción",
+   "enunciado": "Especifica que NB es la elección cuando se necesitan muchas variaciones de un concepto o se re-alimentan imágenes generadas para refinarlas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+    }
+   ]
+  },
+  {
+   "id": "e49f8ecb6df2",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, introducción",
+   "enunciado": "Explicación: Nano Banana es el modelo de edición e iteración (variaciones, inpainting, modificación por referencia); el patrón 2026 es generar héroes en Midjourney o Flux y usar NB para variantes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+    }
+   ]
+  },
+  {
+   "id": "0d5dac15bafb",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, patrón de composición imagen a imagen",
+   "enunciado": "Ejemplo: patrón de imagen a imagen de NB para refinar un héroe: descripción de la referencia, modificación específica, cláusula 'Preserve' y cambio de un elemento concreto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Composition pattern (image-to-image, the strength)"
+    }
+   ]
+  },
+  {
+   "id": "6ad549153a18",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, sintaxis imagen a imagen",
+   "enunciado": "Especifica que NB de imagen a imagen describe la modificación con la forma: modificación, 'Keep' lo que se preserva, 'Change' lo que varía.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "8d6c75846fae",
+   "alcance": "Nano Banana Pro; edición consciente de la física",
+   "enunciado": "Ejemplo: NBP comprende materiales; se le pide llenar un vaso con [LÍQUIDO] añadiendo refracción, menisco y condensación y respetando la iluminación existente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Physics-Aware"
+    }
+   ]
+  },
+  {
+   "id": "6919722655b7",
+   "alcance": "Nano Banana vs GPT Image 2; edición",
+   "enunciado": "La lógica de edición difiere por modelo: Nano Banana es conversacional y sin máscaras («Keep X same, change Y»); GPT Image 2 usa Change/Preserve/Constraints, repite el preserve list cada iteración y admite mask_image_url opcional, con la mejor conservación de identidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing"
+    }
+   ]
+  },
+  {
+   "id": "97311111623a",
+   "alcance": "Nano Banana vs GPT Image 2; sintaxis",
+   "enunciado": "Edit: Nano Banana usa «Keep X same, change Y»; GPT Image 2 usa «Change / Preserve / Constraints» repitiendo el preserve en cada iteración.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+    }
+   ]
+  },
+  {
+   "id": "33e25ed9d984",
+   "alcance": "Nano Banana, edición",
+   "enunciado": "La edición en Nano Banana es conversacional y sin máscaras: quitar objeto, rellenar con reemplazo lógico y declarar lo que se conserva idéntico.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ]
+  },
+  {
+   "id": "75a28bbc16a2",
+   "alcance": "Nano Banana, edición",
+   "enunciado": "Tras generar, se añaden ajustes iterativos en lenguaje simple (más cálido, más contraste, suavizar fondo, cambiar color del titular).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ]
+  },
+  {
+   "id": "3d3481210186",
+   "alcance": "Nano Banana, edición vía Interactions API",
+   "enunciado": "La Interactions API mantiene el contexto y apila hasta 3 ediciones sin perder el original; regla 'Edit, don't re-roll': si la imagen es 80% correcta, pedir un cambio puntual y no regenerar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ]
+  },
+  {
+   "id": "0dbad372541b",
+   "alcance": "Régimen 08 multitud anónima",
+   "enunciado": "El crítico cuenta los rostros legibles: cada uno debe corresponder a un héroe canonizado; el que no, se convierte en silueta, espalda o desenfoque por edición.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "3b77b687ddb6",
+   "alcance": "Régimen 08 multitud anónima, fallos conocidos",
+   "enunciado": "Fallo de rostros legibles en la masa: editar a desenfoque o silueta, o regenerar la placa con contraluz.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "91fe3122b275",
+   "alcance": "Régimen 09 grupo ensamble",
+   "enunciado": "Lo aprobado se canoniza y se edita desde ahí; un miembro que falla se rehace solo en su inserción, nunca el grupo entero.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+     "encabezado": "Grupo ensamble › 7. Tratamiento de personas dentro del régimen"
+    }
+   ]
+  },
+  {
+   "id": "21f8cd5791f4",
+   "alcance": "Skill image, texto en imagen, tips",
+   "enunciado": "Edición iterativa: usar 'Leave everything else exactly the same, but change [X]' y anotar la imagen descargada para subirla de nuevo como referencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/text-rendering.md",
+     "encabezado": "Text Rendering & Infographics › Tips"
+    }
+   ]
+  },
+  {
+   "id": "75973f956957",
+   "alcance": "Skill produccion-visual-sw30, reglas críticas (edición)",
+   "enunciado": "Regla 3: el editor no tiene memoria; usar solo verbos operativos (Move/Replace/Add/Remove/Swap) y cero narrativa ('has become', 'again').",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "39083341374e",
+   "alcance": "Skill produccion-visual-sw30, reglas críticas (edición)",
+   "enunciado": "Regla 6: el swap de identidad es la última operación y va sola, formulada como 'Replace X with Y — same position, same pose, same scale'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "86f6a64e4ebc",
+   "alcance": "Subprocesos por etapa, E5.5, SW30 R3 y R12",
+   "enunciado": "E5.5 corrige quirúrgicamente un cuadro ya aprobado al 80% o más (T5): editar y no re-tirar, con hasta 3 ediciones apiladas.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "112ff661bbea",
+   "alcance": "general (skill image, ambas familias de modelos); Dimensional Translation, conversión de memes",
+   "enunciado": "Plantilla de conversión de meme a nuevo estilo: mantener la composición idéntica y especificar personaje y entorno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/dimensional.md",
+     "encabezado": "Dimensional Translation › Meme Conversion"
+    }
+   ]
+  },
+  {
+   "id": "451f8b96ea39",
+   "alcance": "general (skill image, ambas familias de modelos); edición consciente de la física",
+   "enunciado": "Plantilla para añadir textura de material a una superficie indicando propiedades (mate/brillante, rugoso/liso).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Physics-Aware"
+    }
+   ]
+  },
+  {
+   "id": "7d873bfc0ea7",
+   "alcance": "general (skill image, ambas familias de modelos); edición de imagen",
+   "enunciado": "Hacer un solo edit por iteración; no intentar cambiar todo a la vez.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing"
+    }
+   ]
+  },
+  {
+   "id": "7665611d4740",
+   "alcance": "general (skill image, ambas familias de modelos); edición, adición de objetos",
+   "enunciado": "Plantilla de adición de objeto: indicar posición, estilo que iguale la iluminación existente y escala relativa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Object Addition"
+    }
+   ]
+  },
+  {
+   "id": "521adbd7520a",
+   "alcance": "general (skill image, ambas familias de modelos); edición, colorización de fotos",
+   "enunciado": "Plantilla para colorizar una foto B/N con colores propios de la década indicada y tonos de piel naturales y realistas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Colorization"
+    }
+   ]
+  },
+  {
+   "id": "833a0e57fde8",
+   "alcance": "general (skill image, ambas familias de modelos); edición, colorización de manga",
+   "enunciado": "Plantilla para colorizar un panel de manga: estilo (anime vibrante o realista apagado), efectos brillantes/neón para energía y mantener la integridad del line art.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Colorization"
+    }
+   ]
+  },
+  {
+   "id": "35dbd860ca06",
+   "alcance": "general (skill image, ambas familias de modelos); edición, control de iluminación",
+   "enunciado": "Plantilla de control de iluminación: cambiar la luz manteniendo sujeto y composición iguales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Lighting Control"
+    }
+   ]
+  },
+  {
+   "id": "d40952fe6788",
+   "alcance": "general (skill image, ambas familias de modelos); edición, control de iluminación",
+   "enunciado": "Vocabulario de iluminación para edits: golden hour/atardecer/contraluz cálido, nublado/suave/difuso, noche/dramático/fuente única, rim lighting/silueta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Lighting Control"
+    }
+   ]
+  },
+  {
+   "id": "4130e67db1e0",
+   "alcance": "general (skill image, ambas familias de modelos); edición, eliminación de objetos",
+   "enunciado": "Ejemplo: «Remove tourists, fill with cobblestones» y «Remove car, extend street naturally».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Object Removal"
+    }
+   ]
+  },
+  {
+   "id": "cba057688654",
+   "alcance": "general (skill image, ambas familias de modelos); edición, eliminación de objetos",
+   "enunciado": "Plantilla de eliminación de objeto: quitar [OBJETO], rellenar con reemplazo lógico acorde al entorno y mantener exactamente iguales los elementos preservados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Object Removal"
+    }
+   ]
+  },
+  {
+   "id": "23f533af25e1",
+   "alcance": "general (skill image, ambas familias de modelos); edición, estacional y clima",
+   "enunciado": "Plantilla de cambio de estación o clima: mantener la arquitectura exactamente igual y ajustar nieve, hojas, reflejos o cielo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Seasonal/Weather"
+    }
+   ]
+  },
+  {
+   "id": "96ada55c2686",
+   "alcance": "general (skill image, ambas familias de modelos); edición, localización",
+   "enunciado": "Plantilla de adaptación cultural de un anuncio: nuevo fondo, texto traducido y mantener elementos de marca y composición base.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Localization"
+    }
+   ]
+  },
+  {
+   "id": "ffc6ec94ba4c",
+   "alcance": "general (skill image, ambas familias de modelos); edición, localización",
+   "enunciado": "Plantilla de localización: traducir todo el texto del idioma origen al destino, mantener lo demás igual y conservar estilo tipográfico, tamaño y posición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Localization"
+    }
+   ]
+  },
+  {
+   "id": "01744214b128",
+   "alcance": "general (skill image, ambas familias de modelos); edición, refinamiento conversacional",
+   "enunciado": "Tras el edit inicial se refina de forma conversacional con instrucciones cortas: más cálido, más contraste, bordes suaves, más detalle en sombras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Conversational Refinement"
+    }
+   ]
+  },
+  {
+   "id": "4cd00a80d4a3",
+   "alcance": "general (skill image, ambas familias de modelos); edición, restauración",
+   "enunciado": "Plantilla de restauración de foto dañada: indicar qué reparar, mejorar nitidez y contraste y preservar carácter y grano originales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/editing.md",
+     "encabezado": "Image Editing › Restoration"
+    }
+   ]
+  },
+  {
+   "id": "bbb0a9864396",
+   "alcance": "general (skill image, ambas familias de modelos); refinamiento conversacional",
+   "enunciado": "Tras generar, refinar con instrucciones conversacionales específicas: cambiar color del titular a un hex, sombra suave en el texto, más contraste, fondo suavizado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › Conversational Refinement"
+    }
+   ]
+  },
+  {
+   "id": "bf1ea33282ac",
+   "alcance": "general (skill image, ambas familias de modelos); regla 3, editar y no re-roll",
+   "enunciado": "Si la imagen está 80% correcta, pedir el cambio específico (luz, color de texto, posición) en lugar de regenerar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 3. Edit, Don't Re-roll"
+    }
+   ]
+  },
+  {
+   "id": "d28f9f7ed633",
+   "alcance": "skill image, Paso 3, golden-rules.md",
+   "enunciado": "Paso 3: leer golden-rules.md tras el archivo del modelo, con las reglas universales para ambos modelos: empezar con un verbo, encuadre positivo, colores hex, texto entre comillas, editar en vez de regenerar, un cambio por iteración y referencias de imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)"
+    }
+   ]
+  },
+  {
+   "id": "68d707a1d6bd",
+   "alcance": "skill image, characters.md, Attire Changes",
+   "enunciado": "Ejemplo: añadir un accesorio con la frase «Maintain identity, add [ACCESSORY]».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ]
+  },
+  {
+   "id": "7976330fe99a",
+   "alcance": "skill image, characters.md, Attire Changes",
+   "enunciado": "Ejemplo: cambio de vestuario con la frase «Keep face, change to formal business attire».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ]
+  },
+  {
+   "id": "2cf944096073",
+   "alcance": "skill image, characters.md, Attire Changes",
+   "enunciado": "Ejemplo: cambio de vestuario con la frase «Same person, but wearing [NEW OUTFIT]».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ]
+  },
+  {
+   "id": "a597e04b640f",
+   "alcance": "skill image, characters.md, Environment Swaps",
+   "enunciado": "Ejemplo: cambio de entorno con la frase «Same person in [NEW SETTING]».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ]
+  },
+  {
+   "id": "6342a90358e6",
+   "alcance": "skill image, characters.md, Environment Swaps",
+   "enunciado": "Ejemplo: cambio de entorno con la frase «Transport to [LOCATION], keep identity».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ]
+  },
+  {
+   "id": "c058cf4a93aa",
+   "alcance": "skill image, characters.md, Environment Swaps",
+   "enunciado": "Ejemplo: cambio de fondo con la frase «Change background to [SCENE], maintain lighting on face».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ]
+  },
+  {
+   "id": "42fa0f85b003",
+   "alcance": "skill image, formato de salida para ediciones; obligatorio en gpt-image-2, recomendado en nano-banana",
+   "enunciado": "En ediciones incluir una preserve-list explícita (Change, Preserve, Constraints), obligatoria en gpt-image-2 y recomendada en nano-banana.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Output format"
+    }
+   ]
+  },
+  {
+   "id": "000dc8fbf639",
+   "alcance": "skill produccion-visual-sw30, regla crítica (general)",
+   "enunciado": "Si un resultado es al menos 80% correcto se hace un cambio puntual (hasta 3 ediciones apiladas) y nunca se vuelve a tirar de cero ('edit, don't re-roll').",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "f155cdfc7ced",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "enunciado": "Adaptador nano-banana.md: Gemini 2.5 Flash Image, fuerte en fidelidad de edición e inpainting.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Adapters"
+    }
+   ]
+  },
+  {
+   "id": "092945fa4d91",
+   "alcance": "visual-prompt-forge, imagen, criterio de parada de iteración",
+   "enunciado": "Dejar de iterar prompts cuando hay tres señales: 5 o más re-rolls del mismo shot sin mejora (elegir otro shot o generador), retoques de una sola palabra a ciegas (pasar a refinamiento imagen a imagen con Nano Banana o a post) o imagen 80% correcta con brecha editorial (enviar a post).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › When to stop iterating prompts"
+    }
+   ]
+  }
+ ]
+}

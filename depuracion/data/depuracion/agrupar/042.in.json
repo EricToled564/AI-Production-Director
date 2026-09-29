@@ -1,0 +1,953 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "negativos",
+ "descripcion_tema": "negative prompt, no X, framing positivo, prohibiciones en el prompt",
+ "filas": [
+  {
+   "id": "50469a623908",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "El parámetro negative_prompt de Kling está soportado y se usa por serie para suprimir deriva (por ejemplo 'extra fingers, warped face').",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f0c055946656",
+   "alcance": "GPT Image 2; estructura de 5 slots",
+   "enunciado": "El quinto slot (Constraints) es donde fallan en silencio los prompts mediocres: sin constraints explícitos el modelo deriva.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots"
+    }
+   ]
+  },
+  {
+   "id": "7d5ffe6827dc",
+   "alcance": "GPT Image 2; texto en imagen",
+   "enunciado": "Proteger contra basura con «no extra words, no duplicate text, no watermarks».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Text in Image"
+    }
+   ]
+  },
+  {
+   "id": "b87fbe292acc",
+   "alcance": "General (skill video, fixes y esqueletos, §2 Melting hands / extra fingers) · Kling",
+   "enunciado": "En Kling, contra manos derretidas o dedos extra añadir al campo negativo: distorted hands, extra fingers, melted face, deformed.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Melting hands / extra fingers"
+    }
+   ]
+  },
+  {
+   "id": "505cd2d0ded7",
+   "alcance": "General (skill video, fixes y esqueletos, §2 Melting hands / extra fingers) · Seedance, Veo",
+   "enunciado": "En Seedance y Veo, contra manos derretidas usar fraseo positivo: anatomically correct hands, clean finger separation, realistic proportions.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Melting hands / extra fingers"
+    }
+   ]
+  },
+  {
+   "id": "22e170833e7a",
+   "alcance": "Imagen; Nano Banana Pro; estructura de respuesta",
+   "enunciado": "La salida puede incluir exclusiones (opcional), formuladas en positivo, porque NBP entiende mejor «clean background» que «no clutter».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Output Structure"
+    }
+   ]
+  },
+  {
+   "id": "ceab593082b4",
+   "alcance": "Investigación de campo familia 01 (agua en superficie), regla candidata",
+   "enunciado": "Siempre incluir en el negativo de cualquier cuadro de spray: frozen solid-looking fluid, random droplets, impossible gravity, broken refraction.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/01-agua-superficie.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "a674fcdbd837",
+   "alcance": "Investigación de campo familia 04 (objeto balístico), hallazgo nuevo",
+   "enunciado": "El negative prompt reutilizable de campo para objetos incluye \"floating shadows\" y \"extra reflections\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/04-objeto-balistico.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 04 · Objeto balístico › Fase 4b — Hallazgos nuevos (no contemplados en la familia)"
+    }
+   ]
+  },
+  {
+   "id": "fb4cc0e27eeb",
+   "alcance": "Investigación de campo familia 06 (cuerpo en esfuerzo), hallazgo nuevo, Nano Banana Pro",
+   "enunciado": "Lista negativa de campo para cuerpo en NBP: warped anatomy, extra fingers, disfigured hands, double shadow, plastic skin, over-smoothing, excessive sharpening, blown highlights.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 06 · Cuerpo en el pico de esfuerzo › Fase 4b — Hallazgos nuevos"
+    }
+   ]
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "Lint aurora, casos 1 y 2",
+   "enunciado": "Lint aurora para caso 1 (génesis) o caso 2 (ancla con refs): 75 a 130 palabras, negativo obligatorio y sin re-describir categorías cubiertas por refs.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "6ee4d3f40914",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, menciones negadas",
+   "enunciado": "Decisión 4: una mención negada (no cartoon, not anime) no dispara BANNED ni bans de estilo (P11), porque el snapshot gpt_image_2__1 exige no cartoon, no anime en MAIN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "acea710dc61f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, negativos Kling vs Seedance 2.5",
+   "enunciado": "Decisión 3: la regla sin no X del negativo se aplica solo a Kling, porque en Seedance 2.5 el formato oficial de [Negative Prompts] es no X; el límite de 8 ítems sí aplica a todas las plataformas (SW30 R16).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "254f1592565c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, sin --platform",
+   "enunciado": "Decisión 1: sin --platform el negativo sigue siendo obligatorio (política legacy_required con WARN), porque el SKILL.md original invoca el linter sin plataforma y relajarlo en silencio cambiaría el contrato; se descartó hacerlo opcional por defecto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "c14b5900faac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), política de negativos",
+   "enunciado": "Parche P2: el bloque Negative pasa a ser obligatorio solo en Kling y Seedance 2.5, Constraints cuenta como negativo en GPT Image, en el resto no se exige (se avisa si aparece con marcador Negative), y sin --platform se mantiene el comportamiento legacy (required) con WARN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "10b8b8765262",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, GPT Image 2",
+   "enunciado": "Prueba T02: GPT Image 2 con Constraints: y sin Negative: en caso 1 debe dar exit 0 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "10d570d6b363",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "enunciado": "Prueba T03: Kling caso 3a sin bloque negativo debe dar exit 1 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "604a980ec3ac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "enunciado": "Prueba T13: negativo Kling con no blur y 10 ítems debe dar exit 0 con dos WARN R16 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "6c3af7d6aa7e",
+   "alcance": "Lints previos a la pregunta de avance; GPT Image 2 (audit_gi2)",
+   "enunciado": "Lint audit_gi2: 15 columnas, incluidos los 5 efectos ópticos y framing positivo.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "1a9dac62bddb",
+   "alcance": "Motion brief para todos los modelos de video; SW30 R16, U7, U11",
+   "enunciado": "En todos los modelos de video el motion brief lleva preserve-cues, roles start/tail, movimiento puro, imagen final nombrada y negativos sin \"no X\" con máximo 8 ítems; el aspect ratio ya viene del ancla y el identity block se repite en cada clip aunque haya imagen.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "1af55605c987",
+   "alcance": "Nano Banana",
+   "enunciado": "Prohíbe incluir parámetros numéricos de lente (50mm, 85mm, f/2.8, ISO 400) en Nano Banana porque los ignora; usar descripciones como 'shallow depth of field'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Что НЕ указывать"
+    }
+   ]
+  },
+  {
+   "id": "5720658ff904",
+   "alcance": "Nano Banana vs GPT Image 2; sintaxis",
+   "enunciado": "Framing negativo: en ambas se usa framing positivo; en GPT Image 2 además un preserve list explícito.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/models.md",
+     "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта"
+    }
+   ]
+  },
+  {
+   "id": "39b4984ba0ff",
+   "alcance": "Régimen 04 objeto balístico; GPT Image 2 (slot Constraints)",
+   "enunciado": "Fallo: objeto duplicado o sombra doble; pedir \"single ball, single contact shadow\" en Constraints y bajar la complejidad del fondo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ]
+  },
+  {
+   "id": "fdbaf14fb3c0",
+   "alcance": "Régimen 04 objeto balístico; modelo GPT Image 2 (prompt de cinco slots)",
+   "enunciado": "Usar prompt en cinco slots para GPT Image 2 con el slot Constraints declarando \"no duplicate ball, no second shadow\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "0a8750d0463a",
+   "alcance": "Régimen 07 luz y clima (still, imagen); Nano Banana",
+   "enunciado": "Evitar el HDR sobrecocido en cielos de tormenta y amaneceres pidiendo \"natural contrast, no HDR look\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/07-luz-y-clima.md",
+     "encabezado": "Luz y clima › 4. Luz en este medio"
+    }
+   ]
+  },
+  {
+   "id": "4ed672005032",
+   "alcance": "Régimen 08 multitud anónima",
+   "enunciado": "Los extras de fondo no deben clonar al héroe ni entre sí: ropa, pelo y rasgos distintos, movimientos no sincronizados y \"no identical clones in the background\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+     "encabezado": "Multitud anónima › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ]
+  },
+  {
+   "id": "1a897396cbb0",
+   "alcance": "Seedance 1.0",
+   "enunciado": "Si se ignora el fraseo negativo, se usan sustitutos positivos, porque Seedance 1.0 no tiene parser de negativos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Negative phrasing ignored"
+    }
+   ]
+  },
+  {
+   "id": "31ca990ce87f",
+   "alcance": "Seedance 1.0 Pro",
+   "enunciado": "Seedance 1.0 Pro no admite negative prompts y ninguna sintaxis tipo --no blur funciona.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ]
+  },
+  {
+   "id": "1b4a34314d95",
+   "alcance": "Seedance 1.x y 2.0",
+   "enunciado": "En Seedance 1.x/2.0 los negativos siempre se invierten a fraseo positivo (por ejemplo 'cold blue-gray palette' en vez de 'no yellow tones').",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ]
+  },
+  {
+   "id": "6281b9631195",
+   "alcance": "Seedance 2.0",
+   "enunciado": "Seedance 2.0 añade soporte limitado de negative prompts, frágil y a menudo ignorado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ]
+  },
+  {
+   "id": "7aff661fa0f8",
+   "alcance": "Seedance 2.5",
+   "enunciado": "Seedance 2.5 corrigió el soporte de negativos: las prohibiciones directas (sin subtítulos, sin música de fondo) funcionan y las listas de prohibiciones específicas son parte central de la estructura oficial de prompt 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 12. Negative prompts"
+    }
+   ]
+  },
+  {
+   "id": "56e90a0aad8d",
+   "alcance": "Seedance 2.5 (falla clásica de 1.x/2.0 corregida)",
+   "enunciado": "En Seedance 2.5 los comandos negativos son fiables: \"Pure video, no subtitles, no background music\" suprime subtítulos y música no deseados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+    }
+   ]
+  },
+  {
+   "id": "b29d5655eeb4",
+   "alcance": "Seedance 2.5, ejemplo 'Riverside Farewell'",
+   "enunciado": "Explicación: en el ejemplo, cada etapa contiene un solo cambio de estado, directivas físicas y subtexto emocional, y la lista de prohibiciones nombra los modos de colapso exactos de esa escena.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › A. Restrained micro-acting — \"Riverside Farewell\" (29s one-shot)"
+    }
+   ]
+  },
+  {
+   "id": "5b461828a4be",
+   "alcance": "Seedance 2.5, ejemplo mecha",
+   "enunciado": "Explicación: en el ejemplo mecha se declara el régimen físico al inicio, cada beat narra una consecuencia y cada prohibición apunta a un fallo conocido de ese material.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › B. Physics and prohibitions — sci-fi mecha chase (30s one-shot)"
+    }
+   ]
+  },
+  {
+   "id": "82ce126f7152",
+   "alcance": "Seedance 2.5, esqueleto anticolapso",
+   "enunciado": "Esqueleto anticolapso oficial en tres módulos (capa de referencia, ajustes globales con prohibiciones, storyboard con timestamps) para trabajo dramático de 30 s, más ligero que el esqueleto de 11 bloques.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 7. The anti-collapse skeleton (3 modules)"
+    }
+   ]
+  },
+  {
+   "id": "dd8c46542f66",
+   "alcance": "Seedance 2.5, esqueleto anticolapso",
+   "enunciado": "La lista de prohibiciones debe ser específica y no genérica, y tras cada directiva física debe explicarse el subtexto (por qué ocurre la acción) para que el modelo actúe mejor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 7. The anti-collapse skeleton (3 modules)"
+    }
+   ]
+  },
+  {
+   "id": "b43d1d580dfd",
+   "alcance": "Seedance 2.5, fallos y soluciones, gemelos y fusión de caras",
+   "enunciado": "Contra gemelos o fusión de caras en escenas multipersona: vinculación por sujeto más diferenciación explícita (movimientos no sincronizados, vestuario, peinado y rasgos distintos, sin clones idénticos al fondo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Twins / face-blending in multi-person scenes"
+    }
+   ]
+  },
+  {
+   "id": "3b36a8623a6b",
+   "alcance": "Seedance 2.5, fallos y soluciones, one-take que corta",
+   "enunciado": "Contra el one-take que no se mantiene: \"One continuous shot, no cuts of any kind\" con una ruta de cámara que no motive cortes, y si se cuela el montaje bajar a una ventana de 10-15 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › The one-take that refuses to stay one take"
+    }
+   ]
+  },
+  {
+   "id": "3b0e77cfd717",
+   "alcance": "Seedance 2.5, fallos y soluciones, subtítulos o BGM no deseados",
+   "enunciado": "Contra subtítulos o BGM aleatorios: \"Pure video, no subtitles, no background music\", fiable en 2.5, repetido en la cola global.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › Random subtitles or unwanted BGM"
+    }
+   ]
+  },
+  {
+   "id": "62e60366aa3c",
+   "alcance": "Seedance 2.5, física por consecuencias y disparadores",
+   "enunciado": "Explotar la física de 2.5 en cuatro movimientos: declarar el régimen físico, narrar consecuencias y no solo acciones, restringir negativamente el fallo conocido y condicionar eventos a disparadores en vez de segundos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 11. Physics through consequences and triggers"
+    }
+   ]
+  },
+  {
+   "id": "479940cb3f5c",
+   "alcance": "Seedance 2.5, macro-fórmula",
+   "enunciado": "Cola global: reafirmar los globales que deben mantenerse (posición de cámara, entorno, sonido, luz) y repetir las prohibiciones globales.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "e689436141f3",
+   "alcance": "Seedance 2.5, macro-fórmula",
+   "enunciado": "Trama por línea de tiempo: por cada beat, contenido positivo (imagen, cámara, acción, diálogo, SFX) y prohibiciones locales (por ejemplo, sin subtítulos, sin BGM).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 3. Official prompt formula"
+    }
+   ]
+  },
+  {
+   "id": "743b523fb224",
+   "alcance": "Seedance 2.5, one-shot de actuación emocional (ejemplo oficial 'Riverside Farewell')",
+   "enunciado": "Ejemplo: prompt oficial abreviado de Seedance 2.5 para un one-shot de 29 s de micro-actuación contenida, con escena global, estilo del personaje, actuación central, negativos y storyboard por etapas con estado emocional; se copia la estructura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › A. Restrained micro-acting — \"Riverside Farewell\" (29s one-shot)"
+    }
+   ]
+  },
+  {
+   "id": "3e60fceb53ea",
+   "alcance": "Seedance 2.5, one-shot de física y prohibiciones (ejemplo oficial mecha)",
+   "enunciado": "Ejemplo: prompt oficial de Seedance 2.5 para un one-shot de 30 s de persecución mecha sci-fi, con escena global que declara el régimen físico, negativos específicos y storyboard por marcas de tiempo con etiquetas de función.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 19. Worked examples (official, verbatim) › B. Physics and prohibitions — sci-fi mecha chase (30s one-shot)"
+    }
+   ]
+  },
+  {
+   "id": "0ecd5081474e",
+   "alcance": "Seedance 2.5, sistema de 50 slots de referencia",
+   "enunciado": "Vincular cada sujeto individualmente a su referencia (nunca \"@Images 1 a 4 definen cuatro personajes\"), añadir exclusiones para lo que pueda filtrarse, no re-describir lo que la referencia ya define y usar un Subject Profile para personajes recurrentes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 5. Reference discipline (the 50-slot system)"
+    }
+   ]
+  },
+  {
+   "id": "0d25ec9cd2fd",
+   "alcance": "Seedance 2.5, transiciones",
+   "enunciado": "Adjuntar siempre la cláusula \"prohibit rigid cutting, prohibit objects appearing out of thin air\", la cláusula oficial anti-salto que se repite en cada plantilla de transición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 10. Transitions"
+    }
+   ]
+  },
+  {
+   "id": "375bf9e88f8d",
+   "alcance": "Skill produccion-visual-sw30, template T1 (maestro de rostro)",
+   "enunciado": "Sección clean del T1: bloque clean_doc de anti-belleza explícito (no beauty retouching, no skin smoothing, no even complexion, no soft fill light).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "cb889126c59d",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Ejemplo: esqueleto imagen a video para Kling con Preserve, movimiento de cámara con una lente, uno o dos verbos, señal atmosférica y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Image-to-video"
+    }
+   ]
+  },
+  {
+   "id": "42864b5f6396",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Esqueleto de prompt imagen a video para Kling: Preserve de un rasgo, movimiento de cámara con una lente, uno o dos verbos de movimiento, señal atmosférica y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling image-to-video"
+    }
+   ]
+  },
+  {
+   "id": "3bcca94aa4cc",
+   "alcance": "Video; Kling texto a video (1.x-2.x)",
+   "enunciado": "Ejemplo: esqueleto texto a video para Kling 1.x-2.x con sujeto y ancla de identidad, movimiento en una frase verbal, escena de 3-5 elementos, cámara, luz, atmósfera y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Text-to-video (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "c463a68a9321",
+   "alcance": "Video; Kling texto a video (1.x-2.x)",
+   "enunciado": "Esqueleto de prompt texto a video para Kling: sujeto con ancla de identidad, movimiento, escena de 3-5 elementos, cámara, luz, atmósfera y un campo negativo aparte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling text-to-video"
+    }
+   ]
+  },
+  {
+   "id": "4efd392a13e9",
+   "alcance": "Video; Kling, Veo y Seedance 2.0",
+   "enunciado": "Las restricciones negativas por defecto se usan solo donde el modelo admite negativos: campo de Kling, texto de cuerpo de Veo y Seedance 2.0 con fragilidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 4. Default negative constraints"
+    }
+   ]
+  },
+  {
+   "id": "27d9f40db90e",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "Ejemplo: en el campo negativo de Kling «no blurry faces, no distorted hands» es incorrecto y «blurry faces, distorted hands, melted features» es correcto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "c0b9ff61a0db",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "Ejemplo: en el campo negativo de Kling «no robots» es incorrecto y «robots» es correcto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "a0bc9b0d70df",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "Ejemplo: lista de negativos eficaces comunes en Kling (baja resolución, blur, manos distorsionadas, dedos extra, cara derretida, marca de agua, subtítulos, logo, texto superpuesto, jitter, cámara temblorosa, deformado).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "eba0398a7523",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "Kling tiene un campo dedicado de negative prompts que interpreta la entrada como exclusión, por lo que no se escribe «no X» sino la cosa misma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "ecb8f1c74820",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "La lista de negativos de Kling se mantiene corta, porque las pilas largas reducen movimiento y detalle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "ef8f2db8e66f",
+   "alcance": "Video; Kling, campo negativo",
+   "enunciado": "Para el campo negativo de Kling se reescriben las restricciones como entidades positivas (por ejemplo «distorted hands, extra fingers, subtitles, logos, cartoon physics, random camera drift»).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 4. Default negative constraints"
+    }
+   ]
+  },
+  {
+   "id": "afc275d484ab",
+   "alcance": "Video; Kling, fallo de negativos ignorados",
+   "enunciado": "Si los negativos se ignoran, se reescribe «no X» como «X» en el campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Negative prompts ignored"
+    }
+   ]
+  },
+  {
+   "id": "af02de8df87d",
+   "alcance": "Video; Seedance 1.0",
+   "enunciado": "En Seedance 1.0 se invierten todos los negativos a formulaciones positivas dentro del cuerpo del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 4. Default negative constraints"
+    }
+   ]
+  },
+  {
+   "id": "8ee224aa94e1",
+   "alcance": "Video; Seedance 2.5, Veo, Seedance 1.x/2.0 y Kling",
+   "enunciado": "La prohibición de subtítulos y música es fiable en Seedance 2.5 y Veo; en Seedance 1.x/2.0 y Kling se debe evitar además mencionar texto en pantalla o música no deseados, porque mencionarlos los invoca.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Random subtitles or unwanted background music"
+    }
+   ]
+  },
+  {
+   "id": "52362012ad2f",
+   "alcance": "Video; extensión hacia adelante de un clip",
+   "enunciado": "En extensiones hacia adelante se usa la cláusula estándar que prohíbe el corte rígido y los objetos que aparecen de la nada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Objects or characters appear too early in an extension"
+    }
+   ]
+  },
+  {
+   "id": "094795909101",
+   "alcance": "Video; extensión hacia atrás de un clip",
+   "enunciado": "Se debe marcar explícitamente que los materiales que solo aparecen después de iniciado el video fuente no deben aparecer antes en la extensión hacia atrás.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Objects or characters appear too early in an extension"
+    }
+   ]
+  },
+  {
+   "id": "4509147ac31e",
+   "alcance": "Video; fallo de subtítulos o música no deseados",
+   "enunciado": "Ejemplo: frase de prohibición para video limpio, sin subtítulos ni música de fondo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Random subtitles or unwanted background music"
+    }
+   ]
+  },
+  {
+   "id": "c301aab81766",
+   "alcance": "Video; fallo de subtítulos o música no deseados",
+   "enunciado": "Para subtítulos aleatorios o música de fondo no deseada, se debe prohibirlos directamente y repetir la prohibición al final del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Random subtitles or unwanted background music"
+    }
+   ]
+  },
+  {
+   "id": "7ab2c3832027",
+   "alcance": "Video; modelos que admiten negativos",
+   "enunciado": "Lista de restricciones negativas por defecto para video: sin subtítulos, texto en pantalla, personajes extra, cambios de ropa o rostro, logos, física de caricatura, tonos amarillos cálidos, deriva de cámara, single-take si se pidió multi-shot, manos distorsionadas ni dedos extra.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 4. Default negative constraints"
+    }
+   ]
+  },
+  {
+   "id": "a19e82e56208",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P11",
+   "enunciado": "P11: una mención negada (\"no cartoon\", \"not anime\") no cuenta como violación de BANNED ni de estilo, aunque siga siendo mala práctica en NB/GPT, cosa que cubre gate_image.py.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "c46cf005bd6d",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P2",
+   "enunciado": "P2: el bloque negativo es obligatorio solo si la plataforma tiene campo negativo; si existe se valida con formato sin \"no X\" y un máximo de 8 ítems (WARN), y en GPT Image el slot Constraints cuenta como bloque negativo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "cf0b924fa82c",
+   "alcance": "general (skill image, ambas familias de modelos); regla 2, framing positivo",
+   "enunciado": "Describir lo que se QUIERE y no lo que no se quiere: el modelo entiende mejor la presencia que la ausencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 2. Positive Framing"
+    }
+   ]
+  },
+  {
+   "id": "20bed84787f5",
+   "alcance": "general (skill image, ambas familias de modelos); regla 2, framing positivo",
+   "enunciado": "Ejemplo: «clean background» en lugar de «no clutter».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 2. Positive Framing"
+    }
+   ]
+  },
+  {
+   "id": "da56b9ebb0ca",
+   "alcance": "general (skill image, ambas familias de modelos); regla 2, framing positivo",
+   "enunciado": "Ejemplo: «empty street» en lugar de «street with no cars».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 2. Positive Framing"
+    }
+   ]
+  },
+  {
+   "id": "31db35fee176",
+   "alcance": "general (skill image, ambas familias de modelos); regla 2, framing positivo",
+   "enunciado": "Ejemplo: «solo portrait» en lugar de «no other people».",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/golden-rules.md",
+     "encabezado": "Golden Rules › 2. Positive Framing"
+    }
+   ]
+  },
+  {
+   "id": "3b8559afab13",
+   "alcance": "general (todos los modelos de video)",
+   "enunciado": "Todo prompt se construye con las capas del esqueleto universal U1 en este orden aproximado: sujeto, acción, escena, cámara/lente, luz/atmósfera, estilo, sonido, duración/aspect/resolución, continuidad y restricciones negativas solo si el modelo las soporta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 2. U1. Universal prompt skeleton"
+    }
+   ]
+  },
+  {
+   "id": "2fe30895c670",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P2; por plataforma",
+   "enunciado": "Política de bloque negativo por plataforma: es obligatorio en Kling y Seedance 2.5, y opcional (positive framing; con marcador \"Negative:\" solo aviso) en Seedance 1/2.0, GPT Image, Nano Banana, Veo, Midjourney, Flux, Ideogram, Seedream y Hailuo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_BLOCK_POLICY"
+    }
+   ]
+  },
+  {
+   "id": "871c32054f5a",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai); plataformas con bloque negativo",
+   "enunciado": "El bloque negativo admite como máximo 8 ítems (NEGATIVE_MAX_ITEMS: 8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_MAX_ITEMS"
+    }
+   ]
+  },
+  {
+   "id": "c5b890955968",
+   "alcance": "linter aurora, categoría STRUCTURE, siempre",
+   "enunciado": "La categoría STRUCTURE verifica siempre el conteo de palabras y la presencia de negative prompt.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "19327bf74bf4",
+   "alcance": "linter aurora, detección de vocabulario en el prompt",
+   "enunciado": "Un término no se marca como violación si lo precede una negación (no, not, never, avoid, without, non) a menos de tres palabras.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › NEGATION_BEFORE"
+    }
+   ]
+  },
+  {
+   "id": "8606ae46ea40",
+   "alcance": "linter aurora, reglas P2 y P10; el slot Constraints solo en la familia gpt-image",
+   "enunciado": "El linter separa el prompt en bloque principal (MAIN) y bloque negativo mediante marcadores como \"[negative prompt]\" o \"negative:\", y en la familia gpt-image el slot \"Constraints:\" cuenta como bloque negativo; además cuenta palabras, parsea ítems negativos y busca términos con límites de palabra.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › NEGATIVE_MARKER"
+    }
+   ]
+  },
+  {
+   "id": "a7e56ecfc1fc",
+   "alcance": "linter aurora, todas las plataformas",
+   "enunciado": "El bloque de negative prompt es obligatorio.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "a5e38e6bef82",
+   "alcance": "linter aurora, todas las plataformas",
+   "enunciado": "El vocabulario baneado cross-platform (slow motion, cartoon, anime, 3D render, etc.) solo puede aparecer en el bloque NEGATIVE.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "09b463f98b96",
+   "alcance": "linter aurora, todas las plataformas, categoría BANNED",
+   "enunciado": "Los términos baneados cross-platform (slow motion, cartoon, anime, 3D render, perfume ad, dreamlike) se marcan siempre si aparecen en el bloque MAIN; deben ir solo en el NEGATIVE.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "74f326bdeea0",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "El draft del prompt, incluido el negative prompt, debe escribirse a un archivo de texto antes de correr el linter.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "d28f9f7ed633",
+   "alcance": "skill image, Paso 3, golden-rules.md",
+   "enunciado": "Paso 3: leer golden-rules.md tras el archivo del modelo, con las reglas universales para ambos modelos: empezar con un verbo, encuadre positivo, colores hex, texto entre comillas, editar en vez de regenerar, un cambio por iteración y referencias de imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)"
+    }
+   ]
+  },
+  {
+   "id": "8adea3cbbb4f",
+   "alcance": "skill image, estilo de respuesta final; el daño de los elogios vacíos es específico de GPT Image 2 y los parámetros de lente de Nano Banana",
+   "enunciado": "Evitar sopa de etiquetas, elogios vacíos (stunning, epic, masterpiece, que dañan a GPT Image 2), encuadre negativo (invertir a positivo), comparaciones externas (describir propiedades visuales) y parámetros numéricos de lente en Nano Banana, que los ignora.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Final response style"
+    }
+   ]
+  },
+  {
+   "id": "c7ad8cba68eb",
+   "alcance": "skill produccion-visual-sw30, regla crítica sobre prompts de clips (imagen a video)",
+   "enunciado": "Los prompts de clip llevan solo Preserve-cues, roles de start/tail (por ejemplo 'The tail image defines X — inherit exactly'), movimiento puro e imagen final nombrada, con negativos sin 'no X' y de 8 ítems como máximo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "6d5c84d5b274",
+   "alcance": "visual-prompt-forge, capa 4 Text Layer; excepción Ideogram Modo 2",
+   "enunciado": "El texto en pantalla se compone después de generar, proviene de text-overlays.json y nunca aparece en los prompts de imagen, salvo Ideogram Modo 2 con override explícito.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ]
+  },
+  {
+   "id": "70a6e342ec77",
+   "alcance": "visual-prompt-forge, imagen, fallo 3 (texto en imagen); Ideogram v3 para el caso in-image",
+   "enunciado": "No poner texto en el prompt y componerlo aparte desde text-overlays.json; si debe ir en la imagen (póster) usar Ideogram v3 con flag de override explícito, un solo elemento de texto por prompt y fuentes simples (sans-serif o serif limpia), pues cursivas y decorativas fallan.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ]
+  }
+ ]
+}

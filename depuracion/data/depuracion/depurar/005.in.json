@@ -1,0 +1,1670 @@
+{
+ "instrucciones": "Eliminas duplicados SIN reescribir nada. Cada grupo trae registros originales (texto literal completo,\ndocumento, encabezado y contexto). Decide qué originales se CONSERVAN tal cual y cuáles se ELIMINAN:\n- Un original se elimina solo si TODO su contenido (cada exigencia, prohibición, valor, número, cita literal,\n  excepción, ejemplo y alcance, incluido el que da su encabezado) ya está en UN conservado, que indicas en\n  \"contenido_en\".\n- Si dos registros dicen lo mismo pero cada uno tiene algo propio, se conservan los dos. En la duda, se conserva.\n- El grupo puede mezclar reglas distintas: esas se conservan todas.\nDevuelve JSON {\"grupos\": [{\"grupo\": \"...\", \"conservar\": [ids], \"eliminar\": [{\"id\": \"...\", \"contenido_en\": \"id\",\n\"razon\": \"...\"}]}]}; cada id del grupo aparece exactamente una vez y \"contenido_en\" es un id conservado del grupo.",
+ "grupos": [
+  {
+   "grupo": "G0047",
+   "miembros": [
+    {
+     "id": "05305b087a33",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "lineas": "9-9",
+       "encabezado": "Decisiones de dirección — 2026-09-25"
+      }
+     ],
+     "texto": "| 2 | Alcance del linter aurora | Copia parcheada en el repo. El conteo de palabras nunca bloquea: es advertencia con el presupuesto de la plataforma como referencia. Siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas | Los templates de 250 palabras de SW30 y los prompts de 5 slots de GPT Image pasan |",
+     "contexto": "| # | Decisión | Opción elegida | Consecuencia operativa |\n|---|---|---|---|"
+    },
+    {
+     "id": "05370f8dc9b7",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "38-38",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 1 | **Presupuesto de palabras.** El original hace HARD FAIL por encima de 130 (T2I) o 90 (I2V). SW30 canoniza un maestro de rostro T1 de ~250 palabras; GPT Image tolera 150–300; Kling 3.0 \"structure beats length\". | P1 — el conteo **nunca bloquea**: WARN con el presupuesto por plataforma (tabla `WORD_BUDGET_BY_PLATFORM`) y el techo de `_capabilities.json`. Si la plataforma no está en la tabla, el presupuesto original del caso se reporta como referencia, también WARN. | forge `adapters/_capabilities.json` (\"`max_prompt_words` is a ceiling, not a target\"); rangos de cada adaptador (kling/veo/flux/seedance 80–150, gpt-image 150–300, nano-banana/ideogram/hailuo 60–120, midjourney 40–80, seedream 40–70); `kling.md` §5 y §10 (I2V 20–40); `veo.md` §3 (50–200) y §9; SW30 \"Template canónico T1 … alrededor de 250 palabras\". |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    },
+    {
+     "id": "2172c2443d55",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "lineas": "24-24",
+       "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+      }
+     ],
+     "texto": "- Cuando una regla puede codificarse, se codifica; pero un límite de longitud es dirección, no bloqueo."
+    },
+    {
+     "id": "41eeca8d9a74",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "47-47",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 10 | **Presupuesto I2V Veo/Seedance.** El original aplica 50–90 a todo I2V. Veo tiene sweet spot 50–200 y comprime a 50–100; Seedance no fija número y su skeleton de 11 bloques supera cualquier techo; Kling I2V es 20–40. | P1 — presupuesto `i2v` por familia: Kling 20–40, Veo 50–100; Seedance usa el rango del adaptador (80–150) como única cifra disponible y lo declara en `source`. Todo WARN. | `kling.md` §5 y §10; `veo.md` §3 y §9; `seedance.md` §6 y §13; `seedance-25.md` §19 (ejemplos oficiales largos); forge `adapters/seedance.md`. |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    },
+    {
+     "id": "5ef3b08d23be",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "410-460",
+       "encabezado": "hooks vocabularies.yaml › WORD_BUDGET_BY_PLATFORM"
+      }
+     ],
+     "texto": "WORD_BUDGET_BY_PLATFORM:\n  midjourney:\n    default: [40, 80]\n    ceiling: 100\n    source: \"forge adapters/midjourney.md 'Aim for 40–80 words'; _capabilities.json max_prompt_words 100\"\n  flux:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/flux.md '80–150 words'; _capabilities.json 150\"\n  ideogram:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/ideogram.md '60–120 words'; _capabilities.json 120\"\n  gpt-image:\n    default: [150, 300]\n    ceiling: 300\n    source: \"forge adapters/gpt-image.md '150–300 words'; _capabilities.json 300; SW30 template T1 ~250 palabras\"\n  nano-banana:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/nano-banana.md '60–120 words'; _capabilities.json 120 (SW30 T1 ~250 se reporta, no bloquea)\"\n  seedream:\n    default: [40, 70]\n    ceiling: 120\n    source: \"forge adapters/seedream.md '40–70 words'; _capabilities.json 120\"\n  kling:\n    default: [80, 150]\n    i2v: [20, 40]\n    ceiling: 150\n    source: \"forge adapters/kling.md '80–150 words'; kling.md §5/§10 'Image-to-video (any version). 20-40 words'; _capabilities.json 150\"\n  veo:\n    default: [80, 150]\n    i2v: [50, 100]\n    ceiling: 150\n    source: \"forge adapters/veo.md '80–150 words'; veo.md §3 sweet spot 50-200, §9 'Compress to the 50-100 word range'; _capabilities.json 150\"\n  seedance:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/seedance.md '80–150 words'; _capabilities.json 150; seedance.md §13 no fija número para I2V\"\n  seedance_2.5:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/seedance.md 80–150 / _capabilities.json 150 como única cifra disponible; seedance-25.md no fija número y sus ejemplos oficiales (§19) la superan — referencia informativa\"\n  hailuo:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/hailuo.md '60–120 words'; _capabilities.json 120\"\n\n# ---------- IDENTITY_BLOCK_GROUPS (P3) ----------\n# U7: \"face shape, eye color, skin tone. Hair color, length, style. Facial hair. Exact clothing items.\n# Distinctive accessories.\" Se exige presencia de al menos IDENTITY_BLOCK_MIN_GROUPS grupos."
+    },
+    {
+     "id": "cdb7cf259db5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "15-23",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P1  Conteo de palabras: deja de ser HARD FAIL; pasa a WARN con el presupuesto por\n    plataforma como referencia. Fuente: visual-prompt-forge/adapters/_capabilities.json\n    (`max_prompt_words` es \"a ceiling, not a target\"), rangos de cada adaptador\n    (kling 80-150, veo 80-150, gpt-image 150-300, nano-banana 60-120, midjourney\n    40-80, flux 80-150, ideogram 60-120, seedream 40-70, hailuo 60-120, seedance\n    80-150), kling.md §5/§10 (I2V 20-40), veo.md §3 (50-200) y §9 (comprimir a\n    50-100), produccion-visual-sw30 \"Template T1 ~250 palabras\". El presupuesto\n    original del caso (75-130 / 50-90) queda como referencia cuando la plataforma\n    no está en la tabla."
+    }
+   ]
+  },
+  {
+   "grupo": "G0048",
+   "miembros": [
+    {
+     "id": "05f95d9ea461",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md",
+       "lineas": "48-48",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/60s-founder-explainer/brand-lock.snapshot.md",
+       "lineas": "48-48",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "51-51",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      },
+      {
+       "documento": "skills/visual-asset-critic/examples/worked-run/brand-lock.snapshot.md",
+       "lineas": "48-48",
+       "encabezado": "Brand Lock: WhyStrohm › Never list"
+      }
+     ],
+     "texto": "- never use hype words (\"game-changing\", \"revolutionary\", \"next-level\", \"comprehensive\")"
+    },
+    {
+     "id": "588e81e53853",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+       "lineas": "78-82",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+      },
+      {
+       "documento": "skills/storyboard-architect/brand-packs/_template.md",
+       "lineas": "78-82",
+       "encabezado": "Brand Lock: {{BRAND_NAME}} › Voice rules"
+      }
+     ],
+     "texto": "- e.g. no em dashes\n- no emojis in body copy\n- no exclamation points in headlines\n- no clichéd metaphors (\"game-changing\", \"revolutionary\", \"next-level\")\n- no hype words"
+    },
+    {
+     "id": "5e8ba2fe7c3f",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "lineas": "46-46",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Never list"
+      }
+     ],
+     "texto": "- never use vague claims (\"the best\", \"industry-leading\", \"cutting-edge\")"
+    },
+    {
+     "id": "7515b5d281b6",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md",
+       "lineas": "79-79",
+       "encabezado": "Brand Lock: WhyStrohm › Voice rules"
+      }
+     ],
+     "texto": "- no hype words (\"game-changing\", \"revolutionary\", \"comprehensive\", \"next-level\", \"leverage\")"
+    },
+    {
+     "id": "76c9bf2a7bfa",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/examples/saas-clean.md",
+       "lineas": "69-69",
+       "encabezado": "Brand Lock: Acme SaaS (Example) › Voice rules"
+      }
+     ],
+     "texto": "- no hype words"
+    },
+    {
+     "id": "bab782ac8443",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+       "lineas": "61-61",
+       "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+      }
+     ],
+     "texto": "- no hype words (\"best\", \"premium\", \"game-changing\")"
+    }
+   ]
+  },
+  {
+   "grupo": "G0049",
+   "miembros": [
+    {
+     "id": "074263819924",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "48-48",
+       "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+      }
+     ],
+     "texto": "| Multi-shot in one generation | No (one continuous take) | **Yes — up to 6 shots** |",
+     "contexto": "| Capability | 1.x – 2.6 | **3.0** |\n|---|---|---|"
+    },
+    {
+     "id": "308f190db603",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "50-50",
+       "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+      }
+     ],
+     "texto": "| Lip-sync | No | **Yes — coherent across multi-character scenes** |",
+     "contexto": "| Capability | 1.x – 2.6 | **3.0** |\n|---|---|---|"
+    },
+    {
+     "id": "4e21e26308d6",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "34-34",
+       "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+      }
+     ],
+     "texto": "- **Kling 3.0.** Multi-shot in one generation (up to 6 shots). Native audio with dialogue and lip-sync. 15s continuous output. Native 4K, up to 60 fps. Strongest character and scene consistency. Two tiers: v3/pro and v3/standard."
+    },
+    {
+     "id": "54b66463c815",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "51-51",
+       "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+      }
+     ],
+     "texto": "| Max duration | 5-10s | **Up to 15s** |",
+     "contexto": "| Capability | 1.x – 2.6 | **3.0** |\n|---|---|---|"
+    },
+    {
+     "id": "9ce2dc0d6f0f",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "24-24",
+       "encabezado": "Kling reference (Kuaishou) › 1. What Kling is"
+      }
+     ],
+     "texto": "**Kling 3.0** changed the model's positioning fundamentally — it now competes with Seedance on multi-shot output (up to 6 shots per generation) and with Veo on native dialogue and lip-sync. See section 3."
+    },
+    {
+     "id": "c5a5cf493317",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "49-49",
+       "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+      }
+     ],
+     "texto": "| Native audio | Limited / off | **Yes — dialogue, ambient, voice tone** |",
+     "contexto": "| Capability | 1.x – 2.6 | **3.0** |\n|---|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0050",
+   "miembros": [
+    {
+     "id": "0a5ee0dbf482",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "lineas": "10-10",
+       "encabezado": "Decisiones de dirección — 2026-09-25"
+      }
+     ],
+     "texto": "| 3 | Bloque de identidad con referencia de persona adjunta | Por rol de la referencia. Keyframe de inicio o fin en imagen a video: no re-describir. Referencia de personaje sin start frame, casos con @img, Elements o ancla con refs: bloque de identidad completo y verbatim | Resuelve la contradicción entre U7, Seedance §10, forge Rule 3 y Kling §10, Veo §7, Seedance §13, SW30 R5 y R16 |",
+     "contexto": "| # | Decisión | Opción elegida | Consecuencia operativa |\n|---|---|---|---|"
+    },
+    {
+     "id": "197cea2793d0",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "91-91",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+      }
+     ],
+     "texto": "| `ff` / `lf` | **prohibidos** (FAIL) | no aplica | casos 3a/3b/3c/4: la imagen ancla identidad y wardrobe |",
+     "contexto": "| `--ref-role` | Descriptores P/O en MAIN | Identity block | Cuándo |\n|---|---|---|---|"
+    },
+    {
+     "id": "6672bd9e95da",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "92-92",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+      }
+     ],
+     "texto": "| `character` | permitidos | **obligatorio** (WARN si <3 grupos) | caso 2 con `Image 1: face`, `@img1`, Elements, `--cref` |",
+     "contexto": "| `--ref-role` | Descriptores P/O en MAIN | Identity block | Cuándo |\n|---|---|---|---|"
+    },
+    {
+     "id": "aa27ff46db74",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/prompt_linter.py",
+       "lineas": "33-40",
+       "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+      }
+     ],
+     "texto": "P3  Identity block por rol de la referencia (--ref-role). La prohibición de\n    descriptores P/O solo aplica con rol ff/lf (imagen a video: kling.md §3 y\n    §10 \"Do not re-describe static elements\", veo.md §7, seedance.md §13,\n    SW30 R5 y R16). Con rol character el identity block es obligatorio (U7\n    \"Anchor identity at the START of every prompt\", seedance.md §10 \"The full\n    identity block must follow the @img1 mention\", forge SKILL.md Rule 3 /\n    consistency-locks Lock 1): si faltan ≥3 de {pelo, ojos/piel, prenda,\n    accesorio, rasgo distintivo} → WARN \"identity block absent\"."
+    },
+    {
+     "id": "d108e47c4dd5",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/README.md",
+       "lineas": "40-40",
+       "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+      }
+     ],
+     "texto": "| 3 | **Identity block por rol de la referencia.** El original banea los descriptores P/O siempre que un ref cargue P/O. En I2V eso es correcto (no re-describir el first frame). En caso 2 con refs `@img1` / Elements / `Image 1` es al revés: U7 y Seedance §10 **exigen** el identity block completo junto a la referencia. | P3 — `--ref-role {ff,lf,character,location,prop,style}` (si no se pasa, se deriva del campo `role` de `refs.yaml` y del caso). Con **ff/lf** los descriptores P/O siguen prohibidos. Con **character** se permiten y el identity block es obligatorio: si faltan ≥3 de {pelo, ojos/piel, prenda, accesorio, rasgo distintivo} → WARN \"identity block absent\". | `kling.md` §3 (\"Describe how the scene evolves from the image, not what is in the image\") y §10; `veo.md` §7 (\"Do not re-describe static elements\"); `seedance.md` §13; SW30 R5 y R16; `universal-rules.md` U7 (\"Identity block must include: face shape, eye color, skin tone. Hair … Exact clothing items. Distinctive accessories\"); `seedance.md` §10 (\"The full identity block must follow the @img1 mention\"); forge SKILL.md Rule 3 y `consistency-locks.md` Lock 1. |",
+     "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+    },
+    {
+     "id": "d7f9d8728748",
+     "ubicaciones": [
+      {
+       "documento": ".claude/hooks/aurora/vocabularies.yaml",
+       "lineas": "461-461",
+       "encabezado": "hooks vocabularies.yaml › IDENTITY_BLOCK_MIN_GROUPS"
+      }
+     ],
+     "texto": "IDENTITY_BLOCK_MIN_GROUPS: 3"
+    }
+   ]
+  },
+  {
+   "grupo": "G0051",
+   "miembros": [
+    {
+     "id": "0f675cb4c038",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "104-107",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "`max_prompt_words` is a ceiling. The range in an adapter `.md` is the recommended target\nand always sits inside that ceiling, so a `.md` saying \"40 to 70 words\" under a ceiling of\n120 is guidance, not a conflict. Where a fact in a `.md` and a fact in the JSON genuinely\ndisagree, **the JSON wins**."
+    },
+    {
+     "id": "1cff7a417462",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "109-113",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "That rule is now enforced rather than trusted. `tools/validate_capabilities.py` fails the\nbuild when an adapter advertises more words than its ceiling, or when an adapter never\ndocuments the `aspect_param` the JSON tells you to send. The second check exists because\nnano-banana's matrix entry said `aspect_ratio` while its adapter said the API expects\n`aspectRatio`; the precedence rule meant the wrong one won, silently, on every prompt."
+    },
+    {
+     "id": "30d706367bd6",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: GPT Image (1.5 / 2)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Ideogram (v3)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Midjourney (v7)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "3-3",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+      }
+     ],
+     "texto": "> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift."
+    },
+    {
+     "id": "a2a94d5da69e",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/tools/README.md",
+       "lineas": "52-60",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-architect/tools/README.md",
+       "lineas": "52-60",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/storyboard-html-preview/tools/README.md",
+       "lineas": "52-60",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-asset-critic/tools/README.md",
+       "lineas": "52-60",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/tools/README.md",
+       "lineas": "52-60",
+       "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+      }
+     ],
+     "texto": "Checks the generator capability matrix\n(`skills/visual-prompt-forge/adapters/_capabilities.json`) against\n`capabilities.schema.json`, then checks it against the adapter prose that defers to it:\n\n- every generator id has an adapter `.md` and every adapter `.md` has an entry\n- no adapter advertises more words than its own `max_prompt_words` ceiling\n- every adapter documents the `aspect_param` the matrix says to send\n- no `notes` field cites a word count above its own ceiling\n- warns when the matrix or an entry is past its 120-day freshness window"
+    },
+    {
+     "id": "c646f9c76a45",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "102-102",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "**`adapters/_capabilities.json` is the single source of truth for per-generator limits** (`max_prompt_words`, `supports_text_render`, `supports_motion`, `aspect_param`, and so on). Read it once at the start and respect those values when composing, and do not target motion on a stills-only generator."
+    },
+    {
+     "id": "ed30dc9d0bc5",
+     "ubicaciones": [
+      {
+       "documento": "flujo-spot.html",
+       "lineas": "132-132",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E6.1\nMotion draft desde shots.json + anchor\nvisual-prompt-forge\nShot + keyframes start/tail aprobados\nBorrador por adaptador kling / veo / seedance / hailuo\n_capabilities.json manda sobre el .md",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    }
+   ]
+  },
+  {
+   "grupo": "G0052",
+   "miembros": [
+    {
+     "id": "0f92858ffe68",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "320-320",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "One file per generator. Read these on demand, only for the generators being targeted."
+    },
+    {
+     "id": "272ab4954d55",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "87-98",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "For each target generator, read the matching adapter file:\n\n- `adapters/midjourney.md`\n- `adapters/flux.md`\n- `adapters/ideogram.md`\n- `adapters/gpt-image.md`\n- `adapters/nano-banana.md`\n- `adapters/seedream.md`\n- `adapters/kling.md`      (motion video, default)\n- `adapters/veo.md`        (motion video, dialogue/lipsync + native audio)\n- `adapters/seedance.md`   (motion video, multi-shot sequences)\n- `adapters/hailuo.md`     (motion video, budget iteration)"
+    },
+    {
+     "id": "892ddb90fff0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "100-100",
+       "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+      }
+     ],
+     "texto": "Each adapter file documents the prompting style, parameter syntax, and known pitfalls for that generator. You **must** read the adapter before writing prompts for it. Don't guess from training data, image-gen syntax has churned multiple times."
+    },
+    {
+     "id": "92568cb17fc4",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "295-295",
+       "encabezado": "Visual Prompt Forge › Hard rules › Rule 4. Adapters are the source of truth on syntax"
+      }
+     ],
+     "texto": "If your training data says Midjourney uses `--style 4a` and the adapter file says `--style raw`, the adapter wins. Image-gen syntax changes monthly. The adapter is current; your training is not."
+    },
+    {
+     "id": "e231e82e52a0",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "lineas": "46-46",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+      }
+     ],
+     "texto": "The model file is non-negotiable. Skipping it is the single biggest cause of weak prompts."
+    },
+    {
+     "id": "e2ce0e7cabc5",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "lineas": "101-101",
+       "encabezado": "Final response style"
+      }
+     ],
+     "texto": "When in doubt about a model-specific detail — re-read the model file before writing the final prompt. It costs nothing and prevents bad output."
+    }
+   ]
+  },
+  {
+   "grupo": "G0053",
+   "miembros": [
+    {
+     "id": "0f966d88aa27",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "44-44",
+       "encabezado": "Shot Grammar › Motion (camera movement)"
+      }
+     ],
+     "texto": "For AI-generated still frames, motion is mostly intent for the editor. For motion-video prompts (Kling, Veo, Seedance, Hailuo), motion translates directly."
+    },
+    {
+     "id": "3a72a45093bf",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+      }
+     ],
+     "texto": "With video the **camera motion is load-bearing**. When the shot has dialogue, the **spoken line is also load-bearing** and is written into the prompt (this is the one place where text belongs in a prompt, it is audio, not on-screen text)."
+    },
+    {
+     "id": "843ddd3a7d8f",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md",
+       "lineas": "49-49",
+       "encabezado": "One Shot, All Adapters › Outputs"
+      }
+     ],
+     "texto": "The other three motion adapters (`veo` for dialogue/lipsync, `seedance` for multi-shot sequences, `hailuo` for budget iteration) follow the same five-layer anatomy as Kling and are chosen by need; see their files in `adapters/`. This single silent push shot doesn't exercise dialogue or a sequence, so Kling is the representative motion example here."
+    },
+    {
+     "id": "dbad4dba13e0",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+      }
+     ],
+     "texto": "With video the **camera motion is load-bearing**. The prompt anatomy matches Kling; the difference is cost and intent: iterate freely here."
+    },
+    {
+     "id": "dec8c3d79d9e",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+      }
+     ],
+     "texto": "With video the **camera motion is load-bearing**, and with Seedance the **cut structure is also load-bearing**, you describe the sequence of shots, not just one frame."
+    },
+    {
+     "id": "ef18c84e5f98",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "7-7",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+      }
+     ],
+     "texto": "With video the **camera motion becomes load-bearing** instead of optional. The same shot generates differently when `motion` is `static` versus `push` versus `handheld`. Use this adapter when the storyboard is destined for video generation rather than still-frame compositing."
+    }
+   ]
+  },
+  {
+   "grupo": "G0054",
+   "miembros": [
+    {
+     "id": "10f0fbd2174d",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/SKILL.md",
+       "lineas": "46-46",
+       "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+      }
+     ],
+     "texto": "| Veo, Google video, dialogue / lip-sync, JSON prompts, synchronized SFX, commercial polish with voiceover | [veo.md](references/veo.md) |",
+     "contexto": "| Cue from the user / task | Read |\n|---|---|"
+    },
+    {
+     "id": "302873ccfafc",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "75-75",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't use Veo for silent B-roll.** You are paying for an audio engine you turned off; use Kling."
+    },
+    {
+     "id": "44d77ad98987",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "5-5",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+      }
+     ],
+     "texto": "Veo 3 is the dialogue and lipsync model. It is the only adapter that generates **synchronised native audio**, speech, ambience, and sound effects, in the same pass as the video. It also has the strongest prompt adherence and physical realism of the four motion models. It is the most expensive, so reserve it for shots that actually need spoken dialogue, lipsync, or audio baked in. For silent B-roll and camera moves, Kling is the cheaper default."
+    },
+    {
+     "id": "49ded13694da",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/SKILL.md",
+       "lineas": "331-331",
+       "encabezado": "Visual Prompt Forge › Adapters"
+      }
+     ],
+     "texto": "| `adapters/veo.md` | Veo 3 | Motion video, dialogue/lipsync + native audio |",
+     "contexto": "| File | Generator | Strength |\n|---|---|---|"
+    },
+    {
+     "id": "6021cdb83f0e",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "lineas": "51-51",
+       "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical)"
+      }
+     ],
+     "texto": "Veo is the only model that renders synced lip movement and voice. The syntax matters."
+    },
+    {
+     "id": "e1b6718eef08",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/veo.md",
+       "lineas": "20-20",
+       "encabezado": "Veo reference (Google) › 1. What Veo is"
+      }
+     ],
+     "texto": "Google's cinematic video model with NATIVE synchronized audio. The only major generator that creates dialogue, SFX, and music in sync with the video and does lip-sync natively. Best for commercial polish, narrative with dialogue, and cinematic audio."
+    }
+   ]
+  },
+  {
+   "grupo": "G0055",
+   "miembros": [
+    {
+     "id": "19453edd814b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "92-92",
+       "encabezado": "Seedance reference (ByteDance) › 5. Six-step prompt formula (quick scenes)"
+      }
+     ],
+     "texto": "Write in full sentences, not tags. Seedance prefers clear grammatical prose. For dramatic / multi-shot / character-locked work, **use the production-grade skeleton in section 6 instead.**"
+    },
+    {
+     "id": "770fabbe163b",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/universal-rules.md",
+       "lineas": "81-81",
+       "encabezado": "Universal rules — apply to every video model › 5. U4. Natural language beats tag spam"
+      }
+     ],
+     "texto": "Video models are not image models. Tag stuffing like \"masterpiece, 4k, cinematic, beautiful\" fails. Write in full cinematic sentences as if briefing a human DOP."
+    },
+    {
+     "id": "787210f26b9f",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/nano-banana.md",
+       "lineas": "25-25",
+       "encabezado": "Nano Banana — Specific Rules › Что НЕ указывать"
+      }
+     ],
+     "texto": "- Tag-soup: «cool, modern, 4k, cinematic» — пишет связным предложением."
+    },
+    {
+     "id": "87b4652499a9",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "173-173",
+       "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+      }
+     ],
+     "texto": "Write as flowing prose. Kling 1.x – 2.x dislikes fragmented tag-style inputs."
+    },
+    {
+     "id": "9ca075e56808",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/golden-rules.md",
+       "lineas": "27-28",
+       "encabezado": "Golden Rules › 4. Natural Language"
+      }
+     ],
+     "texto": "❌ Bad: \"Cool car, neon, city, night, 8k\"\n✅ Good: \"A cinematic wide shot of a futuristic sports car speeding through a rainy Tokyo street at night. Neon signs reflect off wet pavement and metallic chassis.\""
+    },
+    {
+     "id": "c8c490e17c80",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "86-86",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't write Midjourney-style comma stacks**. GPT Image parses them as a list of disconnected concepts"
+    }
+   ]
+  },
+  {
+   "grupo": "G0056",
+   "miembros": [
+    {
+     "id": "354771224ca6",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/creative-direction.md",
+       "lineas": "38-43",
+       "encabezado": "Creative Direction › Camera & Hardware"
+      }
+     ],
+     "texto": "**Angles:**\n- \"Low angle\" — power, drama\n- \"Aerial view\" / \"bird's eye\" — scale, pattern\n- \"Eye-level\" — neutral, relatable\n- \"Dutch angle\" — tension, unease\n- \"Worm's eye view\" — extreme drama"
+    },
+    {
+     "id": "885ae128a659",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "130-130",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+      }
+     ],
+     "texto": "D9\nÁngulo y altura de cámara\neye-level · high · low · overhead o top-down · dutch · worm's eye · POV · altura física: a ras de suelo, parachoques, ojos, grúa o aérea, bajo el agua mirando a la superficie\nEl ángulo es la emoción cuando no hay rostro y la relación de poder cuando lo hay: low es dominio, amenaza o fuerza de lanzamiento; eye-level es paridad; high y top-down es juicio, pequeñez o aftermath; dutch se reserva para un solo beat de inestabilidad. Se elige por la dinámica de poder del beat, nunca por variedad. Un ángulo distinto al spec es hard fail en la crítica\nshot-grammar Angle · dramaturgy §6 · animatic §6 · race §10 anti god-angle · kling §3 angle carries emotion · critique-rubric Layer 3",
+     "contexto": "# | Dimensión | Valores posibles | Qué decide | Fuente"
+    },
+    {
+     "id": "8cb5c0ec87ca",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/DECISIONES.md",
+       "lineas": "22-22",
+       "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+      }
+     ],
+     "texto": "- El ángulo de cámara es una dimensión de decisión propia, D9, elegida por la dinámica de poder del beat, nunca por variedad."
+    },
+    {
+     "id": "ba1884af7a2d",
+     "ubicaciones": [
+      {
+       "documento": "skills/storyboard-architect/references/shot-grammar.md",
+       "lineas": "25-25",
+       "encabezado": "Shot Grammar › Angle (camera vertical position)"
+      }
+     ],
+     "texto": "| `low` | Subject feels powerful, dominant |",
+     "contexto": "| Code | Effect |\n|---|---|"
+    },
+    {
+     "id": "df9c885da7c6",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/animatic-keyframes.md",
+       "lineas": "158-158",
+       "encabezado": "Keyframes for an animatic (opornye kadry) › 6. The loaded frame for one panel"
+      }
+     ],
+     "texto": "**Angle encodes the beat** (no face, so the angle *is* the emotion): low / ground-level = power, threat, launch force (**Power, Impact**); eye-level lateral = parity, rivalry stated (**Establish**); high / top-down = judgment, smallness, aftermath (**Aftermath, Exit**)."
+    },
+    {
+     "id": "fdccf4c7fddd",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/kling.md",
+       "lineas": "130-138",
+       "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Cinematic vocabulary that 3.0 actually understands"
+      }
+     ],
+     "texto": "Use these terms directly — the model treats them as instructions, not flavor:\n\n- Framing: profile shot, three-quarter, macro insert, two-shot, OTS, POV, low angle, high angle, Dutch\n- Edits: shot-reverse-shot, match cut, smash cut, J-cut, L-cut\n- Camera moves: tracking, dolly, push-in, pull-out, whip pan, crane, handheld, orbital / 360 spin, Steadicam, drone-like aerial. Composites work: \"pan right while tilting up\".\n- Lens feel: 35mm, 50mm, 85mm, 100mm macro, anamorphic 40mm\n- Tempo words the model obeys: \"ultra-slow motion\" (2-3s feel), \"slow and deliberate\" (5-8s), \"moderate\" (3-5s), \"quick snap\" (1-2s); exact timing works too (\"5-second dolly zoom\").\n- Angle carries emotion: low angle = dominance, high angle = vulnerability, eye-level = neutral. Pick per the power dynamic from `dramaturgy.md` §6, not at random.\n- In the Kling app, Master Shot presets (\"Move Forward and Zoom Up\" etc.) are more stable than hand-written camera prose and save credits — prefer them for standard moves, prose for motivated ones."
+    }
+   ]
+  },
+  {
+   "grupo": "G0057",
+   "miembros": [
+    {
+     "id": "36fedbb449ca",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "43-43",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+      }
+     ],
+     "texto": "| One beat, one frame | Single shot (or use Kling) |",
+     "contexto": "| Situation | Mode |\n|---|---|"
+    },
+    {
+     "id": "3817ea8b1722",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "47-47",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+      }
+     ],
+     "texto": "Map consecutive `shots.json` entries that share a subject into one Seedance multi-shot prompt; reference them by id range in the comment."
+    },
+    {
+     "id": "6034318491db",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "74-74",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't force unrelated beats into one sequence.** Multi-shot is for shots that genuinely belong to one take."
+    },
+    {
+     "id": "a3ab1b2ec05b",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "45-45",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+      }
+     ],
+     "texto": "| Beats with different subjects/locations | Separate generations, assemble in edit |",
+     "contexto": "| Situation | Mode |\n|---|---|"
+    },
+    {
+     "id": "c6cc746f83fe",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "5-5",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+      }
+     ],
+     "texto": "Seedance 2.0 is the multi-shot model. It can generate a **short sequence of cuts in a single generation** while holding subject and environment consistency across them. Reach for it when several consecutive storyboard beats share one subject and you want them to feel like one continuous take, it beats stitching four independent Kling clips that drift apart. For a single isolated shot, Kling is the simpler default."
+    },
+    {
+     "id": "d76eb13635a1",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "44-44",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+      }
+     ],
+     "texto": "| 2–4 consecutive beats, same subject, want continuity | Multi-shot sequence |",
+     "contexto": "| Situation | Mode |\n|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0058",
+   "miembros": [
+    {
+     "id": "3e7653e08b69",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "73-73",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Output handoff"
+      }
+     ],
+     "texto": "Hailuo output is a draft used to choose the shot. The deliverable comes from the final-tier re-roll. If a Hailuo take is genuinely good enough to keep, treat it like any other clip: editorial assembly, text-overlay compositing, color grade, audio."
+    },
+    {
+     "id": "3f3192574f29",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "88-88",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Output handoff"
+      }
+     ],
+     "texto": "Generated clips are raw material, not deliverable. After generation they still need: editorial assembly to storyboard timing, text-overlay compositing from `text-overlays.json`, a color-grade pass, and audio (VO, music, sound design). Say this in handoff."
+    },
+    {
+     "id": "764cde0e4779",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "82-82",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Output handoff"
+      }
+     ],
+     "texto": "Seedance returns a sequence as a single clip (or a small set). It still needs: editorial trimming to exact storyboard timing, text-overlay compositing, a color-grade pass, and audio. Multi-shot output usually needs *less* assembly than stitched single clips, which is the point. Say so in handoff."
+    },
+    {
+     "id": "928ddcdda102",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "83-83",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Output handoff"
+      }
+     ],
+     "texto": "Veo clips arrive with audio attached. They still need: editorial assembly to timing, on-screen text compositing from `text-overlays.json`, a color-grade pass, and an audio decision, keep Veo's native track, or mute it and use the storyboard's recorded VO and music. State which in handoff."
+    },
+    {
+     "id": "af7c69b5787a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "63-63",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Audio direction"
+      }
+     ],
+     "texto": "If the brand-lock or storyboard owns the audio bed (VO recorded separately, music added in post), set `generate_audio=false` and skip this section so Veo does not invent a competing track."
+    },
+    {
+     "id": "c7462d7c0059",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "79-79",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't let Veo's auto-audio fight a post audio bed.** Pick one owner of sound per shot."
+    }
+   ]
+  },
+  {
+   "grupo": "G0059",
+   "miembros": [
+    {
+     "id": "a029d74c5ec9",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "24-24",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+      }
+     ],
+     "texto": "| `prompt_upsampling` | API call field | `false` for series work, auto-rewrites kill consistency |",
+     "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+    },
+    {
+     "id": "aa65ea972419",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "38-38",
+       "encabezado": "Adapter: Ideogram (v3) › Parameters"
+      }
+     ],
+     "texto": "| `magic_prompt` | API field | `OFF` for series work, kills consistency |",
+     "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+    },
+    {
+     "id": "b1474571f519",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "66-66",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't enable the prompt optimizer for series work.** Auto-rewrite breaks shot-to-shot consistency."
+    },
+    {
+     "id": "e29b390895a8",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "22-22",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+      }
+     ],
+     "texto": "| `prompt_optimizer` | `false` for series | Auto-rewrite helps one-offs but breaks shot-to-shot consistency |",
+     "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+    },
+    {
+     "id": "ee08f19b14f1",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "92-92",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't enable prompt upsampling for series work**, fal.ai's auto-rewrite produces inconsistent shots"
+    },
+    {
+     "id": "f6f3dd5d5aa7",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "91-91",
+       "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't trust magic_prompt**, it auto-rewrites and produces inconsistent shots across a series"
+    }
+   ]
+  },
+  {
+   "grupo": "G0060",
+   "miembros": [
+    {
+     "id": "00f488953c00",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/research/09-grupo-ensamble.md",
+       "lineas": "188-190",
+       "encabezado": "Investigación de campo — Familia 09: Grupo ensamble › (4) Hallazgos nuevos (reglas candidatas)"
+      }
+     ],
+     "texto": "4. Nunca corregir dos regiones en la misma instrucción: cambiar una región por vez, porque una\n   instrucción grande \"invita\" al modelo a redibujar lo que ya estaba bien. `[QUOTED]` (Q16)\n   [CAMPO: https://queststudio.io/blog/chatgpt-group-photo-prompts]"
+    },
+    {
+     "id": "3d65942a8e2e",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "86-90",
+       "encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика"
+      }
+     ],
+     "texto": "**Правила edit:**\n- **Один edit за итерацию.** Не пытайся менять всё разом.\n- **Preserve list повторять каждую итерацию.** Иначе дрейф.\n- **Surgical edits:** явно перечисли что НЕ трогать (saturation, contrast, layout, arrows, labels, camera angle).\n- Опционально: `mask_image_url` для точечных edits."
+    },
+    {
+     "id": "7d873bfc0ea7",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/editing.md",
+       "lineas": "8-8",
+       "encabezado": "Image Editing"
+      }
+     ],
+     "texto": "Общее правило: **один edit за итерацию**, не пытайся менять всё разом."
+    },
+    {
+     "id": "b802d9d2999c",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "103-103",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't pile multiple modifications in one image-to-image prompt**, one change per pass produces cleaner results"
+    },
+    {
+     "id": "d2737ae666b8",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/gpt-image.md",
+       "lineas": "122-122",
+       "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+      }
+     ],
+     "texto": "- Один change за раунд. «Make lighting warmer», «remove extra tree», «restore original background»."
+    }
+   ]
+  },
+  {
+   "grupo": "G0061",
+   "miembros": [
+    {
+     "id": "037e2cb4193d",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+       "lineas": "57-57",
+       "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- GPT Image 2 con quality high cuando el detalle de gotas y condensación es el centro del cuadro. [FUENTE: image/references/patterns/food-beverage.md]"
+    },
+    {
+     "id": "4ba58a4a67ab",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "58-58",
+       "encabezado": "Objeto balístico › 6. Modelo recomendado"
+      }
+     ],
+     "texto": "- GPT Image 2 con quality high para el detalle congelado y la legibilidad de texturas finas, como en los patrones de ingrediente flotante. [FUENTE: image/references/patterns/ecommerce.md]"
+    },
+    {
+     "id": "5df62f440496",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/food-beverage.md",
+       "lineas": "96-96",
+       "encabezado": "Food & Beverage Patterns › Hyper-Realistic Food Poster Template"
+      }
+     ],
+     "texto": "**Recommended model:** GPT Image 2 (`quality: high`) — steam, condensation, and ingredient texture fidelity"
+    },
+    {
+     "id": "a55091efb822",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ecommerce.md",
+       "lineas": "92-94",
+       "encabezado": "E-Commerce Product Photography Patterns › Floating Ingredient Freeze-Frame"
+      }
+     ],
+     "texto": "**Key levers:** `{product_name}`, `{background_gradient}` (#F5F0EB to #FFFFFF for light, #1A0A2E to #0D0D0D for dark), `{liquid_type}` (amber juice, white milk, green smoothie), `{ingredient_list}` (sliced strawberries + mint leaves + ice cubes, cocoa nibs + hazelnuts + vanilla pod), `{texture_details}` (visible seeds on strawberry cross-section, frost crystals on ice), `{tilt_angle}` (15, 25), `{max_ingredients}` (6-8)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — frozen detail precision and label legibility"
+    },
+    {
+     "id": "f6fa3f52b7b6",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/patterns/ecommerce.md",
+       "lineas": "41-43",
+       "encabezado": "E-Commerce Product Photography Patterns › Luxury Cosmetics Studio Shot"
+      }
+     ],
+     "texto": "**Key levers:** `{background_surface}` (nero marquina marble, wet obsidian slab, brushed gunmetal), `{product_finish}` (frosted glass, lacquered black, brushed gold), `{accent_material}` (raw quartz crystals, dried lavender stems, black river stones), `{palette}` (golds #C9A84C and blacks, rose #B76E79 and creams, emerald #2D6A4F and silvers), `{time_mood}` (cold blue, warm amber)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — surface materials and condensation detail"
+    }
+   ]
+  },
+  {
+   "grupo": "G0062",
+   "miembros": [
+    {
+     "id": "0987cfd1a819",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "lineas": "86-98",
+       "encabezado": "Output format"
+      }
+     ],
+     "texto": "When you return the prompt, structure it like this:\n\n```\nModel: <nano-banana-2 | nano-banana-pro | gpt-image-2>\nQuality: <low | medium | high>          (only for gpt-image-2)\nSize / Ratio: <e.g. 1536×1024 or 16:9>\n\nPrompt:\n<the prompt text, ready to copy>\n\nNotes:\n- <anything you inferred or assumed because the user did not specify>\n```"
+    },
+    {
+     "id": "3cd8aaf7e106",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/models.md",
+       "lineas": "68-68",
+       "encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)"
+      }
+     ],
+     "texto": "> Скилл сам не запускает генерацию — выдаёт промпт. Модель/quality указываем рядом с промптом как мета."
+    },
+    {
+     "id": "5a20a3340e40",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "283-283",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+      }
+     ],
+     "texto": "Metadatos Model, Quality, Size fuera del cuerpo del prompt"
+    },
+    {
+     "id": "81a1d8b6e102",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/SKILL.md",
+       "lineas": "16-16",
+       "encabezado": "Image Prompting — Nano Banana & GPT Image 2"
+      }
+     ],
+     "texto": "This skill writes image prompts. It does not generate images. The output is: model name + quality / size / aspect ratio + the prompt itself."
+    },
+    {
+     "id": "f8734854981d",
+     "ubicaciones": [
+      {
+       "documento": "skills/image/references/vision-decomposer.md",
+       "lineas": "97-97",
+       "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL › Block 2 — Final Prompt"
+      }
+     ],
+     "texto": "After the prompt, append the standard image-skill output header (Model / Quality / Size) so the user can drop it straight into the generator."
+    }
+   ]
+  },
+  {
+   "grupo": "G0063",
+   "miembros": [
+    {
+     "id": "0c6af54befbb",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+       "lineas": "89-89",
+       "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't include `--ar` flags or weight syntax**. GPT Image ignores them"
+    },
+    {
+     "id": "2b8bad069a26",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "101-101",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't use Midjourney-style flag syntax**. Nano Banana ignores `--ar`, expects `aspectRatio` parameter"
+    },
+    {
+     "id": "9715d1c2cd9a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "91-91",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't use weight syntax `(thing:1.4)`**. Flux 2 doesn't support it; Flux 1.1 partially does. Stick to natural language"
+    },
+    {
+     "id": "9f5ea82f2cac",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "81-81",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+      }
+     ],
+     "texto": "- **Don't use `--ar` syntax**, pass aspect_ratio as a parameter"
+    },
+    {
+     "id": "ab241e19adcf",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "13-13",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Syntax pattern"
+      }
+     ],
+     "texto": "Periods separate beats. Each sentence does one job. No bracket weights, no `--` flags. Flux is parameterless on most APIs (fal.ai, Replicate, BFL direct)."
+    }
+   ]
+  },
+  {
+   "grupo": "G0064",
+   "miembros": [
+    {
+     "id": "0dbad372541b",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "67-67",
+       "encabezado": "Multitud anónima › 7. Tratamiento de personas dentro del régimen"
+      }
+     ],
+     "texto": "- El crítico cuenta rostros legibles: cada uno debe corresponder a un héroe canonizado; el que no, se convierte en silueta, espalda o desenfoque mediante edición. [FUENTE: produccion-visual-sw30/SKILL.md R12]"
+    },
+    {
+     "id": "3b77b687ddb6",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "73-73",
+       "encabezado": "Multitud anónima › 8. Fallos conocidos y su corrección"
+      }
+     ],
+     "texto": "- Rostros legibles en la masa: editar a desenfoque o silueta, o regenerar la placa con contraluz. [FUENTE: produccion-visual-sw30/SKILL.md R12]"
+    },
+    {
+     "id": "595d7cc491a9",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "306-306",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Checks del crítico por tipo de acción, encima de las 6 capas"
+      }
+     ],
+     "texto": "F: rostros legibles = héroes canonizados, cero clones, tres planos con trabajos distintos"
+    },
+    {
+     "id": "edf080d7a585",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/08-multitud-anonima.md",
+       "lineas": "81-81",
+       "encabezado": "Multitud anónima › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Ningún rostro legible que no sea un héroe canonizado. [FUENTE: produccion-visual-sw30/SKILL.md R12]"
+    },
+    {
+     "id": "fffe5970a6b7",
+     "ubicaciones": [
+      {
+       "documento": "flujo-anclas.html",
+       "lineas": "186-186",
+       "encabezado": "Flujo de Anclas Cinematográficas › Paso 3 · dimensiones D2 × D3: Tratamiento de personas: técnica según número de sujetos y tipo de acción"
+      }
+     ],
+     "texto": "Cada rostro legible en el frame es una identidad que hay que sostener en todos los clips. Por eso el crítico cuenta rostros: los que no son héroes canonizados se convierten en silueta, espalda o desenfoque, o el ancla no pasa."
+    }
+   ]
+  },
+  {
+   "grupo": "G0065",
+   "miembros": [
+    {
+     "id": "0def8626c6ee",
+     "ubicaciones": [
+      {
+       "documento": "flujo-spot.html",
+       "lineas": "103-103",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E2\nScreenwriting · sin treatment en STANDARD",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "1c683d154fcb",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "58-58",
+       "encabezado": "AI Production Director › 2. Selección de track"
+      }
+     ],
+     "texto": "- **STANDARD**: pipeline completo pero Etapa 1 comprimida (2–3 conceptos en vez de 5, sin documento de territorios) y Etapa 2 comprimida (script directo, sin treatment separado)."
+    },
+    {
+     "id": "595f907b4323",
+     "ubicaciones": [
+      {
+       "documento": "flujo-spot.html",
+       "lineas": "97-97",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E1\nCreative Strategy · comprimida en STANDARD",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "b2831f927c18",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/references/creative-strategy.md",
+       "lineas": "5-5",
+       "encabezado": "Etapa 1 — Creative Strategy"
+      }
+     ],
+     "texto": "Profundidad por track: FILM ejecuta todo. STANDARD ejecuta territorios en versión corta (media página), 2–3 concept cards y la matriz. EXPRESS no ejecuta esta etapa."
+    },
+    {
+     "id": "b381abdaa4ae",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "79-79",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+      }
+     ],
+     "texto": "- **Salida:** treatment (solo FILM) → script con escenas XML-tagged, sluglines, acción y diálogo."
+    }
+   ]
+  },
+  {
+   "grupo": "G0066",
+   "miembros": [
+    {
+     "id": "10a22738afb7",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "405-405",
+       "encabezado": "Seedance reference (ByteDance) › 17. Seedance 2.5 → read `seedance-25.md`"
+      }
+     ],
+     "texto": "2.5 changes the workflow: a 15-30s narrative that used to be 3-6 stitched clips is now one generation with one continuous arc, extendable to 60s, with a separate Ultra Long mode to 180s. The dramaturgy does not change — the beat map from `dramaturgy.md` §10 moves inside a single prompt."
+    },
+    {
+     "id": "4a541b624f02",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "31-31",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+      }
+     ],
+     "texto": "- **30-second native single-pass clip.** One generation, one continuous arc, no stitching. Extension pushes it to 60s; a separate Ultra Long mode goes to 180s (see sections 13-14)."
+    },
+    {
+     "id": "82c9dda94cfe",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "32-32",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 1. What 2.5 changes"
+      }
+     ],
+     "texto": "- **50 multimodal references** (30 images + 10 videos + 10 audio) with per-asset role binding. The model understands which asset is responsible for character, scene, prop, camera move, or rhythm — if you tell it."
+    },
+    {
+     "id": "af5d93c3801a",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance.md",
+       "lineas": "35-35",
+       "encabezado": "Seedance reference (ByteDance) › 2. Versions and specs"
+      }
+     ],
+     "texto": "- **Seedance 2.5** (released 2026-07-31). Native 30-second single-pass clip, up to 60s via extension, 30-180s in Ultra Long mode. 50 multimodal reference inputs (30 images + 10 video + 10 audio), video editing (partial re-render), 3D white-model camera blockout, realistic humans with multilingual lip-sync in 11 languages. **Full production reference: `seedance-25.md`.**"
+    },
+    {
+     "id": "b460ef7f37e2",
+     "ubicaciones": [
+      {
+       "documento": "skills/video/references/seedance-25.md",
+       "lineas": "45-45",
+       "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 2. Specs and hard limits"
+      }
+     ],
+     "texto": "| Single-pass duration | up to 15s | up to **30s** (duration `-1` or 4-30) |",
+     "contexto": "| Parameter | 2.0 | 2.5 |\n|---|---|---|"
+    }
+   ]
+  },
+  {
+   "grupo": "G0067",
+   "miembros": [
+    {
+     "id": "10c3525125b4",
+     "ubicaciones": [
+      {
+       "documento": "flujo-spot.html",
+       "lineas": "93-93",
+       "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+      }
+     ],
+     "texto": "E0.1\nReunir fuentes\nbrand-lock-extractor\nURL, brand book PDF, screenshots o descripción\nMaterial leído, una sola pregunta si falta todo\nPaso 1 del workflow",
+     "contexto": "Código | Subproceso | Skill con autoridad | Entra | Sale | Gate o herramienta"
+    },
+    {
+     "id": "41bdf67652bd",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/brand-packs/README.md",
+       "lineas": "36-38",
+       "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+      },
+      {
+       "documento": "skills/storyboard-architect/brand-packs/README.md",
+       "lineas": "36-38",
+       "encabezado": "Brand Packs › Generating a brand pack from existing assets"
+      }
+     ],
+     "texto": "Don't hand-author from scratch if the brand already exists. The **`brand-lock-extractor`** skill (ships in this repo at `skills/brand-lock-extractor/`) takes a website URL, a brand book PDF, screenshots, or a written description and produces a `brand-lock.md` in this exact format, with a confidence and source noted for every value:\n\n> \"Extract a brand-lock from acme.com\" or \"build a brand pack from this brand book PDF.\""
+    },
+    {
+     "id": "7bd3353bb954",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "28-28",
+       "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+      }
+     ],
+     "texto": "| `brand-lock-extractor` | 0 · Marca | brand-lock.md de 9 secciones desde assets reales | Parámetros de marca |",
+     "contexto": "| Sub-skill | Capa | Qué aporta | Autoridad sobre |\n|---|---|---|---|"
+    },
+    {
+     "id": "9917307130d4",
+     "ubicaciones": [
+      {
+       "documento": "skills/ai-production-director/SKILL.md",
+       "lineas": "68-68",
+       "encabezado": "AI Production Director › 3. Las etapas › Etapa 0 — Brand Lock *(solo si hay marca/cliente)*"
+      }
+     ],
+     "texto": "- **Skill:** `brand-lock-extractor`. Entrada: sitio web, brand book, screenshots o descripción."
+    },
+    {
+     "id": "ffe9f6765a65",
+     "ubicaciones": [
+      {
+       "documento": "skills/brand-lock-extractor/SKILL.md",
+       "lineas": "36-36",
+       "encabezado": "Brand Lock Extractor › Inputs"
+      }
+     ],
+     "texto": "At minimum you need one source. If the user offers none, ask for the one they have: **\"What can I work from, a website URL, a brand book PDF, screenshots, or a short description?\"** One question."
+    }
+   ]
+  },
+  {
+   "grupo": "G0068",
+   "miembros": [
+    {
+     "id": "1172bc492607",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "83-83",
+       "encabezado": "Objeto balístico › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Specular y material legibles. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "3eb6e9176a00",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "44-44",
+       "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- Luz specular, no ambiental: un specular duro en metal o goma por panel. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "4c87a39b7b50",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+       "lineas": "46-46",
+       "encabezado": "Objeto balístico › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- Un specular duro en el objeto es obligatorio: sin él no hay información de material ni de forma. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "a702004b1ddb",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/09-grupo-ensamble.md",
+       "lineas": "47-47",
+       "encabezado": "Grupo ensamble › 4. Luz en este medio"
+      }
+     ],
+     "texto": "- Instrumentos con specular: barniz, metal, cuerdas; sin specular no hay material. [FUENTE: video/references/race-and-speed.md §7]"
+    },
+    {
+     "id": "c0216ce354d1",
+     "ubicaciones": [
+      {
+       "documento": ".claude/rules/regimenes/05-vehiculo.md",
+       "lineas": "83-83",
+       "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+      }
+     ],
+     "texto": "- [ ] Un specular duro por panel; cálido solo puntual en registro race. [FUENTE: video/references/race-and-speed.md §7]"
+    }
+   ]
+  },
+  {
+   "grupo": "G0069",
+   "miembros": [
+    {
+     "id": "126c5293b47a",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+       "lineas": "36-36",
+       "encabezado": "Adapter: Ideogram (v3) › Parameters"
+      }
+     ],
+     "texto": "| `aspect_ratio` | API field | from `project.aspect` |",
+     "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+    },
+    {
+     "id": "9dcde01584ae",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+       "lineas": "20-20",
+       "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/kling.md",
+       "lineas": "22-22",
+       "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+       "lineas": "26-26",
+       "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+       "lineas": "25-25",
+       "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+      },
+      {
+       "documento": "skills/visual-prompt-forge/adapters/veo.md",
+       "lineas": "20-20",
+       "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+      }
+     ],
+     "texto": "| `aspect_ratio` | from `project.aspect` | |",
+     "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+    },
+    {
+     "id": "b2335609a957",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/flux.md",
+       "lineas": "21-21",
+       "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+      }
+     ],
+     "texto": "| `aspect_ratio` | API call field | from `project.aspect` |",
+     "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+    },
+    {
+     "id": "c67dcb78d5e8",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+       "lineas": "19-19",
+       "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+      }
+     ],
+     "texto": "| `--ar` | aspect ratio | from `project.aspect` | `--ar 9:16`, `--ar 16:9`, `--ar 1:1` |",
+     "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+    },
+    {
+     "id": "c8da57ec05b5",
+     "ubicaciones": [
+      {
+       "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+       "lineas": "30-30",
+       "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Parameters"
+      }
+     ],
+     "texto": "| `aspectRatio` | from `project.aspect` | Native support for `9:16`, `16:9`, `1:1`, `4:5`, `3:4`, `21:9` |",
+     "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+    }
+   ]
+  }
+ ]
+}

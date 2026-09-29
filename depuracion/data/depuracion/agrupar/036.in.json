@@ -1,0 +1,950 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "longitud_prompt",
+ "descripcion_tema": "número de palabras, elementos máximos, compresión, presupuesto",
+ "filas": [
+  {
+   "id": "846c5111509e",
+   "alcance": "Adapter Flux (Flux 2 Pro, 1.1 Pro, Dev) de visual-prompt-forge",
+   "enunciado": "Flux maneja cómodamente 80-150 palabras: no rellenar, pero hay más margen que en Midjourney.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Length"
+    }
+   ]
+  },
+  {
+   "id": "2d4bb1b99249",
+   "alcance": "Adapter Flux (Flux 2 Pro, 1.1 Pro, Dev) de visual-prompt-forge",
+   "enunciado": "No escribir 'highly detailed, 4k, masterpiece' en Flux: son muletas de Stable Diffusion que Flux ignora y gastan tokens.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "7962b47edcb5",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge",
+   "enunciado": "GPT Image maneja cómodamente 150-300 palabras, más que otros generadores, y el margen se usa en descripciones espaciales explícitas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Length"
+    }
+   ]
+  },
+  {
+   "id": "a91bc1cd3aab",
+   "alcance": "Adapter GPT Image (1.5 / 2) de visual-prompt-forge",
+   "enunciado": "No apilar demasiados objetos en GPT Image: cinco o menos elementos distintos por escena, porque más degrada la fidelidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "13b22b1128aa",
+   "alcance": "Adapter Hailuo 02 Pro de visual-prompt-forge",
+   "enunciado": "Hailuo rinde bien con 60-120 palabras, menos que Kling y Veo; los borradores se mantienen concisos porque se prueban movimiento y encuadre, no el pulido final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Length"
+    }
+   ]
+  },
+  {
+   "id": "2584eda1b153",
+   "alcance": "Adapter Hailuo 02 Pro de visual-prompt-forge",
+   "enunciado": "No sobrepulir el prompt del borrador de Hailuo: gastar palabras en movimiento y encuadre y reservar el detalle fotográfico para la regeneración en el modelo final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "8c3011bee2b2",
+   "alcance": "Adapter Ideogram v3 de visual-prompt-forge",
+   "enunciado": "Ideogram maneja cómodamente 60-120 palabras y los prompts con texto deben ser aún más cortos, porque más descripción alrededor de la instrucción de texto aumenta la probabilidad de que el render omita o deforme el copy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3) › Length"
+    }
+   ]
+  },
+  {
+   "id": "69164426252d",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "Kling maneja cómodamente 80-150 palabras; la descripción de movimiento suma un beat sobre un prompt de still y no debe pasarse de ese margen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Length"
+    }
+   ]
+  },
+  {
+   "id": "9b7450de8cf3",
+   "alcance": "Adapter Midjourney v7 de visual-prompt-forge",
+   "enunciado": "En Midjourney conviene apuntar a 40-80 palabras por prompt incluyendo parámetros, y más de 100 palabras rinde peor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Length"
+    }
+   ]
+  },
+  {
+   "id": "35ccce741078",
+   "alcance": "Adapter Midjourney v7 de visual-prompt-forge",
+   "enunciado": "Midjourney premia prompts cortos y de alta señal con adjetivos apilados y vocabulario cinematográfico; los párrafos largos rinden peor porque se leen como pesos en competencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7)"
+    }
+   ]
+  },
+  {
+   "id": "d51d0214565b",
+   "alcance": "Bloques SW30 cuando hay persona",
+   "enunciado": "El prompt con persona debe rondar las 250 palabras; un slot de 300 o más compite consigo mismo.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Cuando hay persona: bloques SW30 encima"
+    }
+   ]
+  },
+  {
+   "id": "05305b087a33",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 2 (linter aurora)",
+   "enunciado": "Decisión 2: el linter aurora es una copia parcheada en el repo donde el conteo de palabras nunca bloquea (solo advierte con el presupuesto de la plataforma), y siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "2172c2443d55",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), principio de trabajo",
+   "enunciado": "Cuando una regla puede codificarse se codifica, pero un límite de longitud es dirección y no bloqueo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+    }
+   ]
+  },
+  {
+   "id": "7c5cde4162fd",
+   "alcance": "GPT Image 2; estrategia de iteración",
+   "enunciado": "Para prompts largos usar secciones etiquetadas y no un solo bloque de texto corrido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/gpt-image.md",
+     "encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy"
+    }
+   ]
+  },
+  {
+   "id": "85a74c5ca2f6",
+   "alcance": "General (skill video, fixes y esqueletos, §2 Dialogue too fast (Veo)) · Veo",
+   "enunciado": "Fix para diálogo demasiado rápido en Veo: recortar la línea a un máximo de 8 segundos de texto hablado, verificándolo leyendo en voz alta a ritmo normal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › Dialogue too fast (Veo)"
+    }
+   ]
+  },
+  {
+   "id": "f69a4a77ebf7",
+   "alcance": "Imagen; ejemplo Before/After del modo Cinematic Verbose",
+   "enunciado": "Ejemplo: el mismo retrato de barista reescrito en Cinematic Verbose, con desgaste de superficies, microtexturas, partículas, sombras de contacto, especulares, reflejos y cues de movimiento añadidos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Cinematic Verbose Mode › Before / After"
+    }
+   ]
+  },
+  {
+   "id": "361f42833e54",
+   "alcance": "Imagen; ejemplo Before/After del modo Cinematic Verbose",
+   "enunciado": "Ejemplo: prompt de retrato de barista en modo Standard Verbose (Setting, Subject, Atmosphere, Mood, Lighting, Format), usado como punto de partida del contraste antes/después.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Cinematic Verbose Mode › Before / After"
+    }
+   ]
+  },
+  {
+   "id": "9a83b5879324",
+   "alcance": "Imagen; modo Cinematic Verbose",
+   "enunciado": "Explicación: el modo Cinematic verbose está un nivel por encima del verbose estándar (5-7 líneas) y se reserva para máximo detalle en hero shots, key visuals y centerpieces de campaña.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Cinematic Verbose Mode"
+    }
+   ]
+  },
+  {
+   "id": "92909ce52245",
+   "alcance": "Imagen; modos de detalle, general",
+   "enunciado": "Ejemplo: modo Concise, una sola frase para iteraciones rápidas (póster minimalista con una manzana roja sobre fondo blanco).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Detail Modes (Режимы)"
+    }
+   ]
+  },
+  {
+   "id": "b94bb0b92150",
+   "alcance": "Imagen; modos de detalle, general",
+   "enunciado": "Ejemplo: modo Standard, uno o dos párrafos que equilibran control y flexibilidad (tiro de producto de audífonos con luz puntual y degradado de fondo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Detail Modes (Режимы)"
+    }
+   ]
+  },
+  {
+   "id": "a16d46793dec",
+   "alcance": "Imagen; modos de detalle, general",
+   "enunciado": "Ejemplo: modo Verbose, máximo detalle para escenas complejas, con secciones Setting, Subject, Atmosphere, Mood, Lighting y Format (estación espacial abandonada).",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/prompt-framework.md",
+     "encabezado": "Prompt Framework › Detail Modes (Режимы)"
+    }
+   ]
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "Lint aurora, casos 1 y 2",
+   "enunciado": "Lint aurora para caso 1 (génesis) o caso 2 (ancla con refs): 75 a 130 palabras, negativo obligatorio y sin re-describir categorías cubiertas por refs.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "40b828f0c34e",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "Con exit 0 el prompt se entrega con el reporte adjunto; con exit 1 no se entrega y se itera; los WARN de palabras se leen junto al techo del adaptador y no se arreglan recortando el T1.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "b5b9742f45b1",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, Seedance 2.5",
+   "enunciado": "Decisión 7: el presupuesto de Seedance 2.5 usa el rango 80–150 del adaptador de Seedance 2.0 con nota de que seedance-25.md no fija cifra; no se inventa un rango porque SW30 R19 prohíbe afirmar límites de plataforma sin fuente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "41eeca8d9a74",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), presupuesto de palabras I2V",
+   "enunciado": "Parche P1: el presupuesto de palabras I2V se fija por familia (Kling 20–40, Veo 50–100, Seedance 80–150 del adaptador declarado en source), siempre como WARN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "65a7d30ed98f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P1",
+   "enunciado": "Prueba T01: un T1 SW30 de unas 250 palabras en nano_banana_pro caso 1 debe dar exit 0 con WARN de palabras (parche P1).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "6be0b6da33b1",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, todos los parches",
+   "enunciado": "Prueba T14: el ejemplo GOOD del README del skill pasa (con y sin --platform), el BAD falla con las mismas violaciones y overrides aceptados, y ya no falla por longitud.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "a482552a5111",
+   "alcance": "Midjourney v7 (adaptador de visual-prompt-forge), errores a evitar",
+   "enunciado": "Prohíbe apilar adjetivos: máximo tres adjetivos por sintagma nominal.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "5826aa81d33e",
+   "alcance": "Motion brief para Kling 3.0 en I2V",
+   "enunciado": "En Kling 3.0 el ancla entra como start_image y opcional tail_image, con Elements de 4 vistas para personajes recurrentes; el prompt de I2V (20 a 40 palabras) dice \"preserve identity, wardrobe, sign exactly\", un movimiento de cámara primero, shots con timecodes y audio.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "fee3daa3c731",
+   "alcance": "Nano Banana (gemini-2.5-flash-image), adaptador de visual-prompt-forge, longitud",
+   "enunciado": "Limita la longitud del prompt NB a 60-120 palabras: más corto que GPT Image, más largo que Midjourney.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Length"
+    }
+   ]
+  },
+  {
+   "id": "3e48c80f434e",
+   "alcance": "Régimen 06 cuerpo en el pico de esfuerzo (still, imagen); template T1 de SW30",
+   "enunciado": "Con rostro, el prompt ronda las 250 palabras con los bloques light_hard, skin_doc, usecase_doc y clean_doc; un slot de más de 300 palabras compite consigo mismo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 6. Modelo recomendado"
+    }
+   ]
+  },
+  {
+   "id": "33fa4192a42b",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Limita cada generación Seedance a unos 4 cortes como máximo porque la consistencia se degrada; se divide y ensambla en edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3b5414a3963f",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, longitud",
+   "enunciado": "Limita el prompt Seedance a 80-150 palabras y, en multi-shot, exige cláusulas cortas: un movimiento de cámara y una acción por corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Length"
+    }
+   ]
+  },
+  {
+   "id": "400f81833808",
+   "alcance": "Seedream 4.5/4.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe escribir párrafos en prompts Seedream: quiere frases separadas por comas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "d3caa5004a34",
+   "alcance": "Seedream 4.5/4.0, adaptador de visual-prompt-forge, longitud",
+   "enunciado": "Limita el prompt Seedream a 40-70 palabras, más corto que la mayoría, sin relleno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Length"
+    }
+   ]
+  },
+  {
+   "id": "89519b2c7aaa",
+   "alcance": "Seedream 4.5/4.0, adaptador de visual-prompt-forge, sintaxis",
+   "enunciado": "Especifica que Seedream requiere prompts cortos y precisos; los largos rinden peor porque el modelo los lee como pesos en competencia y produce mezcla confusa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "f2d80d60f259",
+   "alcance": "Skill ai-video-storyboard, paso 4 (formato de shot)",
+   "enunciado": "Ejemplo: plantilla de cada shot con propósito, composición, movimiento, luz, sujeto, acción, prompt para copiar (40-80 palabras, terminado con 'cinematic 1080p, synchronized audio') y dirección de audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-video-storyboard/SKILL.md",
+     "encabezado": "AI Video Storyboard Generator › Workflow › Step 4 — Write Each Shot"
+    }
+   ]
+  },
+  {
+   "id": "c0bacd197724",
+   "alcance": "Skill image, vision-decomposer, protocolo de salida, bloque 1",
+   "enunciado": "Cada línea del log de análisis: máximo 1-2 frases con solo los parámetros extraídos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/vision-decomposer.md",
+     "encabezado": "Vision Decomposer — Image-to-Prompt Analysis › OUTPUT PROTOCOL › Block 1 — Brief Analysis Log"
+    }
+   ]
+  },
+  {
+   "id": "bee9bb7adee6",
+   "alcance": "Skill produccion-visual-sw30, template T1; GPT Image 2",
+   "enunciado": "Mantener el prompt completo de T1 en unas 250 palabras; un slot de 300+ palabras compite consigo mismo y causa artefactos documentados en gpt-image-2.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "d65c6fdf8a45",
+   "alcance": "Skill video, modo Screenwriter, formato de diálogo para Veo (clips de 8 s)",
+   "enunciado": "Recortar las líneas de diálogo hasta que quepan en 8 segundos de habla natural.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/role-modes.md",
+     "encabezado": "Role modes › 2. Screenwriter mode › Dialogue format (for Veo specifically)"
+    }
+   ]
+  },
+  {
+   "id": "30d706367bd6",
+   "alcance": "Todos los adapters de visual-prompt-forge (Flux, GPT Image, Hailuo, Ideogram, Kling, Midjourney, Nano Banana, Seedance, Seedream, Veo)",
+   "enunciado": "Los datos de capacidad (tope de longitud, soporte de texto y movimiento, parámetro de aspecto) son canónicos en _capabilities.json; el rango de palabras del adapter es objetivo recomendado dentro de ese tope, y si el JSON y el .md discrepan gana el JSON y validate_capabilities.py rompe el build.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ]
+  },
+  {
+   "id": "78cd9d3a55e2",
+   "alcance": "Tools README compartido, project check validate_prompts.py; visual-prompt-forge",
+   "enunciado": "validate_prompts.py valida los archivos de prompts de visual-prompt-forge contra shots.json y la matriz de capacidades: cabecera completa, generator id, aspect, techo max_prompt_words, cobertura de shots, bloques duplicados y las dos reglas duras de la forja (sin copy de texto en pantalla dentro del prompt; environment, lighting y color_grade verbatim).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "702beaf3ebbf",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, diálogo y lipsync",
+   "enunciado": "Limita el diálogo a lo que cabe en la duración (unas 12-18 palabras en un clip de 8s) y exige dirigir la entrega; Veo hace lipsync de la línea citada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Dialogue and lipsync"
+    }
+   ]
+  },
+  {
+   "id": "60c8edd6559d",
+   "alcance": "Veo 3, adaptador de visual-prompt-forge, longitud",
+   "enunciado": "Limita el prompt Veo a 80-150 palabras, gastando el margen en timing de acción y dirección de audio, no en pilas de adjetivos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Length"
+    }
+   ]
+  },
+  {
+   "id": "542bea043bac",
+   "alcance": "Veo, fallo: prompt demasiado largo",
+   "enunciado": "Si el prompt de Veo es demasiado largo y el modelo elige a medias, se comprime a 50-100 palabras o se pasa a JSON, que maneja mejor la longitud por su separación estructural.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Prompt too long, model cherry-picks"
+    }
+   ]
+  },
+  {
+   "id": "dc96ec2e78b1",
+   "alcance": "Veo, longitud de prompt",
+   "enunciado": "El punto óptimo de longitud en Veo es 50-200 palabras: menos da más libertad creativa y menos control, más da control más estricto con mayor riesgo de contradicciones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ]
+  },
+  {
+   "id": "2c647672c6b2",
+   "alcance": "Video; Kling 1.6",
+   "enunciado": "Kling 1.6 requiere prompts simplificados y muy simples.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "990901ba347b",
+   "alcance": "Video; Kling 1.6, 2.1 Pro, 2.5 Turbo Pro y 2.6 Pro",
+   "enunciado": "Fórmula de prompt para Kling 1.6, 2.1 Pro, 2.5 Turbo Pro y 2.6 Pro: sujeto con detalles, un movimiento, escena de 3-5 elementos, lenguaje de cámara, luz y atmósfera.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "1dbb78359895",
+   "alcance": "Video; Kling 1.6, longitud de prompt",
+   "enunciado": "En Kling 1.6 el prompt debe ser simple y mínimo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "7267cd033cd3",
+   "alcance": "Video; Kling 1.x-2.x y 3.0",
+   "enunciado": "Los prompts largos en Kling 1.x-2.x producen salidas derretidas y deben comprimirse sin piedad; en 3.0 la estructura pesa más que la longitud.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "8c08a5a0bfd7",
+   "alcance": "Video; Kling 2.5 Turbo Pro",
+   "enunciado": "Kling 2.5 Turbo Pro admite como máximo 3-4 elementos distintos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "9ade43b5f9c1",
+   "alcance": "Video; Kling 2.5 Turbo Pro, longitud de prompt",
+   "enunciado": "En Kling 2.5 Turbo Pro el prompt lleva como máximo 3-4 elementos y 50-80 palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "63301d4cc479",
+   "alcance": "Video; Kling 2.5 Turbo y 2.6 Pro, fallo de sobrecarga",
+   "enunciado": "Cuando el prompt excede la capacidad del modelo y la salida se derrite, se recorta al número de elementos del modelo: 3-4 para Turbo y 5-7 para 2.6 Pro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Prompt exceeds model capacity, output melts"
+    }
+   ]
+  },
+  {
+   "id": "085b538d1398",
+   "alcance": "Video; Kling 2.5 Turbo, Kling 1.6 y cualquier imagen a video",
+   "enunciado": "Cuando un modelo rinde mejor con prompts cortos (Kling 2.5 Turbo, Kling 1.6, cualquier imagen a video), se recorta en un orden de prioridad fijo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 5. Prompt compression order"
+    }
+   ]
+  },
+  {
+   "id": "92c4721714ec",
+   "alcance": "Video; Kling 2.6 Pro, longitud de prompt",
+   "enunciado": "En Kling 2.6 Pro el prompt lleva 5-7 elementos y 50-80 palabras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "aec0f43b78de",
+   "alcance": "Video; Kling 3.0 imagen a video",
+   "enunciado": "En imagen a video en Kling 3.0 la imagen ancla identidad, composición y texto; el prompt debe ser corto, centrado en el movimiento y describir cómo evoluciona la escena, no lo que ya hay en la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Image-to-video on 3.0 — lock first, then move"
+    }
+   ]
+  },
+  {
+   "id": "938900451655",
+   "alcance": "Video; Kling 3.0, longitud de prompt",
+   "enunciado": "En Kling 3.0 se aceptan prompts más largos, pero el multi-shot necesita estructura explícita, con unas 30-60 palabras por shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "cc820f9389bc",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "En imagen a video con Kling el prompt se mantiene corto (20-40 palabras), solo de movimiento, sin re-describir los elementos estáticos que el modelo ya ve.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "741309f7c1fc",
+   "alcance": "Video; Kling imagen a video, cualquier versión",
+   "enunciado": "En imagen a video, en cualquier versión de Kling, el prompt lleva 20-40 palabras, más corto y centrado en el movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "ecb8f1c74820",
+   "alcance": "Video; Kling, campo de negative prompt",
+   "enunciado": "La lista de negativos de Kling se mantiene corta, porque las pilas largas reducen movimiento y detalle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 6. Negative prompts (critical rule)"
+    }
+   ]
+  },
+  {
+   "id": "e10fb00f946c",
+   "alcance": "Video; Kling, fallo de sobrecarga de elementos",
+   "enunciado": "Si la sobrecarga de elementos derrite las manos, se simplifica, se combinan elementos y se recortan las descripciones secundarias.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Element overload melts hands"
+    }
+   ]
+  },
+  {
+   "id": "f5a1b834ef9b",
+   "alcance": "Video; Kling, todas las versiones",
+   "enunciado": "Los modelos Kling difieren en cuántos elementos distintos manejan por prompt; sobrecargarlos produce rostros derretidos, manos rotas o movimiento estático.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "8c5cc46f619a",
+   "alcance": "Video; compresión de prompts",
+   "enunciado": "El objetivo de comprimir es preservar el esqueleto del prompt y perder el adorno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 5. Prompt compression order"
+    }
+   ]
+  },
+  {
+   "id": "a3996766f03b",
+   "alcance": "Video; compresión de prompts para modelos que prefieren prompts cortos",
+   "enunciado": "Orden de compresión del prompt: conservar continuidad de personaje, acción, timecodes, luz, cámara, gramática de edición y sonido, y eliminar primero filosofía y metacomentario, luego adjetivos extra y referencias de director.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 5. Prompt compression order"
+    }
+   ]
+  },
+  {
+   "id": "cdb7cf259db5",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P1",
+   "enunciado": "P1: el conteo de palabras deja de ser HARD FAIL y pasa a WARN, usando como referencia el presupuesto por plataforma (por ejemplo kling 80-150, gpt-image 150-300, nano-banana 60-120) y el presupuesto original del caso cuando la plataforma no está en la tabla.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "8d9d53182d42",
+   "alcance": "aurora prompt_linter.py, CASE_CONFIGS (P1)",
+   "enunciado": "Define CASE_CONFIGS con los casos del linter (1 génesis, 2 anchor con refs, 3a/3b/3c I2V, 4 video con diálogo) y sus presupuestos de palabras originales v1.1: (75,130) para 1, 2 y 4, y (50,90) para 3a, 3b y 3c, como referencia de respaldo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › CASE_CONFIGS"
+    }
+   ]
+  },
+  {
+   "id": "5ef3b08d23be",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P1; por plataforma",
+   "enunciado": "Tabla WORD_BUDGET_BY_PLATFORM: rango recomendado, rango i2v y techo de palabras por plataforma (Midjourney 40-80/100, Flux 80-150, Ideogram 60-120, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70/120, Kling 80-150 e i2v 20-40, Veo 80-150 e i2v 50-100, Seedance 80-150, Hailuo 60-120), solo como referencia y nunca bloqueante.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › WORD_BUDGET_BY_PLATFORM"
+    }
+   ]
+  },
+  {
+   "id": "871c32054f5a",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai); plataformas con bloque negativo",
+   "enunciado": "El bloque negativo admite como máximo 8 ítems (NEGATIVE_MAX_ITEMS: 8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_MAX_ITEMS"
+    }
+   ]
+  },
+  {
+   "id": "05370f8dc9b7",
+   "alcance": "linter Aurora v1.2-fupai, parche P1 (contradicción 1); todas las plataformas",
+   "enunciado": "El conteo de palabras nunca bloquea en el linter: solo advierte (WARN) con el presupuesto por plataforma y el techo de _capabilities.json, en vez del HARD FAIL original de 130 (T2I) o 90 (I2V), porque SW30, GPT Image y Kling toleran o exigen prompts más largos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "c5b890955968",
+   "alcance": "linter aurora, categoría STRUCTURE, siempre",
+   "enunciado": "La categoría STRUCTURE verifica siempre el conteo de palabras y la presencia de negative prompt.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "14453c5895e9",
+   "alcance": "linter aurora; I2V y T2I",
+   "enunciado": "El conteo de palabras tiene un tope máximo duro de 90 (I2V) o 130 (T2I) y un mínimo blando de 50 o 75 respectivamente.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "b2623970bc43",
+   "alcance": "skill image, Paso 6, prompt-framework.md",
+   "enunciado": "Paso 6: leer prompt-framework.md al estructurar un prompt complejo: checklist universal de elementos, modos de detalle (concise, standard, verbose, cinematic verbose), plantillas parametrizadas y estructura de salida con parámetros y exclusiones.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)"
+    }
+   ]
+  },
+  {
+   "id": "70088f226d02",
+   "alcance": "skill screenwriter, buenas prácticas de calidad",
+   "enunciado": "Prosa magra: cada palabra debe servir a la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/SKILL.md",
+     "encabezado": "Screenwriter Skill › Best Practices › For Quality Output"
+    }
+   ]
+  },
+  {
+   "id": "11e471c07103",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §7 de keyframe a prompt de imagen",
+   "enunciado": "Convertir la ficha en prompt de still siguiendo el esqueleto universal U1 con peso al inicio (U2): abrir con encuadre, lente, luz, paleta y objeto ancla, porque el modelo pone la mayor atención en el primer 30-40% de tokens.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt"
+    }
+   ]
+  },
+  {
+   "id": "c8674c1d59c1",
+   "alcance": "video, todos los modelos (U14)",
+   "enunciado": "La declaración de prioridades pesa más que la disciplina de longitud: un prompt corto con prioridades declaradas supera a uno largo sin ellas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ]
+  },
+  {
+   "id": "56ce60992fcf",
+   "alcance": "video, todos los modelos (U14, prompts sobrecargados)",
+   "enunciado": "Cuando un prompt está sobrecargado (10+ escenas, muchos sujetos, trucos espaciales) se declaran prioridades en vez de añadir descripción: sujeto central que sobrevive, shots clave, transiciones libres y fotograma final obligatorio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ]
+  },
+  {
+   "id": "2942c48f08d6",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "validate_prompts.py comprueba la parte mecánica: cabecera completa, generador válido, aspecto igual al del proyecto, techo de palabras, cobertura de shots, sin bloques duplicados, ausencia de texto en pantalla (regla 1), anclajes verbatim (regla 3) y lógica de shot de la regla 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "58d3a75a2ce3",
+   "alcance": "visual-prompt-forge, bloqueos de consistencia (general, todos los generadores), lo que no funciona",
+   "enunciado": "Prohíbe confiar en tácticas que no arreglan la consistencia: añadir 'consistent character', numerar shots en el prompt, párrafos largos de personaje (más de 4-5 rasgos) o pedir 'exactly the same'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/consistency-locks.md",
+     "encabezado": "Consistency Locks › What doesn't work"
+    }
+   ]
+  },
+  {
+   "id": "21c50ac1515a",
+   "alcance": "visual-prompt-forge, capa 5 Generator Adapter; Midjourney, Kling, Seedream, GPT Image, Ideogram, Flux",
+   "enunciado": "Explicación: el adaptador resuelve el orden de palabras (Midjourney empieza por el sujeto, Kling por el movimiento de cámara), las convenciones de longitud (Seedream corto, GPT Image largo), la sintaxis de parámetros (--ar 9:16 vs aspect_ratio) y las fortalezas de cada modelo (Ideogram texto, Flux fotorrealismo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 5. Generator Adapter"
+    }
+   ]
+  },
+  {
+   "id": "c646f9c76a45",
+   "alcance": "visual-prompt-forge, paso 2",
+   "enunciado": "adapters/_capabilities.json es la única fuente de verdad de los límites por generador (max_prompt_words, supports_text_render, supports_motion, aspect_param...); se lee al inicio, se respeta al componer y no se apunta movimiento a un generador solo de stills.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  },
+  {
+   "id": "0f675cb4c038",
+   "alcance": "visual-prompt-forge, paso 2",
+   "enunciado": "max_prompt_words es un techo y el rango del .md del adaptador es la meta recomendada dentro de ese techo; si un dato del .md y del JSON discrepan de verdad, gana el JSON.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1428 @@
+{
+ "registros": [
+  {
+   "id": "390996b395ff",
+   "enunciado": "Cada shot incluye el campo `environment_ref`, que referencia el lenguaje del series lock y por defecto vale `series_lock.environment`.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4 (shot list), shots.json",
+   "temas": [
+    "shots_json_schema",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "516a2d99a5fc",
+   "enunciado": "Cada shot incluye el campo `lighting_ref`, que referencia el lenguaje del series lock y por defecto vale `series_lock.lighting`.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4 (shot list), shots.json",
+   "temas": [
+    "shots_json_schema",
+    "luz"
+   ]
+  },
+  {
+   "id": "093402c5d8c2",
+   "enunciado": "El campo `on_screen_text` de un shot es null, un id de text-overlay, o un array de ids cuando el shot lleva más de un overlay.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json (array requiere versión 1.2)",
+   "temas": [
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "1a8303ff6b52",
+   "enunciado": "El campo `vo` de un shot contiene la línea de voz en off o null.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json",
+   "temas": [
+    "shots_json_schema",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "dac8e07a007a",
+   "enunciado": "El campo `rationale` de cada shot es una frase que explica por qué ese shot en ese momento.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, shots.json",
+   "temas": [
+    "shots_json_schema",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "b3eab3405666",
+   "enunciado": "Explicación: `rack` significa cosas distintas según el campo; como `motion` indica que el rack focus es el movimiento del shot y como `depth_of_field` indica que el foco cambia a mitad del shot.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 4, campos motion y depth_of_field de shots.json",
+   "temas": [
+    "shots_json_schema",
+    "encuadre_lente_dof",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "0c84f5381e27",
+   "enunciado": "Todo texto en pantalla se registra como entrada de `text-overlays.json` (id, shot_id, content, font, position, size, weight, color hex del palette del brand-lock, enter, exit) y nunca se integra en la descripción visual.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5 (capa de texto), text-overlays.json",
+   "temas": [
+    "texto_en_pantalla",
+    "shots_json_schema",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "e08674c2f624",
+   "enunciado": "Los vocabularios de animación de enter y exit son distintos y `templates/text-overlays.schema.json` es la autoridad; un shot con varios overlays debe listar todos sus ids en el array `on_screen_text` o los extra no se renderizan.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 5, text-overlays.json",
+   "temas": [
+    "texto_en_pantalla",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "9dc1f62bf9b4",
+   "enunciado": "Se definen anclas de entorno, luz y personaje válidas para todos los shots en `series_lock` al inicio de `shots.json`; sin ellas la generación de imagen produce frames incoherentes.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 6 (series lock)",
+   "temas": [
+    "consistencia_identidad",
+    "shots_json_schema",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "41bb6223e561",
+   "enunciado": "Todo shot lleva una rationale de una frase (por qué ese beat, ese encuadre, ese texto) como rastro de auditoría, y no se omite.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 7 (rationale)",
+   "temas": [
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "8e2990d708b2",
+   "enunciado": "Se copia el brand-lock como `brand-lock.snapshot.md` con dos comentarios iniciales en orden: `snapshot taken` con timestamp UTC y `source` con la ruta de origen.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 8 (snapshot del brand-lock)",
+   "temas": [
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "b49243ec7e1b",
+   "enunciado": "El timestamp del snapshot es un instante UTC completo `YYYY-MM-DDThh:mm:ssZ` (una fecha sola no distingue corridas del mismo día) y la fuente es la ruta de copia o el literal `template default`; se permiten comentarios extra después.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 8, snapshot del brand-lock",
+   "temas": [
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "ce81f9213414",
+   "enunciado": "Se ejecuta `tools/validate_brand_lock.py --snapshot <path>` para comprobar las dos líneas de cabecera del snapshot.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 8, snapshot del brand-lock",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "ba7bb0b46889",
+   "enunciado": "Al final, tras cerrar los otros cuatro archivos, se completa `run.json` con `run_id`, `created_at` y el SHA-256 de `shots.json`, `text-overlays.json` y `brand-lock.snapshot.md` tal como se escribieron.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9 (run.json)",
+   "temas": [
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "44b27fb49f92",
+   "enunciado": "Ejemplo: comando `shasum -a 256` sobre shots.json, text-overlays.json y brand-lock.snapshot.md para obtener los hashes de run.json.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9 (run.json)",
+   "temas": [
+    "trazabilidad_procedencia",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "b543c4c4f8fe",
+   "enunciado": "El `run_id` es el timestamp UTC compacto, un guion y 8 caracteres hex (p. ej. `20260730T142300Z-9f2c1ab4`) para evitar colisiones, y `brand_lock_configured` es false cuando el snapshot es un template sin rellenar.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9, run.json",
+   "temas": [
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "f257fb9216bb",
+   "enunciado": "El campo `rounds` de run.json se deja vacío; `visual-prompt-forge` añade una entrada de ronda cuando escribe prompts.",
+   "alcance": "storyboard-architect (SKILL.md), Paso 9, run.json",
+   "temas": [
+    "trazabilidad_procedencia",
+    "revision_iteracion",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "0a4261ba0295",
+   "enunciado": "`storyboard.md` se escribe con el template `templates/storyboard.md.tpl`, leído antes de escribir.",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, storyboard.md",
+   "temas": [
+    "entrega_paquete",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "a6033c14a4e4",
+   "enunciado": "`shots.json` debe validar contra `templates/shots.schema.json` (leído antes de escribir) con la estructura version, project, brand_lock_ref, series_lock y shots con sus campos.",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, shots.json",
+   "temas": [
+    "shots_json_schema",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "006d06b45a11",
+   "enunciado": "Los storyboards nuevos usan versión `1.2` de shots.json; `1.0` y `1.1` siguen siendo válidos, pero el array en `on_screen_text` y el bloque `assets` con hash requieren `1.2`.",
+   "alcance": "storyboard-architect (SKILL.md), shots.json, versionado",
+   "temas": [
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "5cdffdf3529b",
+   "enunciado": "`text-overlays.json` debe validar contra `templates/text-overlays.schema.json`, leído antes de escribir.",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, text-overlays.json",
+   "temas": [
+    "texto_en_pantalla",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "f0eb884b92e7",
+   "enunciado": "La barra de calidad se comprueba ejecutando los validadores (`validate_shots.py`, `validate_brand_lock.py --snapshot`, `validate_provenance.py`) y no revisando la lista a ojo.",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "2098d867d6d5",
+   "enunciado": "`validate_shots.py` comprueba reglas mecánicas: esquemas, tiempos sin huecos ni solapes que cuadran con la duración, resolución de overlays y shots, timing de overlays dentro del shot, colores dentro del palette del brand-lock y que `brand_lock_ref` exista.",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, validate_shots.py",
+   "temas": [
+    "validacion_gates",
+    "texto_en_pantalla",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "6112e3b2e5cd",
+   "enunciado": "El validador solo advierte (no falla) en juicios discutibles: copy de overlay repetido en el subject, hex crudo en un subject, ids fuera de orden cronológico o fuente de overlay no declarada en el brand-lock.",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, advertencias de validate_shots.py",
+   "temas": [
+    "validacion_gates",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "02ea9ab34179",
+   "enunciado": "El agente debe verificar a mano lo que el validador no cubre: rationales que expliquen el porqué, anclas de series_lock reproducibles, beats acordes al argumento del brief y run.json con hashes de los archivos entregados.",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, checklist manual",
+   "temas": [
+    "critica_qa",
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "8a0af3d5da7e",
+   "enunciado": "Si el validador falla se corrige antes de dar por terminado; un validador en verde con un rationale sin leer no es un storyboard terminado.",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar",
+   "temas": [
+    "validacion_gates",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "df0a9d2337f7",
+   "enunciado": "Se cargan según necesidad los archivos de referencia: beat-frameworks, shot-grammar, timing-rules y on-screen-text.",
+   "alcance": "storyboard-architect (SKILL.md), archivos de referencia",
+   "temas": [
+    "flujo_pipeline",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "44ad6107f300",
+   "enunciado": "Ejemplo: `examples/30s-pain-proof-promise/` contiene el set completo de salida de un anuncio de conversión de 30 segundos.",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "7bcd4647a8bd",
+   "enunciado": "Ejemplo: `examples/60s-founder-explainer/` contiene el set completo de salida de un explainer de fundador de 60 segundos.",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "9cacab8ca7f5",
+   "enunciado": "Ejemplo: `examples/shotkit-explainer/` contiene el explainer de 90 segundos, incluido un shot con dos overlays.",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "temas": [
+    "ejemplo_marca",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "34e52bd40e18",
+   "enunciado": "Se leen los tres ejemplos para entender la calidad esperada (sobre todo los rationale); validan limpios con `validate_shots.py --examples` y sirven de referencia de un archivo que pasa.",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "temas": [
+    "entrega_paquete",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "d3e0a5dfe730",
+   "enunciado": "Explicación: para ver el árbol de salida tras generación y revisión, se remite a `visual-asset-critic/examples/worked-run/` (dos shots en dos rondas con hashes, prompts, frames y críticas).",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "temas": [
+    "entrega_paquete",
+    "trazabilidad_procedencia",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "435ef44d53eb",
+   "enunciado": "Tras producir los cinco archivos se informa qué hay en `output/` y se ofrecen los siguientes pasos: prompts con `visual-prompt-forge`, preview HTML con `storyboard-html-preview` y QA con `visual-asset-critic`.",
+   "alcance": "storyboard-architect (SKILL.md), Handoff",
+   "temas": [
+    "entrega_paquete",
+    "flujo_pipeline",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "487bfe0d8091",
+   "enunciado": "No se ejecutan automáticamente los pasos siguientes del handoff; el usuario elige.",
+   "alcance": "storyboard-architect (SKILL.md), Handoff",
+   "temas": [
+    "conducta_agente",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "93d054dc6038",
+   "enunciado": "Ejemplo: sección Identity del brand-lock de WhyStrohm (infraestructura de contenido para marcas de fundador, arquetipo Operator, voz calmada y segura sin gritar).",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic)",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "ddc3783e901a",
+   "enunciado": "Ejemplo: color de fondo del palette de WhyStrohm, crema `#F5F0E8` como lienzo primario.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "7ce05ecc4405",
+   "enunciado": "Ejemplo: color Ink del palette de WhyStrohm, `#2A2A32` casi negro para texto principal y elementos oscuros.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "edc02f49402d",
+   "enunciado": "Ejemplo: acento cálido del palette de WhyStrohm, coral `#D94F3A` para énfasis y puntos en beats de firma.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "c646fd88b0d6",
+   "enunciado": "Ejemplo: acento frío del palette de WhyStrohm, lavanda pálido `#C9BBE0` para resaltes secundarios.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "d86a7d5b3d13",
+   "enunciado": "Ejemplo: color Muted del palette de WhyStrohm, `#7A7580` para texto secundario y captions.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "b78be27632ab",
+   "enunciado": "Ejemplo: color Rule del palette de WhyStrohm, `#E8E1D4` para bordes sutiles, divisores y fondos de tarjeta.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Palette",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "591dadc8f532",
+   "enunciado": "Ejemplo: tipografía de WhyStrohm con Inter Black 900 para display, Inter Medium 500 para cuerpo y JetBrains Mono Regular para código y datos.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Typography",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "5970fbe01032",
+   "enunciado": "Ejemplo: adjetivos de mood de WhyStrohm: operator, considered, deterministic, confident, defense-grade, cada uno con su contrario excluido.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Mood adjectives",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "8bff6c2686ed",
+   "enunciado": "Nunca sobresaturar el fondo crema.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "color_grade_paleta",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "0457141c1024",
+   "enunciado": "Nunca usar el coral como color de relleno; solo como acento o en puntos de firma.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "color_grade_paleta",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "67c7f4bf7bd0",
+   "enunciado": "Nunca usar rayas largas (em dashes) en el copy.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "c6fcfde9e2fa",
+   "enunciado": "Nunca usar emojis en el copy de cuerpo.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "05eacbe444d2",
+   "enunciado": "Nunca usar viñetas en el copy narrativo.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "ae76d101e6b2",
+   "enunciado": "Nunca usar clip-art ni sets genéricos de iconos.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "05f95d9ea461",
+   "enunciado": "Nunca usar palabras de hype (\"game-changing\", \"revolutionary\", \"next-level\", \"comprehensive\").",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "vocabulario_prohibido",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "b064947c9bde",
+   "enunciado": "Nunca usar signos de exclamación en los titulares.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "7f73ee3f5016",
+   "enunciado": "Nunca usar dark mode por defecto; la marca es un híbrido de modo claro.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "color_grade_paleta",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "23925e159509",
+   "enunciado": "Nunca animar el texto con rebote o bamboleo; solo type-on, fade o hard cut.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "c04c4e4cf42b",
+   "enunciado": "Ejemplo: aspect ratios de WhyStrohm: 9:16 principal para social corto, 16:9 para long-form y web, 1:1 para feed y portadas, 4:5 como alternativa de Instagram.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Aspect ratios",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "df0d14af76e0",
+   "enunciado": "Ejemplo: dirección de color grade de WhyStrohm: filmic cálido, sombras teal apagadas, grano leve, luces crema y sombras navy o carbón sin aplastar, al estilo Kodak Portra 400 con limpieza digital.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Color grade direction",
+   "temas": [
+    "ejemplo_marca",
+    "color_grade_paleta",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "94b46dfd19ce",
+   "enunciado": "Ejemplo: lenguaje de movimiento de WhyStrohm: cámara estática por defecto, solo push o pull lento, cortes en la acción, type-on sin rebote y transiciones solo hard cut o disolvencia de 6 frames.",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Motion language",
+   "temas": [
+    "ejemplo_marca",
+    "camara_movimiento",
+    "ritmo_montaje"
+   ]
+  },
+  {
+   "id": "ccd61dc8af3c",
+   "enunciado": "Ejemplo: reglas de voz de WhyStrohm: sin em dashes, emojis en el cuerpo, exclamaciones en titulares ni hype; preferir cifras concretas, presente sobre futuro y \"operator\" e \"infrastructure\" sobre \"creator\" y \"agency\".",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), Voice rules",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "b8382724fd1a",
+   "enunciado": "Ejemplo: metadatos de versión del brand-lock de WhyStrohm (actualizado 2026-05-07, propietario Yuri Strohm, versión 1.0).",
+   "alcance": "brand-lock de ejemplo WhyStrohm (snapshot en ejemplos de storyboard-architect y visual-asset-critic), metadatos finales",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "43f8ef319624",
+   "enunciado": "Ejemplo: ficha del storyboard de 30s de WhyStrohm con duración de 30 segundos.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "a9c83f10c3f8",
+   "enunciado": "Ejemplo: ficha de los storyboards de WhyStrohm (30s y 60s) con aspect ratio 9:16.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "5ceef9dcecd8",
+   "enunciado": "Ejemplo: ficha del storyboard de 30s de WhyStrohm con beat framework Pain-Reframe-Promise.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "df46badb8e36",
+   "enunciado": "Ejemplo: ficha de los storyboards de WhyStrohm con enlace al `brand-lock.snapshot.md` local.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "73ec46d24279",
+   "enunciado": "Ejemplo: ficha del storyboard de 30s de WhyStrohm con fecha de generación 2026-05-07 14:23 UTC.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "7a729c0b9ac2",
+   "enunciado": "Ejemplo: brief del explainer de 30s de WhyStrohm para fundadores que hacen su propio contenido: reencuadre \"problema de infraestructura, no de contenido\", promesa de 30 min/semana y ciclo de 48 horas, CTA al diagnóstico gratuito /scan.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Brief",
+   "temas": [
+    "ejemplo_marca",
+    "estrategia_conceptos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "11c72cfba0a8",
+   "enunciado": "Ejemplo: el PRP estándar de conversión usa tres beats con hook y CTA como bookends.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "790e5602d785",
+   "enunciado": "Ejemplo: beat Hook en 0 a 2 s del storyboard de 30s de WhyStrohm.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "ef5b5033eda7",
+   "enunciado": "Ejemplo: beat Pain en 2 a 11 s, ampliado para 30s para dar espacio al problema.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "ad6836299081",
+   "enunciado": "Ejemplo: beat Reframe + Proof en 11 a 20 s, donde aterriza la tesis de WhyStrohm y luego se demuestra.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "e35d3ef4d7f4",
+   "enunciado": "Ejemplo: beat Promise en 20 a 26 s, específico y con plazo.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "63cff4348abf",
+   "enunciado": "Ejemplo: beat CTA en 26 a 30 s del storyboard de 30s.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "4c37bd547518",
+   "enunciado": "Ejemplo: ancla de personaje del series lock: fundador de treinta y tantos, pelo sal y pimienta, suéter navy, postura calmada, trabajando en laptop.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "f6feac420da9",
+   "enunciado": "Ejemplo: ancla de entorno del series lock: oficina en casa minimalista, paredes blancas, escritorio de roble, una planta, sin desorden.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "c97b8437a044",
+   "enunciado": "Ejemplo: ancla de luz del series lock de WhyStrohm: luz lateral natural suave desde ventana grande a la izquierda de cámara, golden hour de tarde y caída de sombras gentil.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "luz"
+   ]
+  },
+  {
+   "id": "3d14459a4e50",
+   "enunciado": "Ejemplo: ancla de color grade del series lock: filmic cálido, sombras teal apagadas, grano leve, luces crema y sombras navy sin aplastar.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "5375d68abe59",
+   "enunciado": "Ejemplo: shot_01 (hook, 0.0-2.0 s, MCU, estático) con el fundador mirando a cámara y texto \"Your content feels random.\"; el rationale justifica el contacto visual directo y el encuadre estático.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_01",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "b9ff0f55b3b1",
+   "enunciado": "Ejemplo: shot_02 (pain, 2.0-7.0 s, MS, estático) con el fundador desplazando el feed social; el rationale explica el ángulo alto, el DOF profundo y la reserva del espacio para el texto.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_02",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "97caeac6e018",
+   "enunciado": "Ejemplo: shot_03 (pain, 7.0-11.0 s, ECU) con la mano congelada sobre el trackpad y sin texto; el rationale la presenta como símbolo de parálisis.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_03",
+   "temas": [
+    "ejemplo_marca",
+    "emocion_sin_nombrar",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "c53a6110e07d",
+   "enunciado": "Ejemplo: shot_04 (reframe, 11.0-16.0 s, MCU, push) con la expresión cambiando de cansada a clara y texto \"You don't have a content problem...\"; el rationale explica el push lento y que solo cambia la expresión.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_04",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "2164f48aa171",
+   "enunciado": "Ejemplo: shot_05 (proof, 16.0-20.0 s, MS) con el fundador señalando un pipeline kanban; el rationale muestra el sistema y no el resultado.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_05",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "88f03ac3b7fe",
+   "enunciado": "Ejemplo: shot_06 (promise, 20.0-26.0 s, MCU, estático) con el fundador calmado y texto \"30 minutes a week...\"; el rationale lo presenta como el después de la misma persona, más tranquila.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_06",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "fc8ee5494681",
+   "enunciado": "Ejemplo: shot_07 (cta, 26.0-30.0 s, MS, estático) con la URL whystrohm.com/scan en lower-third; el rationale justifica el plano más abierto para dar aire al texto.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), shot_07",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "db7134c8b05c",
+   "enunciado": "Ejemplo: nota de handoff para generar imágenes ejecutando `visual-prompt-forge` sobre `shots.json`.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, Handoff notes",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "6c69f5d092cb",
+   "enunciado": "Ejemplo: nota de handoff para el preview HTML ejecutando `storyboard-html-preview` sobre la carpeta.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise) y 60s founder-explainer, Handoff notes",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "da732f6205cb",
+   "enunciado": "Ejemplo: nota de handoff para QA de frames generados ejecutando `visual-asset-critic` con la imagen y el id del shot.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Handoff notes",
+   "temas": [
+    "ejemplo_marca",
+    "critica_qa",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "b5a3e5764eb9",
+   "enunciado": "Ejemplo: audit trail del storyboard de 30s: generado contra el snapshot del brand-lock congelado el 2026-05-07T14:23:00Z; si el brand-lock cambia hay que volver a correr.",
+   "alcance": "storyboard de ejemplo WhyStrohm 30s (Pain-Reframe-Promise), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "1a5d1dfc39c7",
+   "enunciado": "Ejemplo: ficha del storyboard de 60s de WhyStrohm con duración de 60 segundos.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "5f62a8a332cf",
+   "enunciado": "Ejemplo: ficha del storyboard de 60s de WhyStrohm con beat framework Founder Explainer.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "e7f4aad4f8af",
+   "enunciado": "Ejemplo: ficha del storyboard de 60s de WhyStrohm con fecha de generación 2026-05-07 14:31 UTC.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "73cb7e98b5b6",
+   "enunciado": "Ejemplo: brief del explainer de 60s de WhyStrohm para operadores y fundadores, con arco de cinco micro-beats (hook, stakes, insight, proof, CTA), voz que explica y texto que refuerza los giros.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Brief",
+   "temas": [
+    "ejemplo_marca",
+    "estrategia_conceptos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "8b7e0e912e8a",
+   "enunciado": "Ejemplo: cinco micro-beats del explainer de 60s con sus tiempos (hook 0-2, stakes 2-14, insight 14-32 ampliado, proof 32-42, insight wrap + CTA 42-60).",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Beat framework",
+   "temas": [
+    "ejemplo_marca",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "f8e0da595274",
+   "enunciado": "Ejemplo: ancla de personaje del series lock de 60s: fundador de treinta y tantos, pelo sal y pimienta, suéter navy, hablando a cámara con postura calmada y autoritaria.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "df66c8f83a39",
+   "enunciado": "Ejemplo: ancla de entorno del series lock de 60s: oficina minimalista, paredes blancas, escritorio de roble, una planta, tarde avanzada.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "e9e458a32646",
+   "enunciado": "Ejemplo: shot_01 (hook, MCU) con VO y texto \"Most founders treat content like a hobby.\"; el rationale describe un hook provocador pero calmado donde la voz lleva el filo.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_01",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "50496d158341",
+   "enunciado": "Ejemplo: shot_02 (stakes, MS) con VO y sin texto en pantalla; el rationale explica el plano más abierto para que se lea el gesto y que la voz hace el trabajo.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_02",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "3c24176cd015",
+   "enunciado": "Ejemplo: shot_03 (stakes, ECU en los ojos) con VO y texto \"It's missing infrastructure.\"; el rationale usa el ECU para el momento de realización y el texto para reforzar la línea clave.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_03",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "e44ea6b8d7e0",
+   "enunciado": "Ejemplo: shot_04 (insight, MCU, push) con VO y sin texto; el rationale indica push lento mientras se construye la tesis y la voz como elemento principal.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_04",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "499edf590d86",
+   "enunciado": "Ejemplo: shot_05 (insight, MS) con el fundador señalando la pantalla y texto \"Extract. Lock. Compound.\"; el rationale muestra el artefacto y mantiene legible la pantalla con DOF profundo.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_05",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "f03f93bbf07f",
+   "enunciado": "Ejemplo: shot_06 (proof, MCU) con VO de cifras y texto de estadísticas en upper-third; el rationale usa el callout para que el espectador absorba visualmente mientras la voz confirma.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_06",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "a32cce87574b",
+   "enunciado": "Ejemplo: shot_07 (insight, MS, pull) con VO y sin texto; el rationale usa el pull lento para liberar tensión y evita texto que diluiría la tesis.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_07",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "6c2b6e5058d8",
+   "enunciado": "Ejemplo: shot_08 (cta, MCU estático) con VO y URL whystrohm.com/scan en lower-third; el rationale mantiene la URL en pantalla el tiempo de leerla dos veces.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), shot_08",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "557d6ceeca48",
+   "enunciado": "Ejemplo: nota de handoff para QA ejecutando `visual-asset-critic` por shot.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Handoff notes",
+   "temas": [
+    "ejemplo_marca",
+    "critica_qa",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "59822354657b",
+   "enunciado": "Ejemplo: audit trail del storyboard de 60s: generado contra el snapshot del brand-lock congelado el 2026-05-07T14:31:00Z, fuente `brand-packs/whystrohm.md`.",
+   "alcance": "storyboard de ejemplo WhyStrohm 60s (Founder Explainer), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "199416bc7488",
+   "enunciado": "Ejemplo: la tipografía de producción de WhyStrohm usa dos fuentes y la mono solo para contenido técnico.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Typography",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "3999058dc1bf",
+   "enunciado": "Nunca usar rayas largas (em dashes) en el copy; solo puntos, comas y punto y coma.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Never list",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "7a92a2ccb129",
+   "enunciado": "Nunca romper la línea de mirada entre el sujeto y la \"perspectiva del operador\" implícita.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Never list",
+   "temas": [
+    "marca_brandlock",
+    "dramaturgia_escena",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "53b76bcaeb7e",
+   "enunciado": "Ejemplo: dirección de color grade de WhyStrohm: filmic cálido, sombras teal apagadas, grano leve, luces crema, estilo Kodak Portra 400, pieles cálidas sin naranja y verdes ligeramente desaturados.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Color grade direction",
+   "temas": [
+    "ejemplo_marca",
+    "color_grade_paleta",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "50df981a782c",
+   "enunciado": "Ejemplo: lenguaje de movimiento de WhyStrohm: cámara estática por defecto, solo push o pull lento, cortes en la acción, type-on sin rebote y transiciones solo hard cut o disolvencia de 6 frames, sin wipes ni zooms.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Motion language",
+   "temas": [
+    "ejemplo_marca",
+    "camara_movimiento",
+    "ritmo_montaje"
+   ]
+  },
+  {
+   "id": "36c7c03262ac",
+   "enunciado": "Ejemplo: en contenido de tipografía cinética (patrón Content Spiral) el ritmo se acelera hacia adentro, cada zoom 1.5-2x más rápido que el anterior, y el snap-back al claim amplio es un hard cut.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Motion language",
+   "temas": [
+    "ejemplo_marca",
+    "ritmo_montaje",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "fd738c50b75a",
+   "enunciado": "Sin emojis en el copy de cuerpo.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "9bf2a5537f04",
+   "enunciado": "Sin signos de exclamación en los titulares.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "7515b5d281b6",
+   "enunciado": "Sin palabras de hype (\"game-changing\", \"revolutionary\", \"comprehensive\", \"next-level\", \"leverage\").",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "vocabulario_prohibido",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "2bb594281331",
+   "enunciado": "Sin metáforas de negocio clichés (\"move the needle\", \"drink the kool-aid\", \"low-hanging fruit\").",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "vocabulario_prohibido",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "4764b0b66240",
+   "enunciado": "Sin calificadores en el copy declarativo (\"perhaps\", \"maybe\", \"kind of\").",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "vocabulario_prohibido",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "24bff38fedaa",
+   "enunciado": "Preferir cifras concretas a afirmaciones vagas (\"48 hours\" en vez de \"fast\", \"30 minutes a week\" en vez de \"a little time\").",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "8cf7e3076d08",
+   "enunciado": "Preferir el presente sobre el futuro en el copy.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "dc8d9e13c46d",
+   "enunciado": "Preferir \"operator\" a \"creator\", \"infrastructure\" a \"agency\" y \"system\" a \"service\".",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "vocabulario_prohibido",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "899b31afe982",
+   "enunciado": "El punto coral (`.`) en líneas de firma es una elección tipográfica, no puntuación, y se aplica solo al final de frases héroe.",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Voice rules",
+   "temas": [
+    "marca_brandlock",
+    "texto_en_pantalla",
+    "ejemplo_marca"
+   ]
+  },
+  {
+   "id": "16ea52422d63",
+   "enunciado": "Ejemplo: materiales de referencia del brand-lock de WhyStrohm (sitio, extractor de voz, films pasados y patrón Content Spiral).",
+   "alcance": "brand-lock de ejemplo WhyStrohm, variante shotkit-explainer, Reference materials",
+   "temas": [
+    "ejemplo_marca",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "74533a8140e6",
+   "enunciado": "Ejemplo: cabecera del storyboard del explainer de shotkit: 90 s, 16:9 con corte vertical para socials, framework founder-explainer, snapshot del brand-lock del 2026-05-08T14:34:24Z.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), cabecera",
+   "temas": [
+    "ejemplo_marca",
+    "parametros_tecnicos",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "bb6d197facea",
+   "enunciado": "Explicación: el storyboard es el registro del film v0.1.0 tal como se renderizó, por eso shot_05 aún nombra siete adaptadores incluido Runway/Sora (descontinuado); se deja sin editar para evitar deriva respecto al artefacto producido.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), nota inicial",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "f98cafb2a25b",
+   "enunciado": "Ejemplo: brief del explainer de shotkit de 90 s para marcas de fundador de 500K a 5M de ARR: diagnóstico, metodología de cinco capas, momento de build, prueba y comando de instalación.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Brief",
+   "temas": [
+    "ejemplo_marca",
+    "estrategia_conceptos",
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "048adf63ebad",
+   "enunciado": "Ejemplo: ancla de personaje del series lock de shotkit: sin sujeto humano, explainer tipográfico con estética de control documental.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "1c02e680d646",
+   "enunciado": "Ejemplo: ancla de entorno del series lock de shotkit: dashboard de grado operador, lienzo crema, cabeceras JetBrains Mono, cuerpo Inter y un acento coral por beat.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "consistencia_identidad",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "3e3abe49b2c7",
+   "enunciado": "Ejemplo: ancla de luz del series lock de shotkit: difusa uniforme, sin caída de sombras, grading plano de documento operador.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "luz"
+   ]
+  },
+  {
+   "id": "499ee4d514ce",
+   "enunciado": "Ejemplo: ancla de color grade del series lock de shotkit: luces crema #F5F0E8, sombras ink #2A2A32, coral #D94F3A reservado a beats de firma y sin deriva de saturación.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Series lock",
+   "temas": [
+    "ejemplo_marca",
+    "color_grade_paleta",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "edbf0658a2bb",
+   "enunciado": "Ejemplo: shot_01 (pain, 0-12 s, WS) con el brief vago tecleándose y un chaos cut a cuatro generadores en cuadrícula 2x2; el rationale nombra el fallo de brief vago más model-roulette igual a deriva de marca.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_01",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "0dd33d17fdda",
+   "enunciado": "Ejemplo: shot_02 (reframe, 12-30 s, MS) con cinco capas apiladas (brand lock, series lock, shot spec, text layer, generator adapter); el rationale usa el stack como diagrama que explica la arquitectura.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_02",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "ca85638eccef",
+   "enunciado": "Ejemplo: shot_03 (proof-1, 30-50 s, MS, push) con panel dividido brief/output donde se ensambla el árbol de archivos; el rationale lo presenta como el momento central de build.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_03",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "layout_grafico"
+   ]
+  },
+  {
+   "id": "34866ba57b2c",
+   "enunciado": "Ejemplo: shot_04 (proof-2, 50-65 s, MCU, push) con wipe coral que revela el preview HTML en un iframe; el rationale indica que se muestra el entregable real, no un mock.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_04",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "9a48e1d98c50",
+   "enunciado": "Ejemplo: shot_05 (proof-3, 65-80 s, MS) con una tarjeta de shot y siete adaptadores de generador en abanico; el rationale demuestra que el agnosticismo de modelo es estructural.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_05",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "157f8dfc8ac2",
+   "enunciado": "Ejemplo: shot_06 (promise, 80-90 s, WS) con el comando de instalación en type-on y el tagline en Inter italic; el rationale reduce el CTA a un solo comando sin fricción.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), shot_06",
+   "temas": [
+    "ejemplo_marca",
+    "shots_json_schema",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "5c099092a74a",
+   "enunciado": "Ejemplo: audit trail de shotkit: el brief es el propio documento, delimitado desde la secuencia de lanzamiento del blog.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "a3297856a6b6",
+   "enunciado": "Ejemplo: audit trail de shotkit: brand-lock copiado de `brand-packs/whystrohm.md` el 2026-05-08.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "2d9f97793ea9",
+   "enunciado": "Ejemplo: audit trail de shotkit: la shot list se diseñó para componer con la composición ShotkitDemo existente (mismo chrome, contenido complementario, arco más largo).",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "9d6ae6ea8ae1",
+   "enunciado": "Ejemplo: audit trail de shotkit: el render se publicó en el blog de whystrohm.com como reveal de dogfooding.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "0773459d22e4",
+   "enunciado": "Ejemplo: audit trail de shotkit: el MP4 apaisado se sirve desde `/media/shotkit-explainer/shotkit-explainer.mp4`.",
+   "alcance": "storyboard de ejemplo shotkit explainer (90s), Audit trail",
+   "temas": [
+    "ejemplo_marca",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "1b902cd4757f",
+   "enunciado": "Se elige un único framework de beats sin inventar uno nuevo salvo que el brief realmente no encaje, y se documenta la elección en `storyboard.md`.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md",
+   "temas": [
+    "beat_framework_timing",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "cb6eea89666d",
+   "enunciado": "El framework Pain-Reframe-Promise (por defecto para contenido de conversión) tiene tres beats: Pain (problema concreto en lenguaje del público), Reframe (dar vuelta al problema) y Promise (específica, verificable, con plazo).",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Pain-Reframe-Promise",
+   "temas": [
+    "beat_framework_timing",
+    "estrategia_conceptos"
+   ]
+  },
+  {
+   "id": "3e6de15dd961",
+   "enunciado": "Tiempos de PRP: para 30 s, 0-8 / 8-22 / 22-30; para 60 s, 0-15 / 15-45 / 45-60.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Pain-Reframe-Promise",
+   "temas": [
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "10a6a3b01c6a",
+   "enunciado": "Usar PRP en creatividades de anuncio, video hero de landing y social orientado a conversión.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Pain-Reframe-Promise",
+   "temas": [
+    "beat_framework_timing",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "4440008515b9",
+   "enunciado": "El Hero Trilogy (por defecto para films de producto y de marca) tiene tres beats: World, Hero (mostrar qué hace, no qué es) y Transformation (antes/después a escala).",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Hero Trilogy",
+   "temas": [
+    "beat_framework_timing",
+    "estrategia_conceptos"
+   ]
+  },
+  {
+   "id": "190bea35826a",
+   "enunciado": "Tiempos de Hero Trilogy: para 60 s, 0-20 / 20-40 / 40-60; para 90 s, 0-30 / 30-60 / 60-90.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Hero Trilogy",
+   "temas": [
+    "beat_framework_timing"
+   ]
+  },
+  {
+   "id": "222d86760a1b",
+   "enunciado": "Usar Hero Trilogy en lanzamientos de producto, films de marca y piezas ancla.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Hero Trilogy",
+   "temas": [
+    "beat_framework_timing",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "91023f75fde7",
+   "enunciado": "El Founder Explainer (por defecto para video de marca personal a cámara) tiene cinco micro-beats: Hook (0-2 s), Stakes (2-8 s), Insight (8-20 s en 30 s, 8-40 s en 60 s), Proof y CTA estrecho y específico.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Founder Explainer",
+   "temas": [
+    "beat_framework_timing",
+    "estrategia_conceptos"
+   ]
+  },
+  {
+   "id": "658b5b7d1cce",
+   "enunciado": "Usar Founder Explainer en contenido de fundador, liderazgo de pensamiento y piezas de marca personal.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Founder Explainer",
+   "temas": [
+    "beat_framework_timing",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "eec598b2d05c",
+   "enunciado": "El Content Spiral (por defecto para tipografía cinética u opinión) es recursivo: claim amplio, Zoom 1, Zoom 2 y snap-back al claim reencuadrado.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Content Spiral",
+   "temas": [
+    "beat_framework_timing",
+    "estrategia_conceptos"
+   ]
+  },
+  {
+   "id": "855e26928a27",
+   "enunciado": "En Content Spiral cada zoom es 1.5-2x más rápido que el anterior y el ritmo se acelera hacia adentro.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Content Spiral",
+   "temas": [
+    "beat_framework_timing",
+    "ritmo_montaje"
+   ]
+  },
+  {
+   "id": "9aa187cf520a",
+   "enunciado": "Usar Content Spiral en videos de opinión, piezas de tipografía cinética y comentario social nativo.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Content Spiral",
+   "temas": [
+    "beat_framework_timing",
+    "patrones_genero"
+   ]
+  },
+  {
+   "id": "af3d59c85b33",
+   "enunciado": "El Educational Demo (por defecto para contenido how-to) tiene cuatro beats: Problem state, Reveal, Walk-through y Result (después junto al antes).",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Educational Demo",
+   "temas": [
+    "beat_framework_timing",
+    "estrategia_conceptos"
+   ]
+  },
+  {
+   "id": "92f3cbcc1650",
+   "enunciado": "Usar Educational Demo en tutoriales, videos demo y contenido de formación.",
+   "alcance": "storyboard-architect, references/beat-frameworks.md, Educational Demo",
+   "temas": [
+    "beat_framework_timing",
+    "patrones_genero"
+   ]
+  }
+ ]
+}

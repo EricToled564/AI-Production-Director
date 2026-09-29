@@ -1,0 +1,1721 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "3444d15e6538",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "37-37",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto: blur parcial congelado, el agua en movimiento apenas barrida y el cuerpo o el objeto tack-sharp; es la prueba de un único instante arrestado. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "f788942aecb1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "38-38",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Alternativa para el beat previo al impacto: vector de trayectoria, el cuerpo en el aire en una postura que solo puede resolverse hacia abajo, con espacio negativo hacia el agua. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "1aa2468af852",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "39-39",
+     "encabezado": "Ruptura de superficie › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Nunca blur uniforme en toda la imagen: iguala la salpicadura al fondo y borra el instante. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "4146d9b57017",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "43-43",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- La corona y las gotas solo se leen a contraluz o con luz lateral dura; iluminarlas de frente produce una mancha blanca sin volumen. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "362e2625f9c1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "44-44",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- En split-level la mitad de aire y la mitad de agua tienen exposiciones distintas: el agua uno o dos pasos más oscura, con cáusticas si hay sol; declararlo evita que el modelo unifique las dos mitades. [A PRUEBA]"
+  },
+  {
+   "id": "516a0e0ebf61",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "45-45",
+     "encabezado": "Ruptura de superficie › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Una presión ambiental por panel: la salpicadura ya es la atmósfera; no sumar niebla, lluvia o spray adicional. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "39ea96c82987",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "49-49",
+     "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Rig por defecto: carcasa a nivel exacto de la superficie, o cámara de borde de piscina baja; para el split-level, carcasa con domo semisumergido. [A PRUEBA]"
+  },
+  {
+   "id": "3b6aa8cce0a6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "50-50",
+     "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Ángulo por defecto low a nivel del agua, aislando la salpicadura contra cielo o techo; el overhead se reserva para leer la geometría de la corona desde arriba. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "c8129d7a8dcb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "51-51",
+     "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Lente: 35mm a 50mm desde el borde para no deformar el cuerpo; macro solo para el detalle de las manos rompiendo la superficie. [FUENTE: video/references/camera-lighting-vocabulary.md §3]"
+  },
+  {
+   "id": "651a0852471e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "52-52",
+     "encabezado": "Ruptura de superficie › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- El rig debe existir: una cámara dentro del chorro de entrada o en el fondo de la fosa mirando hacia arriba son montajes reales; una cámara flotando a mitad de la salpicadura no. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "3158d8aee743",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "56-56",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Nano Banana Pro para la física del agua: corona, gotas, refracción y tela mojada. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "037e2cb4193d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "57-57",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- GPT Image 2 con quality high cuando el detalle de gotas y condensación es el centro del cuadro. [FUENTE: image/references/patterns/food-beverage.md]"
+  },
+  {
+   "id": "99453f3d8486",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "58-58",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Si el sujeto es una especie animal real, NB2 con image grounding para la anatomía correcta. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "76b59a27bfd7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "59-59",
+     "encabezado": "Ruptura de superficie › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Recorrido de costo: variantes a 0.5K, selección, regeneración del ganador a 2K o 4K. [FUENTE: image/references/golden-rules.md]"
+  },
+  {
+   "id": "515fb86ed682",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "63-63",
+     "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- En el instante de entrada el rostro no es la identidad: gorro, gafas, traje y silueta la sostienen; esos accesorios se fijan en el identity block del maestro y se repiten. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "59cdc0510015",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "64-64",
+     "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- El maestro de rostro se genera aparte y seco; el cuadro de ruptura se inserta con referencia sobre la placa de agua. [FUENTE: produccion-visual-sw30/SKILL.md R7]"
+  },
+  {
+   "id": "4a63734b0033",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "65-65",
+     "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- La anatomía en el pico se audita al 100% de zoom como manos y rostros: dedos alineados, muñecas, columna en línea. [FUENTE: produccion-visual-sw30/SKILL.md R14]"
+  },
+  {
+   "id": "3a8a272a5f72",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "66-66",
+     "encabezado": "Ruptura de superficie › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Dos cuerpos entrando a la vez: un sujeto por generación; la sincronía la fija el keyframe aprobado, no el texto. [FUENTE: produccion-visual-sw30/SKILL.md R9]"
+  },
+  {
+   "id": "8178b4634aa0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "70-70",
+     "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Dos superficies de agua o un horizonte de agua duplicado: el prompt mezcló vista de superficie y vista sumergida; declarar una sola línea de agua y desde qué lado mira la cámara. [A PRUEBA]"
+  },
+  {
+   "id": "f1512c923500",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "71-71",
+     "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El cuerpo aparece entero y nítido bajo el agua sin quiebre de refracción: pedir explícitamente el desplazamiento óptico en la línea del agua. [A PRUEBA]"
+  },
+  {
+   "id": "46b652f72d18",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "72-72",
+     "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El modelo dibuja al clavadista en el aire cuando se pidió la entrada: falta el estado posterior; describir el agua ya abierta y las manos ya dentro. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "d22e2e660be6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "73-73",
+     "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Salpicadura sin dirección, simétrica como fuente: nombrar el ángulo de entrada y el lado de presión. [A PRUEBA]"
+  },
+  {
+   "id": "5e28165ca26f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "74-74",
+     "encabezado": "Ruptura de superficie › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Corona blanca y plana: luz frontal; mover la fuente detrás del agua. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "771556b800ab",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "78-78",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Estado posterior visible: agua abierta, corona formada. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "6d3eeb85a1e0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "79-79",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Una sola línea de superficie; refracción presente en lo sumergido. [A PRUEBA]"
+  },
+  {
+   "id": "37017d846f99",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "80-80",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Gotas arriba, burbujas abajo, nunca invertidas. [A PRUEBA]"
+  },
+  {
+   "id": "2ce61d4557a8",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "81-81",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Blur diferencial, no uniforme. [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "3a35d5bdc242",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/02-agua-ruptura.md",
+     "lineas": "82-82",
+     "encabezado": "Ruptura de superficie › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Anatomía del pico correcta al zoom. [FUENTE: produccion-visual-sw30/SKILL.md R14]"
+  },
+  {
+   "id": "35c28231a4ae",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "16-18",
+     "encabezado": "Subacuático"
+    }
+   ],
+   "texto": "Bajo el agua no hay horizonte, la luz se absorbe por colores y el medio está lleno de materia. El\nentorno es la presión ambiental de todo el régimen: la visibilidad, las partículas y la dirección\nde la luz hacen el trabajo que en tierra hace el clima."
+  },
+  {
+   "id": "c6ef2518fb8b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "22-22",
+     "encabezado": "Subacuático › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar cuando la cámara y el sujeto están completamente sumergidos. [A PRUEBA]"
+  },
+  {
+   "id": "bf341f72c629",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "23-23",
+     "encabezado": "Subacuático › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Si el cuadro incluye la superficie desde abajo, este archivo manda; si la cruza, cargar además `02-agua-ruptura.md`. [A PRUEBA]"
+  },
+  {
+   "id": "9e47d890479f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "27-27",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. El agua absorbe primero los rojos: a pocos metros la piel, la sangre y los objetos rojos se ven pardos o grises salvo que una luz artificial cercana los recupere; un rojo saturado a profundidad sin fuente cercana es un error físico. [A PRUEBA]"
+  },
+  {
+   "id": "44a85bcf5ead",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "28-28",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. La luz entra desde la superficie y se descompone en haces cuando hay una abertura o partículas; en un cenote los haces caen desde la boca de la caverna y son la única fuente motivada. [A PRUEBA]"
+  },
+  {
+   "id": "5d903316b5f6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "29-29",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. Las cáusticas sobre el fondo o sobre el sujeto son la firma de una superficie iluminada por sol; sin sol directo no hay cáusticas. [A PRUEBA]"
+  },
+  {
+   "id": "0ea9634c501b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "30-30",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. Las burbujas suben verticales y son la brújula del cuadro: indican dónde está arriba y, en racimo desde el regulador, marcan una exhalación reciente, es decir un cambio de estado. [A PRUEBA]"
+  },
+  {
+   "id": "babee7e8fd18",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "31-31",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "5. La visibilidad cae con la distancia: contraste y saturación se pierden hacia el fondo y viran al azul o verde, la perspectiva aérea de este medio. [FUENTE: image/references/vision-decomposer.md §2]"
+  },
+  {
+   "id": "af8331c33725",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "32-32",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "6. El pelo y la tela flotan y se separan del cuerpo; una melena pegada a la cabeza o una camiseta caída se leen como aire. [A PRUEBA]"
+  },
+  {
+   "id": "cb3d053567f6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "33-33",
+     "encabezado": "Subacuático › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "7. La partícula en suspensión cerca de la lente, el backscatter, existe siempre que hay luz frontal; un agua perfectamente limpia se lee como aire teñido de azul. [A PRUEBA]"
+  },
+  {
+   "id": "e70b5e253212",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "37-37",
+     "encabezado": "Subacuático › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto: quietud deliberada con una sola cosa en movimiento, el racimo de burbujas o una aleta en blur parcial; el medio ya comunica lentitud. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "65bfc0bc0b00",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "38-38",
+     "encabezado": "Subacuático › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Para un nadador rápido: sujeto nítido y estela de burbujas barrida detrás, nunca el fondo barrido, porque bajo el agua el fondo casi nunca es legible. [A PRUEBA]"
+  },
+  {
+   "id": "d27526ba7cc4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "39-39",
+     "encabezado": "Subacuático › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- El estado de las burbujas es el cambio de estado del panel: exhalación recién liberada, no burbujas decorativas dispersas. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "63eb28b7a212",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "43-43",
+     "encabezado": "Subacuático › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Una fuente domina: la superficie. Toda luz adicional debe ser un práctico visible, linterna o foco del buzo, y su color cálido cerca del sujeto es la única forma legítima de recuperar rojos. [FUENTE: video/references/camera-lighting-vocabulary.md §5]"
+  },
+  {
+   "id": "ac34a798a733",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "44-44",
+     "encabezado": "Subacuático › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Silueta contre-jour contra la superficie luminosa: cuerpo negro con un rim y un glint en la máscara; el cerebro completa lo que no ve. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "60f8c3b66358",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "45-45",
+     "encabezado": "Subacuático › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Los haces de luz son atmósfera y solo existen con partículas; pedir haces sin partículas produce rayos dibujados. [A PRUEBA]"
+  },
+  {
+   "id": "ad80f1b118bb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "46-46",
+     "encabezado": "Subacuático › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- El 70% del cuadro puede quedar en penumbra azul; no rellenar. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "6d52f35fdc17",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "50-50",
+     "encabezado": "Subacuático › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Ángulo por defecto low mirando hacia la superficie: pone la fuente detrás del sujeto y da escala con los haces; el eye-level lateral sirve para la exploración; el picado desde arriba pierde la luz. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "4ebc480ecff8",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "51-51",
+     "encabezado": "Subacuático › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Lente ancha, 24mm o menos, y cerca del sujeto: bajo el agua la distancia come contraste, así que la cámara se acerca en vez de cerrar plano con tele. [A PRUEBA]"
+  },
+  {
+   "id": "1c2689e01df2",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "52-52",
+     "encabezado": "Subacuático › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- El rig es una carcasa con domo; la deformación de gran angular y la ligera viñeta del domo son texturas legítimas del régimen. [A PRUEBA]"
+  },
+  {
+   "id": "6808af96b9bf",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "53-53",
+     "encabezado": "Subacuático › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Cámara implícita: el descenso lento o el avance en una sola dirección; un solo movimiento por clip cuando se anime. [FUENTE: video/references/camera-lighting-vocabulary.md §2]"
+  },
+  {
+   "id": "55ced5eb5fe4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "57-57",
+     "encabezado": "Subacuático › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Nano Banana Pro para escenas complejas con física de luz, partículas y tela flotante. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "b7c53d9dd935",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "58-58",
+     "encabezado": "Subacuático › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- NB2 con image grounding cuando el cenote, el arrecife o la especie deben ser fieles a la realidad; el grounding cubre lugares, animales y plantas. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "9bd385498958",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "59-59",
+     "encabezado": "Subacuático › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Pedir \"natural contrast, no HDR look\": el azul profundo dispara el HDR sobrecocido. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "83680d5237d3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "60-60",
+     "encabezado": "Subacuático › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- thinking_level high en NB2 cuando se combina grounding con razonamiento espacial de la caverna. [FUENTE: image/references/nano-banana.md]"
+  },
+  {
+   "id": "2e95784f1e50",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "64-64",
+     "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Con máscara y regulador el rostro no sostiene la identidad: la sostienen traje, aletas, color del tanque y silueta; esos elementos van en el identity block y se repiten verbatim. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "c4c3592cf2ab",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "65-65",
+     "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- El apneísta sin máscara sí muestra rostro: entonces aplica el maestro T1 seco, y el cuadro sumergido se inserta con referencia, con el viraje de color declarado como cambio de luz, no como cambio de identidad. [FUENTE: produccion-visual-sw30/SKILL.md R5]"
+  },
+  {
+   "id": "7718d52d67f0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "66-66",
+     "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- La piel bajo el agua se describe con su viraje real, cálida solo bajo la linterna; skin_doc sigue aplicando en textura, no en color. [A PRUEBA]"
+  },
+  {
+   "id": "7cf92e66a3e5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "67-67",
+     "encabezado": "Subacuático › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Dos buzos: uno por generación sobre la placa del cenote; la profundidad relativa se declara por tamaño y por pérdida de contraste, no por \"detrás\". [FUENTE: produccion-visual-sw30/SKILL.md R2]"
+  },
+  {
+   "id": "0acf10394f58",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "71-71",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El agua parece aire azul: faltan partículas, haces o pérdida de contraste con la distancia; añadir las tres, una por cláusula. [A PRUEBA]"
+  },
+  {
+   "id": "7ae92dcef252",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "72-72",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Piel rosada y labios rojos a diez metros: color físicamente imposible sin práctico; declarar el viraje o añadir la linterna como fuente. [A PRUEBA]"
+  },
+  {
+   "id": "2d6ff015501a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "73-73",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Burbujas que van de lado o hacia abajo: el modelo perdió la vertical; declarar \"bubbles rising straight up toward the surface\". [A PRUEBA]"
+  },
+  {
+   "id": "5127a612ddf1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "74-74",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Pelo y tela pegados al cuerpo: pedir flotación explícita. [A PRUEBA]"
+  },
+  {
+   "id": "c41f54625ff6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "75-75",
+     "encabezado": "Subacuático › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Dos direcciones de luz sin práctico visible: contradicción; una fuente desde la superficie y, si hay otra, que se vea. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "88f932eabf5a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "79-79",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Absorción de color coherente con la profundidad declarada. [A PRUEBA]"
+  },
+  {
+   "id": "73c350f74f83",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "80-80",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Partículas, haces o pérdida de contraste presentes. [A PRUEBA]"
+  },
+  {
+   "id": "4d684ad6dc93",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "81-81",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Burbujas verticales; racimo reciente si hay cambio de estado. [A PRUEBA]"
+  },
+  {
+   "id": "47d90ddd6066",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "82-82",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Una sola fuente dominante desde la superficie, prácticos visibles si hay más. [FUENTE: video/references/universal-rules.md U8]"
+  },
+  {
+   "id": "5b9d1a15786c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "83-83",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Pelo y tela flotando. [A PRUEBA]"
+  },
+  {
+   "id": "ecde725c7004",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/03-subacuatico.md",
+     "lineas": "84-84",
+     "encabezado": "Subacuático › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Identidad sostenida por equipo y silueta, verbatim entre cuadros. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "d5a9d25ea7e4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "16-18",
+     "encabezado": "Objeto balístico"
+    }
+   ],
+   "texto": "Un objeto pequeño en vuelo o en el instante de impacto. Sin rostro y casi sin cuerpo, el objeto es\nel actor: su deformación, su sombra de contacto y su estela cuentan la fuerza. Es el régimen donde\nmás fácil se cae en el objeto estático fetiche, que la fuente prohíbe."
+  },
+  {
+   "id": "570b32df2a46",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "22-22",
+     "encabezado": "Objeto balístico › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar cuando el sujeto principal del panel es un objeto en vuelo, en impacto o en el instante posterior al impacto. [A PRUEBA]"
+  },
+  {
+   "id": "13a84858477e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "23-23",
+     "encabezado": "Objeto balístico › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Si el objeto lo impulsa una persona visible, cargar además `06-cuerpo-en-esfuerzo.md`; si el objeto es un vehículo, `05-vehiculo.md`. [A PRUEBA]"
+  },
+  {
+   "id": "ebfbbec26f23",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "27-27",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. Un objeto solo carga emoción cuando cambia de estado: boardear el después del impacto, la pelota aplastada contra las cuerdas, el vaso ya quebrado, la gota ya convertida en corona; el objeto intacto en vuelo es un panel de setup, no de impacto. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "60115c9cc02c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "28-28",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. El impacto se describe por su consecuencia física: la pelota se deforma y las cuerdas ceden, la superficie se astilla en telaraña, el polvo salta de la línea. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "4408f08cfbc9",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "29-29",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. Una pelota blanda en el impacto no es redonda: se achata contra la superficie, y el material del que está hecha lo dice el borde, fieltro erizado o cuero tenso. [A PRUEBA]"
+  },
+  {
+   "id": "494e7725ef0b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "30-30",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. Toda acción produce reacción visible en lo que recibe el golpe: cuerdas deflectadas, tela hundida, superficie del agua deprimida; sin reacción, el objeto flota pegado. [A PRUEBA]"
+  },
+  {
+   "id": "e0ca940eba9a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "31-31",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "5. La sombra de contacto ancla el objeto al mundo: sin sombra de contacto o con sombra doble, el objeto se lee compuesto. [FUENTE: image/references/prompt-framework.md]"
+  },
+  {
+   "id": "3e885dbe3e60",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "32-32",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "6. El vector de trayectoria se compone con el espacio negativo hacia donde el objeto va a resolverse, no de donde viene. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "f7417e5c2a35",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "33-33",
+     "encabezado": "Objeto balístico › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "7. Un objeto pequeño necesita referencia de escala en el mismo plano de foco: una mano, una línea de cancha, una etiqueta; sin ella no hay tamaño. [A PRUEBA]"
+  },
+  {
+   "id": "b679fc32fab3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "37-37",
+     "encabezado": "Objeto balístico › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Elegir una sola lógica de blur y declararla: o el objeto nítido y el fondo barrido, cámara que sigue al objeto, o el objeto barrido y el mundo nítido, cámara fija; las dos a la vez es imposible y el modelo mezcla. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "957d49c65e16",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "38-38",
+     "encabezado": "Objeto balístico › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto en el impacto: blur parcial congelado, el objeto deformado tack-sharp y el polvo, las cuerdas o el líquido apenas barridos. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "cc9f8d1082c2",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "39-39",
+     "encabezado": "Objeto balístico › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto en vuelo: sharp-subject contra fondo barrido con macro y foco muy corto. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "6bf6bf0782eb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "40-40",
+     "encabezado": "Objeto balístico › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Nunca describir la velocidad con adjetivos; describir el residuo: estela de polvo, fibras erizadas, gota alargada en el borde de fuga. [FUENTE: video/references/dramaturgy.md §2]"
+  },
+  {
+   "id": "50dcf999a3ca",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "44-44",
+     "encabezado": "Objeto balístico › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Luz dura lateral o contraluz para que el material del objeto se lea: fieltro, cuero, vidrio, líquido; la luz frontal pareja convierte el objeto en un círculo plano. [FUENTE: video/references/camera-lighting-vocabulary.md §6]"
+  },
+  {
+   "id": "a483e55ef84b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "45-45",
+     "encabezado": "Objeto balístico › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- El polvo, el spray o las astillas solo tienen volumen a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "4c87a39b7b50",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "46-46",
+     "encabezado": "Objeto balístico › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Un specular duro en el objeto es obligatorio: sin él no hay información de material ni de forma. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "ad547661d4da",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "47-47",
+     "encabezado": "Objeto balístico › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Sombra de contacto suave y definida donde el objeto toca, oclusión ambiental en el punto de deformación. [FUENTE: image/references/prompt-framework.md]"
+  },
+  {
+   "id": "4cabd6184194",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "51-51",
+     "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Ángulo por defecto low a la altura del plano de impacto: la red, la línea, la mesa; eye-level para seguir un vuelo; overhead solo para leer la geometría de la corona o la dispersión. [FUENTE: video/references/animatic-keyframes.md §6]"
+  },
+  {
+   "id": "1896f3bef387",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "52-52",
+     "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Lente macro 100mm o equivalente descriptivo para textura y detalle; en Nano Banana describir \"extreme close-up, shallow depth of field\", no números. [FUENTE: video/references/camera-lighting-vocabulary.md §3]"
+  },
+  {
+   "id": "9be7f4b88811",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "53-53",
+     "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Rig montable: cámara de alta velocidad en trípode al nivel del impacto, o cámara robótica que sigue; una cámara que gira alrededor del objeto en el aire no existe en el rodaje real y se lee como render. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "5b71087c93ac",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "54-54",
+     "encabezado": "Objeto balístico › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Cámara implícita: crash zoom al detalle del impacto o freeze frame; nombrar cuál. [FUENTE: video/references/race-and-speed.md §6]"
+  },
+  {
+   "id": "4ba58a4a67ab",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "58-58",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- GPT Image 2 con quality high para el detalle congelado y la legibilidad de texturas finas, como en los patrones de ingrediente flotante. [FUENTE: image/references/patterns/ecommerce.md]"
+  },
+  {
+   "id": "34293604252a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "59-59",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Nano Banana Pro cuando la deformación física es el centro: razonamiento espacial para distorsión creíble. [FUENTE: image/references/patterns/ecommerce.md]"
+  },
+  {
+   "id": "dc1621315c70",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "60-60",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Sin logos ni marcas en el objeto: se heredan de asset aprobado o se componen en post; el modelo los deforma. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "fdbaf14fb3c0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "61-61",
+     "encabezado": "Objeto balístico › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Prompt en cinco slots para GPT Image 2 con el slot Constraints declarando \"no duplicate ball, no second shadow\". [FUENTE: image/references/gpt-image.md]"
+  },
+  {
+   "id": "ed34c0801188",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "65-65",
+     "encabezado": "Objeto balístico › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Si aparece una persona, entra como anatomía en decisión: mano y antebrazo golpeando, no cuerpo entero; nombrar el verbo. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "ba4622657fd4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "66-66",
+     "encabezado": "Objeto balístico › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- La mano y el objeto se generan juntos solo si el contacto es el beat; si no, el objeto se genera solo y la persona en su propio cuadro. [FUENTE: produccion-visual-sw30/SKILL.md R1]"
+  },
+  {
+   "id": "156e8024cd36",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "67-67",
+     "encabezado": "Objeto balístico › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Lateralidad nombrada en cualquier contacto: qué mano, qué lado de la raqueta. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "d3a01f4393bf",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "71-71",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Pelota perfectamente redonda contra las cuerdas: falta el estado posterior; pedir la deformación y la deflexión de las cuerdas. [A PRUEBA]"
+  },
+  {
+   "id": "39b4984ba0ff",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "72-72",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Objeto duplicado o sombra doble: pedir \"single ball, single contact shadow\" en Constraints y bajar la complejidad del fondo. [FUENTE: image/references/gpt-image.md]"
+  },
+  {
+   "id": "2a86517d0cbe",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "73-73",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Blur en el objeto y en el fondo: se pidieron dos lógicas de cámara; elegir una. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "b470e35370ff",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "74-74",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- El objeto flota sin tocar: falta sombra de contacto y reacción de la superficie. [A PRUEBA]"
+  },
+  {
+   "id": "ee7708ebe647",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "75-75",
+     "encabezado": "Objeto balístico › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Marca o logo deformado en el objeto: quitarlo del prompt y componer en post. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "ecaa0ac58876",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "79-79",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Estado posterior visible con deformación y reacción del receptor. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "4d5a617647cb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "80-80",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Una sola lógica de blur, declarada y cumplida. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "ca596167eb31",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "81-81",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Sombra de contacto única. [A PRUEBA]"
+  },
+  {
+   "id": "0680cf331743",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "82-82",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Referencia de escala en foco. [A PRUEBA]"
+  },
+  {
+   "id": "1172bc492607",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "83-83",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Specular y material legibles. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "9690d0220f43",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/04-objeto-balistico.md",
+     "lineas": "84-84",
+     "encabezado": "Objeto balístico › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Sin marcas en el objeto. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "5d8c475ace06",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "16-18",
+     "encabezado": "Vehículo en movimiento"
+    }
+   ],
+   "texto": "Este régimen ya tiene dueño: `race-and-speed.md` es la autoridad para todo vehículo a velocidad, con\n`animatic-keyframes.md` como método base. Este archivo no repite esas reglas; las señala y añade lo\nque cambia cuando el vehículo no es un auto de carreras en una pista."
+  },
+  {
+   "id": "c4025d3bed28",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "22-22",
+     "encabezado": "Vehículo en movimiento › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar `race-and-speed.md` completo antes que este archivo para cualquier vehículo a velocidad. [FUENTE: video/SKILL.md paso 4]"
+  },
+  {
+   "id": "d305c7408728",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "23-23",
+     "encabezado": "Vehículo en movimiento › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Este archivo se carga después, solo para las extensiones: moto, bicicleta, tren, lancha, dron y avión ligero. [A PRUEBA]"
+  },
+  {
+   "id": "68398cad0f67",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "27-27",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. Un still vende velocidad solo si reúne al menos tres de cinco cues: cámara a la altura del parachoques o más baja, asfalto barriendo el borde inferior, referencia cercana pasando el borde, héroe nítido contra fondo barrido, cue de vibración mecánica. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "b83788bdd672",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "28-28",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. La física tiene que estar en el still: squat de la carrocería, nariz levantada, neumático arrugado, rim barrido; nunca depender de que el panel se vea rápido acelerado en post. [FUENTE: video/references/race-and-speed.md §1]"
+  },
+  {
+   "id": "08831dcf6872",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "29-29",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. Los rayos de una rueda en movimiento siempre van barridos en disco; un rim nítido en un vehículo en marcha es el fallo más frecuente y más delator. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "672c193acc17",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "30-30",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. En moto la física visible es el ángulo de inclinación y el borde del neumático trabajando: rodilla o codo cerca del suelo, el cuerpo descolgado hacia el interior de la curva. [A PRUEBA]"
+  },
+  {
+   "id": "a2d9f57a49c6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "31-31",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "5. En bicicleta la velocidad se lee en la cadencia barrida de las piernas y en la cadena, con el cuerpo tenso sobre el manillar; el sudor es el specular de este vehículo. [A PRUEBA]"
+  },
+  {
+   "id": "d1409da69a9f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "32-32",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "6. En tren o metro la velocidad se lee por compresión de larga focal y por el andén o los postes barridos; el vehículo en sí apenas se deforma. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "b0a9cd0421b3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "33-33",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "7. En dron o hélice, las palas se dibujan como discos translúcidos, nunca como palas nítidas. [A PRUEBA]"
+  },
+  {
+   "id": "913eb6236a91",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "34-34",
+     "encabezado": "Vehículo en movimiento › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "8. Toda consecuencia física declarada obliga a la causa: neumáticos que levantan cortinas de agua, gravilla frenada en el borde de ataque. [FUENTE: video/references/universal-rules.md U9]"
+  },
+  {
+   "id": "2c456b09858d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "38-38",
+     "encabezado": "Vehículo en movimiento › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Cue por defecto: héroe nítido y mundo barrido en el eje de viaje, con una referencia cercana alargada en varilla de luz. [FUENTE: video/references/animatic-keyframes.md §4]"
+  },
+  {
+   "id": "20c9e8f1be4c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "39-39",
+     "encabezado": "Vehículo en movimiento › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Alternar registros: paneles bajos y anchos con paneles de compresión de larga focal; nunca toda la secuencia con una sola lente. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "efdab5612d37",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "40-40",
+     "encabezado": "Vehículo en movimiento › 3. Cue de movimiento congelado por defecto"
+    }
+   ],
+   "texto": "- Nombrar el blur diferencial de forma explícita porque los modelos estabilizan de más: \"motion blur on background, fast-shutter look on subject, rim spokes smeared to a disc\". [FUENTE: video/references/animatic-keyframes.md §7]"
+  },
+  {
+   "id": "3eb6e9176a00",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "44-44",
+     "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Luz specular, no ambiental: un specular duro en metal o goma por panel. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "fff8571967c4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "45-45",
+     "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- El calor, disco de freno o escape, es el único cálido permitido en el registro race y debe ser puntual y rodeado de frío. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "be798e415914",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "46-46",
+     "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- Fuera del registro race, un spot comercial de vehículo puede usar paleta cálida: entonces se declara el tratamiento comercial en la tarjeta y el ban de ámbar no aplica. [A PRUEBA]"
+  },
+  {
+   "id": "25256734eda6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "47-47",
+     "encabezado": "Vehículo en movimiento › 4. Luz en este medio"
+    }
+   ],
+   "texto": "- El humo, el polvo o el spray de rueda solo a contraluz. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "6de35cef9324",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "51-51",
+     "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- La cámara va donde un rig real puede atornillarse: parachoques, capó, hostess-tray, eje, cabina hard-mount; si no, se lee render. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "79f06837091c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "52-52",
+     "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Rotar entre las cinco familias de plano: perfil hostess-tray, POV bajo de capó, cabina con vibración, tracking paralelo o joust, proof shot lejano. [FUENTE: video/references/race-and-speed.md §5]"
+  },
+  {
+   "id": "9b41d54a41b3",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "53-53",
+     "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Ángulo por defecto low a la altura del parachoques; el god-angle alto y limpio mata la velocidad. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "c60aebb7677e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "54-54",
+     "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- Dutch solo en el único beat de pérdida de tracción. [FUENTE: video/references/race-and-speed.md §6]"
+  },
+  {
+   "id": "3b6e569c1a14",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "55-55",
+     "encabezado": "Vehículo en movimiento › 5. Cámara, ángulo y rig montable"
+    }
+   ],
+   "texto": "- En bici y moto el rig cercano es la cámara de casco o el chest mount: POV con manillar y manos en primer plano duro. [A PRUEBA]"
+  },
+  {
+   "id": "d52c13dbb3d4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "59-59",
+     "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Nano Banana Pro para escenas complejas con física y materiales; GPT Image 2 quality high cuando hay etiquetas, patrocinadores o pantallas legibles. [FUENTE: image/references/models.md]"
+  },
+  {
+   "id": "4c2e1f027801",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "60-60",
+     "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Flux 2 Pro o Midjourney v7 vía adaptador de forge para el hero photoreal sin rostro. [FUENTE: visual-prompt-forge/references/failure-modes.md F1]"
+  },
+  {
+   "id": "66bf162ea41a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "61-61",
+     "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Sin marcas de patrocinador generadas: se componen en post o se heredan del asset aprobado. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "fecf21990892",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "62-62",
+     "encabezado": "Vehículo en movimiento › 6. Modelo recomendado"
+    }
+   ],
+   "texto": "- Al animar en Kling, la acción rápida se genera lenta y se acelera en post para evitar morphing. [FUENTE: video/references/kling.md §11]"
+  },
+  {
+   "id": "b263e512fc6d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "66-66",
+     "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Sin rostro, o rostro fragmentado por casco, visera y reflejos; la emoción va en nudillos, pedal y aguja. [FUENTE: video/references/race-and-speed.md §4]"
+  },
+  {
+   "id": "bdf667584ddb",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "67-67",
+     "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Cuando el piloto o ciclista es identidad de campaña, el rostro se fija en el maestro T1 fuera del vehículo y el cuadro de acción hereda casco, traje y número como identity block. [FUENTE: video/references/universal-rules.md U7]"
+  },
+  {
+   "id": "c3cc29f75adf",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "68-68",
+     "encabezado": "Vehículo en movimiento › 7. Tratamiento de personas dentro del régimen"
+    }
+   ],
+   "texto": "- Anatomía solo en decisión: mano que cambia, pie que pisa, rodilla que baja. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "3e58277d08d2",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "72-72",
+     "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Rim nítido: pedir explícitamente los rayos barridos en disco. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "e64acd2bd806",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "73-73",
+     "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Cabina perfectamente estable: añadir espejo trémulo, aguja doblada, horizonte 1 a 3 grados fuera. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "9982e179bfe2",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "74-74",
+     "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Moto vertical en curva: declarar el ángulo de inclinación y el lado de la rodilla. [A PRUEBA]"
+  },
+  {
+   "id": "3907718418da",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "75-75",
+     "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Palas de dron nítidas: pedir discos translúcidos. [A PRUEBA]"
+  },
+  {
+   "id": "4aafcc50585e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "76-76",
+     "encabezado": "Vehículo en movimiento › 8. Fallos conocidos y su corrección"
+    }
+   ],
+   "texto": "- Aire alrededor del vehículo en un beat de velocidad: acercar barrera, rival o pared al borde. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "56c9d7449596",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "80-80",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Tres de cinco cues de velocidad presentes. [FUENTE: video/references/race-and-speed.md §3]"
+  },
+  {
+   "id": "7bd2d57cfa94",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "81-81",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Rim barrido, física visible en el chasis. [FUENTE: video/references/race-and-speed.md §10]"
+  },
+  {
+   "id": "9e72a2802e40",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "82-82",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Rig montable. [FUENTE: video/references/race-and-speed.md §2]"
+  },
+  {
+   "id": "c0216ce354d1",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "83-83",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Un specular duro por panel; cálido solo puntual en registro race. [FUENTE: video/references/race-and-speed.md §7]"
+  },
+  {
+   "id": "32b4500f0bf8",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "84-84",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Inclinación y borde de neumático en moto; cadencia barrida en bici; discos en hélices. [A PRUEBA]"
+  },
+  {
+   "id": "c42d3d864028",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/05-vehiculo.md",
+     "lineas": "85-85",
+     "encabezado": "Vehículo en movimiento › 9. Checklist del crítico"
+    }
+   ],
+   "texto": "- [ ] Sin marcas generadas. [FUENTE: visual-prompt-forge/SKILL.md Rule 6]"
+  },
+  {
+   "id": "b64606049e3f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "16-18",
+     "encabezado": "Cuerpo en el pico de esfuerzo"
+    }
+   ],
+   "texto": "Aquí el cuerpo humano es el objeto que cambia de estado. A diferencia de los regímenes sin rostro,\nel rostro suele estar presente y visible, así que el template de piel documental de SW30 aplica\níntegro, sumado a la ley de los tres detalles."
+  },
+  {
+   "id": "6694cdc2b379",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "22-22",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Cargar cuando el beat es el instante de máximo esfuerzo o el cruce de un umbral físico por una persona: cinta de llegada, apex de un salto, impacto de un golpe, punto muerto de un levantamiento. [A PRUEBA]"
+  },
+  {
+   "id": "b639bbf7ee35",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "23-23",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 1. Cuándo cargar"
+    }
+   ],
+   "texto": "- Si hay un objeto impulsado, cargar además `04-objeto-balistico.md`; si hay público detrás, `08-multitud-anonima.md`. [A PRUEBA]"
+  },
+  {
+   "id": "3e699e745853",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "27-27",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "1. Boardear el estado posterior del umbral: la cinta ya rota y volando, el pie ya despegado, el guante ya hundido en el saco; un corredor a un paso de la cinta intacta es setup, no impacto. [FUENTE: video/references/animatic-keyframes.md §5]"
+  },
+  {
+   "id": "eeddddf9caa5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "28-28",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "2. La fase de contacto con el suelo debe ser coherente con la velocidad: en sprint un solo pie toca o ninguno, en el apex del salto ninguno, en el punto muerto del levantamiento los dos plantados y cargados. [A PRUEBA]"
+  },
+  {
+   "id": "941493fb5436",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "29-29",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "3. La emoción se traduce a cuerpo, nunca se nombra: mandíbula trabada, venas como cordones, dedos abiertos, cuello tenso; entre dos y cuatro señales observables, más es sobreactuación. [FUENTE: video/references/universal-rules.md U3]"
+  },
+  {
+   "id": "343b5e0d7749",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/06-cuerpo-en-esfuerzo.md",
+     "lineas": "30-30",
+     "encabezado": "Cuerpo en el pico de esfuerzo › 2. Leyes físicas que el still debe evidenciar"
+    }
+   ],
+   "texto": "4. El sudor se describe como puntos speculares discretos bajo luz dura, no como piel mojada uniforme. [FUENTE: video/references/race-and-speed.md §7]"
+  }
+ ]
+}

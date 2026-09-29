@@ -1,0 +1,678 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "multishot",
+ "descripcion_tema": "varios shots en una generación, marcadores de corte, anti-mush",
+ "filas": [
+  {
+   "id": "a0340374da88",
+   "alcance": "General (skill video, fixes y esqueletos, §2 One continuous take instead of montage)",
+   "enunciado": "Fix para un take continuo en lugar de montaje: declarar secuencia multi-shot con cortes duros visibles, sin un solo plano continuo y con ángulo y encuadre distintos por beat.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › One continuous take instead of montage"
+    }
+   ]
+  },
+  {
+   "id": "b69681d74220",
+   "alcance": "General (skill video, fixes y esqueletos, §2 One continuous take instead of montage) · Seedance",
+   "enunciado": "En Seedance, además, añadir marcadores explícitos `Cut to.` o `Camera cut to.` en el cuerpo del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 2. Common failures and fixes › One continuous take instead of montage"
+    }
+   ]
+  },
+  {
+   "id": "4d8eb8d5801a",
+   "alcance": "Seedance (familia, ByteDance)",
+   "enunciado": "Describe Seedance como modelo de video de ByteDance con la capacidad única de generar varios shots distintos en una sola generación (mini-montaje en un clip de 5-10 s), con buen movimiento y fuerza en anuncios y narrativa corta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 1. What Seedance is"
+    }
+   ]
+  },
+  {
+   "id": "03cc62ed2296",
+   "alcance": "Seedance 1.x/2.0",
+   "enunciado": "Para trabajo dramático, multi-shot, con personaje bloqueado o de clips unidos, se usa siempre el esqueleto de producción de 11 bloques de la sección 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Older single-clip skeleton (kept for quick scenes)"
+    }
+   ]
+  },
+  {
+   "id": "2a360d148e16",
+   "alcance": "Seedance 1.x/2.0, piezas dramáticas y multi-shot",
+   "enunciado": "Especifica el esqueleto de producción de 11 bloques de Seedance: bloqueo de personaje, duración/género/edición, historia, estilo visual, cámara, edición, audio, timeline shot a shot, luz, composición y especificaciones de salida.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+    }
+   ]
+  },
+  {
+   "id": "a3ab1b2ec05b",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Especifica generar por separado y ensamblar en edición los beats con sujetos o locaciones distintos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "d76eb13635a1",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Especifica usar secuencia multi-shot para 2-4 beats consecutivos del mismo sujeto cuando se quiere continuidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "36fedbb449ca",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Especifica usar shot único (o Kling) para un beat y un frame.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "3817ea8b1722",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, cuándo usar multi-shot",
+   "enunciado": "Exige mapear las entradas consecutivas de shots.json que comparten sujeto a un solo prompt multi-shot, referenciándolas por rango de ids en el comentario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › When to use multi-shot vs single"
+    }
+   ]
+  },
+  {
+   "id": "dedd63f14fc0",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, ejemplo",
+   "enunciado": "Ejemplo: prompt Seedance de tres shots (static, push lento, handheld OTS) con ancla de sujeto única, entorno, luz y grade.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Example"
+    }
+   ]
+  },
+  {
+   "id": "9b1bc3617990",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, ejemplo",
+   "enunciado": "Ejemplo: tres beats consecutivos del mismo fundador mapeados a una sola secuencia Seedance.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Example"
+    }
+   ]
+  },
+  {
+   "id": "33fa4192a42b",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Limita cada generación Seedance a unos 4 cortes como máximo porque la consistencia se degrada; se divide y ensambla en edición.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "ba830e34d698",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe apilar dos movimientos de cámara dentro de un corte: un movimiento por corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "6034318491db",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe forzar beats no relacionados en una secuencia: multi-shot es solo para shots de una misma toma.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "3bdbe5c30d91",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, errores a evitar",
+   "enunciado": "Prohíbe variar el ancla de personaje entre cortes: se enuncia una vez para toda la secuencia, verbatim.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Pitfalls to avoid"
+    }
+   ]
+  },
+  {
+   "id": "dec8c3d79d9e",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, introducción",
+   "enunciado": "Especifica que en Seedance la cámara y la estructura de cortes son determinantes: se describe la secuencia de shots, no un solo frame.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+    }
+   ]
+  },
+  {
+   "id": "c6cc746f83fe",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, introducción",
+   "enunciado": "Explicación: Seedance 2.0 es el modelo multi-shot que genera una secuencia corta de cortes en una sola generación manteniendo sujeto y entorno; conviene para beats consecutivos del mismo sujeto y, para un shot aislado, Kling es el default.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+    }
+   ]
+  },
+  {
+   "id": "3b5414a3963f",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, longitud",
+   "enunciado": "Limita el prompt Seedance a 80-150 palabras y, en multi-shot, exige cláusulas cortas: un movimiento de cámara y una acción por corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Length"
+    }
+   ]
+  },
+  {
+   "id": "eeea6bc7ecd9",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, parámetros",
+   "enunciado": "Define el parámetro shots (por defecto 1) como número de cortes de la secuencia en modo multi-shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "38d5c8790497",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, parámetros",
+   "enunciado": "Especifica documentar la secuencia multi-shot con comentario de cabecera (rango de shots, ar, shots=N) seguido del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "a4b88e556b8a",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, parámetros",
+   "enunciado": "Fija la duración por defecto de Seedance en 5s por bloque de shot; las secuencias multi-shot son más largas y hay que revisar el techo vigente de fal.ai.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "9f1c9e2d2f0c",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, sintaxis multi-shot",
+   "enunciado": "Especifica el patrón multi-shot de Seedance: 'Shot N: cámara + acción' por corte, seguido del ancla de personaje de series_lock verbatim, entorno y luz, y grade y mood.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Syntax pattern"
+    }
+   ]
+  },
+  {
+   "id": "3a8d6b3a9790",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, vocabulario de movimiento",
+   "enunciado": "Especifica que el campo motion de la gramática de shots se mapea directamente al vocabulario de Seedance, con un movimiento por corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    }
+   ]
+  },
+  {
+   "id": "eba7c7fff777",
+   "alcance": "Seedance 2.0, ejemplo de tragicomedia (Clip A)",
+   "enunciado": "Ejemplo: prompt completo del Clip A (Hambre) de 5 s con el esqueleto de producción aplicado (bloque anti-mush, bloqueo de personaje con @img1, estilo, cámara, edición, audio, cinco shots cronometrados, luz, composición y flags CLI).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 16. Worked example. 15-second tragicomedy as 3 × 5s clips › Clip A. Hunger (production-grade skeleton applied)"
+    }
+   ]
+  },
+  {
+   "id": "3b36a8623a6b",
+   "alcance": "Seedance 2.5, fallos y soluciones, one-take que corta",
+   "enunciado": "Contra el one-take que no se mantiene: \"One continuous shot, no cuts of any kind\" con una ruta de cámara que no motive cortes, y si se cuela el montaje bajar a una ventana de 10-15 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 17. Failure modes and fixes › The one-take that refuses to stay one take"
+    }
+   ]
+  },
+  {
+   "id": "28f37d0a3089",
+   "alcance": "Seedance 2.5, grids de storyboard y keyframes",
+   "enunciado": "Como grid de storyboard de entrada: una imagen de ≤15 paneles oficiales, línea limpia y poco texto, declarando el orden de lectura y excluyendo su estilo, texto y personajes de relleno, seguido de Shot 1 a Shot N.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "c1669a46217b",
+   "alcance": "Seedance, clips multi-shot de 5 s",
+   "enunciado": "Para un clip multi-shot de 5 s usa por defecto 5 beats con micro-arco dramático: Establish (0-0.8 s), Action, Turn, Reaction y Climax/hero (hasta 5.0 s).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 7. The 5-second shot timeline (rhythm template)"
+    }
+   ]
+  },
+  {
+   "id": "3a69653f3473",
+   "alcance": "Seedance, multi-shot",
+   "enunciado": "Ante deriva de personaje entre shots, se repite el bloque de identidad completo en cada límite de shot dentro del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Character drift across shots"
+    }
+   ]
+  },
+  {
+   "id": "c0fc8b9ea44a",
+   "alcance": "Seedance, multi-shot",
+   "enunciado": "Contra la mezcla de tono, cada shot debe tener una función emocional distinta (Establish / Power / Pressure / Detail / Reaction / Shift / Impact / Aftermath), porque dos shots adyacentes con la misma función se promedian; hay que variar función y encuadre en cada corte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Mood smear / \"everything looks the same\""
+    }
+   ]
+  },
+  {
+   "id": "f6ccb3547583",
+   "alcance": "Seedance, multi-shot",
+   "enunciado": "Seedance lee marcadores de corte explícitos dentro de un prompt y genera shots distintos con cortes visibles; conviene usarlo cuando se necesita montaje en una sola generación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ]
+  },
+  {
+   "id": "54997e6dbe07",
+   "alcance": "Seedance, multi-shot",
+   "enunciado": "Si Seedance produce una sola toma continua cuando se pidió multi-shot, se añaden marcadores explícitos 'Cut to' y se indica 'multi-shot sequence with visible hard cuts. Do not generate a single continuous take.'",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › One continuous take when multi-shot was requested"
+    }
+   ]
+  },
+  {
+   "id": "b3f64b916811",
+   "alcance": "Seedance, multi-shot",
+   "enunciado": "Usa 2-3 shots por clip de 5 s para montaje cinematográfico ajustado, o 4-5 beats cortos y físicamente distintos; el tope duro es 5 shots por generación, la duración debe dimensionarse al número de shots y cada shot debe compartir un ancla con sus vecinos (personaje, lugar o receta de luz).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ]
+  },
+  {
+   "id": "4ddb287a8d3b",
+   "alcance": "Seedance, multi-shot pre-2.5",
+   "enunciado": "Si falla un multi-shot de 4+ shots en 5 s, se limita a 2-3 shots por clip de 5 s (o 4-5 beats cortos según el timeline de la sección 7) y se divide en varias generaciones si hacen falta más.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 15. Failure modes and fixes › Multi-shot fails on 4+ shots in 5s"
+    }
+   ]
+  },
+  {
+   "id": "6cf160475d9f",
+   "alcance": "Seedance, piezas dramáticas y multi-shot",
+   "enunciado": "El esqueleto de producción de 11 bloques se usa en toda pieza dramática, anuncio multi-shot, segmento de videoclip o clip con personaje bloqueado, y omitir un bloque reintroduce su fallo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 6. Production-grade skeleton (11 blocks)"
+    }
+   ]
+  },
+  {
+   "id": "1afe67b91f09",
+   "alcance": "Seedance, prompts multi-shot",
+   "enunciado": "Cuando Seedance ignore los cortes, mezcle shots en un solo cuadro o derive la identidad (o de forma preventiva en trabajo multi-shot pesado), pone al inicio del prompt, antes del bloque [1], el bloque anti-mush que exige secuencia editada con cortes visibles, ángulos y encuadres distintos, ritmo de montaje y apariencia constante.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 9. Anti-mush guard block"
+    }
+   ]
+  },
+  {
+   "id": "d5db5a5a0d8a",
+   "alcance": "Seedance, prompts multi-shot",
+   "enunciado": "Explicación: el bloque anti-mush es el párrafo de mayor palanca en un prompt de Seedance y debe añadirse siempre que un intento previo produjo mush.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 9. Anti-mush guard block"
+    }
+   ]
+  },
+  {
+   "id": "d573663a71ce",
+   "alcance": "Seedance, prompts multi-shot",
+   "enunciado": "Explicación: la regla de los detalles es dura, porque los prompts multi-shot de Seedance fallan por pereza del redactor en un solo shot delgado, que arrastra toda la secuencia.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 4. The Details Law (read this first)"
+    }
+   ]
+  },
+  {
+   "id": "8bf1a7bd5916",
+   "alcance": "Seedance, sintaxis multi-shot",
+   "enunciado": "Ejemplo: tres shots consecutivos en una cocina (plano medio corto, insert macro, sobre el hombro) encadenados con 'Cut to.'",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ]
+  },
+  {
+   "id": "a5201fee4da2",
+   "alcance": "Seedance, sintaxis multi-shot",
+   "enunciado": "Lista los marcadores de corte que Seedance reconoce: Shot 1., Cut to., Camera cut to., Camera switching. y Lens switch to.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ]
+  },
+  {
+   "id": "9c632722ca69",
+   "alcance": "Seedance, sintaxis multi-shot",
+   "enunciado": "Sintaxis alterna en línea: se encadenan las descripciones de shot con las marcas -> Cut to -> y -> Camera cut to ->.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 8. Multi-shot syntax (unique)"
+    }
+   ]
+  },
+  {
+   "id": "102af6f242dd",
+   "alcance": "Veo, cuándo usar JSON",
+   "enunciado": "Se usa JSON en Veo cuando hay múltiples escenas en una generación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ]
+  },
+  {
+   "id": "074263819924",
+   "alcance": "Video; Kling 1.x-2.6 frente a 3.0",
+   "enunciado": "Ejemplo: comparación de capacidades; multi-shot en una generación no existe en Kling 1.x-2.6 (una toma continua) y sí en 3.0 (hasta 6 shots).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › What changed vs 2.x"
+    }
+   ]
+  },
+  {
+   "id": "9ce2dc0d6f0f",
+   "alcance": "Video; Kling 3.0",
+   "enunciado": "Explicación: Kling 3.0 cambió el posicionamiento del modelo y compite con Seedance en multi-shot (hasta 6 shots) y con Veo en diálogo nativo y lip-sync.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 1. What Kling is"
+    }
+   ]
+  },
+  {
+   "id": "4e21e26308d6",
+   "alcance": "Video; Kling 3.0",
+   "enunciado": "Kling 3.0 ofrece multi-shot en una generación (hasta 6), audio nativo con diálogo y lip-sync, salida continua de 15 s, 4K nativo hasta 60 fps, la mayor consistencia de personaje y escena, y dos niveles: v3/pro y v3/standard.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 2. Versions and element limits"
+    }
+   ]
+  },
+  {
+   "id": "167ba88eec8d",
+   "alcance": "Video; Kling 3.0",
+   "enunciado": "Para Kling 3.0 se usa la estructura multi-shot de la sección 3 en lugar de esta fórmula.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 4. Prompt formula (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "5f07f3571e22",
+   "alcance": "Video; Kling 3.0",
+   "enunciado": "Tras introducirlos, se refiere a los personajes como «Character A» o «Character B» dentro de los shots, lo que fija la identidad mejor que re-describirlos en cada shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Anchor subjects early"
+    }
+   ]
+  },
+  {
+   "id": "76bba60189ac",
+   "alcance": "Video; Kling 3.0 API (fal/oficial)",
+   "enunciado": "El parámetro duration por shot debe sumar 15 s o menos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › API parameters (3.0, fal/official)"
+    }
+   ]
+  },
+  {
+   "id": "0677894436e9",
+   "alcance": "Video; Kling 3.0 imagen a video",
+   "enunciado": "Ejemplo: prompt de imagen a video en Kling 3.0 que preserva identidad, vestuario y letrero, etiqueta al personaje, define dos shots con timecodes y añade Audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Image-to-video on 3.0 — lock first, then move"
+    }
+   ]
+  },
+  {
+   "id": "3a7da49bf414",
+   "alcance": "Video; Kling 3.0 multi-shot",
+   "enunciado": "Cada shot debe responder encuadre, sujeto y movimiento; las descripciones vacías colapsan en una sola toma continua.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Multi-shot syntax (think in shots, not clips)"
+    }
+   ]
+  },
+  {
+   "id": "cf571e7f0961",
+   "alcance": "Video; Kling 3.0, fallo de multi-shot colapsado",
+   "enunciado": "Si Kling 3.0 colapsa el multi-shot en una toma continua, se hacen explícitos los límites de shot con timecodes y cada shot lleva un encuadre o ángulo distinto, porque si dos shots adyacentes comparten encuadre y ángulo el modelo los fusiona.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Kling 3.0 collapses multi-shot into one continuous take"
+    }
+   ]
+  },
+  {
+   "id": "938900451655",
+   "alcance": "Video; Kling 3.0, longitud de prompt",
+   "enunciado": "En Kling 3.0 se aceptan prompts más largos, pero el multi-shot necesita estructura explícita, con unas 30-60 palabras por shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "ba2a903c43c2",
+   "alcance": "Video; Kling 3.0, multi-shot con diálogo",
+   "enunciado": "Ejemplo: prompt multi-shot con diálogo en Kling 3.0 (interrogatorio de 12 s) con etiquetas de personaje, intención maestra, cuatro shots, líneas con tono de voz, Camera, Lighting, Audio y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Multi-shot with dialogue (Kling 3.0)"
+    }
+   ]
+  },
+  {
+   "id": "89fc9db17505",
+   "alcance": "Video; Kling 3.0, sintaxis multi-shot",
+   "enunciado": "Ejemplo: prompt multi-shot de Kling 3.0 con etiquetas de personaje, intención maestra, cinco shots con timecodes, más Camera, Lighting y Audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Multi-shot syntax (think in shots, not clips)"
+    }
+   ]
+  },
+  {
+   "id": "8c1cf9932d61",
+   "alcance": "Video; Kling, elección de versión 3.0",
+   "enunciado": "Se debe usar Kling 3.0 en lugar de versiones anteriores para diálogo multi-shot, narrativa continua de 10-15 s, lip-sync, multipersonaje con voces distintas e imagen a video con texto legible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Default model choice"
+    }
+   ]
+  },
+  {
+   "id": "ce2db1f577a2",
+   "alcance": "Video; Seedance (Audio solo desde 1.5)",
+   "enunciado": "Esqueleto de prompt para Seedance: Subject, Motion, Camera con shots separados por Cut to, Environment, Lighting, Style, Audio (solo 1.5+) y Continuity, más flags de resolución, duración y camerafixed.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Seedance"
+    }
+   ]
+  },
+  {
+   "id": "b8d302a8da3f",
+   "alcance": "Video; Seedance multi-shot, divisiones por defecto",
+   "enunciado": "Excepción: Seedance multi-shot puede empacar 2-3 shots en un solo clip de 5-10 s.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/patterns-and-genres.md",
+     "encabezado": "Montage patterns and genre modules › 3. Multi-clip story structure › Default splits"
+    }
+   ]
+  },
+  {
+   "id": "fdb0c2c55d0c",
+   "alcance": "general (todos los modelos de video)",
+   "enunciado": "Explicación: la regla de los detalles es la más violada en video con IA y la causa de que fallen la mayoría de prompts multi-shot, porque un solo shot flojo arrastra toda la secuencia a papilla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 1. The non-negotiable. Details intensify emotion. Laziness kills the prompt."
+    }
+   ]
+  },
+  {
+   "id": "7294741e7f1c",
+   "alcance": "skill screenwriter, referencia advanced-techniques",
+   "enunciado": "Dividir la acción en párrafos cortos sugiere múltiples posiciones de cámara (un párrafo corto por plano).",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/advanced-techniques.md",
+     "encabezado": "Advanced Screenwriting Techniques › Camera Movement Hints (For Arch-V) › Scene Structure for Camera Flow"
+    }
+   ]
+  },
+  {
+   "id": "bf7b53599f4e",
+   "alcance": "skill video, SKILL.md (orden de lectura obligatorio), paso 3, selector de modelo",
+   "enunciado": "Selector de modelo: para Seedance/ByteDance/Doubao/Jimeng, multi-shot en un clip, flags --resolution, --duration, --camerafixed, \"Cut to\", @img1 o drama multi-shot rápido, leer seedance.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ]
+  },
+  {
+   "id": "7a597689a1e3",
+   "alcance": "video; U10 duración; Seedance, Kling 3.0, Seedance 2.5",
+   "enunciado": "La disciplina de duración admite tres excepciones: Seedance con 2-3 shots en un clip de 5-10 s vía \"Cut to\", Kling 3.0 con hasta 6 shots y 15 s con audio nativo, y Seedance 2.5 con hasta 30 s en etapas consecutivas de un cambio de estado primario y un estado final visible.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ]
+  },
+  {
+   "id": "42dbea6ac24a",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "enunciado": "Adaptador seedance.md: Seedance 2.0, video con secuencias multi-shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Adapters"
+    }
+   ]
+  }
+ ]
+}

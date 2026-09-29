@@ -1,0 +1,1137 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "f559ec6876d7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "17-37",
+     "encabezado": "Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: Dark storyboard layout — 3x3 grid of cinematic frames for a {duration}-second {product_name} commercial. Each cell has a thin dark border. Below each cell: scene number, title, and timestamp in small white sans-serif text on dark background.\n\nSubject: {product_name} commercial storyboard showing the complete narrative arc across 9 panels.\n\nImportant Details:\nPanel 1 (0:00–{t1}): {scene_1_description}\nPanel 2 ({t1}–{t2}): {scene_2_description}\nPanel 3 ({t2}–{t3}): {scene_3_description}\nPanel 4 ({t3}–{t4}): {scene_4_description}\nPanel 5 ({t4}–{t5}): {scene_5_description}\nPanel 6 ({t5}–{t6}): {scene_6_description}\nPanel 7 ({t6}–{t7}): {scene_7_description}\nPanel 8 ({t7}–{t8}): {scene_8_description}\nPanel 9 ({t8}–{duration}): {scene_9_description}\n\nEach panel labeled below: \"Scene {N}: {title}\" and \"{start}–{end}\"\n\nUse Case: Pre-production storyboard for video production team\nConstraints: All 9 panels must be clearly separated, no merged cells, every panel must contain distinct content, timestamps must be legible, {language} titles\n```"
+  },
+  {
+   "id": "93988384beff",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "39-44",
+     "encabezado": "Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{product_name}` — brand/product\n- `{duration}` — total spot length (e.g., \"30\", \"60\")\n- `{t1}` through `{t8}` — timestamp boundaries\n- `{scene_1_description}` through `{scene_9_description}` — shot description per panel\n- `{language}` — \"Chinese\" / \"English\" / \"bilingual\""
+  },
+  {
+   "id": "f0b92bd5f551",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "46-51",
+     "encabezado": "Multi-Panel Compositions › 1. 9-Cell Grid Storyboard › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1536x1024 (landscape)\n**Model:** GPT Image 2 `quality: high` (text-heavy — timestamps and titles need legibility)\n**Common pitfalls:**\n- Omitting panel numbers causes the model to merge or skip panels\n- Vague scene descriptions produce near-identical panels — each must have a distinct action, angle, or subject\n- Timestamps in very small text need `quality: high` to remain readable"
+  },
+  {
+   "id": "5113365b8c53",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "57-57",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid"
+    }
+   ],
+   "texto": "**When to use:** Same person shown from 4 angles/crops in one image for an editorial or casting look."
+  },
+  {
+   "id": "ea22cf444736",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "61-76",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: 2x2 grid of four editorial portraits, minimal gap between panels. {background_description}. {lighting_style}.\n\nSubject: {subject_description} — same person in all four panels, consistent identity and wardrobe.\n\nImportant Details:\nTop-left: front-facing portrait, direct eye contact, shoulders up\nTop-right: extreme macro close-up of face — eyes, skin texture, freckles visible\nBottom-left: lower angle looking up, chin slightly raised, confident expression\nBottom-right: side profile, clean silhouette against background\n\nConsistent lighting across all four panels. Skin texture realistic, no airbrushing.\n\nUse Case: editorial photography, model portfolio, casting composite\nConstraints: same person in every panel, no wardrobe changes between panels, no extra people, no text overlays\n```"
+  },
+  {
+   "id": "b23685b2e049",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "78-81",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{subject_description}` — age, appearance, wardrobe (e.g., \"woman in her 30s, dark curly hair, white linen shirt\")\n- `{background_description}` — (e.g., \"soft gray studio backdrop\")\n- `{lighting_style}` — (e.g., \"single key light from upper left, subtle fill from right\")"
+  },
+  {
+   "id": "a4d7aec9a159",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "83-88",
+     "encabezado": "Multi-Panel Compositions › 2. 2x2 Editorial Portrait Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1024x1024 (square) or 1024x1536 (vertical for portrait emphasis)\n**Model:** GPT Image 2 `quality: medium` or Nano Banana Pro (both handle photorealistic portraits well)\n**Common pitfalls:**\n- Not specifying \"same person\" in every panel — model may generate four different people\n- Omitting which quadrant gets which angle — model arranges arbitrarily\n- Requesting too-different crops (full body + extreme close-up) creates scale inconsistency within the grid"
+  },
+  {
+   "id": "8150e33ab68b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "94-94",
+     "encabezado": "Multi-Panel Compositions › 3. 3-Panel Campaign Collage"
+    }
+   ],
+   "texto": "**When to use:** Hero shot + close-up + action for a campaign visual — horizontal or vertical triptych."
+  },
+  {
+   "id": "0241e4954d47",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "98-113",
+     "encabezado": "Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: Three-panel {orientation} collage for {brand_name} campaign. Panels separated by thin white lines.\n\nSubject: {model_description} showcasing {product_description}.\n\nImportant Details:\nPanel 1 (left/top): Hero wide shot — full figure of model with product, environmental context, lifestyle setting\nPanel 2 (center/middle): Close-up product detail — {product_detail_description}, tactile textures, sharp focus\nPanel 3 (right/bottom): Action shot — model using/wearing/interacting with product, candid energy, slight motion blur on extremities\n\nConsistent warm golden-hour lighting across all panels. Same model identity throughout.\n{typography_instruction}\n\nUse Case: social media campaign visual, brand lookbook\nConstraints: same person across all panels, consistent color grading, no stock-photo stiffness, {product_name} must be visible in every panel\n```"
+  },
+  {
+   "id": "8aaf1531f610",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "115-120",
+     "encabezado": "Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{orientation}` — \"horizontal\" (side by side) or \"vertical\" (stacked)\n- `{brand_name}`, `{product_name}`, `{product_description}` — brand context\n- `{model_description}` — who appears\n- `{product_detail_description}` — what the close-up shows\n- `{typography_instruction}` — e.g., `Text: \"{HEADLINE}\" in bold condensed white, overlaid on Panel 1 lower third` or omit for no text"
+  },
+  {
+   "id": "b14a0aa66d2e",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "122-127",
+     "encabezado": "Multi-Panel Compositions › 3. 3-Panel Campaign Collage › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1536x1024 (horizontal triptych) or 1024x1536 (vertical triptych)\n**Model:** GPT Image 2 `quality: medium` — if text overlay needed, use `quality: high`\n**Common pitfalls:**\n- Not specifying panel order — \"hero, close-up, action\" without left/center/right assignment\n- Lighting inconsistency when mixing indoor close-up with outdoor hero shot — specify unified lighting\n- Forgetting to mention subject consistency causes three different models"
+  },
+  {
+   "id": "985b0b5b9a7c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "133-133",
+     "encabezado": "Multi-Panel Compositions › 4. 4x3 Borderless Grid"
+    }
+   ],
+   "texto": "**When to use:** 12 panels telling a story or showing moods — no gaps between panels, seamless mosaic feel."
+  },
+  {
+   "id": "71b8c8415727",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "137-153",
+     "encabezado": "Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: 4x3 borderless grid (4 columns, 3 rows) where each of the 12 panels is an independent image but panels share no borders, gaps, or dividers — edges touch seamlessly. Overall theme: {theme}.\n\nSubject: {subject_description} — maintain strong subject consistency across all 12 panels.\n\nImportant Details:\nRow 1: {panel_1}, {panel_2}, {panel_3}, {panel_4}\nRow 2: {panel_5}, {panel_6}, {panel_7}, {panel_8}\nRow 3: {panel_9}, {panel_10}, {panel_11}, {panel_12}\n\nStyle: {style_description}\nMood progression: {mood_arc}\nEach panel is an independent composition but the overall grid reads as a unified artwork.\n\nUse Case: mood board, editorial spread, social media carousel preview, album artwork\nConstraints: borderless — no white lines, no black borders, no gaps between panels. Same subject identity across all panels. No text in panels.\n```"
+  },
+  {
+   "id": "72a10291354f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "155-160",
+     "encabezado": "Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{subject_description}` — who/what appears across panels\n- `{theme}` — overarching concept (e.g., \"solitude in a city\", \"four seasons of a garden\")\n- `{panel_1}` through `{panel_12}` — brief shot description per cell\n- `{style_description}` — visual style (e.g., \"35mm film grain, desaturated palette\")\n- `{mood_arc}` — how energy changes across the grid (e.g., \"calm morning to chaotic night\")"
+  },
+  {
+   "id": "f89ff53c6bf5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "162-167",
+     "encabezado": "Multi-Panel Compositions › 4. 4x3 Borderless Grid › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1536x1024 (landscape) — gives each cell enough resolution\n**Model:** Nano Banana Pro (handles complex multi-element compositions with thinking mode; no text needed)\n**Common pitfalls:**\n- Saying \"borderless\" is not enough — explicitly state \"no white lines, no black borders, no gaps\"\n- 12 panels in one image pushes detail limits — keep per-panel descriptions short and visually distinct\n- Without explicit subject consistency instructions, each panel may feature a different person/object"
+  },
+  {
+   "id": "af366d2e9109",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "173-173",
+     "encabezado": "Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence"
+    }
+   ],
+   "texto": "**When to use:** Fashion editorial or film-style sequence — multiple camera angles of the same scene in one image."
+  },
+  {
+   "id": "28fae5582e15",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "177-195",
+     "encabezado": "Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: 6-frame cinematic sequence arranged in a 3x2 grid. Dark film-strip aesthetic with thin black borders. {location_description}.\n\nSubject: {subject_description}, wearing {wardrobe_description}. Same person, same outfit, same location across all 6 frames.\n\nImportant Details:\nFrame 1 (top-left): Top-down bird's eye view — subject seen from directly above, full body visible against ground/floor\nFrame 2 (top-center): Low angle looking up — subject towering over camera, dramatic perspective, sky/ceiling visible\nFrame 3 (top-right): Wide isolation shot — subject small in frame, vast environment dominates, sense of scale\nFrame 4 (bottom-left): Close-up with slight tilt — face and upper body, Dutch angle, intimate intensity\nFrame 5 (bottom-center): Motion frame — subject mid-action ({motion_action}), natural motion blur on limbs\nFrame 6 (bottom-right): Grounded final — medium shot, subject at rest, direct gaze, resolving the sequence\n\nPhotographer reference: {photographer_style}\nLighting: consistent {lighting_description} across all frames\n\nUse Case: fashion editorial, film lookbook, director's shot list visualization\nConstraints: same person and wardrobe in every frame, no costume changes, consistent color grading, no text overlays\n```"
+  },
+  {
+   "id": "3047c20150f4",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "197-203",
+     "encabezado": "Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{subject_description}` — model details\n- `{wardrobe_description}` — clothing\n- `{location_description}` — setting\n- `{motion_action}` — what the motion frame captures (e.g., \"walking forward\", \"turning sharply\", \"jumping\")\n- `{photographer_style}` — (e.g., \"Peter Lindbergh desaturated realism\", \"Helmut Newton dramatic contrast\")\n- `{lighting_description}` — (e.g., \"overcast natural light, soft shadows\")"
+  },
+  {
+   "id": "ac843e459e74",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "205-210",
+     "encabezado": "Multi-Panel Compositions › 5. 6-Frame Cinematic Sequence › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1536x1024 (landscape, 3x2 grid)\n**Model:** GPT Image 2 `quality: medium` or Nano Banana Pro\n**Common pitfalls:**\n- Not naming each frame explicitly — \"various angles\" is too vague, the model needs per-frame instructions\n- Top-down and low-angle in the same grid confuse the model if you don't anchor each frame to a grid position\n- Motion blur instruction must be specific (\"blur on hands and feet\") or the model applies blur everywhere"
+  },
+  {
+   "id": "1613429afbe5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "216-216",
+     "encabezado": "Multi-Panel Compositions › 6. Before/After Split"
+    }
+   ],
+   "texto": "**When to use:** Product transformation, makeover, time comparison, renovation — two states side by side."
+  },
+  {
+   "id": "0249057aa9ed",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "220-233",
+     "encabezado": "Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: Single image split into left and right halves with a {divider_style} dividing line down the center. Before/after comparison.\n\nSubject: {subject_description}\n\nImportant Details:\nLeft half (BEFORE): {before_description} — {before_condition}\nRight half (AFTER): {after_description} — {after_condition}\n\nThe transition at the center line should feel {transition_style}. Same camera angle, same framing, same background perspective in both halves — only the subject's state changes.\n\nUse Case: {use_case}\nConstraints: identical composition and camera angle on both sides, same lighting direction, no text unless specified, the dividing line must be clearly visible\n```"
+  },
+  {
+   "id": "0ca1d74fb75e",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "235-241",
+     "encabezado": "Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{subject_description}` — what is being compared\n- `{before_description}` / `{before_condition}` — left side state (e.g., \"faded, cracked wall with peeling paint\")\n- `{after_description}` / `{after_condition}` — right side state (e.g., \"freshly painted wall, smooth finish, vibrant color\")\n- `{divider_style}` — \"thin white line\" / \"subtle gradient blend\" / \"sharp vertical cut\"\n- `{transition_style}` — \"clean and abrupt\" / \"natural, as if wiping away\"\n- `{use_case}` — \"product marketing\", \"renovation portfolio\", \"skincare results\""
+  },
+  {
+   "id": "f27e1f44ca48",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "243-248",
+     "encabezado": "Multi-Panel Compositions › 6. Before/After Split › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1536x1024 (landscape — gives each half a portrait-like proportion)\n**Model:** GPT Image 2 `quality: medium` — for text labels (\"BEFORE\" / \"AFTER\"), use `quality: high`\n**Common pitfalls:**\n- Not specifying \"same camera angle both sides\" — model may show two completely different viewpoints\n- Without a visible divider, the two halves can merge into one ambiguous scene\n- Left/right assignment matters — always state which side is before and which is after"
+  },
+  {
+   "id": "405a5c5455b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "254-254",
+     "encabezado": "Multi-Panel Compositions › 7. 12-Panel Storyboard Poster"
+    }
+   ],
+   "texto": "**When to use:** Full narrative in one image — 3x4 grid (3 columns, 4 rows) for animation or video pre-production."
+  },
+  {
+   "id": "b4c71c923244",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "258-284",
+     "encabezado": "Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)"
+    }
+   ],
+   "texto": "```\nScene: 12-panel storyboard poster, 3 columns x 4 rows. Dark background with each panel in a clean rectangular frame. \"{title}\" in bold white text at the top of the image. Below each panel: scene number and one-line description in small white text.\n\nSubject: {character_description} — maintain consistent character design, proportions, and colors across all 12 panels.\n\nImportant Details:\nPanel 1: {scene_1} — \"{caption_1}\"\nPanel 2: {scene_2} — \"{caption_2}\"\nPanel 3: {scene_3} — \"{caption_3}\"\nPanel 4: {scene_4} — \"{caption_4}\"\nPanel 5: {scene_5} — \"{caption_5}\"\nPanel 6: {scene_6} — \"{caption_6}\"\nPanel 7: {scene_7} — \"{caption_7}\"\nPanel 8: {scene_8} — \"{caption_8}\"\nPanel 9: {scene_9} — \"{caption_9}\"\nPanel 10: {scene_10} — \"{caption_10}\"\nPanel 11: {scene_11} — \"{caption_11}\"\nPanel 12: {scene_12} — \"{caption_12}\"\n\nPanels read left-to-right, top-to-bottom (like a comic page). Character appearance, clothing, and color palette must stay identical across all 12 panels — only pose, expression, angle, and environment change.\n\nStyle: {art_style}\n\nUse Case: animation pre-production, pitch deck visualization, narrative overview poster\nConstraints: all 12 panels must be distinct scenes (no duplicates), character consistency is critical, scene numbers must be legible, {language} captions\nQuality: high\n```"
+  },
+  {
+   "id": "37e747acdaf9",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "286-292",
+     "encabezado": "Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Variables:**\n- `{title}` — project/episode title displayed at top\n- `{character_description}` — detailed character design (colors, outfit, distinguishing features)\n- `{scene_1}` through `{scene_12}` — visual description of each panel\n- `{caption_1}` through `{caption_12}` — text label under each panel\n- `{art_style}` — (e.g., \"Pixar-style 3D\", \"anime cel shading\", \"watercolor illustration\", \"graphic novel ink\")\n- `{language}` — caption language"
+  },
+  {
+   "id": "96be336d1f4c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "294-300",
+     "encabezado": "Multi-Panel Compositions › 7. 12-Panel Storyboard Poster › Template (5-slot format)"
+    }
+   ],
+   "texto": "**Recommended size:** 1024x1536 (portrait — 3 columns x 4 rows needs vertical space)\n**Model:** GPT Image 2 `quality: high` (text-heavy — scene numbers and captions must be readable)\n**Common pitfalls:**\n- Character drift is the biggest risk at 12 panels — repeat character design details in the prompt, not just \"same character\"\n- Without explicit scene numbering in the prompt, panels may appear in random order\n- 12 panels with captions is extremely text-dense — keep captions under 5 words each for legibility\n- Art style must be stated once and applied uniformly; mixing styles across panels produces visual chaos"
+  },
+  {
+   "id": "4fbe381a8b52",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/multi-panel.md",
+     "lineas": "306-319",
+     "encabezado": "Multi-Panel Compositions › General Multi-Panel Tips"
+    }
+   ],
+   "texto": "**Panel count vs. detail trade-off:** More panels = less detail per panel. 4 panels allow rich per-panel descriptions; 12 panels need brief, visually distinct descriptions (3-8 words each).\n\n**Subject consistency:** Always include an explicit instruction: \"same person / same character / same product across all panels.\" Repeat key identity markers (hair color, clothing, distinguishing features) rather than saying \"same as before.\"\n\n**Grid specification:** Always state the grid dimensions (e.g., \"3x2 grid, 3 columns 2 rows\"). Saying \"6 panels\" without layout instruction lets the model choose an unpredictable arrangement.\n\n**Borders and gaps:** Be explicit — \"thin white border between panels\" or \"borderless, no gaps.\" Default behavior varies by model and is unreliable.\n\n**Reading order:** State it: \"left-to-right, top-to-bottom\" or \"numbered 1-9 starting top-left.\" Without this, narrative flow may be jumbled.\n\n**Model selection summary:**\n- Text/labels in panels --> GPT Image 2 `quality: high`\n- No text, complex composition --> Nano Banana Pro\n- Budget/exploration --> Nano Banana 2 or GPT Image 2 `quality: low`"
+  },
+  {
+   "id": "d04e2ff72540",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "3-3",
+     "encabezado": "Nano Banana — Specific Rules"
+    }
+   ],
+   "texto": "Три тира. «Thinking» модели — понимают намерение, физику, композицию."
+  },
+  {
+   "id": "9b405d5caccf",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "7-7",
+     "encabezado": "Nano Banana — Specific Rules"
+    }
+   ],
+   "texto": "| **NB2 Lite** | `gemini-3.1-flash-lite-image` | Самая быстрая и дешёвая ($0.034, ~4 сек), только 1K. Черновики, массовые батчи |",
+   "contexto": "| Тир | Model ID | Роль |\n|-----|----------|------|"
+  },
+  {
+   "id": "97e632ce5c0c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "8-8",
+     "encabezado": "Nano Banana — Specific Rules"
+    }
+   ],
+   "texto": "| **NB2** (Flash) | `gemini-3.1-flash-image` | Дефолтный workhorse: Pro-фичи (текст, 4K, grounding, консистентность) на скорости Flash |",
+   "contexto": "| Тир | Model ID | Роль |\n|-----|----------|------|"
+  },
+  {
+   "id": "8b7a11ed9bc7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "9-9",
+     "encabezado": "Nano Banana — Specific Rules"
+    }
+   ],
+   "texto": "| **NBP** (Pro) | `gemini-3-pro-image` | Топ-тир: сложные многослойные сцены, максимум reasoning и контроля |",
+   "contexto": "| Тир | Model ID | Роль |\n|-----|----------|------|"
+  },
+  {
+   "id": "fffea6dc2b26",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "13-14",
+     "encabezado": "Nano Banana — Specific Rules › Стиль промпта"
+    }
+   ],
+   "texto": "Натуральный язык, 1-2 параграфа. Структура свободная, но порядок помогает:\n**Subject + Action + Location/context + Composition + Style**"
+  },
+  {
+   "id": "26e38c2db1f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "16-20",
+     "encabezado": "Nano Banana — Specific Rules › Стиль промпта"
+    }
+   ],
+   "texto": "```\nA cinematic wide shot of a futuristic sports car speeding through a rainy\nTokyo street at night. Neon signs reflect off wet pavement and metallic\nchassis. Format: 16:9.\n```"
+  },
+  {
+   "id": "1af55605c987",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "24-24",
+     "encabezado": "Nano Banana — Specific Rules › Что НЕ указывать"
+    }
+   ],
+   "texto": "- Числовые параметры объектива: **50mm, 85mm, f/2.8, ISO 400** — NB игнорит. Используй описание: «shallow depth of field», «wide-angle distortion»."
+  },
+  {
+   "id": "787210f26b9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "25-25",
+     "encabezado": "Nano Banana — Specific Rules › Что НЕ указывать"
+    }
+   ],
+   "texto": "- Tag-soup: «cool, modern, 4k, cinematic» — пишет связным предложением."
+  },
+  {
+   "id": "314570390f9b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "30-30",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)"
+    }
+   ],
+   "texto": "NB2 ищет реальные изображения в интернете до генерации. Архитектурно точные конкретные локации, корректные виды животных/растений."
+  },
+  {
+   "id": "42536a059e3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "32-36",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)"
+    }
+   ],
+   "texto": "```\nGenerate a cinematic, golden-hour photograph of [SPECIFIC REAL PLACE].\nEnsure the architectural details, the spire, the surrounding square, and\nthe landscape are accurate to reality.\n```"
+  },
+  {
+   "id": "35de28b81143",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "38-39",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Image Grounding (NB2 only)"
+    }
+   ],
+   "texto": "**Работает:** здания, мосты, площади, виды животных, виды растений, насекомые.\n**Не работает:** конкретные люди."
+  },
+  {
+   "id": "234ee992c854",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "43-43",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ],
+   "texto": "1:8, 8:1, 1:4, 4:1 — для баннеров, скроллов, комикс-стрипов."
+  },
+  {
+   "id": "3fc2d565bde3",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "45-49",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ],
+   "texto": "```\nCreate a 4-panel horizontal comic strip (aspect ratio 4:1).\nThe story follows [CHARACTER] doing [ACTION] that ends with a twist.\nUse a vibrant comic book style. Keep character design consistent.\n```"
+  },
+  {
+   "id": "7a81b5a4f6d0",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "51-51",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Extreme Aspect Ratios (NB2 only)"
+    }
+   ],
+   "texto": "Стандартные: 1:1, 3:2, 2:3, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9."
+  },
+  {
+   "id": "1e3c7b6e5e02",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "55-58",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Thinking Mode"
+    }
+   ],
+   "texto": "Включён по умолчанию; у NBP отключить нельзя (модель рисует до 2 «thought images» в бэкенде, они не тарифицируются как картинки, но thinking-токены платные). У NB2 есть рычаг `thinking_level: minimal | high` (default `minimal`) — поднимай до `high` для:\n- Невнятных результатов, требующих reasoning\n- Сложных инфографик со spatial logic\n- Grounding + spatial reasoning одновременно"
+  },
+  {
+   "id": "611b0556736a",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "64-64",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ],
+   "texto": "| High-fidelity объекты | до 14 | до 10 | до 6 |",
+   "contexto": "| | NB2 Lite | NB2 | NBP |\n|---|---|---|---|"
+  },
+  {
+   "id": "fb81abde985f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "65-65",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ],
+   "texto": "| Character-consistency рефы | нет | до 4 | до 5 |",
+   "contexto": "| | NB2 Lite | NB2 | NBP |\n|---|---|---|---|"
+  },
+  {
+   "id": "a5bdc8bb2cc0",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "66-66",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ],
+   "texto": "| Style рефы | нет | нет | до 3 |",
+   "contexto": "| | NB2 Lite | NB2 | NBP |\n|---|---|---|---|"
+  },
+  {
+   "id": "c9c44676adb8",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "68-74",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › Multi-Reference (лимиты по тирам)"
+    }
+   ],
+   "texto": "```\n[Image 1: face]\n[Image 2: outfit]\n[Image 3: background]\nCombine: face from Image 1, outfit style from Image 2, setting from Image 3.\nMatch lighting and perspective.\n```"
+  },
+  {
+   "id": "bfc1cd376c7b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "78-84",
+     "encabezado": "Nano Banana — Specific Rules › Уникальные возможности › JSON для сложных сцен (5+ элементов)"
+    }
+   ],
+   "texto": "```json\n{\n  \"subject\": {\"description\": \"main subject\", \"expression\": \"emotion/pose\"},\n  \"photography\": {\"angle\": \"eye-level\", \"shot_type\": \"waist-up\", \"aspect_ratio\": \"16:9\"},\n  \"background\": {\"setting\": \"location\", \"lighting\": \"soft natural\"}\n}\n```"
+  },
+  {
+   "id": "33e25ed9d984",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "88-94",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ],
+   "texto": "Conversational, без масок:\n\n```\nRemove [OBJECT] from this image.\nFill with [LOGICAL REPLACEMENT] matching surroundings.\nKeep [PRESERVED ELEMENTS] exactly the same.\n```"
+  },
+  {
+   "id": "75a28bbc16a2",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "96-100",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ],
+   "texto": "После генерации добавляй итеративно:\n- «Make it warmer»\n- «Increase contrast»\n- «Soften background, add blur»\n- «Change headline color to #3b82f6»"
+  },
+  {
+   "id": "3d3481210186",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "102-102",
+     "encabezado": "Nano Banana — Specific Rules › Editing у Nano Banana"
+    }
+   ],
+   "texto": "Interactions API держит контекст сессии — до 3 последовательных правок стэкаются без потери исходника. Правило «Edit, don't re-roll»: картинка верна на 80% — проси точечное изменение, а не новую генерацию."
+  },
+  {
+   "id": "890775ddadba",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "106-106",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ],
+   "texto": "- SOTA по 100+ языкам."
+  },
+  {
+   "id": "acb65d7580c5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "107-107",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ],
+   "texto": "- Font можно называть: «Century Gothic 12px», «Brush Script», «Impact», «Heavy blocky sans-serif»."
+  },
+  {
+   "id": "0850da1125ad",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "108-108",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ],
+   "texto": "- Multi-language в одном кадре работает."
+  },
+  {
+   "id": "c5f052252713",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "109-109",
+     "encabezado": "Nano Banana — Specific Rules › Text Rendering"
+    }
+   ],
+   "texto": "- Hack: для сложного текста — сначала попроси модель **написать текст**, потом отдельным промптом «вставь этот текст в картинку»."
+  },
+  {
+   "id": "8b5aea65aa82",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "115-115",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "| 0.5K | Самая дешёвая, batch и А/B варианты |",
+   "contexto": "| Resolution | Использование |\n|------------|---------------|"
+  },
+  {
+   "id": "ac9f9ccc3cee",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "116-116",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "| 1K | Default |",
+   "contexto": "| Resolution | Использование |\n|------------|---------------|"
+  },
+  {
+   "id": "074a32836bd4",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "117-117",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "| 2K | Финальный отбор |",
+   "contexto": "| Resolution | Использование |\n|------------|---------------|"
+  },
+  {
+   "id": "0d826954408b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "118-118",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "| 4K | Печать, hero-ассеты |",
+   "contexto": "| Resolution | Использование |\n|------------|---------------|"
+  },
+  {
+   "id": "2eaaa40b20b7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "120-120",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "**Workflow:** прогон вариантов на `0.5K` flash (или NB2 Lite на 1K) → отбор → переген победителя на `2K`/`4K`."
+  },
+  {
+   "id": "e168a0188ba1",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "122-122",
+     "encabezado": "Nano Banana — Specific Rules › Resolution / Cost"
+    }
+   ],
+   "texto": "В API `image_size` пишется строго с заглавной K (`1K`, `2K`, `4K`) — `1k` отклоняется. `512px` есть только у NB2; Lite — только 1K. Без указания размера модель матчит вход, иначе 1:1."
+  },
+  {
+   "id": "06d021e16aae",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "126-126",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ],
+   "texto": "Nano Banana — image-слой перед motion-слоем. Всё критичное фиксируется на картинке ДО анимации: identity, композиция, aspect ratio, видимый текст, состояние продукта. Видеомодель усиливает любую неоднозначность стилла."
+  },
+  {
+   "id": "adb3a23ae2dc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "128-128",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ],
+   "texto": "- **Character sheet / hero frame.** Утверди один кадр-эталон персонажа, на него ссылаются все последующие video-промпты."
+  },
+  {
+   "id": "d64fea9f22be",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "129-129",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ],
+   "texto": "- **Aspect ratio сразу целевой.** Кампании нужен вертикальный ролик — генери 9:16, а не кропай после анимации (тихая точка отказа)."
+  },
+  {
+   "id": "87b20a591ea8",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "130-130",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ],
+   "texto": "- **Хэндофф в видеомодель — motion brief, не пересказ.** Движение камеры, движение субъекта, движение фона, длительность, framing lock, запрещённые изменения. Видео-промпт не переописывает то, что уже есть в кадре."
+  },
+  {
+   "id": "968118c37b94",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "131-131",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ],
+   "texto": "- Downstream любой: Veo 3.1, Kling 3.0, Seedance 2.0/2.5, Gemini Omni Flash (штатная пара Google, 10-сек клипы). Батч картинок → ревью-гейт → в видео уходят только одобренные стиллы."
+  },
+  {
+   "id": "23677a66b5f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "135-135",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ],
+   "texto": "- Руки и лица всё ещё плывут (пальцы, суставы, дрейф likeness) — явные anatomy-инструкции + рефы + перегенерации. Есть отчёты, что NBP держит лица хуже NB2."
+  },
+  {
+   "id": "0acf446839a3",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "136-136",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ],
+   "texto": "- Мелкий текст мылится на 1K — для плотного текста 2K+ или GPT Image 2."
+  },
+  {
+   "id": "5dad6137d6bf",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "137-137",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ],
+   "texto": "- Инфографика может содержать фактически неверные данные — цифры проверять всегда, grounding помогает, но не гарантирует."
+  },
+  {
+   "id": "de08cbc06edc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "138-138",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ],
+   "texto": "- Склонность к overcooked HDR / пересату — проси «natural contrast, no HDR look»."
+  },
+  {
+   "id": "478e4a9b3f35",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "139-139",
+     "encabezado": "Nano Banana — Specific Rules › Известные фейлы"
+    }
+   ],
+   "texto": "- SynthID-водяной знак стоит на всех генерациях (невидимый); на Vertex дополнительно C2PA."
+  },
+  {
+   "id": "ea8fd758a057",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "143-143",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ],
+   "texto": "- NB2 не справляется со сложным многослойным промптом."
+  },
+  {
+   "id": "3223ac7df9ba",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "144-144",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ],
+   "texto": "- Нужен максимум референсов с разбивкой по ролям (6 объектов + 5 character + 3 style)."
+  },
+  {
+   "id": "79a1748f4c81",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "145-145",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ],
+   "texto": "- Photoreal с очень тонкой работой по материалам и свету."
+  },
+  {
+   "id": "9cfae78ea82e",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "lineas": "146-146",
+     "encabezado": "Nano Banana — Specific Rules › Когда переключаться NB2 → NBP"
+    }
+   ],
+   "texto": "- NBP медленнее и дороже; на лицах иногда проигрывает NB2 — для портретной серии сначала тестируй оба."
+  },
+  {
+   "id": "1f228b737e5a",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "3-3",
+     "encabezado": "Character Design Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for character turnarounds, expression sheets, outfit variants, and collectible/card formats. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "037da8bd0ea6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "9-9",
+     "encabezado": "Character Design Patterns › Character Turnaround Sheet (3-View)"
+    }
+   ],
+   "texto": "Use for game or animation pre-production — front, side, and back views of a character on a single white canvas with color callouts and height reference lines."
+  },
+  {
+   "id": "2447f5050331",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "13-19",
+     "encabezado": "Character Design Patterns › Character Turnaround Sheet (3-View)"
+    }
+   ],
+   "texto": "```\nScene: clean white background, flat even lighting with no cast shadows, thin horizontal height reference lines in #CCCCCC spanning the full width at head, shoulder, waist, knee, and foot level\nSubject: {character_name} — {character_description} — shown in three views arranged left to right: front view (facing camera), three-quarter side view (turned 75 degrees right), back view (facing away)\nImportant Details: all three views share identical proportions and vertical alignment along the height lines, feet on the same baseline, arms relaxed at sides for clear silhouette reading, color callout annotations — small circles of each key color ({color_1} {hex_1}, {color_2} {hex_2}, {color_3} {hex_3}) connected by thin #999999 leader lines to the corresponding material on the front view, fine line weight for height markers, clothing folds and seam lines consistent across all three angles\nUse Case: game character pre-production, animation model sheet, 3D reference handoff\nConstraints: no background elements, no props in hands, no dramatic poses — neutral standing pose only, all three views must depict the exact same character with identical outfit and proportions, no drop shadows, no gradient backgrounds\n```"
+  },
+  {
+   "id": "0b56a218b4bc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "21-23",
+     "encabezado": "Character Design Patterns › Character Turnaround Sheet (3-View)"
+    }
+   ],
+   "texto": "**Key levers:** `{character_name}`, `{character_description}` (age, build, hairstyle, outfit — be specific), `{color_1}`/`{hex_1}` through `{color_3}`/`{hex_3}` (key palette colors for callouts, e.g. jacket navy #1B2A4A, skin warm beige #D4A574, hair auburn #8B3A2F)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — height reference lines and color callout text require precise rendering"
+  },
+  {
+   "id": "81c23d42f0d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "29-29",
+     "encabezado": "Character Design Patterns › Expression Sheet"
+    }
+   ],
+   "texto": "Use to produce a grid of 6–9 facial expressions for the same character — consistent head angle and art style, with emotion labels under each face."
+  },
+  {
+   "id": "9ccbe7fad002",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "33-48",
+     "encabezado": "Character Design Patterns › Expression Sheet"
+    }
+   ],
+   "texto": "```\nScene: white background, 3x3 grid (or 3x2 for 6 expressions) with thin #DDDDDD divider lines, each cell contains one head-and-shoulders portrait\nSubject: {character_name} — {character_description} — same head angle (three-quarter left), same hairstyle, same lighting across all cells\nImportant Details:\n  Cell 1: neutral — relaxed brow, closed mouth, calm eyes. Label: \"NEUTRAL\"\n  Cell 2: happy — genuine smile reaching the eyes, raised cheeks. Label: \"HAPPY\"\n  Cell 3: angry — furrowed brow, clenched jaw, narrowed eyes. Label: \"ANGRY\"\n  Cell 4: sad — downturned mouth, glistening eyes, slightly lowered head. Label: \"SAD\"\n  Cell 5: surprised — wide eyes, raised eyebrows, open mouth. Label: \"SURPRISED\"\n  Cell 6: disgusted — wrinkled nose, upper lip raised, squinted eyes. Label: \"DISGUSTED\"\n  {extra_expressions}\n  Labels in small {label_font} beneath each cell, #555555 text\n  Consistent {art_style} rendering across all cells — skin tone, line weight, shading approach identical\nUse Case: animation expression reference, visual novel sprite guide, game character documentation\nConstraints: same character identity in every cell — no variation in hair, accessories, skin tone, or clothing between expressions, head angle stays fixed, no hand gestures, labels must be legible\n```"
+  },
+  {
+   "id": "34848605b2cf",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "50-52",
+     "encabezado": "Character Design Patterns › Expression Sheet"
+    }
+   ],
+   "texto": "**Key levers:** `{character_name}`, `{character_description}` (face shape, skin tone, hair, distinguishing marks), `{art_style}` (clean cel-shaded anime, painterly semi-realism, flat vector illustration), `{label_font}` (condensed sans-serif, monospace, rounded sans), `{extra_expressions}` (add cells 7-9: e.g. \"Cell 7: smirk — one corner of mouth raised, knowing look. Label: 'SMIRK'\")\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text labels and consistent facial identity across 9 cells need precise control"
+  },
+  {
+   "id": "10ccb852daf1",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "58-58",
+     "encabezado": "Character Design Patterns › Outfit Variant Grid"
+    }
+   ],
+   "texto": "Use to show one character in multiple outfits or costumes — for fashion exploration, game skin concepts, or wardrobe design."
+  },
+  {
+   "id": "307f2640ec40",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "62-76",
+     "encabezado": "Character Design Patterns › Outfit Variant Grid"
+    }
+   ],
+   "texto": "```\nScene: light neutral background ({bg_color}), {grid_layout} grid, thin white gaps between cells, soft even front lighting in every cell\nSubject: {character_name} — {character_description} — same pose ({pose_description}) in every cell, only the outfit changes\nImportant Details:\n  Cell 1: {outfit_1_name} — {outfit_1_description}\n  Cell 2: {outfit_2_name} — {outfit_2_description}\n  Cell 3: {outfit_3_name} — {outfit_3_description}\n  Cell 4: {outfit_4_name} — {outfit_4_description}\n  Cell 5: {outfit_5_name} — {outfit_5_description}\n  Cell 6: {outfit_6_name} — {outfit_6_description}\n  Outfit name in small bold sans-serif centered below each cell, #333333 text\n  Character body proportions, face, hairstyle, and skin tone identical across all cells — only clothing and accessories differ\nUse Case: game skin lineup, fashion mood board, costume design exploration\nConstraints: same character identity and pose in every cell, no background scenery — character only, outfit labels must be readable, no overlapping garments between cells, {grid_layout} layout must be uniform\n```"
+  },
+  {
+   "id": "ed1c40968d94",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "78-80",
+     "encabezado": "Character Design Patterns › Outfit Variant Grid"
+    }
+   ],
+   "texto": "**Key levers:** `{character_name}`, `{character_description}` (build, face, hair — anchor identity), `{bg_color}` (#F0F0F0 light gray, #FFF8F0 warm cream, #E8EDF2 cool blue-gray), `{grid_layout}` (2x3 or 3x3), `{pose_description}` (hands on hips, relaxed standing, one hand raised), `{outfit_N_name}` / `{outfit_N_description}` (e.g. \"Street Casual\" — oversized denim jacket, white tee, black cargo pants, chunky sneakers)\n\n**Recommended model:** GPT Image 2 (`quality: medium`) — character consistency is the priority; `high` only if outfit labels need fine legibility"
+  },
+  {
+   "id": "80dc8661f2b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "86-86",
+     "encabezado": "Character Design Patterns › Chibi / Mini-Me Collectible"
+    }
+   ],
+   "texto": "Use to transform a realistic character into a cute 3D collectible figurine — oversized head, compact body, multiple poses performing different activities."
+  },
+  {
+   "id": "997f685ab5b5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "90-104",
+     "encabezado": "Character Design Patterns › Chibi / Mini-Me Collectible"
+    }
+   ],
+   "texto": "```\nScene: soft gradient background ({bg_gradient}), studio product lighting with rim light from behind and soft fill from front, subtle ground shadow beneath each figurine\nSubject: chibi-style 3D collectible figurine of {character_name} — {character_description_simplified} — large head (roughly 1:2 head-to-body ratio), rounded limbs, smooth matte vinyl surface, {num_poses} poses arranged in a row\nImportant Details:\n  Pose 1: {pose_1_description}\n  Pose 2: {pose_2_description}\n  Pose 3: {pose_3_description}\n  {extra_poses}\n  Face retains recognizable features from the original character — {face_markers} — simplified into the chibi style with large round eyes and small nose/mouth\n  Outfit matches the original: {outfit_simplified} — colors preserved ({color_palette}), details reduced to clean shapes\n  Each figurine sits on a small circular base ({base_color} matte finish)\n  Vinyl toy aesthetic — visible seam line at sides, slight glossy highlight on forehead and cheeks\nUse Case: merchandise concept, social media avatar set, fan collectible design\nConstraints: consistent face and outfit across all poses, chibi proportions must stay uniform (no realistic proportions creeping in), no text on bases, smooth render — not cel-shaded, matte vinyl material throughout\n```"
+  },
+  {
+   "id": "2cd897f5ce04",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "106-108",
+     "encabezado": "Character Design Patterns › Chibi / Mini-Me Collectible"
+    }
+   ],
+   "texto": "**Key levers:** `{character_name}`, `{character_description_simplified}` (key outfit and hair only), `{face_markers}` (e.g. round glasses, scar on left cheek, green eyes), `{color_palette}` (hex values for 2-3 dominant colors), `{bg_gradient}` (#F5F0EB to #FFFFFF warm, #E0E8F0 to #FFFFFF cool), `{num_poses}` (3-5), `{pose_N_description}` (e.g. sitting cross-legged reading a book, waving with both hands, holding a coffee cup), `{base_color}` (white, black, matching character's main color)\n\n**Recommended model:** GPT Image 2 (`quality: medium`) — smooth 3D vinyl surfaces render well at medium; `high` for marketing-ready close-ups"
+  },
+  {
+   "id": "eb1f9347b4e5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "112-114",
+     "encabezado": "Character Design Patterns › Chibi / Mini-Me Collectible › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nA row of {num_poses} chibi-style 3D vinyl collectible figurines of {character_name}, each in a different pose. Large head (1:2 head-to-body ratio), rounded limbs, smooth matte vinyl surface with visible seam lines and subtle glossy highlights on the forehead. Face retains {face_markers} simplified into chibi proportions with large round eyes. Outfit: {outfit_simplified} in {color_palette}. Poses left to right: {pose_1_description}, {pose_2_description}, {pose_3_description}. Each figurine on a small circular {base_color} matte base. Soft gradient background ({bg_gradient}), studio product lighting with rim light from behind and soft fill from front, subtle ground shadow. Format: 16:9.\n```"
+  },
+  {
+   "id": "4794d6467633",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "120-120",
+     "encabezado": "Character Design Patterns › Anime-Style Character Card"
+    }
+   ],
+   "texto": "Use for a full character reference card with portrait, full body, key items, and color palette — organized on a white background in a professional concept art layout."
+  },
+  {
+   "id": "cd3b836334a0",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "124-136",
+     "encabezado": "Character Design Patterns › Anime-Style Character Card"
+    }
+   ],
+   "texto": "```\nScene: white background, organized reference card layout divided into clear sections with thin #CCCCCC separator lines\nSubject: {character_name} — {character_description} — anime-style rendering with clean line art and flat cel shading\nImportant Details:\n  Left section (40% width): full-body standing pose, front-facing, arms slightly away from body to show full outfit, feet visible, confident neutral expression\n  Upper-right section: portrait bust — head and shoulders, three-quarter angle, detailed face rendering showing {face_details}\n  Mid-right section: {num_items} key items arranged in a row — {item_1}, {item_2}, {item_3} — each drawn at consistent scale with thin outline, labeled in small text below\n  Lower-right section: color palette — {num_swatches} rectangular swatches in a horizontal strip showing the character's key colors ({swatch_colors}), hex code below each swatch\n  Bottom strip: brief stat block or bio text in clean sans-serif — \"Name: {character_name} | Class: {class} | Height: {height} | Affiliation: {affiliation}\"\n  Consistent line weight and shading style across all sections\nUse Case: game character documentation, light novel illustration guide, animation production reference\nConstraints: unified anime art style across all sections — portrait and full body must be the same character with identical design, items must match what the character wears/carries in the full body view, no decorative borders or ornamental frames, text must be legible at screen resolution\n```"
+  },
+  {
+   "id": "c43a45a4d6b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "138-140",
+     "encabezado": "Character Design Patterns › Anime-Style Character Card"
+    }
+   ],
+   "texto": "**Key levers:** `{character_name}`, `{character_description}` (detailed: hair color/style, eye color, outfit layers, accessories), `{face_details}` (distinctive facial features — e.g. heterochromia, facial tattoo, sharp jawline), `{item_1}`/`{item_2}`/`{item_3}` (signature weapon, accessory, artifact), `{swatch_colors}` (e.g. midnight blue #191970, cherry red #C41E3A, silver #C0C0C0, warm skin #E8B89D), `{num_swatches}` (4-6), `{class}` / `{height}` / `{affiliation}` (stat block fields)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — text-heavy layout with hex codes, labels, and stat block requires precise rendering"
+  },
+  {
+   "id": "e9c8e257b0a5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/character-design.md",
+     "lineas": "144-146",
+     "encabezado": "Character Design Patterns › Anime-Style Character Card › Nano Banana version:"
+    }
+   ],
+   "texto": "```\nAn anime-style character reference card for {character_name} on a white background. Left side: full-body standing pose, front-facing, clean cel-shaded anime rendering — {character_description}. Upper right: portrait bust at three-quarter angle showing {face_details}. Mid-right: key items laid out in a row — {item_1}, {item_2}, {item_3} — each drawn consistently and labeled. Lower right: horizontal color palette strip with {num_swatches} rectangular swatches ({swatch_colors}). Clean layout with thin gray separator lines between sections. Professional concept art quality, consistent line weight throughout. Format: 3:4.\n```"
+  },
+  {
+   "id": "de2086b31476",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "3-3",
+     "encabezado": "E-Commerce Product Photography Patterns"
+    }
+   ],
+   "texto": "Reusable prompt templates for product ads, packaging, and commercial visuals. Each pattern uses `{variables}` for customization. Default model: GPT Image 2 (5-slot format) unless noted."
+  },
+  {
+   "id": "0baf3636f951",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "9-9",
+     "encabezado": "E-Commerce Product Photography Patterns › Miniature Diorama Product Ad"
+    }
+   ],
+   "texto": "Use when you need a playful, attention-grabbing product visual where tiny workers interact with an oversized product — ideal for social media ads and launch campaigns."
+  },
+  {
+   "id": "fc890918b4fc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "13-19",
+     "encabezado": "E-Commerce Product Photography Patterns › Miniature Diorama Product Ad"
+    }
+   ],
+   "texto": "```\nScene: clean {surface_color} tabletop studio, soft overhead diffused light, shallow depth of field with tilt-shift blur at edges\nSubject: oversized {product_name} centered in frame, surrounded by miniature construction workers (1/87 scale figurines) — some climbing the packaging with tiny ladders, others operating a miniature crane to lift the cap/lid, a crew painting the label\nImportant Details: {product_material} surface catches key light from upper left, visible condensation/texture on product, figurines cast tiny hard shadows, warm {accent_color} hard hats on workers, fine detail on miniature tools, slightly desaturated background, eye-level camera angle\nUse Case: social media product ad, Instagram carousel hero\nConstraints: no text, no logos other than product label, no floating elements, product must remain recognizable and unaltered, no more than 8 figurines\n```"
+  },
+  {
+   "id": "d18f4c16a66f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "21-23",
+     "encabezado": "E-Commerce Product Photography Patterns › Miniature Diorama Product Ad"
+    }
+   ],
+   "texto": "**Key levers:** `{product_name}`, `{product_material}` (frosted glass, matte aluminum, glossy plastic), `{surface_color}` (white marble, raw concrete, light birch wood), `{accent_color}` (safety orange #FF6600, yellow #FFD600)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — precise figurine detail and product label legibility"
+  },
+  {
+   "id": "97e1e0605eaf",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "29-29",
+     "encabezado": "E-Commerce Product Photography Patterns › Luxury Cosmetics Studio Shot"
+    }
+   ],
+   "texto": "Use for premium beauty or fragrance product photography — dark, moody, tactile surfaces with atmospheric effects."
+  },
+  {
+   "id": "ef865786deeb",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "33-39",
+     "encabezado": "E-Commerce Product Photography Patterns › Luxury Cosmetics Studio Shot"
+    }
+   ],
+   "texto": "```\nScene: dark studio, {background_surface} surface with subtle reflections, thin layer of low-hanging smoke drifting left to right, {time_mood} ambient\nSubject: {product_name} bottle/tube centered, three-quarter angle, {product_finish} catching a single key light from upper right\nImportant Details: fine water droplets on product surface (condensation, not spray), {accent_material} accent elements flanking the product (raw stone, dried botanicals, metal shavings), volumetric haze behind product, reflection on surface below is soft and dark, color palette restricted to {palette}, contact shadow sharp near base fading to soft\nUse Case: luxury brand campaign hero, print ad, website banner\nConstraints: no text overlays, no human hands, background stays dark (#0a0a0a to #1a1a1a gradient), no color spill outside the defined palette, no lens flare\n```"
+  },
+  {
+   "id": "f6fa3f52b7b6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "41-43",
+     "encabezado": "E-Commerce Product Photography Patterns › Luxury Cosmetics Studio Shot"
+    }
+   ],
+   "texto": "**Key levers:** `{background_surface}` (nero marquina marble, wet obsidian slab, brushed gunmetal), `{product_finish}` (frosted glass, lacquered black, brushed gold), `{accent_material}` (raw quartz crystals, dried lavender stems, black river stones), `{palette}` (golds #C9A84C and blacks, rose #B76E79 and creams, emerald #2D6A4F and silvers), `{time_mood}` (cold blue, warm amber)\n\n**Recommended model:** GPT Image 2 (`quality: high`) — surface materials and condensation detail"
+  },
+  {
+   "id": "1211cd2381eb",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "49-49",
+     "encabezado": "E-Commerce Product Photography Patterns › 9-Panel TVC Storyboard Grid"
+    }
+   ],
+   "texto": "> For a dark-themed variant with timestamps, see [multi-panel.md](../multi-panel.md#1-9-cell-grid-storyboard)."
+  },
+  {
+   "id": "bbf8fef0d554",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/patterns/ecommerce.md",
+     "lineas": "51-51",
+     "encabezado": "E-Commerce Product Photography Patterns › 9-Panel TVC Storyboard Grid"
+    }
+   ],
+   "texto": "Use to present a product commercial shot breakdown in a single image — pitch decks, creative presentations, client approvals."
+  }
+ ]
+}

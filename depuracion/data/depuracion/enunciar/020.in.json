@@ -1,0 +1,2134 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "b94cb9bfac05",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "lineas": "371-374",
+     "encabezado": "Visual Prompt Forge › Examples"
+    }
+   ],
+   "texto": "`examples/one-shot-all-adapters/` contains a single shot rendered across seven adapters\nside-by-side: the six stills generators plus Kling. Use it to calibrate output quality.\nThe three remaining motion adapters (Veo, Seedance, Hailuo) have no worked example yet;\ntheir `.md` files carry a worked prompt each in the meantime."
+  },
+  {
+   "id": "d4cd25f4d2ed",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "lineas": "376-377",
+     "encabezado": "Visual Prompt Forge › Examples"
+    }
+   ],
+   "texto": "For a complete two-round output tree, prompts and frames and critiques together, see\n`../visual-asset-critic/examples/worked-run/`."
+  },
+  {
+   "id": "30d706367bd6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: GPT Image (1.5 / 2)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Ideogram (v3)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Midjourney (v7)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "3-3",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ],
+   "texto": "> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift."
+  },
+  {
+   "id": "429523879cab",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+    }
+   ],
+   "texto": "Flux rewards natural-language prompts that read like a competent photographer briefing themselves. It interprets full sentences accurately and handles spatial relationships better than Midjourney. It's the photorealism leader as of Q2 2026, choose Flux over Midjourney when the brief calls for \"looks like a real photograph\" rather than \"looks designed.\""
+  },
+  {
+   "id": "b39495b0a3fb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "9-11",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Syntax pattern"
+    }
+   ],
+   "texto": "```\n{One or two natural-language sentences describing the subject and action}. {Sentence describing environment and lighting}. {Sentence describing technical/photographic specs}. {Brand mood line.}\n```"
+  },
+  {
+   "id": "ab241e19adcf",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "13-13",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Syntax pattern"
+    }
+   ],
+   "texto": "Periods separate beats. Each sentence does one job. No bracket weights, no `--` flags. Flux is parameterless on most APIs (fal.ai, Replicate, BFL direct)."
+  },
+  {
+   "id": "a7c3655d31d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "17-17",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "Flux parameters are typically passed alongside the prompt, not inside it:"
+  },
+  {
+   "id": "b2335609a957",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "21-21",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "| `aspect_ratio` | API call field | from `project.aspect` |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "05399042016b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "| `output_format` | API call field | `png` for compositing |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "c2571d22b65b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "23-23",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "| `safety_tolerance` | API call field | `2` (default) |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "a029d74c5ec9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "24-24",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "| `prompt_upsampling` | API call field | `false` for series work, auto-rewrites kill consistency |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "bd219e613678",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "25-25",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "| `seed` | API call field | set per-storyboard for series consistency |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "e731c8e46cd4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "27-32",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Where parameters go"
+    }
+   ],
+   "texto": "In the `flux.txt` output, document parameters as a comment line above each prompt:\n\n```\n# shot_01, params: ar=9:16, seed=2840193, upsampling=false\n{prompt}\n```"
+  },
+  {
+   "id": "846c5111509e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "36-36",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Length"
+    }
+   ],
+   "texto": "Flux handles **80–150 words** comfortably. Don't pad, but you have headroom Midjourney doesn't."
+  },
+  {
+   "id": "7094827d4745",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "40-40",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "Translate shot grammar into descriptive language:"
+  },
+  {
+   "id": "dd9ccaddc427",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "44-44",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `MCU eye-level` | `Medium close-up framing, camera at eye level.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "587e82443efc",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "45-45",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `WS overhead` | `Wide overhead shot, looking straight down.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "c9ad35e00d09",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "46-46",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `push` | `Camera pushing slowly toward the subject.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "5cb168863c10",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "47-47",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `handheld` | `Handheld camera with slight natural movement.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "a0f9172f75f6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "48-48",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `shallow DOF` | `Shot at f/1.8 with shallow depth of field, background softly out of focus.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "f052a458f727",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "49-49",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition mapping"
+    }
+   ],
+   "texto": "| `deep DOF` | `Shot at f/8, everything in sharp focus front to back.` |",
+   "contexto": "| shot_grammar | Flux phrasing |\n|---|---|"
+  },
+  {
+   "id": "61afb8c3ec1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "53-58",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Photographic specifics"
+    }
+   ],
+   "texto": "Flux rewards camera/lens vocabulary. Add when relevant:\n\n- `Shot on Hasselblad, 80mm lens, f/2.8`\n- `Sony FX6, 35mm prime, natural light only`\n- `Documentary 16mm film aesthetic, slight grain`\n- `Editorial fashion lighting, large softbox key`"
+  },
+  {
+   "id": "c8bb46fd4c47",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "62-64",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition pattern"
+    }
+   ],
+   "texto": "```\n{Framing description with character anchor and action}. {Environment description from series_lock}. {Lighting sentence from series_lock}. {Photographic spec, camera, lens, depth of field}. {Color grade and mood from brand_lock}. Photorealistic, natural skin texture, no AI artifacts.\n```"
+  },
+  {
+   "id": "818caedf8ae6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "66-66",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Composition pattern"
+    }
+   ],
+   "texto": "The closing \"Photorealistic, natural skin texture, no AI artifacts\" line meaningfully reduces the AI-look in Flux output. Include in every prompt."
+  },
+  {
+   "id": "8e10a8da6a18",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "70-70",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Example"
+    }
+   ],
+   "texto": "**Same shot data as Midjourney example.**"
+  },
+  {
+   "id": "ab2b47d5564a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "72-75",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Example"
+    }
+   ],
+   "texto": "**Output prompt:**\n```\nMedium shot of a founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, leaning forward at his laptop with his face partially turned toward window light. Composition leaves negative space on the right side of the frame. The setting is a minimalist home office with white walls and an oak desk. Soft natural side-light from a large window on the left, warm afternoon golden hour. Shot on a 50mm prime at f/2.0, shallow depth of field. Warm filmic color grade with muted teal shadows. Calm, considered mood, operator, not creator. Photorealistic, natural skin texture, no AI artifacts.\n```"
+  },
+  {
+   "id": "33dde847ce08",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "81-81",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Flux variant selection"
+    }
+   ],
+   "texto": "| Flux 2 Pro | Hero shots, final assets | 1× (highest) |",
+   "contexto": "| Variant | When | Cost ratio |\n|---|---|---|"
+  },
+  {
+   "id": "0c42ee30cb67",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "82-82",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Flux variant selection"
+    }
+   ],
+   "texto": "| Flux 1.1 Pro | Series work, balanced | ~0.6× |",
+   "contexto": "| Variant | When | Cost ratio |\n|---|---|---|"
+  },
+  {
+   "id": "30a66621229a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "83-83",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Flux variant selection"
+    }
+   ],
+   "texto": "| Flux Schnell | Quick iteration, drafts | ~0.1× |",
+   "contexto": "| Variant | When | Cost ratio |\n|---|---|---|"
+  },
+  {
+   "id": "9cd25636c63b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "84-84",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Flux variant selection"
+    }
+   ],
+   "texto": "| Flux Dev | Self-hosted, scale | ~0× per image, GPU cost |",
+   "contexto": "| Variant | When | Cost ratio |\n|---|---|---|"
+  },
+  {
+   "id": "41a23c7b7537",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "86-86",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Flux variant selection"
+    }
+   ],
+   "texto": "Default to Flux 2 Pro for storyboard previews. The `flux.txt` file works for any variant, same prompt syntax."
+  },
+  {
+   "id": "2d4bb1b99249",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "90-90",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't write \"highly detailed, 4k, masterpiece\"**, these are Stable Diffusion crutches. Flux ignores them and the line burns tokens"
+  },
+  {
+   "id": "9715d1c2cd9a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "91-91",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't use weight syntax `(thing:1.4)`**. Flux 2 doesn't support it; Flux 1.1 partially does. Stick to natural language"
+  },
+  {
+   "id": "ee08f19b14f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "92-92",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't enable prompt upsampling for series work**, fal.ai's auto-rewrite produces inconsistent shots"
+  },
+  {
+   "id": "a7ee3023349d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "93-93",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't include text content**, even if Flux 2 handles text better than Flux 1.1, composite separately for editability"
+  },
+  {
+   "id": "e3fddcfa354f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "94-94",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't omit the photoreal closing line**, the \"no AI artifacts\" anchor measurably reduces the AI-look"
+  },
+  {
+   "id": "8c0aac18e292",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "98-103",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › API access"
+    }
+   ],
+   "texto": "Flux has multiple API surfaces:\n\n- **fal.ai**, fastest, most stable, supports all variants\n- **Replicate**, broader model selection, slightly slower\n- **BFL direct API**, official, requires their key\n- **WaveSpeedAI**, unified interface across many models"
+  },
+  {
+   "id": "0dc6b99aa39c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "lineas": "105-105",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev) › API access"
+    }
+   ],
+   "texto": "Same prompt syntax across all four. The `flux.txt` file is portable."
+  },
+  {
+   "id": "672d44b02448",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: GPT Image (1.5 / 2)"
+    }
+   ],
+   "texto": "GPT Image rewards paragraph-form prompts with explicit spatial reasoning and complex composition descriptions. It interprets relational language (\"to the left of\", \"behind\", \"in the foreground\") more accurately than any other generator. Choose GPT Image when the brief requires precise scene composition, multiple objects, or accurate text rendering."
+  },
+  {
+   "id": "8577360a5caf",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "9-15",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern"
+    }
+   ],
+   "texto": "```\n{Paragraph 1: subject, action, spatial composition}\n\n{Paragraph 2: environment and contextual details}\n\n{Paragraph 3: lighting, photographic specs, mood}\n```"
+  },
+  {
+   "id": "3d5d9ea46e14",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "17-17",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern"
+    }
+   ],
+   "texto": "Paragraph breaks help GPT Image parse separate beats. One long monolithic paragraph underperforms, the model loses track of which detail applies where."
+  },
+  {
+   "id": "34fa12d5c588",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "21-21",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "GPT Image is API-driven through OpenAI:"
+  },
+  {
+   "id": "f5e7150a4dea",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "25-25",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "| `size` | `1024x1792` for 9:16, `1792x1024` for 16:9, `1024x1024` for 1:1 | Native aspect ratios |",
+   "contexto": "| Parameter | Default for storyboard work | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "b663054da504",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "26-26",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "| `quality` | `high` for hero shots, `medium` for series | |",
+   "contexto": "| Parameter | Default for storyboard work | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "89c3f627925e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "27-27",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "| `style` | `natural` for photoreal, `vivid` for stylized | |",
+   "contexto": "| Parameter | Default for storyboard work | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "0e9b262d79c3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "28-28",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "| `model` | `gpt-image-1.5` (or `gpt-image-2` if available) | |",
+   "contexto": "| Parameter | Default for storyboard work | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "9546b9189618",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "30-34",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters"
+    }
+   ],
+   "texto": "Document in comment:\n```\n# shot_01, params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5\n{prompt}\n```"
+  },
+  {
+   "id": "7962b47edcb5",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "38-38",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Length"
+    }
+   ],
+   "texto": "GPT Image handles **150–300 words** comfortably. Longer than other generators. Use the headroom for explicit spatial descriptions."
+  },
+  {
+   "id": "e7ef1b0f8d7f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "42-46",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength"
+    }
+   ],
+   "texto": "GPT Image's distinctive capability, describe spatial relationships explicitly:\n\n- \"The founder is positioned in the left third of the frame, leaving the right two-thirds open.\"\n- \"A laptop sits on the desk in the foreground, a window with afternoon light is visible in the background.\"\n- \"The subject's shoulders are angled 30 degrees toward the camera, face turned to look at the off-frame light source.\""
+  },
+  {
+   "id": "6cfa36710fa6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "48-48",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength"
+    }
+   ],
+   "texto": "Use this when the shot's composition is load-bearing."
+  },
+  {
+   "id": "fc93fb4e5775",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "52-58",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Composition pattern"
+    }
+   ],
+   "texto": "```\n{Subject paragraph: who is in the frame, what they're doing, where they are positioned in the composition. Reference series_lock character anchor verbatim.}\n\n{Environment paragraph: setting, props, contextual elements. Pull from series_lock environment.}\n\n{Technical paragraph: lighting from series_lock, photographic spec, color grade from brand_lock, mood. Close with \"natural skin texture, no AI rendering artifacts\" if photoreal.}\n```"
+  },
+  {
+   "id": "87730ce0a681",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "62-62",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Example"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "lineas": "60-60",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image) › Example (text-to-image)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "lineas": "48-48",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Example"
+    }
+   ],
+   "texto": "**Same shot data as previous examples.**"
+  },
+  {
+   "id": "59c0b69456ef",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "64-71",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Example"
+    }
+   ],
+   "texto": "**Output prompt:**\n```\nA founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck sweater, leans forward at his laptop. He is positioned in the left third of the frame, his face turned partially toward the window light off-camera left. The composition deliberately reserves the right two-thirds of the frame as negative space.\n\nThe setting is a minimalist home office. White walls, an oak desk in the immediate foreground, the laptop screen partially visible. A large window is implied off-frame to the left, source of the natural light. No clutter, no decorative objects.\n\nSoft natural side-light from the window left, warm afternoon golden hour temperature, gentle shadow rolloff. Shot on a 50mm prime lens at f/2.0, shallow depth of field with the background softly out of focus. Warm filmic color grade with muted teal shadows. The mood is calm and considered, operator energy, not creator energy. Natural skin texture, no AI rendering artifacts.\n```"
+  },
+  {
+   "id": "a36a65ed4c44",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "75-80",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+    }
+   ],
+   "texto": "GPT Image handles text-in-image at roughly 95% accuracy, second only to Ideogram. When text is required:\n\n- Put the exact text in straight double-quotes within the prompt\n- Specify position explicitly (\"centered in the lower third\")\n- Specify approximate typeface character (\"bold sans-serif\", \"elegant serif\")\n- Limit to one text element per prompt for reliability"
+  },
+  {
+   "id": "df9e7903ad84",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "82-82",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering"
+    }
+   ],
+   "texto": "Default for storyboard work is still composited text, keep the override flag pattern from the Ideogram adapter."
+  },
+  {
+   "id": "c8c490e17c80",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "86-86",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't write Midjourney-style comma stacks**. GPT Image parses them as a list of disconnected concepts"
+  },
+  {
+   "id": "ef9d8203fea0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "87-87",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't omit spatial language when the shot has specific composition**, you're paying for the model's strength; use it"
+  },
+  {
+   "id": "a91bc1cd3aab",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "88-88",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't pile too many objects**, five or fewer distinct elements per scene; more degrades fidelity"
+  },
+  {
+   "id": "0c6af54befbb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "89-89",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't include `--ar` flags or weight syntax**. GPT Image ignores them"
+  },
+  {
+   "id": "0c2aa5c2f642",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "90-90",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't forget that GPT Image's \"AI look\" is real**, the closing \"natural skin texture, no AI rendering artifacts\" line meaningfully helps but isn't a complete fix. For pure photoreal, Flux is still stronger"
+  },
+  {
+   "id": "973afe2ac9ce",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "lineas": "94-94",
+     "encabezado": "Adapter: GPT Image (1.5 / 2) › API access"
+    }
+   ],
+   "texto": "GPT Image is OpenAI-only as of Q2 2026. Standard `images.generate` endpoint. Pricing roughly $0.04–0.08 per image depending on size and quality. ChatGPT Plus and above gives UI access."
+  },
+  {
+   "id": "6c54a6ce6ede",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+    }
+   ],
+   "texto": "Hailuo 02 Pro is the cheap, fast iteration model. Strong motion response and prompt-following for the price, on fal.ai. Use it to **find the shot**, block out camera move, framing, and timing across many quick drafts, then re-generate the keeper on Kling (motion finals), Veo (dialogue), or Seedance (sequences). Treat Hailuo output as a working draft, not a final asset."
+  },
+  {
+   "id": "dbad4dba13e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "7-7",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+    }
+   ],
+   "texto": "With video the **camera motion is load-bearing**. The prompt anatomy matches Kling; the difference is cost and intent: iterate freely here."
+  },
+  {
+   "id": "17415de0c779",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "11-13",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Syntax pattern"
+    }
+   ],
+   "texto": "```\n{Camera motion sentence, leading.} {Subject and action over the duration.} {Environment and lighting from series_lock.} {Color grade and mood from brand_lock.}\n```"
+  },
+  {
+   "id": "c52ca8c67a62",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "19-19",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ],
+   "texto": "| `duration` | `6s` | Check the current fal.ai ceiling for the Pro tier |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "9dcde01584ae",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "20-20",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "26-26",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "lineas": "25-25",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "20-20",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ],
+   "texto": "| `aspect_ratio` | from `project.aspect` | |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "f04c159c0749",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "21-21",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ],
+   "texto": "| `start_image` | optional | Image-to-video from an accepted still |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "e29b390895a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ],
+   "texto": "| `prompt_optimizer` | `false` for series | Auto-rewrite helps one-offs but breaks shot-to-shot consistency |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "1c993df87f70",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "24-27",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    }
+   ],
+   "texto": "```\n# shot_01 (draft). Hailuo 02 Pro: duration=6s, ar=9:16, optimizer=false\n{prompt}\n```"
+  },
+  {
+   "id": "13b22b1128aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "31-31",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Length"
+    }
+   ],
+   "texto": "Hailuo handles **60–120 words** efficiently. Shorter than Kling/Veo. Keep drafts lean, you are testing motion and framing, not final polish."
+  },
+  {
+   "id": "c7009affdfc1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "35-35",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "41-41",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "43-43",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "The shot grammar `motion` field maps directly. One move per shot."
+  },
+  {
+   "id": "6364e0f5af9e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "39-39",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "45-45",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "55-55",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "47-47",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `static` | \"Static camera, locked off.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "5914fa61c39c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "40-40",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "56-56",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "48-48",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `push` / `pull` | \"Camera dollies forward / backward slowly.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "eb2d42f5e961",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "41-41",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "57-57",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "49-49",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `pan-left` / `pan-right` | \"Camera pans smoothly left / right.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "00fa65a873f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "42-42",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "58-58",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "50-50",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `tilt-up` / `tilt-down` | \"Camera tilts up / down.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "6c810080910a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "43-43",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "59-59",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "51-51",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `handheld` | \"Handheld camera, subtle organic movement.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "8fdc39bca90a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "44-44",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "60-60",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "52-52",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `orbit` | \"Camera orbits the subject slowly.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "589818aabd5d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "45-45",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "52-52",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "61-61",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "53-53",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `whip` | \"Fast whip pan with motion blur.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "e7a9ec195b1d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "46-46",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "lineas": "62-62",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Motion vocabulary"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "54-54",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `rack` | \"Rack focus from foreground to background.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "f5b78d9604e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "50-50",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Iteration workflow"
+    }
+   ],
+   "texto": "1. Draft the shot on Hailuo with `prompt_optimizer=false`. Cheap, fast."
+  },
+  {
+   "id": "e02c035d6077",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "51-51",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Iteration workflow"
+    }
+   ],
+   "texto": "2. Lock the camera move, framing, and timing that read best."
+  },
+  {
+   "id": "2e16e5e689d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "52-52",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Iteration workflow"
+    }
+   ],
+   "texto": "3. Re-generate the keeper on the right final-tier model: **Kling** for motion finals, **Veo** for dialogue/lipsync, **Seedance** for multi-shot sequences."
+  },
+  {
+   "id": "ef307fdbf65f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "53-53",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Iteration workflow"
+    }
+   ],
+   "texto": "4. Carry the exact prompt forward, the adapters share the same five-layer anatomy, so the prompt body ports with only parameter changes."
+  },
+  {
+   "id": "d75d231d5f25",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "57-61",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Example"
+    }
+   ],
+   "texto": "**Draft of the `motion = \"push\"` shot.**\n\n```\nCamera dollies forward slowly at a steady pace. A founder in his mid-thirties with salt-and-pepper hair in a navy crewneck sits at his laptop in a minimalist home office and leans slightly forward toward window light off-camera left. Soft natural side-light, warm afternoon. Warm filmic color grade, muted teal shadows. Calm operator mood.\n```"
+  },
+  {
+   "id": "12182328fb06",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "65-65",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't ship Hailuo drafts as finals.** Re-roll the keeper on a final-tier model."
+  },
+  {
+   "id": "b1474571f519",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "66-66",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't enable the prompt optimizer for series work.** Auto-rewrite breaks shot-to-shot consistency."
+  },
+  {
+   "id": "70e945bcf17d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "67-67",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "lineas": "78-78",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't stack two camera moves.** One move per shot."
+  },
+  {
+   "id": "d99068a36684",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "68-68",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't include text content.** Composite captions in post."
+  },
+  {
+   "id": "2584eda1b153",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "69-69",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't over-polish the draft prompt.** Spend words on motion and framing; save the photographic detail for the final-tier re-roll."
+  },
+  {
+   "id": "3e7653e08b69",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "lineas": "73-73",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Output handoff"
+    }
+   ],
+   "texto": "Hailuo output is a draft used to choose the shot. The deliverable comes from the final-tier re-roll. If a Hailuo take is genuinely good enough to keep, treat it like any other clip: editorial assembly, text-overlay compositing, color grade, audio."
+  },
+  {
+   "id": "a6b60635a93f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: Ideogram (v3)"
+    }
+   ],
+   "texto": "Ideogram is the only generator that reliably renders text inside images. Use it for cases where text-as-image is the deliverable, posters, branded social tiles, signage, packaging mockups. For everything else, default to Flux or Midjourney and composite text separately."
+  },
+  {
+   "id": "0aa9b5e755c8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "7-7",
+     "encabezado": "Adapter: Ideogram (v3)"
+    }
+   ],
+   "texto": "This adapter has **two modes**: composited (default) and text-in-image (override)."
+  },
+  {
+   "id": "d58afe65873b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "11-11",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 1: Composited (default)"
+    }
+   ],
+   "texto": "Same as Flux, generate the image clean, composite text in post. Use when Ideogram is being chosen for general image quality, not text rendering. Syntax matches Flux conventions."
+  },
+  {
+   "id": "b6867214509a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "15-15",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ],
+   "texto": "Use when the on-screen text is meant to appear as part of the image itself, a poster headline, a sign in the scene, a packaging label. This is the only case where a generator prompt contains the text content."
+  },
+  {
+   "id": "e5fe4eddba9c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "17-20",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ],
+   "texto": "**To trigger Mode 2, the shot must have an explicit override flag in rationale**, e.g.:\n```\n\"rationale\": \"Text-in-image override: poster shot, headline must render as part of composition\"\n```"
+  },
+  {
+   "id": "098af7511cdb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Ideogram (v3) › Mode 2: Text-in-image (override)"
+    }
+   ],
+   "texto": "If you don't see that override flag, default to Mode 1."
+  },
+  {
+   "id": "5da4c99ce842",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "26-28",
+     "encabezado": "Adapter: Ideogram (v3) › Syntax pattern (Mode 2)"
+    }
+   ],
+   "texto": "```\n{Subject and composition}. {Environment and lighting}. The text \"{exact text}\" appears {position description}, in {font style description}. {Brand mood and color closing.}\n```"
+  },
+  {
+   "id": "fa3ace0553d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "30-30",
+     "encabezado": "Adapter: Ideogram (v3) › Syntax pattern (Mode 2)"
+    }
+   ],
+   "texto": "The exact text must be in straight double-quotes. Ideogram parses these as the text-render target."
+  },
+  {
+   "id": "126c5293b47a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "36-36",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "| `aspect_ratio` | API field | from `project.aspect` |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "9f96bfa9189a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "37-37",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "| `model` | API field | `V_3` |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "aa65ea972419",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "38-38",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "| `magic_prompt` | API field | `OFF` for series work, kills consistency |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "701a9f71ba34",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "39-39",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "| `style_type` | API field | `DESIGN` for posters, `REALISTIC` for scenes |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "7334fcc014d4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "40-40",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "| `seed` | API field | set per-storyboard |",
+   "contexto": "| Parameter | Where | Default |\n|---|---|---|"
+  },
+  {
+   "id": "11acda7f6824",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "42-46",
+     "encabezado": "Adapter: Ideogram (v3) › Parameters"
+    }
+   ],
+   "texto": "Document in comment block:\n```\n# shot_01, params: ar=9:16, model=V_3, magic_prompt=OFF, style=DESIGN, seed=2840193\n{prompt}\n```"
+  },
+  {
+   "id": "8c3011bee2b2",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "50-52",
+     "encabezado": "Adapter: Ideogram (v3) › Length"
+    }
+   ],
+   "texto": "Ideogram handles **60–120 words** comfortably. Text-bearing prompts run shorter still:\nthe more scene description you stack around a text instruction, the more likely the\nrender drops or garbles the copy."
+  },
+  {
+   "id": "abc41c129f8c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "56-60",
+     "encabezado": "Adapter: Ideogram (v3) › Composition pattern (Mode 1, composited)"
+    }
+   ],
+   "texto": "Same as Flux pattern, no text in prompt:\n\n```\n{Framing description with character and action}. {Environment from series_lock}. {Lighting from series_lock}. {Photographic spec}. {Brand mood and color}. Clean composition with negative space for text overlay placement.\n```"
+  },
+  {
+   "id": "87d39048ca93",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "64-66",
+     "encabezado": "Adapter: Ideogram (v3) › Composition pattern (Mode 2, text-in-image)"
+    }
+   ],
+   "texto": "```\n{Subject/composition sentence}. {Environment/lighting sentence}. The text \"{exact content}\" appears {center / top-third / bottom-third / etc.}, in {font style, bold sans-serif / elegant serif / handwritten script / etc.}, color {hex or named color from brand-lock}. {Brand mood closing}.\n```"
+  },
+  {
+   "id": "9940c40e00d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "70-77",
+     "encabezado": "Adapter: Ideogram (v3) › Example (Mode 2)"
+    }
+   ],
+   "texto": "**Shot:** poster-style hero frame, brand launch\n**Brand-lock:** display font is `Inter Black`, headline color `#0F1F3A` on `#F5F0E8` cream background\n**Text content:** `built different`\n\n**Output prompt:**\n```\nEditorial poster composition, dense cream background, single bold composition. Minimalist studio environment, even diffused lighting. The text \"built different\" appears center of the frame, in heavy sans-serif typography (Inter Black style), color deep navy #0F1F3A on cream #F5F0E8 background. Calm, considered, operator brand mood, confident without shouting.\n```"
+  },
+  {
+   "id": "f2b13a2cf572",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "81-81",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ],
+   "texto": "- **Photorealistic scenes with people**. Flux is better"
+  },
+  {
+   "id": "65a5c12936c8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "82-82",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ],
+   "texto": "- **Cinematic mood/aesthetic**. Midjourney is better"
+  },
+  {
+   "id": "5e1da6625fd4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "83-83",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ],
+   "texto": "- **Product photography**. Flux 2 Pro is better"
+  },
+  {
+   "id": "9a08f5296690",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "84-84",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ],
+   "texto": "- **Series work where consistency matters**. Midjourney with `--cref` or Flux with seed-locking handles consistency better"
+  },
+  {
+   "id": "5cb5d9f24542",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "86-86",
+     "encabezado": "Adapter: Ideogram (v3) › When NOT to use Ideogram"
+    }
+   ],
+   "texto": "Ideogram's specialty is text. If the brief doesn't need text-in-image, picking Ideogram is choosing the wrong tool."
+  },
+  {
+   "id": "8adbd948a790",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "90-90",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't use Mode 2 without the rationale override**, defaults to text-in-image cause double-text (composited + generated) which destroys the comp"
+  },
+  {
+   "id": "f6f3dd5d5aa7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "91-91",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't trust magic_prompt**, it auto-rewrites and produces inconsistent shots across a series"
+  },
+  {
+   "id": "40be298cd6df",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "92-92",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't pile multiple text elements in one prompt**. Ideogram handles one text element well, two becomes lottery, three is broken"
+  },
+  {
+   "id": "c12b4c4009a5",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "93-93",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't use cursive/decorative fonts**, even Ideogram fails on these. Sans-serif and clean serif are reliable"
+  },
+  {
+   "id": "a67b7ac6a0cb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "lineas": "94-94",
+     "encabezado": "Adapter: Ideogram (v3) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't forget seed**, for any series work, lock the seed at the storyboard level"
+  },
+  {
+   "id": "c83976621d2a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    }
+   ],
+   "texto": "Kling 3.0 generates short video clips, not still frames. It is the default motion model: the best camera-motion realism per dollar on fal.ai, and the strongest image-to-video of the four. Reach for it first. Escalate to Veo (dialogue/lipsync), Seedance (multi-shot), or Hailuo (cheap iteration) only when the shot needs what Kling does not do."
+  },
+  {
+   "id": "ef18c84e5f98",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "7-7",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    }
+   ],
+   "texto": "With video the **camera motion becomes load-bearing** instead of optional. The same shot generates differently when `motion` is `static` versus `push` versus `handheld`. Use this adapter when the storyboard is destined for video generation rather than still-frame compositing."
+  },
+  {
+   "id": "7508e059357d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "11-13",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Syntax pattern"
+    }
+   ],
+   "texto": "```\n{Camera motion sentence, explicit, leading.} {Subject and action over the duration.} {Environment and lighting from series_lock.} {Photographic spec.} {Color grade and mood from brand_lock.}\n```"
+  },
+  {
+   "id": "d9db3d1d2c72",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "15-15",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Syntax pattern"
+    }
+   ],
+   "texto": "Camera motion goes **first**. This is the inverse of image generators where camera is implied. With video the camera's behaviour is the first thing the model must understand."
+  },
+  {
+   "id": "5f36e2682f59",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "21-21",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "| `duration` | `5s` for shots, `10s` for hero | 5s and 10s are the supported lengths |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "46229b8f5ebe",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "23-23",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "| `cfg_scale` | `0.5` | Lower = looser/more dynamic, higher = closer to prompt |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "78243f26ee0b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "24-24",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "| `start_image` | optional | Image-to-video. Pass an accepted still from `shots.json` assets to lock the opening frame |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "f6a432c3b7b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "25-25",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "| `tail_image` | optional | End-frame target for controlled moves |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "50469a623908",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "26-26",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "| `negative_prompt` | per series | Supported. Use to suppress drift, e.g. `extra fingers, warped face` |",
+   "contexto": "| Parameter | Default | Notes |\n|---|---|---|"
+  },
+  {
+   "id": "c7bfb9847aeb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "28-33",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ],
+   "texto": "Document parameters as a comment line above each prompt:\n\n```\n# shot_01. Kling 3.0: duration=5s, ar=9:16, cfg=0.5, start_image=frames/round-1/shot_01.png\n{prompt}\n```"
+  },
+  {
+   "id": "69164426252d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "37-37",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Length"
+    }
+   ],
+   "texto": "Kling handles **80–150 words** comfortably. Motion description adds a beat over a still prompt; do not pad past it."
+  },
+  {
+   "id": "04aa62db16da",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "46-46",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `push` | \"Camera dollies forward slowly at a steady pace.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "a4ac6242c5b0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "47-47",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `pull` | \"Camera dollies backward, pulling away from the subject.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "fe3f5af61805",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "48-48",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `pan-left` / `pan-right` | \"Camera pans smoothly to the left / right.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "30900786c703",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "49-49",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `tilt-up` / `tilt-down` | \"Camera tilts upward / downward.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "5404193cee4f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "50-50",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `handheld` | \"Handheld camera, subtle organic movement, documentary feel.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "0a6e99ebf374",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "51-51",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `orbit` | \"Camera orbits the subject in a slow circle.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "c6d561e75597",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "53-53",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Motion vocabulary"
+    }
+   ],
+   "texto": "| `rack` | \"Rack focus shifts from foreground to background mid-shot.\" |",
+   "contexto": "| `motion` | Video prompt phrase |\n|---|---|"
+  },
+  {
+   "id": "2f8cbb8d5281",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "57-59",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Subject motion"
+    }
+   ],
+   "texto": "Beyond the camera, describe what the subject does over the duration:\n\n> \"Over the course of the shot the founder leans slightly forward and turns his face toward the window light off-camera left.\""
+  },
+  {
+   "id": "2a46da6a64bf",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "61-61",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Subject motion"
+    }
+   ],
+   "texto": "Static composition is not enough for video. This is what separates a video prompt from an image prompt."
+  },
+  {
+   "id": "928ea0562fe0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "65-65",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Example"
+    }
+   ],
+   "texto": "**Same shot data as the image-adapter examples, with `motion = \"push\"`.**"
+  },
+  {
+   "id": "dc515a760c67",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "67-69",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Example"
+    }
+   ],
+   "texto": "```\nCamera dollies forward slowly into the scene at a steady pace. A founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck, sits at his laptop in a minimalist home office; over the shot he leans slightly forward and his face turns toward window light off-camera left, holding negative space on the right of frame throughout. Soft natural side-light from a large window, warm afternoon golden hour. Shot on a 50mm prime equivalent, shallow depth of field. Warm filmic color grade with muted teal shadows. Calm, considered, operator mood.\n```"
+  },
+  {
+   "id": "5ef2c785426d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "73-73",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ],
+   "texto": "- Use `start_image` from the previous shot's accepted final frame to chain a sequence."
+  },
+  {
+   "id": "ce5d145d410e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "74-74",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ],
+   "texto": "- Repeat the series_lock character anchor verbatim in every prompt."
+  },
+  {
+   "id": "5ecd73b55383",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "75-75",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ],
+   "texto": "- Do not flip lighting direction between consecutive shots (window-left stays window-left)."
+  },
+  {
+   "id": "871a5ad230c6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "76-76",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ],
+   "texto": "- Even with start-frame locking, each clip is a fresh generation. Plan for an editorial pass."
+  },
+  {
+   "id": "f26e89f315fd",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "80-80",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't put camera motion at the end.** Kling parses motion best as the leading instruction."
+  },
+  {
+   "id": "2833f5e89e7d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "81-81",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't request multiple camera moves in one shot.** Pick one; compound moves break."
+  },
+  {
+   "id": "3b0c6dd14770",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "82-82",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't describe motion faster than the duration allows.** A slow dolly over 5s is plausible; over 1s it is jitter."
+  },
+  {
+   "id": "bf7d8f4de4be",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "83-83",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't include text content.** Video text rendering is unreliable; composite or animate text in post."
+  },
+  {
+   "id": "93c5b56f8c5a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "84-84",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Pitfalls to avoid"
+    }
+   ],
+   "texto": "- **Don't expect frame-perfect character match between clips.** Budget editorial cleanup."
+  },
+  {
+   "id": "3f3192574f29",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "lineas": "88-88",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Output handoff"
+    }
+   ],
+   "texto": "Generated clips are raw material, not deliverable. After generation they still need: editorial assembly to storyboard timing, text-overlay compositing from `text-overlays.json`, a color-grade pass, and audio (VO, music, sound design). Say this in handoff."
+  },
+  {
+   "id": "35ccce741078",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "5-5",
+     "encabezado": "Adapter: Midjourney (v7)"
+    }
+   ],
+   "texto": "Midjourney rewards short, high-signal prompts with strong adjective stacking and cinematic vocabulary. Long descriptive paragraphs underperform, the model interprets them as competing weights and produces muddled output."
+  },
+  {
+   "id": "0282faa2f230",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "9-11",
+     "encabezado": "Adapter: Midjourney (v7) › Syntax pattern"
+    }
+   ],
+   "texto": "```\n{subject}, {action}, {composition}, {environment}, {lighting}, {color/mood}, {style modifiers} --ar {ratio} --style {style} --s {stylize} {extras}\n```"
+  },
+  {
+   "id": "1c8ed9dcefae",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "13-13",
+     "encabezado": "Adapter: Midjourney (v7) › Syntax pattern"
+    }
+   ],
+   "texto": "Comma-separated phrases. No full sentences. No connective words (\"the\", \"with\", \"and\") unless they're load-bearing."
+  },
+  {
+   "id": "c67dcb78d5e8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "19-19",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--ar` | aspect ratio | from `project.aspect` | `--ar 9:16`, `--ar 16:9`, `--ar 1:1` |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "b8c9e415021d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "20-20",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--style` | `raw` / `4a` / `4b` / `4c` | `raw` | `raw` for photorealistic, omit for default Midjourney aesthetic |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "e7420b6b0e58",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "21-21",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--s` | 0–1000 | `50` for branded, `250` for artistic | Stylization weight. Lower = closer to prompt, higher = more MJ aesthetic |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "9dc8cad5bf74",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "22-22",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--c` | 0–100 | omit | Chaos. Use only when exploring variations |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "6c3ec157fb9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "23-23",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--seed` | integer | omit unless reproducing | For series consistency, set per-storyboard |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "faa0ddb8b324",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "24-24",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--cref` | image URL | use when character anchor exists | Character reference. Pair with `--cw` |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "b45cd2ff2513",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "25-25",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--cw` | 0–100 | `50` | Character weight. 100 = strict character match, 0 = clothing only |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "f01b535229fc",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "26-26",
+     "encabezado": "Adapter: Midjourney (v7) › Parameter reference (current as of Q2 2026)"
+    }
+   ],
+   "texto": "| `--sref` | image URL | use when style anchor exists | Style reference |",
+   "contexto": "| Param | Values | Default to use | Notes |\n|---|---|---|---|"
+  },
+  {
+   "id": "9b7450de8cf3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "30-30",
+     "encabezado": "Adapter: Midjourney (v7) › Length"
+    }
+   ],
+   "texto": "Aim for **40–80 words per prompt** including parameters. Anything over 100 words underperforms."
+  },
+  {
+   "id": "996b98a8c921",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "34-34",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "Translate shot grammar into Midjourney-friendly phrases:"
+  },
+  {
+   "id": "dbb6c04003dd",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "38-38",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `MCU eye-level` | `medium close-up, eye level` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "6048500419d4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "39-39",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `WS overhead` | `wide shot, overhead view, top-down` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "490003849a2c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "40-40",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `static` | (omit, static is default) |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "7a43864c45e9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "41-41",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `push` | `dolly in, pushing forward` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "985cf9e0d290",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "42-42",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `handheld` | `handheld documentary feel, slight motion blur` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "20302e2c15c9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "43-43",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `shallow DOF` | `shallow depth of field, f/1.8, bokeh background` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "1bde57818669",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "44-44",
+     "encabezado": "Adapter: Midjourney (v7) › Composition mapping"
+    }
+   ],
+   "texto": "| `deep DOF` | `deep focus, everything sharp, f/8` |",
+   "contexto": "| shot_grammar | Midjourney phrase |\n|---|---|"
+  },
+  {
+   "id": "a32de516b230",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "lineas": "48-54",
+     "encabezado": "Adapter: Midjourney (v7) › Lighting language"
+    }
+   ],
+   "texto": "Midjourney rewards specific lighting vocabulary:\n\n- `soft natural light, large window left, warm afternoon golden hour`\n- `hard top-light, single key, deep shadows, studio black backdrop`\n- `practical mixed sources, neon accents, urban night, atmospheric haze`\n- `volumetric backlight, rim light separating subject, cinematic haze`\n- `chiaroscuro, dramatic side-light, painterly`"
+  }
+ ]
+}

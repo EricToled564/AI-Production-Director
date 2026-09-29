@@ -1,0 +1,869 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "i2v_keyframes",
+ "descripcion_tema": "imagen a video, primer/último frame, no re-describir, motion brief",
+ "filas": [
+  {
+   "id": "78243f26ee0b",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "El parámetro start_image de Kling es opcional: para imagen a video se pasa un still aceptado de los assets de shots.json para fijar el frame inicial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "f6a432c3b7b1",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "El parámetro tail_image de Kling es opcional y fija el frame final objetivo para movimientos controlados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "c83976621d2a",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge",
+   "enunciado": "Kling 3.0 genera clips cortos de video, no stills; es el modelo de movimiento por defecto (mejor realismo de cámara por dólar en fal.ai y mejor imagen a video de los cuatro) y solo se escala a Veo (diálogo), Seedance (multishot) o Hailuo (iteración barata) cuando el shot necesita algo que Kling no hace.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    }
+   ]
+  },
+  {
+   "id": "5ef2c785426d",
+   "alcance": "Adapter Kling 3.0 de visual-prompt-forge, continuidad entre shots",
+   "enunciado": "Para encadenar una secuencia en Kling se usa como start_image el frame final aceptado del shot anterior.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video) › Continuity across shots"
+    }
+   ]
+  },
+  {
+   "id": "f04c159c0749",
+   "alcance": "Adapters Hailuo 02 Pro y Veo 3 de visual-prompt-forge",
+   "enunciado": "El parámetro start_image es opcional y permite imagen a video desde un still aceptado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration) › Parameters"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "b9d93377f723",
+   "alcance": "Aspect ratio D8; límites de GPT y NB",
+   "enunciado": "El aspect ratio del clip es el del proyecto desde el primer intento, recortar después de animar es un fallo silencioso y FF y LF usan el mismo ratio; GPT llega a 3:1 máximo y los extremos 1:8 y 8:1 son solo de NB.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 5 · dimensión D8: Modelo y resolución por combinación"
+    }
+   ]
+  },
+  {
+   "id": "0a5ee0dbf482",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 3 (imagen a video con referencias)",
+   "enunciado": "Decisión 3: el bloque de identidad depende del rol de la referencia; con keyframe de inicio o fin en imagen a video no se re-describe, y con referencia de personaje sin start frame, casos @img, Elements o ancla con refs va completo y verbatim.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "4ff38efe24e4",
+   "alcance": "Flujo de anclas cinematográficas (flujo-anclas.html), general",
+   "enunciado": "Explicación: un ancla es la imagen fija que el modelo de video hereda, por lo que identidad, composición, aspect ratio, texto visible y estado del producto se fijan en el still antes de animar; el flujo la clasifica en nueve dimensiones, elige la técnica según acción y número de personas, y la lleva por lints, generación, crítica y canonización hasta el motion brief.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas"
+    }
+   ]
+  },
+  {
+   "id": "8d5b1b78720d",
+   "alcance": "Investigación de campo familia 01 (agua en superficie), regla candidata",
+   "enunciado": "Nunca confiar el spray a un modelo de video, porque rompe columnas y dispersa salpicaduras sin momento ni gravedad; el spray se fija en el still y el clip lo hereda.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/research/01-agua-superficie.md",
+     "encabezado": "RESEARCH DE CAMPO — Familia 01 · Agua en superficie › Fase 4b — Hallazgos nuevos (reglas candidatas)"
+    }
+   ]
+  },
+  {
+   "id": "197cea2793d0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role ff/lf, casos 3a/3b/3c/4",
+   "enunciado": "Con --ref-role ff o lf los descriptores P/O en MAIN están prohibidos (FAIL) y el identity block no aplica, porque en los casos 3a/3b/3c/4 la imagen ancla identidad y wardrobe.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "6bca679404ac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6, refs.yaml lleva la imagen aprobada como role FF (y LF/TAIL si hay tail image) con los tags de lo que esa imagen ya fija, normalmente P, O, L y PR.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "6846e8f6492a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3a, etapa 6",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF, CLIP, I2V y CLIP-I2V equivalen al caso 3a del linter (Etapa 6): imagen a video con first frame.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "f2d06042e60d",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3b, etapa 6",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF-LF, CLIP-LF y CLIP-TAIL equivalen al caso 3b (Etapa 6): first frame más tail image (Kling start/tail; Seedance 2.5 first y last).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "1111957ec468",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3c, etapa 6, Kling",
+   "enunciado": "Mapeo de casos: los alias CLIP-MC, CLIP-MOTION y MOTION-CONTROL equivalen al caso 3c (Etapa 6): Kling Motion Control (§9).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "41eeca8d9a74",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), presupuesto de palabras I2V",
+   "enunciado": "Parche P1: el presupuesto de palabras I2V se fija por familia (Kling 20–40, Veo 50–100, Seedance 80–150 del adaptador declarado en source), siempre como WARN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "13ac0e122639",
+   "alcance": "Lo que el video hereda del ancla",
+   "enunciado": "El video hereda del ancla qué tercio ocupa el cuerpo, el punto de vista, la dirección de viaje y las manos nombradas en contactos.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "7887b58c6e3d",
+   "alcance": "Lo que el video hereda del ancla",
+   "enunciado": "La geometría espacial del ancla (dónde está el héroe, dónde la amenaza, hacia dónde escapa) queda heredada por el video.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "eef5c2202799",
+   "alcance": "Lo que el video hereda del ancla; continuidad de luz",
+   "enunciado": "La dirección de luz del ancla se conserva en todos los clips (window-left sigue siendo window-left).",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "2db58982d135",
+   "alcance": "Lo que el video hereda del ancla; general",
+   "enunciado": "El aspect ratio se genera en el ratio destino y nunca se recorta después de animar.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "b26ad51944b3",
+   "alcance": "Lo que el video hereda del ancla; identidad y vestuario",
+   "enunciado": "El video repite el identity block de identidad y vestuario, pero la cara la fija el still.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Lo que el video hereda y ya no se puede corregir"
+    }
+   ]
+  },
+  {
+   "id": "686ab5d82938",
+   "alcance": "Motion brief en imagen a video; general",
+   "enunciado": "El ancla aprobada entra al modelo de video con un prompt corto que solo dice cómo evoluciona; describir lo que ya está en la imagen provoca deriva de identidad.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "5826aa81d33e",
+   "alcance": "Motion brief para Kling 3.0 en I2V",
+   "enunciado": "En Kling 3.0 el ancla entra como start_image y opcional tail_image, con Elements de 4 vistas para personajes recurrentes; el prompt de I2V (20 a 40 palabras) dice \"preserve identity, wardrobe, sign exactly\", un movimiento de cámara primero, shots con timecodes y audio.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "96cacfe1847f",
+   "alcance": "Motion brief para Seedance 2.5",
+   "enunciado": "En Seedance 2.5 el ancla entra como @Image 1 primer frame y @Image 2 último frame declarados por separado con el mismo ratio (hasta 30 imágenes por rol); el prompt va por etapas, un cambio de estado por etapa, con estado final visible, roles de cada referencia y qué ignorar.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "9807ec63d70a",
+   "alcance": "Motion brief para Veo 3.1",
+   "enunciado": "En Veo 3.1 el ancla entra como First Frame más reference ingredients (personaje, locación, prop); el prompt es corto, solo evolución, con \"maintain the subject from the first frame\", movimiento, cámara, cambio de luz y audio.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "1a9dac62bddb",
+   "alcance": "Motion brief para todos los modelos de video; SW30 R16, U7, U11",
+   "enunciado": "En todos los modelos de video el motion brief lleva preserve-cues, roles start/tail, movimiento puro, imagen final nombrada y negativos sin \"no X\" con máximo 8 ítems; el aspect ratio ya viene del ancla y el identity block se repite en cada clip aunque haya imagen.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 7: Handoff al video: el motion brief"
+    }
+   ]
+  },
+  {
+   "id": "adb3a23ae2dc",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "Aprobar un cuadro-eje o character sheet del personaje al que referencien todos los prompts de video posteriores.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "87b20a591ea8",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "El traspaso al modelo de video es un motion brief (cámara, sujeto, fondo, duración, framing lock, cambios prohibidos), no un reresumen; el prompt de video no re-describe lo ya presente en el cuadro.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "06d021e16aae",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "Fijar en la imagen antes de animar todo lo crítico (identidad, composición, aspect ratio, texto visible, estado del producto), porque el modelo de video amplifica cualquier ambigüedad del still.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "d64fea9f22be",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "Generar el keyframe directamente en el aspect ratio objetivo (9:16 para vertical) en lugar de recortar después de animar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "968118c37b94",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "Los stills de Nano Banana sirven a cualquier modelo de video (Veo 3.1, Kling 3.0, Seedance 2.0/2.5, Gemini Omni Flash); pasar por un gate de revisión y enviar a video solo stills aprobados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "f72a92c8c530",
+   "alcance": "Nivel 3b, cadena de dependencia",
+   "enunciado": "Ejemplo: diagrama de la cadena de herencia desde las génesis (rostro T1, placa, landmark, animal, producto, objeto) hasta cuerpo T2, cuadros T3 y T4, edición T5, keyframes, clips de video y ensamble en NLE.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 3b · cadena de dependencia: Todo lo visual nace de una génesis"
+    }
+   ]
+  },
+  {
+   "id": "d9ff076ef538",
+   "alcance": "Rol de ancla keyframe FF en imagen a video",
+   "enunciado": "El keyframe FF es el primer frame del clip: fija identidad, layout y texto en imagen, y el prompt de video describe solo cómo evoluciona.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "cca06ac7f56c",
+   "alcance": "Rol de ancla keyframe LF; Seedance para la declaración separada",
+   "enunciado": "El keyframe LF es el último frame y debe tener el mismo aspect ratio que el FF o el modelo lo estira; en Seedance se declara por separado del FF.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Definición: Qué es un ancla y qué hereda el video de ella › Roles posibles de un ancla"
+    }
+   ]
+  },
+  {
+   "id": "fd88cc254985",
+   "alcance": "Seedance 2.0, adaptador de visual-prompt-forge, parámetros",
+   "enunciado": "Define start_image como parámetro opcional de referencia de imagen a video para el frame inicial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot) › Parameters"
+    }
+   ]
+  },
+  {
+   "id": "a90307d1117f",
+   "alcance": "Seedance 2.5, grids de storyboard y keyframes",
+   "enunciado": "Para secuencias multi-keyframe, usar \"@Image 1 through @Image N as keyframes in this order\" con un estado clave por imagen; las imágenes independientes alinean mejor que un grid y controlan orden y estados, no frames exactos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "9b988122c06a",
+   "alcance": "Seedance 2.5, grids de storyboard y keyframes",
+   "enunciado": "Primer y último frame funcionan en modo omni-reference declarando cada ancla por separado (nunca conjuntamente) y con el mismo aspect ratio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance-25.md",
+     "encabezado": "Seedance 2.5 — production reference (ByteDance, official guides of 2026-07-31) › 16. Storyboard grids and keyframes"
+    }
+   ]
+  },
+  {
+   "id": "afbf48903404",
+   "alcance": "Seedance, imagen a video",
+   "enunciado": "Ejemplo: fraseo malo (re-describe al hombre de camisa roja en la cocina) frente a fraseo bueno (solo movimiento hacia la nevera y cámara: tracking desde atrás, 35mm).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 13. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "b35669e7802f",
+   "alcance": "Seedance, imagen a video",
+   "enunciado": "En imagen a video con imagen de referencia no se describe lo ya visible en la imagen; se describe solo movimiento y cámara, porque re-describir elementos estáticos crea deriva de identidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/seedance.md",
+     "encabezado": "Seedance reference (ByteDance) › 13. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "7bcbbbed2a3b",
+   "alcance": "Skill ai-production-director, etapa 6",
+   "enunciado": "Etapa 6: forge estructura el prompt de movimiento desde shots.json y el anchor aprobado, y el archivo del modelo destino de video fija la sintaxis final: motion brief sin re-describir lo que el anchor ya fija, cámara, blocking, performance, evolución de luz, física y protocolo de diálogo/audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ]
+  },
+  {
+   "id": "ed30dc9d0bc5",
+   "alcance": "Subprocesos por etapa, E6.1",
+   "enunciado": "E6.1 genera con forge el borrador de motion por adaptador (kling, veo, seedance, hailuo) desde el shot y los keyframes start/tail aprobados, y _capabilities.json manda sobre el .md.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "59fb641cf0ea",
+   "alcance": "Subprocesos por etapa, E6.2",
+   "enunciado": "E6.2 reescribe el borrador a la sintaxis del modelo (kling.md, veo.md o seedance.md) como motion brief de cámara, blocking, performance, luz, física y audio, sin re-describir lo que el anchor ya fija (SW30 R16).",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "e934c2285b4a",
+   "alcance": "Tarjeta de ancla, dimensión D1",
+   "enunciado": "D1, rol del ancla (character ref, environment ref, keyframe FF, keyframe LF, hero/macro, motif insert), decide qué se fija, qué modelo de video la recibe y si necesita pareja FF/LF con el mismo ratio.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "458af3069496",
+   "alcance": "Veo 3.1",
+   "enunciado": "Veo 3.1 añade imagen a video con First Frame, audio mejorado, reference ingredients y mayor coherencia de movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ]
+  },
+  {
+   "id": "beca1450a592",
+   "alcance": "Veo 3.1, imagen a video",
+   "enunciado": "Ejemplo: prompt de imagen a video para Veo 3.1 que abre con \"Maintain the subject from the first frame\" y describe solo movimiento, luz, audio y duración.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ]
+  },
+  {
+   "id": "3c2a26b63780",
+   "alcance": "Veo 3.1, imagen a video",
+   "enunciado": "En imagen a video de Veo 3.1 la imagen estática se usa como First Frame y el prompt guía movimiento y sonido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ]
+  },
+  {
+   "id": "4ee9edec32fd",
+   "alcance": "Veo 3.1, imagen a video",
+   "enunciado": "En imagen a video de Veo 3.1 no se re-describen los elementos estáticos, solo movimiento, cámara, cambio de luz y audio, y se añade \"maintain the subject from the first frame\" para proteger la identidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ]
+  },
+  {
+   "id": "edf3d06c3320",
+   "alcance": "Video; Kling 1.x-2.x, imagen a video con Element Binding",
+   "enunciado": "En los ajustes de imagen a video se activa «Bind Elements» para fijar rasgos; esto da un ancla visual que sobrevive a paneos y cambios de luz.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 7. Element Library and Element Binding (1.x – 2.x)"
+    }
+   ]
+  },
+  {
+   "id": "085b538d1398",
+   "alcance": "Video; Kling 2.5 Turbo, Kling 1.6 y cualquier imagen a video",
+   "enunciado": "Cuando un modelo rinde mejor con prompts cortos (Kling 2.5 Turbo, Kling 1.6, cualquier imagen a video), se recorta en un orden de prioridad fijo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 5. Prompt compression order"
+    }
+   ]
+  },
+  {
+   "id": "5cf259ff5a10",
+   "alcance": "Video; Kling 2.6 Pro, imagen a video de moda",
+   "enunciado": "Ejemplo: prompt de moda de imagen a video en Kling 2.6 Pro con Preserve de silueta y textura de tela, tracking lateral lento a 85mm, luz de rim cálida y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Worked example. Fashion, image-to-video (2.6 Pro)"
+    }
+   ]
+  },
+  {
+   "id": "0677894436e9",
+   "alcance": "Video; Kling 3.0 imagen a video",
+   "enunciado": "Ejemplo: prompt de imagen a video en Kling 3.0 que preserva identidad, vestuario y letrero, etiqueta al personaje, define dos shots con timecodes y añade Audio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Image-to-video on 3.0 — lock first, then move"
+    }
+   ]
+  },
+  {
+   "id": "aec0f43b78de",
+   "alcance": "Video; Kling 3.0 imagen a video",
+   "enunciado": "En imagen a video en Kling 3.0 la imagen ancla identidad, composición y texto; el prompt debe ser corto, centrado en el movimiento y describir cómo evoluciona la escena, no lo que ya hay en la imagen.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 3. Kling 3.0 — multi-shot, native audio, 15s › Image-to-video on 3.0 — lock first, then move"
+    }
+   ]
+  },
+  {
+   "id": "e2b186aa0683",
+   "alcance": "Video; Kling 3.0 imagen a video",
+   "enunciado": "Para imagen a video en Kling 3.0 se remite a la sección 3 («lock first, then move»).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "cb889126c59d",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Ejemplo: esqueleto imagen a video para Kling con Preserve, movimiento de cámara con una lente, uno o dos verbos, señal atmosférica y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 12. Skeleton › Image-to-video"
+    }
+   ]
+  },
+  {
+   "id": "994e060f270b",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Ejemplo: prompt de imagen a video en Kling que preserva silueta y texto de etiqueta, con tracking lateral lento, giro de cabeza, viento en el pelo y luz de rim de hora dorada a 35mm.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "cc820f9389bc",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "En imagen a video con Kling el prompt se mantiene corto (20-40 palabras), solo de movimiento, sin re-describir los elementos estáticos que el modelo ya ve.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "42864b5f6396",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Esqueleto de prompt imagen a video para Kling: Preserve de un rasgo, movimiento de cámara con una lente, uno o dos verbos de movimiento, señal atmosférica y campo negativo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 3. Cross-model prompt skeletons › Kling image-to-video"
+    }
+   ]
+  },
+  {
+   "id": "df8d27fc00f7",
+   "alcance": "Video; Kling imagen a video",
+   "enunciado": "Se deben incluir señales explícitas de continuidad, porque Kling responde bien a instrucciones «preserve X».",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 10. Image-to-video rule"
+    }
+   ]
+  },
+  {
+   "id": "741309f7c1fc",
+   "alcance": "Video; Kling imagen a video, cualquier versión",
+   "enunciado": "En imagen a video, en cualquier versión de Kling, el prompt lleva 20-40 palabras, más corto y centrado en el movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 5. Prompt length by model"
+    }
+   ]
+  },
+  {
+   "id": "284e40a17559",
+   "alcance": "Video; Kling, Motion Brush",
+   "enunciado": "El texto del prompt debe coincidir con el movimiento del brush (por ejemplo, no escribir «stagnant pond» si se pinta un río fluyendo); los verbos del prompt se alinean con las direcciones del brush.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 8. Motion Brush (unique)"
+    }
+   ]
+  },
+  {
+   "id": "95e94334e855",
+   "alcance": "Video; Kling, Motion Brush",
+   "enunciado": "Explicación: Motion Brush anima hasta 6 regiones de una sola imagen de forma independiente, cada una con su propia trayectoria de movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 8. Motion Brush (unique)"
+    }
+   ]
+  },
+  {
+   "id": "458a34f36dc5",
+   "alcance": "Video; Kling, fallo de Motion Brush",
+   "enunciado": "Ante artefactos de Motion Brush, se verifica que los verbos del texto coincidan con la dirección del brush y se reescribe el texto si contradice el movimiento.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/kling.md",
+     "encabezado": "Kling reference (Kuaishou) › 11. Failure modes and fixes › Motion Brush artifact"
+    }
+   ]
+  },
+  {
+   "id": "aa27ff46db74",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P3, roles ff, lf y character",
+   "enunciado": "P3: el identity block se rige por el rol de la referencia (--ref-role): los descriptores de persona/objeto se prohíben con rol ff/lf (imagen a video) y con rol character el identity block es obligatorio, con WARN si faltan 3 o más de pelo, ojos/piel, prenda, accesorio y rasgo distintivo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "e33caed2abf3",
+   "alcance": "aurora prompt_linter.py, I2V_CASES",
+   "enunciado": "Define I2V_CASES como los casos de imagen a video del linter: 3a, 3b y 3c.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › I2V_CASES"
+    }
+   ]
+  },
+  {
+   "id": "4c6e22c7856b",
+   "alcance": "linter Aurora, Hailuo caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Hailuo caso 3a: frase de cámara al inicio, acción del sujeto, cambio de luz y mood.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › hailuo__3a"
+    }
+   ]
+  },
+  {
+   "id": "4b02d284cfb7",
+   "alcance": "linter Aurora, Kling 3.0 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 3a (I2V solo primer frame): escena o movimiento, acción del sujeto, cámara, estilo realista y anti-morphing (preserve).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3a"
+    }
+   ]
+  },
+  {
+   "id": "20bb82027dcd",
+   "alcance": "linter Aurora, Kling 3.0 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 3b (I2V primer y último frame): escena o movimiento, transición FF-LF, cámara, estilo realista y anti-morphing.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3b"
+    }
+   ]
+  },
+  {
+   "id": "2f859e431b29",
+   "alcance": "linter Aurora, Seedance (1.0/2.0) caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Seedance caso 3a: acción del sujeto, cámara y audio dentro del cuerpo del prompt (describir solo movimiento y cámara).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance__3a"
+    }
+   ]
+  },
+  {
+   "id": "75af670435b9",
+   "alcance": "linter Aurora, Seedance 2.5 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Seedance 2.5 caso 3a: rol de referencia (@image, first frame), acción del sujeto, cámara, marcadores de audio y estado final (end state).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3a"
+    }
+   ]
+  },
+  {
+   "id": "d4c9fffa6b8f",
+   "alcance": "linter Aurora, Seedance 2.5 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Seedance 2.5 caso 3b: rol de referencia (@image 1, @image 2, first/last frame) declarando cada ancla por separado, acción, cámara, transición y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3b"
+    }
+   ]
+  },
+  {
+   "id": "04a75939c2af",
+   "alcance": "linter Aurora, Veo 3.1 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Veo 3.1 caso 3a: acción del sujeto, timing o beat, cámara, estilo (maintain the subject from the first frame) y cue de física (gravedad, momentum, trayectoria).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a"
+    }
+   ]
+  },
+  {
+   "id": "34dd510b6d8a",
+   "alcance": "linter Aurora, Veo 3.1 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Veo 3.1 caso 3b: transición FF-LF, timing o beat, cámara, cue de física y anti-morphing.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3b"
+    }
+   ]
+  },
+  {
+   "id": "30b6da56ddd8",
+   "alcance": "linter aurora, regla P3 (rol de referencia)",
+   "enunciado": "Los roles de referencia FF, START, FIRST, FIRST_FRAME y START_IMAGE se tratan como primer frame.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › FF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "0263e0a3777b",
+   "alcance": "linter aurora, regla P3 (rol de referencia)",
+   "enunciado": "Los roles de referencia LF, TAIL, LAST, LAST_FRAME, TAIL_IMAGE, END y END_FRAME se tratan como último frame.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › LF_ROLES"
+    }
+   ]
+  },
+  {
+   "id": "c7ad8cba68eb",
+   "alcance": "skill produccion-visual-sw30, regla crítica sobre prompts de clips (imagen a video)",
+   "enunciado": "Los prompts de clip llevan solo Preserve-cues, roles de start/tail (por ejemplo 'The tail image defines X — inherit exactly'), movimiento puro e imagen final nombrada, con negativos sin 'no X' y de 8 ítems como máximo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "10bffde10210",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §7, paso de keyframe a animación; Seedance, Kling, Veo",
+   "enunciado": "Enlazar el archivo de vocabulario para todo token de encuadre, lente o luz, tratar el keyframe como primer frame bloqueado y entregarlo a seedance/kling/veo con el único movimiento dominante (uno por 5 s), nombrándolo en la sintaxis del modelo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 7. From keyframe to image-gen prompt"
+    }
+   ]
+  },
+  {
+   "id": "f32959908abd",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe; Seedance, Kling, Veo",
+   "enunciado": "Si un panel supera los diez puntos del checklist es un opornyi kadr y no papel tapiz, y se entrega a seedance/kling/veo como primer frame bloqueado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "378367c8c791",
+   "alcance": "skill video, enrutar primero",
+   "enunciado": "Para keyframes fijos, hojas de personaje y paneles de animatic que alimentan el pipeline de video, usar el skill hermano image y volver con los keyframes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?"
+    }
+   ]
+  },
+  {
+   "id": "6990e65c2d04",
+   "alcance": "video; modelos con referencias (U13)",
+   "enunciado": "No se re-describe lo que una referencia ya define: si un video de referencia lleva el movimiento, solo se nombran los atributos a heredar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ]
+  }
+ ]
+}

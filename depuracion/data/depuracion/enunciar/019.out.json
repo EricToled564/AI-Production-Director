@@ -1,0 +1,1121 @@
+{
+ "registros": [
+  {
+   "id": "47d55204fcca",
+   "enunciado": "Explicación: la rúbrica puntúa cada check como pass, soft fail o hard fail, pero el JSON de crítica registra una severidad y el veredicto se deriva de ellas; el mapeo debe hacerse solo como indica la tabla siguiente.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "aa5a39473dec",
+   "enunciado": "Un soft fail en cualquier capa se registra como severidad minor, porque el post puede absorberlo y su fix_type suele ser post-level.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "5ed820726d17",
+   "enunciado": "Un hard fail con vía de corrección clara se registra como severidad major, pues un cambio de prompt o un re-roll lo resuelve.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "b112120b5a0c",
+   "enunciado": "Un hard fail en Brand Lock o Series Lock sin vía de corrección se registra como severidad blocking, porque nada posterior lo recupera.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "5610a947b73b",
+   "enunciado": "Cualquier defecto que inutilice el asset se registra como blocking, sin importar la capa.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "a940704784b3",
+   "enunciado": "El veredicto se deriva de las severidades presentes y no es un juicio separado.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "7cd1e76d34e6",
+   "enunciado": "Si hay cualquier severidad blocking, el veredicto es REJECT.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "438560ad9618",
+   "enunciado": "Con tres o más severidades major, el veredicto es REJECT.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "eb62da1eb450",
+   "enunciado": "Con una o dos severidades major, el veredicto es REVISE.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "cc1a49a52c45",
+   "enunciado": "Con solo severidades minor o ninguna, el veredicto es ACCEPT con notas de post.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "01af3c0ce5a3",
+   "enunciado": "Explicación: tools/validate_critique.py aplica exactamente la tabla de veredictos, de modo que una crítica que la contradiga falla; el umbral pasó a ser numérico porque antes la regla de 3+ hard fails y el criterio discrecional del skill se contradecían.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "a737e31abdfe",
+   "enunciado": "Los soft fails se anotan pero no cambian el veredicto por sí solos; si hay tres o más, se debe revisar de nuevo porque suelen esconder un hard fail suavizado.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "80a53a859465",
+   "enunciado": "No criticar lo que el spec no pidió: si no exigía mood cinematográfico, no señalar que podría ser más cinematográfico.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "vocabulario_prohibido"
+   ]
+  },
+  {
+   "id": "46853aa2d34a",
+   "enunciado": "Una vez fijado el veredicto, no acumular quejas: si se rechaza, listar solo los problemas que motivan el rechazo y no cada detalle cosmético.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "51c018bba12e",
+   "enunciado": "Ser siempre específico en la crítica: no basta decir que la luz está mal, hay que señalar la discrepancia concreta (por ejemplo key light a la derecha cuando el series_lock dice izquierda).",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "luz"
+   ]
+  },
+  {
+   "id": "094f74019dcc",
+   "enunciado": "Etiquetar cada problema con la capa a la que pertenece, para que la ruta de corrección sea obvia.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "aa9d345047f7",
+   "enunciado": "Distinguir fallo del prompt de fallo del generador: si el prompt era correcto y el generador produjo malas manos, corresponde re-roll y no corregir el prompt.",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "temas": [
+    "critica_qa",
+    "revision_iteracion",
+    "anatomia_manos"
+   ]
+  },
+  {
+   "id": "25d0f7722d95",
+   "enunciado": "Metadato del skill visual-media: cubre fotografía, video, animación, cine, formato corto y postproducción, y debe activarse ante esas menciones o ante planes de rodaje, feedback de material, storytelling visual y decisiones de encuadre e iluminación, no ante tareas de código, API o backend.",
+   "alcance": "skill visual-media (general)",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "66e9ebbbe541",
+   "enunciado": "Explicación: lema del skill visual-media, contar historias con lenguaje visual y crear imágenes memorables.",
+   "alcance": "skill visual-media (general)",
+   "temas": [
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "ea97788012ae",
+   "enunciado": "El skill visual-media aplica a composición y técnica fotográfica, planeación de video, contenido de formato corto, flujo de animación y edición y colorización en postproducción.",
+   "alcance": "skill visual-media (general)",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "f97f5748cda5",
+   "enunciado": "Explicación: el triángulo de exposición relaciona diafragma (abierto da poca profundidad, cerrado mucha), obturador (rápido congela, lento produce blur y estelas) e ISO (bajo limpio, alto con ruido).",
+   "alcance": "skill visual-media (general), fundamentos de fotografía",
+   "temas": [
+    "parametros_tecnicos",
+    "encuadre_lente_dof"
+   ]
+  },
+  {
+   "id": "91a24f93daa0",
+   "enunciado": "Explicación: reglas básicas de composición: tercios, líneas guía hacia el sujeto, encuadre dentro del encuadre, simetría contra asimetría y espacio negativo que refuerza el punto focal.",
+   "alcance": "skill visual-media (general), fundamentos de fotografía",
+   "temas": [
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "a596dbb8d0c1",
+   "enunciado": "Luz frontal: es plana con pocas sombras y es ideal para registro y foto de documento.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "a481868dd95f",
+   "enunciado": "Luz lateral: es volumétrica con sombras y es ideal para retrato y arquitectura.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "cd9c05c17633",
+   "enunciado": "Contraluz: produce silueta y halo y es ideal para atmósfera y piezas artísticas.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "8881d4d2a43a",
+   "enunciado": "Luz cenital: da sombras duras y debe evitarse al mediodía.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz"
+   ]
+  },
+  {
+   "id": "afa5b5296633",
+   "enunciado": "Hora dorada: luz cálida y suave, ideal para paisaje y retrato.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "cb2a925ec356",
+   "enunciado": "Hora azul: luz fría y enigmática, ideal para ciudad y escenas nocturnas.",
+   "alcance": "skill visual-media (general), uso de la luz",
+   "temas": [
+    "luz",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "5fe3c0683808",
+   "enunciado": "Explicación: las tres etapas de producción (preproducción 30%, rodaje 20%, postproducción 50%) con sus tareas típicas: guion y storyboard, dirección y captura, edición, color, sonido y VFX.",
+   "alcance": "skill visual-media (general), flujo de producción de video",
+   "temas": [
+    "flujo_pipeline",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "7a1bc876fc0c",
+   "enunciado": "Push in: da énfasis por acercamiento y sirve para revelar el punto clave.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "98966448877c",
+   "enunciado": "Pull out: revela el conjunto y sirve para cierre y transición.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "88ba43660026",
+   "enunciado": "Pan: desplazamiento horizontal, útil para seguimiento y presentar el entorno.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "8921fb510516",
+   "enunciado": "Tilt: desplazamiento vertical, útil para mostrar altura.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "fa27ba10deb6",
+   "enunciado": "Track: acompaña al sujeto, útil en caminata y persecución.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "8199162c9aa0",
+   "enunciado": "Órbita: giro de 360 grados, útil para un momento dramático.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "86aac720999a",
+   "enunciado": "Cámara en mano: da inmediatez y presencia, útil en documental y tensión.",
+   "alcance": "skill visual-media (general), movimientos de cámara",
+   "temas": [
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "d513ea942e26",
+   "enunciado": "Explicación: catálogo de tipos de plano (general, entero, medio, primer plano, primerísimo primer plano) con el uso de cada uno: entorno, acción y vestuario, diálogo, expresión y detalle.",
+   "alcance": "skill visual-media (general), tipos de plano",
+   "temas": [
+    "encuadre_lente_dof"
+   ]
+  },
+  {
+   "id": "f87df49a10a4",
+   "enunciado": "TikTok: duración óptima de 15 a 60 s, formato 9:16, carácter de entretenimiento y retos.",
+   "alcance": "skill visual-media (general), formato corto",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "3aec88ec5d05",
+   "enunciado": "Reels: duración óptima de 15 a 90 s, formato 9:16, carácter de cuidado y estética.",
+   "alcance": "skill visual-media (general), formato corto",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "070d388a0df0",
+   "enunciado": "Shorts: duración óptima de 15 a 60 s, formato 9:16, carácter de divulgación y humor.",
+   "alcance": "skill visual-media (general), formato corto",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "5a728debb379",
+   "enunciado": "Douyin: duración óptima de 15 a 60 s, formato 9:16, carácter de contenido local.",
+   "alcance": "skill visual-media (general), formato corto",
+   "temas": [
+    "parametros_tecnicos",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "ddaaa1b25992",
+   "enunciado": "Explicación: fórmula del video corto: hook en 0-3 s, contenido acelerado por bloques hasta cerca del s 50 y CTA en los últimos 5 s; los primeros 3 segundos deciden todo.",
+   "alcance": "skill visual-media (general), formato corto",
+   "temas": [
+    "beat_framework_timing",
+    "ritmo_montaje"
+   ]
+  },
+  {
+   "id": "400e4cbe73e4",
+   "enunciado": "Explicación: los 12 principios de animación de Disney, de squash and stretch a appeal, con la idea clave de cada uno.",
+   "alcance": "skill visual-media (general), fundamentos de animación",
+   "temas": [
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "2943dd6ce88f",
+   "enunciado": "Explicación: flujo de producción de animación, de concepto a entrega, con diseño de personajes, de escenarios y paleta como rama previa a la animación.",
+   "alcance": "skill visual-media (general), fundamentos de animación",
+   "temas": [
+    "animacion_ilustracion",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "4663618ad227",
+   "enunciado": "Explicación: principios de edición: corte en movimiento, corte en reposo, regla de los 180 grados y J-cut/L-cut, que aumentan la fluidez.",
+   "alcance": "skill visual-media (general), postproducción y edición",
+   "temas": [
+    "ritmo_montaje",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "e5f679664389",
+   "enunciado": "Exposición: controla el brillo general y sirve, por ejemplo, para levantar una toma subexpuesta.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "b686d808bfac",
+   "enunciado": "Contraste: es la distancia entre luces y sombras y sirve para ganar volumen.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "85ab368e910b",
+   "enunciado": "Temperatura: eje frío/cálido; se usa cálido para calidez emocional.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "4ca647214d6a",
+   "enunciado": "Tinte: eje verde/magenta, útil para corregir tonos de piel.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "59a30ab78687",
+   "enunciado": "Saturación: intensidad de color; se desatura para lograr un look cinematográfico.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "544048d070fb",
+   "enunciado": "Curvas: ajuste fino; una curva en S da más contraste.",
+   "alcance": "skill visual-media (general), colorización",
+   "temas": [
+    "postproduccion",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "32ba7ce7e67d",
+   "enunciado": "Ejemplo: equipo de captura recomendado: cámaras Sony A7, Canon R y Fujifilm; celulares iPhone Pro y Pixel; estabilizadores DJI RS y Zhiyun.",
+   "alcance": "skill visual-media (general), herramientas",
+   "temas": [
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "ec1660506a2e",
+   "enunciado": "Ejemplo: software de edición profesional recomendado: Premiere Pro, DaVinci Resolve y Final Cut.",
+   "alcance": "skill visual-media (general), herramientas",
+   "temas": [
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "e6d7a737e1e7",
+   "enunciado": "Ejemplo: software de edición ligero recomendado: CapCut, iMovie y Filmora.",
+   "alcance": "skill visual-media (general), herramientas",
+   "temas": [
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "1dffc5e354a4",
+   "enunciado": "Ejemplo: software de VFX recomendado: After Effects y Motion.",
+   "alcance": "skill visual-media (general), herramientas",
+   "temas": [
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "d77275a3e93c",
+   "enunciado": "Ejemplo: herramientas de animación recomendadas: 2D con Toon Boom, Clip Studio y Procreate; 3D con Blender, Maya y Cinema 4D; motion con After Effects y Lottie.",
+   "alcance": "skill visual-media (general), herramientas",
+   "temas": [
+    "animacion_ilustracion"
+   ]
+  },
+  {
+   "id": "91ee9b50369c",
+   "enunciado": "Ejemplo: recursos de referencia recomendados: StudioBinder, Peter McKinnon, Corridor Crew y The Animator's Survival Kit.",
+   "alcance": "skill visual-media (general), recursos",
+   "temas": [
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "33286af1d47a",
+   "enunciado": "Metadato del skill visual-prompt-forge: genera prompts específicos por modelo a partir de shots.json para stills y video, tiene modo revisión que lee critique.json y re-emite solo los shots fallidos, y se activa ante peticiones de prompts, mención de generadores o entrega de shots.json.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "de07ab98b390",
+   "enunciado": "Explicación: cada generador premia un estilo de prompt distinto (corto en Midjourney, lenguaje natural en Flux, párrafo en GPT Image, texto en Ideogram) y un prompt que funciona en uno produce basura en otro.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "47a3a627fed2",
+   "enunciado": "Explicación: el skill adapta el mismo shot a distinta sintaxis según el generador.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "f74773273c06",
+   "enunciado": "El skill se activa cuando el usuario entrega shots.json o una lista estructurada de shots, nombra un generador concreto, pide prompts de imagen o generación para un storyboard, o quiere el mismo shot adaptado a varios generadores.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "24af134cfb28",
+   "enunciado": "Si no existe shots.json y el usuario quiere construir un storyboard desde cero, usar primero storyboard-architect y luego encadenar con este skill.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "76c75ebdf2f0",
+   "enunciado": "El skill produce un archivo por generador objetivo dentro de un directorio por ronda (output/prompts/round-1/), con nombres como midjourney.txt, flux.txt, kling.txt o veo.txt.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "entrega_paquete",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "6093fb94fb85",
+   "enunciado": "Cada ronda escribe en su propio directorio (round-1, round-2...) y nunca en una ruta fija por generador, para que la ronda 2 no destruya el prompt de la ronda 1.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "trazabilidad_procedencia",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "85916b0704f3",
+   "enunciado": "Cada archivo es texto plano con un prompt por shot, separado por línea en blanco y un comentario # shot_NN, pensado para copiar y pegar o enviar a una API.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "f83970dad68f",
+   "enunciado": "Todo prompt se compone de cinco capas: Brand Lock, Series Lock, Shot Spec, Text Layer (nunca en el prompt, se compone aparte) y Generator Adapter.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "27aec56e74a5",
+   "enunciado": "Explicación: las cuatro primeras capas vienen de shots.json y del brand-lock; la quinta, el adaptador de generador, es lo que aplica este skill.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "51bbfaa0b28a",
+   "enunciado": "Las entradas necesarias son shots.json (obligatorio), brand-lock.snapshot.md (obligatorio) y los generadores objetivo (obligatorio, preguntar si no se especifican).",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "shots_json_schema",
+    "marca_brandlock"
+   ]
+  },
+  {
+   "id": "ae8f264c6675",
+   "enunciado": "Antes de componer se debe validar la entrada con python tools/validate_shots.py output/.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "validacion_gates",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "b07317863f91",
+   "enunciado": "Si falta el brand-lock o shots.json no valida, detenerse y avisar al usuario, sin intentar forjar prompts con datos incompletos.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "validacion_gates",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "ba46d44aff1a",
+   "enunciado": "Si no hay tools/, leer el esquema en ../storyboard-architect/templates/shots.schema.json y verificar a mano; si los skills no están juntos, pedir el esquema al usuario en vez de componer de memoria.",
+   "alcance": "visual-prompt-forge",
+   "temas": [
+    "shots_json_schema",
+    "validacion_gates",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "272ab4954d55",
+   "enunciado": "Para cada generador objetivo hay que leer su archivo adaptador correspondiente (midjourney, flux, ideogram, gpt-image, nano-banana, seedream, kling, veo, seedance, hailuo).",
+   "alcance": "visual-prompt-forge, paso 2",
+   "temas": [
+    "capacidades_modelo",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "892ddb90fff0",
+   "enunciado": "Es obligatorio leer el adaptador antes de escribir prompts para ese generador y no adivinar desde el entrenamiento, porque la sintaxis de generación de imagen cambia con frecuencia.",
+   "alcance": "visual-prompt-forge, paso 2",
+   "temas": [
+    "conducta_agente",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "c646f9c76a45",
+   "enunciado": "adapters/_capabilities.json es la única fuente de verdad de los límites por generador (max_prompt_words, supports_text_render, supports_motion, aspect_param...); se lee al inicio, se respeta al componer y no se apunta movimiento a un generador solo de stills.",
+   "alcance": "visual-prompt-forge, paso 2",
+   "temas": [
+    "capacidades_modelo",
+    "longitud_prompt",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "0f675cb4c038",
+   "enunciado": "max_prompt_words es un techo y el rango del .md del adaptador es la meta recomendada dentro de ese techo; si un dato del .md y del JSON discrepan de verdad, gana el JSON.",
+   "alcance": "visual-prompt-forge, paso 2",
+   "temas": [
+    "longitud_prompt",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "1cff7a417462",
+   "enunciado": "Explicación: tools/validate_capabilities.py hace cumplir la regla de precedencia, fallando si un adaptador anuncia más palabras que su techo o no documenta el aspect_param del JSON, tras un caso donde nano-banana usaba aspect_ratio en la matriz y aspectRatio en el adaptador.",
+   "alcance": "visual-prompt-forge, paso 2",
+   "temas": [
+    "validacion_gates",
+    "parametros_tecnicos",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "7427e278e336",
+   "enunciado": "Para cada shot y cada generador: tomar paleta, mood y never list del brand-lock; character, environment y lighting del series_lock; framing, angle, motion y subject del shot; eliminar cualquier referencia a on_screen_text; aplicar la sintaxis del adaptador y añadir parámetros del generador.",
+   "alcance": "visual-prompt-forge, paso 3",
+   "temas": [
+    "estructura_prompt_imagen",
+    "texto_en_pantalla",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "2ea04645a7d3",
+   "enunciado": "Se escribe un archivo por generador en output/prompts/round-{N}/ con cabecera (storyboard, generador, modelo, aspecto, brand-lock, run, ronda) y un bloque # shot_NN por shot con el prompt debajo.",
+   "alcance": "visual-prompt-forge, paso 4",
+   "temas": [
+    "entrega_paquete",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "759bc299a513",
+   "enunciado": "Explicación: las líneas # son comentarios y el usuario copia solo el cuerpo; tools/copy-prompt.py trata un comentario que nombra un shot como cabecera de bloque y cualquier otro comentario interno como anotación que no copia.",
+   "alcance": "visual-prompt-forge, paso 4",
+   "temas": [
+    "herramientas_codigo",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "79624e74431b",
+   "enunciado": "Registrar run y ronda en la cabecera y no una marca de tiempo de generación, para que dos ejecuciones idénticas produzcan archivos idénticos.",
+   "alcance": "visual-prompt-forge, paso 4",
+   "temas": [
+    "trazabilidad_procedencia",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "629e42df828f",
+   "enunciado": "Tras escribir los archivos, añadir una entrada al array rounds de run.json con número de ronda, started_at, reason y, por archivo, generador, ruta, SHA-256 y ids de shots cubiertos.",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "temas": [
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "12d8d8efc38a",
+   "enunciado": "Ejemplo: comando para calcular los SHA-256 de los archivos de la ronda: shasum -a 256 output/prompts/round-1/*.txt.",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "temas": [
+    "trazabilidad_procedencia",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "d099543faf79",
+   "enunciado": "El array rounds es la única parte escribible de run.json; todo lo demás quedó fijado cuando lo escribió el architect.",
+   "alcance": "visual-prompt-forge, paso 4b",
+   "temas": [
+    "trazabilidad_procedencia",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "66fe69b1f405",
+   "enunciado": "Al terminar, informar dónde están los archivos y ofrecer el siguiente paso: hacer QA de las imágenes generadas contra el storyboard con visual-asset-critic.",
+   "alcance": "visual-prompt-forge, paso 5",
+   "temas": [
+    "entrega_paquete",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "cba2acb97391",
+   "enunciado": "Ejemplo: el helper tools/copy-prompt.py copia al portapapeles prompts individuales, por archivo o con --shot para un shot concreto de una ronda de revisión.",
+   "alcance": "visual-prompt-forge, paso 5",
+   "temas": [
+    "herramientas_codigo",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "4de3d23cbd2e",
+   "enunciado": "Explicación: el helper de copia es opcional; los .txt se pueden leer directamente y sirve sobre todo cuando el operador alterna entre terminal y la UI del generador.",
+   "alcance": "visual-prompt-forge, paso 5",
+   "temas": [
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "4af443f5e0ec",
+   "enunciado": "En modo revisión, con shots.json y uno o más critique.json, no se re-forja todo el storyboard: se re-emiten prompts solo de los shots fallidos, con la corrección ya aplicada.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "5bbce47ce9ea",
+   "enunciado": "El modo revisión se activa cuando el usuario dice aplicar la crítica, revisar los shots fallidos o re-roll de lo que no pasó, o entrega un árbol de salida con critiques/.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "5c698b20f531",
+   "enunciado": "Leer todas las críticas de output/critiques/round-{N}/, con N la ronda más alta presente; cada archivo es el veredicto de un shot (shot_id, verdict, issues[]).",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "194b81e9fbff",
+   "enunciado": "Omitir los shots con verdict ACCEPT, porque ya están terminados.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "0274de265517",
+   "enunciado": "Detenerse ante un REJECT: no re-emitir prompt, listar los shots rechazados con lo que dijo el crítico y preguntar al usuario cómo proceder (cambiar spec, brand-lock o generador), pues esas decisiones exceden al skill.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "29d1171d320b",
+   "enunciado": "Para cada shot REVISE se ramifica según fix_type: prompt-level recompone el prompt con el fix aplicado; re-roll mantiene el prompt idéntico con anotación de tomar 2-3 muestras y elegir la más limpia; post-level no se re-emite porque se corrige en compositing.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "critica_qa"
+   ]
+  },
+  {
+   "id": "db657a30ec47",
+   "enunciado": "Un shot cuyos problemas son todos post-level no lleva prompt nuevo: se omite del archivo revisado y su id se añade a post_only_shots en la nueva ronda de run.json, porque decirlo en el chat no lo registra.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "trazabilidad_procedencia",
+    "postproduccion"
+   ]
+  },
+  {
+   "id": "2e092f649096",
+   "enunciado": "Al revisar, se reaplica la anatomía de cinco capas y el mismo adaptador de la corrida original.",
+   "alcance": "visual-prompt-forge, modo revisión",
+   "temas": [
+    "revision_iteracion",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "bd3770cf45e9",
+   "enunciado": "Escribir output/prompts/round-{N+1}/revised-{generator}.txt solo con los shots revisados, añadir la ronda a run.json y anotar por shot qué cambió y por qué citando el issue.",
+   "alcance": "visual-prompt-forge, modo revisión, salida",
+   "temas": [
+    "revision_iteracion",
+    "trazabilidad_procedencia",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "2002ee86044f",
+   "enunciado": "La cabecera de bloque debe empezar con el id del shot como en una pasada completa, porque copy-prompt.py identifica bloques por el id al inicio de la línea y una cabecera que empezara con Revision of lo dejaba ilegible.",
+   "alcance": "visual-prompt-forge, modo revisión, salida",
+   "temas": [
+    "entrega_paquete",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "56a5ed0da179",
+   "enunciado": "Al terminar la revisión, informar qué shots se revisaron, cuáles solo necesitan post, cuáles se rechazaron y cuáles ya estaban ACCEPT; luego el usuario genera y vuelve a pasar visual-asset-critic.",
+   "alcance": "visual-prompt-forge, modo revisión, salida",
+   "temas": [
+    "revision_iteracion",
+    "entrega_paquete"
+   ]
+  },
+  {
+   "id": "eddb3447a2f3",
+   "enunciado": "Con el mismo shots.json, brand-lock y crítica, la revisión debe producir el mismo prompt revisado; el formato no debe tener marcas de tiempo ni orden aleatorio.",
+   "alcance": "visual-prompt-forge, modo revisión, determinismo",
+   "temas": [
+    "trazabilidad_procedencia",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "7fa95411f5a2",
+   "enunciado": "Al aplicar un fix, hacer la edición más estrecha que lo satisfaga y dejar todas las demás capas idénticas byte a byte; reescribir lo que la crítica no pidió es deriva.",
+   "alcance": "visual-prompt-forge, modo revisión, determinismo",
+   "temas": [
+    "revision_iteracion",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "514ef04c8cf6",
+   "enunciado": "Explicación: las reglas duras siguientes son innegociables y su violación produce salida rota aunque el prompt parezca correcto.",
+   "alcance": "visual-prompt-forge, reglas duras",
+   "temas": [
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "94dbf71300ce",
+   "enunciado": "Regla 1: el texto nunca va en el prompt; si el shot tiene on_screen_text, el prompt no contiene su contenido y el texto se compone aparte; solo Ideogram es excepción, como override explícito señalado en el rationale.",
+   "alcance": "visual-prompt-forge, regla 1; excepción Ideogram",
+   "temas": [
+    "texto_en_pantalla",
+    "logos_marcas_en_imagen"
+   ]
+  },
+  {
+   "id": "9e5366814cf6",
+   "enunciado": "Regla 2: los colores de marca vienen del color_grade del series_lock y la paleta del brand_lock, y no se repiten en la prosa del sujeto del shot, porque duplicar la descripción produce sobresaturación.",
+   "alcance": "visual-prompt-forge, regla 2",
+   "temas": [
+    "marca_brandlock",
+    "color_grade_paleta"
+   ]
+  },
+  {
+   "id": "90d687aae8d4",
+   "enunciado": "Regla 3: las cadenas environment, lighting y color_grade del series_lock pasan a cada prompt textualmente; parafrasearlas o variarlas rompe la consistencia entre shots.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "3a8643d605c7",
+   "enunciado": "Verbatim significa la cadena completa sin editar, no la misma idea en mejor prosa: reescribir con más fluidez es deriva que se vuelve visible solo al alinear varios shots.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "6e33e02023af",
+   "enunciado": "Solo se permite poner en mayúscula la primera letra para iniciar una oración; no se admite reordenar, omitir cláusulas, usar sinónimos ni insertar adjetivos en las cadenas del series_lock.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "f6f0f2ed9d8f",
+   "enunciado": "El campo character genera una advertencia y no un error si falta, porque un shot sin persona puede omitirlo; cuando hay persona también va verbatim.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "consistencia_identidad",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "ec0725249107",
+   "enunciado": "La regla de verbatim se hace cumplir con python tools/validate_prompts.py output/ y no se confía a la disciplina del autor.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "1cb280de0c11",
+   "enunciado": "Explicación: el validador existe porque un pase de autoría cuidadoso sobre un storyboard de siete shots derivó en los anclajes en los siete mientras los demás validadores seguían en verde.",
+   "alcance": "visual-prompt-forge, regla 3",
+   "temas": [
+    "validacion_gates",
+    "continuidad_multiclip"
+   ]
+  },
+  {
+   "id": "92568cb17fc4",
+   "enunciado": "Regla 4: el archivo adaptador es la fuente de verdad de la sintaxis y prevalece sobre el entrenamiento del modelo (por ejemplo --style raw sobre --style 4a en Midjourney).",
+   "alcance": "visual-prompt-forge, regla 4; Midjourney como ejemplo",
+   "temas": [
+    "conducta_agente",
+    "capacidades_modelo",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "289dde6cd7af",
+   "enunciado": "Regla 6: todo prompt declara antes que nada dónde está el cuerpo en el encuadre (tercio), el punto de vista, la dirección de viaje, nada que contradiga la cámara, la lateralidad en cualquier contacto entre dos personas y ninguna marca (logos y letras se componen en post).",
+   "alcance": "visual-prompt-forge, regla 6",
+   "temas": [
+    "composicion_frame",
+    "angulo_camara",
+    "anatomia_manos",
+    "logos_marcas_en_imagen"
+   ]
+  },
+  {
+   "id": "3a1c3921f7ea",
+   "enunciado": "Regla 5: los prompts deben ser reproducibles; las mismas entradas deben dar siempre el mismo prompt por shot, y si dos corridas difieren el skill está roto.",
+   "alcance": "visual-prompt-forge, regla 5",
+   "temas": [
+    "trazabilidad_procedencia",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "f33de6c3b612",
+   "enunciado": "Referencia: references/prompt-anatomy.md explica en profundidad el modelo de cinco capas.",
+   "alcance": "visual-prompt-forge, archivos de referencia",
+   "temas": [
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "c7f9d0ab386d",
+   "enunciado": "Referencia: references/consistency-locks.md explica cómo el series_lock evita la deriva entre shots.",
+   "alcance": "visual-prompt-forge, archivos de referencia",
+   "temas": [
+    "continuidad_multiclip",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "2c096133919e",
+   "enunciado": "Referencia: references/failure-modes.md recoge fallos comunes de generación de imagen y sus correcciones en el prompt.",
+   "alcance": "visual-prompt-forge, archivos de referencia",
+   "temas": [
+    "capacidades_modelo",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "0f92858ffe68",
+   "enunciado": "Hay un archivo adaptador por generador y se leen bajo demanda, solo para los generadores objetivo.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "capacidades_modelo",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "abd30c9c0062",
+   "enunciado": "Adaptador midjourney.md: Midjourney v7+, fuerte en estética y look cinematográfico.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "d1e60f84d6ba",
+   "enunciado": "Adaptador flux.md: Flux 2 / Flux 1.1 Pro, fuerte en fotorrealismo.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "30006d101ab0",
+   "enunciado": "Adaptador ideogram.md: Ideogram v3, para texto en imagen solo como override.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo",
+    "texto_en_pantalla"
+   ]
+  },
+  {
+   "id": "e10d8c682d9b",
+   "enunciado": "Adaptador gpt-image.md: GPT Image 1.5 / 2, fuerte en precisión al prompt y razonamiento espacial.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "f155cdfc7ced",
+   "enunciado": "Adaptador nano-banana.md: Gemini 2.5 Flash Image, fuerte en fidelidad de edición e inpainting.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo",
+    "edicion_imagen"
+   ]
+  },
+  {
+   "id": "5903718ab14d",
+   "enunciado": "Adaptador seedream.md: Seedream 4.5, para alto volumen y bajo costo.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "ec15d930b365",
+   "enunciado": "Adaptador kling.md: Kling 3.0, video con movimiento por defecto (mejor movimiento de cámara por dólar).",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "49ded13694da",
+   "enunciado": "Adaptador veo.md: Veo 3, video con diálogo, lipsync y audio nativo.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo",
+    "audio_dialogo"
+   ]
+  },
+  {
+   "id": "42dbea6ac24a",
+   "enunciado": "Adaptador seedance.md: Seedance 2.0, video con secuencias multi-shot.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo",
+    "multishot"
+   ]
+  },
+  {
+   "id": "357683e16ffb",
+   "enunciado": "Adaptador hailuo.md: Hailuo 02 Pro, video para iteración de bajo costo.",
+   "alcance": "visual-prompt-forge, adaptadores",
+   "temas": [
+    "seleccion_modelo"
+   ]
+  },
+  {
+   "id": "a3831231758c",
+   "enunciado": "Ejecutar el validador en lugar de revisar a ojo: validate_prompts.py sobre output/ y copy-prompt.py con --list sobre el archivo de la ronda.",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "2942c48f08d6",
+   "enunciado": "validate_prompts.py comprueba la parte mecánica: cabecera completa, generador válido, aspecto igual al del proyecto, techo de palabras, cobertura de shots, sin bloques duplicados, ausencia de texto en pantalla (regla 1), anclajes verbatim (regla 3) y lógica de shot de la regla 6.",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "temas": [
+    "validacion_gates",
+    "longitud_prompt",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "60191507db1c",
+   "enunciado": "Checks manuales que el validador no cubre: un archivo por generador pedido, contabilizar los shots omitidos en revisión (ACCEPT, post-only o rechazados), parámetros correctos para la superficie de pegado, ronda añadida a run.json con hash por archivo y que el prompt describa realmente el shot.",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "temas": [
+    "validacion_gates",
+    "revision_iteracion",
+    "trazabilidad_procedencia"
+   ]
+  }
+ ]
+}

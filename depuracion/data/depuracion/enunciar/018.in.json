@@ -1,0 +1,1716 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "7a597689a1e3",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "139-142",
+     "encabezado": "Universal rules — apply to every video model › 11. U10. Duration discipline"
+    }
+   ],
+   "texto": "Three exceptions:\n- Seedance — 2-3 shots inside one 5-10s clip via \"Cut to\" syntax (see `seedance.md` §8).\n- Kling 3.0 — up to 6 shots inside one generation, up to 15s, with native audio and dialogue (see `kling.md` §3).\n- Seedance 2.5 — up to 30s in one pass. The working structure is consecutive stages, each with one primary state change and an explicit visible end state (see `seedance-25.md` §6)."
+  },
+  {
+   "id": "1a6e8fa7b007",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "146-146",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "Every clip needs a clear final frame. The model uses the ending as emotional destination."
+  },
+  {
+   "id": "d698e3c6bea2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "148-148",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "- \"Ends on his face frozen in the blue refrigerator light\" beats \"he stands there sadly.\""
+  },
+  {
+   "id": "1e3bd475dec4",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "150-150",
+     "encabezado": "Universal rules — apply to every video model › 12. U11. The final image rule"
+    }
+   ],
+   "texto": "The final image is also one of the five anchors (see `dramaturgy.md` §13). Naming it is non-negotiable."
+  },
+  {
+   "id": "1285e3c81acf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "154-158",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "Before returning the final prompt to the user, audit every shot. Each shot must carry at least one of each:\n\n1. Environmental pressure (lighting, weather, surface, sound of the room).\n2. Physical micro-action on the body (jaw, hand, breath, eye, gesture).\n3. Sound anchor or recurring visual motif tied to the emotional spine."
+  },
+  {
+   "id": "ced2e15c121c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "160-160",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "If a shot has zero, fix it before sending. If a shot has only one, ask whether you can make it two without bloat. The strongest prompts in this skill's worked examples always have all three."
+  },
+  {
+   "id": "10f0c7be66f0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "162-162",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ],
+   "texto": "Empty descriptors that fail this check: \"establishing wide shot\", \"beautiful lighting\", \"dynamic camera move\", \"cinematic look\", \"intense moment\", \"dramatic close-up\". Replace each with three concrete physical facts."
+  },
+  {
+   "id": "64539d677446",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "166-166",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "Wherever a model accepts reference assets (Seedance `@Image/@Video/@Audio`, Kling Element Binding and Omni references, Veo ingredients), **every asset gets an explicit role written in the prompt**: what it defines (appearance, motion, voice, scene, camera path) and what to ignore (\"Do not use the image background\", \"Do not use the people in the image\")."
+  },
+  {
+   "id": "aa0ae2147e58",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "168-168",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- Bind each subject individually: \"<Character A> corresponds to @Image 1 — use only the appearance, hairstyle, and clothing.\" Never the collective form \"@Images 1 through 4 define four characters respectively\" — it does not state which is which."
+  },
+  {
+   "id": "6990e65c2d04",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "169-169",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- Do not restate what a reference already defines. If a video reference carries the motion, name only the attributes to inherit; re-describing every action fights the reference."
+  },
+  {
+   "id": "bf6a50093e8b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "170-170",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "- More assets is not more control. Control comes from role clarity; unassigned assets bleed into the frame."
+  },
+  {
+   "id": "91d63f9db086",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "172-172",
+     "encabezado": "Universal rules — apply to every video model › 14. U13. Reference role discipline"
+    }
+   ],
+   "texto": "Model-specific limits and templates live in the model files (`seedance-25.md` §5 has the fullest system)."
+  },
+  {
+   "id": "56ce60992fcf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "176-181",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ],
+   "texto": "When a prompt is overloaded (10+ scenes, many subjects, spatial tricks), adding more description makes it worse. Instead, declare priorities — the model cannot know what matters most unless told what to protect and what to sacrifice:\n\n1. The core subject that must survive every shot.\n2. The key shots that must appear.\n3. The transitions where the model may freestyle.\n4. The mandatory final frame."
+  },
+  {
+   "id": "c8674c1d59c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "lineas": "183-183",
+     "encabezado": "Universal rules — apply to every video model › 15. U14. Priority declaration"
+    }
+   ],
+   "texto": "This ranks above prompt-length discipline: a shorter prompt with declared priorities beats a longer one without them."
+  },
+  {
+   "id": "e1b6718eef08",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "20-20",
+     "encabezado": "Veo reference (Google) › 1. What Veo is"
+    }
+   ],
+   "texto": "Google's cinematic video model with NATIVE synchronized audio. The only major generator that creates dialogue, SFX, and music in sync with the video and does lip-sync natively. Best for commercial polish, narrative with dialogue, and cinematic audio."
+  },
+  {
+   "id": "9004529ad50e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "24-24",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "- Veo 3. Text-to-video, native audio, 4 / 6 / 8 second clips."
+  },
+  {
+   "id": "458af3069496",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "25-25",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "- Veo 3.1. Adds image-to-video with First Frame, improved audio, reference ingredients, stronger motion coherence."
+  },
+  {
+   "id": "7f0ad55e9cf2",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "27-28",
+     "encabezado": "Veo reference (Google) › 2. Versions and specs"
+    }
+   ],
+   "texto": "Duration. 4, 6, or 8 seconds.\nDialogue budget. Max 8 seconds of spoken audio per clip."
+  },
+  {
+   "id": "ec680bd260b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "32-32",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "Order matters. Lead with subject and camera. Quality modifiers go at the end."
+  },
+  {
+   "id": "0101f79e5045",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "34-42",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "```text\n[Subject / Action]\n+ [Environment / Setting]\n+ [Camera / Shot Type / Lens]\n+ [Lighting / Atmosphere]\n+ [Style / Quality]\n+ [Audio]\n+ [Duration]\n```"
+  },
+  {
+   "id": "dc96ec2e78b1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "44-47",
+     "encabezado": "Veo reference (Google) › 3. Prompt structure and length"
+    }
+   ],
+   "texto": "Sweet spot. 50-200 words.\n\n- Shorter prompts = more creative latitude, less control.\n- Longer prompts = tighter control, higher risk of contradictions."
+  },
+  {
+   "id": "6021cdb83f0e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "51-51",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical)"
+    }
+   ],
+   "texto": "Veo is the only model that renders synced lip movement and voice. The syntax matters."
+  },
+  {
+   "id": "9a8c9fac925a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "55-55",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "Double quotes + lead-in verb (says, whispers, shouts, mutters, asks)."
+  },
+  {
+   "id": "26b5a4ee5b8c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "57-61",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "```text\nA woman says, \"Welcome to the future.\"\nHe whispers, \"Don't move.\"\nShe shouts, \"Get out!\"\n```"
+  },
+  {
+   "id": "49b4fcb2de3b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "63-63",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "Colon after the lead-in verb works too and is often more reliable."
+  },
+  {
+   "id": "33e554078782",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "65-67",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Required format"
+    }
+   ],
+   "texto": "```text\nA woman says: \"Welcome to the future.\"\n```"
+  },
+  {
+   "id": "5a47f9bf4c00",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "71-77",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Voice character modifiers"
+    }
+   ],
+   "texto": "Place modifiers before the lead-in verb.\n\n```text\nHe says in a weary voice, \"We are fine. We are fine.\"\nShe whispers nervously, \"I don't want to be here.\"\nHe shouts excitedly, \"We did it!\"\n```"
+  },
+  {
+   "id": "d068742c1923",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "81-81",
+     "encabezado": "Veo reference (Google) › 4. Dialogue syntax (critical) › Timing rule"
+    }
+   ],
+   "texto": "Maximum 8 seconds of spoken audio. Cram too many words into a 5s clip and the delivery speeds up unnaturally. Cut the line until it fits."
+  },
+  {
+   "id": "562e346f392e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "85-93",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ],
+   "texto": "Three supported formats. Mix as needed.\n\n```text\nSFX: thunder cracks in the distance\nAudio: rain on tin roof, distant traffic, one slow breath\n(a loud thunderclap)\n(key turning in a lock)\n(wet footsteps on concrete)\n```"
+  },
+  {
+   "id": "98680e82a979",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "95-95",
+     "encabezado": "Veo reference (Google) › 5. SFX syntax"
+    }
+   ],
+   "texto": "Use labels `Audio:`, `Says:`, `SFX:` to separate sound direction from visual direction. The model needs an explicit signal that audio should be generated."
+  },
+  {
+   "id": "74495978d63c",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "99-99",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique)"
+    }
+   ],
+   "texto": "Veo parses structured JSON. This prevents \"concept bleed\" where describing mood accidentally changes object colors. Use JSON for complex scenes with strict continuity needs."
+  },
+  {
+   "id": "dd065ad8d5e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "103-159",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › Full schema"
+    }
+   ],
+   "texto": "```json\n{\n  \"version\": \"veo-3.1\",\n  \"output\": {\n    \"duration_sec\": 8,\n    \"fps\": 24,\n    \"resolution\": \"1080p\",\n    \"aspect_ratio\": \"16:9\"\n  },\n  \"global_style\": {\n    \"look\": \"cinematic naturalism\",\n    \"color\": \"cold blue-gray palette, desaturated skin\",\n    \"mood\": \"quiet domestic tragedy\",\n    \"reference\": \"Fincher-style motivated camera\"\n  },\n  \"continuity\": {\n    \"characters\": [\n      {\n        \"id\": \"man\",\n        \"description\": \"40s, tired eyes, stubble, dark blue t-shirt, grey sweatpants, barefoot\"\n      }\n    ],\n    \"props\": [\"empty refrigerator\", \"single sausage\", \"chipped white plate\"],\n    \"lighting_constant\": \"cold fridge light as key\"\n  },\n  \"scenes\": [\n    {\n      \"id\": \"01\",\n      \"start\": \"0.0\",\n      \"end\": \"3.0\",\n      \"shot\": {\n        \"type\": \"medium close-up\",\n        \"framing\": \"eye-level, slightly offset\",\n        \"camera\": \"slow push-in, 50mm\"\n      },\n      \"action\": \"He opens the fridge. His face catches the cold light. His eyes stop on the empty shelf.\",\n      \"environment\": \"small kitchen, 3am, rain outside window\",\n      \"lighting\": \"cold fridge light as key, warm window spill as rim\",\n      \"audio\": \"fridge hum, distant rain, one stomach growl\"\n    },\n    {\n      \"id\": \"02\",\n      \"start\": \"3.0\",\n      \"end\": \"8.0\",\n      \"shot\": {\n        \"type\": \"extreme close-up\",\n        \"framing\": \"macro insert on hand\",\n        \"camera\": \"static, 100mm macro\"\n      },\n      \"action\": \"His hand hovers over a single sausage. He picks it up slowly, exhales.\",\n      \"environment\": \"inside the fridge\",\n      \"lighting\": \"cold fridge light, high contrast\",\n      \"audio\": \"quiet breath, soft plastic crinkle\"\n    }\n  ]\n}\n```"
+  },
+  {
+   "id": "102af6f242dd",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "163-163",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Multiple scenes in one generation."
+  },
+  {
+   "id": "b6160e69d19b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "164-164",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Strict character continuity across shots."
+  },
+  {
+   "id": "b26f73ebf4f9",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "165-165",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- Complex props that must stay the same color and size."
+  },
+  {
+   "id": "35b856f550ff",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "166-166",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "- When a prose prompt kept changing subject colors when you added mood words."
+  },
+  {
+   "id": "64e0e5324da9",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "168-168",
+     "encabezado": "Veo reference (Google) › 6. JSON prompts (powerful, unique) › When to use JSON"
+    }
+   ],
+   "texto": "Not every Veo prompt needs JSON. For simple clips, prose is faster and often better."
+  },
+  {
+   "id": "3c2a26b63780",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "172-172",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ],
+   "texto": "Uses the static image as First Frame. Prompt guides motion and sound."
+  },
+  {
+   "id": "4ee9edec32fd",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "174-178",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ],
+   "texto": "Rules.\n\n- Do not re-describe static elements.\n- Describe only motion, camera, light change, and audio.\n- Add \"maintain the subject from the first frame\" to protect identity."
+  },
+  {
+   "id": "beca1450a592",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "180-187",
+     "encabezado": "Veo reference (Google) › 7. Image-to-video (Veo 3.1)"
+    }
+   ],
+   "texto": "Example.\n\n```text\nMaintain the subject from the first frame. Slow push-in, 50mm. She exhales, her eyes shift to the left, one strand of hair falls across her forehead. Warm rim light grows stronger.\n\nAudio: soft breath, distant traffic, one door closing in the next room.\nDuration: 6 seconds.\n```"
+  },
+  {
+   "id": "bb55872b6167",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "191-191",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ],
+   "texto": "Upload multiple reference images (character, location, prop) and tag them in the prompt."
+  },
+  {
+   "id": "db2e6ef0c409",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "193-195",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ],
+   "texto": "```text\nThe character from reference_1 walks into the location from reference_2 holding the object from reference_3.\n```"
+  },
+  {
+   "id": "e241faf72e61",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "197-197",
+     "encabezado": "Veo reference (Google) › 8. Reference ingredients (3.1)"
+    }
+   ],
+   "texto": "Use when you need a specific character in a specific place with a specific object."
+  },
+  {
+   "id": "45db882da0cf",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "203-203",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Dialogue speeds up unnaturally"
+    }
+   ],
+   "texto": "Fix. Cut the line to fit 8 seconds of natural speech. Test by reading aloud."
+  },
+  {
+   "id": "d733628247b3",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "207-207",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Audio missing from output"
+    }
+   ],
+   "texto": "Fix. Add explicit `Audio:`, `SFX:`, or `Says:` labels. Do not assume the model will infer audio from visual description."
+  },
+  {
+   "id": "fd3f3bc8d5f0",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "211-211",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Camera direction ignored"
+    }
+   ],
+   "texto": "Fix. Lead the prompt with camera. \"Wide aerial shot\" at the start beats \"cinematic camera work\" in the middle."
+  },
+  {
+   "id": "6919bb8dfa42",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "215-215",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Character color changes when mood words are added"
+    }
+   ],
+   "texto": "Fix. Switch to JSON prompt. Lock the character description in the continuity block. Keep mood in global_style where it cannot bleed into object colors."
+  },
+  {
+   "id": "cd9ec0564f7a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "219-219",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Lip-sync off"
+    }
+   ],
+   "texto": "Fix. Check the lead-in verb. \"She says, ...\" outperforms just quoted speech alone. Colon form often more reliable than comma."
+  },
+  {
+   "id": "542bea043bac",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "223-223",
+     "encabezado": "Veo reference (Google) › 9. Failure modes and fixes › Prompt too long, model cherry-picks"
+    }
+   ],
+   "texto": "Fix. Compress to the 50-100 word range. Or switch to JSON which handles length better because of structural separation."
+  },
+  {
+   "id": "ea50e53665af",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "229-237",
+     "encabezado": "Veo reference (Google) › 10. Skeleton › Prose version"
+    }
+   ],
+   "texto": "```text\n[Subject performing action] in [environment]. [Camera framing + lens + movement]. [Lighting direction + color temperature]. [Style + mood + palette].\n\nAudio: [ambient sounds, SFX, music texture].\nSays: [character] says, \"[dialogue, max 8 seconds of speech].\"\nSFX: [punctual sound events].\n\nDuration: [4 / 6 / 8] seconds.\n```"
+  },
+  {
+   "id": "f33a23fafa03",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "241-241",
+     "encabezado": "Veo reference (Google) › 10. Skeleton › JSON version"
+    }
+   ],
+   "texto": "See section 6. Copy the schema and fill in."
+  },
+  {
+   "id": "b85049e802da",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/veo.md",
+     "lineas": "245-253",
+     "encabezado": "Veo reference (Google) › 10. Skeleton › Worked example. Commercial hero shot"
+    }
+   ],
+   "texto": "```text\nA woman in a cream silk blouse stands in front of a morning window, lifting a ceramic coffee cup to her lips. Medium close-up, 85mm, slow push-in. Warm window key from frame-left, soft bounce fill from frame-right. Cinematic naturalism, creamy palette, shallow depth of field.\n\nAudio: distant city ambience, ceramic clink, one slow breath.\nSays: She whispers to herself, \"One more minute.\"\nSFX: (spoon tapping ceramic at 2 seconds).\n\nDuration: 6 seconds.\n```"
+  },
+  {
+   "id": "af776fac6eda",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Critique a generated image against its source storyboard shot and prompt, producing revision notes. Use when the user has generated an image and wants feedback before committing. Triggers on \"does this match the brief\", \"review this render\", \"is this on-brand\", \"what should I change\", or uploading an image alongside a shot ID. The QA loop for AI visuals. Works even without a storyboard-architect run. Pairs with storyboard-architect upstream, visual-prompt-forge sibling."
+  },
+  {
+   "id": "4f4bd8fac62d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "8-8",
+     "encabezado": "Visual Asset Critic"
+    }
+   ],
+   "texto": "You are the editorial second-eye on AI-generated images. Most teams don't have one, they generate, glance, accept, and ship. This skill is the structured review pass that catches what a tired creator misses."
+  },
+  {
+   "id": "5cbae42158c4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "10-10",
+     "encabezado": "Visual Asset Critic"
+    }
+   ],
+   "texto": "The output is a critique with concrete, actionable revision notes. Not vibes. Not \"looks good.\" Specific, prompt-level or post-level fixes."
+  },
+  {
+   "id": "62d991eb5eb0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "14-20",
+     "encabezado": "Visual Asset Critic › When to use"
+    }
+   ],
+   "texto": "Trigger when the user:\n\n- Uploads or links a generated image with a question about quality\n- Asks \"does this match the storyboard\"\n- Says \"review this render\", \"is this on-brand\", \"what should I change\"\n- Has a generated image and a `shots.json` shot reference and wants QA\n- Has a generated image and just wants editorial feedback (no storyboard reference)"
+  },
+  {
+   "id": "f8c53f582091",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "24-24",
+     "encabezado": "Visual Asset Critic › What you produce"
+    }
+   ],
+   "texto": "**Two artifacts from every review, always both:** a human-readable markdown critique (the primary surface) and a machine-readable critique JSON (so a pipeline can gate on the verdict instead of parsing prose). The JSON is detailed in Step 6; it never replaces the markdown."
+  },
+  {
+   "id": "e4ea41bce05c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "26-29",
+     "encabezado": "Visual Asset Critic › What you produce"
+    }
+   ],
+   "texto": "The JSON goes to `output/critiques/round-{N}/{shot_id}.critique.json`. One file per shot\nper round, never a shared filename. A 12-shot project reviewed over three rounds writes 36\ncritiques; when they all went to `output/critique.json` it kept one, and which one depended\non review order."
+  },
+  {
+   "id": "4eaea813bdd0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "31-51",
+     "encabezado": "Visual Asset Critic › What you produce"
+    }
+   ],
+   "texto": "The markdown critique uses these sections:\n\n```\n## Verdict\nACCEPT / REVISE / REJECT, one line\n\n## What's working\n2–4 specific positives. Concrete observations, not flattery.\n\n## What's not working\n2–5 specific issues. Each one cites a layer. Brand Lock, Series Lock, Shot Spec, Composition, Technical, or Continuity.\n\n## Revision plan\nFor each issue, the fix:\n- Prompt-level (re-roll with this change to the prompt)\n- Post-level (acceptable to address in editing/compositing)\n- Re-roll required (no prompt fix; budget 2–3 attempts)\n\n## Confidence\nHIGH / MEDIUM / LOW, how sure you are about the verdict\n```"
+  },
+  {
+   "id": "3a1b67945861",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "55-55",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "You need:"
+  },
+  {
+   "id": "96f5636b80c6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "59-59",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "| The generated image | Yes | Cannot critique without it |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "ff2b3416864f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "60-60",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "| Shot ID + shots.json | Recommended | If absent, ask for shot intent in a sentence |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "004cdee55e6e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "61-61",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "| brand-lock.snapshot.md | Recommended | If absent, critique only on technical merits |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "29fa0f0d23cc",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "62-62",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "| The original prompt used | Helpful | If absent, infer from intent |",
+   "contexto": "| Input | Required? | Default if absent |\n|---|---|---|"
+  },
+  {
+   "id": "b6ec01121484",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "64-64",
+     "encabezado": "Visual Asset Critic › Inputs"
+    }
+   ],
+   "texto": "If only the image is provided with no context, ask for one piece of information: **what was this shot supposed to be?** A single sentence is enough to anchor the critique."
+  },
+  {
+   "id": "f8217af6adaa",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "70-75",
+     "encabezado": "Visual Asset Critic › Workflow › Step 1. Establish intent"
+    }
+   ],
+   "texto": "What was this shot supposed to do? Pull from:\n\n- Shot's `rationale` field (if shots.json provided)\n- Shot's `subject`, `framing`, `angle`, `motion` fields\n- User's stated intent (if no shots.json)\n- The beat this shot serves"
+  },
+  {
+   "id": "db40a9d6e2cd",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "77-77",
+     "encabezado": "Visual Asset Critic › Workflow › Step 1. Establish intent"
+    }
+   ],
+   "texto": "If you can't establish intent in one sentence, ask. Don't critique blind."
+  },
+  {
+   "id": "5aca47866999",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "81-88",
+     "encabezado": "Visual Asset Critic › Workflow › Step 2. Critique by layer"
+    }
+   ],
+   "texto": "Read `references/critique-rubric.md` for the full rubric. Quick version, check the image against:\n\n1. **Brand Lock**, does it respect palette, mood, \"never\" list?\n2. **Series Lock**, does it match character/environment/lighting anchors?\n3. **Shot Spec**, does framing/angle/composition match the spec?\n4. **Composition**, does it reserve space for on-screen text if applicable?\n5. **Technical**, skin texture, hands, eyes, anatomy, AI artifacts?\n6. **Continuity**, if previous shots in the series are available, does it match?"
+  },
+  {
+   "id": "b9b12582c2f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "90-90",
+     "encabezado": "Visual Asset Critic › Workflow › Step 2. Critique by layer"
+    }
+   ],
+   "texto": "For each layer, note: pass / soft fail / hard fail. The verdict aggregates these."
+  },
+  {
+   "id": "e3f012f2553e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "94-97",
+     "encabezado": "Visual Asset Critic › Workflow › Step 3. Map issues to fixes"
+    }
+   ],
+   "texto": "For every \"not working\" point, the critique must say what to do about it. Three buckets:\n\n**Prompt-level fix**, change the prompt and re-roll. Specify the exact change:\n> \"The character has brown hair instead of salt-and-pepper. Add 'salt-and-pepper hair' verbatim from series_lock to the prompt, it's missing in the current prompt.\""
+  },
+  {
+   "id": "9a4cc4ba64af",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "99-100",
+     "encabezado": "Visual Asset Critic › Workflow › Step 3. Map issues to fixes"
+    }
+   ],
+   "texto": "**Post-level fix**, acceptable to address in compositing. Specify what:\n> \"Color grade is slightly cool, push warmth +5 in post, no need to re-generate.\""
+  },
+  {
+   "id": "56fcc06eff71",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "102-103",
+     "encabezado": "Visual Asset Critic › Workflow › Step 3. Map issues to fixes"
+    }
+   ],
+   "texto": "**Re-roll required**, no prompt fix will help; the generator just produced a bad sample. Budget 2–3 attempts:\n> \"Hands are mangled. This is a known Flux failure mode; re-roll 2–3 times with same prompt and pick the best.\""
+  },
+  {
+   "id": "dbc5cf3c7ac4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "109-109",
+     "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+    }
+   ],
+   "texto": "| ACCEPT | All layers pass or soft-fail in ways post can fix |",
+   "contexto": "| Verdict | When |\n|---|---|"
+  },
+  {
+   "id": "6dfc2c71ed63",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "110-110",
+     "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+    }
+   ],
+   "texto": "| REVISE | One or two layers hard-fail; clear fix path |",
+   "contexto": "| Verdict | When |\n|---|---|"
+  },
+  {
+   "id": "15262b61f193",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "111-111",
+     "encabezado": "Visual Asset Critic › Workflow › Step 4. Verdict"
+    }
+   ],
+   "texto": "| REJECT | Three+ layers fail or one critical layer (Brand Lock, Series Lock) hard-fails with no clear fix |",
+   "contexto": "| Verdict | When |\n|---|---|"
+  },
+  {
+   "id": "3b240e18d8c8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "115-115",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ],
+   "texto": "Be honest about uncertainty:"
+  },
+  {
+   "id": "7860550c8e9c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "119-119",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ],
+   "texto": "| HIGH | Storyboard reference + brand-lock + prompt all available, clear assessment |",
+   "contexto": "| Confidence | When |\n|---|---|"
+  },
+  {
+   "id": "239b21c72242",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "120-120",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ],
+   "texto": "| MEDIUM | Some references missing but core intent is clear |",
+   "contexto": "| Confidence | When |\n|---|---|"
+  },
+  {
+   "id": "bee8fa4495cd",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "121-121",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ],
+   "texto": "| LOW | Only the image, intent is inferred; verdict is your best guess |",
+   "contexto": "| Confidence | When |\n|---|---|"
+  },
+  {
+   "id": "0eee90ee7cc0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "123-126",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ],
+   "texto": "HIGH is a factual claim about what you had, not a mood. `tools/validate_critique.py`\nrejects a `1.1` critique that claims HIGH while `shot_id`, `brand_lock_ref`, or\n`prompt_ref` is null, because that combination says the three inputs HIGH depends on were\nnot there."
+  },
+  {
+   "id": "c5fe1fb2281a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "130-134",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "After writing the markdown critique, **also** write\n`output/critiques/round-{N}/{shot_id}.critique.json` conforming to\n`templates/critique.schema.json` at version `1.1`. Same review, two surfaces. The markdown\nis for the human; the JSON is so an automated QA loop (e.g. `visual-prompt-forge` revision\nmode) can act on the verdict without parsing prose."
+  },
+  {
+   "id": "879f9aef88f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "136-136",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "**Map the markdown to the schema, section for section:**"
+  },
+  {
+   "id": "4638a09cdbc8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "140-140",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `## Verdict` | `verdict` (`ACCEPT` / `REVISE` / `REJECT`) |",
+   "contexto": "| Markdown | JSON field |\n|---|---|"
+  },
+  {
+   "id": "ca028501c0c6",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "141-141",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `## What's working` bullets | `working[]` (one string each) |",
+   "contexto": "| Markdown | JSON field |\n|---|---|"
+  },
+  {
+   "id": "7deef25d598d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "142-142",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `## What's not working` + `## Revision plan` | `issues[]`, merge them: each issue carries its layer/note from \"what's not working\" and its `fix_type`/`fix` from the matching revision-plan line |",
+   "contexto": "| Markdown | JSON field |\n|---|---|"
+  },
+  {
+   "id": "3e4503dce617",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "143-143",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `## Confidence` | `confidence` (`HIGH` / `MEDIUM` / `LOW`) |",
+   "contexto": "| Markdown | JSON field |\n|---|---|"
+  },
+  {
+   "id": "d716ddfacd6f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "145-146",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "**Provenance, all of it required at 1.1.** A verdict is a claim about specific bytes. Name\nthem, and hash them:"
+  },
+  {
+   "id": "6815aadd324b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "150-150",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `run_id`, `round` | from `run.json` and the round directory you are writing into |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "dc5bb5f2b7d9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "151-151",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `created_at` | UTC instant, `YYYY-MM-DDThh:mm:ssZ` |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "15e779ba094f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "152-152",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `shot_id` | the shot, or `null` for a standalone image with no storyboard |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "aa6a59c4f028",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "153-153",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `image_ref`, `image_sha256` | the frame you reviewed, and its SHA-256 |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "6c3ff9e8270d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "154-154",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `prompt_ref`, `prompt_sha256` | the prompt file it came from, and its SHA-256 |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "f39cc51889f8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "155-155",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `brand_lock_ref`, `brand_lock_sha256` | the snapshot you judged against, and its SHA-256 |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "2677d23f1a37",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "156-156",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `generator`, `model_version` | the generator id from `_capabilities.json`, and its model version |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "129eed74b5c7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "157-157",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `seed` | if the generator exposes one, else `null` |",
+   "contexto": "| Field | Value |\n|---|---|"
+  },
+  {
+   "id": "d85c8deadac0",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "159-163",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "```bash\nshasum -a 256 output/frames/round-1/shot_03.png \\\n              output/prompts/round-1/flux.txt \\\n              output/brand-lock.snapshot.md\n```"
+  },
+  {
+   "id": "ba8501e9f824",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "165-168",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "Every one of those fields is required, and every one is nullable. That combination is\ndeliberate: `null` records that an input genuinely was not available, while a missing field\nrecords nothing at all. If you did not have the prompt, write `prompt_ref: null` and drop\nyour confidence to MEDIUM. Do not omit the key."
+  },
+  {
+   "id": "cb634a622e7e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "170-172",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "The hashes are the point. Without `image_sha256`, a frame regenerated after this review\nstill satisfies `image_ref`, and a stale ACCEPT sails through the gate attached to a file\nnobody looked at."
+  },
+  {
+   "id": "e4b9e9c7d0aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "174-174",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "**Severity, assign one per issue.** This is the field the gate runs on, so map it from the layer rubric deterministically:"
+  },
+  {
+   "id": "446c17bc39a1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "178-178",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `minor` | soft-fail, fixable in post | a soft-fail on any layer; `fix_type: post-level` |",
+   "contexto": "| Severity | Means | Maps from |\n|---|---|---|"
+  },
+  {
+   "id": "6e9785d19630",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "179-179",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `major` | hard-fail **with** a clear fix path | a hard-fail that a prompt change or re-roll fixes |",
+   "contexto": "| Severity | Means | Maps from |\n|---|---|---|"
+  },
+  {
+   "id": "4f6aa31aaa78",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "180-180",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "| `blocking` | hard-fail on a critical layer (Brand Lock / Series Lock) with **no** clear fix, or a defect that makes the asset unusable | an unrecoverable hard-fail |",
+   "contexto": "| Severity | Means | Maps from |\n|---|---|---|"
+  },
+  {
+   "id": "66fdc7470618",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "182-187",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "**Gating rule, the verdict is derived from severities, not chosen freely.** This guarantees the markdown verdict and the JSON verdict always agree:\n\n- Any `blocking` issue ⇒ verdict is `REJECT`.\n- Three or more `major` issues ⇒ verdict is `REJECT`.\n- One or two `major` issues (and no blocking) ⇒ verdict is `REVISE`.\n- Only `minor` issues, or none ⇒ verdict is `ACCEPT` (with post notes)."
+  },
+  {
+   "id": "a5b92944e6f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "189-191",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "The three-major rule used to read \"escalate to REJECT at your discretion.\" Discretion in a\ngate is not a gate, and it disagreed with `references/critique-rubric.md`, which called\nthree hard fails a REJECT outright. It is now a threshold, and the validator enforces it."
+  },
+  {
+   "id": "ed60b159436e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "193-193",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ],
+   "texto": "Pick the markdown `## Verdict` by this same rule."
+  },
+  {
+   "id": "3cee2e6ae56b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "197-201",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ],
+   "texto": "Writing a schema-valid critique is not the same as passing the gate. Run it:\n\n```bash\npython tools/validate_critique.py output/critiques/round-1/shot_03.critique.json\n```"
+  },
+  {
+   "id": "cadd94bd1699",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "203-208",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ],
+   "texto": "Or check the whole tree at once, which also recomputes every hash against the files on\ndisk:\n\n```bash\npython tools/validate_provenance.py output/\n```"
+  },
+  {
+   "id": "45a3e1825d87",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "210-213",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ],
+   "texto": "This step is not optional and it is not someone else's job. A critique that says `ACCEPT`\nwhile carrying a `major` issue is a bug, and the only reason to write a validator for that\nbug is to actually run it. Before this step existed, the gate ran in CI against two\nfixtures that ship in the repo and never once against a real client's critique."
+  },
+  {
+   "id": "4be69bfeb08a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "215-218",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ],
+   "texto": "Worked examples: `examples/critique.accept.json` and `examples/critique.revise.json` show\nthe shape at version `1.0`, which is still valid and carries no provenance.\n`examples/worked-run/critiques/` shows version `1.1` with real hashes, two shots across two\nrounds."
+  },
+  {
+   "id": "415faa0301da",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "224-224",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 1. No vibes-based critique"
+    }
+   ],
+   "texto": "\"Looks great\" / \"feels off\" without specifics is not a critique. Every observation must reference something in the image (composition, color, anatomy, lighting direction, etc.)."
+  },
+  {
+   "id": "186b7f3cd151",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "228-228",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 2. Prompt-level fixes must be specific"
+    }
+   ],
+   "texto": "\"Change the prompt\" is not a fix. \"Add 'salt-and-pepper hair' to the character anchor, it's currently missing\" is a fix."
+  },
+  {
+   "id": "45f93d1ecf0b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "232-232",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 3. Don't critique what wasn't asked"
+    }
+   ],
+   "texto": "If the brief was \"founder at laptop, calm mood\" and the generation delivered exactly that, don't note that \"the room could be more visually interesting.\" That's scope creep, not critique."
+  },
+  {
+   "id": "df84fea7707b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "236-236",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 4. Be honest about generator limits"
+    }
+   ],
+   "texto": "Some failures (mangled hands, weird eye reflections, jewelry shimmer) are known generator weaknesses. Surface them as such, don't pretend a different prompt will fix them. Recommend re-roll or post."
+  },
+  {
+   "id": "9dc38cd8f58b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "240-240",
+     "encabezado": "Visual Asset Critic › Hard rules › Rule 5. When in doubt, ACCEPT and recommend post"
+    }
+   ],
+   "texto": "Generation is one stage in a pipeline. If the image is 80% right and the gap is fixable in post, that's an ACCEPT with post notes. Don't send the user back to re-generate when an editor would handle it in 90 seconds."
+  },
+  {
+   "id": "de90057166cd",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "244-244",
+     "encabezado": "Visual Asset Critic › Reference"
+    }
+   ],
+   "texto": "- `references/critique-rubric.md`, the full layer-by-layer rubric"
+  },
+  {
+   "id": "16a0f4268962",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "248-267",
+     "encabezado": "Visual Asset Critic › Example output"
+    }
+   ],
+   "texto": "> ## Verdict\n> REVISE\n>\n> ## What's working\n> - Composition correctly reserves the right two-thirds for text overlay (matches shot_03 rationale)\n> - Lighting direction matches series_lock (window-left, warm afternoon)\n> - Mood reads as calm/considered, on-brand\n>\n> ## What's not working\n> - **Series Lock, character mismatch.** The character has brown hair, but series_lock specifies \"salt-and-pepper.\" This is a verbatim-anchor failure.\n> - **Technical, left hand.** Hand on the laptop has six fingers (Flux known failure mode).\n> - **Shot Spec, framing.** Generated as MS but spec called for MCU. Subject is too small in frame.\n>\n> ## Revision plan\n> - **Hair:** Prompt-level. Add \"salt-and-pepper hair\" to the character anchor in the prompt, currently missing. Re-roll.\n> - **Hand:** Re-roll required. Generate 2–3 more times with same prompt and pick a clean one.\n> - **Framing:** Prompt-level. Change \"medium shot\" to \"medium close-up\" in the prompt. Re-roll.\n>\n> ## Confidence\n> HIGH"
+  },
+  {
+   "id": "9ca4ae7a62a4",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "271-274",
+     "encabezado": "Visual Asset Critic › Handoff"
+    }
+   ],
+   "texto": "After delivering the critique, if the verdict is REVISE, offer:\n\n> \"Want me to draft the revised prompt? Point `visual-prompt-forge` at this output tree in\n> revision mode and it will re-emit prompts for just the shots that need them.\""
+  },
+  {
+   "id": "203727149aba",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "276-279",
+     "encabezado": "Visual Asset Critic › Handoff"
+    }
+   ],
+   "texto": "If the verdict is REJECT, do not offer that. REJECT means a blocking issue or three or more\nmajor ones, which is a failure with no clear fix path, and revision mode is built to stop\nthere and ask. Say what blocked it and what decision it needs: a changed shot spec, a\nchanged brand-lock, or a different generator."
+  },
+  {
+   "id": "3f7ff4894c9a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "lineas": "281-282",
+     "encabezado": "Visual Asset Critic › Handoff"
+    }
+   ],
+   "texto": "Don't auto-revise. The user picks. The critique you just wrote is exactly what closes that\nloop."
+  },
+  {
+   "id": "3897cd1f7454",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "3-3",
+     "encabezado": "Critique Rubric"
+    }
+   ],
+   "texto": "The structured layer-by-layer pass. Use this as the checklist when reviewing a generated image."
+  },
+  {
+   "id": "91771fdacd51",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "9-9",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ],
+   "texto": "| Palette | Image colors come from brand-lock palette | Colors close but slightly off | Colors not in palette at all |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "0b73cbf2f03b",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "10-10",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ],
+   "texto": "| Mood adjectives | Image reads as the brand mood | Mood reads as adjacent (e.g. \"calm\" vs \"neutral\") | Image reads as a different mood (e.g. \"energetic\" when brief was \"calm\") |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "a083ce767408",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "11-11",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ],
+   "texto": "| \"Never\" list | None of the items in the never list are present | One item in the never list shows softly | Multiple never-list violations |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "70f44f021111",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "12-12",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ],
+   "texto": "| Aspect ratio | Matches `project.aspect` | Within a crop of the spec | Wrong aspect |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "7906240c7952",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "14-14",
+     "encabezado": "Critique Rubric › Layer 1. Brand Lock check"
+    }
+   ],
+   "texto": "Hard fail on Brand Lock = REJECT or REVISE depending on whether prompt fix exists."
+  },
+  {
+   "id": "939ff0bde55d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "20-20",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ],
+   "texto": "| Character anchor | All described features visible | One minor feature off (e.g. wrong shirt color) | Wrong person (different age/race/build than anchor) |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "612d6beeede7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "21-21",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ],
+   "texto": "| Environment | Matches series_lock | Slight environment drift | Different environment entirely |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "4b7fc20e56e7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "22-22",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ],
+   "texto": "| Lighting direction | Matches series_lock | Lighting is right but slightly different angle | Lighting from wrong direction (continuity break) |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "23dc6f472259",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "23-23",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ],
+   "texto": "| Color grade | Matches series_lock | Slight tonal drift | Different color grade |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "e449c634abdb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "25-25",
+     "encabezado": "Critique Rubric › Layer 2. Series Lock check"
+    }
+   ],
+   "texto": "Hard fail on Series Lock = REJECT (continuity break) or REVISE if specific fix available."
+  },
+  {
+   "id": "fa562f05b2ba",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "31-31",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ],
+   "texto": "| Framing | Matches spec (ECU/CU/MS/etc.) | One step off (e.g. MS instead of MCU) | Two+ steps off |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "f098ded70838",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "32-32",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ],
+   "texto": "| Angle | Matches spec | Slight angle variation | Wrong angle (low when spec was eye-level) |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "d5d1469e367c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "33-33",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ],
+   "texto": "| Subject action | Matches `subject` description | Subject doing similar but slightly different action | Subject doing wrong action |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "4b874ef61adf",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "34-34",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ],
+   "texto": "| Depth of field | Matches if specified | Slight DOF variation | Deep when shallow was specified |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "3684f0db1558",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "36-36",
+     "encabezado": "Critique Rubric › Layer 3. Shot Spec check"
+    }
+   ],
+   "texto": "Soft fail = post-level fix or accept. Hard fail = revise."
+  },
+  {
+   "id": "77e2de9f9e52",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "42-42",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ],
+   "texto": "| Negative space for text | Reserved per spec | Reserved but tight | No reserved space, overlay won't fit |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "6817625abe3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "43-43",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ],
+   "texto": "| Subject placement | Matches rationale | Slightly off (subject in left-third vs right-third) | Subject blocks where text was meant to go |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "c21649a806c5",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "44-44",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ],
+   "texto": "| Eye-line | Looks where intended | Slight gaze direction off | Looking the wrong way |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "dcec2655764f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "45-45",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ],
+   "texto": "| Headroom | Appropriate | Slightly tight or loose | Cropped at hairline / huge headroom |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "971e78268473",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "47-47",
+     "encabezado": "Critique Rubric › Layer 4. Composition check"
+    }
+   ],
+   "texto": "Composition fails are usually prompt-level fixable. Re-roll with explicit composition language."
+  },
+  {
+   "id": "a3a5e679cfc3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "53-53",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "| Hands | Anatomically correct | Slight finger weirdness | Six fingers, fused fingers, wrong joints |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "70db8df356dc",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "54-54",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "| Eyes | Symmetrical, focused | Slight asymmetry | Wonky eyes, wrong reflections |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "258a26a5687a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "55-55",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "| Skin texture | Natural | Slightly plastic | Heavy AI plastic |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "e2dff73ff2d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "56-56",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "| Anatomy | Correct | Minor weirdness | Major anatomy errors |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "1bf6853392b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "57-57",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "| Background artifacts | Clean | Minor weirdness | Distorted text, melted objects, impossible geometry |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "f0a3e074ac0d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "59-59",
+     "encabezado": "Critique Rubric › Layer 5. Technical check"
+    }
+   ],
+   "texto": "Technical hard fails are almost always **re-roll required**. The prompt was probably fine; the generator just produced a bad sample. Budget 2–3 re-rolls."
+  },
+  {
+   "id": "57760c0c854a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "65-65",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ],
+   "texto": "| Character match | Same person, same look | Slight drift | Clearly different person |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "4964b0e1bf51",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "66-66",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ],
+   "texto": "| Lighting continuity | Same direction, time of day | Subtle shift | Direction reversed, time of day jumped |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "5a9d3bbb9618",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "67-67",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ],
+   "texto": "| Environment continuity | Same space | Slight environment drift | Different space |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "122fc5919d79",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "68-68",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ],
+   "texto": "| Color grade match | Identical | Subtle shift | Visibly different |",
+   "contexto": "| Check | Pass | Soft fail | Hard fail |\n|---|---|---|---|"
+  },
+  {
+   "id": "893267811bff",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "lineas": "70-70",
+     "encabezado": "Critique Rubric › Layer 6. Continuity check (if previous shots available)"
+    }
+   ],
+   "texto": "Continuity hard fails break the storyboard. REVISE with verbatim-anchor checks on the prompt."
+  }
+ ]
+}

@@ -1,0 +1,3992 @@
+{
+ "instrucciones": "Recibes TODOS los enunciados de un tema (id, alcance, enunciado, documento y encabezado). Encuentra\nTODOS los grupos de registros que establecen LA MISMA REGLA aunque estén redactados distinto: misma obligación,\nprohibición, límite o instrucción con el mismo alcance; uno puede ser más completo que otro. Método: reparte primero\nen subtemas finos, compara dentro de cada subtema cada registro con todos los demás y revisa al final cruzando\nsubtemas vecinos. No agrupes reglas que solo comparten tema, que tienen valores distintos, ni un ejemplo con la\nregla que ilustra. Mismo contenido bajo encabezados de modelos o regímenes distintos: relacion\n\"misma_regla_otro_alcance\".\nDevuelve JSON {\"grupos\": [{\"ids\": [...], \"relacion\": \"misma_regla\" | \"misma_regla_otro_alcance\", \"regla\": \"la\nregla común en una frase\"}]} (o {\"grupos\": []}). Solo ids del listado.",
+ "tema": "validacion_gates",
+ "descripcion_tema": "validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos",
+ "filas": [
+  {
+   "id": "2df347966774",
+   "alcance": "Carpeta regimenes, decisiones de la sesión 2026-09-25",
+   "enunciado": "Las reglas de régimen viven en el repo y las lee rule_registry.py; toda regla lleva etiqueta de origen (sin ella no entra a la base), las inferencias entran como [A PRUEBA] con prioridad 4 sin bloquear gates, y se canonizan en tres pasos (campo, ejercicio real, [CANONICA fecha]).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/regimenes/README.md",
+     "encabezado": "Familias de régimen físico — reglas para anclas cinematográficas"
+    }
+   ]
+  },
+  {
+   "id": "0105554bda91",
+   "alcance": "Carreras, guardia anti-fake (race-and-speed, skill video)",
+   "enunciado": "Exige, antes de enviar el board, correr sobre él el checklist maestro de animatic-keyframes §9, dramaturgy §15 y universal-rules §13, sin saltarse la verificación de los tres detalles que es el paso más violado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 10. Anti-fake guard"
+    }
+   ]
+  },
+  {
+   "id": "6d12917a2593",
+   "alcance": "Carreras, guardia anti-fake (race-and-speed, skill video)",
+   "enunciado": "Explicación: lista de paneles específicos de carrera que destruyen la credibilidad y no deben dibujarse, además del checklist general de animatic-keyframes §9 que corre sobre cada panel.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 10. Anti-fake guard"
+    }
+   ]
+  },
+  {
+   "id": "e7f7da80250c",
+   "alcance": "Carreras, guardia anti-fake (race-and-speed, skill video)",
+   "enunciado": "Prohíbe paneles vedados: inserto fetiche estático sin verbo ni cambio de estado, anatomía en reposo, detalle sin etiqueta de la sección 4, board solo de proof-of-speed sin commitment/mistake/recovery, desorden decorativo de tablero y lavado cálido sin función narrativa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/race-and-speed.md",
+     "encabezado": "Race, speed and faceless kinetic montage › 10. Anti-fake guard"
+    }
+   ]
+  },
+  {
+   "id": "05305b087a33",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 2 (linter aurora)",
+   "enunciado": "Decisión 2: el linter aurora es una copia parcheada en el repo donde el conteo de palabras nunca bloquea (solo advierte con el presupuesto de la plataforma), y siguen bloqueando redundancia con referencias, vocabulario prohibido y secciones requeridas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "0fd9030e2965",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 8 (entrada de inferencias)",
+   "enunciado": "Decisión 8: las inferencias entran con etiqueta [A PRUEBA], se confirman o refutan con investigación de campo, pasan por un ejercicio real por caso y se canonizan según el resultado, sin bloquear nunca un gate hasta ser canónicas.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "1232faa5cee6",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), decisión 9 (clasificación sin NotebookLM)",
+   "enunciado": "Decisión 9: NotebookLM sale del flujo por completo y clasifica un clasificador de dos capas (determinista por ruta y regex, más similitud vectorial con confianza) con auditoría de Eric en hoja xlsx cuyo veredicto manda; se retiran el servidor MCP, los scripts nblm_*, rule_export.py y el corpus, y se conserva rule_answer_check.py.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25"
+    }
+   ]
+  },
+  {
+   "id": "2172c2443d55",
+   "alcance": "Decisiones de dirección del 2026-09-25 (Eric Toledano), principio de trabajo",
+   "enunciado": "Cuando una regla puede codificarse se codifica, pero un límite de longitud es dirección y no bloqueo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/rules/DECISIONES.md",
+     "encabezado": "Decisiones de dirección — 2026-09-25 › Principios que salieron de la sesión y quedan como reglas de trabajo"
+    }
+   ]
+  },
+  {
+   "id": "6645692951ba",
+   "alcance": "Etapa 1",
+   "enunciado": "Gate de la etapa 1: el usuario selecciona un concepto, y si pide un híbrido se trata como concepto nuevo con su propia card antes de avanzar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "encabezado": "Etapa 1 — Creative Strategy › 4. Matriz de selección"
+    }
+   ]
+  },
+  {
+   "id": "c596828155c1",
+   "alcance": "Etapa 1, dirección narrativa",
+   "enunciado": "La dirección narrativa más la concept card son la entrada completa de la etapa 2; si screenwriter tuviera que preguntar algo estructural, se corrige en la etapa 1.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "encabezado": "Etapa 1 — Creative Strategy › 5. Dirección narrativa del concepto ganador"
+    }
+   ]
+  },
+  {
+   "id": "4a6ee381992a",
+   "alcance": "Etapa 1, lectura del brief",
+   "enunciado": "Si la single-minded proposition no se puede escribir en una frase, la etapa 1 no puede continuar hasta resolverlo con el usuario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/creative-strategy.md",
+     "encabezado": "Etapa 1 — Creative Strategy › 1. Lectura del brief"
+    }
+   ]
+  },
+  {
+   "id": "94a1477c95e7",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: 00-README.md explica en una página como máximo qué es el proyecto, qué track se usó y dónde está cada cosa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "da55c2a3199a",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: aurora-prompt-linter limpio sobre todos los prompts, si está instalada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "d16dfa30ca40",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: cada escena del script pasa la fórmula de escena y la three-jobs rule.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "190618760f30",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: el concepto seleccionado por el usuario debe estar documentado en 01-strategy.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "c5578bd6bd63",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: la dirección cinematográfica no contiene vocabulario prohibido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "430fe62f4a9c",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: la trazabilidad fue muestreada según la sección 2.5.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "7c81483f6704",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: los anchors críticos tienen critique ACCEPT en un máximo de 2 rondas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "ecb9593a3399",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: los créditos en 00-README.md incluyen la atribución a Serge Shima (smixs) si se usó esa capa y anotan las licencias de las sub-skills.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "b28f318cacbe",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: los prompts de video están en la sintaxis del modelo destino y pasaron los dos checks de video.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "8b283ba763cd",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: preview.html abre offline y refleja el estado final.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "c4d55f4b9c7c",
+   "alcance": "Etapa 7, checklist maestro",
+   "enunciado": "Checklist maestro: shots.json validado con validate_shots.py limpio y auditoría de 3 detalles por shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 4. Checklist maestro del pipeline (gate de la Etapa 7)"
+    }
+   ]
+  },
+  {
+   "id": "39a30b128267",
+   "alcance": "Etapa 7, reglas de trazabilidad",
+   "enunciado": "Verificación de cierre: muestrear 3 prompts al azar y trazar prompt, shot, escena y concepto; si falta un eslabón, el paquete no se entrega.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/references/production-package.md",
+     "encabezado": "Etapa 7 — Final AI Video Production Package › 2. Reglas de trazabilidad"
+    }
+   ]
+  },
+  {
+   "id": "fd82c32e3ac4",
+   "alcance": "Flujo de anclas, pasos A0 a A12 con gates; general",
+   "enunciado": "Ejemplo: diagrama del flujo completo de una ancla (A0 a A12): inventario, tarjeta D1-D9, plan de dependencias, ruta por tipo de acción D2, tratamiento/cámara/luz, modelo, ensamblado por bloques, lints, micro-gate, generar barato y regenerar en alta, inspección y crítica, canonización con hash y motion brief.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 2: El flujo completo de una ancla"
+    }
+   ]
+  },
+  {
+   "id": "226bbc848349",
+   "alcance": "Flujo de anclas; general",
+   "enunciado": "El flujo de ancla tiene doce pasos y cinco gates; la ruta por tipo de acción es la bifurcación que cambia la técnica y ninguna ancla se genera sin dependencias canonizadas ni tarjeta completa.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 2: El flujo completo de una ancla"
+    }
+   ]
+  },
+  {
+   "id": "714b6e095e2b",
+   "alcance": "General (skill video, dramaturgia y montaje, §1 Scene formula)",
+   "enunciado": "Antes de escribir un prompt, nombrar cada uno de los cinco elementos en una frase; si no se puede, la escena no está lista.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 1. Core law. Scene formula"
+    }
+   ]
+  },
+  {
+   "id": "78511288c23b",
+   "alcance": "General (skill video, dramaturgia y montaje, §11 Shot card template)",
+   "enunciado": "Si una ficha de shot tiene campos vacíos, llenarlos o descartar el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 11. Shot card template"
+    }
+   ]
+  },
+  {
+   "id": "dd17d3ca731d",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 1: ¿está completa la fórmula de escena (deseo, obstáculo, geometría, mirada, ritmo)?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "337f05957898",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 2: ¿cada shot pasa el chequeo de tres detalles (presión ambiental, micro-acción física, motivo de sonido o visual)?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "cf2a367fd577",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 3: ¿cada shot cumple una de las tres funciones (cambiar emoción, avanzar acción, aumentar presión)?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "79a69f8320eb",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 4: ¿hay una razón motivada para cada movimiento de cámara?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "20e5cd9baadf",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 5: ¿es legible la geometría espacial?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "55d820e37dad",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Chequeo 6: ¿están nombradas las cinco anclas (emoción, motivo, objeto, quiebre, imagen final)?",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "49f80dd615f7",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Ejecutar el chequeo de seis puntos de dramaturgia antes de devolver el prompt final al usuario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "30ef82d697f8",
+   "alcance": "General (skill video, dramaturgia y montaje, §15 Dramaturgy check)",
+   "enunciado": "Si alguna respuesta del chequeo es no, corregir antes de enviar; el paso 2 (tres detalles) es el más violado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage › 15. Dramaturgy check before sending any prompt"
+    }
+   ]
+  },
+  {
+   "id": "56cfb647aa03",
+   "alcance": "General (skill video, dramaturgia y montaje, §intro)",
+   "enunciado": "La capa de dramaturgia es obligatoria: un encuadre bello sin dramaturgia es papel tapiz, y todo prompt construido con este skill debe pasar el chequeo de dramaturgia antes de enviarse al usuario.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/dramaturgy.md",
+     "encabezado": "Dramaturgy, detail, montage"
+    }
+   ]
+  },
+  {
+   "id": "60ac4830abd3",
+   "alcance": "General (skill video, fixes y esqueletos, §1 Continuity checklist)",
+   "enunciado": "Antes de enviar un prompt al usuario, verificar la lista de continuidad: mismo personaje, ropa exacta, lógica de locación, progresión de estado de objetos, sin personajes, texto ni logos indeseados, sin acciones mano-objeto imposibles, sin cámara ni luz vagas, sin apilar referencias de directores, sin contradicciones, paleta con colores concretos e imagen final explícita.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+    }
+   ]
+  },
+  {
+   "id": "269806edf6e5",
+   "alcance": "General (skill video, fixes y esqueletos, §1 Continuity checklist)",
+   "enunciado": "Si falta algún ítem de la lista de continuidad, corregir antes de enviar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/fixes-and-skeletons.md",
+     "encabezado": "Fixes, checklist, and cross-model skeletons › 1. Continuity checklist"
+    }
+   ]
+  },
+  {
+   "id": "23e41c2cbeb2",
+   "alcance": "Imagen; slides, checklist",
+   "enunciado": "Checklist de diapositiva: una idea por slide, máximo 5 puntos, título 44-54pt y texto 18-24pt, 3-4 colores con alto contraste, suficiente whitespace, visuales en alta resolución con estilo único.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/slides.md",
+     "encabezado": "Presentation Slides › Design Principles › Checklist"
+    }
+   ]
+  },
+  {
+   "id": "ad84a7c2aa48",
+   "alcance": "Lint aurora, casos 1 y 2",
+   "enunciado": "Lint aurora para caso 1 (génesis) o caso 2 (ancla con refs): 75 a 130 palabras, negativo obligatorio y sin re-describir categorías cubiertas por refs.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "6672bd9e95da",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role character, caso 2",
+   "enunciado": "Con --ref-role character los descriptores P/O están permitidos y el identity block es obligatorio (WARN si hay menos de 3 grupos), en caso 2 con Image 1: face, @img1, Elements o --cref.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "2842b9ea59aa",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role location/prop/style",
+   "enunciado": "Con --ref-role location, prop o style los descriptores P/O están permitidos (WARN si además hay tags P/O), el identity block no aplica y L/PR/S se rigen por sus tags.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "538846abde61",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --sports-broadcast en casos 1/2 vs video",
+   "enunciado": "Parche P8: el flag --sports-broadcast se ignora con WARN en casos 1/2 (stills) y sigue siendo FAIL en 3a/3b/3c/4 si faltan las keywords 60fps y broadcast realism.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "09e44c43a766",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --treatment (P7)",
+   "enunciado": "--treatment fotorreal (default) banea anime/cartoon/3D render y avisa sobre slow motion; ilustracion y animacion levantan esos bans y ajustan la sección style; race mantiene los bans fotorreal y convierte slow motion en FAIL.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Tratamiento (P7)"
+    }
+   ]
+  },
+  {
+   "id": "40b828f0c34e",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "Con exit 0 el prompt se entrega con el reporte adjunto; con exit 1 no se entrega y se itera; los WARN de palabras se leen junto al techo del adaptador y no se arreglan recortando el T1.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "e686368159e0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 5 con --case T3, --platform nano_banana_pro, --ref-role character, --series-lock y --overrides.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "713122b4829f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5 el linter se ejecuta por prompt, con el caso SW30 tal cual (--case T1, --case T3) y la plataforma del header Model: del skill image (nano_banana_pro, nano_banana_2, gpt_image_2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "349713d8298f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5, refs.yaml se escribe desde el plan de anchors con cada referencia con role (CHARACTER, LOCATION, PROP, STYLE) y tags (P1, O1, L1, PR1, S1).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "73cb97ea1a81",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "enunciado": "En la Etapa 5, series_lock.json se extrae de shots.json (series_lock.character/environment/lighting/color_grade), las mismas cadenas que forge exige verbatim.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 5 — imágenes ancla (casos 1 y 2)"
+    }
+   ]
+  },
+  {
+   "id": "934386d7a28e",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 6 con --case CLIP-FF-LF, --platform kling_3.0, --series-lock y --overrides.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "56eefa888eb2",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "El gate de la Etapa 6 es doble: los dos checks de video (dramaturgy check de 6 puntos y auditoría de 3 detalles) y además este linter limpio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "06b2d782daf2",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6 la plataforma es la del archivo de modelo destino (kling_3.0, veo_3.1, seedance_2.5, hailuo).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "c680abb53597",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6 se usa --treatment race en spots de velocidad y --sports-broadcast solo si aplica la Regla 26.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "6bca679404ac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "enunciado": "En la Etapa 6, refs.yaml lleva la imagen aprobada como role FF (y LF/TAIL si hay tail image) con los tags de lo que esa imagen ya fija, normalmente P, O, L y PR.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline › Etapa 6 — prompts de video (casos 3 y 4)"
+    }
+   ]
+  },
+  {
+   "id": "fb8ab12c23e6",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), bans de estilo por tratamiento",
+   "enunciado": "Parche P7 (estilos): anime/cartoon/3D render se banean solo en tratamiento fotorreal/race (STYLE_BANNED_FOTORREAL); en ilustración/animación se sustituyen los patrones de la sección style y se retira anti_style.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "aaf94b1533b9",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --case",
+   "enunciado": "Decisión 8: un alias desconocido de --case devuelve exit 2 (error de uso) y no un reporte FAIL, conservando el contrato de argparse choices= del original.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "155fd6645b87",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --ref-role",
+   "enunciado": "Decisión 10: --ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O, porque el identity block de U7 no tiene sentido para una placa o un prop.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "a90ff8494c6d",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --treatment race",
+   "enunciado": "Decisión 6: --treatment race existe como cuarto valor y hereda los bans de fotorreal, porque la spec pide salvo --treatment race para slow motion y no hay otra forma de expresarlo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "6ee4d3f40914",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, menciones negadas",
+   "enunciado": "Decisión 4: una mención negada (no cartoon, not anime) no dispara BANNED ni bans de estilo (P11), porque el snapshot gpt_image_2__1 exige no cartoon, no anime en MAIN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "acea710dc61f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, negativos Kling vs Seedance 2.5",
+   "enunciado": "Decisión 3: la regla sin no X del negativo se aplica solo a Kling, porque en Seedance 2.5 el formato oficial de [Negative Prompts] es no X; el límite de 8 ítems sí aplica a todas las plataformas (SW30 R16).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "32992db00d58",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, sección style",
+   "enunciado": "Decisión 5: la sección style se dispensa cuando S está cubierta (P12) en lugar de sacar photorealistic/documentary/editorial de S, porque U13 dice que lo que define la referencia no se restata.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "1decd497b05c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, series_lock",
+   "enunciado": "Decisión 2: la exención de series_lock no cubre BANNED (solo se eximen P/O/L/PR/S), porque el director §6.1 dice que el vocabulario prohibido gana siempre y un color_grade con cinematic no debe colar.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "254f1592565c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, sin --platform",
+   "enunciado": "Decisión 1: sin --platform el negativo sigue siendo obligatorio (política legacy_required con WARN), porque el SKILL.md original invoca el linter sin plataforma y relajarlo en silencio cambiaría el contrato; se descartó hacerlo opcional por defecto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "1c42bf6eec3a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, vocabulario L/PR/O",
+   "enunciado": "Decisión 9: el vocabulario nuevo evita términos de una sola palabra con colisión conocida (stage, counter, cup) y usa formas compuestas (concert stage, bar counter, coffee cup), porque la exención direccional no cubre esos contextos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Decisiones tomadas fuera de la spec (y la alternativa descartada)"
+    }
+   ]
+  },
+  {
+   "id": "717da42e9ef5",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), derivación de --ref-role",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml (FF, LF, TAIL, CHARACTER, ELEMENT, IMG…) y, en su defecto, del caso (video → ff; casos 1/2 → character).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Rol de la referencia (P3)"
+    }
+   ]
+  },
+  {
+   "id": "d108e47c4dd5",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), descriptores P/O e identity block por --ref-role",
+   "enunciado": "Parche P3: el identity block depende del rol de la referencia; con ff/lf los descriptores P/O siguen prohibidos, con character se permiten y el identity block es obligatorio (WARN si faltan 3 o más de los 5 grupos de rasgos).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "2d11321137d4",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), estilo (S) vs secciones requeridas",
+   "enunciado": "Parche P12: si la categoría S está cubierta por refs de estilo, la sección style se dispensa y se reporta como WARN informativo, resolviendo la imposibilidad de satisfacer prohibición y requisito a la vez.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "18d56a1c0349",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), invocación desde el pipeline, etapas 5 y 6",
+   "enunciado": "El director (ai-production-director) nombra al linter como gate final con veto final sobre prompts (§1), lo exige en la Etapa 6 y la Etapa 5 lo recomienda.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Invocación desde el pipeline"
+    }
+   ]
+  },
+  {
+   "id": "6ca41557bbc9",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (capa 1)",
+   "enunciado": "La capa 1 del linter (redundancia con refs por categoría P/O/L/PR/S) sigue bloqueando igual cuando el rol es ff/lf.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "461acd01eb82",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (exenciones)",
+   "enunciado": "Las exenciones de contexto de cámara y las anclas direccionales del linter son idénticas al original.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "96c1105bd3bd",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (secciones requeridas)",
+   "enunciado": "Las secciones requeridas siguen bloqueando, salvo las dispensadas por P12 y los overrides por tratamiento.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "1ca245733b3a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (vocabulario prohibido)",
+   "enunciado": "El vocabulario prohibido sigue bloqueando y ahora es más largo, no más corto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "be644ce2f6e0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9)",
+   "enunciado": "En los alias de caso son indiferentes las mayúsculas, guiones y guiones bajos, y un alias desconocido sale con código 2.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "52b1d24dca11",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 1, etapa 5",
+   "enunciado": "Mapeo de casos: los alias T1, T2, PLACA/PLATE y GENESIS equivalen al caso 1 del linter (Etapa 5, anchors): maestro de rostro, maestro de cuerpo y placa vacía, sin refs.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "107e003280cf",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 2, etapa 5",
+   "enunciado": "Mapeo de casos: los alias T3, T4, T5 y ANCLA/ANCHOR equivalen al caso 2 del linter (Etapa 5): cuadro de 1 persona, de 2 personas y edición quirúrgica, con refs Image N o @img.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "6846e8f6492a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3a, etapa 6",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF, CLIP, I2V y CLIP-I2V equivalen al caso 3a del linter (Etapa 6): imagen a video con first frame.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "f2d06042e60d",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3b, etapa 6",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF-LF, CLIP-LF y CLIP-TAIL equivalen al caso 3b (Etapa 6): first frame más tail image (Kling start/tail; Seedance 2.5 first y last).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "1111957ec468",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3c, etapa 6, Kling",
+   "enunciado": "Mapeo de casos: los alias CLIP-MC, CLIP-MOTION y MOTION-CONTROL equivalen al caso 3c (Etapa 6): Kling Motion Control (§9).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "e42776a696d0",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 4 diálogo, etapa 6",
+   "enunciado": "Mapeo de casos: los alias CLIP-DIALOGO, CLIP-DIALOG y CLIP-DIALOGUE equivalen al caso 4 (Etapa 6): Kling 3.0 P1–P4, Veo Says: y Seedance 2.5 con llaves.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso › Mapeo de casos (P9)"
+    }
+   ]
+  },
+  {
+   "id": "52d6a24a4946",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mecanismo OVERRIDE",
+   "enunciado": "El mecanismo OVERRIDE: <término-o-categoría> - <razón> es idéntico al original: vale solo para el turno actual y con scope específico.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "59fe83ae36f2",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), micro-acción corporal",
+   "enunciado": "Parche P5: sweat, jaw, jawline, knuckles, breath, swallow, tendon, vein, blink y similares salen de P y quedan exentos (BODY_MICRO_ACTION_EXEMPT) para permitir la micro-acción corporal exigida por la Ley de Detalles aunque haya ref de persona.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "c14b5900faac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), política de negativos",
+   "enunciado": "Parche P2: el bloque Negative pasa a ser obligatorio solo en Kling y Seedance 2.5, Constraints cuenta como negativo en GPT Image, en el resto no se exige (se avisa si aparece con marcador Negative), y sin --platform se mantiene el comportamiento legacy (required) con WARN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "41eeca8d9a74",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), presupuesto de palabras I2V",
+   "enunciado": "Parche P1: el presupuesto de palabras I2V se fija por familia (Kling 20–40, Veo 50–100, Seedance 80–150 del adaptador declarado en source), siempre como WARN.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "ff5850f2e43a",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "enunciado": "Diseño del hook Stop gate_aurora.py (no cableado): lee el payload del hook, extrae los bloques de prompt visual del último mensaje, resuelve caso y plataforma desde la cabecera (si no, no opina), usa refs.yaml y series_lock.json del run activo, traduce linter 1 a exit 2 y 0 a exit 0, se registra en hooks.Stop tras gate_dramaturgy.py y reutiliza el contador anti-bucle (MAX_CONSECUTIVE_BLOCKS = 3).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)"
+    }
+   ]
+  },
+  {
+   "id": "174669d4cc4c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "enunciado": "Explicación: el hook Stop no está hecho; la copia es una herramienta invocable a mano y desde el pipeline, y el hook será el siguiente paso cuando el cableado de caso/plataforma desde la cabecera esté validado en sesiones reales.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Cómo se cablearía como hook `Stop` (no está cableado)"
+    }
+   ]
+  },
+  {
+   "id": "ad45f8bf2a77",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "enunciado": "Ejemplo: comandos para correr la suite de pruebas del linter (18 pruebas, exit 0 si pasan todas) con y sin VERBOSE=1.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "2f15ea639ce1",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "enunciado": "Prueba T15: --json sigue produciendo las claves originales.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "65a7d30ed98f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P1",
+   "enunciado": "Prueba T01: un T1 SW30 de unas 250 palabras en nano_banana_pro caso 1 debe dar exit 0 con WARN de palabras (parche P1).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "86f4e16f7985",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P12",
+   "enunciado": "Prueba T16: un ref con S y prompt sin palabras de estilo da exit 0 con la sección style dispensada; sin ref S da exit 1 (parche P12).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "10b8b8765262",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, GPT Image 2",
+   "enunciado": "Prueba T02: GPT Image 2 con Constraints: y sin Negative: en caso 1 debe dar exit 0 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "10d570d6b363",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "enunciado": "Prueba T03: Kling caso 3a sin bloque negativo debe dar exit 1 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "604a980ec3ac",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "enunciado": "Prueba T13: negativo Kling con no blur y 10 ítems debe dar exit 0 con dos WARN R16 (parche P2).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "a7f82cd06651",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P3",
+   "enunciado": "Prueba T04/T04b: caso 2 con --ref-role character y identity block da exit 0 con descriptores P permitidos; sin identity block da exit 0 con WARN (parche P3).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "0adf4b061851",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P3",
+   "enunciado": "Prueba T05: caso 3a con --ref-role ff y descriptores P debe dar exit 1 (parche P3).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "881757f2c46c",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P4",
+   "enunciado": "Prueba T06/T06b: con --series-lock que contiene gym y el prompt con gym verbatim da exit 0; el mismo prompt sin series-lock da exit 1 con FAIL [L] gym (parche P4).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "808c4e132eb7",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P5",
+   "enunciado": "Prueba T07: her jaw locks, sweat beads con ref P de rol ff debe dar exit 0 (parche P5).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "1525f2b1b854",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P6",
+   "enunciado": "Prueba T08: el término cinematic debe dar exit 1 (parche P6).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "fecf8e4d35d7",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P7",
+   "enunciado": "Prueba T09: anime con --treatment ilustracion da exit 0 y en fotorreal da exit 1 (parche P7).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "1db67ee4d19f",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P7, Kling",
+   "enunciado": "Prueba T10: ultra-slow motion en Kling da exit 0 sin WARN, slow motion con --treatment race da exit 1 y en fotorreal da WARN (parche P7).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "6e432ced5d18",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P8",
+   "enunciado": "Prueba T11: --sports-broadcast en caso 1 debe dar exit 0 con WARN (parche P8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "eebb1f5bdcba",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P9/P10",
+   "enunciado": "Prueba T12: --case T1 resuelve a 1, CLIP-FF a 3a y CLIP-DIALOGO a 4 (snapshot kling_3.0__4), y un alias desconocido da exit 2 (parches P9, P10).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "6be0b6da33b1",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, todos los parches",
+   "enunciado": "Prueba T14: el ejemplo GOOD del README del skill pasa (con y sin --platform), el BAD falla con las mismas violaciones y overrides aceptados, y ya no falla por longitud.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Pruebas"
+    }
+   ]
+  },
+  {
+   "id": "2cc378db7d3b",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), redundancia vs series_lock",
+   "enunciado": "Parche P4: con --series-lock los términos de redundancia que caigan dentro de las cadenas exactas de series_lock quedan exentos, y se avisa (WARN) si una cadena no aparece verbatim porque validate_prompts.py la bloqueará.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "7c3bbd0bd530",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), salida --json",
+   "enunciado": "La salida --json mantiene las claves originales intactas y añade case_alias, treatment, ref_role, ref_role_source, word_budget_source, negative_policy, negative_marker, series_lock_keys y linter_version.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Qué NO cambió"
+    }
+   ]
+  },
+  {
+   "id": "6d0c4d8099aa",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), slow motion por tratamiento",
+   "enunciado": "Parche P7 (slow motion): deja de ser BANNED global; es WARN en fotorreal/ilustración/animación, FAIL con --treatment race y permitido sin aviso con prefijo ultra- o con OVERRIDE justificado.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "798fc6684e77",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), snapshots de plataformas",
+   "enunciado": "Parche P10: se añaden snapshots para las plataformas omitidas (flux, ideogram, seedream, nano_banana_2, seedance, seedance_2.5, hailuo, kling_3.0 caso 4), con resolución por familia, reconocimiento de marcadores negativos y vocabulario L/PR/O ampliado.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "56c9e1bebc89",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), uso por línea de comandos",
+   "enunciado": "Ejemplo: invocación de prompt_linter.py con --prompt, --refs, --case CLIP-FF, --platform kling_3.0, --ref-role ff, --series-lock, --treatment fotorreal, --overrides y flags opcionales --sports-broadcast y --json.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Uso"
+    }
+   ]
+  },
+  {
+   "id": "834ec1b34585",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), vocabulario prohibido",
+   "enunciado": "Parche P6: cinematic sale de S y de todos los patrones de secciones y pasa al vocabulario BANNED junto con professional, high quality, masterpiece, stunning, epic y similares; una mención negada no cuenta.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "1ae486009624",
+   "alcance": "Lints previos a la pregunta de avance",
+   "enunciado": "Lint gate_dramaturgy: revisa el vocabulario prohibido de video e imagen.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "895849a1923f",
+   "alcance": "Lints previos a la pregunta de avance",
+   "enunciado": "Lint validate_prompts: comprueba series_lock verbatim, ausencia de texto de overlay, tercio del cuerpo, POV, dirección de viaje, manos en contactos y ausencia de marcas.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "6c3af7d6aa7e",
+   "alcance": "Lints previos a la pregunta de avance; GPT Image 2 (audit_gi2)",
+   "enunciado": "Lint audit_gi2: 15 columnas, incluidos los 5 efectos ópticos y framing positivo.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "eacd93b6b9c9",
+   "alcance": "Lints previos a la pregunta de avance; prompts de imagen",
+   "enunciado": "Lint gate_image: el prompt empieza con verbo, en lenguaje natural y con el modelo declarado.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 6: Ensamblaje del prompt del ancla y lints › Lints antes de la pregunta de avance"
+    }
+   ]
+  },
+  {
+   "id": "6d767253ead1",
+   "alcance": "Megaflujo del spot, tracks STANDARD/FILM/EXPRESS",
+   "enunciado": "Ejemplo: diagrama del megaflujo de brief a Final AI Video Production Package, con clasificación de track, etapas E0 a E7, gates, OK del usuario, reintento de E5 y post-producción hasta el spot publicado.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 0 → 1: El megaflujo: de brief a Final AI Video Production Package"
+    }
+   ]
+  },
+  {
+   "id": "1a0bcf03653e",
+   "alcance": "Megaflujo, tracks STANDARD y FILM",
+   "enunciado": "Las ocho etapas se encadenan por gates; la Etapa 5 es donde vive la génesis, y los gates 0, 1, 2 y 4 exigen OK explícito del usuario en STANDARD y FILM.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 0 → 1: El megaflujo: de brief a Final AI Video Production Package"
+    }
+   ]
+  },
+  {
+   "id": "968118c37b94",
+   "alcance": "Nano Banana, keyframes para video",
+   "enunciado": "Los stills de Nano Banana sirven a cualquier modelo de video (Veo 3.1, Kling 3.0, Seedance 2.0/2.5, Gemini Omni Flash); pasar por un gate de revisión y enviar a video solo stills aprobados.",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/nano-banana.md",
+     "encabezado": "Nano Banana — Specific Rules › Кейфреймы для видео"
+    }
+   ]
+  },
+  {
+   "id": "adea2f04850a",
+   "alcance": "Nivel 4, génesis sin referencias, salidas",
+   "enunciado": "Salida de la génesis: cabecera de 3 líneas más Model / Quality / Size, Prompt y Notes.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso › Salidas"
+    }
+   ]
+  },
+  {
+   "id": "4966c720825a",
+   "alcance": "Nivel 4, subflujo atómico de génesis",
+   "enunciado": "Explicación: la génesis sin referencias usa solo texto y es el subproceso más denso en reglas; empieza por la clase de sujeto, que decide modelo y bloques, y sigue el orden de lectura de image/SKILL.md, el micro-gate de SW30 y el veto de vocabulario de ai-production-director §6.1.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 4 · subflujo atómico: Génesis sin referencias, paso a paso"
+    }
+   ]
+  },
+  {
+   "id": "dc77ec33141b",
+   "alcance": "Protocolo de canonización de las reglas de régimen físico",
+   "enunciado": "Cuarto paso: canonizar el template con fecha, añadir columnas nuevas en el auditor y actualizar la etiqueta.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 8 · familias de régimen físico: Dónde viven las reglas nuevas y cómo se canonizan › Protocolo de canonización"
+    }
+   ]
+  },
+  {
+   "id": "757182a7611d",
+   "alcance": "Skill ai-production-director, etapa 0",
+   "enunciado": "Gate de la etapa 0: el usuario confirma los valores marcados como estimados; sin marca formal se usa el Visual Theme de la etapa 3 como sustituto ligero.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 0 — Brand Lock *(solo si hay marca/cliente)*"
+    }
+   ]
+  },
+  {
+   "id": "70d273a9a14b",
+   "alcance": "Skill ai-production-director, etapa 1",
+   "enunciado": "Gate de la etapa 1: el usuario selecciona un solo concepto y no se escribe una línea de guion con el concepto abierto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 1 — Creative Strategy"
+    }
+   ]
+  },
+  {
+   "id": "3e7d3cb70be3",
+   "alcance": "Skill ai-production-director, etapa 2",
+   "enunciado": "Gate de la etapa 2: cada escena debe pasar la fórmula de escena (deseo, obstáculo, geometría, mirada, ritmo) y la three-jobs rule (cambia emoción, avanza acción o sube presión); la escena que no cumple ninguna se corta en el guion.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 2 — Screenwriting"
+    }
+   ]
+  },
+  {
+   "id": "ed96bb31df42",
+   "alcance": "Skill ai-production-director, etapa 3",
+   "enunciado": "Gate de la etapa 3: cero palabras del vocabulario prohibido (sección 6.1) y cada decisión de cámara con razón dramática escrita.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 3 — Cinematic Direction"
+    }
+   ]
+  },
+  {
+   "id": "119a9bb1fe05",
+   "alcance": "Skill ai-production-director, etapa 4",
+   "enunciado": "Gate de la etapa 4: validate_shots.py limpio, six-point dramaturgy check y auditoría de 3 detalles por shot (presión ambiental, micro-acción física, ancla de sonido/motivo); un shot con cero detalles es filler y se elimina.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 4 — Shot Planning"
+    }
+   ]
+  },
+  {
+   "id": "6975c5fbea6c",
+   "alcance": "Skill ai-production-director, etapa 5",
+   "enunciado": "Gate de la etapa 5: cada anchor crítico necesita critique ACCEPT con máximo 2 rondas de revisión vía forge en modo revisión (solo shots reprobados); a la tercera falla se replantea el shot, no el prompt.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 5 — Anchor Images"
+    }
+   ]
+  },
+  {
+   "id": "f5e9b557811c",
+   "alcance": "Skill ai-production-director, etapa 6",
+   "enunciado": "Gate obligatorio de la etapa 6: los dos checks de video (dramaturgy check de 6 puntos y auditoría de 3 detalles) y, si aurora-prompt-linter está instalada, el linter limpio; un prompt que falle cualquiera no se entrega.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 6 — Video Prompts"
+    }
+   ]
+  },
+  {
+   "id": "2c03b0590029",
+   "alcance": "Skill ai-production-director, etapa 7",
+   "enunciado": "Gate de la etapa 7: checklist maestro completo y trazabilidad verificada por muestreo de 3 prompts al azar que trazan hasta su concepto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas › Etapa 7 — Package & Delivery"
+    }
+   ]
+  },
+  {
+   "id": "71732878b88a",
+   "alcance": "Skill ai-production-director, mapa de sub-skills, gate final",
+   "enunciado": "Ejemplo: aurora-prompt-linter, si está instalada, es el gate final con validación determinista de todo prompt visual antes de entregar y tiene veto final sobre los prompts.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 1. Mapa de sub-skills"
+    }
+   ]
+  },
+  {
+   "id": "1e14e887e950",
+   "alcance": "Skill ai-production-director, todas las etapas",
+   "enunciado": "Cada etapa declara sub-skill, entradas, salidas y gate; el gate se verifica antes de avanzar y, si falla, se corrige en la etapa actual, nunca después.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 3. Las etapas"
+    }
+   ]
+  },
+  {
+   "id": "a90b94ff0437",
+   "alcance": "Skill ai-production-director, track EXPRESS",
+   "enunciado": "En el track EXPRESS solo el shot list requiere OK del usuario antes de escribir prompts.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ]
+  },
+  {
+   "id": "76f790fafeaf",
+   "alcance": "Skill ai-production-director, tracks STANDARD y FILM",
+   "enunciado": "Al cerrar cada gate se entrega el artefacto y se anuncia la siguiente etapa en una línea; en STANDARD/FILM los gates 1 (concepto), 2 (script) y 4 (storyboard) requieren OK explícito del usuario y los demás avanzan solos salvo instrucción contraria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/ai-production-director/SKILL.md",
+     "encabezado": "AI Production Director › 4. Interacción con el usuario entre etapas"
+    }
+   ]
+  },
+  {
+   "id": "c0adc5653638",
+   "alcance": "Skill produccion-visual-sw30 (SW30 y cualquier generación de imagen/video)",
+   "enunciado": "Descripción del skill produccion-visual-sw30: reglas críticas y micro-gate para toda producción visual AI de Final Upgrade; usarlo siempre al escribir/entregar prompts o gastar créditos, y aplicar el micro-gate de 3 líneas antes de producir (entrega sin cabecera es inválida).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "frontmatter › description"
+    }
+   ]
+  },
+  {
+   "id": "c980ed8e5f88",
+   "alcance": "Skill produccion-visual-sw30, arquitectura por secciones (obligatoria)",
+   "enunciado": "Antes de escribir cualquier prompt, seguir tres pasos en orden: catalogar el tipo (T1-T5) y sus reglas en la matriz, definir las secciones que exige el tipo con bloques nombrados compartidos, y ensamblar por sección con P(...) o E(...) y salida en formato del skill image (cabecera, References, Prompt, Notes fuera del cuerpo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt)"
+    }
+   ]
+  },
+  {
+   "id": "ff237829062b",
+   "alcance": "Skill produccion-visual-sw30, micro-gate (puntos de no retorno)",
+   "enunciado": "Antes de gastar créditos y antes de entregar un prompt visual, la respuesta abre con exactamente 3 líneas (SKILL: archivo y sección leídos en este turno; RIESGOS; TÉCNICA con fuente o 'no encontrada'); sin cabecera la entrega es inválida y generar sin preflight de costo está prohibido.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › MICRO-GATE (obligatorio en los dos puntos de no retorno)"
+    }
+   ]
+  },
+  {
+   "id": "6c937a5e73c3",
+   "alcance": "Skill produccion-visual-sw30, motor de plantillas",
+   "enunciado": "template_engine.py es obligatorio para construir cualquier prompt visual (se instancia con build(...)) y lanza TemplateViolation si falta una sección obligatoria, se añade una no declarada, una sección de BLOCKS llega como texto suelto, falta Notes o se cuela metadato (Model/Quality/Size/Aspect ratio) en el cuerpo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Motor de plantillas — el molde se cumple por código, no por disciplina"
+    }
+   ]
+  },
+  {
+   "id": "9d4c6e9aff94",
+   "alcance": "Skill produccion-visual-sw30, pregunta de avance",
+   "enunciado": "Reglas de uso de la pregunta de avance: responderla antes de entregar; si es NO, leer archivos faltantes y repetir; prohibido SÍ falso o con matices; 'exhaustiva' = archivos completos leídos sin grep; 'correcta' = cada regla verificable en lint o contrastada una a una; ante duda leer 'cuándo cargar'; se puede preguntar al usuario solo por dirección creativa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › PREGUNTA DE AVANCE (gate de entrega, antes del micro-gate)"
+    }
+   ]
+  },
+  {
+   "id": "22c8d03b358f",
+   "alcance": "Skill produccion-visual-sw30, pregunta de avance (antes del micro-gate)",
+   "enunciado": "Gate de entrega: ninguna respuesta es satisfactoria mientras la respuesta honesta a '¿utilizaste de forma exhaustiva y correcta todas las reglas del skill aplicables a este caso?' no sea SÍ sin matices.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › PREGUNTA DE AVANCE (gate de entrega, antes del micro-gate)"
+    }
+   ]
+  },
+  {
+   "id": "3610e8560401",
+   "alcance": "Skill produccion-visual-sw30, procedimiento ante un cambio",
+   "enunciado": "Ante un cambio, identificar a qué bloque pertenece, editar ese bloque una sola vez, recompilar y auditar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Ante un cambio"
+    }
+   ]
+  },
+  {
+   "id": "337282c3949d",
+   "alcance": "Skill produccion-visual-sw30, procedimiento ante un cambio",
+   "enunciado": "Prohibido editar el texto de un brief individual: es parchar, arregla una cosa y rompe otra, y causa los ciclos de tres reescrituras.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Ante un cambio"
+    }
+   ]
+  },
+  {
+   "id": "48c781cacffe",
+   "alcance": "Skill produccion-visual-sw30, sistema de cobertura de reglas",
+   "enunciado": "Cuando el usuario detecta un defecto, añadir su regla al ledger con su check en el mismo turno para que el sistema aprenda de su detector más confiable.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Sistema de cobertura de reglas — la fuente manda, no la memoria"
+    }
+   ]
+  },
+  {
+   "id": "98c973fac982",
+   "alcance": "Skill produccion-visual-sw30, sistema de cobertura de reglas",
+   "enunciado": "Explicación: el catálogo de reglas salía de la memoria y cubría 12% de los enunciados; la cadena corregida usa rule_registry.py (extrae mecánicamente los 209 enunciados), rule_ledger.py (exige disposición CHECK o NA con razón por regla, código 1 si queda PENDING) y audit_gi2.py (verifica prompts por columna).",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Sistema de cobertura de reglas — la fuente manda, no la memoria"
+    }
+   ]
+  },
+  {
+   "id": "4ef52a61601d",
+   "alcance": "Skill produccion-visual-sw30, sistema de cobertura de reglas",
+   "enunciado": "Gate de cobertura: el builder corre rule_ledger.py antes de emitir y si no cierra al 100% dispuesto no hay archivo de prompts; estado actual 124 aplicables, 100 con verificación, 24 excluidas con razón, 0 pendientes.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Sistema de cobertura de reglas — la fuente manda, no la memoria"
+    }
+   ]
+  },
+  {
+   "id": "5a6ed0a43ffa",
+   "alcance": "Skill produccion-visual-sw30, template canónico T1 (maestro de rostro)",
+   "enunciado": "Explicación: Dirección canonizó (2026-08-25) el template de maestro de rostro T1 que resolvió el look plástico; todo maestro de rostro se instancia con cuatro bloques y el motor lanza TemplateViolation si se sustituye alguno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Template canónico de MAESTRO DE ROSTRO (T1) — obligatorio, aplicado por código"
+    }
+   ]
+  },
+  {
+   "id": "e3ef4bb6dd93",
+   "alcance": "Skill produccion-visual-sw30, verificación mecánica",
+   "enunciado": "El lint del builder rompe la compilación ante cualquier desviación de la plantilla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)"
+    }
+   ]
+  },
+  {
+   "id": "f065c865f8b7",
+   "alcance": "Skill produccion-visual-sw30, verificación mecánica",
+   "enunciado": "audit_gi2.py valida 15 columnas: slots, anti-slop, ratio estándar, metadatos fuera del prompt, Notes, cámara con los 5 efectos ópticos (compresión, bokeh/wash, viñeta, halación, grano), mood, color, identity-lock, texto de marca, framing positivo, mirada y manos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › ARQUITECTURA POR SECCIONES (obligatoria antes de escribir cualquier prompt) › Verificación mecánica (no depende de criterio)"
+    }
+   ]
+  },
+  {
+   "id": "8a8bdd703afe",
+   "alcance": "Subprocesos por etapa, E0.4",
+   "enunciado": "E0.4 escribe brand-lock.md con notas de extracción desde el template brand-lock.md.tpl y lo valida con validate_brand_lock.py.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "f6b809e643e1",
+   "alcance": "Subprocesos por etapa, E1.1",
+   "enunciado": "E1.1 lee el brief y el brand-lock y produce problema, audiencia, single-minded proposition en una frase, tono y restricciones; sin SMP en una frase la etapa no continúa.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "9b9cc9444564",
+   "alcance": "Subprocesos por etapa, E1.4",
+   "enunciado": "E1.4 puntúa las cards en una matriz de 1 a 5 con recomendación argumentada y el usuario elige UN concepto.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "e256657b4edf",
+   "alcance": "Subprocesos por etapa, E2.4",
+   "enunciado": "E2.4 entrega script.md en XML-tagged con key_visuals por escena, y el gate E2 es la fórmula de escena de dramaturgy.md.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "c4739325c9a3",
+   "alcance": "Subprocesos por etapa, E3.5",
+   "enunciado": "E3.5 define los 5 anclas definitivos (emoción, motivo, objeto, quiebre, imagen final) a partir de los preliminares de E1.5; el gate E3 exige cero vocabulario prohibido y el objeto ancla es candidato a génesis.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "6c224396585c",
+   "alcance": "Subprocesos por etapa, E4.6",
+   "enunciado": "E4.6 produce rationale, storyboard.md, brand-lock.snapshot.md y run.json con SHA-256, validados con validate_shots.py, validate_brand_lock.py y validate_provenance.py.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "62b4036a9fb7",
+   "alcance": "Subprocesos por etapa, E5.6",
+   "enunciado": "E5.6 genera borradores por adaptador con visual-prompt-forge en prompts/round-N/<modelo>.txt, validados con validate_prompts.py: series_lock verbatim, sin texto y sin logos.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "ccfc7b244ac5",
+   "alcance": "Subprocesos por etapa, E5.7",
+   "enunciado": "E5.7 critica por capas con visual-asset-critic y emite critique.json con ACCEPT, REVISE o REJECT y severidades, validado con validate_critique.py y validate_provenance.py.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "63d45a1b6918",
+   "alcance": "Subprocesos por etapa, E6.4",
+   "enunciado": "E6.4 exige en cada prompt el dramaturgy check con seis respuestas sí y la auditoría de tres detalles por shot; si una es no, no se entrega.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "d7d8628fcb31",
+   "alcance": "Subprocesos por etapa, E6.5",
+   "enunciado": "E6.5 pasa el prompt por aurora-prompt-linter con refs.yaml y caso, y debe dar PASS con prompt_linter.py exit 0.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "faa5d99ba0ea",
+   "alcance": "Subprocesos por etapa, E6.6",
+   "enunciado": "E6.6 entrega el prompt que pasó todo con la cabecera SKILL / RIESGOS / TÉCNICA; una entrega sin cabecera es inválida.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-spot.html",
+     "encabezado": "Mapa del Spot Publicitario › Nivel 2: Subprocesos por etapa"
+    }
+   ]
+  },
+  {
+   "id": "4996ba6d39db",
+   "alcance": "Tarjeta de ancla de nueve dimensiones; general",
+   "enunciado": "La tarjeta de ancla extiende la keyframe card de animatic-keyframes.md §2 con las decisiones de SW30 y del skill de imagen; un campo vacío revela dirección faltante y no se genera con campos vacíos.",
+   "ubicaciones": [
+    {
+     "documento": "flujo-anclas.html",
+     "encabezado": "Flujo de Anclas Cinematográficas › Paso 1: La tarjeta de ancla: nueve dimensiones antes de escribir una palabra"
+    }
+   ]
+  },
+  {
+   "id": "30d706367bd6",
+   "alcance": "Todos los adapters de visual-prompt-forge (Flux, GPT Image, Hailuo, Ideogram, Kling, Midjourney, Nano Banana, Seedance, Seedream, Veo)",
+   "enunciado": "Los datos de capacidad (tope de longitud, soporte de texto y movimiento, parámetro de aspecto) son canónicos en _capabilities.json; el rango de palabras del adapter es objetivo recomendado dentro de ese tope, y si el JSON y el .md discrepan gana el JSON y validate_capabilities.py rompe el build.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/adapters/flux.md",
+     "encabezado": "Adapter: Flux (Flux 2 Pro / Flux 1.1 Pro / Flux Dev)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/gpt-image.md",
+     "encabezado": "Adapter: GPT Image (1.5 / 2)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/hailuo.md",
+     "encabezado": "Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/ideogram.md",
+     "encabezado": "Adapter: Ideogram (v3)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/kling.md",
+     "encabezado": "Adapter: Kling 3.0 (motion-aware video)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/midjourney.md",
+     "encabezado": "Adapter: Midjourney (v7)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/nano-banana.md",
+     "encabezado": "Adapter: Nano Banana (Gemini 2.5 Flash Image)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedance.md",
+     "encabezado": "Adapter: Seedance 2.0 (motion-aware video, multi-shot)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/seedream.md",
+     "encabezado": "Adapter: Seedream (4.5 / 4.0)"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/adapters/veo.md",
+     "encabezado": "Adapter: Veo 3 (motion-aware video, native audio)"
+    }
+   ]
+  },
+  {
+   "id": "49f1840c30f0",
+   "alcance": "Tools README compartido por cinco skills, ejecución completa",
+   "enunciado": "Ejemplo: ejecutar todos los checks con ./tools/check.sh, con opción --quiet para solo líneas pass/fail y PYTHON=python3.12 para elegir intérprete.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "b78fca2a8563",
+   "alcance": "Tools README compartido por cinco skills, ejecución completa",
+   "enunciado": "Explicación: check.sh es exactamente lo que ejecuta CI, así que una corrida local en verde implica un PR en verde.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "5581b0d36d07",
+   "alcance": "Tools README compartido por cinco skills, validadores",
+   "enunciado": "Cada validador incluye un --selftest que construye fixtures fallidos y falla si el check no los detecta, porque un validador que deja de detectar en silencio es peor que ninguno.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Run everything"
+    }
+   ]
+  },
+  {
+   "id": "cb3fda8cf1aa",
+   "alcance": "Tools README compartido, project check validate_critique.py",
+   "enunciado": "validate_critique.py valida una crítica contra critique.schema.json y contra dos invariantes que el schema no puede expresar.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "11effd23f447",
+   "alcance": "Tools README compartido, project check validate_prompts.py",
+   "enunciado": "El ancla de personaje es una advertencia y no un error, porque un shot sin personas puede omitirla legítimamente.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "78cd9d3a55e2",
+   "alcance": "Tools README compartido, project check validate_prompts.py; visual-prompt-forge",
+   "enunciado": "validate_prompts.py valida los archivos de prompts de visual-prompt-forge contra shots.json y la matriz de capacidades: cabecera completa, generator id, aspect, techo max_prompt_words, cobertura de shots, bloques duplicados y las dos reglas duras de la forja (sin copy de texto en pantalla dentro del prompt; environment, lighting y color_grade verbatim).",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ]
+  },
+  {
+   "id": "e2963509a03e",
+   "alcance": "Tools README compartido, project check validate_provenance.py",
+   "enunciado": "validate_provenance.py recorre un árbol de salida y recalcula cada hash registrado para responder si un veredicto sigue describiendo el archivo que revisó.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ]
+  },
+  {
+   "id": "f6f784774995",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py emite advertencias para juicios: copy de overlay repetido en el subject de un shot, hex crudo en un subject, ids de shot fuera de orden cronológico y fuente que el brand-lock no declara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "8f7082efb6b3",
+   "alcance": "Tools README compartido, project check validate_shots.py",
+   "enunciado": "validate_shots.py valida shots.json y text-overlays.json como instancias y aplica reglas cruzadas: end posterior a start, sin huecos ni solapes, span igual a project.duration_s, referencias de overlays resueltas en ambos sentidos, cada overlay alcanzable, timing dentro de la ventana del shot y colores de overlay presentes en la paleta del brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ]
+  },
+  {
+   "id": "bff6cea436e5",
+   "alcance": "Tools README compartido, repo check validate_brand_lock.py",
+   "enunciado": "validate_brand_lock.py comprueba que un brand-lock tenga todas las secciones y campos de Identity requeridos, que su paleta declare los cinco roles que el preview HTML mapea a variables CSS y que las fuentes estén en el formato con backticks que leen las tools.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ]
+  },
+  {
+   "id": "a2a94d5da69e",
+   "alcance": "Tools README compartido, repo check validate_capabilities.py; matriz de visual-prompt-forge",
+   "enunciado": "validate_capabilities.py contrasta la matriz de capacidades de generadores (_capabilities.json) con su schema y con la prosa de los adapters: cada id tiene su .md, ningún adapter anuncia más palabras que su max_prompt_words, cada adapter documenta el aspect_param, ningún notes cita más palabras que su techo, y avisa si pasan 120 días sin frescura.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ]
+  },
+  {
+   "id": "0ae7e0aba006",
+   "alcance": "Tools README compartido, repo check validate_schemas.py",
+   "enunciado": "validate_schemas.py comprueba que cada archivo *.schema.json sea JSON Schema válido (Draft 2020-12) y lleve $id, title y description.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ]
+  },
+  {
+   "id": "f761b04fc372",
+   "alcance": "Tools README compartido, repo check validate_skills.py",
+   "enunciado": "validate_skills.py comprueba que cada SKILL.md de skills/ tenga el frontmatter YAML requerido, un name igual a su directorio y una description sustancial.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    }
+   ]
+  },
+  {
+   "id": "1a4bd4dacd90",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, conectarla a tools/check.sh, que es lo que llama CI.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "bd0324f27617",
+   "alcance": "Tools README compartido, sección Adding new tools",
+   "enunciado": "Al añadir una tool nueva, darle un --selftest que demuestre que el check se dispara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ]
+  },
+  {
+   "id": "a2ca91907aec",
+   "alcance": "Tools README compartido, sección Project checks",
+   "enunciado": "Explicación: los project checks se ejecutan contra el directorio de salida de un proyecto y no contra el repo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks"
+    }
+   ]
+  },
+  {
+   "id": "152e16b567c5",
+   "alcance": "Tools README compartido, shots-to-html.py",
+   "enunciado": "--rendered-at fija la marca de tiempo del render para que la salida sea reproducible; CI vuelve a renderizar cada preview incluido con valor fijo y falla si cambia un byte.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ]
+  },
+  {
+   "id": "554455999cc9",
+   "alcance": "Tools README compartido, validate_critique.py",
+   "enunciado": "La compuerta de la crítica: cualquier issue blocking fuerza REJECT, tres o más major fuerzan REJECT, y uno o dos major prohíben ACCEPT.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ]
+  },
+  {
+   "id": "d7938e800886",
+   "alcance": "Tools README compartido, validate_provenance.py --require-accept",
+   "enunciado": "Con --require-accept, validate_provenance.py actúa como condición de parada del pipeline: sale con 0 solo si la cadena está intacta y el último veredicto de cada shot es ACCEPT.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ]
+  },
+  {
+   "id": "143933d8dae2",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches)",
+   "enunciado": "Explicación: el aurora prompt_linter v1.2-fupai es una copia parcheada del linter v1.1 del skill aurora-prompt-linter, con vocabulario ampliado y contradicciones resueltas a favor de la fuente; conserva la CLI y los exit codes 0/1/2 y añade --ref-role, --series-lock y --treatment.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "cdb7cf259db5",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P1",
+   "enunciado": "P1: el conteo de palabras deja de ser HARD FAIL y pasa a WARN, usando como referencia el presupuesto por plataforma (por ejemplo kling 80-150, gpt-image 150-300, nano-banana 60-120) y el presupuesto original del caso cuando la plataforma no está en la tabla.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "1cff1a7b03ba",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P10",
+   "enunciado": "P10: se amplía el vocabulario L/PR/O (agua, automotriz, café/interior, clima, música) y los snapshots de secciones para seedance_2.5, flux, ideogram, hailuo, seedream, nano_banana_2 y kling 3.0 caso 4, y se reconocen Negative field., [Negative Prompts] y Constraints:.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "a19e82e56208",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P11",
+   "enunciado": "P11: una mención negada (\"no cartoon\", \"not anime\") no cuenta como violación de BANNED ni de estilo, aunque siga siendo mala práctica en NB/GPT, cosa que cubre gate_image.py.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "c5a8407f908f",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P12, referencias con categoría S",
+   "enunciado": "P12: si una referencia carga S, el vocabulario de estilo queda prohibido en MAIN y se dispensa la sección requerida `style`, reportada como WARN informativo, para no exigir algo imposible de satisfacer.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "c46cf005bd6d",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P2",
+   "enunciado": "P2: el bloque negativo es obligatorio solo si la plataforma tiene campo negativo; si existe se valida con formato sin \"no X\" y un máximo de 8 ítems (WARN), y en GPT Image el slot Constraints cuenta como bloque negativo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "f21da8fcb6ee",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P4",
+   "enunciado": "P4: con --series-lock, los términos de vocabulario dentro de una cadena verbatim de series_lock (character, environment, lighting, color_grade) quedan exentos de la capa de redundancia, para no castigar lo que validate_prompts.py exige.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "5eab3eda6b96",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P5",
+   "enunciado": "P5: las palabras de micro-acción corporal (sweat, jaw, knuckles, breath, exhale, swallow, tendon, vein, blink, entre otras) quedan exentas de la categoría P del linter.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "d5ec554e49d5",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P6",
+   "enunciado": "P6: \"cinematic\" sale de la categoría S y de las secciones requeridas y entra en BANNED junto con professional, high quality, masterpiece, stunning, epic, amazing, beautiful lighting, dynamic camera, intense moment, powerful scene y la lista anti-slop de gpt-image.md.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "2c57b9426e91",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P7, --treatment",
+   "enunciado": "P7: los bans de estilo (anime, cartoon, 3D render) dependen del tratamiento (--treatment) y solo aplican en fotorreal; \"slow motion\" pasa a WARN en fotorreal, FAIL con --treatment race y se permite sin aviso con prefijo \"ultra-\" o con OVERRIDE.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "749dcc6f4efa",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P8, casos 1 y 2 de imagen frente a video",
+   "enunciado": "P8: --sports-broadcast solo aplica a casos de video (3a/3b/3c/4) y se ignora con WARN en los casos 1 y 2, porque \"60fps\" y \"broadcast realism\" son parámetros de video y SW30 R8 prohíbe movimiento en stills.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "4be652c08e64",
+   "alcance": "aurora prompt_linter.py v1.2-fupai, docstring (changelog de parches), parche P9",
+   "enunciado": "P9: los casos del pipeline se mapean a los del linter (T1/T2/placa a 1; T3/T4/T5 con refs a 2; CLIP I2V a 3a/3b/3c; CLIP con diálogo a 4) y --case acepta ambos alfabetos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py (parcheado en el repo) › docstring"
+    }
+   ]
+  },
+  {
+   "id": "922bbcd50ba8",
+   "alcance": "aurora prompt_linter.py, CASE_ALIASES (P9)",
+   "enunciado": "Define CASE_ALIASES (P9), que traduce los alias del pipeline (T1, T2, PLACA, T3 a T5, CLIP, CLIP-FF, CLIP-DIALOGO, etc.) a los casos 1, 2, 3a, 3b, 3c y 4 del linter.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › CASE_ALIASES"
+    }
+   ]
+  },
+  {
+   "id": "4a7ad3e97893",
+   "alcance": "brand packs (README de brand-lock-extractor y storyboard-architect), _template.md, Typography",
+   "enunciado": "Poner el nombre y peso de la fuente entre backticks inmediatamente tras la etiqueta (p. ej. `Inter Black 900`), porque la vista previa HTML y el chequeo de fuente de overlays leen ese valor y lo anterior es prosa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    },
+    {
+     "documento": "skills/storyboard-architect/brand-packs/_template.md",
+     "encabezado": "Brand Lock: {{BRAND_NAME}} › Typography"
+    }
+   ]
+  },
+  {
+   "id": "cb647e03a826",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), categoría L",
+   "enunciado": "Lista L (locación) del linter, ampliada con agua, automotriz, café/interior, clima y música/ensamble, cuyos términos quedan prohibidos en el prompt principal cuando una referencia de lugar los cubre.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › L"
+    }
+   ]
+  },
+  {
+   "id": "65e79644834a",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), categoría O (con rol ff/lf)",
+   "enunciado": "Lista O (outfit) del linter, ampliada con ropa de agua, automotriz, café y música/ensamble, cuyos términos quedan prohibidos en el prompt principal cuando una referencia de vestuario los cubre.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › O"
+    }
+   ]
+  },
+  {
+   "id": "675d62e296f8",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), categoría P y cabecera del archivo",
+   "enunciado": "Define la lista P (personaje/sujeto) del linter Aurora v1.2-fupai, cuyos términos quedan prohibidos en el prompt principal cuando una referencia carga esa categoría (P y O solo con rol ff/lf), y documenta los cambios respecto al original (sweat/jawline pasan a exentos, cinematic a BANNED, etc.) con su fuente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › P"
+    }
+   ]
+  },
+  {
+   "id": "4f8e6a445afa",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), categoría PR",
+   "enunciado": "Lista PR (prop) del linter, ampliada con agua, automotriz, café/interior y música/ensamble, cuyos términos quedan prohibidos en el prompt principal cuando una referencia de producto o prop los cubre.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › PR"
+    }
+   ]
+  },
+  {
+   "id": "3f69dab9eb3c",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), categoría S",
+   "enunciado": "Lista S (estilo) del linter (photorealistic, editorial, documentary, studio lighting) que se prohíbe en el prompt principal cuando una referencia de estilo la cubre; \"cinematic\" sale de ella y pasa a BANNED.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › S"
+    }
+   ]
+  },
+  {
+   "id": "5ef3b08d23be",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P1; por plataforma",
+   "enunciado": "Tabla WORD_BUDGET_BY_PLATFORM: rango recomendado, rango i2v y techo de palabras por plataforma (Midjourney 40-80/100, Flux 80-150, Ideogram 60-120, GPT Image 150-300, Nano Banana 60-120, Seedream 40-70/120, Kling 80-150 e i2v 20-40, Veo 80-150 e i2v 50-100, Seedance 80-150, Hailuo 60-120), solo como referencia y nunca bloqueante.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › WORD_BUDGET_BY_PLATFORM"
+    }
+   ]
+  },
+  {
+   "id": "2fe30895c670",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P2; por plataforma",
+   "enunciado": "Política de bloque negativo por plataforma: es obligatorio en Kling y Seedance 2.5, y opcional (positive framing; con marcador \"Negative:\" solo aviso) en Seedance 1/2.0, GPT Image, Nano Banana, Veo, Midjourney, Flux, Ideogram, Seedream y Hailuo.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_BLOCK_POLICY"
+    }
+   ]
+  },
+  {
+   "id": "d7f9d8728748",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P3",
+   "enunciado": "El bloque de identidad debe cubrir al menos 3 grupos de descriptores (IDENTITY_BLOCK_MIN_GROUPS: 3).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › IDENTITY_BLOCK_MIN_GROUPS"
+    }
+   ]
+  },
+  {
+   "id": "82802d4681e6",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P3, con base en U7",
+   "enunciado": "Define los cinco grupos de descriptores de identidad (pelo, ojos/piel, prenda, accesorio, rasgo distintivo) con sus palabras clave, de los que el linter exige presencia de un mínimo en el bloque de identidad.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › IDENTITY_BLOCK_GROUPS"
+    }
+   ]
+  },
+  {
+   "id": "7fe98d142055",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P5",
+   "enunciado": "Lista BODY_MICRO_ACTION_EXEMPT del linter: términos de micro-acción corporal (sweat, jaw, knuckles, breath, exhale, swallow, tendon, vein, blink) que nunca cuentan como re-descripción de P.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › BODY_MICRO_ACTION_EXEMPT"
+    }
+   ]
+  },
+  {
+   "id": "48559b81f12b",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P7",
+   "enunciado": "Prefijos permitidos de slow motion (\"ultra-\", \"ultra \") que eximen el término del aviso o bloqueo del linter.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_ALLOWED_PREFIXES"
+    }
+   ]
+  },
+  {
+   "id": "2ffd32d24989",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P7; fotorreal (WARN) y race (FAIL)",
+   "enunciado": "Lista SLOW_MOTION_TERMS: términos de cámara lenta que el linter advierte en fotorreal, bloquea con tratamiento race y exime con prefijo \"ultra-\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_TERMS"
+    }
+   ]
+  },
+  {
+   "id": "bf84786d089c",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P7; tratamientos fotorreal y race",
+   "enunciado": "Lista STYLE_BANNED_FOTORREAL: términos de estilo ilustrado o 3D (anime, cartoon, 3D render, CGI look, cel shading, pixar style, claymation, vector/flat illustration) que se prohíben solo con tratamiento fotorreal o race y son legítimos en ilustración o animación.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › STYLE_BANNED_FOTORREAL"
+    }
+   ]
+  },
+  {
+   "id": "5bb14e744a32",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P7; tratamientos ilustración y animación",
+   "enunciado": "Sobrescrituras por tratamiento: para ilustración y animación el linter reemplaza los patrones de estilo y detalles y elimina anti_style y photoreal_closing, pues no aplican a esos tratamientos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › TREATMENT_SECTION_OVERRIDES"
+    }
+   ]
+  },
+  {
+   "id": "1a88c1e535ee",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), regla P8; casos de video 3a/3b/3c/4 deportivo",
+   "enunciado": "Palabras obligatorias para el caso de broadcast deportivo en video (60fps, broadcast realism), exigidas en los casos de video 3a/3b/3c/4.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › REQUIRED_SPORTS_BROADCAST"
+    }
+   ]
+  },
+  {
+   "id": "b5827498fa83",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), reglas P6 y P11; todas las plataformas",
+   "enunciado": "Lista BANNED del linter: palabras siempre prohibidas en el prompt principal (cinematic, professional, high quality, masterpiece, stunning, epic, amazing, incredible, gorgeous, plastic skin, etc.); una mención negada no cuenta.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › BANNED"
+    }
+   ]
+  },
+  {
+   "id": "1b10dcc75c0b",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai), vocabulario permitido de movimiento y cámara",
+   "enunciado": "Lista de prefijos de vocabulario de cámara y movimiento (camera, shot, lens, pans, tilts, dollies, orbits, etc.) que quedan exentos de baneo en el linter.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › ALLOWED_MOTION_PREFIXES"
+    }
+   ]
+  },
+  {
+   "id": "871c32054f5a",
+   "alcance": "linter Aurora (vocabularies.yaml v1.2-fupai); plataformas con bloque negativo",
+   "enunciado": "El bloque negativo admite como máximo 8 ítems (NEGATIVE_MAX_ITEMS: 8).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_MAX_ITEMS"
+    }
+   ]
+  },
+  {
+   "id": "642e9ad10206",
+   "alcance": "linter Aurora (vocabularies.yaml), GPT Image 2 caso 1 (génesis text-to-image) y convención general de claves plataforma__caso",
+   "enunciado": "Secciones obligatorias del prompt principal por plataforma y caso: cada sección tiene patrones (substring, sin distinguir mayúsculas), se considera presente si coincide al menos uno y su ausencia es FAIL; para GPT Image 2 caso 1 exige sujeto, acción, entorno, estilo, cámara, luz, anti-estilo, \"Use case:\" y \"Constraints:\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1"
+    }
+   ]
+  },
+  {
+   "id": "c0e2802dd415",
+   "alcance": "linter Aurora v1.2-fupai, copia en el repo",
+   "enunciado": "Explicación: esta copia parcheada (v1.2-fupai) del linter del skill aurora-prompt-linter conserva su interfaz y exit codes (0 PASS, 1 FAIL, 2 uso), añade las opciones --ref-role, --series-lock y --treatment, y resuelve las contradicciones a favor de la fuente sin tocar el original.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ]
+  },
+  {
+   "id": "7261b2c93c11",
+   "alcance": "linter Aurora v1.2-fupai, estructura de archivos",
+   "enunciado": "Explicación: la carpeta .claude/hooks/aurora/ contiene prompt_linter.py, vocabularies.yaml, README.md y tests con run.sh (18 pruebas, exit 0 si todas pasan) y fixtures.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ]
+  },
+  {
+   "id": "e7219970f76d",
+   "alcance": "linter Aurora v1.2-fupai, motivación de la copia",
+   "enunciado": "Explicación: la copia existe porque el original, calibrado para un flujo anterior, bloquea prompts que los skills actuales exigen y deja pasar palabras que prohíben; las doce contradicciones se resuelven con parches respaldados por archivo y sección, sin criterio del agente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Por qué existe esta copia"
+    }
+   ]
+  },
+  {
+   "id": "05370f8dc9b7",
+   "alcance": "linter Aurora v1.2-fupai, parche P1 (contradicción 1); todas las plataformas",
+   "enunciado": "El conteo de palabras nunca bloquea en el linter: solo advierte (WARN) con el presupuesto por plataforma y el techo de _capabilities.json, en vez del HARD FAIL original de 130 (T2I) o 90 (I2V), porque SW30, GPT Image y Kling toleran o exigen prompts más largos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ]
+  },
+  {
+   "id": "6a9fd19b9b9e",
+   "alcance": "linter Aurora, Flux caso 1 (génesis text-to-image)",
+   "enunciado": "Secciones obligatorias para Flux caso 1: sujeto, acción o pose, entorno, luz, especificación fotográfica (shot on, mm, f/, DOF) y cierre fotorrealista.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › flux__1"
+    }
+   ]
+  },
+  {
+   "id": "d53b84492fd9",
+   "alcance": "linter Aurora, GPT Image 1.5 caso 2 (imagen ancla con referencias)",
+   "enunciado": "Secciones obligatorias para GPT Image 1.5 caso 2: roles de referencia, preservación de rostro (preserve exact facial structure, identity), sujeto y acción, cámara y luz.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_1_5__2"
+    }
+   ]
+  },
+  {
+   "id": "a7965bf9ac77",
+   "alcance": "linter Aurora, GPT Image 2 caso 2 (imagen ancla con referencias)",
+   "enunciado": "Secciones obligatorias para GPT Image 2 caso 2 (ancla con referencias): roles de referencia (image 1, ref:), sujeto y acción, cámara, luz, consistencia de estilo (preserve, maintain) y slot \"Constraints:\".",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__2"
+    }
+   ]
+  },
+  {
+   "id": "4c6e22c7856b",
+   "alcance": "linter Aurora, Hailuo caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Hailuo caso 3a: frase de cámara al inicio, acción del sujeto, cambio de luz y mood.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › hailuo__3a"
+    }
+   ]
+  },
+  {
+   "id": "c4dd05d97c17",
+   "alcance": "linter Aurora, Ideogram caso 1 (génesis, Modo 1 composited)",
+   "enunciado": "Secciones obligatorias para Ideogram caso 1 (Modo 1, texto compuesto): sujeto, entorno, luz y composición (espacio negativo, encuadre).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › ideogram__1"
+    }
+   ]
+  },
+  {
+   "id": "4b02d284cfb7",
+   "alcance": "linter Aurora, Kling 3.0 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 3a (I2V solo primer frame): escena o movimiento, acción del sujeto, cámara, estilo realista y anti-morphing (preserve).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3a"
+    }
+   ]
+  },
+  {
+   "id": "20bb82027dcd",
+   "alcance": "linter Aurora, Kling 3.0 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 3b (I2V primer y último frame): escena o movimiento, transición FF-LF, cámara, estilo realista y anti-morphing.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3b"
+    }
+   ]
+  },
+  {
+   "id": "69a08200a9c7",
+   "alcance": "linter Aurora, Kling 3.0 caso 3c (motion control)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 3c (motion control): escena, referencia de movimiento (@video), orientación del personaje y cámara; el prompt se centra solo en describir al sujeto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+    }
+   ]
+  },
+  {
+   "id": "92c6f9aecf61",
+   "alcance": "linter Aurora, Kling 3.0 caso 4 (diálogo)",
+   "enunciado": "Secciones obligatorias para Kling 3.0 caso 4 (video con diálogo): etiquetas de personaje, lista de shots, diálogo entre comillas, etiqueta de voz, enlace temporal y audio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__4"
+    }
+   ]
+  },
+  {
+   "id": "b9023158e8e0",
+   "alcance": "linter Aurora, Midjourney caso 1 (génesis text-to-image)",
+   "enunciado": "Secciones obligatorias para Midjourney caso 1: sujeto, estilo, composición, luz, aspect ratio (--ar) y calidad (--v, --style, --q, --stylize, --s).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+    }
+   ]
+  },
+  {
+   "id": "0d3a38873e6c",
+   "alcance": "linter Aurora, Nano Banana 2 caso 1 (génesis text-to-image)",
+   "enunciado": "Secciones obligatorias para Nano Banana 2 caso 1, iguales a las de NBP: sujeto, acción o pose, entorno, estilo, luz y detalles, en lenguaje natural de 1-2 párrafos.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__1"
+    }
+   ]
+  },
+  {
+   "id": "9ed3f4e9fc7e",
+   "alcance": "linter Aurora, Nano Banana 2 caso 2 (imagen ancla con referencias)",
+   "enunciado": "Secciones obligatorias para Nano Banana 2 caso 2, iguales a las de NBP: roles de referencia, sujeto y acción, cámara, luz y ancla de colocación.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__2"
+    }
+   ]
+  },
+  {
+   "id": "ff8bca07f82d",
+   "alcance": "linter Aurora, Nano Banana Pro caso 1 (génesis text-to-image)",
+   "enunciado": "Secciones obligatorias para Nano Banana Pro caso 1: sujeto, acción o pose, entorno, estilo, luz y detalles (textura de piel, tela, asimetría), sin números de lente.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+    }
+   ]
+  },
+  {
+   "id": "f48ac8ec7a03",
+   "alcance": "linter Aurora, Nano Banana Pro caso 2 (imagen ancla con referencias)",
+   "enunciado": "Secciones obligatorias para Nano Banana Pro caso 2: roles de referencia (image 1, @img), sujeto y acción, cámara, luz y ancla de colocación (on the, beside, between).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__2"
+    }
+   ]
+  },
+  {
+   "id": "2f859e431b29",
+   "alcance": "linter Aurora, Seedance (1.0/2.0) caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Seedance caso 3a: acción del sujeto, cámara y audio dentro del cuerpo del prompt (describir solo movimiento y cámara).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance__3a"
+    }
+   ]
+  },
+  {
+   "id": "75af670435b9",
+   "alcance": "linter Aurora, Seedance 2.5 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Seedance 2.5 caso 3a: rol de referencia (@image, first frame), acción del sujeto, cámara, marcadores de audio y estado final (end state).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3a"
+    }
+   ]
+  },
+  {
+   "id": "d4c9fffa6b8f",
+   "alcance": "linter Aurora, Seedance 2.5 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Seedance 2.5 caso 3b: rol de referencia (@image 1, @image 2, first/last frame) declarando cada ancla por separado, acción, cámara, transición y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3b"
+    }
+   ]
+  },
+  {
+   "id": "151ad314e167",
+   "alcance": "linter Aurora, Seedance 2.5 caso 4 (diálogo)",
+   "enunciado": "Secciones obligatorias para Seedance 2.5 caso 4: marcador de diálogo entre llaves { }, idioma del diálogo, acción del sujeto, cámara y estado final.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__4"
+    }
+   ]
+  },
+  {
+   "id": "3702f26afda9",
+   "alcance": "linter Aurora, Seedream caso 1 (génesis text-to-image)",
+   "enunciado": "Secciones obligatorias para Seedream caso 1: sujeto, encuadre, entorno, luz y estilo, según la plantilla {framing} of {anchor}, {action}, {environment}, {lighting}, {grade}, {mood}, photorealistic.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedream__1"
+    }
+   ]
+  },
+  {
+   "id": "05110fd371a5",
+   "alcance": "linter Aurora, Sora 2 caso 4 (diálogo)",
+   "enunciado": "Secciones obligatorias para Sora 2 caso 4: acción del sujeto, diálogo, tono o acento, timing y especificaciones de audio.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › sora_2__4"
+    }
+   ]
+  },
+  {
+   "id": "04a75939c2af",
+   "alcance": "linter Aurora, Veo 3.1 caso 3a (I2V primer frame)",
+   "enunciado": "Secciones obligatorias para Veo 3.1 caso 3a: acción del sujeto, timing o beat, cámara, estilo (maintain the subject from the first frame) y cue de física (gravedad, momentum, trayectoria).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a"
+    }
+   ]
+  },
+  {
+   "id": "34dd510b6d8a",
+   "alcance": "linter Aurora, Veo 3.1 caso 3b (primer y último frame)",
+   "enunciado": "Secciones obligatorias para Veo 3.1 caso 3b: transición FF-LF, timing o beat, cámara, cue de física y anti-morphing.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3b"
+    }
+   ]
+  },
+  {
+   "id": "55dfb6e9a1a0",
+   "alcance": "linter Aurora, Veo 3.1 caso 4 (diálogo)",
+   "enunciado": "Secciones obligatorias para Veo 3.1 caso 4: acción del sujeto, diálogo, tono o acento, timing y especificaciones de audio (ambient, SFX).",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__4"
+    }
+   ]
+  },
+  {
+   "id": "3f6d37fa7dd9",
+   "alcance": "linter aurora (prompt_linter.py)",
+   "enunciado": "El linter aurora reconoce solo cuatro tratamientos visuales válidos: fotorreal, ilustracion, animacion y race.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › TREATMENTS"
+    }
+   ]
+  },
+  {
+   "id": "c5b890955968",
+   "alcance": "linter aurora, categoría STRUCTURE, siempre",
+   "enunciado": "La categoría STRUCTURE verifica siempre el conteo de palabras y la presencia de negative prompt.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "9382ce9840b5",
+   "alcance": "linter aurora, detección de redundancia",
+   "enunciado": "Limitación: el linter no detecta sinónimos (p. ej. \"tank top\" en la ref y \"athletic shirt\" en el prompt no se consideran redundantes); la tabla de sinónimos queda en el roadmap v1.1.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "19327bf74bf4",
+   "alcance": "linter aurora, detección de vocabulario en el prompt",
+   "enunciado": "Un término no se marca como violación si lo precede una negación (no, not, never, avoid, without, non) a menos de tres palabras.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › NEGATION_BEFORE"
+    }
+   ]
+  },
+  {
+   "id": "8bcef1fc7394",
+   "alcance": "linter aurora, etiquetado de refs",
+   "enunciado": "Limitación: el linter no ve las imágenes y depende de los tags declarados por el agente, así que el agente debe re-verificar los tags antes de invocarlo o un mal etiquetado falla en silencio.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "345ea983dbb8",
+   "alcance": "linter aurora, exenciones del vocabulario baneado",
+   "enunciado": "No se marcan los términos usados en contexto de movimiento o cámara ni como ancla direccional (p. ej. \"away from her face\", \"across the climbing wall\").",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "18e9385a8efc",
+   "alcance": "linter aurora, flag --sports-broadcast, Regla 26 v6.0",
+   "enunciado": "La categoría REQUIRED exige las palabras 60fps y broadcast realism cuando se activa el flag --sports-broadcast (Regla 26 v6.0).",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "ae5ec21a63f9",
+   "alcance": "linter aurora, flag sports-broadcast, Regla 26 v6.0",
+   "enunciado": "Con el flag sports broadcast activo, el bloque MAIN debe incluir 60fps y broadcast realism (Regla 26 v6.0).",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "3aed96730ebc",
+   "alcance": "linter aurora, overrides",
+   "enunciado": "Explicación: el mecanismo de override preserva la flexibilidad en casos límite sin permitir abuso, porque exige una expresión escrita específica del usuario en el turno actual.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "206319d47666",
+   "alcance": "linter aurora, parseo de overrides (sin cambios desde v1.1)",
+   "enunciado": "Un override válido se expresa con la sintaxis \"OVERRIDE: término - razón\" en el mensaje del usuario.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › OVERRIDE_PATTERN"
+    }
+   ]
+  },
+  {
+   "id": "7fa5196a190f",
+   "alcance": "linter aurora, redundancia por categoría (P/O/L/PR/S)",
+   "enunciado": "Si una referencia carga la categoría X, esa categoría no debe describirse en el bloque MAIN del prompt.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "a9a273ef369f",
+   "alcance": "linter aurora, regla P10, plataformas de imagen y video",
+   "enunciado": "Define la tabla de familias de plataforma (P10) con un patrón regex por familia (nano-banana, gpt-image, midjourney, flux, ideogram, seedream, kling, veo, seedance, hailuo, sora) para asignar la clave de snapshot por defecto.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › FAMILY_PATTERNS"
+    }
+   ]
+  },
+  {
+   "id": "d40a1aac0155",
+   "alcance": "linter aurora, regla P4 (series lock)",
+   "enunciado": "El series lock (P4) se compone de cuatro claves: character, environment, lighting y color_grade.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › SERIES_LOCK_KEYS"
+    }
+   ]
+  },
+  {
+   "id": "8606ae46ea40",
+   "alcance": "linter aurora, reglas P2 y P10; el slot Constraints solo en la familia gpt-image",
+   "enunciado": "El linter separa el prompt en bloque principal (MAIN) y bloque negativo mediante marcadores como \"[negative prompt]\" o \"negative:\", y en la familia gpt-image el slot \"Constraints:\" cuenta como bloque negativo; además cuenta palabras, parsea ítems negativos y busca términos con límites de palabra.",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/prompt_linter.py",
+     "encabezado": "aurora prompt_linter.py › NEGATIVE_MARKER"
+    }
+   ]
+  },
+  {
+   "id": "a7e56ecfc1fc",
+   "alcance": "linter aurora, todas las plataformas",
+   "enunciado": "El bloque de negative prompt es obligatorio.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "09b463f98b96",
+   "alcance": "linter aurora, todas las plataformas, categoría BANNED",
+   "enunciado": "Los términos baneados cross-platform (slow motion, cartoon, anime, 3D render, perfume ad, dreamlike) se marcan siempre si aparecen en el bloque MAIN; deben ir solo en el NEGATIVE.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "14453c5895e9",
+   "alcance": "linter aurora; I2V y T2I",
+   "enunciado": "El conteo de palabras tiene un tope máximo duro de 90 (I2V) o 130 (T2I) y un mínimo blando de 50 o 75 respectivamente.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "c19e52905e7c",
+   "alcance": "prompt-production-protocol Step 5b, todos los casos",
+   "enunciado": "Si el linter devuelve STATUS=FAIL sin override válido no se entrega el prompt: se itera el draft, y nunca se entrega al usuario con un FAIL.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "fb88c5293c29",
+   "alcance": "prompt-production-protocol Step 5b; casos 3a/3b/3c obligatorio, 1/2/4 recomendado",
+   "enunciado": "El Step 5b (linter determinista) es obligatorio para los casos 3a/3b/3c y recomendado para los casos 1, 2 y 4.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/skill_update_step5.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "3d5b8d8af37f",
+   "alcance": "skill aurora-prompt-linter",
+   "enunciado": "Encabezado que introduce la lista de casos en los que el uso del linter aurora es obligatorio.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "ff8e05e3fa24",
+   "alcance": "skill aurora-prompt-linter y prompt-production-protocol Step 5",
+   "enunciado": "El linter no se ejecuta solo: el Step 5 del skill prompt-production-protocol debe invocarlo como ítem crítico, según la edición propuesta en skill_update_step5.md.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "8000136d8538",
+   "alcance": "skill aurora-prompt-linter, paso de etiquetado de refs",
+   "enunciado": "Cada referencia debe etiquetarse por categoría (P sujeto, O outfit, L locación, PR prop, S estilo), pudiendo llevar varias, según los IDs del system v6.0 §7.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "74f326bdeea0",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "El draft del prompt, incluido el negative prompt, debe escribirse a un archivo de texto antes de correr el linter.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "df518fb15982",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "El mensaje del usuario del turno actual debe capturarse en un archivo de texto para que el linter pueda parsear los OVERRIDEs.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "401505f3f796",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "Paso del procedimiento: ejecutar el linter sobre el draft (el comando se muestra a continuación).",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "9a1d8944d3d5",
+   "alcance": "skill aurora-prompt-linter, procedimiento",
+   "enunciado": "Paso del procedimiento: interpretar el resultado del linter según lo que se detalla a continuación.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/SKILL.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "15ae1850a3c8",
+   "alcance": "skill aurora-prompt-linter, prompts de imagen y video",
+   "enunciado": "Explicación: el linter determinista bloquea la entrega de prompts con redundancia respecto a refs, violaciones de estructura, vocabulario baneado o falta de keywords obligatorios, y se integra como gate obligatorio en el Step 5 de prompt-production-protocol.",
+   "ubicaciones": [
+    {
+     "documento": "rules.sqlite:skills/aurora-prompt-linter/references/README.md",
+     "encabezado": ""
+    }
+   ]
+  },
+  {
+   "id": "b80eb8fe8ec1",
+   "alcance": "skill brand-lock-extractor",
+   "enunciado": "La salida es un brand-lock.md en el formato exacto que valida tools/validate_brand_lock.py y que consumen los demás skills.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor"
+    }
+   ]
+  },
+  {
+   "id": "abd922ca9650",
+   "alcance": "skill brand-lock-extractor, Paso 4",
+   "enunciado": "Escribir el brand-lock con templates/brand-lock.md.tpl rellenando todas las secciones requeridas sin placeholders y añadir una sección '## Extraction notes' con cada valor inferred o needs confirmation, su fuente y razonamiento; es el rastro de auditoría y no rompe la validación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 4. Write the brand-lock"
+    }
+   ]
+  },
+  {
+   "id": "5488c579e6d8",
+   "alcance": "skill brand-lock-extractor, Paso 5, autocomprobación",
+   "enunciado": "Antes de presentar, confirmar que el archivo pasaría la validación: las nueve secciones presentes, Identidad con sus cuatro campos (Brand, One-line description, Archetype, Voice posture) y al menos un hex #RRGGBB real en la paleta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 5. Self-check, then hand off"
+    }
+   ]
+  },
+  {
+   "id": "3bf3306be3df",
+   "alcance": "skill brand-lock-extractor, Paso 5, entrega",
+   "enunciado": "Entregar con un mensaje que diga que paleta y tipografía se muestrearon de los activos, cuántos valores requieren confirmación (ver Extraction notes), que se coloque el archivo en brand-packs/, se confirmen los marcados y se ejecute validate_brand_lock.py.",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/SKILL.md",
+     "encabezado": "Brand Lock Extractor › Workflow › Step 5. Self-check, then hand off"
+    }
+   ]
+  },
+  {
+   "id": "03a7eb82f8a8",
+   "alcance": "skill produccion-visual-sw30, regla crítica (general)",
+   "enunciado": "Antes de entregar deben estar en verde los validadores del paquete y los techos de palabras, y hay que hacer inspección visual propia (zoom 100% de rostros y manos); si algo falla no se entrega, se repite y se dice en una línea qué falló.",
+   "ubicaciones": [
+    {
+     "documento": "skills/produccion-visual-sw30/SKILL.md",
+     "encabezado": "Producción visual SW30 — micro-gate + 20 reglas críticas › REGLAS CRÍTICAS"
+    }
+   ]
+  },
+  {
+   "id": "357530501ec2",
+   "alcance": "skill screenwriter, checklist de entrega al pipeline",
+   "enunciado": "Antes de pasar el guion a la siguiente etapa se verifica que las escenas tengan metadatos completos, 3-5 key_visuals, nombres consistentes, XML bien formado, duración en rango (5-10 min), numeración sin huecos, descripciones ricas y sin direcciones técnicas de cámara.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Pipeline Handoff Checklist"
+    }
+   ]
+  },
+  {
+   "id": "dbf90139582a",
+   "alcance": "skill screenwriter, validación XML",
+   "enunciado": "Ejemplo: el mismo XML corregido con todas las etiquetas cerradas.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ]
+  },
+  {
+   "id": "c36c3d9f445e",
+   "alcance": "skill screenwriter, validación XML",
+   "enunciado": "Ejemplo: el mismo texto corregido con el carácter escapado como &lt;.",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ]
+  },
+  {
+   "id": "fd7f1e9c34c5",
+   "alcance": "skill screenwriter, validación XML",
+   "enunciado": "Ejemplo: error XML común de caracteres especiales sin escapar (un '<' literal en el texto).",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ]
+  },
+  {
+   "id": "cb0fd9a5d919",
+   "alcance": "skill screenwriter, validación XML",
+   "enunciado": "Ejemplo: error XML común de una etiqueta sin cierre (action sin cerrar).",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › Common XML Errors"
+    }
+   ]
+  },
+  {
+   "id": "779d5daff842",
+   "alcance": "skill screenwriter, validación de formato de salida (XML bien formado)",
+   "enunciado": "El XML debe ser válido: etiquetas de apertura con cierre, anidación correcta y caracteres especiales escapados (&lt; &gt; &amp;).",
+   "ubicaciones": [
+    {
+     "documento": "skills/screenwriter/references/pipeline-integration.md",
+     "encabezado": "Pipeline Integration Guide › Output Format Validation › XML Well-Formedness"
+    }
+   ]
+  },
+  {
+   "id": "19b209ae0476",
+   "alcance": "skill storyboard-architect, paso 4 (lista de shots)",
+   "enunciado": "Se lee references/shot-grammar.md y se usan los nombres de campo del schema, que tiene additionalProperties false, de modo que una variante como 'environment' en vez de 'environment_ref' falla la validación.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 4. Draft the shot list"
+    }
+   ]
+  },
+  {
+   "id": "532c67a3b589",
+   "alcance": "skill video, SKILL.md (orden de lectura obligatorio), paso 1",
+   "enunciado": "No se puede decidir si un prompt está listo sin correr el chequeo de dramaturgia de dramaturgy.md.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)"
+    }
+   ]
+  },
+  {
+   "id": "d6c55c25d87b",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe ganar su lugar en la densidad, con un beat sostenido = un panel y un golpe = una ráfaga, de modo que el tablero se lea como tacómetro acelerando aun en mudo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "98e3eeab27e3",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe llevar al menos una de las seis pistas de movimiento como still (barrido, blur parcial, streak, vector, nítido-borroso, quietud sostenida) o una pausa quieta deliberada, y los paneles 'rápidos' deben llevar al menos tres de las cinco pistas de velocidad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "c1ab787f226f",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe mostrar cambio de estado y no fetiche estático, con el objeto cruzando un umbral (ralentí→destello, limpio→humeado, plantado→levantándose); sin anatomía en reposo ni palanca aparcada.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "ca4812357c19",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe nombrar la cámara implícita, el movimiento del que es primer frame, físicamente montable en el auto y sin ángulo dios de render.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "20596feb5e8d",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe tener emoción vía objeto, el sentimiento que llevaría un rostro congelado en nudillo, aguja, pedal, humo o gota de sudor; sin cambio de estado ni emoción se descarta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "b69030ff8405",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe tener nombrada una etiqueta de función (Establish, Reveal, Power, Pressure, Detail, Reaction, Shift, Impact, Aftermath, Exit); sin etiqueta se descarta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "31ea51357fa4",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe tener tres capas de profundidad con trabajo declarado (FG enmarca u obstruye, MG sujeto, BG apuesta), un solo punto focal y todo otro objeto como evidencia y no decoración.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "e5f7aca53b11",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel debe tener un beat legible que se pueda decir en una frase y rotular (setup, commitment, mistake, recovery, proof-of-speed, result); si no, es un fantik y se descarta.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "a3f5cc600ec3",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: el panel no debe tener rostro, o solo uno fragmentado hasta la inutilidad (silueta o reflejo).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "62c62c106bc2",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Checklist: la celda de sonido debe estar llena aunque el panel sea un still, indicando qué audio subyace al frame sostenido y dónde muerde el corte (dramaturgy.md §11).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "a102f623232f",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe",
+   "enunciado": "Ejecutar el checklist antes de entregar cada panel y descartar el panel que falle.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "8de507cf2fa6",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe (spot de carrera de ejemplo)",
+   "enunciado": "Checklist: mantener la paleta fría (acero, cian, magenta, blanco mercurio; rojo y verde solo acento; ámbar ≤15% y de fuente puntual, tóxico y nunca acogedor), con una fuente motivada, ~70% sin luz, un especular duro y textura nombrada (grano, halación, un flare) y no 'clean'.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "f32959908abd",
+   "alcance": "skill video, animatic-keyframes (stills de storyboard), §9 checklist de keyframe; Seedance, Kling, Veo",
+   "enunciado": "Si un panel supera los diez puntos del checklist es un opornyi kadr y no papel tapiz, y se entrega a seedance/kling/veo como primer frame bloqueado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/animatic-keyframes.md",
+     "encabezado": "Keyframes for an animatic (opornye kadry) › 9. Checklist: does this keyframe earn its place"
+    }
+   ]
+  },
+  {
+   "id": "6a04f2233d8f",
+   "alcance": "skill video, paso 5 de lectura obligatoria, antes de entregar",
+   "enunciado": "Antes de devolver nada, ejecutar dos chequeos: el de dramaturgia (fórmula de escena completa, tres detalles y three-jobs en cada shot, cámara motivada, geometría legible, cinco anclas nombradas) y la auditoría de tres detalles (presión ambiental, micro-acción física y motivo sonoro o visual por shot).",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check"
+    }
+   ]
+  },
+  {
+   "id": "002c239e18d0",
+   "alcance": "skill video, paso 5, antes de entregar",
+   "enunciado": "Si algún shot falla los chequeos de dramaturgia y tres detalles, corregirlo antes de enviar; este paso no se omite.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — apply the dramaturgy check and the three-detail check"
+    }
+   ]
+  },
+  {
+   "id": "0eee90ee7cc0",
+   "alcance": "skill visual-asset-critic, Paso 5; críticas versión 1.1",
+   "enunciado": "HIGH es una afirmación factual sobre lo que se tenía: tools/validate_critique.py rechaza una crítica 1.1 con HIGH cuando shot_id, brand_lock_ref o prompt_ref son null.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 5. Confidence"
+    }
+   ]
+  },
+  {
+   "id": "ed60b159436e",
+   "alcance": "skill visual-asset-critic, Paso 6",
+   "enunciado": "El ## Verdict del markdown se elige con la misma regla derivada de severidades.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "cb634a622e7e",
+   "alcance": "skill visual-asset-critic, Paso 6; procedencia",
+   "enunciado": "Los hashes son el punto: sin image_sha256 un fotograma regenerado tras la revisión seguiría satisfaciendo image_ref y un ACCEPT obsoleto pasaría el gate asociado a un archivo que nadie vio.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "66fdc7470618",
+   "alcance": "skill visual-asset-critic, Paso 6; regla de gating",
+   "enunciado": "El veredicto se deriva de las severidades y no se elige libremente: cualquier blocking o tres o más major da REJECT; uno o dos major sin blocking da REVISE; solo minor o ninguno da ACCEPT con notas de post.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "a5b92944e6f5",
+   "alcance": "skill visual-asset-critic, Paso 6; regla de gating",
+   "enunciado": "Explicación: la regla de tres major pasó de \"REJECT a discreción\" a umbral, porque la discreción en un gate no es un gate y contradecía la rúbrica; el validador ahora la aplica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "e4b9e9c7d0aa",
+   "alcance": "skill visual-asset-critic, Paso 6; severidad",
+   "enunciado": "Se asigna una severidad por issue, mapeada de forma determinista desde la rúbrica de capas, porque es el campo sobre el que corre el gate.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 6. Emit structured output (critique JSON)"
+    }
+   ]
+  },
+  {
+   "id": "cadd94bd1699",
+   "alcance": "skill visual-asset-critic, Paso 7",
+   "enunciado": "Alternativamente se revisa todo el árbol con tools/validate_provenance.py output/, que además recalcula cada hash contra los archivos en disco.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "45a3e1825d87",
+   "alcance": "skill visual-asset-critic, Paso 7",
+   "enunciado": "El paso del gate no es opcional ni tarea de otro: una crítica ACCEPT con un issue major es un bug y el validador solo sirve si se ejecuta de verdad.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "3cee2e6ae56b",
+   "alcance": "skill visual-asset-critic, Paso 7",
+   "enunciado": "Un JSON válido por esquema no equivale a pasar el gate: se ejecuta tools/validate_critique.py sobre el archivo de crítica.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/SKILL.md",
+     "encabezado": "Visual Asset Critic › Workflow › Step 7. Run the gate"
+    }
+   ]
+  },
+  {
+   "id": "ce81f9213414",
+   "alcance": "storyboard-architect (SKILL.md), Paso 8, snapshot del brand-lock",
+   "enunciado": "Se ejecuta `tools/validate_brand_lock.py --snapshot <path>` para comprobar las dos líneas de cabecera del snapshot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Workflow › Step 8. Snapshot the brand-lock"
+    }
+   ]
+  },
+  {
+   "id": "f0eb884b92e7",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar",
+   "enunciado": "La barra de calidad se comprueba ejecutando los validadores (`validate_shots.py`, `validate_brand_lock.py --snapshot`, `validate_provenance.py`) y no revisando la lista a ojo.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "8a0af3d5da7e",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar",
+   "enunciado": "Si el validador falla se corrige antes de dar por terminado; un validador en verde con un rationale sin leer no es un storyboard terminado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "6112e3b2e5cd",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, advertencias de validate_shots.py",
+   "enunciado": "El validador solo advierte (no falla) en juicios discutibles: copy de overlay repetido en el subject, hex crudo en un subject, ids fuera de orden cronológico o fuente de overlay no declarada en el brand-lock.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "2098d867d6d5",
+   "alcance": "storyboard-architect (SKILL.md), Quality bar, validate_shots.py",
+   "enunciado": "`validate_shots.py` comprueba reglas mecánicas: esquemas, tiempos sin huecos ni solapes que cuadran con la duración, resolución de overlays y shots, timing de overlays dentro del shot, colores dentro del palette del brand-lock y que `brand_lock_ref` exista.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "34e52bd40e18",
+   "alcance": "storyboard-architect (SKILL.md), ejemplos",
+   "enunciado": "Se leen los tres ejemplos para entender la calidad esperada (sobre todo los rationale); validan limpios con `validate_shots.py --examples` y sirven de referencia de un archivo que pasa.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Examples"
+    }
+   ]
+  },
+  {
+   "id": "a6033c14a4e4",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, shots.json",
+   "enunciado": "`shots.json` debe validar contra `templates/shots.schema.json` (leído antes de escribir) con la estructura version, project, brand_lock_ref, series_lock y shots con sus campos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `shots.json`"
+    }
+   ]
+  },
+  {
+   "id": "5cdffdf3529b",
+   "alcance": "storyboard-architect (SKILL.md), formatos de salida, text-overlays.json",
+   "enunciado": "`text-overlays.json` debe validar contra `templates/text-overlays.schema.json`, leído antes de escribir.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/SKILL.md",
+     "encabezado": "Storyboard Architect › Output formats › `text-overlays.json`"
+    }
+   ]
+  },
+  {
+   "id": "85a9e9068952",
+   "alcance": "storyboard-architect, timing-rules, validación de timing",
+   "enunciado": "Antes de dar por terminado, validar el timing: la suma de duraciones iguala la del proyecto con margen de 0.1 s, ningún shot con start >= end ni solapado, el primero empieza en 0.0, el último termina al final, y cada overlay entra y sale dentro de su shot (o pasa a un shot sucesor marcado) con duración mínima de leer dos veces.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "encabezado": "Timing Rules › Validating timing"
+    }
+   ]
+  },
+  {
+   "id": "9a6fc73018b4",
+   "alcance": "storyboard-html-preview, barra de calidad",
+   "enunciado": "Antes de dar por terminado verificar: abre sin errores en cualquier navegador, sin peticiones de red al cargar, impresión limpia, viewport móvil de 375 px sin scroll horizontal, colores y fuentes tomados del brand-lock, todos los shots y todos los overlays presentes, footer enlazado a brand_lock_ref, fecha de run y de render diferenciadas, y ningún {{ residual.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "a27a5c151152",
+   "alcance": "storyboard-html-preview, barra de calidad",
+   "enunciado": "El renderizador CLI comprueba la mitad mecánica de esa lista contra sí mismo con python tools/shots-to-html.py --selftest.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "98a074689dae",
+   "alcance": "storyboard-html-preview, dos marcas de tiempo",
+   "enunciado": "Si el brand-lock en disco ya no coincide con el hash registrado en run.json, indicarlo en la página, porque el lector ve frames construidos sobre un estado de marca que ya no puede ver.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Two timestamps, not one"
+    }
+   ]
+  },
+  {
+   "id": "78fce4242ffa",
+   "alcance": "storyboard-html-preview, ejemplos",
+   "enunciado": "Abrir los ejemplos en el navegador para calibrar la calidad; los cuatro se re-renderizan en CI con marcas de tiempo fijas y el build falla si la salida cambia, así que sirven de prueba de regresión del skill.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Examples"
+    }
+   ]
+  },
+  {
+   "id": "9224e63f8136",
+   "alcance": "storyboard-html-preview, paso 1 leer entradas",
+   "enunciado": "Validar antes de renderizar con python tools/validate_shots.py output/ y detenerse si falla.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "53a5da97cd1e",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Escapar todo: sujetos, rationales, líneas de VO y texto de overlay son prosa generada por modelo que entra en contextos de texto y de atributo, y tools/shots-to-html.py escapa cada sustitución por defecto y reserva la salida cruda solo para el CSS incrustado.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "491befe54ec1",
+   "alcance": "storyboard-html-preview, paso 4 incrustar frames",
+   "enunciado": "Si la entrada assets.generated de un shot tiene sha256 y el archivo ya no coincide, renderizar el frame pero avisarlo en la página, porque significa que el frame cambió tras registrarse.",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ]
+  },
+  {
+   "id": "1285e3c81acf",
+   "alcance": "video, todos los modelos (U12, auditoría previa al envío)",
+   "enunciado": "Antes de devolver el prompt final se audita cada shot: debe llevar al menos una presión ambiental, una micro-acción física en el cuerpo y un ancla sonora o motivo visual recurrente ligado a la espina emocional.",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/references/universal-rules.md",
+     "encabezado": "Universal rules — apply to every video model › 13. U12. The three-detail check (audit before sending)"
+    }
+   ]
+  },
+  {
+   "id": "01af3c0ce5a3",
+   "alcance": "visual-asset-critic, rúbrica de crítica",
+   "enunciado": "Explicación: tools/validate_critique.py aplica exactamente la tabla de veredictos, de modo que una crítica que la contradiga falla; el umbral pasó a ser numérico porque antes la regla de 3+ hard fails y el criterio discrecional del skill se contradecían.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-asset-critic/references/critique-rubric.md",
+     "encabezado": "Critique Rubric › Aggregating verdict"
+    }
+   ]
+  },
+  {
+   "id": "ae8f264c6675",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Antes de componer se debe validar la entrada con python tools/validate_shots.py output/.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "b07317863f91",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Si falta el brand-lock o shots.json no valida, detenerse y avisar al usuario, sin intentar forjar prompts con datos incompletos.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "ba46d44aff1a",
+   "alcance": "visual-prompt-forge",
+   "enunciado": "Si no hay tools/, leer el esquema en ../storyboard-architect/templates/shots.schema.json y verificar a mano; si los skills no están juntos, pedir el esquema al usuario en vez de componer de memoria.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 1. Read inputs"
+    }
+   ]
+  },
+  {
+   "id": "60191507db1c",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "Checks manuales que el validador no cubre: un archivo por generador pedido, contabilizar los shots omitidos en revisión (ACCEPT, post-only o rechazados), parámetros correctos para la superficie de pegado, ronda añadida a run.json con hash por archivo y que el prompt describa realmente el shot.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "a3831231758c",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "Ejecutar el validador en lugar de revisar a ojo: validate_prompts.py sobre output/ y copy-prompt.py con --list sobre el archivo de la ronda.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "2942c48f08d6",
+   "alcance": "visual-prompt-forge, barra de calidad",
+   "enunciado": "validate_prompts.py comprueba la parte mecánica: cabecera completa, generador válido, aspecto igual al del proyecto, techo de palabras, cobertura de shots, sin bloques duplicados, ausencia de texto en pantalla (regla 1), anclajes verbatim (regla 3) y lógica de shot de la regla 6.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Quality bar"
+    }
+   ]
+  },
+  {
+   "id": "1cff7a417462",
+   "alcance": "visual-prompt-forge, paso 2",
+   "enunciado": "Explicación: tools/validate_capabilities.py hace cumplir la regla de precedencia, fallando si un adaptador anuncia más palabras que su techo o no documenta el aspect_param del JSON, tras un caso donde nano-banana usaba aspect_ratio en la matriz y aspectRatio en el adaptador.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Workflow › Step 2. Pick the adapters"
+    }
+   ]
+  },
+  {
+   "id": "243e45eb508a",
+   "alcance": "visual-prompt-forge, principio de diseño por capas",
+   "enunciado": "Explicación: cada capa tiene una sola función, los cambios son quirúrgicos y las salidas reproducibles, por lo que las barreras en código superan a las barreras en intención.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ]
+  },
+  {
+   "id": "f6f0f2ed9d8f",
+   "alcance": "visual-prompt-forge, regla 3",
+   "enunciado": "El campo character genera una advertencia y no un error si falta, porque un shot sin persona puede omitirlo; cuando hay persona también va verbatim.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  },
+  {
+   "id": "1cb280de0c11",
+   "alcance": "visual-prompt-forge, regla 3",
+   "enunciado": "Explicación: el validador existe porque un pase de autoría cuidadoso sobre un storyboard de siete shots derivó en los anclajes en los siete mientras los demás validadores seguían en verde.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  },
+  {
+   "id": "ec0725249107",
+   "alcance": "visual-prompt-forge, regla 3",
+   "enunciado": "La regla de verbatim se hace cumplir con python tools/validate_prompts.py output/ y no se confía a la disciplina del autor.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 3. Series_lock anchors are verbatim"
+    }
+   ]
+  },
+  {
+   "id": "3a1c3921f7ea",
+   "alcance": "visual-prompt-forge, regla 5",
+   "enunciado": "Regla 5: los prompts deben ser reproducibles; las mismas entradas deben dar siempre el mismo prompt por shot, y si dos corridas difieren el skill está roto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules › Rule 5. Prompts must be reproducible"
+    }
+   ]
+  },
+  {
+   "id": "514ef04c8cf6",
+   "alcance": "visual-prompt-forge, reglas duras",
+   "enunciado": "Explicación: las reglas duras siguientes son innegociables y su violación produce salida rota aunque el prompt parezca correcto.",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/SKILL.md",
+     "encabezado": "Visual Prompt Forge › Hard rules"
+    }
+   ]
+  }
+ ]
+}

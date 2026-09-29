@@ -1,0 +1,2583 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "b78d4d5e0d55",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "5-8",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Identity"
+    }
+   ],
+   "texto": "**Brand:** Northwind Coffee Roasters\n**One-line description:** Small-batch coffee, roasted and shipped the same morning, with full origin transparency, for people who want real coffee and no subscription to babysit.\n**Archetype:** Maker, with a Rebel edge against pretension (frames the category's problem as cheap beans hidden behind burnt roasts and luxury pricing).\n**Voice posture:** Plainspoken and confident. Short declaratives, dry, no decoration."
+  },
+  {
+   "id": "e31a64d6e46c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "16-16",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Background | `#F4EFE6` | Paper cream, primary canvas |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "ebcf65eb95b0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "17-17",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Ink | `#2B2018` | Espresso brown, primary text and dark elements |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "da0373d97ae9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "18-18",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Accent | `#C5562B` | Ember, highlights and CTAs |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "86e0e826b2f1",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "19-19",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Muted | `#8A8076` | Stone, secondary text and captions |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "75ed3331e760",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "20-20",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Palette"
+    }
+   ],
+   "texto": "| Rule | `#DCD3C4` | Borders and dividers |",
+   "contexto": "| Role | Hex | Use |\n|---|---|---|"
+  },
+  {
+   "id": "d77e36914d8d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "24-25",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Typography"
+    }
+   ],
+   "texto": "**Display font:** `Tiempos Headline Semibold`, serif\n**Body font:** `Söhne Regular`, sans-serif, Medium for emphasis"
+  },
+  {
+   "id": "b2ab7562736d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "29-32",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Mood adjectives"
+    }
+   ],
+   "texto": "- plainspoken, not precious\n- warm, not cozy-cute\n- honest about origin\n- unhurried"
+  },
+  {
+   "id": "d7a89b3741d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "36-36",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use stock smiles or posed lifestyle photography"
+  },
+  {
+   "id": "54ebaa0863e0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "37-37",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use latte art as decoration"
+  },
+  {
+   "id": "c5b30bec6e3d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "38-38",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never use the word \"artisanal\""
+  },
+  {
+   "id": "2aeee8752467",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "40-40",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never shoot glossy product-on-white; matte and natural-light only"
+  },
+  {
+   "id": "c3dfc5d90eaf",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "41-41",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Never list"
+    }
+   ],
+   "texto": "- never lean on burnt, dark-roast cliche imagery"
+  },
+  {
+   "id": "8cdd167f9b22",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "45-45",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Aspect ratios"
+    }
+   ],
+   "texto": "Default: 4:5 and 9:16 for social, 16:9 for the web hero."
+  },
+  {
+   "id": "ec4a46d30fae",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "49-49",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Color grade direction"
+    }
+   ],
+   "texto": "> Matte, low contrast, natural window light, warm but restrained. Reminiscent of Kinfolk editorial photography. Never glossy commercial product lighting."
+  },
+  {
+   "id": "98385a03853f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "53-53",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Motion language"
+    }
+   ],
+   "texto": "> Minimal and unhurried. Static or slow push only. Cuts land on action, not on a timer. Type sets in place, it does not bounce or wobble. No fast cuts, no whip pans."
+  },
+  {
+   "id": "fea3ea382233",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "57-57",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- no exclamation points, anywhere"
+  },
+  {
+   "id": "0a8706bb7ae9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "58-58",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- never the word \"artisanal\" (or \"curated\", \"elevated\")"
+  },
+  {
+   "id": "c54f349197b3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "59-59",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- short declarative sentences; cut adjectives before nouns that do not need them"
+  },
+  {
+   "id": "980c6ad8001c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "60-60",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- prefer specific origin claims (farm, region, roast date) over vague quality words"
+  },
+  {
+   "id": "bab782ac8443",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "61-61",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Voice rules"
+    }
+   ],
+   "texto": "- no hype words (\"best\", \"premium\", \"game-changing\")"
+  },
+  {
+   "id": "f85a893819e2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "65-65",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "Audit trail for this extraction. Values not listed here were read directly from an asset (`extracted`): the four palette hex from the site CSS, both font names from the CSS, the never-list lines from the brand sheet, and the aspect ratios from the brand sheet."
+  },
+  {
+   "id": "36b3030cd368",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "67-70",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Inferred** (reasoned from evidence, reasonable to ship):\n- Archetype \"Maker / Rebel\", from \"we are roasters, not a lifestyle brand. The coffee does the talking\" and the framing of competitors as burnt-cheap or overpriced.\n- Mood adjectives, from the plainspoken homepage copy and the matte, natural-light photography described on the brand sheet.\n- Color grade direction, inferred from the brand sheet's photography notes (matte, low-contrast, window light); no graded footage was provided."
+  },
+  {
+   "id": "d9db63a90369",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "72-75",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Needs confirmation** (best estimate, please verify):\n- Rule color `#DCD3C4`, no divider/border color was given; estimated as a darker tint of the paper background. Confirm or replace.\n- Font weights (Tiempos Headline Semibold, Söhne Regular/Medium), fonts are confirmed from CSS, weights are estimated from visual weight. Confirm against the brand book.\n- Motion language, no motion assets were provided; this is a conservative default consistent with the Plainspoken/Confident posture. Confirm against any existing video."
+  },
+  {
+   "id": "e95b95ec4d3c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/brand-lock.md",
+     "lineas": "79-81",
+     "encabezado": "Brand Lock: Northwind Coffee Roasters › Extraction notes"
+    }
+   ],
+   "texto": "**Last updated:** 2026-06-18\n**Owner:** extracted\n**Version:** 1.0"
+  },
+  {
+   "id": "1b8fcc8df4d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "3-3",
+     "encabezado": "Example input: what the user handed over"
+    }
+   ],
+   "texto": "This is the raw source material for the worked extraction. The user provided a URL and a one-page brand sheet. The `brand-lock.md` in this folder is what the skill produced from it."
+  },
+  {
+   "id": "9d91ffd51c50",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "7-13",
+     "encabezado": "Example input: what the user handed over › Source 1: website (fetched)"
+    }
+   ],
+   "texto": "**Homepage hero:**\n> Northwind Coffee Roasters\n> Small-batch coffee, roasted the morning it ships.\n> No subscriptions to forget about. No bitter shortcuts. Just coffee that tastes like someone cared.\n\n**About page excerpt:**\n> We started Northwind in a one-car garage in Duluth because the coffee we could buy locally was either burnt to hide cheap beans or priced like a luxury good. We roast in small batches, ship the same day, and tell you exactly where the beans came from and who grew them. We are roasters, not a lifestyle brand. The coffee does the talking."
+  },
+  {
+   "id": "cd4c270db068",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "15-23",
+     "encabezado": "Example input: what the user handed over › Source 1: website (fetched)"
+    }
+   ],
+   "texto": "**CSS (from the page source):**\n```\n--paper: #F4EFE6;\n--espresso: #2B2018;\n--ember: #C5562B;\n--stone: #8A8076;\nfont-family: \"Tiempos Headline\", Georgia, serif;   /* headings */\nfont-family: \"Söhne\", -apple-system, sans-serif;    /* body */\n```"
+  },
+  {
+   "id": "14f9ddaea83a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "27-27",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Logo: wordmark only, espresso brown on paper cream. No icon."
+  },
+  {
+   "id": "d9446588964b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "28-28",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Photography: matte, low-contrast, natural window light. Beans, hands, kraft bags. Never glossy product-on-white."
+  },
+  {
+   "id": "88630c8c5ce5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "29-29",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- \"We don't do: stock smiles, latte art as decoration, exclamation points, or the word 'artisanal'.\""
+  },
+  {
+   "id": "0babaeb5d140",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/examples/input-brief.md",
+     "lineas": "30-30",
+     "encabezado": "Example input: what the user handed over › Source 2: one-page brand sheet (read)"
+    }
+   ],
+   "texto": "- Formats noted: Instagram (4:5 and 9:16), website hero (16:9)."
+  },
+  {
+   "id": "53ad38434c9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "3-3",
+     "encabezado": "Extraction rubric"
+    }
+   ],
+   "texto": "How to read each brand-lock section out of real assets. For every section: where the signal lives, how to read it, and how to assign confidence."
+  },
+  {
+   "id": "ea30aeb75371",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "7-11",
+     "encabezado": "Extraction rubric › Confidence levels"
+    }
+   ],
+   "texto": "Apply one to every value.\n\n- **extracted**, read directly from an asset. A hex in the brand book PDF. A `font-family` in the site CSS. A verbatim quote from the homepage. Ship it plainly.\n- **inferred**, reasoned from evidence, not stated. Archetype from how the brand frames problems. Never-list from what the assets consistently avoid. Ship it, note the reasoning.\n- **needs confirmation**, a best estimate where assets were silent, compressed, or contradictory. A color sampled from a low-quality JPEG. A font you could not positively identify. Fill it so the file is complete, then flag it in Extraction notes."
+  },
+  {
+   "id": "40e35f7800fc",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "15-23",
+     "encabezado": "Extraction rubric › Identity"
+    }
+   ],
+   "texto": "**Brand:** the name. Extracted from the logo, the title tag, or the description.\n\n**One-line description:** what the brand does and who for. This is the load-bearing sentence; a generator implicitly references it on every prompt. Pull it from the hero headline plus the about page. Prefer concrete over abstract: \"Managed bookkeeping for solo law firms\" beats \"Financial services for professionals.\" If the site only offers a vague tagline, sharpen it from the services/about copy and flag it `needs confirmation`.\n\n**Archetype:** one word, Operator, Sage, Caregiver, Rebel, Creator, Jester, Ruler, Everyman, etc. Almost always `inferred`. Read it from how the brand frames the customer's problem:\n- frames problems as systems to engineer -> Operator\n- frames problems as questions to investigate -> Sage\n- frames problems as people to support -> Caregiver\n- frames problems as a status quo to break -> Rebel"
+  },
+  {
+   "id": "af8ce4d7af34",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "25-25",
+     "encabezado": "Extraction rubric › Identity"
+    }
+   ],
+   "texto": "**Voice posture:** Confident / Warm / Sharp / Quiet / Playful / Authoritative. Read from sentence length, punctuation, and word choice in the body copy. Short declaratives -> Sharp/Confident. Long, soft, second-person -> Warm. Cite a representative sentence."
+  },
+  {
+   "id": "c228a67d83a8",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "29-29",
+     "encabezado": "Extraction rubric › Palette"
+    }
+   ],
+   "texto": "A table of `#RRGGBB` by role: Background, Ink, Accent, Muted, Rule, plus any brand-specific roles. Up to 8; past that the brand stops being recognizable."
+  },
+  {
+   "id": "fa13e49d0b3e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "31-34",
+     "encabezado": "Extraction rubric › Palette"
+    }
+   ],
+   "texto": "How to get real hex:\n- **Brand book PDF:** read the swatches directly. Highest confidence.\n- **Website:** the CSS holds exact values (`background`, `color`, CSS custom properties like `--accent`). Highest confidence after a brand book.\n- **Screenshots:** sample the dominant background, the text color, and the one or two accent colors. Compression shifts color slightly, so flag screenshot-sampled values `needs confirmation` unless they are clearly flat brand colors."
+  },
+  {
+   "id": "405406d36501",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "36-36",
+     "encabezado": "Extraction rubric › Palette"
+    }
+   ],
+   "texto": "**Never guess a hex.** If you cannot read or sample one, estimate, label it `needs confirmation`, and tell the user exactly which role to verify. (See SKILL.md Rule 1.)"
+  },
+  {
+   "id": "1e72704e433b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "40-40",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ],
+   "texto": "Display font, body font, optional mono, each with weight (`Inter Black 900`, not `Inter Bold`)."
+  },
+  {
+   "id": "71259aa5de41",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "42-42",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ],
+   "texto": "- **Website:** `font-family` declarations and loaded font files (`fonts.googleapis.com`, `@font-face`, `.woff2` names) name the fonts exactly. Weights come from `font-weight`."
+  },
+  {
+   "id": "3ad7486036c9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "43-43",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ],
+   "texto": "- **Brand book:** named directly."
+  },
+  {
+   "id": "31391964143b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "44-44",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ],
+   "texto": "- **Screenshots:** identify by eye only if confident; otherwise flag `needs confirmation`. Do not invent a plausible name (Rule 2)."
+  },
+  {
+   "id": "949334727788",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "46-46",
+     "encabezado": "Extraction rubric › Typography"
+    }
+   ],
+   "texto": "Two fonts max; three only if one is mono for code/data."
+  },
+  {
+   "id": "66d48f283a52",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "50-50",
+     "encabezado": "Extraction rubric › Mood adjectives"
+    }
+   ],
+   "texto": "3-5 adjectives, specific, contrast clauses preferred. Read tone from the body copy and the imagery together."
+  },
+  {
+   "id": "44ed1f8a39e6",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "52-52",
+     "encabezado": "Extraction rubric › Mood adjectives"
+    }
+   ],
+   "texto": "Reject generic fillers (\"professional, modern, clean\"), they describe everything and constrain nothing. Push to contrast clauses that do work: \"operator not creator\", \"warm not precious\", \"plainspoken not corporate\". If the assets only support generic adjectives, flag `needs confirmation`. Cite the copy or image that supports each adjective."
+  },
+  {
+   "id": "9e6349fd2514",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "56-56",
+     "encabezado": "Extraction rubric › Never list"
+    }
+   ],
+   "texto": "The hardest and most valuable section. Brands document what they do; you infer what they avoid from consistency across the assets."
+  },
+  {
+   "id": "19635125b635",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "58-61",
+     "encabezado": "Extraction rubric › Never list"
+    }
+   ],
+   "texto": "Method, look for what is conspicuously absent:\n- Imagery: no stock-photo gloss? no people? no gradients? no clip-art icons? Each absence is a never.\n- Copy: no exclamation points? no hype words (\"revolutionary\", \"game-changing\")? no emojis? no questions in headlines? Each pattern is a never.\n- Color/layout: never full-bleed photography? never more than one accent? never centered body text?"
+  },
+  {
+   "id": "a2db1409aa50",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "63-63",
+     "encabezado": "Extraction rubric › Never list"
+    }
+   ],
+   "texto": "Turn each observed constraint into a `never` line. Be specific: \"never use stock-photo aesthetic\" beats \"keep it authentic\". Aim for 5+. Never ship an empty list (Rule 4)."
+  },
+  {
+   "id": "6e550da8cec3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "67-67",
+     "encabezado": "Extraction rubric › Aspect ratios"
+    }
+   ],
+   "texto": "The ratios the brand renders for. Default to `9:16, 16:9, 1:1, 4:5`. If the assets reveal a bias (a vertical-only social brand, a cinematic 21:9 site hero), reflect it and note the evidence."
+  },
+  {
+   "id": "3b72845cc69a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "71-71",
+     "encabezado": "Extraction rubric › Color grade direction"
+    }
+   ],
+   "texto": "One sentence on how footage and generated images should be graded, with a reference point where possible (Kodak Portra 400, Apple keynote photography, A24 film grade). Infer from the existing photography's warmth, contrast, and saturation. If there is no photography to read, base it on the palette and flag `needs confirmation`."
+  },
+  {
+   "id": "5bfe53f7a54c",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "75-75",
+     "encabezado": "Extraction rubric › Motion language"
+    }
+   ],
+   "texto": "One paragraph: camera moves, cut style, text animation, pacing. Read from any existing video or motion on the site; if there is none, infer a conservative default consistent with the voice posture (a Quiet/Authoritative brand -> minimal, slow, deliberate) and flag `needs confirmation`. Keep it to one coherent motion language, do not blend \"minimal and deliberate\" with \"energetic whip pans\"."
+  },
+  {
+   "id": "5987d148ae23",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/references/extraction-rubric.md",
+     "lineas": "79-79",
+     "encabezado": "Extraction rubric › Voice rules"
+    }
+   ],
+   "texto": "Copy-level constraints for VO and on-screen text. Many overlap the never-list but are phrased as authoring rules: \"no em dashes\", \"sentences under 14 words\", \"prefer specific numbers over vague claims\", \"no exclamation points in headlines\". Extract from observed copy patterns. These become prompt constraints downstream, so make them enforceable, not aspirational."
+  },
+  {
+   "id": "3ca6f6f1b437",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "3-4",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "3-4",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "3-4",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "3-4",
+     "encabezado": "Tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "3-4",
+     "encabezado": "Tools"
+    }
+   ],
+   "texto": "Python helpers that keep the repo honest, gate a real project's output, and render previews\nwithout invoking Claude."
+  },
+  {
+   "id": "aaa07d41b696",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "8-10",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "8-10",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "8-10",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "8-10",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "8-10",
+     "encabezado": "Tools › Requirements"
+    }
+   ],
+   "texto": "```bash\npip install pyyaml jsonschema\n```"
+  },
+  {
+   "id": "4e3f91635392",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "12-12",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "12-12",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "12-12",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "12-12",
+     "encabezado": "Tools › Requirements"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "12-12",
+     "encabezado": "Tools › Requirements"
+    }
+   ],
+   "texto": "Standard library otherwise. No pandas, no numpy."
+  },
+  {
+   "id": "49f1840c30f0",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "16-20",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "16-20",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "16-20",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "16-20",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "16-20",
+     "encabezado": "Tools › Run everything"
+    }
+   ],
+   "texto": "```bash\n./tools/check.sh            # every check, with output\n./tools/check.sh --quiet    # pass/fail lines only\nPYTHON=python3.12 ./tools/check.sh\n```"
+  },
+  {
+   "id": "b78fca2a8563",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "22-22",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "22-22",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "22-22",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "22-22",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "22-22",
+     "encabezado": "Tools › Run everything"
+    }
+   ],
+   "texto": "This is exactly what CI runs, so a green local run means a green PR."
+  },
+  {
+   "id": "5581b0d36d07",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "24-26",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "24-26",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "24-26",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "24-26",
+     "encabezado": "Tools › Run everything"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "24-26",
+     "encabezado": "Tools › Run everything"
+    }
+   ],
+   "texto": "Every validator below also ships a `--selftest` that constructs failing fixtures and fails if\nthe check does not catch them. A validator that silently stops catching things is worse than\nno validator, and the selftests are how that gets noticed."
+  },
+  {
+   "id": "f761b04fc372",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "32-33",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "32-33",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "32-33",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "32-33",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "32-33",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    }
+   ],
+   "texto": "Checks every `SKILL.md` in `skills/` has the required YAML frontmatter, a `name` that matches\nits directory and a substantive `description`."
+  },
+  {
+   "id": "77161f64c348",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "35-37",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "35-37",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "35-37",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "35-37",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "35-37",
+     "encabezado": "Tools › Repo checks › `validate_skills.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_skills.py\n```"
+  },
+  {
+   "id": "0ae7e0aba006",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "41-42",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "41-42",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "41-42",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "41-42",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "41-42",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ],
+   "texto": "Checks every `*.schema.json` file is itself valid JSON Schema (Draft 2020-12) and carries\n`$id`, `title`, and `description`."
+  },
+  {
+   "id": "58d6a869869f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "44-46",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "44-46",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "44-46",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "44-46",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "44-46",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_schemas.py\n```"
+  },
+  {
+   "id": "1ea989a6fae6",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "48-48",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "48-48",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "48-48",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "48-48",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "48-48",
+     "encabezado": "Tools › Repo checks › `validate_schemas.py`"
+    }
+   ],
+   "texto": "It validates schemas, not instances. For instances, see `validate_shots.py`."
+  },
+  {
+   "id": "a2a94d5da69e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "52-60",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "52-60",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "52-60",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "52-60",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "52-60",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ],
+   "texto": "Checks the generator capability matrix\n(`skills/visual-prompt-forge/adapters/_capabilities.json`) against\n`capabilities.schema.json`, then checks it against the adapter prose that defers to it:\n\n- every generator id has an adapter `.md` and every adapter `.md` has an entry\n- no adapter advertises more words than its own `max_prompt_words` ceiling\n- every adapter documents the `aspect_param` the matrix says to send\n- no `notes` field cites a word count above its own ceiling\n- warns when the matrix or an entry is past its 120-day freshness window"
+  },
+  {
+   "id": "a6cca3d43969",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "62-65",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "62-65",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "62-65",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "62-65",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "62-65",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_capabilities.py\npython tools/validate_capabilities.py --selftest\n```"
+  },
+  {
+   "id": "653bfb7d4088",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "67-68",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "67-68",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "67-68",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "67-68",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "67-68",
+     "encabezado": "Tools › Repo checks › `validate_capabilities.py`"
+    }
+   ],
+   "texto": "The prose checks exist because the matrix and the adapters had drifted in three places while\nevery file repeated the rule that the JSON wins."
+  },
+  {
+   "id": "bff6cea436e5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "72-74",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "72-74",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "72-74",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "72-74",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "72-74",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ],
+   "texto": "Checks a brand-lock has all required sections and Identity fields, that its palette declares\nthe five roles the HTML preview maps onto CSS variables, and that its fonts are in the\nbackticked form the tools read."
+  },
+  {
+   "id": "4df8ba1bfc29",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "76-82",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "76-82",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "76-82",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "76-82",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "76-82",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_brand_lock.py brand-packs/whystrohm.md\npython tools/validate_brand_lock.py --require-configured brand-packs/whystrohm.md\npython tools/validate_brand_lock.py --snapshot output/brand-lock.snapshot.md\npython tools/validate_brand_lock.py --snapshots     # every snapshot in the repo\npython tools/validate_brand_lock.py --selftest\n```"
+  },
+  {
+   "id": "604f06b713de",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "84-86",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "84-86",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "84-86",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "84-86",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "84-86",
+     "encabezado": "Tools › Repo checks › `validate_brand_lock.py`"
+    }
+   ],
+   "texto": "A brand-pack may be an unfilled template; that is what a template is. A snapshot may not, and\n`--snapshot` additionally requires the `<!-- snapshot taken: ... -->` and\n`<!-- source: ... -->` header, with a full UTC instant preferred over a bare date."
+  },
+  {
+   "id": "a2ca91907aec",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "90-90",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "90-90",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "90-90",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "90-90",
+     "encabezado": "Tools › Project checks"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "90-90",
+     "encabezado": "Tools › Project checks"
+    }
+   ],
+   "texto": "These run against a project's output directory, not the repo."
+  },
+  {
+   "id": "8f7082efb6b3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "94-98",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "94-98",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "94-98",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "94-98",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "94-98",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ],
+   "texto": "Validates `shots.json` and `text-overlays.json` as instances, plus every cross-field and\ncross-file rule JSON Schema cannot express: `end` after `start`, no gaps or overlaps, span\nmatching `project.duration_s`, overlay references resolving in both directions, every overlay\nreachable from some shot, overlay timing inside its shot window, and every overlay color\npresent in the brand-lock palette."
+  },
+  {
+   "id": "bfeed2a388f3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "100-105",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "100-105",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "100-105",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "100-105",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "100-105",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_shots.py output/\npython tools/validate_shots.py path/to/shots.json\npython tools/validate_shots.py --examples     # every bundled example\npython tools/validate_shots.py --selftest\n```"
+  },
+  {
+   "id": "f6f784774995",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "107-108",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "107-108",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "107-108",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "107-108",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "107-108",
+     "encabezado": "Tools › Project checks › `validate_shots.py`"
+    }
+   ],
+   "texto": "Warnings cover the judgement calls: overlay copy repeated in a shot subject, a raw hex in a\nsubject, shot ids out of chronological order, a font the brand-lock does not declare."
+  },
+  {
+   "id": "78cd9d3a55e2",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "112-116",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "112-116",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "112-116",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "112-116",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "112-116",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ],
+   "texto": "Validates the prompt files `visual-prompt-forge` writes, against `shots.json` and the\ncapability matrix. Header completeness, generator id, aspect agreement, the\n`max_prompt_words` ceiling, shot coverage, duplicate blocks, and the forge's two hard\nrules: no on-screen text copy inside a prompt, and `environment` / `lighting` /\n`color_grade` appearing verbatim."
+  },
+  {
+   "id": "5f82a4053f47",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "118-123",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "118-123",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "118-123",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "118-123",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "118-123",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_prompts.py output/\npython tools/validate_prompts.py output/prompts/round-1/flux.txt\npython tools/validate_prompts.py --examples\npython tools/validate_prompts.py --selftest\n```"
+  },
+  {
+   "id": "8b3efca44887",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "125-129",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "125-129",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "125-129",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "125-129",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "125-129",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ],
+   "texto": "The verbatim check is the reason this file exists. Series consistency depends on the\nseries_lock anchors landing unedited in every prompt, and that is the single easiest rule\nin the kit to break, because paraphrasing an anchor is what writing good prose feels like.\nA careful authoring pass over a seven-shot storyboard drifted on it seven times out of\nseven with every other validator green, and so did the worked-run fixture in this repo."
+  },
+  {
+   "id": "11effd23f447",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "131-132",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "131-132",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "131-132",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "131-132",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "131-132",
+     "encabezado": "Tools › Project checks › `validate_prompts.py`"
+    }
+   ],
+   "texto": "The character anchor is a warning rather than an error: a shot with no person in it can\nlegitimately omit it, and the message says so, so you can confirm rather than guess."
+  },
+  {
+   "id": "cb3fda8cf1aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "136-137",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "136-137",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "136-137",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "136-137",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "136-137",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ],
+   "texto": "Validates a critique against `critique.schema.json` **and** the two invariants the schema\ncannot hold."
+  },
+  {
+   "id": "554455999cc9",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "139-140",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "139-140",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "139-140",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "139-140",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "139-140",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ],
+   "texto": "The gate: any `blocking` issue forces `REJECT`, three or more `major` issues force `REJECT`,\none or two `major` forbid `ACCEPT`."
+  },
+  {
+   "id": "8f714e7ceb2a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "142-144",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "142-144",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "142-144",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "142-144",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "142-144",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ],
+   "texto": "The provenance rules, from schema version `1.1`: a hash without its path is not a reference,\n`image_ref` may not be null, `HIGH` confidence requires the shot, brand-lock, and prompt all\nto be identified, and a named generator has to exist in the capability matrix."
+  },
+  {
+   "id": "7b2e61b11f1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "146-151",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "146-151",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "146-151",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "146-151",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "146-151",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_critique.py output/critiques/round-1/shot_03.critique.json\npython tools/validate_critique.py output/          # every critique in the tree\npython tools/validate_critique.py --examples\npython tools/validate_critique.py --selftest\n```"
+  },
+  {
+   "id": "740197cf4603",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "153-154",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "153-154",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "153-154",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "153-154",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "153-154",
+     "encabezado": "Tools › Project checks › `validate_critique.py`"
+    }
+   ],
+   "texto": "Version `1.0` critiques still pass, with a warning: they carry a verdict and no way to tie it\nto the bytes it reviewed."
+  },
+  {
+   "id": "e2963509a03e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "158-159",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "158-159",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "158-159",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "158-159",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "158-159",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ],
+   "texto": "Walks an output tree and recomputes every recorded hash. This is the tool that answers \"does\nthis verdict still describe the file it reviewed.\""
+  },
+  {
+   "id": "085dab44a484",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "161-166",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "161-166",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "161-166",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "161-166",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "161-166",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/validate_provenance.py output/\npython tools/validate_provenance.py output/ --require-accept\npython tools/validate_provenance.py output/ --json\npython tools/validate_provenance.py --selftest\n```"
+  },
+  {
+   "id": "cfb2dce58771",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "168-174",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "168-174",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "168-174",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "168-174",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "168-174",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ],
+   "texto": "It catches, with a selftest for each:\n\n- a frame regenerated after its critique (`image_sha256` no longer matches)\n- a brand-lock edited mid-project (`brand_lock_sha256` no longer matches `run.json`)\n- a frame on disk with no critique for its round, never reviewed at all\n- two critiques for the same shot in the same round, two operators colliding\n- rounds that skip a number, or a critique whose `run_id` belongs to another run"
+  },
+  {
+   "id": "d7938e800886",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "176-177",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "176-177",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "176-177",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "176-177",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "176-177",
+     "encabezado": "Tools › Project checks › `validate_provenance.py`"
+    }
+   ],
+   "texto": "`--require-accept` makes it the pipeline stop condition: exit 0 only when the chain is intact\n*and* every shot's latest verdict is ACCEPT."
+  },
+  {
+   "id": "58daf3aff91f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "183-191",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "183-191",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "183-191",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "183-191",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "183-191",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ],
+   "texto": "Renders an output folder into a single `preview.html`.\n\n```bash\npython tools/shots-to-html.py output/\npython tools/shots-to-html.py output/ --inline-images\npython tools/shots-to-html.py output/ --out review.html\npython tools/shots-to-html.py output/ --rendered-at 2026-07-30T00:00:00Z\npython tools/shots-to-html.py --selftest\n```"
+  },
+  {
+   "id": "f5332ef9f953",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "193-196",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "193-196",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "193-196",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "193-196",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "193-196",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ],
+   "texto": "It renders `skills/storyboard-html-preview/templates/preview.html.tpl`, the same structural\ntemplate the skill uses, through the small engine in `_template.py`. It did not always: the\nCLI used to build its HTML inline while claiming to share the template, so the two could and\ndid diverge."
+  },
+  {
+   "id": "49f6b00ae9c3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "198-199",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "198-199",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "198-199",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "198-199",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "198-199",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ],
+   "texto": "Everything interpolated is HTML-escaped. Shot subjects and rationales are model-generated\nprose, and one angle bracket used to be enough to break the page."
+  },
+  {
+   "id": "152e16b567c5",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "201-202",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "201-202",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "201-202",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "201-202",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "201-202",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ],
+   "texto": "`--rendered-at` pins the render timestamp, which makes output reproducible. CI re-renders\nevery bundled preview with a pinned value and fails if a byte moves."
+  },
+  {
+   "id": "b4a8ab8f30e3",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "204-205",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "204-205",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "204-205",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "204-205",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "204-205",
+     "encabezado": "Tools › Rendering › `shots-to-html.py`"
+    }
+   ],
+   "texto": "The page shows two dates, deliberately: the **run** date from `run.json`, and the **render**\ndate. A single \"Generated\" date meant re-rendering a preview restamped the run as today."
+  },
+  {
+   "id": "c3e1b1492015",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "209-210",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "209-210",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "209-210",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "209-210",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "209-210",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ],
+   "texto": "Pipes one shot's prompt to the clipboard so you can paste into a generator UI without hunting\nthrough the file."
+  },
+  {
+   "id": "053684f76685",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "212-217",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "212-217",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "212-217",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "212-217",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "212-217",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ],
+   "texto": "```bash\npython tools/copy-prompt.py output/prompts/round-1/flux.txt\npython tools/copy-prompt.py output/prompts/round-2/revised-flux.txt --shot shot_02\npython tools/copy-prompt.py output/prompts/round-1/flux.txt --list\npython tools/copy-prompt.py --selftest\n```"
+  },
+  {
+   "id": "93e51af3b144",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "219-222",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "219-222",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "219-222",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "219-222",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "219-222",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ],
+   "texto": "Reads both file shapes the forge writes. Comment lines inside a shot block are annotations and\nnever land in the clipboard, so a revision file's `# fix [...]` notes are shown but not\ncopied. Revision files used to be unreadable to this tool entirely, which was awkward given\nthey are the files an operator pastes from most."
+  },
+  {
+   "id": "67cd3ebf7613",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "224-224",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "224-224",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "224-224",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "224-224",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "224-224",
+     "encabezado": "Tools › Rendering › `copy-prompt.py`"
+    }
+   ],
+   "texto": "Pure standard library. `pbcopy` on macOS, `xclip` or `xsel` on Linux, `clip` on Windows."
+  },
+  {
+   "id": "596399cc5d9f",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "228-233",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "228-233",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "228-233",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "228-233",
+     "encabezado": "Tools › Internal modules"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "228-233",
+     "encabezado": "Tools › Internal modules"
+    }
+   ],
+   "texto": "Not entry points. Imported by the tools above.\n\n- `_shotkit.py`, hashing, run ids, brand-lock parsing, and the output-tree path conventions.\n  One copy, so no two tools can disagree about what a palette or a frame path is.\n- `_template.py`, the template engine: `{{var}}`, `{{{raw}}}`, `{{#each}}`, `{{#if}}`. Only\n  the subset `preview.html.tpl` uses, deliberately."
+  },
+  {
+   "id": "15fa94e68c9b",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "237-237",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "237-237",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "237-237",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "237-237",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "237-237",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "- Make it executable (`chmod +x`)"
+  },
+  {
+   "id": "92fb7ef3837e",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "238-238",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "238-238",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "238-238",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "238-238",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "238-238",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "- Add a usage docstring at the top of the file"
+  },
+  {
+   "id": "bd0324f27617",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "239-239",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "239-239",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "239-239",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "239-239",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "239-239",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "- Give it a `--selftest` that proves the check fires"
+  },
+  {
+   "id": "3fa2b51f6c44",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "240-240",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "240-240",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "240-240",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "240-240",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "240-240",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "- Document it in this README"
+  },
+  {
+   "id": "1a4bd4dacd90",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "241-241",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "241-241",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "241-241",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "241-241",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "241-241",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "- Wire it into `tools/check.sh`, which is what CI calls"
+  },
+  {
+   "id": "5a763327bb3d",
+   "ubicaciones": [
+    {
+     "documento": "skills/brand-lock-extractor/tools/README.md",
+     "lineas": "243-243",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-architect/tools/README.md",
+     "lineas": "243-243",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/storyboard-html-preview/tools/README.md",
+     "lineas": "243-243",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-asset-critic/tools/README.md",
+     "lineas": "243-243",
+     "encabezado": "Tools › Adding new tools"
+    },
+    {
+     "documento": "skills/visual-prompt-forge/tools/README.md",
+     "lineas": "243-243",
+     "encabezado": "Tools › Adding new tools"
+    }
+   ],
+   "texto": "Keep tools dependency-light. PyYAML, jsonschema, and the standard library are the baseline."
+  },
+  {
+   "id": "9fffa4e42c64",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "4-11",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: >\n  Image prompting skill for Nano Banana (NBP/NB2) and GPT Image 2. Writes ready-to-use\n  prompts with model/quality/size recommendations. Use when: \"нарисуй\", \"сгенерируй\n  картинку\", \"image prompt\", \"промпт для картинки\", blog covers, slides, posters,\n  product shots, UI mockups, storyboards, character sheets, edit/colorize, style transfer,\n  vision analysis, image-to-prompt, nb, NBP, NB2, gpt-image-2, multi-panel grids,\n  ecommerce product photography, fashion editorial, food/beverage ads, cinematic portraits.\n  Do NOT use for: video (use video skill), 3D models, audio, non-image tasks."
+  },
+  {
+   "id": "81a1d8b6e102",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "16-16",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2"
+    }
+   ],
+   "texto": "This skill writes image prompts. It does not generate images. The output is: model name + quality / size / aspect ratio + the prompt itself."
+  },
+  {
+   "id": "9a593d8e2532",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "18-18",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2"
+    }
+   ],
+   "texto": "The body of this SKILL.md is intentionally thin so you cannot fake a result by reading it alone. The actual rules — what the models reward, what they punish, how to phrase a 5-slot template, when to add `quality: high`, when to use image grounding — live only in the reference files."
+  },
+  {
+   "id": "d9ed5452ea9b",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "22-22",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?"
+    }
+   ],
+   "texto": "- **Motion, clips, montage** (Seedance, Kling, Veo, any image-to-video): use the sibling `video` skill. This skill's storyboard and keyframe outputs feed it."
+  },
+  {
+   "id": "2e3991c47b2f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "23-23",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?"
+    }
+   ],
+   "texto": "- **No idea or script yet** (user wants a concept or an ad scenario, not a picture): if the `creative-director` skill is installed, start there — it develops ideas and scripts for commercials and beyond ([github.com/smixs/creative-director-skill](https://github.com/smixs/creative-director-skill))."
+  },
+  {
+   "id": "c813921f3900",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "24-24",
+     "encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?"
+    }
+   ],
+   "texto": "- **A concrete image is needed** — this skill. Continue below."
+  },
+  {
+   "id": "5160eccd7ff3",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "30-30",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ],
+   "texto": "Past attempts to write prompts directly from this skill body produced lazy, generic results. Each model has its own physics; common rules collapse into mush when applied without model-specific syntax. Read in this order before producing any prompt:"
+  },
+  {
+   "id": "94aec5c9ad1d",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "34-34",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)"
+    }
+   ],
+   "texto": "Decide: Nano Banana (NB2 or NBP) or GPT Image 2. The choice changes the prompt syntax fundamentally — natural-language paragraphs vs. labeled 5-slot template, quality settings, which features exist (image grounding only on NB, EXACT TEXT discipline only on GPT Image, etc.)."
+  },
+  {
+   "id": "322f0d4acb35",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "36-36",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)"
+    }
+   ],
+   "texto": "If the user named a model — confirm and proceed. If not — pick using the table in `models.md`, then state your choice in the output header."
+  },
+  {
+   "id": "433ca4b5afda",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "40-42",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ],
+   "texto": "- **Nano Banana** → [nano-banana.md](references/nano-banana.md)\n  Image grounding for real locations. Extreme aspect ratios (1:8, 8:1, 4:1). Thinking mode. JSON for 5+ elements. Up to 14 reference images. Why you must NOT write `50mm / f-stop / ISO` numbers.\n"
+  },
+  {
+   "id": "a305d839cfe7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "43-44",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ],
+   "texto": "- **GPT Image 2** → [gpt-image.md](references/gpt-image.md)\n  5-slot template (Scene / Subject / Important Details / Use Case / Constraints). Anti-slop banned-words list. `quality: low / medium / high` as a deliberate fidelity lever. Size constraints (multiples of 16, max 3:1, up to 2560×1440). Two-column edit logic (Change / Preserve / Constraints). Up to 16 reference images with explicit roles."
+  },
+  {
+   "id": "e231e82e52a0",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "46-46",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — read **one** model file (the one you picked)"
+    }
+   ],
+   "texto": "The model file is non-negotiable. Skipping it is the single biggest cause of weak prompts."
+  },
+  {
+   "id": "d28f9f7ed633",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "50-50",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)"
+    }
+   ],
+   "texto": "Universal rules that apply to both models: start with a verb, positive framing, hex colors, quote text, edit don't re-roll, one change per iteration, reference images."
+  },
+  {
+   "id": "fc7e4e1faff9",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "54-72",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only what matches the request)"
+    }
+   ],
+   "texto": "Pick zero or more, depending on what the user asked for:\n\n- Text in image, infographic, diagram, multilingual rendering → [text-rendering.md](references/text-rendering.md)\n- Edit existing image (object removal, lighting swap, colorization, restoration, localization) → [editing.md](references/editing.md)\n- Character continuity across multiple images / panels → [characters.md](references/characters.md)\n- Presentation slides → [slides.md](references/slides.md)\n- Sequential narrative (storyboard, comic, panel sequence) → [storyboards.md](references/storyboards.md)\n- Sketch → final, wireframes, structural input → [structural.md](references/structural.md)\n- 2D → 3D, floor plans, isometric → [dimensional.md](references/dimensional.md)\n- **Vision analysis / image-to-prompt / style transfer from a reference image** → [vision-decomposer.md](references/vision-decomposer.md). Load this whenever the user attaches an image and asks to recreate, match, decompose, or transfer its style.\n- **Multi-panel compositions** (grids, collages, storyboard sheets in ONE image) → [multi-panel.md](references/multi-panel.md). 9-cell TVC grids, 2x2 portrait grids, 3-panel campaign collages, 4x3 borderless grids, 6-frame cinematic sequences, before/after splits, 12-panel storyboard posters.\n- **Industry pattern libraries** — proven prompt templates by vertical. Load the matching file:\n  - E-commerce product shots → [patterns/ecommerce.md](references/patterns/ecommerce.md)\n  - Fashion editorial campaigns → [patterns/fashion-editorial.md](references/patterns/fashion-editorial.md)\n  - Food & beverage advertising → [patterns/food-beverage.md](references/patterns/food-beverage.md)\n  - Cinematic portraits → [patterns/portrait-cinema.md](references/patterns/portrait-cinema.md)\n  - Posters & illustration → [patterns/poster-illustration.md](references/patterns/poster-illustration.md)\n  - Character design (turnarounds, expression sheets, outfit grids) → [patterns/character-design.md](references/patterns/character-design.md)\n  - UI mockups & social media formats → [patterns/ui-social.md](references/patterns/ui-social.md)"
+  },
+  {
+   "id": "071d11e24696",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "76-76",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 5 — read for production language → [creative-direction.md](references/creative-direction.md)"
+    }
+   ],
+   "texto": "Studio-quality vocabulary for lighting design, camera and hardware, color grading and film stock, materiality and texture. Read when you need precise terms beyond what `golden-rules.md` covers."
+  },
+  {
+   "id": "b2623970bc43",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "80-80",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)"
+    }
+   ],
+   "texto": "Universal element checklist (subject, context, action, environment, camera, lighting, mood, materials, palette, format), detail modes (concise / standard / verbose / cinematic verbose), parameterized templates, output structure with parameters and exclusions."
+  },
+  {
+   "id": "0987cfd1a819",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "86-98",
+     "encabezado": "Output format"
+    }
+   ],
+   "texto": "When you return the prompt, structure it like this:\n\n```\nModel: <nano-banana-2 | nano-banana-pro | gpt-image-2>\nQuality: <low | medium | high>          (only for gpt-image-2)\nSize / Ratio: <e.g. 1536×1024 or 16:9>\n\nPrompt:\n<the prompt text, ready to copy>\n\nNotes:\n- <anything you inferred or assumed because the user did not specify>\n```"
+  },
+  {
+   "id": "42fa0f85b003",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "100-106",
+     "encabezado": "Output format"
+    }
+   ],
+   "texto": "For edits, also include an explicit preserve-list (mandatory for gpt-image-2, recommended for nano-banana):\n\n```\nChange: <one concrete thing>\nPreserve: <face, pose, lighting, framing, geometry, ...>\nConstraints: <no extra objects, no drift, ...>\n```"
+  },
+  {
+   "id": "2c3af60ba928",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "112-112",
+     "encabezado": "Final response style"
+    }
+   ],
+   "texto": "Prefer: ready-to-copy prompts, hex colors, concrete materials, named compositions, model-specific syntax (5-slot for GPT Image, natural prose for Nano Banana)."
+  },
+  {
+   "id": "8adea3cbbb4f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/SKILL.md",
+     "lineas": "114-114",
+     "encabezado": "Final response style"
+    }
+   ],
+   "texto": "Avoid: tag soup (\"cool, modern, 4k\"), vague praise (\"stunning, epic, masterpiece\" — actively hurts GPT Image 2), negative framing (\"no people, no cars\" — invert to positive), external comparisons (\"like Apple ad\" — describe the visual properties instead), numerical lens parameters in Nano Banana prompts (it ignores them)."
+  },
+  {
+   "id": "1984a8c026c7",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "3-3",
+     "encabezado": "Character Consistency"
+    }
+   ],
+   "texto": "Up to 14 reference images (6 high-fidelity). Identity locking across scenes."
+  },
+  {
+   "id": "d83f903b7648",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "7-12",
+     "encabezado": "Character Consistency › Identity Locking"
+    }
+   ],
+   "texto": "```\nUsing person from [IMAGE REFERENCE]:\nKeep facial features exactly the same.\nChange: [EXPRESSION / POSE / CLOTHING / SETTING]\nMaintain: identity, recognizable features\n```"
+  },
+  {
+   "id": "c6a852e671ac",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "14-14",
+     "encabezado": "Character Consistency › Identity Locking"
+    }
+   ],
+   "texto": "Key phrase: \"Keep facial features exactly the same as Image 1\""
+  },
+  {
+   "id": "50dd9ac1c3c6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "18-29",
+     "encabezado": "Character Consistency › Viral Thumbnails"
+    }
+   ],
+   "texto": "```\nDesign viral thumbnail using person from Image 1.\n\nFace: Keep features same, change expression to [excited/surprised/shocked]\nAction: Pose on [left/right], pointing toward [OBJECT]\nSubject: [OBJECT] on opposite side\nGraphics: Bold [COLOR] arrow connecting person to object\nText: \"[HEADLINE]\" in massive pop-style, white outline, drop shadow\nBackground: Blurred [SETTING]\n\nHigh saturation and contrast.\n```"
+  },
+  {
+   "id": "853e22f1e4c0",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "33-41",
+     "encabezado": "Character Consistency › Multi-Character Consistency"
+    }
+   ],
+   "texto": "```\nCreate [NUMBER]-part story with these [N] characters.\n\nIdentity: Keep attire and features consistent throughout.\nVariation: Different angles, expressions, distances per image.\nRule: Only one of each character per image.\n\nStory arc: [DESCRIPTION with emotional highs/lows]\n```"
+  },
+  {
+   "id": "16d3db740bfb",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "45-54",
+     "encabezado": "Character Consistency › Brand Asset Generation"
+    }
+   ],
+   "texto": "```\nUsing this [PRODUCT] as reference:\nCreate [NUMBER] [TYPE] shots.\n\nMaintain: Brand consistency, quality level\nVary: Angles, lighting, context\nStyle: [editorial / lifestyle / product]\n\nGenerate one at a time.\n```"
+  },
+  {
+   "id": "2822ca372316",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "58-61",
+     "encabezado": "Character Consistency › Expression Control"
+    }
+   ],
+   "texto": "While maintaining identity:\n- \"Change expression to excited and surprised\"\n- \"Make them look thoughtful, gazing left\"\n- \"Add confident smile, direct eye contact\""
+  },
+  {
+   "id": "58b8b016c667",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "65-68",
+     "encabezado": "Character Consistency › Pose/Action Control"
+    }
+   ],
+   "texto": "- \"Pose pointing finger toward [DIRECTION]\"\n- \"Standing with arms crossed\"\n- \"Mid-stride, dynamic motion\"\n- \"Seated, leaning forward\""
+  },
+  {
+   "id": "2cf944096073",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "72-72",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ],
+   "texto": "- \"Same person, but wearing [NEW OUTFIT]\""
+  },
+  {
+   "id": "7976330fe99a",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "73-73",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ],
+   "texto": "- \"Keep face, change to formal business attire\""
+  },
+  {
+   "id": "68d707a1d6bd",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "74-74",
+     "encabezado": "Character Consistency › Attire Changes"
+    }
+   ],
+   "texto": "- \"Maintain identity, add [ACCESSORY]\""
+  },
+  {
+   "id": "a597e04b640f",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "78-78",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ],
+   "texto": "- \"Same person in [NEW SETTING]\""
+  },
+  {
+   "id": "6342a90358e6",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "79-79",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ],
+   "texto": "- \"Transport to [LOCATION], keep identity\""
+  },
+  {
+   "id": "c058cf4a93aa",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/characters.md",
+     "lineas": "80-80",
+     "encabezado": "Character Consistency › Environment Swaps"
+    }
+   ],
+   "texto": "- \"Change background to [SCENE], maintain lighting on face\""
+  },
+  {
+   "id": "d7c3ce04bc5e",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "3-3",
+     "encabezado": "Creative Direction"
+    }
+   ],
+   "texto": "Studio-quality controls for lighting, camera, color, and materiality."
+  },
+  {
+   "id": "23c74c6ba6cc",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "7-7",
+     "encabezado": "Creative Direction › Lighting Design"
+    }
+   ],
+   "texto": "Tell the model exactly how the scene is illuminated."
+  },
+  {
+   "id": "f76c59a43054",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "9-12",
+     "encabezado": "Creative Direction › Lighting Design"
+    }
+   ],
+   "texto": "**Studio setups:**\n- \"Three-point softbox setup\" — even product/portrait lighting\n- \"Single key light from upper left\" — dramatic shadow\n- \"Ring light, frontal\" — beauty/fashion, flat lighting"
+  },
+  {
+   "id": "dc1324bb7350",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "14-19",
+     "encabezado": "Creative Direction › Lighting Design"
+    }
+   ],
+   "texto": "**Dramatic effects:**\n- \"Chiaroscuro lighting with harsh, high contrast\"\n- \"Golden hour backlighting creating long shadows\"\n- \"Rim lighting, subject silhouetted against bright background\"\n- \"Volumetric god rays through window\"\n- \"Neon underglow, cyberpunk street\""
+  },
+  {
+   "id": "24ec507274d5",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "21-24",
+     "encabezado": "Creative Direction › Lighting Design"
+    }
+   ],
+   "texto": "**Natural:**\n- \"Soft overcast daylight, even diffusion\"\n- \"Dappled sunlight through trees\"\n- \"Blue hour, cold ambient light\""
+  },
+  {
+   "id": "6dce5ac41699",
+   "ubicaciones": [
+    {
+     "documento": "skills/image/references/creative-direction.md",
+     "lineas": "28-28",
+     "encabezado": "Creative Direction › Camera & Hardware"
+    }
+   ],
+   "texto": "Specify camera type to change the visual DNA of the image."
+  }
+ ]
+}

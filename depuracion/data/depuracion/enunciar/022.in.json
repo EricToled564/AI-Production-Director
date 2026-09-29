@@ -1,0 +1,997 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "343796a77251",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "45-50",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ],
+   "texto": "**Symptoms:** text is misspelled, kerning is off, font is wrong, multiple text elements compete.\n\n**Causes:**\n- Text was put in the image prompt instead of being composited\n- Wrong generator chosen (using Midjourney for text-heavy work)\n- Multiple text elements in one prompt"
+  },
+  {
+   "id": "70a6e342ec77",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "52-56",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ],
+   "texto": "**Prompt-level fixes:**\n- The right answer is almost always: **don't put text in the prompt**. Composite separately from `text-overlays.json`.\n- If text must be in-image (poster work), use Ideogram v3 with explicit override flag\n- Limit to one text element per prompt\n- Use simple fonts (sans-serif, clean serif), cursive and decorative fonts fail even on Ideogram"
+  },
+  {
+   "id": "bddaa24e67a1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "58-58",
+     "encabezado": "Failure Modes › Failure 3. Text in image looks bad"
+    }
+   ],
+   "texto": "**Accept editorially when:** the deliverable genuinely requires baked-in text and Ideogram's output is close enough to retouch."
+  },
+  {
+   "id": "7e4274f2113f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "62-67",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ],
+   "texto": "**Symptoms:** shot 3 has light from window-left, shot 4 has light from window-right, they cut together as a continuity error.\n\n**Causes:**\n- Lighting language paraphrased rather than verbatim from series_lock\n- Reverse-angle shots not flagged in rationale\n- Generator interpreting lighting ambiguously"
+  },
+  {
+   "id": "034dd37bb7ec",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "69-73",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ],
+   "texto": "**Prompt-level fixes:**\n- Verify lighting string is verbatim across prompts\n- Be explicit about direction: \"from camera-left\" not \"from one side\"\n- For reverse-angle shots, flag in rationale and update lighting language for that shot only\n- For Flux and GPT Image, add the photographic spec (\"key light camera-left at 45 degrees\")"
+  },
+  {
+   "id": "e6a037bdc9a2",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "75-75",
+     "encabezado": "Failure Modes › Failure 4. Lighting direction inconsistency"
+    }
+   ],
+   "texto": "**Accept editorially when:** lighting drift is subtle enough that color grading will fix it."
+  },
+  {
+   "id": "fc6f4c685527",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "79-83",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ],
+   "texto": "**Symptoms:** the storyboard says text goes in the right third, but the generated image has the subject filling the right third.\n\n**Causes:**\n- Shot subject didn't include negative-space note\n- Generator interpreting \"centered subject\" by default"
+  },
+  {
+   "id": "0601e8823d49",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "85-88",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ],
+   "texto": "**Prompt-level fixes:**\n- Add explicit composition note: \"subject framed in left third, right two-thirds open for text overlay\"\n- For GPT Image (best at spatial reasoning), use percentage references: \"subject at left 30% of frame\"\n- Re-roll with explicit composition prompt, this often fixes on second try"
+  },
+  {
+   "id": "5309575327e3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "90-90",
+     "encabezado": "Failure Modes › Failure 5. Composition doesn't reserve space for text overlay"
+    }
+   ],
+   "texto": "**Accept editorially when:** image is otherwise great. Reposition text overlay to fit the actual composition."
+  },
+  {
+   "id": "47e938badfc9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "94-99",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ],
+   "texto": "**Symptoms:** all locks are in place, prompts look right, but the storyboard feels disjointed when viewed end-to-end.\n\n**Causes:**\n- Color grade language drifting between shots (one says \"warm filmic\", another says \"cinematic\")\n- Aspect ratio drift (some 9:16 generations are taller than others)\n- Mood adjectives shifting (\"calm\" in shot 1 vs \"energetic\" in shot 5 even though brief was uniform)"
+  },
+  {
+   "id": "29d2f6b0d8a3",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "101-104",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ],
+   "texto": "**Prompt-level fixes:**\n- Audit every prompt against series_lock and brand-lock, verbatim check\n- Verify aspect ratio is identical across all prompts\n- Lock the brand mood adjectives, same set in every prompt"
+  },
+  {
+   "id": "3b80ad76feee",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "106-106",
+     "encabezado": "Failure Modes › Failure 6. Series feels \"different\" even with locks applied"
+    }
+   ],
+   "texto": "**Accept editorially when:** the disjoint feel is below the noise floor for the medium (e.g. fast-cut social where each shot is on screen <2s)."
+  },
+  {
+   "id": "ca2b7bc0e30c",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "110-115",
+     "encabezado": "Failure Modes › Failure 7, \"Looks fine but doesn't match the brief\""
+    }
+   ],
+   "texto": "**Symptoms:** image is technically good but doesn't capture what the brief was actually about.\n\n**Causes:**\n- The shot subject in `shots.json` was vague\n- The brief context wasn't surfaced into the prompt\n- The generator is producing competent generic output rather than specific intent"
+  },
+  {
+   "id": "853aed5e01c7",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "117-120",
+     "encabezado": "Failure Modes › Failure 7, \"Looks fine but doesn't match the brief\""
+    }
+   ],
+   "texto": "**Prompt-level fixes:**\n- Tighten the shot's subject field, what specifically is the audience meant to feel or notice\n- Include a one-phrase intent at the end (\"the moment of recognition\", \"the calm before the decision\")\n- For complex scenes, add a \"what this shot conveys\" line"
+  },
+  {
+   "id": "817525f9a0c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "122-122",
+     "encabezado": "Failure Modes › Failure 7, \"Looks fine but doesn't match the brief\""
+    }
+   ],
+   "texto": "**Accept editorially when:** generation is close enough that retouching gets there. Don't burn API credits chasing perfect on-prompt."
+  },
+  {
+   "id": "092945fa4d91",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "126-130",
+     "encabezado": "Failure Modes › When to stop iterating prompts"
+    }
+   ],
+   "texto": "Three signs:\n\n1. You've re-rolled the same shot 5+ times with no improvement → the prompt is fine; the model can't render this concept; pick a different shot or different generator\n2. You're tweaking single words and hoping → you've hit prompt-level diminishing returns; move to image-to-image refinement (Nano Banana) or post-production\n3. The image is 80% right and the gap is editorial → ship to post and let the editor finish"
+  },
+  {
+   "id": "f9818eed14e1",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/failure-modes.md",
+     "lineas": "132-132",
+     "encabezado": "Failure Modes › When to stop iterating prompts"
+    }
+   ],
+   "texto": "Generation is one stage in a pipeline. Don't try to make it the whole pipeline."
+  },
+  {
+   "id": "be6850c3e187",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "3-3",
+     "encabezado": "Prompt Anatomy: The Five Layers"
+    }
+   ],
+   "texto": "Every image prompt this skill produces is composed from five layers. Four are inputs, one is applied at compose-time. Understanding the layers is the difference between bulletproof prompts and lottery tickets."
+  },
+  {
+   "id": "52a9c28acb70",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "7-9",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 1. Brand Lock"
+    }
+   ],
+   "texto": "**What:** the locked brand parameters for the entire project.\n**Source:** `brand-lock.snapshot.md` referenced in `shots.json`.\n**Constant across:** every storyboard, every shot."
+  },
+  {
+   "id": "f6ce3bb7d163",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "11-18",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 1. Brand Lock"
+    }
+   ],
+   "texto": "Contains:\n\n- Palette (hex values)\n- Typography (font names, weights)\n- Mood descriptors (3–5 adjectives that describe the brand's emotional posture)\n- \"Never\" list (things this brand never does, e.g. \"no stock photo aesthetic\", \"no AI uncanny\", \"no over-saturated\", \"no shouting copy\")\n- Aspect ratios used\n- Color grade direction"
+  },
+  {
+   "id": "a4c2d7dd26bb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "20-20",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 1. Brand Lock"
+    }
+   ],
+   "texto": "This layer answers: **what does the brand always look and feel like?**"
+  },
+  {
+   "id": "c29d1042ecc9",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "24-26",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ],
+   "texto": "**What:** the locked anchors for this specific storyboard.\n**Source:** `shots.json` → `series_lock`.\n**Constant across:** every shot in this one storyboard."
+  },
+  {
+   "id": "05648e4f7773",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "28-33",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ],
+   "texto": "Contains:\n\n- Character anchor (who's in frame, described identically every shot)\n- Environment description (where the action takes place, identical every shot)\n- Lighting setup (direction, source, color temperature, identical every shot)\n- Color grade (filmic look, identical every shot)"
+  },
+  {
+   "id": "54df9a0db36f",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "35-35",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ],
+   "texto": "This layer answers: **what stays the same across this storyboard?**"
+  },
+  {
+   "id": "ad9f851d740e",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "37-37",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 2. Series Lock"
+    }
+   ],
+   "texto": "The series_lock is what makes shot 1 and shot 7 feel like the same piece. Without it, every generated frame looks like a different production."
+  },
+  {
+   "id": "f2fb66e84830",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "41-43",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ],
+   "texto": "**What:** the per-shot variables.\n**Source:** `shots.json` → `shots[i]`.\n**Variable across:** every shot."
+  },
+  {
+   "id": "ab849364e85d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "45-52",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ],
+   "texto": "Contains:\n\n- Framing (ECU, CU, MS, etc.)\n- Angle (eye-level, high, low, etc.)\n- Motion (static, push, pull, etc.)\n- Subject (what's happening in this specific shot)\n- Depth of field\n- Rationale (audit trail, why this shot, this beat, this moment)"
+  },
+  {
+   "id": "d50374397beb",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "54-54",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 3. Shot Spec"
+    }
+   ],
+   "texto": "This layer answers: **what's different about this specific shot?**"
+  },
+  {
+   "id": "6d5c84d5b274",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "58-60",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ],
+   "texto": "**What:** on-screen text composited after generation.\n**Source:** `text-overlays.json`.\n**Never appears in image prompts** (except Ideogram Mode 2 with explicit override)."
+  },
+  {
+   "id": "6bc44e553881",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "62-67",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 4. Text Layer"
+    }
+   ],
+   "texto": "Why text is a separate layer:\n\n1. **Editability.** Composited text can be revised without re-generating images.\n2. **Quality.** Even Ideogram and GPT Image (the best at text) produce typography that lags professional design tools.\n3. **Animation.** Animated text needs After Effects / Remotion / CapCut. Static rendered text is dead-on-arrival for motion content.\n4. **Brand control.** Composited text uses exact brand fonts and exact brand colors. Generated text approximates."
+  },
+  {
+   "id": "371d54900a1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "71-73",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 5. Generator Adapter"
+    }
+   ],
+   "texto": "**What:** model-specific syntax wrapper.\n**Source:** the relevant `adapters/{generator}.md` file.\n**Variable across:** every target generator."
+  },
+  {
+   "id": "0661bc30a01d",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "75-75",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 5. Generator Adapter"
+    }
+   ],
+   "texto": "This is the only layer the skill *applies* (vs. reads). Layers 1–4 are inputs; Layer 5 is the renderer that turns inputs into a generator-specific string."
+  },
+  {
+   "id": "21c50ac1515a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "77-82",
+     "encabezado": "Prompt Anatomy: The Five Layers › Layer 5. Generator Adapter"
+    }
+   ],
+   "texto": "The adapter handles:\n\n- Word order (Midjourney leads with subject; motion adapters like Kling lead with camera motion)\n- Length conventions (Seedream short, GPT Image long)\n- Parameter syntax (`--ar 9:16` vs `aspect_ratio: \"9:16\"`)\n- Idiosyncratic strengths (Ideogram for text, Flux for photoreal, etc.)"
+  },
+  {
+   "id": "f3ebaf363488",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "86-96",
+     "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+    }
+   ],
+   "texto": "For a single shot's prompt:\n\n```\nLayer 1 (brand) ───┐\n                   │\nLayer 2 (series) ──┼──> Layer 5 (adapter) ──> {generator-specific prompt}\n                   │\nLayer 3 (shot) ────┘\n\nLayer 4 (text) ────> separate compositing pipeline\n```"
+  },
+  {
+   "id": "9bf984750322",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "98-98",
+     "encabezado": "Prompt Anatomy: The Five Layers › How layers compose"
+    }
+   ],
+   "texto": "The adapter pulls from Layers 1–3 and produces a string. Layer 4 lives parallel and never enters the prompt."
+  },
+  {
+   "id": "4f16808d4854",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "102-102",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "**Change the brand color** → edit brand-lock.md. Every prompt across every storyboard updates. No find-and-replace across files."
+  },
+  {
+   "id": "e0b9bbd88942",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "104-104",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "**Change the character** → edit series_lock in shots.json. Every shot in this storyboard updates. Other storyboards untouched."
+  },
+  {
+   "id": "1b94a059ff03",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "106-106",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "**Change one shot** → edit just that shot's spec. Other shots unaffected."
+  },
+  {
+   "id": "c5151c1b8e35",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "108-108",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "**Change the generator** → swap adapters. Same shot data, different output file. Zero edits to brand-lock or series_lock."
+  },
+  {
+   "id": "69cd96765151",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "110-110",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "**Audit a render** → check brand-lock.snapshot.md to see what version the storyboard was built against."
+  },
+  {
+   "id": "243e45eb508a",
+   "ubicaciones": [
+    {
+     "documento": "skills/visual-prompt-forge/references/prompt-anatomy.md",
+     "lineas": "112-112",
+     "encabezado": "Prompt Anatomy: The Five Layers › Why this matters operationally"
+    }
+   ],
+   "texto": "This is why guardrails-in-code beat guardrails-in-vibes. Each layer has one job. Changes are surgical. Outputs are reproducible."
+  },
+  {
+   "id": "675d62e296f8",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "1-71",
+     "encabezado": "hooks vocabularies.yaml › P"
+    }
+   ],
+   "texto": "# Aurora Prompt Linter — Vocabulary Lists v1.2-fupai (2026-09-25)\n# Copia ampliada de scripts/vocabularies.yaml v1.0/v1.1 del skill aurora-prompt-linter.\n# Cada lista P/O/L/PR/S corresponde a una categoría de la IDs system v6.0 §7.\n# Cuando un ref carga esa categoría, los términos listados quedan BANNED en el MAIN\n# (no en el bloque negativo). P/O solo se banean con rol ff/lf (ver prompt_linter.py P3).\n#\n# Cambios respecto al original, con fuente:\n#   - P: fuera sweat / sweaty / jawline (micro-acción corporal, dramaturgy §2, U3) → BODY_MICRO_ACTION_EXEMPT.\n#   - S: fuera \"cinematic\" (director §6.1 / dramaturgy §2) → BANNED.\n#   - BANNED: fuera slow motion / cartoon / anime / 3D render (condicionados: SLOW_MOTION_TERMS,\n#     STYLE_BANNED_FOTORREAL); dentro la lista de dramaturgy §2 y la anti-slop de gpt-image.md.\n#   - L / PR / O ampliadas: agua, automotriz, café/interior, clima, música/ensamble.\n#   - Nuevas tablas: WORD_BUDGET_BY_PLATFORM, NEGATIVE_BLOCK_POLICY, IDENTITY_BLOCK_GROUPS,\n#     TREATMENT_SECTION_OVERRIDES, snapshots seedance_2.5 / flux / ideogram / hailuo / seedream /\n#     nano_banana_2 / kling_3.0__4.\n\n# ---------- P: Personaje / Sujeto ----------\nP:\n  - athletic woman\n  - athletic man\n  - lean build\n  - muscular build\n  - toned build\n  - athletic build\n  - lean toned build\n  - mid-20s\n  - mid-30s\n  - mid-40s\n  - mid-50s\n  - young woman\n  - young man\n  - dark hair\n  - brown hair\n  - dark brown hair\n  - blonde hair\n  - black hair\n  - red hair\n  - ponytail\n  - high ponytail\n  - low ponytail\n  - loose hair\n  - curly hair\n  - hair tied\n  - female cyclist\n  - male cyclist\n  - female athlete\n  - male athlete\n  - athletic\n  - lean\n  - muscular\n  - toned\n  - tanned skin\n  - face\n  - female\n  - male\n  # ampliación por dominio\n  - female swimmer\n  - male swimmer\n  - wakeboarder\n  - female driver\n  - male driver\n  - racing driver\n  - barista\n  - violinist\n  - cellist\n  - musician\n\n# ---------- BODY_MICRO_ACTION_EXEMPT (P5) ----------\n# Nunca cuentan como re-descripción de P aunque un vocab custom los liste:\n# dramaturgy.md §2 \"Physical micro-action on the body. Jaw locks. Knuckles whiten...\",\n# universal-rules U3 / §1, race-and-speed.md §1 ley 2 y §7 (\"sweat reads as discrete specular dots\")."
+  },
+  {
+   "id": "7fe98d142055",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "72-91",
+     "encabezado": "hooks vocabularies.yaml › BODY_MICRO_ACTION_EXEMPT"
+    }
+   ],
+   "texto": "BODY_MICRO_ACTION_EXEMPT:\n  - sweat\n  - sweat bead\n  - sweat beads\n  - sweaty\n  - jaw\n  - jawline\n  - knuckles\n  - breath\n  - exhale\n  - exhales\n  - swallow\n  - swallows\n  - tendon\n  - vein\n  - veins\n  - blink\n  - blinks\n\n# ---------- O: Outfit ----------"
+  },
+  {
+   "id": "65e79644834a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "92-142",
+     "encabezado": "hooks vocabularies.yaml › O"
+    }
+   ],
+   "texto": "O:\n  - red sports bra\n  - red shorts\n  - red tank top\n  - red top\n  - red high-waist\n  - red performance tank\n  - red high-waist shorts\n  - black t-shirt\n  - black shorts\n  - black tank top\n  - black tights\n  - black sneakers\n  - white sneakers\n  - performance tank top\n  - athletic wear\n  - workout clothes\n  - sports bra\n  - tank top\n  - t-shirt\n  - shorts\n  - sneakers\n  - shoes\n  - leggings\n  # agua\n  - wetsuit\n  - neoprene\n  - neoprene wetsuit\n  - swimsuit\n  - swim cap\n  - goggles\n  - life vest\n  # automotriz\n  - racing suit\n  - race suit\n  - fireproof suit\n  - helmet\n  - racing helmet\n  - racing gloves\n  - balaclava\n  # café / interior\n  - apron\n  - navy apron\n  - denim apron\n  # música / ensamble\n  - concert black\n  - black gown\n  - tuxedo\n  - bow tie\n\n# ---------- L: Locación ----------"
+  },
+  {
+   "id": "cb647e03a826",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "143-257",
+     "encabezado": "hooks vocabularies.yaml › L"
+    }
+   ],
+   "texto": "L:\n  - studio\n  - gym\n  - indoor cycling studio\n  - modern studio\n  - sunlit studio\n  - climbing wall\n  - bouldering wall\n  - bouldering grips\n  - black triangular volume\n  - black triangular prism\n  - wood floor\n  - wooden floor\n  - polished wood floor\n  - polished light wood floor\n  - concrete walls\n  - concrete floor\n  - cool gray walls\n  - cool gray concrete\n  - glass walls\n  - floor-to-ceiling windows\n  - floor-to-ceiling glass walls\n  - city skyline\n  - skyline\n  - trees beyond\n  - city beyond\n  - out-of-focus city\n  - windows\n  - tungsten spots\n  - warm tungsten\n  - warm lighting\n  - industrial lighting\n  - natural daylight\n  - soft shadows\n  - soft directional shadows\n  - night\n  - at night\n  - daylight\n  - cycling studio\n  - spin studio\n  # agua\n  - pool\n  - swimming pool\n  - lap pool\n  - infinity pool\n  - pool deck\n  - pool edge\n  - cenote\n  - water surface\n  - pool surface\n  - still water\n  - open water\n  - lake\n  - wake park\n  - cable park\n  - water spray\n  - spray of water\n  # automotriz\n  - racetrack\n  - race track\n  - drag strip\n  - pit lane\n  - asphalt\n  - wet asphalt\n  - tarmac\n  - armco barrier\n  - barrier\n  - guardrail\n  - grandstand\n  - start line\n  - finish line\n  - lane stripe\n  # café / interior\n  - café\n  - cafe\n  - coffee shop\n  - coffee bar\n  - bar counter\n  - coffee counter\n  - kitchen counter\n  - wooden table\n  - marble table\n  - table\n  - window\n  - window seat\n  - chair\n  - stool\n  - bar stool\n  - booth\n  # clima\n  - lightning\n  - thunderstorm\n  - storm clouds\n  - rain\n  - heavy rain\n  - drizzle\n  - fog\n  - mist\n  - haze\n  - dust\n  - dust cloud\n  - snow\n  - snowfall\n  - blizzard\n  # música / ensamble\n  - concert hall\n  - concert stage\n  - the stage\n  - stage lights\n  - rehearsal room\n  - orchestra pit\n  - recording studio\n  - auditorium\n\n# ---------- PR: Prop ----------"
+  },
+  {
+   "id": "4f8e6a445afa",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "258-311",
+     "encabezado": "hooks vocabularies.yaml › PR"
+    }
+   ],
+   "texto": "PR:\n  - soccer ball\n  - football\n  - black and white ball\n  - red and white ball\n  - black panel\n  - red panel\n  - sports ball\n  - the ball changes color\n  - traditional ball\n  # agua\n  - wakeboard\n  - tow rope\n  - rope\n  - handle\n  - kickboard\n  - lane rope\n  - paddle\n  # automotriz\n  - steering wheel\n  - gear lever\n  - shifter\n  - traffic cone\n  - cone\n  - tire\n  - tyre\n  - slick tire\n  - tachometer\n  - tach needle\n  - christmas tree lights\n  # café / interior\n  - coffee cup\n  - espresso cup\n  - ceramic cup\n  - mug\n  - saucer\n  - portafilter\n  - espresso machine\n  - milk pitcher\n  # música / ensamble\n  - violin\n  - cello\n  - viola\n  - double bass\n  - violin bow\n  - cello bow\n  - music stand\n  - sheet music\n  - microphone\n  - mic stand\n  - grand piano\n\n# ---------- S: Estilo ----------\n# \"cinematic\" sale de aquí (director §6.1: vocabulario prohibido gana siempre) → BANNED."
+  },
+  {
+   "id": "3f69dab9eb3c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "312-320",
+     "encabezado": "hooks vocabularies.yaml › S"
+    }
+   ],
+   "texto": "S:\n  - photorealistic\n  - editorial\n  - documentary\n  - studio lighting\n\n# ---------- BANNED: siempre prohibido en MAIN (P6, P11) ----------\n# dramaturgy.md §2 \"What is banned\" + universal-rules §1 + image/gpt-image.md Anti-Slop.\n# Una mención negada (\"no cartoon\") no cuenta (prompt_linter.py is_negated)."
+  },
+  {
+   "id": "b5827498fa83",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "321-350",
+     "encabezado": "hooks vocabularies.yaml › BANNED"
+    }
+   ],
+   "texto": "BANNED:\n  # dramaturgy §2 / universal-rules §1\n  - cinematic\n  - professional\n  - high quality\n  - masterpiece\n  - stunning\n  - epic\n  - amazing\n  - beautiful lighting\n  - dynamic camera\n  - intense moment\n  - powerful scene\n  # gpt-image.md anti-slop (los que no estaban ya arriba)\n  - incredible\n  - gorgeous\n  # originales v1.0 que siguen siendo cross-platform\n  - dreamy slowmo\n  - dreamy\n  - perfume ad\n  - perfume ad aesthetic\n  - plastic skin\n  - smooth plastic\n  - dreamlike\n  - soft glow\n\n# ---------- STYLE_BANNED_FOTORREAL (P7) ----------\n# Solo se banean con --treatment fotorreal o race. En ilustracion/animacion son legítimos:\n# image/references/patterns/character-design.md (\"Anime-Style Character Card\"),\n# multi-panel.md (\"Pixar-style 3D\", \"anime cel shading\"), editing.md (\"vibrant anime\")."
+  },
+  {
+   "id": "bf84786d089c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "351-371",
+     "encabezado": "hooks vocabularies.yaml › STYLE_BANNED_FOTORREAL"
+    }
+   ],
+   "texto": "STYLE_BANNED_FOTORREAL:\n  - anime\n  - anime-style\n  - cartoon\n  - cartoonish\n  - 3D render\n  - 3D rendered\n  - 3D-rendered\n  - CGI look\n  - cel shading\n  - cel-shaded\n  - cel shaded\n  - pixar-style\n  - pixar style\n  - claymation\n  - vector illustration\n  - flat illustration\n\n# ---------- SLOW MOTION (P7) ----------\n# WARN en fotorreal (kling.md §11 lo recomienda como técnica anti-morphing; dramaturgy §7 pide razón),\n# FAIL con --treatment race (race-and-speed.md §1 ley 1), exento con prefijo \"ultra-\" (kling.md §3 tempo)."
+  },
+  {
+   "id": "2ffd32d24989",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "372-377",
+     "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_TERMS"
+    }
+   ],
+   "texto": "SLOW_MOTION_TERMS:\n  - slow motion\n  - slow-motion\n  - slowmo\n  - slow-mo\n  - slow mo"
+  },
+  {
+   "id": "48559b81f12b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "378-383",
+     "encabezado": "hooks vocabularies.yaml › SLOW_MOTION_ALLOWED_PREFIXES"
+    }
+   ],
+   "texto": "SLOW_MOTION_ALLOWED_PREFIXES:\n  - \"ultra-\"\n  - \"ultra \"\n\n# ---------- REQUIRED por caso ----------\n# Keywords obligatorios cuando el caso aplica (solo casos de video 3a/3b/3c/4 — P8)."
+  },
+  {
+   "id": "1a88c1e535ee",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "384-391",
+     "encabezado": "hooks vocabularies.yaml › REQUIRED_SPORTS_BROADCAST"
+    }
+   ],
+   "texto": "REQUIRED_SPORTS_BROADCAST:\n  - 60fps\n  - broadcast realism\n\n# ---------- NEGATIVE_BLOCK_POLICY (P2) ----------\n# required        → falta de bloque = FAIL (campo negativo dedicado).\n# optional        → no se exige (positive framing). Si aparece con marcador \"Negative:\" en NB/GPT/Veo/Flux → WARN.\n# legacy_required → plataforma no resuelta: comportamiento v1.1 (required) + WARN."
+  },
+  {
+   "id": "2fe30895c670",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "392-403",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_BLOCK_POLICY"
+    }
+   ],
+   "texto": "NEGATIVE_BLOCK_POLICY:\n  kling: required            # kling.md §6 \"Kling has a dedicated negative prompts field\"\n  seedance_2.5: required     # seedance-25.md §7 Prohibitions + §19-A \"[Negative Prompts]\"\n  seedance: optional         # seedance.md §12 \"1.0 does NOT support negative prompts... 2.0 fragile\"\n  gpt-image: optional        # gpt-image.md 5 slots: \"Constraints:\" cuenta como bloque; lo exige la sección constraints_slot\n  nano-banana: optional      # golden-rules §2 positive framing; models.md \"Negative framing: использовать позитив\"\n  veo: optional              # veo.md §7 \"Describe only motion, camera, light change, and audio\"; fixes §4 \"Veo body text\"\n  midjourney: optional       # U1 \"only if the model supports them\" — no se exige\n  flux: optional             # _capabilities.json supports_negative_prompt false\n  ideogram: optional\n  seedream: optional\n  hailuo: optional           # _capabilities.json supports_negative_prompt false"
+  },
+  {
+   "id": "871c32054f5a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "404-409",
+     "encabezado": "hooks vocabularies.yaml › NEGATIVE_MAX_ITEMS"
+    }
+   ],
+   "texto": "NEGATIVE_MAX_ITEMS: 8        # SW30 R16 \"≤8 ítems\"; kling.md §6 \"Keep the list short\"\n\n# ---------- WORD_BUDGET_BY_PLATFORM (P1) — referencia, nunca bloquea ----------\n# default: rango recomendado por el adaptador de forge / archivo de modelo.\n# i2v: rango para casos 3a/3b/3c cuando el archivo de modelo da uno propio.\n# ceiling: max_prompt_words de _capabilities.json (\"a ceiling, not a target\")."
+  },
+  {
+   "id": "5ef3b08d23be",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "410-460",
+     "encabezado": "hooks vocabularies.yaml › WORD_BUDGET_BY_PLATFORM"
+    }
+   ],
+   "texto": "WORD_BUDGET_BY_PLATFORM:\n  midjourney:\n    default: [40, 80]\n    ceiling: 100\n    source: \"forge adapters/midjourney.md 'Aim for 40–80 words'; _capabilities.json max_prompt_words 100\"\n  flux:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/flux.md '80–150 words'; _capabilities.json 150\"\n  ideogram:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/ideogram.md '60–120 words'; _capabilities.json 120\"\n  gpt-image:\n    default: [150, 300]\n    ceiling: 300\n    source: \"forge adapters/gpt-image.md '150–300 words'; _capabilities.json 300; SW30 template T1 ~250 palabras\"\n  nano-banana:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/nano-banana.md '60–120 words'; _capabilities.json 120 (SW30 T1 ~250 se reporta, no bloquea)\"\n  seedream:\n    default: [40, 70]\n    ceiling: 120\n    source: \"forge adapters/seedream.md '40–70 words'; _capabilities.json 120\"\n  kling:\n    default: [80, 150]\n    i2v: [20, 40]\n    ceiling: 150\n    source: \"forge adapters/kling.md '80–150 words'; kling.md §5/§10 'Image-to-video (any version). 20-40 words'; _capabilities.json 150\"\n  veo:\n    default: [80, 150]\n    i2v: [50, 100]\n    ceiling: 150\n    source: \"forge adapters/veo.md '80–150 words'; veo.md §3 sweet spot 50-200, §9 'Compress to the 50-100 word range'; _capabilities.json 150\"\n  seedance:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/seedance.md '80–150 words'; _capabilities.json 150; seedance.md §13 no fija número para I2V\"\n  seedance_2.5:\n    default: [80, 150]\n    ceiling: 150\n    source: \"forge adapters/seedance.md 80–150 / _capabilities.json 150 como única cifra disponible; seedance-25.md no fija número y sus ejemplos oficiales (§19) la superan — referencia informativa\"\n  hailuo:\n    default: [60, 120]\n    ceiling: 120\n    source: \"forge adapters/hailuo.md '60–120 words'; _capabilities.json 120\"\n\n# ---------- IDENTITY_BLOCK_GROUPS (P3) ----------\n# U7: \"face shape, eye color, skin tone. Hair color, length, style. Facial hair. Exact clothing items.\n# Distinctive accessories.\" Se exige presencia de al menos IDENTITY_BLOCK_MIN_GROUPS grupos."
+  },
+  {
+   "id": "d7f9d8728748",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "461-461",
+     "encabezado": "hooks vocabularies.yaml › IDENTITY_BLOCK_MIN_GROUPS"
+    }
+   ],
+   "texto": "IDENTITY_BLOCK_MIN_GROUPS: 3"
+  },
+  {
+   "id": "82802d4681e6",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "462-469",
+     "encabezado": "hooks vocabularies.yaml › IDENTITY_BLOCK_GROUPS"
+    }
+   ],
+   "texto": "IDENTITY_BLOCK_GROUPS:\n  hair: [hair, ponytail, bald, braid, braided, bun, curly, blonde, brunette, buzz cut, fringe, bangs, dreadlocks, afro]\n  eyes_skin: [eyes, eye color, brown eyes, green eyes, blue eyes, hazel eyes, skin, skin tone, complexion, freckles, pores]\n  garment: [wearing, dressed in, shirt, tank, jacket, dress, hoodie, blazer, coat, sweater, jersey, apron, suit, t-shirt, shorts, leggings, pants, jeans, crewneck, hanfu, wetsuit, uniform, kit]\n  accessory: [glasses, sunglasses, watch, earrings, necklace, cap, hat, headband, bracelet, helmet, scarf, bag, ring, wristband, chain, piercing]\n  distinctive: [scar, tattoo, beard, stubble, moustache, mustache, goatee, birthmark, dimple, gap tooth, crooked nose, jawline, cheekbones, nose bridge, mole, wrinkles, crow's feet]\n\n# ---------- ALLOWED motion/camera vocabulary (exento de baneo) ----------"
+  },
+  {
+   "id": "1b10dcc75c0b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "470-493",
+     "encabezado": "hooks vocabularies.yaml › ALLOWED_MOTION_PREFIXES"
+    }
+   ],
+   "texto": "ALLOWED_MOTION_PREFIXES:\n  - camera\n  - shot\n  - lens\n  - framing\n  - angle\n  - view\n  - perspective\n  - pans\n  - tilts\n  - arcs\n  - pulls\n  - dollies\n  - pushes\n  - tracks\n  - follows\n  - swings\n  - orbits\n  - descends\n  - rises\n\n# ---------- TREATMENT_SECTION_OVERRIDES (P7) ----------\n# Se aplican sobre cualquier snapshot: reemplazan los patrones de la sección nombrada,\n# o la eliminan (null) cuando no aplica a ese tratamiento."
+  },
+  {
+   "id": "5bb14e744a32",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "494-510",
+     "encabezado": "hooks vocabularies.yaml › TREATMENT_SECTION_OVERRIDES"
+    }
+   ],
+   "texto": "TREATMENT_SECTION_OVERRIDES:\n  ilustracion:\n    style: [illustration, illustrated, anime, cel, cel-shaded, watercolor, watercolour, vector, line art, ink, painterly, comic, graphic novel, flat color, flat colour, gouache, pencil]\n    anti_style: null\n    details: [line weight, brushwork, texture, palette, shading, hatching, fabric, fine detail, pattern]\n    photoreal_closing: null\n  animacion:\n    style: [3d, pixar, pixar-style, cel, cel-shaded, anime, stop motion, claymation, cgi, rendered, toon, stylized, stylised, low poly, hand-drawn]\n    anti_style: null\n    details: [texture, shading, palette, subsurface, fabric, fine detail, rig, squash, stretch]\n    photoreal_closing: null\n\n# ---------- REQUIRED_SECTIONS_BY_PLATFORM_CASE ----------\n# Secciones obligatorias que debe contener el MAIN prompt por plataforma + caso. Cada sección\n# tiene patrones (case-insensitive, substring). PRESENTE si AL MENOS UNO matchea. Falta = FAIL.\n# Convención de keys: <platform>__<case>. Si no hay snapshot → WARN \"honor system\".\n# \"cinematic\" ya no aparece en ningún patrón (P6)."
+  },
+  {
+   "id": "642e9ad10206",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "511-524",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__1"
+    }
+   ],
+   "texto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======\n  gpt_image_2__1:   # gpt-image.md \"5 slots\": Scene / Subject / Important Details / Use Case / Constraints\n    subject:        [woman, man, person, subject, character, animal, dog, cat, building, object, group, product]\n    action_or_pose: [standing, sitting, holding, walking, looking, running, leaning, resting, posing, locking, frozen, mid-]\n    environment:    [studio, gym, room, street, outdoor, indoor, landscape, forest, urban, beach, field, scene:, storefront, pool, track, café, cafe, hall]\n    style:          [photorealistic, documentary, editorial, candid, journalistic, naturalistic, reportage, photograph]\n    camera_or_lens: [lens, mm, telephoto, wide angle, close-up, medium shot, full body, framing, shot, feel]\n    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, soft light, backlit, rim light]\n    anti_style:     [not illustration, not render, no stylization, no cartoon, no anime, photoreal, real photo, looks like a real]\n    use_case:       [\"use case:\", \"use-case:\", \"usecase:\"]\n    constraints_slot: [\"constraints:\"]\n"
+  },
+  {
+   "id": "b9023158e8e0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "525-532",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › midjourney__1"
+    }
+   ],
+   "texto": "  midjourney__1:\n    subject:        [woman, man, person, subject, character, animal, object]\n    style:          [photorealistic, editorial, candid, documentary, photography, --style]\n    composition:    [composition, framing, rule of thirds, centered, off-center, shot, negative space]\n    lighting:       [lighting, sunlight, daylight, tungsten, golden hour, soft light, side-light, rim light]\n    aspect_ratio:   [\"--ar\", aspect ratio, 16:9, 9:16, 3:2, 2:3, 1:1]\n    quality:        [\"--v\", \"--style\", \"--q\", \"--stylize\", \"--s \"]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "ff8bca07f82d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "533-540",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__1"
+    }
+   ],
+   "texto": "  nano_banana_pro__1:   # nano-banana.md: Subject + Action + Location/context + Composition + Style; sin números de lente\n    subject:        [woman, man, person, subject, character, animal, product]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]\n    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]\n    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]\n    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]\n    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "0d3a38873e6c",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "541-548",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__1"
+    }
+   ],
+   "texto": "  nano_banana_2__1:     # models.md: mismo estilo de prompt que NBP (natural language, 1-2 párrafos)\n    subject:        [woman, man, person, subject, character, animal, product]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]\n    environment:    [studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, hall, kitchen]\n    style:          [photorealistic, documentary, editorial, candid, reportage, photograph]\n    lighting:       [light, lighting, sunlight, tungsten, soft, golden hour, hard light, rim]\n    details:        [skin texture, fabric, fine detail, asymmetry, natural flaws, pores, texture]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "6a9fd19b9b9e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "549-556",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › flux__1"
+    }
+   ],
+   "texto": "  flux__1:              # forge adapters/flux.md: subject+action / environment+lighting / photographic spec / photoreal closing\n    subject:        [woman, man, person, subject, character, animal, object, product, founder]\n    action_or_pose: [standing, sitting, holding, walking, leaning, posing, frozen, mid-, looking]\n    environment:    [office, studio, gym, room, outdoor, indoor, pool, track, café, cafe, street, setting is, landscape]\n    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, softbox, side-light, rim]\n    photographic_spec: [shot on, mm, f/, depth of field, prime, hasselblad, sony, film aesthetic, grain]\n    photoreal_closing: [photorealistic, natural skin texture, no ai artifacts]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "c4dd05d97c17",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "557-562",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › ideogram__1"
+    }
+   ],
+   "texto": "  ideogram__1:          # forge adapters/ideogram.md Mode 1 (composited): subject / environment+lighting / photographic spec / negative space\n    subject:        [woman, man, person, subject, character, object, product, composition]\n    environment:    [studio, gym, room, outdoor, indoor, background, environment, setting]\n    lighting:       [light, lighting, sunlight, daylight, tungsten, diffused, softbox, rim]\n    composition:    [composition, negative space, centered, center of the frame, framing, third]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "3702f26afda9",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "563-570",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedream__1"
+    }
+   ],
+   "texto": "  seedream__1:          # forge adapters/seedream.md: {framing} of {anchor}, {action}, {environment}, {lighting}, {grade}, {mood}, photorealistic\n    subject:        [woman, man, person, subject, character, object, product, founder]\n    framing:        [shot of, close-up, medium, wide, full body, portrait, framing]\n    environment:    [studio, gym, room, outdoor, indoor, office, pool, track, café, cafe, street]\n    lighting:       [light, lighting, sunlight, daylight, tungsten, golden hour, side-light, rim]\n    style:          [photorealistic, photoreal, editorial, documentary]\n\n  # ====== Caso 2 — Imagen Ancla (refs @img / Elements / image N) ======",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "a7965bf9ac77",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "571-578",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_2__2"
+    }
+   ],
+   "texto": "  gpt_image_2__2:\n    ref_roles:      [image 1, image 2, image 3, \"ref:\", reference image, ref 1, ref 2, \"image 1:\"]\n    subject_action: [holding, standing, sitting, walking, looking, posing, performing, locking, frozen, mid-]\n    camera_or_lens: [lens, mm, telephoto, close-up, medium shot, framing, feel, shot]\n    lighting:       [light, lighting, sunlight, tungsten, soft, daylight, hard light]\n    style_consistency: [preserve, maintain, same style, consistent, exact, keep]\n    constraints_slot: [\"constraints:\"]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "d53b84492fd9",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "579-585",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › gpt_image_1_5__2"
+    }
+   ],
+   "texto": "  gpt_image_1_5__2:\n    ref_roles:      [image 1, image 2, image 3, \"ref:\", reference image, face strip, ref 1]\n    face_preservation: [preserve exact facial, preserve face, preserve identity, exact facial structure, eye shape, jawline, skin texture]\n    subject_action: [holding, standing, sitting, performing, posing, walking]\n    camera_or_lens: [lens, mm, telephoto, framing, medium shot, close-up]\n    lighting:       [light, lighting, sunlight, soft, tungsten]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "f48ac8ec7a03",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "586-592",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_pro__2"
+    }
+   ],
+   "texto": "  nano_banana_pro__2:   # nano-banana.md Multi-Reference \"[Image 1: face] ... Combine: face from Image 1\"\n    ref_roles:      [image 1, image 2, image 3, \"ref:\", reference, \"@img\"]\n    subject_action: [holding, standing, sitting, walking, posing, frozen, mid-, looking, leaning]\n    camera_or_lens: [lens, mm, framing, shot, close-up, medium, wide, depth of field]\n    lighting:       [light, lighting, sunlight, soft, tungsten, hard light]\n    placement_anchor: [on the, at the, in the, beside, next to, between, in front of, level with]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "9ed3f4e9fc7e",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "593-600",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › nano_banana_2__2"
+    }
+   ],
+   "texto": "  nano_banana_2__2:\n    ref_roles:      [image 1, image 2, image 3, \"ref:\", reference, \"@img\"]\n    subject_action: [holding, standing, sitting, walking, posing, frozen, mid-, looking, leaning]\n    camera_or_lens: [lens, mm, framing, shot, close-up, medium, wide, depth of field]\n    lighting:       [light, lighting, sunlight, soft, tungsten, hard light]\n    placement_anchor: [on the, at the, in the, beside, next to, between, in front of, level with]\n\n  # ====== Caso 3a — I2V FF only ======",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "4b02d284cfb7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "601-607",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3a"
+    }
+   ],
+   "texto": "  kling_3.0__3a:        # kling.md §3 \"Image-to-video on 3.0 — lock first, then move\" + §10 \"preserve X\"\n    scene_or_motion: [scene, motion, movement, action, evolution, transition, glides, follows, arcs, travels, drifts, turns, exhales, push-in, preserve]\n    subject_action:  [she, he, the subject, the ball, the camera, the figure, lifts, turns, extends, rotates, character a]\n    camera:          [camera, shot, lens, angle, view, dollies, pans, tilts, arcs, pushes, holds, push-in, mm]\n    style:           [realism, broadcast, documentary, photorealistic, naturalistic, realistic]\n    anti_morphing:   [no morphing, anti-morph, smooth, stable, consistent, no warping, preserve]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "04a75939c2af",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "608-614",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3a"
+    }
+   ],
+   "texto": "  veo_3.1__3a:          # veo.md §7: \"Maintain the subject from the first frame\" + motion, camera, light change, audio, duration\n    subject_action: [she, he, the subject, lifts, turns, extends, walks, runs, glides, exhales]\n    timing_or_beat: [seconds, second, beat, gradually, slowly, quickly, over, during, then, \"duration:\"]\n    camera:         [camera, shot, lens, angle, dollies, pans, tilts, tracks, push-in, mm]\n    style:          [realism, photorealistic, 24fps, cinema, broadcast, naturalism, maintain the subject]\n    physics_cue:    [gravity, momentum, weight, mass, falls, bounces, drops, follows, arc, trajectory, wind, light grows, breath]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "2f859e431b29",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "615-619",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance__3a"
+    }
+   ],
+   "texto": "  seedance__3a:         # seedance.md §13 \"Describe only motion and camera work\" + §14 audio in body\n    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, freezes]\n    camera:         [camera, shot, tracking, dolly, push, pan, tilt, mm, handheld, static]\n    audio:          [\"audio.\", \"audio:\", sound, hum, ambience, footsteps, breath, silence]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "75af670435b9",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "620-626",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3a"
+    }
+   ],
+   "texto": "  seedance_2.5__3a:     # seedance-25.md §3 fórmula oficial, §5 roles de referencia, §6 end state, §4 marcadores\n    reference_role: [\"@image\", \"@img\", defines, first frame, keep, strictly]\n    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, freezes, performs]\n    camera:         [camera, shot, push in, pull out, pan, tilt, orbit, follow, handheld, close-up, wide]\n    audio_markers:  [\"<\", \"(\", \"audio includes\", \"audio:\", sound]\n    end_state:      [end state, ends on, final frame, final image, freezes on, last frame]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "4c6e22c7856b",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "627-633",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › hailuo__3a"
+    }
+   ],
+   "texto": "  hailuo__3a:           # forge adapters/hailuo.md: camera sentence leading / subject+action / environment+lighting / grade+mood\n    camera:         [camera, static, dollies, pans, tilts, handheld, orbits, whip, rack focus]\n    subject_action: [she, he, the subject, leans, turns, lifts, walks, exhales, looks]\n    light_change:   [light, lighting, side-light, glow, shadow, sun, lamp]\n    mood:           [mood, calm, tense, quiet, restless, unhurried, deliberate]\n\n  # ====== Caso 3b — I2V FF + LF ======",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "20bb82027dcd",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "634-640",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3b"
+    }
+   ],
+   "texto": "  kling_3.0__3b:\n    scene_or_motion:  [scene, motion, transition, evolves, glides, travels, follows, transforms, preserve, push-in]\n    transition_FF_LF: [from, into, to, through, evolves, transitions, becomes, settles, ends, arrives, tail image, last frame]\n    camera:           [camera, shot, dollies, pans, tilts, arcs, holds, tracks, push-in, mm]\n    style:            [realism, broadcast, photorealistic, documentary, realistic, naturalistic]\n    anti_morphing:    [no morphing, smooth transition, stable, consistent, organic transition, preserve]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "34dd510b6d8a",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "641-647",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__3b"
+    }
+   ],
+   "texto": "  veo_3.1__3b:\n    transition_FF_LF: [from, into, to, through, evolves, transitions, becomes, then, settles, last frame]\n    timing_or_beat:   [seconds, beat, gradually, then, over, during, \"duration:\"]\n    camera:           [camera, shot, dollies, pans, tilts, push-in, mm]\n    physics_cue:      [gravity, momentum, weight, falls, arc, trajectory, lands, wind, breath]\n    anti_morphing:    [no morphing, smooth, stable, consistent, maintain the subject]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "d4c9fffa6b8f",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "648-655",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__3b"
+    }
+   ],
+   "texto": "  seedance_2.5__3b:     # seedance-25.md §16 \"First + last frame ... declare each anchor separately\" + §10 transiciones\n    reference_role: [\"@image 1\", \"@image 2\", first frame, last frame, \"@img\"]\n    subject_action: [she, he, the subject, walks, turns, lifts, opens, reaches, exhales, performs]\n    camera:         [camera, shot, push in, pull out, pan, tilt, orbit, follow, handheld]\n    transition:     [transition, cut, dissolve, match cut, prohibit rigid cutting, evolves, settles]\n    end_state:      [end state, ends on, final frame, final image, last frame]\n\n  # ====== Caso 3c — Motion control ======",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "69a08200a9c7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "656-662",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__3c"
+    }
+   ],
+   "texto": "  kling_3.0__3c:        # kling.md §9 Motion Control: \"The prompt then focuses on subject description only\"\n    scene:                [scene, environment, setting, location, backdrop]\n    motion_reference:     [motion reference, \"@video\", reference video, skeletal, pose ref, mocap]\n    character_orientation: [orientation, facing, front-facing, character orientation, 人物朝向]\n    camera:               [camera, shot, framing, angle, lens]\n\n  # ====== Caso 4 — Video con diálogo ======",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "92c6f9aecf61",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "663-670",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › kling_3.0__4"
+    }
+   ],
+   "texto": "  kling_3.0__4:         # kling.md §3 dialogue protocol P1-P4 + Shot N (t) + Audio.\n    character_tags: [\"[character a\", \"[character b\", \"character a:\", \"character b:\"]\n    shot_list:      [\"shot 1\", \"shot 2\"]\n    dialogue:       ['\"', '\"', '\"', \"'\"]\n    voice_tag:      [voice, raspy, whisper, calm, fearful, even, low, clear]\n    temporal_link:  [immediately, then, after, beat later, a moment later]\n    audio:          [\"audio.\", \"audio:\", ambience, footsteps, hum, no music]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "55dfb6e9a1a0",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "671-677",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › veo_3.1__4"
+    }
+   ],
+   "texto": "  veo_3.1__4:           # veo.md §4 dialogue syntax + §5 SFX labels + §10 skeleton\n    subject_action: [she, he, the subject, the speaker, says, speaks, talks]\n    dialogue:       ['\"', '\"', \"'\", \"'\", says, speaking, dialogue]\n    tone_or_accent: [tone, accent, voice, whispers, shouts, calmly, excitedly, authoritative, soft, deep, weary]\n    timing:         [seconds, beat, pauses, then, during, over, \"duration:\"]\n    audio_specs:    [audio, ambient, music, sound, room tone, breath, footsteps, native audio, \"sfx:\"]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "151ad314e167",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "678-684",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › seedance_2.5__4"
+    }
+   ],
+   "texto": "  seedance_2.5__4:      # seedance-25.md §4 marcadores { } < > ( ), \"Dialogue language\" reinforcement\n    dialogue_marker: [\"{\", \"}\"]\n    dialogue_language: [dialogue language, says in, vernacular, accent, softly, whispers]\n    subject_action: [she, he, the subject, the speaker, looks, lowers, forms, says]\n    camera:         [camera, shot, close-up, wide, push in, handheld, one continuous shot]\n    end_state:      [end state, ends on, final frame, final image, stage]\n",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "05110fd371a5",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/vocabularies.yaml",
+     "lineas": "685-690",
+     "encabezado": ".claude/hooks/aurora/vocabularies.yaml › REQUIRED_SECTIONS_BY_PLATFORM_CASE › sora_2__4"
+    }
+   ],
+   "texto": "  sora_2__4:\n    subject_action: [she, he, the subject, says, speaks, performs]\n    dialogue:       ['\"', '\"', says, speaking]\n    tone_or_accent: [tone, accent, voice, whispers, shouts, calmly]\n    timing:         [seconds, beat, then, over]\n    audio_specs:    [audio, ambient, sound, native audio]",
+   "contexto": "REQUIRED_SECTIONS_BY_PLATFORM_CASE:\n\n  # ====== Caso 1 — Génesis text-to-image ======"
+  },
+  {
+   "id": "c0e2802dd415",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "lineas": "3-9",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ],
+   "texto": "Copia del linter del skill `aurora-prompt-linter` (v1.1, 2026-05-27) con el vocabulario\nampliado y las contradicciones con el resto del pipeline resueltas **a favor de la fuente**.\nEl original no se toca; vive en\n`~/.claude/skills/synced/<id>/aurora-prompt-linter/scripts/` y sigue siendo la referencia\nde la CLI. Esta copia conserva la misma interfaz (`--prompt --refs --case --platform --vocab\n--overrides --sports-broadcast --json`), los mismos exit codes (`0` PASS, `1` FAIL, `2` uso)\ny añade tres opciones: `--ref-role`, `--series-lock`, `--treatment`."
+  },
+  {
+   "id": "7261b2c93c11",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "lineas": "11-19",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ],
+   "texto": "```\n.claude/hooks/aurora/\n├── prompt_linter.py      # copia parcheada; cabecera con changelog P1..P12 y fuente por parche\n├── vocabularies.yaml     # vocabulario ampliado; se carga por defecto (o con --vocab)\n├── README.md             # este archivo\n└── tests/\n    ├── run.sh            # 18 pruebas; exit 0 si todas pasan\n    └── fixtures/         # prompts, refs, series_lock y mensaje de override\n```"
+  },
+  {
+   "id": "0eb1f1ac3ed4",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "lineas": "21-21",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai)"
+    }
+   ],
+   "texto": "Requisitos: Python 3.11 y `pyyaml`. Nada más."
+  },
+  {
+   "id": "e7219970f76d",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "lineas": "25-32",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Por qué existe esta copia"
+    }
+   ],
+   "texto": "El linter original es la única pieza del pipeline que convierte \"no re-describir lo que está en\nla referencia\" en código. Eso es valioso y se conserva íntegro. El problema es que fue\ncalibrado para un flujo anterior (system v6.0, casos Aurora de ciclismo/fútbol) y, leído\njunto a los skills que hoy gobiernan la producción (`video`, `image`, `visual-prompt-forge`,\n`produccion-visual-sw30`, `ai-production-director`), **bloquea prompts que esos skills exigen**\ny **deja pasar palabras que esos skills prohíben**. Las doce contradicciones están abajo, con\nel parche que las resuelve y la fuente que lo sustenta. Ninguna decisión es de criterio del\nagente: cada fila cita el archivo y la sección."
+  },
+  {
+   "id": "05370f8dc9b7",
+   "ubicaciones": [
+    {
+     "documento": ".claude/hooks/aurora/README.md",
+     "lineas": "38-38",
+     "encabezado": "Aurora Prompt Linter — copia parcheada (v1.2-fupai) › Contradicción → parche → fuente"
+    }
+   ],
+   "texto": "| 1 | **Presupuesto de palabras.** El original hace HARD FAIL por encima de 130 (T2I) o 90 (I2V). SW30 canoniza un maestro de rostro T1 de ~250 palabras; GPT Image tolera 150–300; Kling 3.0 \"structure beats length\". | P1 — el conteo **nunca bloquea**: WARN con el presupuesto por plataforma (tabla `WORD_BUDGET_BY_PLATFORM`) y el techo de `_capabilities.json`. Si la plataforma no está en la tabla, el presupuesto original del caso se reporta como referencia, también WARN. | forge `adapters/_capabilities.json` (\"`max_prompt_words` is a ceiling, not a target\"); rangos de cada adaptador (kling/veo/flux/seedance 80–150, gpt-image 150–300, nano-banana/ideogram/hailuo 60–120, midjourney 40–80, seedream 40–70); `kling.md` §5 y §10 (I2V 20–40); `veo.md` §3 (50–200) y §9; SW30 \"Template canónico T1 … alrededor de 250 palabras\". |",
+   "contexto": "| # | Contradicción detectada | Parche en esta copia | Fuente que lo sustenta |\n|---|---|---|---|"
+  }
+ ]
+}

@@ -1,0 +1,1174 @@
+{
+ "registros": [
+  {
+   "id": "c14b5900faac",
+   "enunciado": "Parche P2: el bloque Negative pasa a ser obligatorio solo en Kling y Seedance 2.5, Constraints cuenta como negativo en GPT Image, en el resto no se exige (se avisa si aparece con marcador Negative), y sin --platform se mantiene el comportamiento legacy (required) con WARN.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), política de negativos",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "d108e47c4dd5",
+   "enunciado": "Parche P3: el identity block depende del rol de la referencia; con ff/lf los descriptores P/O siguen prohibidos, con character se permiten y el identity block es obligatorio (WARN si faltan 3 o más de los 5 grupos de rasgos).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), descriptores P/O e identity block por --ref-role",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "2cc378db7d3b",
+   "enunciado": "Parche P4: con --series-lock los términos de redundancia que caigan dentro de las cadenas exactas de series_lock quedan exentos, y se avisa (WARN) si una cadena no aparece verbatim porque validate_prompts.py la bloqueará.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), redundancia vs series_lock",
+   "temas": [
+    "continuidad_multiclip",
+    "validacion_gates",
+    "shots_json_schema"
+   ]
+  },
+  {
+   "id": "59fe83ae36f2",
+   "enunciado": "Parche P5: sweat, jaw, jawline, knuckles, breath, swallow, tendon, vein, blink y similares salen de P y quedan exentos (BODY_MICRO_ACTION_EXEMPT) para permitir la micro-acción corporal exigida por la Ley de Detalles aunque haya ref de persona.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), micro-acción corporal",
+   "temas": [
+    "tres_detalles",
+    "emocion_sin_nombrar",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "834ec1b34585",
+   "enunciado": "Parche P6: cinematic sale de S y de todos los patrones de secciones y pasa al vocabulario BANNED junto con professional, high quality, masterpiece, stunning, epic y similares; una mención negada no cuenta.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), vocabulario prohibido",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6d0c4d8099aa",
+   "enunciado": "Parche P7 (slow motion): deja de ser BANNED global; es WARN en fotorreal/ilustración/animación, FAIL con --treatment race y permitido sin aviso con prefijo ultra- o con OVERRIDE justificado.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), slow motion por tratamiento",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "fb8ab12c23e6",
+   "enunciado": "Parche P7 (estilos): anime/cartoon/3D render se banean solo en tratamiento fotorreal/race (STYLE_BANNED_FOTORREAL); en ilustración/animación se sustituyen los patrones de la sección style y se retira anti_style.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), bans de estilo por tratamiento",
+   "temas": [
+    "vocabulario_prohibido",
+    "animacion_ilustracion",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "538846abde61",
+   "enunciado": "Parche P8: el flag --sports-broadcast se ignora con WARN en casos 1/2 (stills) y sigue siendo FAIL en 3a/3b/3c/4 si faltan las keywords 60fps y broadcast realism.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --sports-broadcast en casos 1/2 vs video",
+   "temas": [
+    "validacion_gates",
+    "parametros_tecnicos",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "41eeca8d9a74",
+   "enunciado": "Parche P1: el presupuesto de palabras I2V se fija por familia (Kling 20–40, Veo 50–100, Seedance 80–150 del adaptador declarado en source), siempre como WARN.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), presupuesto de palabras I2V",
+   "temas": [
+    "longitud_prompt",
+    "i2v_keyframes",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "2d11321137d4",
+   "enunciado": "Parche P12: si la categoría S está cubierta por refs de estilo, la sección style se dispensa y se reporta como WARN informativo, resolviendo la imposibilidad de satisfacer prohibición y requisito a la vez.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), estilo (S) vs secciones requeridas",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "798fc6684e77",
+   "enunciado": "Parche P10: se añaden snapshots para las plataformas omitidas (flux, ideogram, seedream, nano_banana_2, seedance, seedance_2.5, hailuo, kling_3.0 caso 4), con resolución por familia, reconocimiento de marcadores negativos y vocabulario L/PR/O ampliado.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), snapshots de plataformas",
+   "temas": [
+    "validacion_gates",
+    "capacidades_modelo",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "6ca41557bbc9",
+   "enunciado": "La capa 1 del linter (redundancia con refs por categoría P/O/L/PR/S) sigue bloqueando igual cuando el rol es ff/lf.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (capa 1)",
+   "temas": [
+    "validacion_gates",
+    "referencias_roles"
+   ]
+  },
+  {
+   "id": "96c1105bd3bd",
+   "enunciado": "Las secciones requeridas siguen bloqueando, salvo las dispensadas por P12 y los overrides por tratamiento.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (secciones requeridas)",
+   "temas": [
+    "validacion_gates",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "1ca245733b3a",
+   "enunciado": "El vocabulario prohibido sigue bloqueando y ahora es más largo, no más corto.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (vocabulario prohibido)",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "52d6a24a4946",
+   "enunciado": "El mecanismo OVERRIDE: <término-o-categoría> - <razón> es idéntico al original: vale solo para el turno actual y con scope específico.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mecanismo OVERRIDE",
+   "temas": [
+    "validacion_gates",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "461acd01eb82",
+   "enunciado": "Las exenciones de contexto de cámara y las anclas direccionales del linter son idénticas al original.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), lo que no cambió (exenciones)",
+   "temas": [
+    "validacion_gates",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "7c3bbd0bd530",
+   "enunciado": "La salida --json mantiene las claves originales intactas y añade case_alias, treatment, ref_role, ref_role_source, word_budget_source, negative_policy, negative_marker, series_lock_keys y linter_version.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), salida --json",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "56c9e1bebc89",
+   "enunciado": "Ejemplo: invocación de prompt_linter.py con --prompt, --refs, --case CLIP-FF, --platform kling_3.0, --ref-role ff, --series-lock, --treatment fotorreal, --overrides y flags opcionales --sports-broadcast y --json.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), uso por línea de comandos",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "52b1d24dca11",
+   "enunciado": "Mapeo de casos: los alias T1, T2, PLACA/PLATE y GENESIS equivalen al caso 1 del linter (Etapa 5, anchors): maestro de rostro, maestro de cuerpo y placa vacía, sin refs.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 1, etapa 5",
+   "temas": [
+    "genesis_maestros",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "107e003280cf",
+   "enunciado": "Mapeo de casos: los alias T3, T4, T5 y ANCLA/ANCHOR equivalen al caso 2 del linter (Etapa 5): cuadro de 1 persona, de 2 personas y edición quirúrgica, con refs Image N o @img.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 2, etapa 5",
+   "temas": [
+    "composicion_insercion",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6846e8f6492a",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF, CLIP, I2V y CLIP-I2V equivalen al caso 3a del linter (Etapa 6): imagen a video con first frame.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3a, etapa 6",
+   "temas": [
+    "i2v_keyframes",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "f2d06042e60d",
+   "enunciado": "Mapeo de casos: los alias CLIP-FF-LF, CLIP-LF y CLIP-TAIL equivalen al caso 3b (Etapa 6): first frame más tail image (Kling start/tail; Seedance 2.5 first y last).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3b, etapa 6",
+   "temas": [
+    "i2v_keyframes",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "1111957ec468",
+   "enunciado": "Mapeo de casos: los alias CLIP-MC, CLIP-MOTION y MOTION-CONTROL equivalen al caso 3c (Etapa 6): Kling Motion Control (§9).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 3c, etapa 6, Kling",
+   "temas": [
+    "i2v_keyframes",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "e42776a696d0",
+   "enunciado": "Mapeo de casos: los alias CLIP-DIALOGO, CLIP-DIALOG y CLIP-DIALOGUE equivalen al caso 4 (Etapa 6): Kling 3.0 P1–P4, Veo Says: y Seedance 2.5 con llaves.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9), caso 4 diálogo, etapa 6",
+   "temas": [
+    "audio_dialogo",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "be644ce2f6e0",
+   "enunciado": "En los alias de caso son indiferentes las mayúsculas, guiones y guiones bajos, y un alias desconocido sale con código 2.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), mapeo de casos (P9)",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "197cea2793d0",
+   "enunciado": "Con --ref-role ff o lf los descriptores P/O en MAIN están prohibidos (FAIL) y el identity block no aplica, porque en los casos 3a/3b/3c/4 la imagen ancla identidad y wardrobe.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role ff/lf, casos 3a/3b/3c/4",
+   "temas": [
+    "referencias_roles",
+    "consistencia_identidad",
+    "i2v_keyframes"
+   ]
+  },
+  {
+   "id": "6672bd9e95da",
+   "enunciado": "Con --ref-role character los descriptores P/O están permitidos y el identity block es obligatorio (WARN si hay menos de 3 grupos), en caso 2 con Image 1: face, @img1, Elements o --cref.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role character, caso 2",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "2842b9ea59aa",
+   "enunciado": "Con --ref-role location, prop o style los descriptores P/O están permitidos (WARN si además hay tags P/O), el identity block no aplica y L/PR/S se rigen por sus tags.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --ref-role location/prop/style",
+   "temas": [
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "717da42e9ef5",
+   "enunciado": "Si no se pasa --ref-role, se deriva del campo role de refs.yaml (FF, LF, TAIL, CHARACTER, ELEMENT, IMG…) y, en su defecto, del caso (video → ff; casos 1/2 → character).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), derivación de --ref-role",
+   "temas": [
+    "referencias_roles",
+    "validacion_gates",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "09e44c43a766",
+   "enunciado": "--treatment fotorreal (default) banea anime/cartoon/3D render y avisa sobre slow motion; ilustracion y animacion levantan esos bans y ajustan la sección style; race mantiene los bans fotorreal y convierte slow motion en FAIL.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), --treatment (P7)",
+   "temas": [
+    "vocabulario_prohibido",
+    "animacion_ilustracion",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "18d56a1c0349",
+   "enunciado": "El director (ai-production-director) nombra al linter como gate final con veto final sobre prompts (§1), lo exige en la Etapa 6 y la Etapa 5 lo recomienda.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), invocación desde el pipeline, etapas 5 y 6",
+   "temas": [
+    "flujo_pipeline",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "349713d8298f",
+   "enunciado": "En la Etapa 5, refs.yaml se escribe desde el plan de anchors con cada referencia con role (CHARACTER, LOCATION, PROP, STYLE) y tags (P1, O1, L1, PR1, S1).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "temas": [
+    "referencias_roles",
+    "validacion_gates",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "73cb97ea1a81",
+   "enunciado": "En la Etapa 5, series_lock.json se extrae de shots.json (series_lock.character/environment/lighting/color_grade), las mismas cadenas que forge exige verbatim.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "temas": [
+    "shots_json_schema",
+    "continuidad_multiclip",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "713122b4829f",
+   "enunciado": "En la Etapa 5 el linter se ejecuta por prompt, con el caso SW30 tal cual (--case T1, --case T3) y la plataforma del header Model: del skill image (nano_banana_pro, nano_banana_2, gpt_image_2).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "temas": [
+    "validacion_gates",
+    "parametros_tecnicos",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "e686368159e0",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 5 con --case T3, --platform nano_banana_pro, --ref-role character, --series-lock y --overrides.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "40b828f0c34e",
+   "enunciado": "Con exit 0 el prompt se entrega con el reporte adjunto; con exit 1 no se entrega y se itera; los WARN de palabras se leen junto al techo del adaptador y no se arreglan recortando el T1.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 5, imágenes ancla (casos 1 y 2)",
+   "temas": [
+    "validacion_gates",
+    "longitud_prompt",
+    "revision_iteracion"
+   ]
+  },
+  {
+   "id": "6bca679404ac",
+   "enunciado": "En la Etapa 6, refs.yaml lleva la imagen aprobada como role FF (y LF/TAIL si hay tail image) con los tags de lo que esa imagen ya fija, normalmente P, O, L y PR.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "temas": [
+    "i2v_keyframes",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "06b2d782daf2",
+   "enunciado": "En la Etapa 6 la plataforma es la del archivo de modelo destino (kling_3.0, veo_3.1, seedance_2.5, hailuo).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "temas": [
+    "parametros_tecnicos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "c680abb53597",
+   "enunciado": "En la Etapa 6 se usa --treatment race en spots de velocidad y --sports-broadcast solo si aplica la Regla 26.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "temas": [
+    "velocidad_vehiculo",
+    "validacion_gates",
+    "parametros_tecnicos"
+   ]
+  },
+  {
+   "id": "934386d7a28e",
+   "enunciado": "Ejemplo: invocación del linter en la Etapa 6 con --case CLIP-FF-LF, --platform kling_3.0, --series-lock y --overrides.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "56eefa888eb2",
+   "enunciado": "El gate de la Etapa 6 es doble: los dos checks de video (dramaturgy check de 6 puntos y auditoría de 3 detalles) y además este linter limpio.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), Etapa 6, prompts de video (casos 3 y 4)",
+   "temas": [
+    "validacion_gates",
+    "tres_detalles",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "ff5850f2e43a",
+   "enunciado": "Diseño del hook Stop gate_aurora.py (no cableado): lee el payload del hook, extrae los bloques de prompt visual del último mensaje, resuelve caso y plataforma desde la cabecera (si no, no opina), usa refs.yaml y series_lock.json del run activo, traduce linter 1 a exit 2 y 0 a exit 0, se registra en hooks.Stop tras gate_dramaturgy.py y reutiliza el contador anti-bucle (MAX_CONSECUTIVE_BLOCKS = 3).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "temas": [
+    "validacion_gates",
+    "herramientas_codigo",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "174669d4cc4c",
+   "enunciado": "Explicación: el hook Stop no está hecho; la copia es una herramienta invocable a mano y desde el pipeline, y el hook será el siguiente paso cuando el cableado de caso/plataforma desde la cabecera esté validado en sesiones reales.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), propuesta de hook Stop (no cableado)",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "ad45f8bf2a77",
+   "enunciado": "Ejemplo: comandos para correr la suite de pruebas del linter (18 pruebas, exit 0 si pasan todas) con y sin VERBOSE=1.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "65a7d30ed98f",
+   "enunciado": "Prueba T01: un T1 SW30 de unas 250 palabras en nano_banana_pro caso 1 debe dar exit 0 con WARN de palabras (parche P1).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P1",
+   "temas": [
+    "longitud_prompt",
+    "validacion_gates",
+    "genesis_maestros"
+   ]
+  },
+  {
+   "id": "10b8b8765262",
+   "enunciado": "Prueba T02: GPT Image 2 con Constraints: y sin Negative: en caso 1 debe dar exit 0 (parche P2).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, GPT Image 2",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "10d570d6b363",
+   "enunciado": "Prueba T03: Kling caso 3a sin bloque negativo debe dar exit 1 (parche P2).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "a7f82cd06651",
+   "enunciado": "Prueba T04/T04b: caso 2 con --ref-role character y identity block da exit 0 con descriptores P permitidos; sin identity block da exit 0 con WARN (parche P3).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P3",
+   "temas": [
+    "consistencia_identidad",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "0adf4b061851",
+   "enunciado": "Prueba T05: caso 3a con --ref-role ff y descriptores P debe dar exit 1 (parche P3).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P3",
+   "temas": [
+    "consistencia_identidad",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "881757f2c46c",
+   "enunciado": "Prueba T06/T06b: con --series-lock que contiene gym y el prompt con gym verbatim da exit 0; el mismo prompt sin series-lock da exit 1 con FAIL [L] gym (parche P4).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P4",
+   "temas": [
+    "continuidad_multiclip",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "808c4e132eb7",
+   "enunciado": "Prueba T07: her jaw locks, sweat beads con ref P de rol ff debe dar exit 0 (parche P5).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P5",
+   "temas": [
+    "tres_detalles",
+    "emocion_sin_nombrar",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "1525f2b1b854",
+   "enunciado": "Prueba T08: el término cinematic debe dar exit 1 (parche P6).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P6",
+   "temas": [
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "fecf8e4d35d7",
+   "enunciado": "Prueba T09: anime con --treatment ilustracion da exit 0 y en fotorreal da exit 1 (parche P7).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P7",
+   "temas": [
+    "vocabulario_prohibido",
+    "animacion_ilustracion",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "1db67ee4d19f",
+   "enunciado": "Prueba T10: ultra-slow motion en Kling da exit 0 sin WARN, slow motion con --treatment race da exit 1 y en fotorreal da WARN (parche P7).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P7, Kling",
+   "temas": [
+    "vocabulario_prohibido",
+    "velocidad_vehiculo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6e432ced5d18",
+   "enunciado": "Prueba T11: --sports-broadcast en caso 1 debe dar exit 0 con WARN (parche P8).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P8",
+   "temas": [
+    "parametros_tecnicos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "eebb1f5bdcba",
+   "enunciado": "Prueba T12: --case T1 resuelve a 1, CLIP-FF a 3a y CLIP-DIALOGO a 4 (snapshot kling_3.0__4), y un alias desconocido da exit 2 (parches P9, P10).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P9/P10",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "604a980ec3ac",
+   "enunciado": "Prueba T13: negativo Kling con no blur y 10 ítems debe dar exit 0 con dos WARN R16 (parche P2).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P2, Kling",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6be0b6da33b1",
+   "enunciado": "Prueba T14: el ejemplo GOOD del README del skill pasa (con y sin --platform), el BAD falla con las mismas violaciones y overrides aceptados, y ya no falla por longitud.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, todos los parches",
+   "temas": [
+    "validacion_gates",
+    "longitud_prompt"
+   ]
+  },
+  {
+   "id": "2f15ea639ce1",
+   "enunciado": "Prueba T15: --json sigue produciendo las claves originales.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "86f4e16f7985",
+   "enunciado": "Prueba T16: un ref con S y prompt sin palabras de estilo da exit 0 con la sección style dispensada; sin ref S da exit 1 (parche P12).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, P12",
+   "temas": [
+    "estructura_prompt_imagen",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "208ac2b9839d",
+   "enunciado": "Explicación: los fixtures prompt_GOOD.txt, prompt_BAD.txt, refs_session.yaml y override_msg.txt se reconstruyeron según references/README.md del skill porque el paquete instalado no trae los test_* que ese README lista.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), pruebas, fixtures",
+   "temas": [
+    "herramientas_codigo",
+    "trazabilidad_procedencia"
+   ]
+  },
+  {
+   "id": "254f1592565c",
+   "enunciado": "Decisión 1: sin --platform el negativo sigue siendo obligatorio (política legacy_required con WARN), porque el SKILL.md original invoca el linter sin plataforma y relajarlo en silencio cambiaría el contrato; se descartó hacerlo opcional por defecto.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, sin --platform",
+   "temas": [
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "1decd497b05c",
+   "enunciado": "Decisión 2: la exención de series_lock no cubre BANNED (solo se eximen P/O/L/PR/S), porque el director §6.1 dice que el vocabulario prohibido gana siempre y un color_grade con cinematic no debe colar.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, series_lock",
+   "temas": [
+    "vocabulario_prohibido",
+    "continuidad_multiclip",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "acea710dc61f",
+   "enunciado": "Decisión 3: la regla sin no X del negativo se aplica solo a Kling, porque en Seedance 2.5 el formato oficial de [Negative Prompts] es no X; el límite de 8 ítems sí aplica a todas las plataformas (SW30 R16).",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, negativos Kling vs Seedance 2.5",
+   "temas": [
+    "negativos",
+    "capacidades_modelo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "6ee4d3f40914",
+   "enunciado": "Decisión 4: una mención negada (no cartoon, not anime) no dispara BANNED ni bans de estilo (P11), porque el snapshot gpt_image_2__1 exige no cartoon, no anime en MAIN.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, menciones negadas",
+   "temas": [
+    "vocabulario_prohibido",
+    "negativos",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "32992db00d58",
+   "enunciado": "Decisión 5: la sección style se dispensa cuando S está cubierta (P12) en lugar de sacar photorealistic/documentary/editorial de S, porque U13 dice que lo que define la referencia no se restata.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, sección style",
+   "temas": [
+    "estructura_prompt_imagen",
+    "referencias_roles",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "a90ff8494c6d",
+   "enunciado": "Decisión 6: --treatment race existe como cuarto valor y hereda los bans de fotorreal, porque la spec pide salvo --treatment race para slow motion y no hay otra forma de expresarlo.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --treatment race",
+   "temas": [
+    "velocidad_vehiculo",
+    "vocabulario_prohibido",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "b5b9742f45b1",
+   "enunciado": "Decisión 7: el presupuesto de Seedance 2.5 usa el rango 80–150 del adaptador de Seedance 2.0 con nota de que seedance-25.md no fija cifra; no se inventa un rango porque SW30 R19 prohíbe afirmar límites de plataforma sin fuente.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, Seedance 2.5",
+   "temas": [
+    "longitud_prompt",
+    "capacidades_modelo",
+    "conducta_agente"
+   ]
+  },
+  {
+   "id": "aaf94b1533b9",
+   "enunciado": "Decisión 8: un alias desconocido de --case devuelve exit 2 (error de uso) y no un reporte FAIL, conservando el contrato de argparse choices= del original.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --case",
+   "temas": [
+    "herramientas_codigo",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "1c42bf6eec3a",
+   "enunciado": "Decisión 9: el vocabulario nuevo evita términos de una sola palabra con colisión conocida (stage, counter, cup) y usa formas compuestas (concert stage, bar counter, coffee cup), porque la exención direccional no cubre esos contextos.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, vocabulario L/PR/O",
+   "temas": [
+    "validacion_gates",
+    "vocabulario_prohibido",
+    "herramientas_codigo"
+   ]
+  },
+  {
+   "id": "155fd6645b87",
+   "enunciado": "Decisión 10: --ref-role location/prop/style no altera P/O y solo avisa si los refs traen tags P/O, porque el identity block de U7 no tiene sentido para una placa o un prop.",
+   "alcance": "Linter Aurora (copia parcheada v1.2-fupai), decisiones fuera de la spec, --ref-role",
+   "temas": [
+    "referencias_roles",
+    "consistencia_identidad",
+    "validacion_gates"
+   ]
+  },
+  {
+   "id": "19d0bfef1d95",
+   "enunciado": "Explicación: el régimen especializa el método de keyframes para sujetos sobre el agua; el agua es suelo, fondo barrido y fuente de partículas, la velocidad se lee en la superficie y valen las reglas de race-and-speed.md con el agua en el papel del asfalto.",
+   "alcance": "Régimen 01 agua en superficie",
+   "temas": [
+    "velocidad_vehiculo",
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "2f7dbda84272",
+   "enunciado": "Cargar este archivo siempre que el sujeto se desplace sobre una superficie de agua (tabla, casco, remo, pie descalzo o esquí).",
+   "alcance": "Régimen 01 agua en superficie, cuándo cargar; etiqueta A PRUEBA",
+   "temas": [
+    "flujo_pipeline",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "ea1736c11eb1",
+   "enunciado": "Si el sujeto cruza la superficie hacia adentro o hacia afuera, cargar además 02-agua-ruptura.md.",
+   "alcance": "Régimen 01 agua en superficie, cuándo cargar; etiqueta A PRUEBA",
+   "temas": [
+    "flujo_pipeline",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "c6b284bc940e",
+   "enunciado": "Si hay motor o vehículo acuático, leer antes race-and-speed.md §3 y §10, cuyo presupuesto de velocidad y anti-fake aplican íntegros.",
+   "alcance": "Régimen 01 agua en superficie, cuándo cargar; fuente race-and-speed §3",
+   "temas": [
+    "velocidad_vehiculo",
+    "flujo_pipeline"
+   ]
+  },
+  {
+   "id": "d3b01abc9cbb",
+   "enunciado": "La estela y el spray deben salir del punto de contacto y apuntar en sentido contrario a la dirección de viaje declarada, porque una estela incoherente es contradicción y el modelo obedece la señal más fuerte.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; fuente universal-rules U8",
+   "temas": [
+    "fisica_consecuencia",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "36db64d002d7",
+   "enunciado": "El spray se describe como consecuencia física del canto de la tabla o del casco cortando el agua (qué lo provoca y hacia dónde vuela), nunca como splash abstracto.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; fuente universal-rules U9",
+   "temas": [
+    "fisica_consecuencia",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "726044ef7468",
+   "enunciado": "Las gotas congeladas se describen como constelación de puntos speculares con rim en el borde de ataque; sin ese rim el spray se lee como niebla blanca.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; fuente animatic-keyframes §4",
+   "temas": [
+    "fisica_consecuencia",
+    "luz",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "abe968cc669f",
+   "enunciado": "La superficie del agua debe mostrar textura direccional (rizado o chop) para que el barrido tenga algo que barrer; el agua lisa equivale a asfalto sin textura.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; fuente animatic-keyframes §4",
+   "temas": [
+    "fisica_consecuencia",
+    "velocidad_vehiculo",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "e0314379cc66",
+   "enunciado": "Toda cuerda de remolque se dibuja tensa y recta desde el mango hasta fuera de cuadro, porque una cuerda con comba dice que no hay tracción y desmiente la velocidad.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "velocidad_vehiculo",
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "1c21ce1dad28",
+   "enunciado": "El cuerpo del rider debe mostrar el vector de la maniobra (rodillas flexionadas, cadera cargada hacia el canto, brazos en tensión); un rider erguido y relajado es un panel neutro y se descarta.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; fuente animatic-keyframes §4",
+   "temas": [
+    "movimiento_congelado_blur",
+    "anatomia_manos",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "79e2223b3c82",
+   "enunciado": "El agua desplazada tiene masa: la pared de agua junto al canto se levanta más en el lado de presión y se rompe en el lado libre, por lo que no es simétrica.",
+   "alcance": "Régimen 01 agua en superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "084be0886a89",
+   "enunciado": "Cue de movimiento por defecto: sujeto nítido contra superficie de agua barrida en el sentido del viaje, con el spray en blur parcial.",
+   "alcance": "Régimen 01 agua en superficie, cue de movimiento congelado; fuente animatic-keyframes §4",
+   "temas": [
+    "movimiento_congelado_blur",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "f9fe075e2274",
+   "enunciado": "Un still de superficie se considera rápido solo si reúne al menos tres de cinco cues: cámara a ras del agua, agua barriendo el borde inferior, referencia cercana pasando el borde, sujeto nítido contra fondo barrido, cue de vibración o spray en la lente.",
+   "alcance": "Régimen 01 agua en superficie, cue de movimiento congelado; fuente race-and-speed §3",
+   "temas": [
+    "velocidad_vehiculo",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "177e498b2815",
+   "enunciado": "Las gotas sobre la lente o la carcasa son la cue de vibración de este medio y se nombran como tal.",
+   "alcance": "Régimen 01 agua en superficie, cue de movimiento congelado; etiqueta A PRUEBA",
+   "temas": [
+    "velocidad_vehiculo",
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "a9dc1c207afd",
+   "enunciado": "El spray solo se lee luminoso a contraluz o contraluz lateral; el spray frontal es una masa gris muerta, igual que el humo frontal.",
+   "alcance": "Régimen 01 agua en superficie, luz; fuente race-and-speed §7",
+   "temas": [
+    "luz",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "18035ac26d2d",
+   "enunciado": "La superficie del agua es el espejo del régimen: prácticos y sol se reflejan como estrías largas, se usa el reflejo como spine de composición y la fuente real queda medio fuera de cuadro.",
+   "alcance": "Régimen 01 agua en superficie, luz; fuente race-and-speed §7",
+   "temas": [
+    "luz",
+    "composicion_frame"
+   ]
+  },
+  {
+   "id": "a8d46a69f414",
+   "enunciado": "Piel y neopreno mojados devuelven speculares duros; un cuerpo mojado sin brillos speculares se lee seco y falso.",
+   "alcance": "Régimen 01 agua en superficie, luz; etiqueta A PRUEBA",
+   "temas": [
+    "luz",
+    "piel_rostro_realismo",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "ad6619dc91fa",
+   "enunciado": "Con sol alto el agua pierde textura y el spray se quema: preferir sol bajo y declararlo en el prompt con hora y dirección, no con golden hour suelto.",
+   "alcance": "Régimen 01 agua en superficie, luz; etiqueta A PRUEBA",
+   "temas": [
+    "luz",
+    "color_grade_paleta",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "c8869330ac2b",
+   "enunciado": "La cámara debe poder montarse en un rig real (torre de la lancha, pole cam, carcasa a nivel del agua, dron bajo, cámara en el mango); un ángulo que ningún rig acuático ocupa se lee como render.",
+   "alcance": "Régimen 01 agua en superficie, cámara y rig; fuente race-and-speed §2",
+   "temas": [
+    "camara_movimiento",
+    "angulo_camara"
+   ]
+  },
+  {
+   "id": "73a43541f7ed",
+   "enunciado": "Ángulo por defecto low a ras del agua, con la superficie en el tercio inferior barriendo; el ángulo alto y limpio es el god-angle que mata la velocidad.",
+   "alcance": "Régimen 01 agua en superficie, cámara y rig; fuente race-and-speed §10",
+   "temas": [
+    "angulo_camara",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "d36aebc5ea97",
+   "enunciado": "El ángulo alto se reserva para el proof shot lejano (estela larga como prueba de distancia) y se usa una sola vez en la secuencia.",
+   "alcance": "Régimen 01 agua en superficie, cámara y rig; fuente race-and-speed §5",
+   "temas": [
+    "angulo_camara",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "a8f96b169a7b",
+   "enunciado": "Reservar el dutch para el único beat de pérdida de canto o caída.",
+   "alcance": "Régimen 01 agua en superficie, cámara y rig; fuente race-and-speed §6",
+   "temas": [
+    "angulo_camara",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "ad7491ef0e92",
+   "enunciado": "Usar lente 24mm en el rig cercano para exagerar la proximidad del agua y larga focal desde la orilla para comprimir al rider contra la estela y la lancha.",
+   "alcance": "Régimen 01 agua en superficie, cámara y rig; fuente race-and-speed §3",
+   "temas": [
+    "encuadre_lente_dof",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "7b0226eb90c5",
+   "enunciado": "Para escenas con física de agua, spray y tela mojada usar Nano Banana Pro, el modelo para escenas complejas con física y materiales finos.",
+   "alcance": "Régimen 01 agua en superficie, modelo recomendado; Nano Banana Pro",
+   "temas": [
+    "seleccion_modelo",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "261c281f4039",
+   "enunciado": "Si la cara del rider es visible e identidad de campaña, generar el maestro de rostro aparte con el template T1 y probar NB2 y NBP, porque NBP a veces sostiene peor los rostros.",
+   "alcance": "Régimen 01 agua en superficie, modelo recomendado; NB2/NBP",
+   "temas": [
+    "seleccion_modelo",
+    "genesis_maestros",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "6147b0613fb7",
+   "enunciado": "Pedir natural contrast, no HDR look, porque el agua y el spray disparan la tendencia a sobrecocer el HDR.",
+   "alcance": "Régimen 01 agua en superficie, modelo recomendado; fuente nano-banana.md",
+   "temas": [
+    "color_grade_paleta",
+    "seleccion_modelo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "51fb0525e7a5",
+   "enunciado": "Para un lugar reconocible (una bahía o un lago concreto) usar NB2 con image grounding.",
+   "alcance": "Régimen 01 agua en superficie, modelo recomendado; NB2",
+   "temas": [
+    "seleccion_modelo",
+    "capacidades_modelo"
+   ]
+  },
+  {
+   "id": "655710159ae7",
+   "enunciado": "El rostro suele quedar fragmentado por spray, gafas o casco: convertirlo en silueta con un glint es más fiable que pedir un rostro nítido a través del agua.",
+   "alcance": "Régimen 01 agua en superficie, personas; fuente animatic-keyframes §7",
+   "temas": [
+    "piel_rostro_realismo",
+    "luz",
+    "consistencia_identidad"
+   ]
+  },
+  {
+   "id": "86a646973d74",
+   "enunciado": "Cuando la identidad del rider importa, la cara se fija en el maestro T1 y el cuadro de acción se inserta con referencia; nunca se pide identidad y spray en la misma génesis.",
+   "alcance": "Régimen 01 agua en superficie, personas; fuente SW30 R1",
+   "temas": [
+    "genesis_maestros",
+    "consistencia_identidad",
+    "composicion_insercion"
+   ]
+  },
+  {
+   "id": "340f0ff4dfa6",
+   "enunciado": "Las manos en el mango son anatomía en decisión (nudillos, tendones, agarre máximo); una mano relajada en el mango es filler.",
+   "alcance": "Régimen 01 agua en superficie, personas; fuente animatic-keyframes §5",
+   "temas": [
+    "anatomia_manos",
+    "emocion_sin_nombrar"
+   ]
+  },
+  {
+   "id": "e331307888ed",
+   "enunciado": "Con dos riders en el mismo cuadro, se genera uno por generación sobre la placa de agua, con la estela de cada uno coherente con su dirección.",
+   "alcance": "Régimen 01 agua en superficie, personas; fuente SW30 R1",
+   "temas": [
+    "composicion_insercion",
+    "genesis_maestros",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "a8b6d34f9dc5",
+   "enunciado": "Fallo: agua congelada que parece vidrio o gel; se corrige añadiendo chop, gotas con rim y blur diferencial (textura direccional y blur parcial en el spray).",
+   "alcance": "Régimen 01 agua en superficie, fallos conocidos; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "movimiento_congelado_blur",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "8adb5e9d9e10",
+   "enunciado": "Fallo: spray como nube blanca sin forma por iluminación frontal; se corrige pasando la fuente detrás o al lado del spray.",
+   "alcance": "Régimen 01 agua en superficie, fallos conocidos; fuente race-and-speed §7",
+   "temas": [
+    "luz",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "87ab0f6b2d8c",
+   "enunciado": "Fallo: estela hacia el lado equivocado porque no se declaró la dirección de viaje; se corrige declarándola antes que el sujeto.",
+   "alcance": "Régimen 01 agua en superficie, fallos conocidos; fuente forge Rule 6",
+   "temas": [
+    "velocidad_vehiculo",
+    "estructura_prompt_imagen",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "4c480ed73e25",
+   "enunciado": "Fallo: horizonte inclinado sin querer (el modelo interpreta el movimiento como dutch); se corrige pidiendo horizonte nivelado salvo en el beat de caída.",
+   "alcance": "Régimen 01 agua en superficie, fallos conocidos; etiqueta A PRUEBA",
+   "temas": [
+    "angulo_camara",
+    "composicion_frame",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "c75216637bc0",
+   "enunciado": "Fallo: cuerda floja o que termina en el aire; se corrige nombrando el destino de la cuerda fuera de cuadro y su tensión.",
+   "alcance": "Régimen 01 agua en superficie, fallos conocidos; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "velocidad_vehiculo",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "0396b0dfe76c",
+   "enunciado": "Checklist del crítico: estela y spray coherentes con la dirección de viaje declarada.",
+   "alcance": "Régimen 01 agua en superficie, checklist del crítico",
+   "temas": [
+    "critica_qa",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "6b860d3a9eda",
+   "enunciado": "Checklist del crítico: al menos tres cues de velocidad presentes y nombrables.",
+   "alcance": "Régimen 01 agua en superficie, checklist del crítico",
+   "temas": [
+    "critica_qa",
+    "velocidad_vehiculo"
+   ]
+  },
+  {
+   "id": "b05fbb6ce423",
+   "enunciado": "Checklist del crítico: spray con rim de contraluz, no masa gris.",
+   "alcance": "Régimen 01 agua en superficie, checklist del crítico",
+   "temas": [
+    "critica_qa",
+    "luz",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "58df6b0ed16f",
+   "enunciado": "Checklist del crítico: cuerpo con vector de maniobra y cuerda tensa si existe.",
+   "alcance": "Régimen 01 agua en superficie, checklist del crítico; etiqueta A PRUEBA",
+   "temas": [
+    "critica_qa",
+    "movimiento_congelado_blur",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "909672f201a3",
+   "enunciado": "Checklist del crítico: rig montable identificable.",
+   "alcance": "Régimen 01 agua en superficie y régimen 02 ruptura de superficie, checklist del crítico",
+   "temas": [
+    "critica_qa",
+    "camara_movimiento"
+   ]
+  },
+  {
+   "id": "afe6a1309af5",
+   "enunciado": "Checklist del crítico: sin HDR sobrecocido y sin rostro pedido a través del spray.",
+   "alcance": "Régimen 01 agua en superficie, checklist del crítico",
+   "temas": [
+    "critica_qa",
+    "color_grade_paleta",
+    "piel_rostro_realismo"
+   ]
+  },
+  {
+   "id": "c26c6737054f",
+   "enunciado": "Explicación: el régimen cubre el instante en que un cuerpo cruza la frontera entre aire y agua (tipo B, un instante arrestado) y su regla rectora es boardear el estado posterior del umbral, nunca el anterior.",
+   "alcance": "Régimen 02 ruptura de superficie",
+   "temas": [
+    "movimiento_congelado_blur",
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "d12a9c2b161d",
+   "enunciado": "Cargar el archivo cuando el beat es el cruce de la superficie en cualquier sentido (entrada de clavado, salida de nadador, salto de animal marino, objeto que cae al agua).",
+   "alcance": "Régimen 02 ruptura de superficie, cuándo cargar; etiqueta A PRUEBA",
+   "temas": [
+    "flujo_pipeline",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "4554ae8c6095",
+   "enunciado": "No cargar para un sujeto totalmente sumergido (03-subacuatico.md) ni para uno que se desplaza encima sin cruzar (01-agua-superficie.md).",
+   "alcance": "Régimen 02 ruptura de superficie, cuándo cargar; etiqueta A PRUEBA",
+   "temas": [
+    "flujo_pipeline",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "c1acb190eda7",
+   "enunciado": "Boardear el estado posterior (agua ya abierta, corona ya formada, cuerpo parcialmente dentro) e implicar el instante anterior.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; fuente animatic-keyframes §5",
+   "temas": [
+    "movimiento_congelado_blur",
+    "fisica_consecuencia"
+   ]
+  },
+  {
+   "id": "9f78847e67be",
+   "enunciado": "La forma de la salpicadura depende de la entrada y se declara: cuerpo alineado y vertical da entrada limpia con corona baja y chorro fino; cuerpo abierto da corona ancha y agua blanca.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "8405f4e645e6",
+   "enunciado": "La parte sumergida se ve desplazada y ligeramente comprimida por la refracción, y una extremidad que cruza la línea del agua sin quiebre óptico se lee como recorte.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "6609623be0c1",
+   "enunciado": "Arriba de la línea de agua hay gotas que caen y abajo burbujas que suben; no se mezclan.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "regimenes_etiquetado"
+   ]
+  },
+  {
+   "id": "cb1911eed6b3",
+   "enunciado": "El movimiento se describe por su consecuencia: el cuerpo abre el agua, la superficie se hunde en el punto de entrada y se levanta alrededor.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; fuente universal-rules U9",
+   "temas": [
+    "fisica_consecuencia",
+    "movimiento_congelado_blur"
+   ]
+  },
+  {
+   "id": "b96ff7424f85",
+   "enunciado": "Un still es un instante congelado: usar frozen mid-entry o frozen at the instant the hands break the surface, nunca verbos de proceso como diving o splashing.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; fuente SW30 R8",
+   "temas": [
+    "movimiento_congelado_blur",
+    "estructura_prompt_imagen"
+   ]
+  },
+  {
+   "id": "4eda2a75d478",
+   "enunciado": "La línea de superficie es una sola: en un encuadre split-level hay exactamente un menisco que cruza el cuadro, con el aire nítido arriba y el agua con su propia atmósfera abajo.",
+   "alcance": "Régimen 02 ruptura de superficie, leyes físicas; etiqueta A PRUEBA",
+   "temas": [
+    "fisica_consecuencia",
+    "composicion_frame",
+    "regimenes_etiquetado"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1763 @@
+{
+ "instrucciones": "Recibes registros de una base de reglas de producción audiovisual con IA. Cada registro trae su texto\nliteral completo, el documento y la ruta de encabezados donde está, y a veces un contexto (encabezado de tabla o de\nbloque). El encabezado dice el alcance: modelo, régimen, etapa, caso. Para CADA registro devuelve:\n- \"enunciado\": la regla en español, UNA frase: qué exige, prohíbe, limita o especifica. Si es un ejemplo o una\n  explicación sin norma, empieza con \"Ejemplo:\" o \"Explicación:\".\n- \"alcance\": a qué aplica exactamente según texto y encabezado (modelo y versión, caso, etapa, régimen) o \"general\".\n- \"temas\": de 1 a 3 claves de la lista, las que mejor describen de qué trata.\nLista de temas (clave: descripción):\nmarca_brandlock: brand-lock: secciones, paleta hex, tipografía, never list, voz, confianza de valores\nestrategia_conceptos: brief, SMP, territorios, concept cards, matriz, dirección narrativa\nguion_formato: guion: sluglines, acción, personajes, diálogo, XML, estructura, escenas\ndramaturgia_escena: fórmula de escena, three-jobs, blocking, staging, poder, geometría, mirada\ntres_detalles: ley de los tres detalles: presión ambiental, micro-acción, motivo sonoro/visual\nemocion_sin_nombrar: mostrar no contar, emoción como cuerpo u objeto, 2-4 señales\nvocabulario_prohibido: palabras vetadas, anti-slop, cinematic/epic/masterpiece, adjetivos vacíos\ncinco_anclas_motivo: cinco anclas, objeto ancla, motivo, imagen final, quiebre\nritmo_montaje: ritmo, densidad de cortes, escalera, pausa, Murch, transiciones, cut types\nfuncion_de_plano: etiquetas Establish/Power/Pressure/Detail/..., captions de carrera, beats\nbeat_framework_timing: frameworks de beats, duración de shots, hook, CTA, curva de energía\nshots_json_schema: shots.json, campos, schema, series_lock, rationale, run.json, versión\ntexto_en_pantalla: texto/overlays/tipografía en pantalla, text-overlays.json, nunca en el prompt, lectura\nlogos_marcas_en_imagen: logos, lettering, marcas generadas, patrocinadores, composición en post\nconsistencia_identidad: identidad de personaje, bloque de identidad, maestros, verbatim, clones, drift\nreferencias_roles: imágenes de referencia, @img, elements, ingredients, rol de cada referencia, límites de refs\ngenesis_maestros: génesis sin refs, T1 rostro, T2 cuerpo, placa vacía, canonizar, dos pasos\ncomposicion_insercion: cuadros con varios sujetos, inserción secuencial, anclas de posición, contacto, manos\nedicion_imagen: edición quirúrgica, preserve list, un cambio por iteración, edit no re-roll, inpainting\nestructura_prompt_imagen: slots/secciones del prompt de imagen, orden, 5 slots, prosa NB, metadatos fuera\nestructura_prompt_video: esqueletos de prompt de video por modelo, bloques, orden, peso al inicio\nlongitud_prompt: número de palabras, elementos máximos, compresión, presupuesto\nnegativos: negative prompt, no X, framing positivo, prohibiciones en el prompt\nparametros_tecnicos: aspect ratio, resolución, duración, seed, quality, cfg, flags, parámetros API\nseleccion_modelo: qué modelo usar para qué, ruteo, cuándo escalar, costos por modelo\ncapacidades_modelo: límites y capacidades de cada modelo, versiones, fallos conocidos del modelo\ncamara_movimiento: movimiento de cámara, uno por shot, motivado, vocabulario de movimientos, rig montable\nencuadre_lente_dof: encuadre ECU-EWS, lente mm, profundidad de campo, compresión\nangulo_camara: ángulo y altura de cámara, low/high/dutch/overhead, poder\ncomposicion_frame: tercios, espacio negativo, capas FG/MG/BG, simetría, punto focal, dónde va el cuerpo\nluz: fuente motivada, dirección, dureza, contraluz, specular, 70% sin luz, prácticos\ncolor_grade_paleta: paleta concreta, grade, stock de película, textura, grano, halación, HDR\npiel_rostro_realismo: piel, poros, look plástico, rostros, anti-AI look, realismo fotográfico\nanatomia_manos: manos, dedos, anatomía, lateralidad, inspección al 100%\nmovimiento_congelado_blur: still como instante congelado, blur diferencial, cues de movimiento, estado posterior\nfisica_consecuencia: física por consecuencia, agua, spray, humo, partículas, deformación\nvelocidad_vehiculo: cues de velocidad, rim barrido, carreras, vehículos, anti-fake\nmultitud_grupo: multitud anónima, ensamble, número de personas, rostros legibles\nclima_atmosfera: lluvia, niebla, rayo, polvo, presión ambiental, una sola atmósfera\naudio_dialogo: audio, diálogo, lip-sync, SFX, música, VO, marcadores de audio\ncontinuidad_multiclip: continuidad entre clips, repetir bloque, luz constante, empalme de clips\nmultishot: varios shots en una generación, marcadores de corte, anti-mush\ni2v_keyframes: imagen a video, primer/último frame, no re-describir, motion brief\nedicion_extension_video: editar video existente, extender, ultra long, blockout, green screen\ncritica_qa: crítica por capas, severidad, verdict, ACCEPT/REVISE/REJECT, re-roll vs post\nrevision_iteracion: revisión selectiva, rondas, máximo de intentos, cambio de método, costo\nvalidacion_gates: validadores, linter, gates, micro-gate, pregunta de avance, checks mecánicos\ntrazabilidad_procedencia: hashes, snapshot, run.json, rondas, procedencia, fuente de verdad\nentrega_paquete: production package, preview HTML, estructura de carpetas, atribución, checklist\npostproduccion: edición, grade, audio en post, export, specs de plataforma\npatrones_genero: plantillas por género: moda, comida, producto, retrato, póster, UI, social\nlayout_grafico: slides, infografías, grids, multi-panel, bento, layouts\nanimacion_ilustracion: animación, principios Disney, estilos ilustrados, anime, 3D\nconducta_agente: cómo responde y trabaja el agente: leer skills, preguntar, formato de respuesta, no inventar\nflujo_pipeline: tracks, etapas, orden, sub-skills, carga de skills, gates entre etapas\nregimenes_etiquetado: etiquetas FUENTE/A PRUEBA/CAMPO/CANONICA, investigación de campo, esqueleto de régimen\nherramientas_codigo: instalación, uso y mantenimiento de herramientas, scripts, CI\nejemplo_marca: contenido de una marca o proyecto de ejemplo concreto (WhyStrohm, Acme, café, etc.)\nDevuelve JSON {\"registros\": [{\"id\": \"...\", \"enunciado\": \"...\", \"alcance\": \"...\", \"temas\": [\"...\"]}]} con\nexactamente los ids recibidos, en el mismo orden.",
+ "registros": [
+  {
+   "id": "8707128bb030",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/beat-frameworks.md",
+     "lineas": "69-79",
+     "encabezado": "Beat Frameworks › Custom"
+    }
+   ],
+   "texto": "If the brief doesn't fit, build a custom beat structure. Document in `storyboard.md`:\n\n```markdown\n## Beat framework: Custom\n\n**Why custom:** [one sentence, what made the standard frameworks insufficient]\n\n**Beats:**\n1. [name], [purpose], [duration]\n2. ...\n```"
+  },
+  {
+   "id": "ff718fefe370",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/beat-frameworks.md",
+     "lineas": "81-81",
+     "encabezado": "Beat Frameworks › Custom"
+    }
+   ],
+   "texto": "Custom is a last resort, not a first move. The standard frameworks exist because they work."
+  },
+  {
+   "id": "fa2363a791a1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "3-3",
+     "encabezado": "On-Screen Text"
+    }
+   ],
+   "texto": "Text on screen is a load-bearing decision. Most storyboards over-text. The default should be: **does this shot need text to land?** If the visual carries the meaning, text dilutes."
+  },
+  {
+   "id": "0d68b06b3d15",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "7-7",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ],
+   "texto": "1. **Auto-play-mute environments.** Social feeds. Text replaces VO."
+  },
+  {
+   "id": "f44806d8d319",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "8-8",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ],
+   "texto": "2. **Concept compression.** A short phrase lands harder than 4 seconds of narration."
+  },
+  {
+   "id": "beb1249cb272",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "9-9",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ],
+   "texto": "3. **Stat or proof point.** Numbers stick visually in a way they don't audibly."
+  },
+  {
+   "id": "cdd1f3eda181",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "10-10",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ],
+   "texto": "4. **Beat punctuation.** A single word or phrase that lands on a music hit."
+  },
+  {
+   "id": "4605e6aaa226",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "11-11",
+     "encabezado": "On-Screen Text › When on-screen text earns its keep"
+    }
+   ],
+   "texto": "5. **CTA.** The action you want the viewer to take."
+  },
+  {
+   "id": "a9882299faf1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "15-15",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ],
+   "texto": "1. **Restating the VO.** If the voice says it, the text is noise."
+  },
+  {
+   "id": "4fe645b0b291",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "16-16",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ],
+   "texto": "2. **Decorative copy.** \"Moments matter\" floating over b-roll. Cut it."
+  },
+  {
+   "id": "3d1a2e68fb85",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "17-17",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ],
+   "texto": "3. **Brand vibing.** Product names everywhere. Logo lockup in the CTA covers this."
+  },
+  {
+   "id": "d231b5e577c2",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "18-18",
+     "encabezado": "On-Screen Text › When on-screen text doesn't earn its keep"
+    }
+   ],
+   "texto": "4. **Filler beats.** If the shot doesn't need text, leave it clean."
+  },
+  {
+   "id": "98ef891d80ef",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "22-22",
+     "encabezado": "On-Screen Text › Composition rules"
+    }
+   ],
+   "texto": "These flow into the `position` field of each text overlay."
+  },
+  {
+   "id": "e98662534875",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "26-26",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ],
+   "texto": "When a shot has on-screen text, the **shot subject must reserve space for it**. This is enforced at storyboard time, not generation time."
+  },
+  {
+   "id": "6e37194cf8a3",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "28-30",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ],
+   "texto": "If text is in the right third → subject composition leaves the right third clear.\nIf text is lower third → subject upper two-thirds.\nIf text is centered → subject framed to negative space around center."
+  },
+  {
+   "id": "21e1b74d1380",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "32-32",
+     "encabezado": "On-Screen Text › Composition rules › Negative-space-aware composition"
+    }
+   ],
+   "texto": "This goes into the shot's rationale: \"MCU left-third subject, reserves right-third for `text_03`.\""
+  },
+  {
+   "id": "29b473e95de2",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "38-38",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `center` | Display headline, single concept, hard cut in/out |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "691bb7928483",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "39-39",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `lower-third` | Caption / VO substitute, persistent across shots |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "17c8fdb3efc8",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "40-40",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `upper-third` | Stat callout, secondary information |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "73d87e33010c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "41-41",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `left-third` | Subject is right-weighted in frame |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "c12fc7302065",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "42-42",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `right-third` | Subject is left-weighted in frame |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "dbd83e6aea21",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "43-43",
+     "encabezado": "On-Screen Text › Composition rules › Positions"
+    }
+   ],
+   "texto": "| `{x: %, y: %}` | Custom, only when the standard positions don't fit |",
+   "contexto": "| Position | Use when |\n|---|---|"
+  },
+  {
+   "id": "3ce449ed5202",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "49-49",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ],
+   "texto": "| `display` | 96–144 px | Hero/hook beats |",
+   "contexto": "| Size | Pixel approx (1080p) | Use for |\n|---|---|---|"
+  },
+  {
+   "id": "d6d24bf4a35b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "50-50",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ],
+   "texto": "| `headline` | 56–80 px | Reframe beats |",
+   "contexto": "| Size | Pixel approx (1080p) | Use for |\n|---|---|---|"
+  },
+  {
+   "id": "570b3b212f90",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "51-51",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ],
+   "texto": "| `body` | 32–48 px | Caption-style, persistent |",
+   "contexto": "| Size | Pixel approx (1080p) | Use for |\n|---|---|---|"
+  },
+  {
+   "id": "628a5d8bbfb0",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "52-52",
+     "encabezado": "On-Screen Text › Composition rules › Sizes"
+    }
+   ],
+   "texto": "| `caption` | 20–28 px | Disclaimers, attribution |",
+   "contexto": "| Size | Pixel approx (1080p) | Use for |\n|---|---|---|"
+  },
+  {
+   "id": "3e560027aac7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "56-61",
+     "encabezado": "On-Screen Text › Composition rules › Animation"
+    }
+   ],
+   "texto": "Default to clean, not flashy:\n\n- Hook beats → `hard-cut` in, `hard-cut` out (no fade)\n- Reframe beats → `fade-in` 0.2s, `fade-out` 0.2s\n- Persistent captions → `slide-up` in, `slide-down` out\n- CTA → `type-on` for a typewriter effect, or `slide-up`"
+  },
+  {
+   "id": "2fd756bfb3d4",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "63-63",
+     "encabezado": "On-Screen Text › Composition rules › Animation"
+    }
+   ],
+   "texto": "Avoid stacking animations. Pick one per overlay."
+  },
+  {
+   "id": "bbf26547423f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "67-67",
+     "encabezado": "On-Screen Text › Color rules"
+    }
+   ],
+   "texto": "The `color` field of every text overlay must be a hex value that exists in the brand-lock palette. If you find yourself wanting a color that's not in the palette, the answer is not to add it, the answer is to pick a different overlay style or shot composition."
+  },
+  {
+   "id": "8be3e8da00eb",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "71-71",
+     "encabezado": "On-Screen Text › Typography rules"
+    }
+   ],
+   "texto": "Same: every `font` field must reference a font defined in brand-lock typography. Two fonts max per project (display + body). More than that and the brand stops being recognizable."
+  },
+  {
+   "id": "bf80d4e909a3",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "75-75",
+     "encabezado": "On-Screen Text › The \"read twice\" rule"
+    }
+   ],
+   "texto": "Already covered in timing-rules.md but worth repeating: text needs to be on screen long enough for someone to read it twice. Calculate, then verify. Don't eyeball."
+  },
+  {
+   "id": "7dbb6a666061",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "79-82",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ],
+   "texto": "Text can persist across consecutive shots. This is useful when:\n\n- The text takes longer to read than a single shot's duration\n- You want text to feel anchored while visuals change underneath"
+  },
+  {
+   "id": "0ca8d4c7bbe6",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "84-84",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ],
+   "texto": "To stack, both shots reference the same `on_screen_text` ID. The overlay's `enter.at` aligns to the first shot's start, `exit.at` aligns to the second shot's end."
+  },
+  {
+   "id": "84436ceba73b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "86-91",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ],
+   "texto": "In `shots.json`:\n\n```json\n{ \"id\": \"shot_03\", \"on_screen_text\": \"text_02\", ... },\n{ \"id\": \"shot_04\", \"on_screen_text\": \"text_02\", ... }\n```"
+  },
+  {
+   "id": "f60e5b96ad1f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "93-101",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ],
+   "texto": "In `text-overlays.json`:\n\n```json\n{\n  \"id\": \"text_02\",\n  \"shot_id\": [\"shot_03\", \"shot_04\"],\n  ...\n}\n```"
+  },
+  {
+   "id": "b5ad9051769c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/on-screen-text.md",
+     "lineas": "103-103",
+     "encabezado": "On-Screen Text › Stacking text across shots"
+    }
+   ],
+   "texto": "Document this in rationale: \"text persists across shot 3-4 to give 4.8s read-time for 16-word reframe.\""
+  },
+  {
+   "id": "55a2b67ae9b3",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "3-3",
+     "encabezado": "Shot Grammar"
+    }
+   ],
+   "texto": "Controlled vocabulary. Use these exact terms in `shots.json`. Generators interpret loose language inconsistently, locked vocabulary survives translation."
+  },
+  {
+   "id": "6bc1153d84b8",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "9-9",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `ECU` | Extreme close-up | Eyes, hands, single detail |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "446a8e54dec6",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "10-10",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `CU` | Close-up | Head, or full hand-on-object |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "71c667efe170",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "11-11",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `MCU` | Medium close-up | Head and shoulders |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "99f29eee3a2e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "12-12",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `MS` | Medium shot | Waist up |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "2c5e4053a459",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "13-13",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `MLS` | Medium long shot | Full body, environment minimal |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "e0e883e79ee7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "14-14",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `WS` | Wide shot | Full body, environment present |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "e00a60da3a48",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "15-15",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "| `EWS` | Extreme wide shot | Subject small in environment |",
+   "contexto": "| Code | Name | What it shows |\n|---|---|---|"
+  },
+  {
+   "id": "84623b7e9fd1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "17-17",
+     "encabezado": "Shot Grammar › Framing (subject size in frame)"
+    }
+   ],
+   "texto": "Default to MCU and MS for talking-head founder content. ECU and CU for product detail and emotion. WS and EWS for context-setting."
+  },
+  {
+   "id": "12757e0cd251",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "23-23",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "| `eye-level` | Neutral, default |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "c1d14b59e2e2",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "24-24",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "| `high` | Subject feels smaller, vulnerable |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "ba1884af7a2d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "25-25",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "| `low` | Subject feels powerful, dominant |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "8e922ecf53d0",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "26-26",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "| `overhead` | Detached, schematic, instructional |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "d97caf264b61",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "27-27",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "| `dutch` | Tilted, tension, unease |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "b20bf86f0874",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "29-29",
+     "encabezado": "Shot Grammar › Angle (camera vertical position)"
+    }
+   ],
+   "texto": "Default to eye-level. Use the others deliberately, not for variety."
+  },
+  {
+   "id": "464c35198f7e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "35-35",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `static` | No movement | Default. Static is not boring. |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "61cf8bbd2334",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "36-36",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `push` | Camera moves toward subject | Building intensity, revealing |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "1620beec328a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "37-37",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `pull` | Camera moves away | Releasing, contextualizing |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "b7f74a3704f7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "38-38",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `pan-left` / `pan-right` | Camera rotates horizontally | Surveying environment |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "60d0d9d3bf21",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "39-39",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `tilt-up` / `tilt-down` | Camera rotates vertically | Reveal scale or detail |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "2262c89b2e3f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "40-40",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `handheld` | Subtle organic shake | Documentary feel, urgency |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "0e06b865a1b0",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "41-41",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `orbit` | Camera circles subject | Hero shots, product reveal |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "88dcb85f5885",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "42-42",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "| `whip` | Fast pan as transition | Beat-cuts in fast-paced content |",
+   "contexto": "| Code | Effect | Use when |\n|---|---|---|"
+  },
+  {
+   "id": "0f966d88aa27",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "44-44",
+     "encabezado": "Shot Grammar › Motion (camera movement)"
+    }
+   ],
+   "texto": "For AI-generated still frames, motion is mostly intent for the editor. For motion-video prompts (Kling, Veo, Seedance, Hailuo), motion translates directly."
+  },
+  {
+   "id": "5334820bc7cf",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "50-50",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ],
+   "texto": "| `shallow` | Subject sharp, background blurred |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "cdb46d51e776",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "51-51",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ],
+   "texto": "| `deep` | Everything in focus |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "fd11479b3399",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "52-52",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ],
+   "texto": "| `rack` | Focus shifts mid-shot |",
+   "contexto": "| Code | Effect |\n|---|---|"
+  },
+  {
+   "id": "0637176f5901",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "54-54",
+     "encabezado": "Shot Grammar › Depth of field"
+    }
+   ],
+   "texto": "Default to shallow for talking-head, deep for environmental and schematic."
+  },
+  {
+   "id": "e15b207af24d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "58-62",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ],
+   "texto": "Don't redefine per shot. Define once in `series_lock.lighting`. Examples:\n\n- `soft natural side-light, large window left, warm afternoon`\n- `hard top-light, single source, deep shadows, studio black`\n- `practical mixed sources, neon accents, urban night`"
+  },
+  {
+   "id": "e91796ada2eb",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "64-64",
+     "encabezado": "Shot Grammar › Lighting style (referenced from series_lock)"
+    }
+   ],
+   "texto": "The series_lock string flows into every prompt automatically."
+  },
+  {
+   "id": "183d6e203e00",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "68-72",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ],
+   "texto": "Structured, not poetic. Pattern:\n\n```\n[who/what], [doing what], [emotional or compositional note]\n```"
+  },
+  {
+   "id": "763ce9dae073",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "74-77",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ],
+   "texto": "Good:\n```\n\"Founder, mid-thirties, leaning forward at laptop, face partially turned to window light\"\n```"
+  },
+  {
+   "id": "1d90f6e8cb0d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "79-82",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ],
+   "texto": "Bad:\n```\n\"A determined entrepreneur conquering the digital frontier with passion\"\n```"
+  },
+  {
+   "id": "c3f54ca27424",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "84-84",
+     "encabezado": "Shot Grammar › Subject description"
+    }
+   ],
+   "texto": "Generators reward precision. Adjectives describing emotion (\"determined\", \"passionate\") produce stock-photo aesthetics. Describe what the camera actually sees."
+  },
+  {
+   "id": "2b45b8b352b0",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "88-92",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ],
+   "texto": "This trips people up. The rule:\n\n- **brand_lock**, locked across the entire project. Palette, type, \"never\" list.\n- **series_lock**, locked across this storyboard. Character anchor, environment, lighting style, color grade.\n- **subject (per shot)**, what's different about *this* shot. Action, expression, framing-specific composition notes."
+  },
+  {
+   "id": "a17cc447a0bd",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/shot-grammar.md",
+     "lineas": "94-94",
+     "encabezado": "Shot Grammar › What goes in `subject` vs `series_lock` vs `brand_lock`"
+    }
+   ],
+   "texto": "If you find yourself repeating the same lighting description across shots, it belongs in series_lock. If you find yourself repeating the same color description across storyboards, it belongs in brand_lock."
+  },
+  {
+   "id": "8d2cb7f7df43",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "3-3",
+     "encabezado": "Timing Rules"
+    }
+   ],
+   "texto": "Pacing is math, not feel. Use these as defaults. Override only with reason documented in rationale."
+  },
+  {
+   "id": "7182c49244ea",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "9-9",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "| Kinetic typography / opinion | 1.0–1.5s | 0.5–2.0s |",
+   "contexto": "| Content type | Default shot duration | Range |\n|---|---|---|"
+  },
+  {
+   "id": "33473c60ee9d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "10-10",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "| Founder talking-head | 2.5–4.0s | 2.0–6.0s |",
+   "contexto": "| Content type | Default shot duration | Range |\n|---|---|---|"
+  },
+  {
+   "id": "853cada2f82d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "11-11",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "| Product/lifestyle b-roll | 1.5–2.5s | 1.0–3.5s |",
+   "contexto": "| Content type | Default shot duration | Range |\n|---|---|---|"
+  },
+  {
+   "id": "2ab455907041",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "12-12",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "| Demo / how-to | 3.0–5.0s | 2.0–7.0s |",
+   "contexto": "| Content type | Default shot duration | Range |\n|---|---|---|"
+  },
+  {
+   "id": "aac208b47425",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "13-13",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "| Cinematic brand film | 3.5–6.0s | 2.0–10.0s |",
+   "contexto": "| Content type | Default shot duration | Range |\n|---|---|---|"
+  },
+  {
+   "id": "bee6a4980720",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "15-15",
+     "encabezado": "Timing Rules › Shot duration baselines"
+    }
+   ],
+   "texto": "If a single shot is longer than 7 seconds in a 30-second piece, justify it in rationale. Long shots are not bad. Unjustified long shots are."
+  },
+  {
+   "id": "008b543fd79d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "19-22",
+     "encabezado": "Timing Rules › Hook timing (the first beat)"
+    }
+   ],
+   "texto": "The hook is 0–2s. Always. There are no exceptions in short-form content. Specifically:\n\n- 9:16 social: first frame must telegraph the topic. Auto-play on mute means the first half-second is fighting a swipe.\n- 16:9 in-feed: first 2s decides watch-time."
+  },
+  {
+   "id": "d3a780bc5567",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "24-24",
+     "encabezado": "Timing Rules › Hook timing (the first beat)"
+    }
+   ],
+   "texto": "The hook shot framing should be high-contrast against the shots that follow. If shot 2 is MS, shot 1 should not be MS. Visual contrast = retention."
+  },
+  {
+   "id": "741955769e25",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "28-32",
+     "encabezado": "Timing Rules › CTA timing (the final beat)"
+    }
+   ],
+   "texto": "The CTA is the final 4–6s for 30s content, 6–10s for 60s content. Specifically:\n\n- Last shot should hold long enough for someone to read the CTA text and act\n- Don't put motion on the CTA shot, let the text breathe\n- If there's a logo lockup, it lives in the final 2s, not earlier"
+  },
+  {
+   "id": "3f3c5518e3d1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "36-36",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ],
+   "texto": "A text overlay needs to be on screen long enough to be **read twice**. Not once, twice. Why: viewers are skimming, eyes don't always lock on first frame."
+  },
+  {
+   "id": "8de931e78e09",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "38-42",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ],
+   "texto": "Reading speed reference (assume average viewer):\n- 1 short word (≤5 chars): 0.6s minimum read\n- Short phrase (≤6 words): 1.2s\n- Sentence (≤14 words): 2.4s\n- Long sentence (15–25 words): 4.0s"
+  },
+  {
+   "id": "860e0a62301d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "44-44",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ],
+   "texto": "Multiply by 2 for the \"read twice\" rule. So a 6-word phrase needs **2.4s on screen minimum**."
+  },
+  {
+   "id": "d9954ddf9981",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "46-49",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ],
+   "texto": "If a shot is 2 seconds and you need a 14-word sentence, you have a problem. Either:\n1. Shorten the copy\n2. Carry the text across two consecutive shots (text persists during cut)\n3. Lengthen the shot"
+  },
+  {
+   "id": "eb1a77f3812b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "51-51",
+     "encabezado": "Timing Rules › On-screen text duration math"
+    }
+   ],
+   "texto": "Do not under-time text. It's the most common storyboard failure."
+  },
+  {
+   "id": "11f7697b695b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "55-69",
+     "encabezado": "Timing Rules › Pacing curve"
+    }
+   ],
+   "texto": "For 30-second content, the natural energy curve:\n\n```\n0s ─────────────────────────────────── 30s\n\nEnergy\n  ▲     ╱╲\n  │    ╱  ╲___\n  │   ╱       ╲___\n  │  ╱            ╲___\n  │ ╱                 ╲___\n  └─────────────────────────►\n   hook  build  apex  release  CTA\n   0-2   2-12   12-20  20-26   26-30\n```"
+  },
+  {
+   "id": "5f75799760f5",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "71-71",
+     "encabezado": "Timing Rules › Pacing curve"
+    }
+   ],
+   "texto": "The apex is two-thirds in, not at the end. The CTA is a release, not a peak."
+  },
+  {
+   "id": "e79489c08f4c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "73-73",
+     "encabezado": "Timing Rules › Pacing curve"
+    }
+   ],
+   "texto": "For 60-second content, scale the same curve. Apex around 0:40, CTA from 0:50."
+  },
+  {
+   "id": "85a9e9068952",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-architect/references/timing-rules.md",
+     "lineas": "77-86",
+     "encabezado": "Timing Rules › Validating timing"
+    }
+   ],
+   "texto": "Before declaring done, check:\n\n1. Sum of `(end - start)` across all shots equals project duration ±0.1s\n2. No shot has `start >= end`\n3. No two shots overlap\n4. First shot starts at 0.0\n5. Last shot ends at project duration\n6. Every text overlay's `enter.at` is ≥ its shot's `start`\n7. Every text overlay's `exit.at` is ≤ its shot's `end` (or carries to a flagged successor shot)\n8. Every text overlay's on-screen duration ≥ read-twice threshold"
+  },
+  {
+   "id": "8116d0608738",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "3-3",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Render a structured storyboard (storyboard.md, shots.json, text-overlays.json, brand-lock.snapshot.md) into a single-file HTML preview that is shareable, printable, and offline. Use when the user wants to share a storyboard, export for review, hand off to an editor, or print a hard copy. Triggers on \"preview the storyboard\", \"share this\", \"export to HTML\", \"print version\", or after a storyboard-architect run. Produces one self-contained .html file with no build or server."
+  },
+  {
+   "id": "e2ddd2f47576",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "8-8",
+     "encabezado": "Storyboard HTML Preview"
+    }
+   ],
+   "texto": "You are turning structured storyboard files into a single shareable HTML document. The output is what an editor, stakeholder, or client opens in a browser without thinking about it."
+  },
+  {
+   "id": "6d02c602883a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "10-10",
+     "encabezado": "Storyboard HTML Preview"
+    }
+   ],
+   "texto": "The constraint is non-negotiable: **single file, no build step, no server, works offline.** Any time the output requires \"run this build command\" or \"host this somewhere,\" the skill has failed."
+  },
+  {
+   "id": "5f68ec22e656",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "14-19",
+     "encabezado": "Storyboard HTML Preview › When to use"
+    }
+   ],
+   "texto": "Trigger when the user:\n\n- Asks to preview, share, or export a storyboard\n- Wants a printable version\n- Says \"what's the next step\" after a storyboard-architect run\n- Hands off `storyboard.md` + `shots.json` + asks for a deliverable for review"
+  },
+  {
+   "id": "1fe35cb647d2",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "23-23",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ],
+   "texto": "One file: `preview.html`. Self-contained. Inline CSS. No JavaScript dependencies (vanilla JS only, embedded). No external font files (uses system stack with brand-font fallbacks). No external images (placeholder slots; if generated images exist, embed as base64 OR reference relative paths)."
+  },
+  {
+   "id": "14eb49cf553d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "25-35",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ],
+   "texto": "```\noutput/\n├── run.json                   # input, for the run id and date\n├── storyboard.md              # input\n├── shots.json                 # input\n├── text-overlays.json         # input\n├── brand-lock.snapshot.md     # input\n├── frames/round-N/            # input, if generation has happened\n├── critiques/round-N/         # input, for the verdict badges\n└── preview.html               # ← what this skill produces\n```"
+  },
+  {
+   "id": "946c07c223eb",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "37-43",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ],
+   "texto": "If the user has generated frames, the HTML references them via relative paths so the file\nworks when the whole `output/` folder is shared. Resolve a shot's frame in this order:\n\n1. An entry in `shot.assets.generated` marked `accepted: true`\n2. The newest entry in `shot.assets.generated`\n3. `frames/round-{highest}/{shot_id}.{png,jpg,jpeg,webp}`\n4. `generated/{shot_id}.{ext}`, the pre-3.0.0 flat layout"
+  },
+  {
+   "id": "732aee4a024d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "45-46",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ],
+   "texto": "Data first, convention second. Reading the path convention first meant the page showed\nwhatever file happened to sit there, accepted or rejected, first draft or fifth re-roll."
+  },
+  {
+   "id": "4094f50d2d6f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "48-49",
+     "encabezado": "Storyboard HTML Preview › What you produce"
+    }
+   ],
+   "texto": "If no frames exist yet, the HTML uses styled placeholder cards with the shot spec, still\nuseful for review and handoff."
+  },
+  {
+   "id": "7b8e96e7283f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "55-59",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ],
+   "texto": "Required:\n\n- `shots.json`\n- `text-overlays.json`\n- `brand-lock.snapshot.md`"
+  },
+  {
+   "id": "9c59f85ac75d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "61-66",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ],
+   "texto": "Optional:\n\n- `run.json` (for the run id and date; without it the page says \"not recorded\")\n- `storyboard.md` (for narrative context, surface the brief at the top)\n- `frames/round-N/{shot_id}.{png,jpg,jpeg,webp}` (if generation has happened)\n- `critiques/round-N/{shot_id}.critique.json` (for verdict badges)"
+  },
+  {
+   "id": "9224e63f8136",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "68-72",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 1. Read inputs"
+    }
+   ],
+   "texto": "Validate before rendering, and stop if it fails:\n\n```bash\npython tools/validate_shots.py output/\n```"
+  },
+  {
+   "id": "2cf6418e5cfa",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "76-80",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 2. Extract brand parameters"
+    }
+   ],
+   "texto": "From `brand-lock.snapshot.md`, extract:\n\n- Palette (hex values), used for HTML accent colors\n- Display font and body font names, used as font-family values with system fallbacks\n- Brand voice / mood, used in subtle copy choices"
+  },
+  {
+   "id": "5a525e79da1a",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "82-82",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 2. Extract brand parameters"
+    }
+   ],
+   "texto": "The HTML preview should *feel* like the brand without going overboard. Quiet branding, not loud."
+  },
+  {
+   "id": "e4e992d90188",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "86-86",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 3. Generate the HTML"
+    }
+   ],
+   "texto": "Use `templates/preview.html.tpl` as the structural template. Read it before generating."
+  },
+  {
+   "id": "9c72b019c02b",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "88-145",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 3. Generate the HTML"
+    }
+   ],
+   "texto": "The HTML structure:\n\n```\n<!DOCTYPE html>\n<html>\n<head>\n  <meta>\n  <title>{project title}</title>\n  <style>\n    /* All CSS inline. ~200 lines. Brand-aware. */\n    /* Print stylesheet included. */\n  </style>\n</head>\n<body>\n  <header>\n    <!-- Project title, duration, aspect, generated timestamp -->\n  </header>\n\n  <section class=\"brief\">\n    <!-- Brief summary if storyboard.md provides one -->\n  </section>\n\n  <section class=\"series-lock\">\n    <!-- Character / environment / lighting / color grade -->\n  </section>\n\n  <section class=\"shots\">\n    <!-- One card per shot -->\n    <article class=\"shot\" id=\"shot_01\">\n      <div class=\"shot-frame\">\n        <!-- generated image OR styled placeholder -->\n      </div>\n      <div class=\"shot-meta\">\n        <!-- timestamp, framing, angle, motion -->\n      </div>\n      <div class=\"shot-subject\">\n        <!-- subject description -->\n      </div>\n      <div class=\"shot-text-overlay\">\n        <!-- if on_screen_text exists, show overlay content with timing -->\n      </div>\n      <div class=\"shot-rationale\">\n        <!-- rationale text -->\n      </div>\n    </article>\n    <!-- ... -->\n  </section>\n\n  <footer>\n    <!-- audit trail: brand-lock snapshot reference, timestamp -->\n  </footer>\n\n  <script>\n    /* Vanilla JS only. Optional: keyboard nav, jump-to-shot, expand/collapse. */\n  </script>\n</body>\n</html>\n```"
+  },
+  {
+   "id": "d3bdb96f0403",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "149-154",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "Resolve each shot's frame by the order in \"What you produce\" above, then reference it by a\npath relative to the output root:\n\n```html\n<img src=\"frames/round-2/shot_01.png\" alt=\"shot_01: hook\" loading=\"lazy\" />\n```"
+  },
+  {
+   "id": "6ff8a2a6ad95",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "156-156",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "This works when the whole output folder is zipped and shared."
+  },
+  {
+   "id": "3af8485e192e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "158-159",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "For hard-copy print (a single file with no folder structure), the skill can offer to inline\nframes as base64. Ask the user which they prefer if frames are present."
+  },
+  {
+   "id": "491befe54ec1",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "161-164",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "If a shot's `assets.generated` entry carries a `sha256` and the file no longer matches it,\nrender the frame but say so on the page. That mismatch means the frame changed after it was\nrecorded, which is exactly the case where a preview quietly showing the new file is worse\nthan one that flags it."
+  },
+  {
+   "id": "ab5e52e558c0",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "166-167",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "If no frames exist, render styled placeholder cards showing the framing, subject, and shot\nspec. These are still useful for stakeholder review at the storyboard stage."
+  },
+  {
+   "id": "933a996b2759",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "169-172",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "**Template flag convention.** When composing the per-shot context for `preview.html.tpl`, set exactly one of:\n\n- `has_image: true` and `image_path: \"frames/round-2/shot_NN.png\"`, when a frame exists\n- `has_no_image: true`, when none does (renders the placeholder card)"
+  },
+  {
+   "id": "0f4ffec00d0f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "174-174",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "The template uses two parallel `{{#if}}` blocks rather than `{{#if}}/{{else}}` to keep the rendering portable across template engines."
+  },
+  {
+   "id": "aae16ed88854",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "176-179",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "For text overlays, set `has_overlays: true` and an `overlays` array on the shot. Each entry\ncarries `id`, `content`, `font`, `weight`, `color`, `size`, `position_class`,\n`position_label`, `enter_at`, `enter_animation`, `exit_at`, `exit_animation`. The template\niterates that array with `{{#each overlays}}`."
+  },
+  {
+   "id": "c77e674b5cc7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "181-183",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "It is an array because `shots.json` lets a shot carry several overlays and\n`text-overlays.json` always did. A single set of `overlay_*` fields could hold one, so the\nsecond overlay on a shot rendered nowhere and nothing reported it."
+  },
+  {
+   "id": "9faad70a5d8f",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "185-187",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "For verdict badges, set `has_verdict`, `verdict`, `verdict_round`, and `verdict_class`\n(the lowercased verdict) from the newest critique for that shot under `critiques/`. Omit\nthem when the shot has no critique."
+  },
+  {
+   "id": "53a5da97cd1e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "189-193",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 4. Embed frames if available"
+    }
+   ],
+   "texto": "**Escape everything.** Subjects, rationales, VO lines, and overlay copy are model-generated\nprose that lands in both text and attribute contexts. One angle bracket in a rationale, or\none quote in an overlay font name, breaks the page a client is reading.\n`tools/shots-to-html.py` escapes every substitution by default and reserves raw output for\nthe inlined CSS alone."
+  },
+  {
+   "id": "b8a3a90c06c7",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "197-201",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually"
+    }
+   ],
+   "texto": "For every shot with an `on_screen_text` reference, the HTML shows:\n\n- The text content rendered in approximately the brand font (or visible fallback)\n- The position indicated visually (lower-third, center, etc.)\n- Timing info (enter/exit beats)"
+  },
+  {
+   "id": "539ef040ada9",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "203-203",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 5. Render text overlays visually"
+    }
+   ],
+   "texto": "This gives the reviewer a sense of what the final composited frame will look like, even before final compositing happens."
+  },
+  {
+   "id": "770eac9aa318",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "207-212",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 6. Print stylesheet"
+    }
+   ],
+   "texto": "Include `@media print` rules that:\n\n- Hide nav, footer scripts, expand/collapse UI\n- Force one shot per page (or two if compact)\n- Ensure text overlays render legibly\n- Use black-on-white where brand colors won't print well"
+  },
+  {
+   "id": "6a4068b74e82",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "214-214",
+     "encabezado": "Storyboard HTML Preview › Workflow › Step 6. Print stylesheet"
+    }
+   ],
+   "texto": "The user should be able to hit Cmd-P / Ctrl-P and get a clean PDF."
+  },
+  {
+   "id": "41a3aea83759",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "220-220",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 1. Single file, no exceptions"
+    }
+   ],
+   "texto": "The output is one `.html` file. If you find yourself wanting a separate stylesheet or JS file, inline it. If you find yourself wanting a build step, you're solving the wrong problem."
+  },
+  {
+   "id": "3a79df2b3747",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "224-224",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 2. No external dependencies at runtime"
+    }
+   ],
+   "texto": "No CDN scripts. No Google Fonts. No external CSS frameworks. The file must work with no internet connection."
+  },
+  {
+   "id": "8b1f36792703",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "226-226",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 2. No external dependencies at runtime"
+    }
+   ],
+   "texto": "The exception: if the user explicitly opts in (e.g. \"make it pretty, I'm online\"), Tailwind via CDN is acceptable. Default is no."
+  },
+  {
+   "id": "6902942ddc78",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "230-230",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 3. Print must work"
+    }
+   ],
+   "texto": "Hit Cmd-P. The result should be a clean PDF. If layout breaks across page boundaries, the print stylesheet is broken."
+  },
+  {
+   "id": "6a2e9c38558c",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "234-234",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 4. Brand-aware but quiet"
+    }
+   ],
+   "texto": "Use brand colors as accents, not as full backgrounds. The reviewer's job is to read the storyboard, not admire the design. Subtle."
+  },
+  {
+   "id": "328e9d70c560",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "238-238",
+     "encabezado": "Storyboard HTML Preview › Hard rules › Rule 5. Mobile-readable"
+    }
+   ],
+   "texto": "Stakeholders open links on phones. The HTML should be readable on mobile without horizontal scroll. Simple responsive CSS."
+  },
+  {
+   "id": "3c0c6fb203dc",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "242-244",
+     "encabezado": "Storyboard HTML Preview › Templates"
+    }
+   ],
+   "texto": "- `templates/preview.html.tpl`, the structural template\n- `templates/styles.css.tpl`, the CSS to inline\n- `templates/print.css.tpl`, the print rules"
+  },
+  {
+   "id": "9344af962f95",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "246-246",
+     "encabezado": "Storyboard HTML Preview › Templates"
+    }
+   ],
+   "texto": "The skill reads all three and assembles them into a single `preview.html`."
+  },
+  {
+   "id": "9a6fc73018b4",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "250-261",
+     "encabezado": "Storyboard HTML Preview › Quality bar"
+    }
+   ],
+   "texto": "Before declaring done, verify:\n\n- [ ] File opens in any browser (Chrome, Safari, Firefox) with no errors\n- [ ] No external network requests fire on load\n- [ ] Print preview produces a clean PDF\n- [ ] Mobile viewport (375px) renders without horizontal scroll\n- [ ] Brand colors and fonts come from the brand-lock, not from a fallback\n- [ ] Every shot from `shots.json` is present\n- [ ] Every overlay referenced by a shot is rendered, including second and third overlays\n- [ ] `brand_lock_ref` from `shots.json` is what the footer links to, not a hardcoded name\n- [ ] The run date and the render date are both shown, and labelled differently\n- [ ] No `{{` remains anywhere in the output"
+  },
+  {
+   "id": "a27a5c151152",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "263-267",
+     "encabezado": "Storyboard HTML Preview › Quality bar"
+    }
+   ],
+   "texto": "The CLI renderer checks the mechanical half of that list against itself:\n\n```bash\npython tools/shots-to-html.py --selftest\n```"
+  },
+  {
+   "id": "66d84d53eb6d",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "271-272",
+     "encabezado": "Storyboard HTML Preview › Two timestamps, not one"
+    }
+   ],
+   "texto": "\"Run\" is when the storyboard was produced, read from `run.json`. \"Rendered\" is when the page\nwas written. They are separate lines in the footer and they must stay separate."
+  },
+  {
+   "id": "e5e2450caa3e",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "274-276",
+     "encabezado": "Storyboard HTML Preview › Two timestamps, not one"
+    }
+   ],
+   "texto": "Collapsing them into a single \"Generated\" date meant re-rendering a preview six months later\nrestamped the run as today, and the footer went on asserting the page was built against a\nbrand-lock on a date that had nothing to do with the frames above it."
+  },
+  {
+   "id": "98a074689dae",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "278-279",
+     "encabezado": "Storyboard HTML Preview › Two timestamps, not one"
+    }
+   ],
+   "texto": "If the brand-lock on disk no longer hashes to what `run.json` recorded, say so on the page.\nThe reader is looking at frames built against a brand state they can no longer see."
+  },
+  {
+   "id": "04c3605f7878",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "283-289",
+     "encabezado": "Storyboard HTML Preview › Examples"
+    }
+   ],
+   "texto": "Generated `preview.html` files ship next to the storyboards that produced them:\n\n- `../storyboard-architect/examples/30s-pain-proof-promise/preview.html`\n- `../storyboard-architect/examples/60s-founder-explainer/preview.html`\n- `../storyboard-architect/examples/shotkit-explainer/preview.html`, including the\n  two-overlay shot\n- `../visual-asset-critic/examples/worked-run/preview.html`, with frames and verdict badges"
+  },
+  {
+   "id": "78fce4242ffa",
+   "ubicaciones": [
+    {
+     "documento": "skills/storyboard-html-preview/SKILL.md",
+     "lineas": "291-293",
+     "encabezado": "Storyboard HTML Preview › Examples"
+    }
+   ],
+   "texto": "Open them in a browser to calibrate quality. All four are re-rendered in CI with pinned\ntimestamps and the build fails if the output moves, so they are also the regression test for\nthis skill's output."
+  },
+  {
+   "id": "c8bf6db0812a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "4-4",
+     "encabezado": "frontmatter › description"
+    }
+   ],
+   "texto": "description: Use this skill whenever the user asks to create, improve, audit, or split prompts for AI video generators (Seedance, Kling, Veo, Runway, Luma, Pika, Sora, any image-to-video system). The skill also covers storyboards, shot lists, director treatments, dynamic montage, multi-clip story structure, camera direction, lighting, blocking, pacing, character continuity, dialogue, and sound design. Trigger even when the user says things like \"придумай сцену для видео\", \"разбей на склейки\", \"сделай раскадровку\", \"улучши промпт для Kling\", \"переведи сценарий в промпты\", \"как снять X в AI-видео\", or shares a prompt and asks to fix it."
+  },
+  {
+   "id": "ad758025b4c1",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "9-9",
+     "encabezado": "AI Director, Screenwriter & Editor"
+    }
+   ],
+   "texto": "Hybrid role. You direct (see frame, emotion, motivated camera), write (build beat, action, consequence, final image), and edit (cut rhythm, protect continuity, drive montage). Prompt engineering is fourth — it serves the first three."
+  },
+  {
+   "id": "322786336f17",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "11-11",
+     "encabezado": "AI Director, Screenwriter & Editor"
+    }
+   ],
+   "texto": "A beautiful frame without dramaturgy is wallpaper. A dramaturgically clean prompt without details is mush. The whole craft of this skill lives in the reference files. The body of this SKILL.md is intentionally thin so you cannot fake a result by reading it alone."
+  },
+  {
+   "id": "93ba1f4fba73",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "15-15",
+     "encabezado": "AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?"
+    }
+   ],
+   "texto": "- **No idea or script yet** (user wants a concept, a Big Idea, a campaign, an ad scenario — not a prompt): if the `creative-director` skill is installed, start there — it develops ideas and scripts for commercials and beyond ([github.com/smixs/creative-director-skill](https://github.com/smixs/creative-director-skill)). Come back here once there is a script to shoot."
+  },
+  {
+   "id": "378367c8c791",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "16-16",
+     "encabezado": "AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?"
+    }
+   ],
+   "texto": "- **Still keyframes, character sheets, animatic panels** to feed the video pipeline: use the sibling `image` skill, then return with the keyframes."
+  },
+  {
+   "id": "49256a1f4515",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "17-17",
+     "encabezado": "AI Director, Screenwriter & Editor › Route first — is this actually a video-prompt task?"
+    }
+   ],
+   "texto": "- **A script or scene exists and needs prompts** — this skill. Continue below."
+  },
+  {
+   "id": "292264ddb274",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "23-23",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ],
+   "texto": "Past attempts to write prompts directly from this skill body produced lazy, mush-prone results. The fix is structural: the process lives only in the reference files, and you load them in this order before producing output. Skipping a step **silently** degrades the result — the model cannot tell that a shot is wallpaper, only the writer can, and only by applying the rules from these files."
+  },
+  {
+   "id": "30df553a192b",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "25-25",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+    }
+   ],
+   "texto": "For every video prompt request, load the files in this order:"
+  },
+  {
+   "id": "e97c3d5196d8",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "29-29",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)"
+    }
+   ],
+   "texto": "Scene formula. Details Law (the second core law, most violated). Murch Rule of Six. Three-jobs rule. Five anchors. Blocking, staging, environment as pressure. Three-layer storyboard. 14-field shot card. Rhythm ladder. Dramaturgy check."
+  },
+  {
+   "id": "532c67a3b589",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "31-31",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [dramaturgy.md](references/dramaturgy.md)"
+    }
+   ],
+   "texto": "You cannot decide whether a prompt is ready without running the dramaturgy check from this file."
+  },
+  {
+   "id": "5d1d1a5796ad",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "35-35",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 2 — always read second → [universal-rules.md](references/universal-rules.md)"
+    }
+   ],
+   "texto": "U1–U12 universal rules that apply to every video model: prompt skeleton, weight-at-start, show-don't-tell, lens language, character anchor, contradictions, duration discipline, final image rule, three-detail check."
+  },
+  {
+   "id": "0f81f92f40e3",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "39-39",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "Use this short selector. The full reasoning is in the chosen file."
+  },
+  {
+   "id": "bf7b53599f4e",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "43-43",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "| Seedance, ByteDance, Doubao, Jimeng, multi-shot in one clip, `--resolution`, `--duration`, `--camerafixed`, \"Cut to\", `@img1`, fast multi-shot drama | [seedance.md](references/seedance.md) |",
+   "contexto": "| Cue from the user / task | Read |\n|---|---|"
+  },
+  {
+   "id": "886822fb1f7a",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "44-44",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "| **Seedance 2.5 production work**: 30s single-pass, 50-slot reference kits, video editing / partial re-render, extension, Ultra Long (30-180s), 3D blockout / green screen, `@Image N`, `{ }` dialogue markers | [seedance.md](references/seedance.md) **+** [seedance-25.md](references/seedance-25.md) |",
+   "contexto": "| Cue from the user / task | Read |\n|---|---|"
+  },
+  {
+   "id": "2353e1b53eef",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "45-45",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "| Kling, Kuaishou, Element Binding, Motion Brush, Motion Control, dedicated negative prompt field, **Kling 3.0 multi-shot with `[Character A: ...]` labels, native dialogue + lip-sync, 15s, Turbo (cheap lip-sync), Omni (references + editing, 4K)** | [kling.md](references/kling.md) |",
+   "contexto": "| Cue from the user / task | Read |\n|---|---|"
+  },
+  {
+   "id": "10f0fbd2174d",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "46-46",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "| Veo, Google video, dialogue / lip-sync, JSON prompts, synchronized SFX, commercial polish with voiceover | [veo.md](references/veo.md) |",
+   "contexto": "| Cue from the user / task | Read |\n|---|---|"
+  },
+  {
+   "id": "7a1fae04f241",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "48-54",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "Default if nothing in the request hints at a model:\n- Multi-shot narrative or fast montage drama → Seedance, or Kling 3.0 if dialogue is involved.\n- Dialogue / commercial polish / synchronized SFX → Veo, or Kling 3.0 for multi-character dialogue scenes up to 15s.\n- Character consistency across many social clips → Kling 2.6 Pro (cheaper) or Kling 3.0 (with in-prompt `[Character A: ...]` labels).\n- 10-15s continuous narrative with audio → Kling 3.0.\n- 15-30s continuous single-generation arc, heavy reference kits (up to 50 assets), editing or extending existing footage, 30-180s long-form → Seedance 2.5.\n- Face-heavy drama → Seedance 2.5 (realistic humans + lip-sync are its headline feature), Kling, or Veo. On a 2.0-only pipeline route faces to 1.5 Pro (2.0 filters human faces aggressively)."
+  },
+  {
+   "id": "f6386a04706d",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "56-56",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 3 — pick the model and read **one** model file"
+    }
+   ],
+   "texto": "For a more detailed comparison (max clip length, audio support, character lock methods, motion brush, etc.), read the model file you picked. Do not load all three."
+  },
+  {
+   "id": "97769ee58763",
+   "ubicaciones": [
+    {
+     "documento": "skills/video/SKILL.md",
+     "lineas": "60-60",
+     "encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 4 — task-shaped reading (load only those that match)"
+    }
+   ],
+   "texto": "- Storyboard / shot list / director treatment / \"разбей на склейки\" → [role-modes.md](references/role-modes.md). Determines whether you operate as Director, Screenwriter, or Editor for this turn."
+  }
+ ]
+}
