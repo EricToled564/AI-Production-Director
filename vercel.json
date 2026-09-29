@@ -1,20 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "",
-  "installCommand": "",
-  "outputDirectory": "apd/deploy/static",
   "functions": {
-    "api/index.py": {
-      "maxDuration": 300,
-      "includeFiles": "{apd/apd/**,apd/web/**,apd/server.py,apd/data/*.json,apd/deploy/rules.sqlite,apd/originales/**,app/**,.claude/hooks/**,.claude/rules/**}"
-    }
+    "api/sample.js": { "maxDuration": 300 }
   },
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index?__ruta=/$1" }
-  ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     }
   ]
