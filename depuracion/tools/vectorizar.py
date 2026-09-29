@@ -49,8 +49,15 @@ def main():
 
     t0 = time.time()
     textos = ["passage: " + t for _, t in filas]
-    vec = np.array(list(modelo.embed(textos, batch_size=32)), dtype=np.float32)
+    # se ordena por longitud para no rellenar lotes con padding; el orden original se restituye después
+    orden = sorted(range(len(textos)), key=lambda k: len(textos[k]))
+    crudo = np.array(list(modelo.embed([textos[k] for k in orden], batch_size=16)), dtype=np.float32)
+    raw = np.empty_like(crudo)
+    raw[orden] = crudo
     seg = time.time() - t0
+    np.savez_compressed(SALIDA.with_name("vectores_e5_crudos.npz"), ids=np.array([i for i, _ in filas]), vectores=raw)
+    # el modelo ONNX de fastembed entrega vectores sin normalizar: se normalizan (L2) para usar coseno
+    vec = raw / np.linalg.norm(raw, axis=1, keepdims=True)
 
     ids = np.array([i for i, _ in filas])
     assert vec.shape == (len(filas), 1024), vec.shape
@@ -63,7 +70,7 @@ def main():
     assert (z["ids"] == ids).all() and np.array_equal(z["vectores"], vec)
     RESUMEN.write_text(json.dumps({
         "modelo": MODELO, "registros": len(filas), "dimension": 1024, "segundos": round(seg, 1),
-        "mas_de_512_tokens": largos, "norma_min": float(normas.min()), "norma_max": float(normas.max())},
+        "mas_de_512_tokens": largos, "norma_min": float(normas.min()), "norma_max": float(normas.max()), "norma_cruda_min": float(np.linalg.norm(raw, axis=1).min()), "norma_cruda_max": float(np.linalg.norm(raw, axis=1).max())},
         ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"vectorizados {len(filas)} registros · dim 1024 · {seg:.0f} s · {largos} con más de 512 tokens (el modelo lee los primeros 512)")
 
