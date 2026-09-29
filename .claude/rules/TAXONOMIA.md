@@ -1,5 +1,7 @@
 # Taxonomía de catalogación de reglas y sintaxis
 
+Nota del 2026-09-29: por instrucción de Eric se eliminó toda referencia a otros skills, y con ella la faceta 32 (fuente con autoridad, cuyos valores eran nombres de skills). Son 31 facetas. La decisión 10 de `DECISIONES.md` sigue diciendo 32 porque ese archivo es una fuente congelada del proceso de depuración y no se toca.
+
 Aprobada y canonizada por Eric Toledano el 2026-09-28 (decisión 10 de `DECISIONES.md`). Se revisa solo si al
 vectorizar aparece una regla que no encaja en ningún valor, o un valor que queda sin reglas asignadas.
 
