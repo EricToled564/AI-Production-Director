@@ -3,8 +3,7 @@
 Aprobada y canonizada por Eric Toledano el 2026-09-28 (decisión 10 de `DECISIONES.md`). Se revisa solo si al
 vectorizar aparece una regla que no encaja en ningún valor, o un valor que queda sin reglas asignadas.
 
-Los valores de la faceta 5 marcados "propuesto" no tienen fuente en los skills; salen de los sectores de los
-proyectos de Final Upgrade.
+Valores propuestos por mí, sin respaldo en el zip, salen de los sectores de los proyectos de Final Upgrade (faceta 5): belleza y cuidado personal, hospitalidad y viajes, retail y supermercado, tecnología, salud y bienestar, educación, corporativo.
 
 ## Reglas de asignación
 
@@ -62,61 +61,64 @@ Si la regla vale para toda la etapa, va sin paso.
 
 **Rama imagen**
 
-| Valor | Definición | Fuente |
-|---|---|---|
-| editorial | imagen con lenguaje de revista; se combina con la temática: editorial de moda, deportiva, musical, gastronómica | image/patterns/fashion-editorial |
-| key visual de campaña | imagen principal de una campaña publicitaria | image/patterns |
-| e-commerce o catálogo | producto para tienda o catálogo | image/patterns/ecommerce |
-| retrato | una persona como sujeto de la pieza | image/patterns/portrait-cinema |
-| póster o key art | pieza gráfica con título o composición de cartel | image/patterns/poster-illustration |
-| post o historia para redes | imagen para feed o historias | image/patterns/ui-social |
-| miniatura | thumbnail de video con rostro y gancho | image/characters, Viral Thumbnails |
-| UI o mockup | pantallas, apps, maquetas de interfaz | image/patterns/ui-social, image/structural |
-| slide o presentación | una diapositiva: portada, datos, comparación, proceso | image/slides |
-| storyboard o multipanel | varios paneles en una imagen | image/storyboards, image/multi-panel |
-| diseño de personaje | hoja o maestro de un personaje | image/patterns/character-design |
-| visualización arquitectónica | render de espacio, plano a 3D | image/dimensional |
-| identidad de marca | logo, sistema visual, aplicaciones | image/structural, Brand Identity Systems |
+| Valor | Definición |
+|---|---|
+| editorial | imagen con lenguaje de revista; se combina con la temática: editorial de moda, deportiva, musical, gastronómica |
+| key visual de campaña | imagen principal de una campaña publicitaria |
+| e-commerce o catálogo | producto para tienda o catálogo |
+| retrato | una persona como sujeto de la pieza |
+| póster o key art | pieza gráfica con título o composición de cartel |
+| post o historia para redes | imagen para feed o historias |
+| miniatura | thumbnail de video con rostro y gancho |
+| UI o mockup | pantallas, apps, maquetas de interfaz |
+| slide o presentación | una diapositiva: portada, datos, comparación, proceso |
+| storyboard o multipanel | varios paneles en una imagen |
+| diseño de personaje | hoja o maestro de un personaje |
+| visualización arquitectónica | render de espacio, plano a 3D |
+| identidad de marca | logo, sistema visual, aplicaciones |
+
 
 **Rama video**
 
-| Valor | Definición | Fuente |
-|---|---|---|
-| spot publicitario | comercial de producto o marca de 15, 30 o 60 s | director; patterns-and-genres §2 Commercial |
-| campaña | serie de piezas con un mismo concepto | director |
-| brand film o brand story | pieza de atmósfera sobre la marca, planos largos | director; ai-video-storyboard, Brand Story |
-| videoclip | la música es la columna de la pieza | patterns-and-genres §2 Music video |
-| fashion film | prenda en movimiento | patterns-and-genres §2 Fashion |
-| cortometraje de ficción | historia de 90 s a 10 min | director (track FILM) |
-| explainer de producto | problema, solución, cómo funciona, resultados, CTA | ai-video-storyboard, Product Explainer |
-| demo educativa | enseña a hacer algo paso a paso | storyboard-architect, Educational Demo |
-| founder o testimonial | una persona cuenta la marca a cámara | storyboard-architect, Founder Explainer |
-| UGC o social ad | estética de creador con celular | patterns-and-genres §2 UGC / Social |
-| reel con narrativa | reel, TikTok o Short con arco | director; ai-video-storyboard |
-| anuncio para redes | Instagram o TikTok ad de 15 o 30 s | ai-video-storyboard |
-| hook de 15 s | una sola idea con cortes rápidos | ai-video-storyboard, TikTok Hook |
+| Valor | Definición |
+|---|---|
+| spot publicitario | comercial de producto o marca de 15, 30 o 60 s |
+| campaña | serie de piezas con un mismo concepto |
+| brand film o brand story | pieza de atmósfera sobre la marca, planos largos |
+| videoclip | la música es la columna de la pieza |
+| fashion film | prenda en movimiento |
+| cortometraje de ficción | historia de 90 s a 10 min |
+| explainer de producto | problema, solución, cómo funciona, resultados, CTA |
+| demo educativa | enseña a hacer algo paso a paso |
+| founder o testimonial | una persona cuenta la marca a cámara |
+| UGC o social ad | estética de creador con celular |
+| reel con narrativa | reel, TikTok o Short con arco |
+| anuncio para redes | Instagram o TikTok ad de 15 o 30 s |
+| hook de 15 s | una sola idea con cortes rápidos |
+
 
 ### 5. Temática o industria — ¿de qué sector o tema es la pieza?
 
 Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; editorial + música = editorial musical.
 
-| Valor | Definición | Fuente |
-|---|---|---|
-| deporte y fitness | atletas, clubes, competencia | regímenes 04 y 06; race-and-speed |
-| automotriz y movilidad | autos, motos, bicis | regimen 05; race-and-speed |
-| música | artistas, conciertos, videoclips | patterns-and-genres §2 |
-| moda | prendas, modelos, pasarela | image/patterns/fashion-editorial |
-| comida y bebida | producto comestible o bebida | image/patterns/food-beverage |
-| arquitectura e inmobiliaria | espacios y edificios | image/dimensional |
-| belleza y cuidado personal | cosmética, piel, cabello | propuesto |
-| hospitalidad y viajes | hoteles, destinos | propuesto |
-| retail y supermercado | tiendas, anaquel, promociones | propuesto |
-| tecnología | apps, dispositivos, SaaS | propuesto (image/slides, estilo SaaS) |
-| salud y bienestar | clínicas, bienestar | propuesto |
-| educación | cursos, material didáctico | propuesto (visual-media §7) |
-| corporativo | B2B, institucional | propuesto |
+| Valor | Definición |
+|---|---|
+| deporte y fitness | atletas, clubes, competencia |
+| automotriz y movilidad | autos, motos, bicis |
+| música | artistas, conciertos, videoclips |
+| moda | prendas, modelos, pasarela |
+| comida y bebida | producto comestible o bebida |
+| arquitectura e inmobiliaria | espacios y edificios |
+| belleza y cuidado personal | cosmética, piel, cabello |
+| hospitalidad y viajes | hoteles, destinos |
+| retail y supermercado | tiendas, anaquel, promociones |
+| tecnología | apps, dispositivos, SaaS |
+| salud y bienestar | clínicas, bienestar |
+| educación | cursos, material didáctico |
+| corporativo | B2B, institucional |
 
-### 6. Formato de salida — ¿en qué proporción se entrega? (shots.schema)
+
+### 6. Formato de salida — ¿en qué proporción se entrega?
 
 | Valor | Definición |
 |---|---|
@@ -126,7 +128,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | 4:5 | vertical corto: feed de Instagram |
 | 21:9 | cinemascope |
 
-### 7. Género narrativo (rama video y guion) — ¿qué drama cuenta? (patterns-and-genres §2)
+### 7. Género narrativo (rama video y guion) — ¿qué drama cuenta?
 
 | Valor | Definición |
 |---|---|
@@ -135,7 +137,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | acción | persecución, pelea, riesgo físico |
 | carrera y velocidad | vehículo o atleta a velocidad |
 
-### 8. Estructura de beats — ¿qué arco sigue la pieza completa? (storyboard-architect/beat-frameworks; ai-video-storyboard paso 5)
+### 8. Estructura de beats — ¿qué arco sigue la pieza completa?
 
 | Valor | Definición |
 |---|---|
@@ -149,7 +151,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | Atmosphere → Climax | brand story: atmósfera, revelación lenta, clímax, logo |
 | Custom | estructura propia declarada |
 
-### 9. Patrón de montaje — ¿cómo se encadenan los planos de una secuencia? (patterns-and-genres §1)
+### 9. Patrón de montaje — ¿cómo se encadenan los planos de una secuencia?
 
 | Valor | Definición |
 |---|---|
@@ -162,7 +164,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 
 ## Bloque C — El cuadro o el clip (etapas 3 a 6)
 
-### 10. Modo de generación (solo etapas 5 y 6) — ¿génesis o ancla en imagen; qué tipo de clip en video? (casos aurora; archivos de modelo de video)
+### 10. Modo de generación (solo etapas 5 y 6) — ¿génesis o ancla en imagen; qué tipo de clip en video?
 
 | Rama | Valor | Definición |
 |---|---|---|
@@ -171,7 +173,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | Imagen | composición de varias referencias | une elementos de varias referencias sin ser cuadro de clip: producto en escena, póster |
 | Imagen | edición de imagen existente (T5) | cambia una zona de una imagen aprobada y conserva el resto |
 | Imagen | transferencia de estilo | aplica el estilo de una imagen de referencia a otro contenido |
-| Imagen | boceto o wireframe a final | un boceto, layout o plano controla la composición (image/structural, image/dimensional) |
+| Imagen | boceto o wireframe a final | un boceto, layout o plano controla la composición |
 | Video | texto a video | sin imagen de entrada; solo EXPRESS |
 | Video | primer frame (3a) | el ancla es el primer cuadro |
 | Video | primer y último frame (3b) | dos anclas con el mismo ratio definen inicio y fin |
@@ -197,7 +199,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | hero/macro | producto u objeto en detalle |
 | motif insert | objeto ancla que reaparece entre clips |
 
-### 12. Función del plano — ¿qué trabajo hace este plano en la historia? (role-modes §4; ai-video-storyboard, Purpose labels)
+### 12. Función del plano — ¿qué trabajo hace este plano en la historia?
 
 | Valor | Definición |
 |---|---|
@@ -259,7 +261,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | interior | bajo techo |
 | exterior | al aire libre, incluida el agua abierta |
 
-### 17. Estilo visual — ¿qué look tiene? (flujo-anclas D4; image/creative-direction, Color Grading & Film Stock)
+### 17. Estilo visual — ¿qué look tiene? (flujo-anclas D4)
 
 | Valor | Definición |
 |---|---|
@@ -274,7 +276,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | UGC/social | celular, luz natural |
 | experimental | cross-processing, colores desplazados |
 
-### 18. Técnica de representación — ¿con qué técnica se hace la imagen? (prompt-framework, Task Types; image/structural)
+### 18. Técnica de representación — ¿con qué técnica se hace la imagen?
 
 | Valor | Definición |
 |---|---|
@@ -318,7 +320,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | <20% | rostro pequeño en el cuadro |
 | sin rostro visible | silueta, casco, espalda |
 
-### 23. Referencias adjuntas (solo etapas 5 y 6) — ¿qué referencias acompañan al prompt? (aurora)
+### 23. Referencias adjuntas (solo etapas 5 y 6) — ¿qué referencias acompañan al prompt?
 
 | Valor | Definición |
 |---|---|
@@ -329,7 +331,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | producto o prop (PR) | producto u objeto |
 | estilo (S) | referencia de look, color o textura |
 
-### 24. Tamaño de plano — ¿cuánto del sujeto entra en cuadro? (shot-grammar; camera-lighting-vocabulary §1)
+### 24. Tamaño de plano — ¿cuánto del sujeto entra en cuadro?
 
 | Valor | Definición |
 |---|---|
@@ -342,7 +344,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | ECU extreme close-up | ojos, manos, un detalle |
 | macro insert | detalle a escala macro |
 
-### 25. Ángulo — ¿desde dónde mira la cámara? (flujo-anclas D9; shot-grammar; vocabulary §1)
+### 25. Ángulo — ¿desde dónde mira la cámara? (flujo-anclas D9)
 
 | Valor | Definición |
 |---|---|
@@ -356,7 +358,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | over-the-shoulder | sobre el hombro de otro personaje |
 | perfil | el sujeto de lado |
 
-### 26. Movimiento de cámara (rama video) — ¿cómo se mueve la cámara? (camera-lighting-vocabulary §2; shots.schema)
+### 26. Movimiento de cámara (rama video) — ¿cómo se mueve la cámara?
 
 | Valor | Definición |
 |---|---|
@@ -382,7 +384,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | bullet time | tiempo congelado con cámara girando |
 | speed ramp | acelera, frena, acelera |
 
-### 27. Transición (rama video) — ¿cómo pasa este clip al siguiente? (camera-lighting-vocabulary §11)
+### 27. Transición (rama video) — ¿cómo pasa este clip al siguiente?
 
 | Valor | Definición |
 |---|---|
@@ -398,7 +400,7 @@ Se combina con el tipo de pieza: editorial + deporte = editorial deportiva; edit
 | zoom-through | la cámara atraviesa una pupila, cerradura o ventana |
 | ink-wash dissolve | sangrado estilizado, animación |
 
-### 28. Audio (rama video) — ¿qué suena? (camera-lighting-vocabulary §8)
+### 28. Audio (rama video) — ¿qué suena?
 
 | Valor | Definición |
 |---|---|
@@ -451,31 +453,8 @@ Se asigna cuando la regla nombra el modelo o usa su sintaxis.
 | Valor | Definición |
 |---|---|
 | no | no es un gate |
-| sí, la verifica una herramienta | validate_shots, linter, auditor |
+| sí, la verifica una herramienta | un validador o auditor automático |
 | sí, la aprueba el usuario | gates 1, 2 y 4 del director |
-
-### 32. Fuente con autoridad — ¿qué skill la dicta? (director §1)
-
-Se asigna sola por el archivo de origen.
-
-| Valor | Autoridad sobre |
-|---|---|
-| brand-lock-extractor | parámetros de marca |
-| creative-strategy.md | estrategia creativa |
-| screenwriter | estructura narrativa y diálogo |
-| video (dramaturgia) | dramaturgia y lenguaje de cámara |
-| storyboard-architect | fuente de verdad estructural (shots.json) |
-| ai-video-storyboard | shot list EXPRESS |
-| image | sintaxis final de prompts de imagen |
-| visual-prompt-forge | estructura de shots a prompt y loop de revisión |
-| visual-asset-critic | aceptar o rechazar renders |
-| video (archivos de modelo) | sintaxis final de prompts de video |
-| storyboard-html-preview | formato de entrega visual |
-| visual-media | animación y material didáctico en español (§7) |
-| aurora-prompt-linter | veto final sobre prompts |
-| produccion-visual-sw30 | templates y reglas de producción SW30 |
-| regímenes del repo | física por régimen |
-| decisiones del usuario | DECISIONES.md |
 
 ## Dónde quedaron los valores que ya no tienen faceta propia
 
