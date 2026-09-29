@@ -28,6 +28,7 @@ Uso: python3 tools/depurar_duplicados.py congelar|extraer|estado|final|prueba XL
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import html
 import json
@@ -521,39 +522,97 @@ def cmd_final(_a):
           f"lista final {len(T) - len(quedan)}")
 
 
+def verdad_del_usuario():
+    """La ÚNICA verdad son los archivos que subió el usuario: su zip del repo (árbol y historial de git, donde está el
+    corpus con el texto completo de 12 skills) y sus dos HTML. Devuelve (textos_de_skills, archivos_del_zip, html)."""
+    import glob
+    import tempfile
+    zips = glob.glob("/root/.claude/uploads/*/*AI-Production-Director-completo.zip")
+    if not zips:
+        raise SystemExit("no encuentro el zip del repo subido por el usuario en /root/.claude/uploads")
+    tmp = Path(tempfile.mkdtemp())
+    with zipfile.ZipFile(zips[0]) as z:
+        z.extractall(tmp)
+    git = lambda *x: subprocess.run(["git", "-C", str(tmp), *x], capture_output=True, text=True).stdout
+    skills: dict[str, str] = {}
+    for f in sorted({l for l in git("log", "--all", "--name-only", "--format=").split("\n")
+                     if l.startswith("notebooklm-corpus/") and l.endswith(".md")}):
+        ultimo = git("rev-list", "-n1", "--all", "--", f).strip()
+        t = git("show", f"{ultimo}:{f}") or git("show", f"{ultimo}^:{f}")
+        trozos = re.split(r"^## ARCHIVO: (.+)$", t, flags=re.M)
+        for k in range(1, len(trozos), 2):
+            cuerpo = re.sub(r"\n+---\n+$", "", trozos[k + 1].strip("\n") + "\n").strip("\n")
+            skills["skills/" + trozos[k].strip()] = cuerpo
+    repo = {str(p.relative_to(tmp)): p.read_text(encoding="utf-8", errors="replace")
+            for p in tmp.rglob("*") if p.is_file() and ".git" not in p.parts and p.suffix in (".md", ".yaml", ".json", ".py")}
+    html_ = {}
+    for nombre in ("flujo-anclas.html", "flujo-spot.html"):
+        h = glob.glob(f"/root/.claude/uploads/*/*{nombre}")
+        if h:
+            html_["apd/originales/" + nombre] = Path(h[0]).read_text(encoding="utf-8")
+    return skills, repo, html_
+
+
+def visible_html(x):
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", x)))
+
+
+def estado_respaldo(c, texto, rid, skills, repo, html_):
+    """'ok' | 'mal' | None (sin ubicación en lo que subió el usuario), mirando todas las ubicaciones del registro."""
+    vistas = []
+    for ar, in c.execute("select archivo from registros_fuente where registro_id=?", (rid,)):
+        if ar in skills:
+            vistas.append(texto in skills[ar])
+        elif ar in repo:
+            vistas.append(texto in repo[ar])
+        elif ar in html_:
+            vv = visible_html(html_[ar])
+            vistas.append(all(re.sub(r"\s+", " ", x).strip() in vv for x in texto.split("\n") if x.strip()))
+    return None if not vistas else ("ok" if all(vistas) else "mal")
+
+
 def cmd_prueba(a):
-    """100 filas al azar del xlsx entregado, cada una contra todas sus ubicaciones, leyendo el zip."""
+    """100 filas al azar del xlsx entregado contra la verdad del usuario (sus zips y HTML), no contra mi árbol de trabajo.
+    Una fila es 'respaldada' si alguna de sus ubicaciones existe en lo que subió el usuario; ahí el texto literal debe
+    aparecer tal cual. Las filas sin ubicación en lo que subió se cuentan aparte y NO entran en el 100/100."""
     import openpyxl
     exigir_manifiesto()
     c = con()
-    z = zipfile.ZipFile(ZIP)
-    nombres = set(z.namelist())
+    skills, repo, html_ = verdad_del_usuario()
 
-    def lineas(ar):
-        n = RAIZ_ZIP + ar if ar.startswith("skills/") else RAIZ_ZIP + ar[4:] if ar.startswith("pkg/") else None
-        t = z.read(n).decode("utf-8") if n in nombres else (APD.parent / ar).read_text(encoding="utf-8")
-        L = t.split("\n")
-        return L[:-1] if L and L[-1] == "" else L
+    def visible(x):
+        return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", x)))
     ws = openpyxl.load_workbook(a.xlsx, read_only=True)["Registros"]
     cab = [x.value for x in next(ws.iter_rows(max_row=1))]
     col = cab.index("ID registro")
     filas = [(r[0], r[col]) for r in ws.iter_rows(min_row=2, values_only=True)]
-    muestra = random.Random(int.from_bytes(os.urandom(8), "big")).sample(filas, 100)
-    fallos = []
-    for texto, rid in muestra:
-        for ar, li, lf, lin in c.execute("select archivo, linea_ini, linea_fin, lineas from registros_fuente where registro_id=?", (rid,)):
-            L = lineas(ar)
-            if ar.endswith(".html"):
-                vis = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", "\n".join(L[li - 1:lf]))))
-                ok = all(re.sub(r"\s+", " ", x).strip() in vis for x in texto.split("\n") if x.strip())
-            else:
-                ok = texto == ("\n".join(L[x - 1] for x in json.loads(lin)) if lin else "\n".join(L[li - 1:lf]))
-            if not ok:
-                fallos.append(f"{rid} {ar}:{li}-{lf}")
-    print(f"prueba: {len(filas)} filas en el xlsx · 100 al azar · {100 - len({f.split()[0] for f in fallos})}/100 iguales a su fuente")
-    for f in fallos:
-        print("  FALLA", f)
-    if fallos:
+
+    def estado(texto, rid):
+        """'ok' | 'mal' | None (sin respaldo en lo que subió el usuario) para la fila, mirando todas sus ubicaciones."""
+        vistas = []
+        for ar, in c.execute("select archivo from registros_fuente where registro_id=?", (rid,)):
+            if ar in skills:
+                vistas.append(texto in skills[ar])
+            elif ar in repo:
+                vistas.append(texto in repo[ar])
+            elif ar in html_:
+                vv = visible(html_[ar])
+                vistas.append(all(re.sub(r"\s+", " ", x).strip() in vv for x in texto.split("\n") if x.strip()))
+        return None if not vistas else ("ok" if all(vistas) else "mal")
+    est = {rid: estado(t, rid) for t, rid in filas}
+    resp = [(t, r) for t, r in filas if est[r] is not None]
+    sin = [r for t, r in filas if est[r] is None]
+    mal = [r for t, r in filas if est[r] == "mal"]
+    muestra = random.Random(int.from_bytes(os.urandom(8), "big")).sample(resp, 100)
+    fallos = [r for t, r in muestra if est[r] == "mal"]
+    print(f"prueba contra tu verdad: {len(filas)} filas · con respaldo en lo que subiste: {len(resp)} · SIN respaldo: {len(sin)}")
+    print(f"  las {len(resp)} con respaldo, todas: {len(resp) - len(mal)} literales · {len(mal)} distintas")
+    print(f"  100 al azar entre las respaldadas: {100 - len(fallos)}/100 iguales")
+    por = collections.Counter(a for r in sin for (a,) in c.execute("select archivo from registros_fuente where registro_id=?", (r,)))
+    print("  sin respaldo, por archivo:", dict(por.most_common(6)), "…" if len(por) > 6 else "")
+    for r in mal[:10]:
+        print("  DISTINTA", r, [x for (x,) in c.execute("select archivo from registros_fuente where registro_id=?", (r,))])
+    if mal:
         sys.exit(1)
 
 

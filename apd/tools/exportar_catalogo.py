@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -78,8 +79,13 @@ def main():
     wb = Workbook()
     ws = wb.active
     ws.title = "Registros"
+    sys.path.insert(0, str(APD / "tools"))
+    import depurar_duplicados as dd
+    sk, rp, ht = dd.verdad_del_usuario()
+    etiqueta = {"ok": "sí, literal", "mal": "DISTINTO a lo que subiste", None: "sin copia en lo que subiste"}
+    respaldo = {rid: etiqueta[dd.estado_respaldo(con, t, rid, sk, rp, ht)] for rid, _, t in regs}
     cab = ["Registro (copia literal de la fuente)"] + [c for c, _ in CATALOGO] + UBICACION + \
-        ["Contexto literal (encabezado de tabla o de bloque)"]
+        ["Contexto literal (encabezado de tabla o de bloque)", "Respaldo en tu zip"]
     ws.append(cab)
     for rid, orden, texto in regs:
         fs = fuentes.get(rid, [])
@@ -87,7 +93,7 @@ def main():
         sec = " | ".join(f[3] or "" for f in fs)
         par = " | ".join(f"{f[4]} de {f[5]}" for f in fs)
         lin = " | ".join((f"{f[1]}–{f[2]}" if f[1] and f[2] != f[1] else str(f[1])) if f[1] else "objeto JSON/Python" for f in fs)
-        ws.append([texto] + [""] * len(CATALOGO) + [doc, sec, par, lin, rid, contexto.get(rid) or ""])
+        ws.append([texto] + [""] * len(CATALOGO) + [doc, sec, par, lin, rid, contexto.get(rid) or "", respaldo[rid]])
     bold = Font(bold=True)
     fill_cat = PatternFill("solid", fgColor="FFF2CC")
     fill_ubi = PatternFill("solid", fgColor="DDEBF7")
