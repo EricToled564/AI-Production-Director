@@ -1,0 +1,268 @@
+{
+  "version": "gpt2-fixed-universals-20261021-v1",
+  "status": "IMPLEMENTATION_CANDIDATE_NOT_USER_ACCEPTED",
+  "universal_rule_ids": [
+    "U-LABELS",
+    "U-ANTI-SLOP",
+    "U-VISUAL-SPECIFICITY",
+    "U-FUNCTIONAL-REQUIREMENTS",
+    "U-OPERATION-VERB",
+    "U-POSITIVE-FRAMING",
+    "U-NATURAL-LANGUAGE",
+    "U-USE-CONTEXT",
+    "U-MODEL-SEPARATION",
+    "U-DELIVERY-SEPARATION",
+    "U-TECHNICAL-ENVELOPE",
+    "U-QUALITY-ENVELOPE"
+  ],
+  "selection_policy": "ALWAYS_EVALUATE_EVERY_ID_NO_NOT_APPLICABLE",
+  "rules": [
+    {
+      "rule_id": "U-LABELS",
+      "source_ids": [
+        "INV-002334"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Use labeled sections rather than an undifferentiated prose block. Exact section vocabularies belong to fixed operation packs, not to this universal rule.",
+      "failure_criteria": "Instruction content is an unlabeled continuous block.",
+      "uncertainty_criteria": "Boundaries or labels are ambiguous.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Do not require arbitrary nonempty fields. INV-002397 concerns long prompts and is not universal provenance."
+    },
+    {
+      "rule_id": "U-ANTI-SLOP",
+      "source_ids": [
+        "INV-002340",
+        "INV-002343"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Reject vague praise and unsupported superlative quality claims used as image instructions; judge meaning across synonyms and languages, not a finite blacklist.",
+      "failure_criteria": "Aesthetic praise or an empty quality superlative substitutes for a visual instruction, including but not limited to source examples stunning/incredible/epic/gorgeous/masterpiece.",
+      "uncertainty_criteria": "A term could be a concrete subject, exact requested rendered text, or evaluative praise; flag its exact usage rather than deleting it.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "No blanket canonical ban on photorealistic, optical specifications or every adjective is inferred. Source mentions are attributed claims, not performance measurements."
+    },
+    {
+      "rule_id": "U-VISUAL-SPECIFICITY",
+      "source_ids": [
+        "INV-002344",
+        "INV-002345",
+        "INV-002049",
+        "INV-002257",
+        "INV-002258",
+        "INV-002259",
+        "INV-002260"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Use concrete visual properties rather than piled style tags or external comparisons; specify subject/material/color/position to the degree supported by the brief.",
+      "failure_criteria": "Abstract comparison or style-tag stack replaces an actionable visual description.",
+      "uncertainty_criteria": "Precision would require inventing a brief fact or resolving an ambiguous style reference.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Source examples are examples, not mandatory Chanel, hex color, camera, or material fields. Do not prohibit meaningful styles or colors merely for lacking a numerical value."
+    },
+    {
+      "rule_id": "U-FUNCTIONAL-REQUIREMENTS",
+      "source_ids": [
+        "INV-002346"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "State functional requirements directly instead of burying them in mood language. Compare the raw brief and resulting prompt.",
+      "failure_criteria": "A supplied functional requirement is absent, contradicted, or only vaguely suggested.",
+      "uncertainty_criteria": "Brief requirement or its visual translation has multiple materially different meanings.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Evidence must identify brief requirement and corresponding output; inferred requirements are not canonical facts."
+    },
+    {
+      "rule_id": "U-OPERATION-VERB",
+      "source_ids": [
+        "INV-002241"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Begin the first operative instruction with an operation verb, before details, while preserving the model-specific section label.",
+      "failure_criteria": "First operative instruction begins with description rather than a verb indicating the requested operation.",
+      "uncertainty_criteria": "A non-English or ambiguous verb cannot confidently be identified, or operation conflicts with input.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Create/Generate/Design/Transform/Convert/Edit are examples, not an exhaustive English-only whitelist. Labels themselves are not the instruction."
+    },
+    {
+      "rule_id": "U-POSITIVE-FRAMING",
+      "source_ids": [
+        "INV-002243",
+        "INV-002335"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Describe desired visual states positively; preserve explicit exclusions and invariants in model-specific Constraints.",
+      "failure_criteria": "Negative description unnecessarily substitutes for a clear desired visual state outside needed constraints.",
+      "uncertainty_criteria": "Converting a prohibition could change user intent or conflict with an explicit preserve/exclusion.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "INV-002335 explicitly prescribes what must NOT change/appear. Never mechanically remove no/not, no watermarks, no extra text, or user prohibitions."
+    },
+    {
+      "rule_id": "U-NATURAL-LANGUAGE",
+      "source_ids": [
+        "INV-002253"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Express coherent relationships in natural language within the labeled sections, not disconnected keyword stacks.",
+      "failure_criteria": "Output consists of disconnected style/quality keywords instead of intelligible visual relationships.",
+      "uncertainty_criteria": "Concise technical descriptions could be either coherent shorthand or disconnected tags.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Labeled fragments can be valid; do not require prose filler or arbitrary sentence length."
+    },
+    {
+      "rule_id": "U-USE-CONTEXT",
+      "source_ids": [
+        "INV-002262",
+        "INV-002335"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Communicate the intended use/context so model decisions are grounded in the brief.",
+      "failure_criteria": "Known intended use is lost or replaced with a different use.",
+      "uncertainty_criteria": "Use is unspecified and supplying it would be an unsupported assumption.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Do not inject cookbook, corporate aesthetic, educational-app style, or other example content."
+    },
+    {
+      "rule_id": "U-MODEL-SEPARATION",
+      "source_ids": [
+        "INV-002011",
+        "INV-002044"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Honor the requested GPT Image 2 model and identify it in the output header rather than mixing the model contract into scene description.",
+      "failure_criteria": "Output silently substitutes a different model or lacks model identification in the output contract.",
+      "uncertainty_criteria": "Input requests incompatible model routing or model choice is unresolved.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "This fixed module is for GPT Image 2. It does not authorize changing model because a source recommends another model."
+    },
+    {
+      "rule_id": "U-DELIVERY-SEPARATION",
+      "source_ids": [
+        "INV-002000",
+        "INV-002044"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Deliver a copyable image prompt, model and quality/size/ratio fields, and separately identified inferences/assumptions. Keep operational metadata outside the visual prompt.",
+      "failure_criteria": "Required delivery components are absent or operational status/inference notes contaminate the image instruction.",
+      "uncertainty_criteria": "An item may be a real visual constraint or only brief bookkeeping; flag before stripping.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "A statement that no reference was supplied is not automatically a visual constraint. No image generation is authorized by this output rule. Quality default conflict is retained separately."
+    },
+    {
+      "rule_id": "U-TECHNICAL-ENVELOPE",
+      "source_ids": [
+        "INV-002355",
+        "INV-002356",
+        "INV-002357",
+        "INV-002358",
+        "INV-002044"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Review the GPT2 size/ratio envelope against the documentary limits: each edge <3840 px, each supplied pixel dimension multiple of16, long/short ratio <=3, area655360..8294400 inclusive. Keep technical fields outside scene prose.",
+      "failure_criteria": "Explicit chosen dimensions or aspect violate the exact documentary limits or contradict the user request.",
+      "uncertainty_criteria": "Explicit parameter values are ambiguous, malformed, conflict with the approved profile/user request, or are asserted as verified despite insufficient evidence.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "Always review the supplied or approved-profile technical envelope. Source2044 permits Size / Ratio: ratio alone is valid. Missing optional pixel dimensions is NOT a failure or uncertainty; report PASS with scope limited to supplied ratio, without claiming pixel compliance. Missing optional input never mandates invention. This is documentary, not live API verification.2560x1440 is only a recommendation."
+    },
+    {
+      "rule_id": "U-QUALITY-ENVELOPE",
+      "source_ids": [
+        "INV-002350",
+        "INV-002351",
+        "INV-002352",
+        "INV-002353",
+        "INV-002044"
+      ],
+      "scope": "ALL_GPT_IMAGE_2_PROMPT_DELIVERIES",
+      "per_request_selection": false,
+      "strength": "requirement",
+      "interpretation_is_derived": true,
+      "intent": "Review quality as explicit low/medium/high metadata, with its documented fidelity/latency purpose. Preserve user quality and distinguish recommendation from mandatory conditional text rules.",
+      "failure_criteria": "Chosen quality is unsupported, silently changes explicit user quality, or is inserted as visual scene content.",
+      "uncertainty_criteria": "Neither user nor approved profile supplies quality and choosing a new default requires resolving the medium-versus-low source tension; supplied quality conflicts with a mandatory branch requirement.",
+      "evidence_requirements": [
+        "Identify exact artifact field and quote the relevant supplied text; for an omission identify the expected field and the inspected full scope.",
+        "Explain the observable relationship to the exact canonical source, not merely that an instruction was supplied.",
+        "For PASS include concrete compliance evidence. Never invent an absent attribute to satisfy a source example."
+      ],
+      "notes": "An agreed profile value satisfies quality even if absent from raw brief. Do not flag merely because raw brief omits it. Source2044 requires Quality in final GPT2 delivery. Do not infer measured latency, price or guarantee or silently resolve an unneeded default conflict. Conditional high for small/dense/multifont text belongs the fixed text pack."
+    }
+  ]
+}

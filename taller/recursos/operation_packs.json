@@ -1,0 +1,125 @@
+[
+  {
+    "pack_id": "GPT2-GEN",
+    "scope": "Standard generation, excluding separately specified marketing-text or infographic schema",
+    "source_ids": [
+      "INV-002335",
+      "INV-002336"
+    ],
+    "fixed_labels": [
+      "Scene",
+      "Subject",
+      "Important Details",
+      "Use Case",
+      "Constraints"
+    ],
+    "derived_mapping": {
+      "mood": "Important Details"
+    },
+    "checks": [
+      "Use exactly these model-specific section labels; arbitrary labels are not accepted as this schema.",
+      "Put the operation verb inside first operative section, not before Scene label.",
+      "Preserve supplied functional requirements and real visual constraints. Do not inject bookkeeping or source example content."
+    ],
+    "not_a_requirement": [
+      "No arbitrary nonempty-field rule is introduced.",
+      "Mood is not a sixth final section.",
+      "All visual attributes listed as examples are not mandatory."
+    ],
+    "universal": false,
+    "activation": "EXPLICIT_OPERATION_CONTRACT_NOT_UNIVERSAL_SELECTION",
+    "implementation_status": "FIXED_DATA_CONTRACT_RUNTIME_INTEGRATION_NOT_CLAIMED",
+    "scoped_adapter_checks": [
+      {
+        "source_ids": [
+          "INV-011759"
+        ],
+        "scope": "Forge-generated GPT Image 1.5/2 draft before final image syntax",
+        "intent": "Do not use actual Midjourney --ar or weight controls as instructions to GPT2. Exact requested visible text containing those characters is not foreign-control syntax.",
+        "strength": "requirement_within_adapter_scope"
+      },
+      {
+        "source_ids": [
+          "INV-011758"
+        ],
+        "scope": "Scene composition in Forge GPT Image adapter",
+        "intent": "Five or fewer distinct elements is a fidelity guideline. More requested elements creates a tradeoff for user review, not a technical impossibility, hard rejection or deletion permission.",
+        "strength": "advisory"
+      }
+    ]
+  },
+  {
+    "pack_id": "GPT2-EDIT",
+    "scope": "Editing an existing image",
+    "source_ids": [
+      "INV-002375",
+      "INV-002377",
+      "INV-002378",
+      "INV-002379",
+      "INV-002045",
+      "INV-002046"
+    ],
+    "fixed_labels": [
+      "Change",
+      "Preserve",
+      "Constraints"
+    ],
+    "checks": [
+      "State one concrete change per iteration.",
+      "Repeat the applicable preserve invariants explicitly; do not preserve the attribute being changed.",
+      "For surgical edit list what must not change."
+    ],
+    "not_a_requirement": [
+      "No five-generation-slot requirement.",
+      "No mandatory mask: source2380 explicitly optional."
+    ],
+    "universal": false,
+    "activation": "EXPLICIT_OPERATION_CONTRACT_NOT_UNIVERSAL_SELECTION",
+    "implementation_status": "FIXED_DATA_CONTRACT_RUNTIME_INTEGRATION_NOT_CLAIMED"
+  },
+  {
+    "pack_id": "GPT2-MARKETING-TEXT",
+    "scope": "Marketing creative with rendered headline/subhead",
+    "source_ids": [
+      "INV-002406"
+    ],
+    "fixed_labels": [
+      "Scene",
+      "Subject",
+      "Important Details",
+      "Use Case",
+      "Text",
+      "Constraints"
+    ],
+    "checks": [
+      "Text contains exact required headline/subhead and typography/color/position.",
+      "Keep high Quality in metadata.",
+      "Apply source constraints to this marketing variant, not to all GPT2 tasks."
+    ],
+    "universal": false,
+    "activation": "EXPLICIT_OPERATION_CONTRACT_NOT_UNIVERSAL_SELECTION",
+    "implementation_status": "FIXED_DATA_CONTRACT_RUNTIME_INTEGRATION_NOT_CLAIMED"
+  },
+  {
+    "pack_id": "GPT2-INFOGRAPHIC",
+    "scope": "Infographic / diagram template",
+    "source_ids": [
+      "INV-002408"
+    ],
+    "fixed_labels": [
+      "Title",
+      "Content flow",
+      "Visual format",
+      "Use Case",
+      "Constraints"
+    ],
+    "checks": [
+      "Preserve title/flow/layout/audience and legible hierarchy/no decorative noise.",
+      "Keep high Quality and Size outside prompt.",
+      "1536x1024 is this template size, not a forced size for every infographic where user supplied another valid ratio."
+    ],
+    "universal": false,
+    "activation": "EXPLICIT_OPERATION_CONTRACT_NOT_UNIVERSAL_SELECTION",
+    "implementation_status": "FIXED_DATA_CONTRACT_RUNTIME_INTEGRATION_NOT_CLAIMED"
+  }
+]

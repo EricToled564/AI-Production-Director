@@ -1,0 +1,53 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/inject_rules.py\"",
+            "timeout": 30,
+            "statusMessage": "Inyectando reglas obligatorias..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_microgate.py\"",
+            "timeout": 30,
+            "statusMessage": "Micro-gate: cabecera de 3 lineas..."
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_dramaturgy.py\"",
+            "timeout": 30,
+            "statusMessage": "Gate 6.1: vocabulario prohibido..."
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_image.py\"",
+            "timeout": 30,
+            "statusMessage": "Gate imagen: golden rules..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gate_shots.py\"",
+            "timeout": 60,
+            "statusMessage": "Gate Etapa 4: validate_shots.py..."
+          }
+        ]
+      }
+    ]
+  }
+}
