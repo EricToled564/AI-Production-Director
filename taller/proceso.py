@@ -363,13 +363,15 @@ class Proceso:
                                           E.validar_selector(ids, brief))
             for d in valor["decisiones"]:
                 decisiones[d["id"]] = d
-        conteos = _conteos(decisiones.values())
+        # Todos los revisores ven el mismo conteo, el de la primera pasada: así cada lote se revisa de forma
+        # independiente (se puede paralelizar y el reintento de un lote no invalida la revisión de los demás).
+        conteos_revision = _conteos(decisiones.values())
         for grupo in lotes:
             ids = [u["id"] for u in grupo]
             for intento in range(REINTENTOS_SELECCION + 1):
                 propias = [decisiones[i] for i in ids]
                 rev = self.proveedor.llamar("revisor_seleccion", E.SISTEMA_REVISOR_SELECCION,
-                                            dict(E.carga_revisor_seleccion(self.rec, brief, grupo, propias, conteos), ronda_operacion=ronda_op),
+                                            dict(E.carga_revisor_seleccion(self.rec, brief, grupo, propias, conteos_revision), ronda_operacion=ronda_op),
                                             E.validar_registros(ids, clave="id"))
                 fallas = [r for r in rev["registros"] if r["estado"] == "FAIL"]
                 for r in rev["registros"]:
@@ -382,7 +384,6 @@ class Proceso:
                                               E.validar_selector(ids, brief))
                 for d in nuevo["decisiones"]:
                     decisiones[d["id"]] = d
-                conteos = _conteos(decisiones.values())
         dudas = []
         for i, d in decisiones.items():
             r = revisiones.get(i, {})
