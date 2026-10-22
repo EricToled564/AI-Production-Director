@@ -1,0 +1,58 @@
+{
+  "version": "taller-llenado-gpt2-gen-20261022",
+  "estado": "PROPUESTA_PARA_REVISION_DEL_USUARIO_EN_ETAPA_6",
+  "adapter": "GPT2-GEN",
+  "fuente_adapter": "TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md §6 GPT2-GEN; image/references/gpt-image.md#5-slots (INV-002335)",
+  "template": "Scene: {{escena}}\nSubject: {{sujeto_accion}}\nImportant Details: {{detalles_visuales}}\nUse Case: {{uso}}\nConstraints: {{restricciones}}",
+  "parametros_separados": ["quality", "tamano"],
+  "nota_literal": "El literal de INV-002335 no se copia aquí: la app lo lee de canonical_sources.json para no alterar el texto canónico.",
+  "slots": [
+    {
+      "id": "LLENADO::Scene",
+      "slot": "Scene",
+      "instruccion": "Escribir el lugar, el momento, el fondo y el entorno resueltos desde el brief validado. Aquí empieza la primera instrucción operativa: debe abrir con un verbo de operación (por ejemplo Create o Generate) dentro del rótulo, sin anteponer nada antes de 'Scene:'.",
+      "campos_brief": ["entrada.escena.espacio", "entrada.escena.entorno", "entrada.escena.momento", "entrada.escena.clima", "entrada.escena.planos", "entrada.pieza.tematica"],
+      "fuentes": ["INV-002335", "PLAN_V5 §16.11: Scene ← F16; contexto de F05 y F30 cuando tengan efecto ambiental", "operation_packs GPT2-GEN checks[1]"]
+    },
+    {
+      "id": "LLENADO::Subject",
+      "slot": "Subject",
+      "instruccion": "Describir el sujeto central, la acción visible y las relaciones entre sujetos: cantidad, posición de cada uno, rasgos, cabello, vestuario, expresión traducida a signos físicos, postura y contactos.",
+      "campos_brief": ["entrada.sujetos.cantidad", "entrada.sujetos.items[].descripcion", "entrada.sujetos.items[].edad", "entrada.sujetos.items[].genero", "entrada.sujetos.items[].rasgos", "entrada.sujetos.items[].cabello", "entrada.sujetos.items[].vestuario", "entrada.sujetos.items[].expresion", "entrada.sujetos.items[].posicion", "entrada.accion.tipo", "entrada.accion.estado_visible", "entrada.accion.postura", "entrada.accion.evidencia_fisica", "entrada.blocking.contactos", "entrada.blocking.relaciones", "entrada.identidad.invariantes"],
+      "fuentes": ["INV-002335", "PLAN_V5 §16.11: Subject ← F15/F19/F13/F20/F21 y relaciones pertinentes"]
+    },
+    {
+      "id": "LLENADO::Important Details",
+      "slot": "Important Details",
+      "instruccion": "Concretar estilo y representación con atributos observables, plano, ángulo, altura y efecto óptico de la cámara, luz (fuente, dirección, dureza, distribución, contraste, especulares), color, grade, materiales, texturas, piel y composición. Solo lo que el brief validado y las reglas seleccionadas sostienen.",
+      "campos_brief": ["entrada.estilo", "entrada.representacion", "entrada.camara.plano", "entrada.camara.angulo", "entrada.camara.altura", "entrada.camara.efecto_optico", "entrada.camara.lente_intencion", "entrada.luz.fuente", "entrada.luz.direccion", "entrada.luz.dureza", "entrada.luz.distribucion", "entrada.luz.contraste", "entrada.luz.specular", "entrada.color_material.paleta", "entrada.color_material.grade", "entrada.color_material.materiales", "entrada.color_material.texturas", "entrada.color_material.acabado", "entrada.composicion", "entrada.rostro.detalles", "entrada.fisica.regimen"],
+      "fuentes": ["INV-002335", "PLAN_V5 §16.11: Important Details ← F17/F18/F24/F25 y materias de F30: luz, color, piel, materialidad, composición", "operation_packs GPT2-GEN derived_mapping: mood → Important Details"]
+    },
+    {
+      "id": "LLENADO::Use Case",
+      "slot": "Use Case",
+      "instruccion": "Declarar el uso concreto de la pieza y su tipo, tal como quedaron en el brief validado.",
+      "campos_brief": ["entrada.pieza.tipo", "entrada.pieza.uso", "entrada.pieza.objetivo", "entrada.publicacion.destino"],
+      "fuentes": ["INV-002335", "PLAN_V5 §16.11: Use Case ← F04 y función del activo"]
+    },
+    {
+      "id": "LLENADO::Constraints",
+      "slot": "Constraints",
+      "instruccion": "Listar las prohibiciones, invariantes y restricciones efectivas del brief validado y de las reglas seleccionadas. No convertir datos administrativos del brief (por ejemplo 'no se adjuntó referencia') en restricciones visuales. No una lista genérica de negativos.",
+      "campos_brief": ["entrada.restricciones"],
+      "fuentes": ["INV-002335", "INV-002336", "PLAN_V5 §16.11: Constraints ← prohibiciones, preservaciones, condiciones y excepciones de todas las reglas seleccionadas", "universal_rules U-DELIVERY-SEPARATION notes"]
+    }
+  ],
+  "parametros": [
+    {
+      "id": "LLENADO::quality",
+      "instruccion": "quality es metadato separado del prompt: low, medium o high. Si el brief no lo fija, preguntar; no inventar un default (conflicto INV-002351 / INV-002353 conservado).",
+      "fuentes": ["INV-002350", "INV-002351", "INV-002352", "INV-002353", "INV-002044"]
+    },
+    {
+      "id": "LLENADO::tamano",
+      "instruccion": "tamano es metadato separado: el ratio del brief validado, o dimensiones en píxeles solo si el brief las fija y cumplen los límites documentales.",
+      "fuentes": ["INV-002044", "INV-002355", "INV-002356", "INV-002357", "INV-002358"]
+    }
+  ]
+}
