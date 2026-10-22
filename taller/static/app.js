@@ -134,14 +134,18 @@ function renderBrief() {
   }
   const resto = campos.filter((c) => !usados.has(c.path));
   if (resto.length) grupos += `<div class="grupo"><h3>Otros</h3>${resto.map((c) => renderCampo(c, editable, obs[c.path])).join("")}</div>`;
-  const devolucion = caso.correccion && caso.correccion.problemas.length && editable
-    ? `<div class="aviso"><b>El corrector devolvió el brief:</b> ${caso.correccion.problemas.length} observaciones (marcadas en rojo o ámbar). ${esc(caso.correccion.observaciones || "")}</div>` : "";
+  const cor = caso.correccion;
+  const devolucion = cor && cor.problemas.length && editable
+    ? `<div class="aviso"><b>El corrector devolvió el brief:</b> ${cor.problemas.length} errores objetivos (en rojo). ${esc(cor.observaciones || "")}</div>` : "";
+  const notasCor = cor && (cor.notas || []).length
+    ? `<div class="nota-cor"><b>Notas del corrector (no devuelven el brief; decides tú si cambias algo):</b><ul>${cor.notas.map((n) => `<li><code>${esc(n.path)}</code>: ${esc(n.pregunta || n.comentario)}</li>`).join("")}</ul></div>` : "";
+  const tiempoCor = cor && cor.segundos != null ? `<p class="nota">Revisión del corrector: ${cor.segundos} s · ${cor.aprobados ?? "—"} campos aprobados sin observaciones.</p>` : "";
   const titulo = editable ? "2–3 · Brief completo para tu revisión" : "Brief validado";
   return `<div class="tarjeta"><h2>${titulo}</h2>
     <div class="resumen">${Object.entries(cuenta).map(([k, v]) => `<span class="contador"><span class="etiqueta e-${k}">${NOMBRE_ESTADO[k]}</span> ${v}</span>`).join("")}</div>
     ${caso.desarrollo.resumen_creativo ? `<h3>Propuesta creativa en conjunto</h3><p>${esc(caso.desarrollo.resumen_creativo)}</p>` : ""}
     ${(caso.desarrollo.conflictos || []).length ? `<div class="aviso"><b>Conflictos detectados:</b><ul>${caso.desarrollo.conflictos.map((c) => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}
-    ${devolucion}
+    ${devolucion}${notasCor}${tiempoCor}
     ${caso.brief_hash ? `<p class="nota">Validado por el corrector · hash ${esc(caso.brief_hash.slice(0, 16))}…</p>` : ""}
     ${grupos}
     ${editable ? `<div class="barra-accion">

@@ -136,24 +136,53 @@ def validar_desarrollo(rec, original, aportes):
 
 SISTEMA_CORRECTOR_BRIEF = """Eres el corrector independiente del brief. No redactas prompts ni reescribes el brief.
 Revisa CADA campo contra el texto original, los aportes y decisiones del usuario, la condición literal del
-template y el contrato de la operación. Para cada campo devuelve PASS, FAIL o UNCERTAIN.
+template y el contrato de la operación, pero reporta SOLO las excepciones: un campo que no aparece en tu
+respuesta queda aprobado. No escribas nada sobre los campos correctos.
 
-FAIL cuando: un dato marcado como proporcionado no corresponde a su cita o la deforma; una inferencia no
-tiene base; se perdió o contradijo algo que el usuario pidió; un campo requerido quedó vacío; una condición
-se evaluó mal (por ejemplo, una pieza fotográfica sin cámara o sin luz desarrolladas); hay contradicción
-entre campos (cantidad de sujetos, posiciones, operación frente a referencias); aparece vocabulario vago o
-prohibido por el usuario; una propuesta se presenta como dato del usuario.
-UNCERTAIN cuando hay una ambigüedad real que solo el usuario puede resolver: incluye una pregunta concreta.
-PASS exige que el campo sea correcto y suficiente; explica brevemente por qué.
+FAIL (devuelve el brief al usuario) solo por defectos objetivos: un dato marcado como proporcionado no
+corresponde a su cita o la deforma; una inferencia no tiene base; se perdió o contradijo algo que el usuario
+pidió; un campo requerido quedó vacío; una condición se evaluó mal (por ejemplo, una pieza fotográfica sin
+cámara o sin luz desarrolladas); hay contradicción entre campos (cantidad de sujetos, posiciones, operación
+frente a referencias, imposibilidad física); aparece vocabulario vago o prohibido por el usuario; una
+propuesta se presenta como dato del usuario.
 
-Las decisiones del usuario son posteriores al original y mandan sobre él: no las reviertas.
-Devuelve JSON: {"registros": [{"path": "...", "estado": "PASS|FAIL|UNCERTAIN", "comentario": "...",
-"pregunta": "..."}], "observaciones_generales": "..."} con todos los campos, una vez cada uno."""
+Las decisiones del usuario (origen usuario, propuesta_aceptada, propuesta_rechazada,
+vacio_explicado_por_usuario) son finales y mandan sobre el original: no las reviertas. Que un asunto sea
+decisión exclusiva del usuario NUNCA es motivo de FAIL ni de devolución: si el usuario ya decidió, el campo
+está aprobado. Solo marca FAIL un campo decidido si su valor crea un defecto objetivo de la lista anterior.
+UNCERTAIN es una nota para el usuario que NO devuelve el brief: úsala solo si queda una ambigüedad real
+que afecta a la imagen, con una pregunta concreta.
+
+Sé breve: cada comentario en 40 palabras o menos, observaciones_generales en 60 o menos.
+Devuelve JSON: {"observaciones": [{"path": "...", "estado": "FAIL|UNCERTAIN", "comentario": "...",
+"pregunta": "..."}], "observaciones_generales": "..."}. Lista vacía si todo el brief es correcto."""
+
+
+def _compacto(campo):
+    return {k: v for k, v in campo.items() if v not in ("", None, [], {})}
 
 
 def carga_corrector(rec, original, aportes, brief_final):
-    return {"texto_original": original, "aportes_usuario": aportes, "brief": brief_final,
+    return {"texto_original": original, "aportes_usuario": aportes, "brief": [_compacto(c) for c in brief_final],
             "contrato_operacion_genesis": rec.contrato_genesis, "directivas_usuario": rec.reglas_directivas()}
+
+
+def validar_corrector(rutas):
+    """Respuesta por excepción: solo campos FAIL o UNCERTAIN; los ausentes quedan aprobados."""
+    validas = set(rutas)
+
+    def validar(valor):
+        _exigir(isinstance(valor, dict) and isinstance(valor.get("observaciones"), list), "Falta la lista 'observaciones'.")
+        vistos = set()
+        for r in valor["observaciones"]:
+            _exigir(isinstance(r, dict) and r.get("path") in validas, f"Ruta inexistente en el brief: {r.get('path') if isinstance(r, dict) else r}.")
+            _exigir(r["path"] not in vistos, f"{r['path']}: observación duplicada.")
+            vistos.add(r["path"])
+            _exigir(r.get("estado") in ("FAIL", "UNCERTAIN"), f"{r['path']}: estado debe ser FAIL o UNCERTAIN.")
+            _exigir(r.get("comentario"), f"{r['path']}: falta comentario.")
+            if r["estado"] == "UNCERTAIN":
+                _exigir(r.get("pregunta"), f"{r['path']}: UNCERTAIN exige pregunta.")
+    return validar
 
 
 def validar_registros(ids_esperados, clave="path"):

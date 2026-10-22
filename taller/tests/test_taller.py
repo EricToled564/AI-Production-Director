@@ -4,6 +4,7 @@ No prueban la calidad semántica de un modelo real: eso exige correr un caso con
     python -m unittest discover -s taller/tests -v
 """
 import json
+import os
 import sys
 import tempfile
 import threading
@@ -27,6 +28,7 @@ class Modelo:
     def __init__(self):
         self.llamadas = {}
         self.fallar_corrector_una_vez = True
+        self.nota_en_corrector = False
         self.borrador_con_slop = True
         self.duda_en_revision = True
 
@@ -57,11 +59,15 @@ class Modelo:
         return {"campos": campos, "resumen_creativo": "Retrato documental al amanecer.", "conflictos": []}
 
     def corrector_brief(self, carga):
-        registros = [{"path": c["path"], "estado": "PASS", "comentario": "Correcto.", "pregunta": ""} for c in carga["brief"]]
+        observaciones = []
+        primero, ultimo = carga["brief"][0]["path"], carga["brief"][-1]["path"]
         if self.fallar_corrector_una_vez:
             self.fallar_corrector_una_vez = False
-            registros[0] = dict(registros[0], estado="FAIL", comentario="El flujo no corresponde a una génesis.")
-        return {"registros": registros, "observaciones_generales": ""}
+            observaciones.append({"path": primero, "estado": "FAIL", "comentario": "El flujo no corresponde a una génesis."})
+        if self.nota_en_corrector:
+            observaciones.append({"path": ultimo, "estado": "UNCERTAIN", "comentario": "Decisión del usuario.",
+                                  "pregunta": "¿Confirmas el destino?"})
+        return {"observaciones": observaciones, "observaciones_generales": ""}
 
     def selector(self, carga):
         decisiones = []
@@ -110,14 +116,15 @@ class Base(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def decidir_todo(self, cid):
-        caso = self.pr.leer(cid)
+    def decidir_todo(self, cid, pr=None):
+        pr = pr or self.pr
+        caso = pr.leer(cid)
         for c in caso["brief_actual"]:
             if c["estado_desarrollo"] == "propuesta":
-                self.pr.decidir_campo(cid, c["path"], "aceptar")
+                pr.decidir_campo(cid, c["path"], "aceptar")
             elif c["estado_desarrollo"] == "falta":
-                self.pr.decidir_campo(cid, c["path"], "responder", "overol impermeable naranja")
-        self.pr.marcar_revisado(cid, True)
+                pr.decidir_campo(cid, c["path"], "responder", "overol impermeable naranja")
+        pr.marcar_revisado(cid, True)
 
     def hasta_brief_validado(self):
         cid = self.pr.crear_caso(ORIGINAL)["id"]
@@ -192,6 +199,49 @@ class TestCompuertas(Base):
         self.assertEqual(len(caso["correccion"]["problemas"]), 1)
         with self.assertRaises(P.Compuerta):
             self.pr.seleccionar(cid)
+
+    def test_nota_del_corrector_no_devuelve_el_brief(self):
+        """Lo que solo el usuario puede decidir no es motivo de devolución (Eric, 2026-10-22)."""
+        self.modelo.fallar_corrector_una_vez = False
+        self.modelo.nota_en_corrector = True
+        cid = self.pr.crear_caso(ORIGINAL)["id"]
+        self.pr.desarrollar_brief(cid)
+        self.decidir_todo(cid)
+        caso = self.pr.corregir_brief(cid)
+        self.assertEqual(caso["etapa"], P.BRIEF_VALIDADO)
+        self.assertEqual(len(caso["correccion"]["notas"]), 1)
+        self.assertEqual(caso["correccion"]["problemas"], [])
+
+    def test_revision_del_brief_limitada_a_45_segundos(self):
+        vistos = []
+
+        def falso_post(url, cuerpo, cabeceras, segundos):
+            vistos.append((segundos, cuerpo.get("max_tokens")))
+            return {"content": [{"type": "text", "text": json.dumps({"observaciones": [], "observaciones_generales": ""})}]}
+
+        original_post, clave = llm._post, os.environ.get("ANTHROPIC_API_KEY")
+        os.environ["ANTHROPIC_API_KEY"] = "prueba"
+        llm._post = falso_post
+        try:
+            pr = P.Proceso(self.almacen, llm.Anthropic(self.almacen))
+            cid = pr.crear_caso(ORIGINAL)["id"]
+            caso = self.almacen.leer_caso(cid)
+            caso["desarrollo"] = self.modelo.desarrollador_brief(
+                E.carga_desarrollo(pr.rec, ORIGINAL, [], []))
+            caso["etapa"] = P.BRIEF_REVISION
+            self.almacen.guardar_caso(caso)
+            self.decidir_todo(cid, pr)
+            caso = pr.corregir_brief(cid)
+        finally:
+            llm._post = original_post
+            if clave is None:
+                os.environ.pop("ANTHROPIC_API_KEY", None)
+            else:
+                os.environ["ANTHROPIC_API_KEY"] = clave
+        self.assertEqual(caso["etapa"], P.BRIEF_VALIDADO)
+        self.assertEqual(len(vistos), 1)
+        self.assertLessEqual(vistos[0][0], 45)
+        self.assertEqual(vistos[0][1], P.MAX_SALIDA_REVISION)
 
     def test_reabrir_invalida_lo_posterior(self):
         cid = self.hasta_brief_validado()

@@ -35,7 +35,7 @@ con el motivo; no se acepta a medias.
 | 1 | `original` | El texto original se guarda tal cual y no se edita nunca. Los datos nuevos entran como aportes aparte. |
 | 2 | desarrollo del brief | El modelo llena los 109 campos de `template_brief.json`. Cada campo queda `proporcionado` (con cita literal del original o de un aporte, verificada), `inferido` (con fundamento), `propuesta` (con fundamento, la decide el usuario), `falta` (con pregunta) o `condicion_inactiva` (prohibido en campos de condición "siempre" y en los requeridos de T-GENESIS). No hay campos vacíos silenciosos. |
 | 3 | `brief_revision` | Se muestra el brief completo. El usuario acepta, modifica o rechaza cada propuesta y responde cada pregunta (o deja el campo vacío con explicación obligatoria). Debe marcar "Revisé el brief completo". |
-| 4 | corrector | Solo con 0 pendientes y revisión marcada. Si falla, el brief vuelve al usuario con las observaciones; no se genera prompt. |
+| 4 | corrector | Solo con 0 pendientes y revisión marcada. Solo un error objetivo (FAIL) devuelve el brief al usuario; lo que solo el usuario puede decidir nunca lo devuelve: sale como nota (UNCERTAIN) visible que no bloquea. El corrector responde solo con excepciones y tiene un máximo de 45 s por API (tope de 4000 tokens de salida; razonamiento bajo en OpenAI, ajustable con `TALLER_ESFUERZO_REVISION`). Si el proveedor no responde a tiempo, la app lo informa y se reintenta. |
 | 5 | `brief_validado` → selección | Con el brief validado se seleccionan reglas específicas del catálogo: cada una con fuente, por qué aplica (cita del brief) y bloque destino. Más de dos por bloque es aviso para evaluar el filtro, nunca un tope. Las dudas del revisor de selección las decide el usuario. |
 | 6 | `plantilla_vista` | Se muestra la plantilla de 5 bloques con sus instrucciones de llenado y las 12 reglas universales literales. El usuario elige `quality` (la app no inventa un valor por defecto). |
 | 7 | redacción | El redactor arma el prompt con el brief validado, las instrucciones y las reglas seleccionadas; el documento lleva al inicio las instrucciones y reglas con trazabilidad y los textos canónicos sin alterar. |
@@ -60,9 +60,9 @@ procedencia de cada uno; la app avisa en la interfaz si alguno fue modificado.
 python -m unittest discover -s taller/tests
 ```
 
-20 pruebas: compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
+22 pruebas: compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
 flujo completo hasta aprobación con un modelo simulado, quality no inventada, redacción automática
-tras fallo determinista, ambigüedades, notas contextuales, validadores, modo manual y API HTTP.
+tras fallo determinista, notas del corrector que no devuelven el brief, límite de 45 s en la revisión, ambigüedades, notas contextuales, validadores, modo manual y API HTTP.
 
 ## Caso de demostración
 
