@@ -350,12 +350,13 @@ def reglas_para_revision(rec, especificas, notas):
     return reglas
 
 
-def paquete_entrega(parametros, brief_validado):
+def paquete_entrega(parametros, brief_validado, notas_redactor=None):
     """Lo que la app exporta junto al cuerpo del prompt; el revisor evalúa las reglas de entrega con esto."""
     inferencias = [f"{c['path']}: {json.dumps(c['valor'], ensure_ascii=False)} ({c['origen']})"
                    for c in brief_validado if c.get("origen") in ("inferido", "propuesta_aceptada")]
     return {"model": "Model: GPT Image 2", "quality": f"Quality: {parametros.get('quality')}",
-            "size": f"Size / Ratio: {parametros.get('tamano')}", "inferencias_y_supuestos": inferencias}
+            "size": f"Size / Ratio: {parametros.get('tamano')}", "inferencias_y_supuestos": inferencias,
+            "notas_del_redactor": list(notas_redactor or [])}
 
 
 def validar_revisor_prompt(ids, cuerpo, entrega=None):

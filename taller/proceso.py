@@ -509,7 +509,7 @@ class Proceso:
             if borrador.get("parametros") != parametros:
                 prompt["notas"].append("El redactor devolvió parámetros distintos; se conservan los fijados por el usuario.")
             deterministas = E.comprobaciones_deterministas(slots, parametros, brief)
-            entrega = E.paquete_entrega(parametros, brief)
+            entrega = E.paquete_entrega(parametros, brief, prompt["notas"])
             rev = self.proveedor.llamar("revisor_prompt", E.SISTEMA_REVISOR_PROMPT,
                                         {"brief_validado": brief, "prompt": cuerpo, "parametros": parametros,
                                          "entrega": entrega, "reglas": reglas, "texto_original": caso["original"],
