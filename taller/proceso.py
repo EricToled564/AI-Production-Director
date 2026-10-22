@@ -506,10 +506,12 @@ class Proceso:
             if borrador.get("parametros") != parametros:
                 prompt["notas"].append("El redactor devolvió parámetros distintos; se conservan los fijados por el usuario.")
             deterministas = E.comprobaciones_deterministas(slots, parametros, brief)
+            entrega = E.paquete_entrega(parametros, brief)
             rev = self.proveedor.llamar("revisor_prompt", E.SISTEMA_REVISOR_PROMPT,
                                         {"brief_validado": brief, "prompt": cuerpo, "parametros": parametros,
-                                         "reglas": reglas, "texto_original": caso["original"], "ronda_operacion": [ronda_op, ronda]},
-                                        E.validar_revisor_prompt(ids, cuerpo))
+                                         "entrega": entrega, "reglas": reglas, "texto_original": caso["original"],
+                                         "ronda_operacion": [ronda_op, ronda]},
+                                        E.validar_revisor_prompt(ids, cuerpo, entrega))
             registros = rev["registros"] + deterministas
             problemas = [r for r in registros if r["estado"] != "PASS"]
             fallas = [r for r in problemas if r["estado"] == "FAIL"]
@@ -656,8 +658,11 @@ def documento_prompt(rec, caso, especificas):
     lineas += ["", "## Salida", "", "```text", "Model: GPT Image 2", f"Quality: {p['parametros']['quality']}",
                f"Size / Ratio: {p['parametros']['tamano']}", "", "Prompt:", p["cuerpo"], "```", "",
                "## Texto para copiar en el generador", "", "```text", p["cuerpo"], "```", ""]
+    inferencias = E.paquete_entrega(p["parametros"], caso["brief_validado"])["inferencias_y_supuestos"]
+    if inferencias:
+        lineas += ["## Inferencias y supuestos (fuera del texto visual)", ""] + [f"- {n}" for n in inferencias] + [""]
     if p.get("notas"):
-        lineas += ["## Notas", ""] + [f"- {n}" for n in p["notas"]] + [""]
+        lineas += ["## Notas del redactor", ""] + [f"- {n}" for n in p["notas"]] + [""]
     lineas += ["## Trazabilidad de la verificación", ""]
     for r in caso["revision_prompt"]["registros"]:
         lineas.append(f"- {r['regla_id']}: {r['estado']} — {r.get('explicacion') or r.get('comentario', '')}")

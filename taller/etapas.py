@@ -215,9 +215,15 @@ Devuelve JSON: {"decisiones": [{"id": "INV-...", "decision": "seleccionada|exclu
 "campo_brief": "...", "cita_brief": "...", "razon": "...", "pregunta": "..."}]}"""
 
 
+def universales_resumidas(rec):
+    """Texto de las 12 universales para que selector y revisor comprueben qué cubren de verdad."""
+    return [{"regla_id": u["regla_id"], "intencion": u["intencion"],
+             "fuentes": [f"{f['id']}: {f['texto']}" for f in u["fuentes"]]} for u in rec.universales]
+
+
 def carga_selector(rec, brief_validado, unidades, retro=None):
     return {"brief_validado": brief_validado, "modelo": "GPT Image 2", "operacion": "genesis",
-            "reglas_universales_ya_aplicadas": [u["regla_id"] for u in rec.universales],
+            "reglas_universales_ya_aplicadas": universales_resumidas(rec),
             "bloques": BLOQUES, "candidatas": [rec.unidad_compacta(u) for u in unidades],
             "retroalimentacion_revisor": retro or []}
 
@@ -254,7 +260,8 @@ No apruebes por cumplir un conteo. Devuelve JSON: {"registros": [{"id": "INV-...
 
 
 def carga_revisor_seleccion(rec, brief_validado, unidades, decisiones, conteos):
-    return {"brief_validado": brief_validado, "candidatas": [rec.unidad_compacta(u) for u in unidades],
+    return {"brief_validado": brief_validado, "reglas_universales_ya_aplicadas": universales_resumidas(rec),
+            "candidatas": [rec.unidad_compacta(u) for u in unidades],
             "decisiones": decisiones, "conteo_por_bloque_total": conteos}
 
 
@@ -314,6 +321,9 @@ Para cada regla devuelve:
   describe el posible problema y "pregunta" la decisión concreta.
 Compara también el prompt con el brief validado: lo que el brief exige debe estar, sin contradicciones ni
 datos inventados. Considera las notas contextuales del usuario como aclaraciones vinculadas a su regla.
+"entrega" es el paquete que la app exporta junto al prompt (encabezado de modelo, quality, tamaño e
+inferencias del brief separadas del texto visual): evalúa con él las reglas de entrega. Para un problema
+en la entrega, la "cita" copia literalmente el fragmento de "entrega"; para uno del texto, del prompt.
 Devuelve JSON: {"registros": [{"regla_id": "...", "estado": "PASS|FAIL|UNCERTAIN", "slot": "...",
 "cita": "...", "explicacion": "...", "pregunta": "..."}]} con todas las reglas, una vez cada una."""
 
@@ -340,16 +350,25 @@ def reglas_para_revision(rec, especificas, notas):
     return reglas
 
 
-def validar_revisor_prompt(ids, cuerpo):
+def paquete_entrega(parametros, brief_validado):
+    """Lo que la app exporta junto al cuerpo del prompt; el revisor evalúa las reglas de entrega con esto."""
+    inferencias = [f"{c['path']}: {json.dumps(c['valor'], ensure_ascii=False)} ({c['origen']})"
+                   for c in brief_validado if c.get("origen") in ("inferido", "propuesta_aceptada")]
+    return {"model": "Model: GPT Image 2", "quality": f"Quality: {parametros.get('quality')}",
+            "size": f"Size / Ratio: {parametros.get('tamano')}", "inferencias_y_supuestos": inferencias}
+
+
+def validar_revisor_prompt(ids, cuerpo, entrega=None):
     base = validar_registros(ids, clave="regla_id")
-    cuerpo_n = normalizar(cuerpo)
+    fuentes = [normalizar(cuerpo), normalizar(json.dumps(entrega or {}, ensure_ascii=False))]
 
     def validar(valor):
         base(valor)
         for r in valor["registros"]:
             if r["estado"] in ("FAIL", "UNCERTAIN"):
-                _exigir(r.get("cita") and normalizar(r["cita"]) in cuerpo_n,
-                        f"{r['regla_id']}: la cita de un {r['estado']} debe copiar un fragmento literal del prompt.")
+                cita = normalizar(r.get("cita") or "")
+                _exigir(cita and any(cita in f for f in fuentes),
+                        f"{r['regla_id']}: la cita de un {r['estado']} debe copiar un fragmento literal del prompt o de la entrega.")
     return validar
 
 
