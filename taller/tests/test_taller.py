@@ -29,6 +29,7 @@ class Modelo:
         self.llamadas = {}
         self.fallar_corrector_una_vez = True
         self.nota_en_corrector = False
+        self.cargas_redactor = []
         self.borrador_con_slop = True
         self.duda_en_revision = True
 
@@ -83,6 +84,7 @@ class Modelo:
         return {"registros": [{"id": d["id"], "estado": "PASS", "comentario": "Correcto.", "pregunta": ""} for d in carga["decisiones"]]}
 
     def redactor(self, carga):
+        self.cargas_redactor.append(carga)
         detalles = "Low side light from the left, weathered skin texture."
         if self.borrador_con_slop:
             self.borrador_con_slop = False
@@ -300,6 +302,21 @@ class TestFlujoCompleto(Base):
         notas = self.almacen.notas_para("otro-caso")
         self.assertEqual(notas[0]["regla_id"], item["regla_id"])
         self.assertEqual(notas[0]["decision"], "Plano medio corto.")
+
+    def test_redactor_recibe_todas_las_decisiones_del_caso(self):
+        """Una ronda nueva de ambigüedades no borra las decisiones anteriores para el redactor."""
+        cid = self.hasta_brief_validado()
+        self.pr.seleccionar(cid)
+        self.pr.confirmar_plantilla(cid, "high")
+        caso = self.pr.redactar(cid)
+        item = caso["ambiguedades"]["items"][0]
+        self.pr.decidir_ambiguedad(cid, item["id"], "Plano medio corto.", "solo_este_caso")
+        caso = self.almacen.leer_caso(cid)
+        caso["ambiguedades"]["items"] = []  # simula una ronda posterior con otras ambigüedades
+        self.almacen.guardar_caso(caso)
+        self.pr.redactar(cid)
+        decisiones = self.modelo.cargas_redactor[-1]["decisiones_usuario"]
+        self.assertIn("Plano medio corto.", [d["decision"] for d in decisiones])
 
 
 class TestValidadores(unittest.TestCase):

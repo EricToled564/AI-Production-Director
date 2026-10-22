@@ -488,8 +488,11 @@ class Proceso:
         ids = [r["regla_id"] for r in reglas]
         previo = caso["prompt"]
         observaciones = (caso.get("revision_prompt") or {}).get("problemas", [])
-        decisiones = [{"regla_id": a["regla_id"], "cita": a["cita"], "pregunta": a["pregunta"], "decision": a["decision"]}
-                      for a in ((caso.get("ambiguedades") or {}).get("items") or []) if a.get("decision")]
+        # Todas las decisiones del usuario sobre ambigüedades (de cualquier ronda de este caso y las de alcance
+        # casos_similares), no solo las de la última ronda: una ronda nueva no debe borrar lo ya decidido.
+        decisiones = [{"regla_id": n["regla_id"], "cita": n["contexto"].get("cita", ""),
+                       "pregunta": n["contexto"].get("pregunta", ""), "decision": n["decision"], "alcance": n["alcance"]}
+                      for n in notas]
         comentario = caso.get("comentario_final")
         ronda_op = self._ronda(caso, "redactar", nueva)
         for ronda in range(1, RONDAS_AUTOMATICAS + 1):
