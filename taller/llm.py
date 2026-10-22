@@ -13,6 +13,8 @@ y el modo manual puede retomar una operación de varios pasos.
 import json
 import os
 import re
+import socket
+import time
 import urllib.error
 import urllib.request
 
@@ -33,6 +35,10 @@ class ErrorModelo(Exception):
 
 class RespuestaInvalida(Exception):
     pass
+
+
+class LimiteTiempo(ErrorModelo):
+    """La llamada superó el tiempo máximo fijado para su rol."""
 
 
 def clave_solicitud(rol, sistema, carga):
@@ -65,6 +71,8 @@ def extraer_json(texto):
 
 
 def _post(url, cuerpo, cabeceras, segundos):
+    if segundos <= 1:
+        raise LimiteTiempo("Se agotó el tiempo máximo antes de llamar al proveedor.")
     req = urllib.request.Request(url, data=json.dumps(cuerpo).encode("utf-8"), headers=cabeceras)
     try:
         with urllib.request.urlopen(req, timeout=segundos) as r:
@@ -73,7 +81,11 @@ def _post(url, cuerpo, cabeceras, segundos):
         detalle = e.read().decode("utf-8", "replace")[:600]
         raise ErrorModelo(f"HTTP {e.code}: {detalle}")
     except urllib.error.URLError as e:
+        if isinstance(e.reason, (TimeoutError, socket.timeout)):
+            raise LimiteTiempo(f"El proveedor no respondió en {segundos:.0f} s.")
         raise ErrorModelo(f"Sin conexión con el proveedor: {e.reason}")
+    except (TimeoutError, socket.timeout):
+        raise LimiteTiempo(f"El proveedor no respondió en {segundos:.0f} s.")
 
 
 class Proveedor:
@@ -83,12 +95,15 @@ class Proveedor:
     def __init__(self, almacen):
         self.almacen = almacen  # objeto con leer_respuesta(clave) / guardar_respuesta(clave, ...)
 
-    def llamar(self, rol, sistema, carga, validar):
+    def llamar(self, rol, sistema, carga, validar, limite_s=None, max_salida=None):
+        """limite_s: tiempo máximo de la llamada (se aplica a los proveedores por API);
+        max_salida: tope de tokens de salida."""
         clave = clave_solicitud(rol, sistema, carga)
         guardada = self.almacen.leer_respuesta(clave)
         if guardada is not None:
             return guardada
-        solicitud = {"clave": clave, "rol": rol, "sistema": sistema, "carga": carga}
+        solicitud = {"clave": clave, "rol": rol, "sistema": sistema, "carga": carga,
+                     "limite_s": limite_s, "max_salida": max_salida}
         valor = self._obtener(solicitud, validar)
         self.almacen.guardar_respuesta(clave, rol, self.nombre, valor)
         return valor
@@ -117,15 +132,21 @@ class _API(Proveedor):
     segundos = 600
 
     def _obtener(self, solicitud, validar):
-        texto = self._completar(solicitud["sistema"], solicitud["carga"])
+        limite = solicitud.get("limite_s")
+        fin = time.monotonic() + (limite or self.segundos)
+        texto = self._completar(solicitud["sistema"], solicitud["carga"], fin - time.monotonic(), solicitud)
         try:
             valor = extraer_json(texto)
             validar(valor)
             return valor
         except RespuestaInvalida as e:
-            # Un reintento con el error explícito; si vuelve a fallar se informa al usuario.
+            # Un reintento con el error explícito, dentro del mismo tiempo máximo; si no cabe o vuelve a
+            # fallar se informa al usuario.
+            restante = fin - time.monotonic()
+            if limite and restante < 10:
+                raise RespuestaInvalida(f"{e} No queda tiempo para reintentar dentro del límite de {limite:.0f} s.")
             carga = dict(solicitud["carga"], error_respuesta_anterior=str(e))
-            texto = self._completar(solicitud["sistema"], carga)
+            texto = self._completar(solicitud["sistema"], carga, restante, solicitud)
             valor = extraer_json(texto)
             validar(valor)
             return valor
@@ -139,20 +160,25 @@ class OpenAI(_API):
         self.clave = os.environ.get("OPENAI_API_KEY", "")
         self.modelo = os.environ.get("OPENAI_MODEL", "")
         self.esfuerzo = os.environ.get("OPENAI_REASONING_EFFORT", "")
+        # Las revisiones con tiempo máximo usan razonamiento bajo para caber en el límite.
+        self.esfuerzo_revision = os.environ.get("TALLER_ESFUERZO_REVISION", "low")
         if not self.clave or not self.modelo:
             raise ErrorModelo("Faltan OPENAI_API_KEY u OPENAI_MODEL en el entorno.")
 
     def descripcion(self):
         return f"openai:{self.modelo}"
 
-    def _completar(self, sistema, carga):
+    def _completar(self, sistema, carga, segundos, solicitud):
         cuerpo = {"model": self.modelo, "instructions": sistema,
                   "input": "Datos de entrada en JSON. Responde solo con JSON.\n" + json.dumps(carga, ensure_ascii=False),
                   "text": {"format": {"type": "json_object"}}}
-        if self.esfuerzo:
-            cuerpo["reasoning"] = {"effort": self.esfuerzo}
+        esfuerzo = self.esfuerzo_revision if solicitud.get("limite_s") else self.esfuerzo
+        if esfuerzo:
+            cuerpo["reasoning"] = {"effort": esfuerzo}
+        if solicitud.get("max_salida"):
+            cuerpo["max_output_tokens"] = solicitud["max_salida"]
         r = _post("https://api.openai.com/v1/responses", cuerpo,
-                  {"Authorization": "Bearer " + self.clave, "Content-Type": "application/json"}, self.segundos)
+                  {"Authorization": "Bearer " + self.clave, "Content-Type": "application/json"}, segundos)
         partes = [c.get("text", "") for o in r.get("output", []) if o.get("type") == "message"
                   for c in o.get("content", []) if c.get("type") == "output_text"]
         if not partes:
@@ -174,12 +200,12 @@ class Anthropic(_API):
     def descripcion(self):
         return f"anthropic:{self.modelo}"
 
-    def _completar(self, sistema, carga):
-        cuerpo = {"model": self.modelo, "max_tokens": 32000, "system": sistema,
+    def _completar(self, sistema, carga, segundos, solicitud):
+        cuerpo = {"model": self.modelo, "max_tokens": solicitud.get("max_salida") or 32000, "system": sistema,
                   "messages": [{"role": "user", "content": "Datos de entrada en JSON. Responde solo con un objeto JSON.\n" + json.dumps(carga, ensure_ascii=False)}]}
         r = _post(self.base + "/v1/messages", cuerpo,
                   {"x-api-key": self.clave, "anthropic-version": "2023-06-01", "content-type": "application/json"},
-                  self.segundos)
+                  segundos)
         partes = [b.get("text", "") for b in r.get("content", []) if b.get("type") == "text"]
         if not partes:
             raise ErrorModelo(f"Respuesta sin texto (stop_reason {r.get('stop_reason')}).")

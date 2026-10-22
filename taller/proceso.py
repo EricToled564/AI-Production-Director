@@ -32,6 +32,8 @@ APROBADO = "aprobado"
 ORDEN = [ORIGINAL, BRIEF_REVISION, BRIEF_VALIDADO, SELECCION_DUDAS, SELECCION_LISTA, PLANTILLA_VISTA,
          PROMPT_AMBIGUEDADES, PROMPT_DETENIDO, REVISION_FINAL, APROBADO]
 RONDAS_AUTOMATICAS = 3
+LIMITE_REVISION_S = 45      # tiempo máximo de la revisión del brief por API (decisión de Eric, 2026-10-22)
+MAX_SALIDA_REVISION = 4000  # tokens de salida: la respuesta solo lista excepciones
 REINTENTOS_SELECCION = 2
 
 DECISIONES_POR_ESTADO = {
@@ -311,19 +313,29 @@ class Proceso:
         final = self.brief_final(caso)
         carga = E.carga_corrector(self.rec, caso["original"], caso["aportes"], final)
         carga["ronda_operacion"] = self._ronda(caso, "corregir", nueva)
+        inicio = time.monotonic()
         valor = self.proveedor.llamar("corrector_brief", E.SISTEMA_CORRECTOR_BRIEF, carga,
-                                      E.validar_registros(self.rec.rutas, clave="path"))
-        problemas = [r for r in valor["registros"] if r["estado"] != "PASS"]
-        caso["correccion"] = {"registros": valor["registros"], "observaciones": valor.get("observaciones_generales", ""),
-                              "problemas": problemas, "brief_hash": huella(final), "ts": time.time()}
+                                      E.validar_corrector(self.rec.rutas),
+                                      limite_s=LIMITE_REVISION_S, max_salida=MAX_SALIDA_REVISION)
+        segundos = round(time.monotonic() - inicio, 1)
+        # Solo un FAIL devuelve el brief. UNCERTAIN es una nota para el usuario: lo que solo el usuario
+        # puede decidir no es motivo de devolución.
+        observaciones = valor["observaciones"]
+        problemas = [r for r in observaciones if r["estado"] == "FAIL"]
+        notas = [r for r in observaciones if r["estado"] == "UNCERTAIN"]
+        caso["correccion"] = {"registros": observaciones, "observaciones": valor.get("observaciones_generales", ""),
+                              "problemas": problemas, "notas": notas, "aprobados": len(final) - len(observaciones),
+                              "segundos": segundos, "brief_hash": huella(final), "ts": time.time()}
         if problemas:
             caso["revision_completa"] = False
-            self._guardar(caso, "brief_devuelto_por_corrector", {"problemas": len(problemas)})
+            self._guardar(caso, "brief_devuelto_por_corrector", {"problemas": len(problemas), "notas": len(notas),
+                                                                 "segundos": segundos})
         else:
             caso["brief_validado"] = final
             caso["brief_hash"] = huella(final)
             caso["etapa"] = BRIEF_VALIDADO
-            self._guardar(caso, "brief_validado", {"brief_hash": caso["brief_hash"]})
+            self._guardar(caso, "brief_validado", {"brief_hash": caso["brief_hash"], "notas": len(notas),
+                                                   "segundos": segundos})
         return caso
 
     def reabrir_brief(self, caso_id, motivo="El usuario reabrió el brief"):
