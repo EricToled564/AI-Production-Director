@@ -1,8 +1,8 @@
 # Taller de brief y prompt — GPT Image 2, imágenes
 
-App local que convierte la idea original del usuario en un brief creativo y técnico completo y,
-solo después de validarlo, en un prompt para GPT Image 2. Python estándar (sin dependencias) y una
-interfaz web en el navegador. Funciona en Windows, macOS y Linux.
+App que convierte la idea original del usuario en un brief creativo y técnico completo y, solo después
+de validarlo, en un prompt para GPT Image 2. Python estándar (sin dependencias) y una interfaz web.
+Corre en local (Windows, macOS, Linux) o desplegada en Vercel (ver "Despliegue en Vercel").
 
 ## Arranque
 
@@ -15,9 +15,10 @@ Variables de entorno opcionales:
 
 | Variable | Uso | Por defecto |
 |---|---|---|
-| `TALLER_PROVEEDOR` | `manual`, `openai` o `anthropic` | `manual` |
+| `TALLER_PROVEEDOR` | `anthropic`, `manual` u `openai` | `anthropic` |
+| `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` | proveedor Anthropic (Messages API) | modelo `claude-opus-5-5` |
 | `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT` | proveedor OpenAI (Responses API) | — |
-| `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` | proveedor Anthropic (Messages API) | — |
+| `TALLER_LIMITE_LLAMADA_S` | tiempo máximo de una llamada al modelo | `600` local, `280` en Vercel |
 | `TALLER_PUERTO` | puerto local | `8770` |
 | `TALLER_DB` | ruta de la base SQLite de casos | `taller/datos/taller.sqlite3` |
 
@@ -27,6 +28,32 @@ Si la clave falta o el proveedor falla al crearse, la app cae al modo manual y l
 (instrucciones + datos). Se copia a ChatGPT o Claude, se pega la respuesta JSON y la app la valida
 con las mismas reglas que una respuesta de API. Una respuesta que no pasa la validación se rechaza
 con el motivo; no se acepta a medias.
+
+## Despliegue en Vercel
+
+Proyecto con `rootDirectory = taller`. La función `api/index.py` atiende `/api/*`; `static/` se sirve como
+sitio estático (`vercel.json`). Las rutas y compuertas son las mismas del servidor local (`rutas.py`).
+
+Diferencias con el modo local, porque una función de Vercel no tiene disco persistente ni hilos en
+segundo plano:
+
+- **Los casos viven en el navegador** (IndexedDB, con localStorage de respaldo). Cada petición envía la
+  instantánea del caso y el servidor devuelve la actualizada (`nube.py`, `AlmacenMemoria`). Otro
+  navegador u otra computadora no ven tus casos: usa **Exportar respaldo / Importar respaldo**.
+- **Una llamada al modelo por petición.** Si una operación necesita varias (selección por lotes,
+  rondas de redacción), la interfaz repite la petición sola y reutiliza las respuestas ya guardadas.
+  Cada llamada debe caber en `maxDuration` = 300 s (plan Hobby).
+- **Contraseña obligatoria.** La URL es pública y gasta la cuenta del proveedor: la API exige la cabecera
+  `X-Taller-Clave` igual a `TALLER_CLAVE_ACCESO`. Sin esa variable definida la app no se abre. La página la
+  pide una vez y la guarda en el navegador.
+
+Variables del proyecto en Vercel (Settings → Environment Variables; después volver a desplegar):
+
+| Variable | Obligatoria | Para qué |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | sí, para usar la API | Sin ella la app cae al modo manual (copiar y pegar). |
+| `TALLER_CLAVE_ACCESO` | sí | Contraseña de la app. |
+| `ANTHROPIC_MODEL` | no | Por defecto `claude-opus-5-5`. |
 
 ## El proceso (las compuertas no se pueden saltar)
 
@@ -60,7 +87,7 @@ procedencia de cada uno; la app avisa en la interfaz si alguno fue modificado.
 python -m unittest discover -s taller/tests
 ```
 
-22 pruebas: compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
+28 pruebas: modo nube (contraseña, instantánea en el navegador, una llamada por petición, manual en la nube, despacho compartido), compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
 flujo completo hasta aprobación con un modelo simulado, quality no inventada, redacción automática
 tras fallo determinista, notas del corrector que no devuelven el brief, límite de 45 s en la revisión, ambigüedades, notas contextuales, validadores, modo manual y API HTTP.
 
@@ -78,8 +105,7 @@ app. Se detiene en el paso 3 con las decisiones pendientes para revisión del us
 
 - El catálogo de reglas específicas (`catalogo_especificas.json`, 607 unidades) es provisional:
   el catálogo definitivo de textos todavía no se ha hecho.
-- No se ha corrido ninguna etapa con un modelo real por API desde el entorno de desarrollo (la
-  clave disponible no tenía crédito). El flujo completo está probado con un modelo simulado; con
-  modelo real conviene empezar en modo manual o con una clave con crédito y revisar la primera
-  corrida etapa por etapa.
+- No se ha corrido ninguna etapa contra la API de Anthropic desde el entorno de desarrollo (no había
+  clave). El flujo completo se corrió con instancias de Claude por la vía manual (ver
+  `demo/PRUEBA_SPINNING_prompt_exportado.md`) y con un modelo simulado en las pruebas.
 - La app no genera imágenes.

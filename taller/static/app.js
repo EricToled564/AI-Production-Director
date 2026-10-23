@@ -31,23 +31,90 @@ const NOMBRE_ESTADO = { proporcionado: "Proporcionado", inferido: "Inferido", pr
 
 let casoId = null, caso = null, sondeo = null;
 
+// ---------------------------------------------------------------- modo nube (Vercel)
+// En la nube no hay disco en el servidor: cada caso vive en este navegador (IndexedDB, con localStorage de
+// respaldo) y viaja como instantánea en cada petición. Exporta respaldos con regularidad.
+let NUBE = false, CLAVE = "", PROV = "";
+const ls = {
+  get(k) { try { return localStorage.getItem("taller:" + k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem("taller:" + k, v); return true; } catch { return false; } },
+};
+const kv = (() => {
+  let dbp = null;
+  const db = () => dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("taller", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (modo, f) => { const d = await db(); return new Promise((res, rej) => { const q = f(d.transaction("kv", modo).objectStore("kv")); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); };
+  return {
+    async get(k) { try { return await tx("readonly", (s) => s.get(k)); } catch { const v = ls.get(k); return v ? JSON.parse(v) : undefined; } },
+    async set(k, v) { try { await tx("readwrite", (s) => s.put(v, k)); } catch { if (!ls.set(k, JSON.stringify(v))) throw new Error("No se pudo guardar en este navegador: exporta un respaldo."); } },
+  };
+})();
+const vacia = () => ({ version: 1, casos: {}, eventos: {}, respuestas: {}, pegados: {}, notas: [], operaciones: {} });
+
+async function cargarInstantanea(cid) {
+  const inst = (cid && await kv.get("caso:" + cid)) || vacia();
+  const globales = (await kv.get("notas_globales")) || [];
+  const ids = new Set(inst.notas.map((n) => n.id));
+  inst.notas = inst.notas.concat(globales.filter((n) => !ids.has(n.id)));
+  return inst;
+}
+async function guardarInstantanea(cid, inst) {
+  const globales = (await kv.get("notas_globales")) || [];
+  const ids = new Set(globales.map((n) => n.id));
+  inst.notas.filter((n) => n.alcance === "casos_similares" && !ids.has(n.id)).forEach((n) => globales.push(n));
+  await kv.set("notas_globales", globales);
+  inst.notas = inst.notas.filter((n) => n.caso_id === cid);
+  await kv.set("caso:" + cid, inst);
+  const indice = ((await kv.get("indice")) || []).filter((c) => c.id !== cid);
+  const c = inst.casos[cid];
+  if (c) indice.push({ id: c.id, titulo: c.original.slice(0, 90), etapa: c.etapa, creado: c.creado, actualizado: c.actualizado || c.creado });
+  await kv.set("indice", indice);
+}
+
+async function apiNube(metodo, ruta, cuerpo) {
+  const m = ruta.match(/^\/api\/casos\/([^/]+)/);
+  const cid = m ? m[1] : null;
+  const instantanea = await cargarInstantanea(cid);
+  const r = await fetch(ruta, { method: "POST", headers: { "Content-Type": "application/json", "X-Taller-Clave": CLAVE },
+    body: JSON.stringify({ metodo, cuerpo: cuerpo || null, instantanea, proveedor: PROV }) });
+  const res = await r.json().catch(() => ({}));
+  if (r.status === 401) { CLAVE = ""; ls.set("clave", ""); }
+  if (!r.ok) throw new Error((res.datos && res.datos.error) || res.error || `Error ${r.status}`);
+  if (res.instantanea && (cid || (res.datos && res.datos.id))) await guardarInstantanea(cid || res.datos.id, res.instantanea);
+  return res.datos;
+}
+
 async function api(metodo, ruta, cuerpo) {
-  const r = await fetch(ruta, { method: metodo, headers: { "Content-Type": "application/json" }, body: cuerpo ? JSON.stringify(cuerpo) : undefined });
+  if (NUBE && ruta !== "/api/estado") return apiNube(metodo, ruta, cuerpo);
+  const cab = { "Content-Type": "application/json" };
+  if (NUBE) cab["X-Taller-Clave"] = CLAVE;
+  const r = await fetch(ruta, { method: metodo, headers: cab, body: cuerpo ? JSON.stringify(cuerpo) : undefined });
   const datos = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(datos.error || `Error ${r.status}`);
   return datos;
 }
 async function accion(ruta, cuerpo) {
-  try { await api("POST", `/api/casos/${casoId}/${ruta}`, cuerpo); await cargarCaso(); }
-  catch (e) { alert(e.message); }
+  try {
+    let r = await api("POST", `/api/casos/${casoId}/${ruta}`, cuerpo);
+    // En la nube cada petición hace como máximo una llamada al modelo: se repite hasta terminar.
+    while (NUBE && r && r.continuar) {
+      await cargarCaso();
+      r = await api("POST", `/api/casos/${casoId}/continuar`, {});
+    }
+    await cargarCaso();
+  } catch (e) { alert(e.message); if (casoId) cargarCaso().catch(() => {}); }
 }
 
 async function cargarEstado() {
   const e = await api("GET", "/api/estado");
-  $("#proveedor").value = e.proveedor;
+  if (!NUBE) $("#proveedor").value = e.proveedor;
   $("#aviso-proveedor").textContent = e.aviso_proveedor || "";
   $("#recursos-estado").textContent = e.recursos_modificados.length ? `Recursos modificados: ${e.recursos_modificados.join(", ")}` : "";
-  $("#lista-casos").innerHTML = e.casos.map((c) => `<div class="caso-item ${c.id === casoId ? "activo" : ""}" data-id="${c.id}">
+  const casos = NUBE ? ((await kv.get("indice")) || []).sort((a, b) => b.actualizado - a.actualizado) : e.casos;
+  $("#lista-casos").innerHTML = casos.map((c) => `<div class="caso-item ${c.id === casoId ? "activo" : ""}" data-id="${c.id}">
     ${esc(c.titulo)}…<small>${esc(c.etapa)} · ${new Date(c.actualizado * 1000).toLocaleString()}</small></div>`).join("") || '<p class="nota">Sin casos todavía.</p>';
   document.querySelectorAll(".caso-item").forEach((el) => el.onclick = () => { casoId = el.dataset.id; cargarCaso(); });
 }
@@ -58,7 +125,7 @@ async function cargarCaso() {
   render();
   const op = caso.operacion_actual;
   clearTimeout(sondeo);
-  if (op && op.estado === "en_curso") sondeo = setTimeout(cargarCaso, 2000);
+  if (!NUBE && op && op.estado === "en_curso") sondeo = setTimeout(cargarCaso, 2000);
   cargarEstado();
 }
 
@@ -74,7 +141,9 @@ function renderOperacion() {
   if (!op || op.estado === "ok") return "";
   if (op.estado === "en_curso") {
     const s = Math.round(Date.now() / 1000 - op.inicio);
-    return `<div class="op en_curso"><b>En curso:</b> ${esc(op.nombre)} · ${s} s. Las llamadas al modelo pueden tardar varios minutos.</div>`;
+    const pasos = op.pasos ? ` · ${op.pasos} llamadas al modelo completadas` : "";
+    return `<div class="op en_curso"><b>En curso:</b> ${esc(op.nombre)} · ${s} s${pasos}. Cada llamada al modelo puede tardar varios minutos.
+      ${NUBE ? `<div class="controles"><button class="continuar-op">Continuar si se detuvo</button></div>` : ""}</div>`;
   }
   if (op.estado === "manual") {
     return `<div class="op manual"><b>Modo manual — rol: ${esc(op.solicitud.rol)}.</b> ${esc(op.mensaje)}
@@ -291,7 +360,7 @@ function renderPrompt() {
       <button class="primario" id="aprobar">Aprobar el prompt</button></div>`;
   }
   if (caso.etapa === "aprobado") {
-    html += `<div class="barra-accion"><b>Aprobado por ti.</b> <a href="/api/casos/${casoId}/exportar">Descargar documento del prompt (.md)</a>
+    html += `<div class="barra-accion"><b>Aprobado por ti.</b> ${NUBE ? `<button id="exportar-md">Descargar documento del prompt (.md)</button>` : `<a href="/api/casos/${casoId}/exportar">Descargar documento del prompt (.md)</a>`}
       <span class="nota">La generación de la imagen la decides tú.</span></div>`;
   }
   html += `<details><summary>Trazabilidad de la verificación (${rev.registros.length})</summary><table>${rev.registros.map((r) =>
@@ -328,7 +397,19 @@ function enlazar() {
   const ec = $("#enviar-comentario"); if (ec) ec.onclick = () => accion("comentario", { texto: $("#comentario-final").value });
   const ecr = $("#enviar-comentario-redactar"); if (ecr) ecr.onclick = async () => { await accion("comentario", { texto: $("#comentario-final").value }); await accion("redactar"); };
   const apr = $("#aprobar"); if (apr) apr.onclick = () => confirm("¿Apruebas este prompt?") && accion("aprobar");
+  document.querySelectorAll(".continuar-op").forEach((b) => b.onclick = () => accion("continuar", {}));
+  const ex = $("#exportar-md"); if (ex) ex.onclick = async () => {
+    try { const d = await api("GET", `/api/casos/${casoId}/exportar`); descargar(d.nombre, d.texto, "text/markdown"); }
+    catch (e) { alert(e.message); }
+  };
   if ($("#plantilla-cont")) cargarPlantilla();
+}
+
+function descargar(nombre, texto, tipo) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([texto], { type: tipo + ";charset=utf-8" }));
+  a.download = nombre; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 $("#nuevo").onclick = () => {
@@ -342,8 +423,56 @@ $("#nuevo").onclick = () => {
   };
 };
 $("#proveedor").onchange = async (e) => {
-  const r = await api("POST", "/api/proveedor", { nombre: e.target.value });
-  $("#aviso-proveedor").textContent = r.aviso || "";
-  $("#proveedor").value = r.proveedor;
+  if (NUBE) { PROV = e.target.value; ls.set("proveedor", PROV); }
+  try {
+    const r = NUBE ? await apiNube("POST", "/api/proveedor", { nombre: e.target.value }) : await api("POST", "/api/proveedor", { nombre: e.target.value });
+    $("#aviso-proveedor").textContent = r.aviso || "";
+    $("#proveedor").value = r.proveedor;
+  } catch (err) { alert(err.message); }
 };
-cargarEstado();
+
+async function exportarRespaldo() {
+  const indice = (await kv.get("indice")) || [];
+  const casos = {};
+  for (const c of indice) casos[c.id] = await kv.get("caso:" + c.id);
+  const datos = { taller_respaldo: 1, fecha: new Date().toISOString(), indice, casos, notas_globales: (await kv.get("notas_globales")) || [] };
+  descargar(`taller_respaldo_${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(datos), "application/json");
+}
+async function importarRespaldo(archivo) {
+  const datos = JSON.parse(await archivo.text());
+  if (!datos.taller_respaldo) throw new Error("El archivo no es un respaldo del taller.");
+  for (const [id, inst] of Object.entries(datos.casos || {})) if (inst) await guardarInstantanea(id, inst);
+  const globales = (await kv.get("notas_globales")) || [];
+  const ids = new Set(globales.map((n) => n.id));
+  (datos.notas_globales || []).forEach((n) => { if (!ids.has(n.id)) globales.push(n); });
+  await kv.set("notas_globales", globales);
+}
+
+async function iniciar() {
+  let e;
+  try { e = await (await fetch("/api/estado", { headers: { "X-Taller-Clave": ls.get("clave") || "" } })).json(); } catch { e = {}; }
+  if (e.modo === "nube") {
+    NUBE = true;
+    CLAVE = ls.get("clave") || "";
+    PROV = ls.get("proveedor") || e.proveedor;
+    $("#respaldo").hidden = false;
+    $("#proveedor").value = PROV;
+    if (!e.clave_configurada) {
+      $("#principal").innerHTML = `<div class="tarjeta aviso"><b>Falta configurar la contraseña.</b> Define TALLER_CLAVE_ACCESO en Vercel → Settings → Environment Variables y vuelve a desplegar.</div>`;
+      return;
+    }
+    while (!e.clave_ok) {
+      const c = prompt("Contraseña del taller (TALLER_CLAVE_ACCESO):");
+      if (c === null) { $("#principal").innerHTML = '<p class="vacio">Sin contraseña no se puede usar el taller.</p>'; return; }
+      CLAVE = c.trim(); ls.set("clave", CLAVE);
+      e = await (await fetch("/api/estado", { headers: { "X-Taller-Clave": CLAVE } })).json();
+    }
+    $("#exp-respaldo").onclick = () => exportarRespaldo().catch((x) => alert(x.message));
+    $("#imp-respaldo").onchange = async (ev) => {
+      try { await importarRespaldo(ev.target.files[0]); await cargarEstado(); alert("Respaldo importado."); }
+      catch (x) { alert(x.message); }
+    };
+  }
+  await cargarEstado();
+}
+iniciar();

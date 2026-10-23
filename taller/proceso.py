@@ -135,6 +135,75 @@ class Almacen:
                  "contexto": json.loads(f["contexto"]), "alcance": f["alcance"]} for f in filas]
 
 
+class AlmacenMemoria:
+    """Misma interfaz que Almacen, en memoria. En la nube el estado vive en el navegador: cada petición
+    trae una instantánea JSON, se hidrata aquí y la instantánea actualizada vuelve al navegador."""
+
+    MAX_EVENTOS = 200
+
+    def __init__(self, instantanea=None):
+        d = instantanea or {}
+        self.casos = dict(d.get("casos") or {})
+        self._eventos = {k: list(v) for k, v in (d.get("eventos") or {}).items()}
+        self.respuestas = dict(d.get("respuestas") or {})
+        self.pegados = dict(d.get("pegados") or {})
+        self.notas = list(d.get("notas") or [])
+        self.operaciones = dict(d.get("operaciones") or {})
+
+    def instantanea(self):
+        return {"version": 1, "casos": self.casos, "eventos": self._eventos, "respuestas": self.respuestas,
+                "pegados": self.pegados, "notas": self.notas, "operaciones": self.operaciones}
+
+    def leer_respuesta(self, clave):
+        r = self.respuestas.get(clave)
+        return r["valor"] if r else None
+
+    def guardar_respuesta(self, clave, rol, proveedor, valor):
+        self.respuestas[clave] = {"rol": rol, "proveedor": proveedor, "valor": valor, "ts": time.time()}
+
+    def leer_pegado(self, clave):
+        return self.pegados.get(clave)
+
+    def guardar_pegado(self, clave, valor):
+        self.pegados[clave] = valor
+
+    def borrar_pegado(self, clave):
+        self.pegados.pop(clave, None)
+
+    def guardar_caso(self, caso):
+        caso["actualizado"] = time.time()
+        self.casos[caso["id"]] = json.loads(json.dumps(caso, ensure_ascii=False))
+
+    def leer_caso(self, caso_id):
+        if caso_id not in self.casos:
+            raise KeyError(caso_id)
+        return json.loads(json.dumps(self.casos[caso_id], ensure_ascii=False))
+
+    def listar_casos(self):
+        casos = sorted(self.casos.values(), key=lambda c: c.get("actualizado", 0), reverse=True)
+        return [{"id": c["id"], "creado": c["creado"], "actualizado": c.get("actualizado", c["creado"]),
+                 "etapa": c["etapa"], "titulo": c["original"][:90]} for c in casos]
+
+    def evento(self, caso_id, tipo, detalle):
+        lista = self._eventos.setdefault(caso_id, [])
+        lista.append({"ts": time.time(), "tipo": tipo, "detalle": detalle})
+        del lista[:-self.MAX_EVENTOS]
+
+    def eventos(self, caso_id):
+        return list(self._eventos.get(caso_id, []))
+
+    def guardar_nota(self, regla_id, caso_id, decision, contexto, alcance):
+        nota_id = uuid.uuid4().hex
+        self.notas.append({"id": nota_id, "regla_id": regla_id, "caso_id": caso_id, "decision": decision,
+                           "contexto": contexto, "alcance": alcance, "ts": time.time()})
+        return nota_id
+
+    def notas_para(self, caso_id):
+        filas = [n for n in self.notas if n["caso_id"] == caso_id or n["alcance"] == "casos_similares"]
+        return [{k: n[k] for k in ("id", "regla_id", "caso_id", "decision", "contexto", "alcance")}
+                for n in sorted(filas, key=lambda n: n["ts"])]
+
+
 class Proceso:
     def __init__(self, almacen, proveedor):
         self.almacen = almacen

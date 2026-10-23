@@ -1,7 +1,7 @@
 """Proveedores de inferencia.
 
+- anthropic: Messages API (ANTHROPIC_API_KEY, ANTHROPIC_MODEL; por defecto claude-opus-5-5). Proveedor por defecto.
 - openai: Responses API (OPENAI_API_KEY, OPENAI_MODEL, OPENAI_REASONING_EFFORT opcional).
-- anthropic: Messages API (ANTHROPIC_API_KEY, ANTHROPIC_MODEL).
 - manual: la app muestra la solicitud exacta; el usuario la pega en ChatGPT o Claude y
   devuelve la respuesta JSON. Se valida igual que una respuesta de API.
 - fixture: solo para pruebas automáticas; nunca se ofrece en la interfaz.
@@ -39,6 +39,11 @@ class RespuestaInvalida(Exception):
 
 class LimiteTiempo(ErrorModelo):
     """La llamada superó el tiempo máximo fijado para su rol."""
+
+
+class Continuar(Exception):
+    """En la nube cada petición hace como máximo una llamada nueva al modelo: la operación sigue en la
+    siguiente petición, que reutiliza las respuestas ya guardadas en caché."""
 
 
 def clave_solicitud(rol, sistema, carga):
@@ -129,11 +134,12 @@ class Manual(Proveedor):
 
 
 class _API(Proveedor):
-    segundos = 600
+    cobra = True  # cada llamada no cacheada gasta la cuenta del proveedor
+    segundos = float(os.environ.get("TALLER_LIMITE_LLAMADA_S", "600"))
 
     def _obtener(self, solicitud, validar):
         limite = solicitud.get("limite_s")
-        fin = time.monotonic() + (limite or self.segundos)
+        fin = time.monotonic() + min(limite or self.segundos, self.segundos)
         texto = self._completar(solicitud["sistema"], solicitud["carga"], fin - time.monotonic(), solicitud)
         try:
             valor = extraer_json(texto)
@@ -225,6 +231,28 @@ class Fixture(Proveedor):
         valor = self.responder(solicitud["rol"], solicitud["carga"])
         validar(valor)
         return valor
+
+
+class UnaLlamadaPorPeticion:
+    """Envuelve un proveedor para que una petición HTTP haga como máximo una llamada nueva y cobrada.
+    Las respuestas en caché (y las pegadas en modo manual) no cuentan."""
+
+    def __init__(self, base):
+        self.base = base
+        self.nombre = base.nombre
+        self.lote_seleccion = base.lote_seleccion
+        self.almacen = base.almacen
+        self.hechas = 0
+
+    def llamar(self, rol, sistema, carga, validar, **opciones):
+        if getattr(self.base, "cobra", False) and self.almacen.leer_respuesta(clave_solicitud(rol, sistema, carga)) is None:
+            if self.hechas:
+                raise Continuar()
+            self.hechas += 1
+        return self.base.llamar(rol, sistema, carga, validar, **opciones)
+
+    def descripcion(self):
+        return self.base.descripcion()
 
 
 def crear(nombre, almacen):
