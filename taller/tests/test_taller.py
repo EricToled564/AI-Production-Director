@@ -426,5 +426,126 @@ class TestServidor(unittest.TestCase):
             srv.shutdown()
 
 
+class TestNube(unittest.TestCase):
+    """Modo Vercel: estado en el navegador, una llamada al modelo por petición, contraseña obligatoria."""
+
+    def setUp(self):
+        import nube
+        self.nube = nube
+        self.antes = {k: os.environ.get(k) for k in ("TALLER_CLAVE_ACCESO", "TALLER_PROVEEDOR")}
+        os.environ["TALLER_CLAVE_ACCESO"] = "secreto-de-prueba"
+        os.environ["TALLER_PROVEEDOR"] = "anthropic"
+        self.modelo = Modelo()
+        self.llamadas_cobradas = 0
+
+        def fabrica(nombre, almacen):
+            prov = llm.Fixture(almacen, self._responder)
+            prov.cobra = True
+            return prov
+        self.fabrica = fabrica
+        self.inst = None
+
+    def tearDown(self):
+        for k, v in self.antes.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+    def _responder(self, rol, carga):
+        self.llamadas_cobradas += 1
+        return self.modelo(rol, carga)
+
+    def pedir(self, ruta, cuerpo=None, metodo="POST", clave="secreto-de-prueba"):
+        partes = [p for p in ruta.split("/") if p]
+        codigo, datos = self.nube.atender(partes, {"metodo": metodo, "cuerpo": cuerpo, "instantanea": self.inst}, clave, self.fabrica)
+        if "instantanea" in datos:
+            self.inst = json.loads(json.dumps(datos["instantanea"]))  # viaja como JSON, igual que desde el navegador
+        return codigo, datos.get("datos", datos)
+
+    def test_contrasena_obligatoria(self):
+        self.assertEqual(self.pedir("/api/casos", {"original": ORIGINAL}, clave="otra")[0], 401)
+        os.environ.pop("TALLER_CLAVE_ACCESO")
+        codigo, datos = self.pedir("/api/casos", {"original": ORIGINAL})
+        self.assertEqual(codigo, 503)
+        codigo, estado = self.pedir("/api/estado", metodo="GET")
+        self.assertEqual((codigo, estado["modo"], estado["clave_configurada"]), (200, "nube", False))
+
+    def test_almacen_memoria_ida_y_vuelta(self):
+        a = P.AlmacenMemoria()
+        pr = P.Proceso(a, llm.Fixture(a, Modelo()))
+        cid = pr.crear_caso(ORIGINAL)["id"]
+        pr.desarrollar_brief(cid)
+        a.guardar_nota("U-LABELS", cid, "decisión", {"cita": "x"}, "casos_similares")
+        b = P.AlmacenMemoria(json.loads(json.dumps(a.instantanea())))
+        self.assertEqual(b.leer_caso(cid)["etapa"], P.BRIEF_REVISION)
+        self.assertEqual(b.listar_casos()[0]["id"], cid)
+        self.assertEqual(len(b.respuestas), 1)
+        self.assertEqual(b.notas_para("otro")[0]["decision"], "decisión")
+        self.assertTrue(b.eventos(cid))
+
+    def test_flujo_completo_una_llamada_por_peticion(self):
+        codigo, caso = self.pedir("/api/casos", {"original": ORIGINAL})
+        cid = caso["id"]
+        base = f"/api/casos/{cid}"
+
+        def operar(op):
+            antes = self.llamadas_cobradas
+            codigo, r = self.pedir(f"{base}/{op}", {})
+            peticiones = 1
+            while r.get("continuar"):
+                self.assertLessEqual(self.llamadas_cobradas - antes, peticiones, "Más de una llamada en una petición")
+                codigo, r = self.pedir(f"{base}/continuar", {})
+                peticiones += 1
+            self.assertEqual(self.llamadas_cobradas - antes, peticiones if self.llamadas_cobradas > antes else 0)
+            self.assertEqual(r["estado"], "ok", r)
+            return peticiones
+
+        operar("desarrollar")
+        _, c = self.pedir(base, metodo="GET")
+        for campo in c["brief_actual"]:
+            if campo["estado_desarrollo"] == "propuesta":
+                self.pedir(f"{base}/campo", {"path": campo["path"], "decision": "aceptar"})
+            elif campo["estado_desarrollo"] == "falta":
+                self.pedir(f"{base}/campo", {"path": campo["path"], "decision": "responder", "valor": "overol naranja"})
+        self.pedir(f"{base}/revisado", {"revisado": True})
+        operar("corregir")
+        self.assertEqual(self.pedir(base, metodo="GET")[1]["etapa"], P.BRIEF_REVISION)  # el fixture falla una vez
+        self.pedir(f"{base}/revisado", {"revisado": True})
+        operar("corregir")
+        self.assertGreater(operar("seleccionar"), 1, "La selección por lotes debe repartirse en varias peticiones")
+        self.pedir(f"{base}/plantilla", {"quality": "high"})
+        operar("redactar")
+        _, c = self.pedir(base, metodo="GET")
+        self.assertEqual(c["etapa"], P.PROMPT_AMBIGUEDADES)
+        for item in c["ambiguedades"]["items"]:
+            self.pedir(f"{base}/ambiguedad", {"id": item["id"], "decision": "Plano medio corto.", "alcance": "solo_este_caso"})
+        operar("redactar")
+        self.assertEqual(self.pedir(f"{base}/aprobar", {})[0], 200)
+        codigo, doc = self.pedir(f"{base}/exportar", metodo="GET")
+        self.assertEqual(codigo, 200)
+        self.assertIn("Scene: Create a fishing pier", doc["texto"])
+
+    def test_manual_en_la_nube(self):
+        def fabrica_manual(nombre, almacen):
+            return llm.Manual(almacen)
+        self.fabrica = fabrica_manual
+        _, caso = self.pedir("/api/casos", {"original": ORIGINAL})
+        base = f"/api/casos/{caso['id']}"
+        _, r = self.pedir(f"{base}/desarrollar", {})
+        self.assertEqual(r["estado"], "manual")
+        op = self.inst["operaciones"][caso["id"]]
+        respuesta = json.dumps(self.modelo.desarrollador_brief(E.carga_desarrollo(cargar(), ORIGINAL, [], [])))
+        _, r = self.pedir(f"{base}/manual", {"clave": op["solicitud"]["clave"], "texto": respuesta})
+        self.assertEqual(r["estado"], "ok")
+        self.assertEqual(self.pedir(base, metodo="GET")[1]["etapa"], P.BRIEF_REVISION)
+
+    def test_despacho_compartido_con_el_servidor_local(self):
+        import rutas
+        import server
+        self.assertIs(server.rutas.despachar, rutas.despachar)
+        self.assertIs(self.nube.rutas.despachar, rutas.despachar)
+
+
 if __name__ == "__main__":
     unittest.main()
