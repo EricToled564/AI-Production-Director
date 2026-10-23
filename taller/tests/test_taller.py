@@ -549,3 +549,23 @@ class TestNube(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestPublicacionRaiz(unittest.TestCase):
+    """El proyecto de Vercel de la raíz sirve el taller en /taller/: copia de la interfaz y función puente."""
+
+    def test_copia_publica_igual_a_static(self):
+        raiz = Path(__file__).resolve().parents[2]
+        pares = [("static/index.html", "public/taller/index.html"), ("static/app.js", "public/taller/static/app.js"),
+                 ("static/style.css", "public/taller/static/style.css")]
+        for origen, copia in pares:
+            self.assertEqual((raiz / "taller" / origen).read_bytes(), (raiz / copia).read_bytes(),
+                             f"{copia} no coincide: correr python taller/sincronizar_publico.py")
+
+    def test_funcion_raiz_expone_handler(self):
+        import importlib.util
+        raiz = Path(__file__).resolve().parents[2]
+        spec = importlib.util.spec_from_file_location("api_taller_raiz", raiz / "api" / "taller.py")
+        modulo = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(modulo)
+        self.assertTrue(hasattr(modulo, "handler"))
