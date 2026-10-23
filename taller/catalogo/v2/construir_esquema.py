@@ -133,7 +133,8 @@ for f, vals in EXT.items():
         esquema["extensiones"].append({"faceta": f, "valor": v})
 for f, nombre, vals in (("F32", "Texto en la imagen", ["sin texto", "texto corto", "texto extenso o pequeño"]),
                         ("F33", "Complejidad de escena", ["simple", "compleja (5 o más elementos)"]),
-                        ("F34", "Resolución", ["1K", "2K", "4K"])):
+                        ("F34", "Resolución", ["1K", "2K", "4K"]),
+                        ("F35", "Migración de versión de modelo", ["sí", "no"])):
     esquema["facetas"][f] = {"nombre": nombre, "valores": [valor(v, "extension_aprobada_2026-10-23") for v in vals]}
     esquema["extensiones"] += [{"faceta": f, "valor": v} for v in vals]
 

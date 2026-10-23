@@ -26,7 +26,7 @@ ACCIONES = ["agregar al prompt", "seleccionar estructura", "fijar parámetro", "
 DESTINOS = [d for d in E["destinos"] if d.startswith(("salida.slots", "salida.parametros", "salida.validaciones",
                                                       "salida.referencias", "salida.aceptacion", "salida.traza",
                                                       "entrada.modelo", "entrada.referencias", "salida.prompt"))]
-FACETAS_APLIC = ["P01"] + [f"F{i:02d}" for i in range(1, 30)] + ["P04", "F32", "F33", "F34"]
+FACETAS_APLIC = ["P01"] + [f"F{i:02d}" for i in range(1, 30)] + ["P04", "F32", "F33", "F34", "F35"]
 
 
 def columnas():

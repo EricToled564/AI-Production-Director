@@ -22,6 +22,8 @@
    - Las plantillas de un look concreto se tratan como biblioteca: se ofrecen por tipo de pieza y estilo y la
      confirmación elige como máximo una.
    - F10 + edición: cambiar vestuario · edición: cambiar mobiliario u objeto (consulta C2 del piloto).
+   - F35 Migración de versión de modelo: sí · no (consulta C3 del piloto). Las reglas de migración llevan «sí»; la app
+     trabaja con «no».
    - Campo unidad + imagen fija suelta (respuesta a la consulta U1 del piloto gpt-image.md).
    - Los textos sobre "14 o más referencias" o "grounding de lugar real" se cierran sin valor nuevo.
 5. Toda etiqueta usada en la catalogación debe coincidir al 100% con la taxonomía original (o con una extensión
