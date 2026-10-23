@@ -15,8 +15,8 @@ Criterios fijos (escritos también en la hoja "criterios" del Excel):
   parámetro · validar el prompt · validar contra el ejemplo · excluir del prompt · solo traza.
 - Origen de evidencia: «Evidencia directa» (texto literal de un skill instalado). Evidencia de la afirmación:
   «Afirmación fuente por contrastar» salvo conflicto entre fuentes. Adopción: «adopción documental».
-- Unidad: la taxonomía no tiene valor para una imagen fija suelta (fotograma = imagen dentro de una secuencia
-  temporal): las filas de activo visual quedan sin unidad y con CONSULTA U1.
+- Unidad de las filas de activo visual: «imagen fija suelta» (extensión aprobada por Eric el 2026-10-23, respuesta a
+  la consulta U1).
 """
 
 PASOS_PROMPT = ["E5.2 génesis sin referencias", "E5.3 maestros derivados", "E5.4 cuadros con referencias",
@@ -73,7 +73,7 @@ def A(id_, **k):
     base["id"] = id_
     if base["objeto"] == "activo visual o sonoro":
         base["medio"] = base["medio"] or "Imagen fija"
-        base["consulta"] = (base["consulta"] + " · " if base["consulta"] else "") + "U1"
+        base["unidad"] = base["unidad"] or "imagen fija suelta"
     elif base["unidad"] is None:
         base["unidad"] = {"campo o esquema": "campo o esquema", "registro de ejecución (run)": "registro (run)",
                           "documento": "documento"}[base["objeto"]]
@@ -381,8 +381,6 @@ APLICACIONES = [
 ]
 
 CONSULTAS = {
-    "U1": "La taxonomía no tiene unidad para una imagen fija suelta: «Fotograma» se define como imagen dentro de una "
-          "secuencia temporal. ¿Se agrega «imagen» o «imagen fija suelta» al campo unidad?",
     "C1": "La fuente se contradice: «quality: medium | Default starting point» (línea 46) frente a «Стартуй с low» "
           "(línea 49). Además, la app no inventa quality por defecto (lo elige el usuario). ¿Cuál manda?",
     "C2": "F10 no tiene subtipos «edición: cambiar vestuario (try-on)» ni «edición: cambiar mobiliario/objeto». "
