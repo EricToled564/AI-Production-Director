@@ -29,3 +29,8 @@
 6. Las pruebas se hacen solo con GPT Image 2; otros modelos se añaden después.
 7. quality en GPT Image 2 (consulta C1 del piloto): la elige el usuario; «medium como punto de partida» y «empieza con
    low» se le muestran como opciones. high sigue siendo obligatorio en los casos que la fuente lo exige.
+8. Biblioteca de prompts efectivos: un prompt que el usuario marca como "funcionó" después de generar se guarda con
+   su brief validado, sus facetas de caso, parámetros y (opcional) la imagen. Ante un brief nuevo, si se detecta un
+   prompt guardado para el mismo caso, se ofrece directo sin regenerarlo. Se implementa después de cerrar el
+   catálogo, porque la búsqueda usa sus facetas. Corresponde en la taxonomía a E5.9 canonizar, «Canonizada» y
+   «Observación de ejecución».
