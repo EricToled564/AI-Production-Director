@@ -82,6 +82,12 @@ Reglas de redacción del brief:
 - entrada.restricciones: todas las prohibiciones o invariantes que impuso el usuario; [] solo si no impuso ninguna.
 - Si hay decisiones del usuario sobre un campo, respétalas literalmente.
 
+Brevedad (el tiempo de respuesta depende de cuánto escribes):
+- Omite las claves vacías: no escribas "cita": "", "pregunta": "", "alternativas": [] ni "valor": null.
+- condicion_inactiva: solo {"path", "estado", "fundamento"}, con el fundamento en 12 palabras o menos.
+- fundamento de inferido o propuesta: 25 palabras o menos. cita: el fragmento literal mínimo que prueba el dato.
+- alternativas: como máximo 2, solo en propuestas.
+
 Si la entrada trae "rutas_a_desarrollar", el brief se desarrolla por partes: devuelve SOLO esos campos, en
 ese orden, y mantén coherencia con "campos_ya_desarrollados" (las partes anteriores, que no repites). En
 las partes que no son la última, "resumen_creativo" puede ir vacío; en la última, resume el brief completo.
