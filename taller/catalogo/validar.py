@@ -12,7 +12,7 @@ CLAVES = ["id", "naturaleza", "aplicacion", "plantilla_destino", "ambito", "face
 NAT = {"regla", "sintaxis", "ejemplo", "explicativo", "estructural"}
 APL = {"INCORPORADA A TEMPLATE", "ACTIVO EN SELECCIÓN", "APLICACIÓN EN CONTROL O ENTREGA", "SIN EFECTO NORMATIVO"}
 PROHIBIDAS = ("pendiente", "propuesta", "duda", "desconocido", "no aplica", "n/a", "tbd")
-F = [f"F{i:02d}" for i in range(1, 32)]
+F = [f"F{i:02d}" for i in range(1, 33)]
 err = []
 if [x.get("id") for x in sal] != [u["id"] for u in lote]:
     err.append("los ids no coinciden con el lote (faltan, sobran o cambió el orden)")
