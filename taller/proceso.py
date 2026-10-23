@@ -34,6 +34,7 @@ ORDEN = [ORIGINAL, BRIEF_REVISION, BRIEF_VALIDADO, SELECCION_DUDAS, SELECCION_LI
 RONDAS_AUTOMATICAS = 3
 LIMITE_REVISION_S = 45      # tiempo máximo de la revisión del brief por API (decisión de Eric, 2026-10-22)
 MAX_SALIDA_REVISION = 4000  # tokens de salida: la respuesta solo lista excepciones
+LIMITE_ORTOGRAFIA_S = 30    # corrección automática de los textos del usuario antes de enviarlos
 REINTENTOS_SELECCION = 2
 
 DECISIONES_POR_ESTADO = {
@@ -304,6 +305,7 @@ class Proceso:
                 if ultima:
                     resumen = parcial.get("resumen_creativo", "")
             valor = {"campos": campos, "resumen_creativo": resumen, "conflictos": conflictos}
+        _promover_literales(valor["campos"], caso["original"], caso["aportes"])
         caso["desarrollo"] = valor
         # Las decisiones del usuario se conservan solo si el campo sigue en un estado compatible.
         estados = {c["path"]: c["estado"] for c in valor["campos"]}
@@ -337,6 +339,29 @@ class Proceso:
         caso["revision_completa"] = False
         self._guardar(caso, "decision_campo", {"path": ruta, "decision": decision})
         return caso
+
+    def aceptar_propuestas(self, caso_id):
+        """Acepta de una vez todas las propuestas que el usuario no ha decidido; solo quedan las preguntas."""
+        caso = self.almacen.leer_caso(caso_id)
+        self._exigir_etapa(caso, BRIEF_REVISION)
+        n = 0
+        for c in caso["desarrollo"]["campos"]:
+            if c["estado"] == "propuesta" and c["path"] not in caso["decisiones"]:
+                caso["decisiones"][c["path"]] = {"decision": "aceptar", "valor": None, "comentario": "",
+                                                 "ts": time.time()}
+                n += 1
+        caso["revision_completa"] = False
+        self._guardar(caso, "propuestas_aceptadas_en_bloque", {"aceptadas": n})
+        return n
+
+    def corregir_ortografia(self, texto):
+        """Corrige ortografía, acentos, puntuación y gramática sin cambiar el sentido ni los términos del usuario.
+        En modo manual no hay corrección automática: copiar y pegar para corregir una frase no tiene sentido."""
+        if not texto or not texto.strip() or self.proveedor.nombre == "manual":
+            return {"texto": texto, "corregido": False}
+        valor = self.proveedor.llamar("ortografia", E.SISTEMA_ORTOGRAFIA, {"texto": texto}, E.validar_ortografia,
+                                      limite_s=LIMITE_ORTOGRAFIA_S, max_salida=max(400, len(texto)))
+        return {"texto": valor["texto"], "corregido": valor["texto"] != texto}
 
     def marcar_revisado(self, caso_id, revisado):
         caso = self.almacen.leer_caso(caso_id)
@@ -707,6 +732,23 @@ def _es_numero(t):
         return True
     except ValueError:
         return False
+
+
+def _promover_literales(campos, original, aportes):
+    """Una propuesta cuyo valor ya está escrito literalmente en el original o en un aporte no es propuesta:
+    es dato del usuario. Se convierte a "proporcionado" con ese texto como cita, para no volver a preguntarlo."""
+    fuentes = E.normalizar(original + "\n" + "\n".join(a["texto"] for a in aportes))
+    for c in campos:
+        if c.get("estado") != "propuesta":
+            continue
+        partes = c.get("valor") if isinstance(c.get("valor"), list) else [c.get("valor")]
+        textos = [p for p in partes if isinstance(p, str)]
+        if not textos or len(textos) != len(partes):
+            continue
+        if all(len(E.normalizar(t)) >= 4 and E.normalizar(t) in fuentes for t in textos):
+            for k in ("fundamento", "alternativas", "pregunta"):
+                c.pop(k, None)
+            c.update(estado="proporcionado", cita=" | ".join(textos))
 
 
 def _contar(valores):

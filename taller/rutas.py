@@ -86,6 +86,12 @@ def _post(partes, b, pr, ctx):
     if partes == ["api", "proveedor"]:
         ctx.cambiar_proveedor(b.get("nombre", "manual"))
         return 200, {"proveedor": ctx.nombre_proveedor(), "aviso": ctx.aviso_proveedor()}
+    if partes == ["api", "ortografia"]:
+        try:
+            return 200, pr.corregir_ortografia(b.get("texto", ""))
+        except (llm.ErrorModelo, llm.Continuar, llm.ManualPendiente) as e:
+            # La corrección nunca bloquea: si el proveedor no responde, el texto se envía tal cual.
+            return 200, {"texto": b.get("texto", ""), "corregido": False, "aviso": str(e) or "Sin corrección."}
     if partes == ["api", "casos"]:
         return 200, pr.crear_caso(b.get("original", ""))
     if len(partes) == 4 and partes[:2] == ["api", "casos"]:
@@ -108,6 +114,7 @@ def _post(partes, b, pr, ctx):
             "aporte": lambda: pr.agregar_aporte(cid, b.get("texto", "")),
             "campo": lambda: pr.decidir_campo(cid, b.get("path"), b.get("decision"), b.get("valor"), b.get("comentario", "")),
             "revisado": lambda: pr.marcar_revisado(cid, b.get("revisado")),
+            "aceptar_propuestas": lambda: pr.aceptar_propuestas(cid),
             "reabrir": lambda: pr.reabrir_brief(cid),
             "duda": lambda: pr.resolver_duda_seleccion(cid, b.get("id"), b.get("incluir"), b.get("bloque", ""),
                                                        b.get("campo", ""), b.get("cita", ""), b.get("comentario", "")),

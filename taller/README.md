@@ -61,7 +61,7 @@ Variables del proyecto en Vercel (Settings → Environment Variables; después v
 |---|---|---|
 | 1 | `original` | El texto original se guarda tal cual y no se edita nunca. Los datos nuevos entran como aportes aparte. |
 | 2 | desarrollo del brief | El modelo llena los 109 campos de `template_brief.json`. Cada campo queda `proporcionado` (con cita literal del original o de un aporte, verificada), `inferido` (con fundamento), `propuesta` (con fundamento, la decide el usuario), `falta` (con pregunta) o `condicion_inactiva` (prohibido en campos de condición "siempre" y en los requeridos de T-GENESIS). No hay campos vacíos silenciosos. |
-| 3 | `brief_revision` | Se muestra el brief completo. El usuario acepta, modifica o rechaza cada propuesta y responde cada pregunta (o deja el campo vacío con explicación obligatoria). Debe marcar "Revisé el brief completo". |
+| 3 | `brief_revision` | Se muestra el brief completo. Lo que el usuario ya escribió va como `proporcionado` con su cita y no se vuelve a preguntar (una propuesta cuyo valor está literal en el original se convierte sola). El usuario acepta, modifica o rechaza propuestas (o todas de un clic con "Aceptar todas las propuestas") y responde cada pregunta (o deja el campo vacío con explicación obligatoria). Debe marcar "Revisé el brief completo". |
 | 4 | corrector | Solo con 0 pendientes y revisión marcada. Solo un error objetivo (FAIL) devuelve el brief al usuario; lo que solo el usuario puede decidir nunca lo devuelve: sale como nota (UNCERTAIN) visible que no bloquea. El corrector responde solo con excepciones y tiene un máximo de 45 s por API (tope de 4000 tokens de salida; razonamiento bajo en OpenAI, ajustable con `TALLER_ESFUERZO_REVISION`). Si el proveedor no responde a tiempo, la app lo informa y se reintenta. |
 | 5 | `brief_validado` → selección | Con el brief validado se seleccionan reglas específicas del catálogo: cada una con fuente, por qué aplica (cita del brief) y bloque destino. Más de dos por bloque es aviso para evaluar el filtro, nunca un tope. Las dudas del revisor de selección las decide el usuario. |
 | 6 | `plantilla_vista` | Se muestra la plantilla de 5 bloques con sus instrucciones de llenado y las 12 reglas universales literales. El usuario elige `quality` (la app no inventa un valor por defecto). |
@@ -69,6 +69,11 @@ Variables del proyecto en Vercel (Settings → Environment Variables; después v
 | 8 | revisor semántico | Verifica cumplimiento real regla por regla. Violaciones claras vuelven al redactor automáticamente (hasta 3 rondas). Comprobaciones deterministas adicionales: 5 bloques en orden, placeholders, vocabulario prohibido, quality y size válidos. |
 | 9 | `prompt_ambiguedades` | Las ambigüedades se marcan en rojo en el texto con nota al pie. El usuario decide; la decisión va al redactor y al revisor y se guarda como nota contextual ligada a la regla (este caso o casos similares), sin reescribir el texto canónico. |
 | 10 | `revision_final` → `aprobado` | Prompt revisado para revisión final. Un comentario repite el ciclo. El usuario aprueba y exporta; la generación de la imagen la decide y la hace el usuario fuera de la app. |
+
+**Corrección automática de textos.** Antes de enviar el texto original, un aporte, una respuesta, un comentario
+o una decisión, la app corrige ortografía, acentos, puntuación y gramática con el proveedor activo (máximo 30 s;
+no cambia el sentido ni los términos) y muestra el texto corregido y el tecleado. En modo manual o si el
+proveedor falla, el texto se envía tal cual. Las cajas de texto tienen además el corrector del navegador en español.
 
 Cambiar el brief después de validarlo (reabrir o agregar un aporte) invalida todo lo posterior:
 selección, plantilla y prompt se rehacen. Brief y prompt nunca se crean a la vez.
@@ -87,7 +92,7 @@ procedencia de cada uno; la app avisa en la interfaz si alguno fue modificado.
 python -m unittest discover -s taller/tests
 ```
 
-28 pruebas: modo nube (contraseña, instantánea en el navegador, una llamada por petición, manual en la nube, despacho compartido), compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
+34 pruebas: menos preguntas (literales promovidos, aceptar todas las propuestas), corrector de ortografía, modo nube (contraseña, instantánea en el navegador, una llamada por petición, manual en la nube, despacho compartido), compuertas no saltables, corrector que devuelve al usuario, invalidación al reabrir,
 flujo completo hasta aprobación con un modelo simulado, quality no inventada, redacción automática
 tras fallo determinista, notas del corrector que no devuelven el brief, límite de 45 s en la revisión, ambigüedades, notas contextuales, validadores, modo manual y API HTTP.
 
