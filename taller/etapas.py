@@ -143,7 +143,8 @@ FAIL (devuelve el brief al usuario) solo por defectos objetivos: un dato marcado
 corresponde a su cita o la deforma; una inferencia no tiene base; se perdió o contradijo algo que el usuario
 pidió; un campo requerido quedó vacío; una condición se evaluó mal (por ejemplo, una pieza fotográfica sin
 cámara o sin luz desarrolladas); hay contradicción entre campos (cantidad de sujetos, posiciones, operación
-frente a referencias, imposibilidad física); aparece vocabulario vago o prohibido por el usuario; una
+frente a referencias, o una imposibilidad física que se deduce solo de lo que dice el propio brief);
+aparece vocabulario vago o prohibido por el usuario; una
 propuesta se presenta como dato del usuario.
 
 Las decisiones del usuario (origen usuario, propuesta_aceptada, propuesta_rechazada,
@@ -152,6 +153,9 @@ decisión exclusiva del usuario NUNCA es motivo de FAIL ni de devolución: si el
 está aprobado. Solo marca FAIL un campo decidido si su valor crea un defecto objetivo de la lista anterior.
 UNCERTAIN es una nota para el usuario que NO devuelve el brief: úsala solo si queda una ambigüedad real
 que afecta a la imagen, con una pregunta concreta.
+Tu conocimiento general del mundo (cómo funciona un aparato, un deporte, un material) no está en el brief ni
+en las reglas y puede estar equivocado o no aplicar al caso: si una decisión del usuario choca con ese
+conocimiento, nunca es FAIL; es UNCERTAIN, explicando en qué te basas para que el usuario decida.
 
 Sé breve: cada comentario en 40 palabras o menos, observaciones_generales en 60 o menos.
 Devuelve JSON: {"observaciones": [{"path": "...", "estado": "FAIL|UNCERTAIN", "comentario": "...",
