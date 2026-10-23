@@ -8,11 +8,11 @@ tax = json.loads((AQUI / "taxonomia_f.json").read_text())
 lote = json.loads(Path(sys.argv[1]).read_text())
 sal = json.loads(Path(sys.argv[2]).read_text())
 CLAVES = ["id", "naturaleza", "aplicacion", "plantilla_destino", "ambito", "facetas", "condicion",
-          "fuera_de_taxonomia", "razon"]
+          "fuera_de_taxonomia", "razon", "excepto", "excepto_texto", "facetas_alternativas", "biblioteca"]
 NAT = {"regla", "sintaxis", "ejemplo", "explicativo", "estructural"}
 APL = {"INCORPORADA A TEMPLATE", "ACTIVO EN SELECCIÓN", "APLICACIÓN EN CONTROL O ENTREGA", "SIN EFECTO NORMATIVO"}
 PROHIBIDAS = ("pendiente", "propuesta", "duda", "desconocido", "no aplica", "n/a", "tbd")
-F = [f"F{i:02d}" for i in range(1, 33)]
+F = [f"F{i:02d}" for i in range(1, 35)]
 err = []
 if [x.get("id") for x in sal] != [u["id"] for u in lote]:
     err.append("los ids no coinciden con el lote (faltan, sobran o cambió el orden)")
@@ -35,6 +35,11 @@ for x in sal:
     for p in PROHIBIDAS:
         if f'"{p}' in texto:
             err.append(f"{i}: estado prohibido '{p}'")
+    for k, v in list(x["excepto"].items()) + [kv for alt in x["facetas_alternativas"] for kv in alt.items()]:
+        if k not in tax["facetas"] or not isinstance(v, list) or not v or any(e not in tax["facetas"][k]["valores"] for e in v):
+            err.append(f"{i}: excepto o alternativa inválida en {k}: {v}")
+    if not isinstance(x["biblioteca"], bool) or not isinstance(x["excepto_texto"], list):
+        err.append(f"{i}: biblioteca o excepto_texto con tipo inválido")
     fac = x["facetas"]
     if nat == "estructural":
         if fac:
