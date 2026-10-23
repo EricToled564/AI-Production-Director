@@ -98,16 +98,45 @@ async function api(metodo, ruta, cuerpo) {
   if (!r.ok) throw new Error(datos.error || `Error ${r.status}`);
   return datos;
 }
+const NOMBRES_OPERACION = { desarrollar: "Desarrollando el brief", corregir: "Corrector revisando el brief",
+  seleccionar: "Seleccionando reglas específicas", redactar: "Redactando y revisando el prompt" };
+let trabajando = false;
+
+// En la nube cada petición espera la respuesta del modelo (puede tardar minutos): se muestra un aviso con
+// cronómetro y se bloquean los botones para que un segundo clic no lance otra petición en paralelo.
+function avisoTrabajando(ruta) {
+  const inicio = Date.now();
+  const caja = document.createElement("div");
+  caja.className = "trabajando";
+  $("#principal").prepend(caja);
+  document.querySelectorAll("button, input, select, textarea").forEach((el) => { if (!el.closest("header")) el.disabled = true; });
+  const pintar = () => {
+    const s = Math.round((Date.now() - inicio) / 1000);
+    caja.innerHTML = `<b>${esc(NOMBRES_OPERACION[ruta] || "Trabajando")}…</b> ${s} s · el modelo puede tardar varios minutos; no cierres la página.`;
+  };
+  pintar();
+  const t = setInterval(pintar, 1000);
+  return () => { clearInterval(t); caja.remove(); };
+}
+
 async function accion(ruta, cuerpo) {
+  if (trabajando) return;
+  trabajando = true;
+  let quitar = () => {};
   try {
+    if (NUBE && NOMBRES_OPERACION[ruta]) quitar = avisoTrabajando(ruta);
     let r = await api("POST", `/api/casos/${casoId}/${ruta}`, cuerpo);
     // En la nube cada petición hace como máximo una llamada al modelo: se repite hasta terminar.
     while (NUBE && r && r.continuar) {
+      quitar();
       await cargarCaso();
+      quitar = avisoTrabajando(ruta);
       r = await api("POST", `/api/casos/${casoId}/continuar`, {});
     }
+    quitar();
     await cargarCaso();
-  } catch (e) { alert(e.message); if (casoId) cargarCaso().catch(() => {}); }
+  } catch (e) { quitar(); alert(e.message); if (casoId) cargarCaso().catch(() => {}); }
+  finally { trabajando = false; }
 }
 
 async function cargarEstado() {
