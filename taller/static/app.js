@@ -1,3 +1,5 @@
+// Prefijo de ruta: vacío en el servidor local; "/taller" cuando la app se sirve dentro de otro proyecto de Vercel.
+const BASE = location.pathname.startsWith("/taller") ? "/taller" : "";
 "use strict";
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -78,7 +80,7 @@ async function apiNube(metodo, ruta, cuerpo) {
   const m = ruta.match(/^\/api\/casos\/([^/]+)/);
   const cid = m ? m[1] : null;
   const instantanea = await cargarInstantanea(cid);
-  const r = await fetch(ruta, { method: "POST", headers: { "Content-Type": "application/json", "X-Taller-Clave": CLAVE },
+  const r = await fetch(BASE + ruta, { method: "POST", headers: { "Content-Type": "application/json", "X-Taller-Clave": CLAVE },
     body: JSON.stringify({ metodo, cuerpo: cuerpo || null, instantanea, proveedor: PROV }) });
   const res = await r.json().catch(() => ({}));
   if (r.status === 401) { CLAVE = ""; ls.set("clave", ""); }
@@ -91,7 +93,7 @@ async function api(metodo, ruta, cuerpo) {
   if (NUBE && ruta !== "/api/estado") return apiNube(metodo, ruta, cuerpo);
   const cab = { "Content-Type": "application/json" };
   if (NUBE) cab["X-Taller-Clave"] = CLAVE;
-  const r = await fetch(ruta, { method: metodo, headers: cab, body: cuerpo ? JSON.stringify(cuerpo) : undefined });
+  const r = await fetch(BASE + ruta, { method: metodo, headers: cab, body: cuerpo ? JSON.stringify(cuerpo) : undefined });
   const datos = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(datos.error || `Error ${r.status}`);
   return datos;
@@ -360,7 +362,7 @@ function renderPrompt() {
       <button class="primario" id="aprobar">Aprobar el prompt</button></div>`;
   }
   if (caso.etapa === "aprobado") {
-    html += `<div class="barra-accion"><b>Aprobado por ti.</b> ${NUBE ? `<button id="exportar-md">Descargar documento del prompt (.md)</button>` : `<a href="/api/casos/${casoId}/exportar">Descargar documento del prompt (.md)</a>`}
+    html += `<div class="barra-accion"><b>Aprobado por ti.</b> ${NUBE ? `<button id="exportar-md">Descargar documento del prompt (.md)</button>` : `<a href="${BASE}/api/casos/${casoId}/exportar">Descargar documento del prompt (.md)</a>`}
       <span class="nota">La generación de la imagen la decides tú.</span></div>`;
   }
   html += `<details><summary>Trazabilidad de la verificación (${rev.registros.length})</summary><table>${rev.registros.map((r) =>
@@ -450,7 +452,7 @@ async function importarRespaldo(archivo) {
 
 async function iniciar() {
   let e;
-  try { e = await (await fetch("/api/estado", { headers: { "X-Taller-Clave": ls.get("clave") || "" } })).json(); } catch { e = {}; }
+  try { e = await (await fetch(BASE + "/api/estado", { headers: { "X-Taller-Clave": ls.get("clave") || "" } })).json(); } catch { e = {}; }
   if (e.modo === "nube") {
     NUBE = true;
     CLAVE = ls.get("clave") || "";
@@ -465,7 +467,7 @@ async function iniciar() {
       const c = prompt("Contraseña del taller (TALLER_CLAVE_ACCESO):");
       if (c === null) { $("#principal").innerHTML = '<p class="vacio">Sin contraseña no se puede usar el taller.</p>'; return; }
       CLAVE = c.trim(); ls.set("clave", CLAVE);
-      e = await (await fetch("/api/estado", { headers: { "X-Taller-Clave": CLAVE } })).json();
+      e = await (await fetch(BASE + "/api/estado", { headers: { "X-Taller-Clave": CLAVE } })).json();
     }
     $("#exp-respaldo").onclick = () => exportarRespaldo().catch((x) => alert(x.message));
     $("#imp-respaldo").onchange = async (ev) => {
