@@ -123,7 +123,8 @@ esquema["destinos"] = sorted(set(rutas))
 EXT = {"F04": ["infografía o diagrama", "concept art", "pieza de portafolio"],
        "F05": ["finanzas y banca", "sector público"], "F06": ["3:2"],
        "F10": ["edición: quitar objeto", "edición: añadir objeto", "edición: cambiar luz o clima", "edición: colorizar",
-               "edición: restaurar", "edición: traducir texto", "análisis de imagen a prompt"],
+               "edición: restaurar", "edición: traducir texto", "análisis de imagen a prompt",
+               "edición: cambiar vestuario", "edición: cambiar mobiliario u objeto"],
        "F17": ["anclado en época, cultura o autor", "brutalista", "futurista"]}
 for f, vals in EXT.items():
     for v in vals:

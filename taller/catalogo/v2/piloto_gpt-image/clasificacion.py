@@ -139,8 +139,8 @@ APLICACIONES = [
       objeto="campo o esquema", uso=CT, f30=["parámetros técnicos"], accion=["fijar parámetro"],
       destino=["salida.parametros.quality"], valor="quality: medium como punto de partida",
       evid="Conflicto de fuentes",
-      fund="«quality: medium | Default starting point»; choca con 002353 «Стартуй с low»: CONSULTA C1",
-      consulta="C1"),
+      fund="«quality: medium | Default starting point»; choca con 002353. Decisión de Eric (C1): quality la elige "
+           "el usuario y esta línea se le muestra como opción"),
     A("INV-002352", sufijo="A1", t112=["alternativa", "valor de campo", "selección"], fuerza=["Recomendación"],
       objeto="campo o esquema", uso=CT, r={"F32": ["texto extenso o pequeño"]}, f30=["parámetros técnicos"],
       accion=["fijar parámetro"], destino=["salida.parametros.quality"], valor="quality: high",
@@ -157,7 +157,8 @@ APLICACIONES = [
     A("INV-002353", t112=["regla", "selección"], fuerza=["Recomendación"], objeto="registro de ejecución (run)", uso=CT,
       f30=["parámetros técnicos"], accion=["fijar parámetro"], destino=["salida.parametros.quality"],
       valor="empezar con quality: low y subir si hace falta", evid="Conflicto de fuentes",
-      fund="«Стартуй с low, апгрейди по необходимости»; choca con 002351: CONSULTA C1", consulta="C1"),
+      fund="«Стартуй с low, апгрейди по необходимости»; choca con 002351. Decisión de Eric (C1): quality la elige "
+           "el usuario y esta línea se le muestra como opción"),
     A("INV-002355", t112=["regla", "valor de campo"], objeto="campo o esquema", uso=CT, idioma="en",
       f30=["parámetros técnicos"], accion=["validar el prompt"], destino=["salida.parametros.tamano", "salida.validaciones"],
       valor="lado mayor < 3840 px", estado_cap="Informe de capacidad sin prueba de ejecución", fund="«Max edge: <3840px»"),
@@ -242,12 +243,12 @@ APLICACIONES = [
       destino=["salida.referencias"], valor="mask_image_url para ediciones puntuales", dependencia="Dependencia de interfaz",
       fund="«Опционально: mask_image_url для точечных edits»"),
     A("INV-002382", t112=["sintaxis", "selección"], fuerza=["Recomendación"], objeto="activo visual o sonoro", uso=SEL,
-      idioma="en", r={"F10": EDICION, "F15": ["persona"]}, f02=["E5.5 edición quirúrgica"],
+      idioma="en", r={"F10": ["edición: cambiar vestuario"], "F15": ["persona"]}, f02=["E5.5 edición quirúrgica"],
       f30=["estructura y sintaxis del prompt", "identidad y consistencia", "luz"], accion=["agregar al prompt"],
       destino=["salida.slots.Change", "salida.slots.Preserve"],
       valor="Change garments only. Preserve exact face, body shape, pose, hair, expression, background, camera angle. "
             "Match lighting/shadows so outfit looks naturally worn.",
-      fund="patrón «Virtual try-on»; la taxonomía no tiene subtipo de edición «cambiar vestuario»: CONSULTA C2", consulta="C2"),
+      fund="patrón «Virtual try-on» → subtipo «edición: cambiar vestuario» (aprobado por Eric, consulta C2)"),
     A("INV-002383", sufijo="A1", t112=["sintaxis", "selección"], fuerza=["Recomendación"], objeto="activo visual o sonoro",
       uso=SEL, idioma="en", r={"F10": ["edición: quitar objeto"]}, f02=["E5.5 edición quirúrgica"],
       f30=["estructura y sintaxis del prompt"], accion=["agregar al prompt"], destino=["salida.slots.Change", "salida.slots.Constraints"],
@@ -268,12 +269,12 @@ APLICACIONES = [
       valor="Change ONLY environmental conditions: lighting direction/quality, shadows, atmosphere, precipitation. Preserve "
             "identity, geometry, camera angle, object placement.", fund="patrón «Lighting/weather swap»"),
     A("INV-002385", t112=["sintaxis", "selección"], fuerza=["Recomendación"], objeto="activo visual o sonoro", uso=SEL,
-      idioma="en", r={"F10": EDICION, "F16": ["interior"], "F15": ["objeto o prop"]}, f02=["E5.5 edición quirúrgica"],
+      idioma="en", r={"F10": ["edición: cambiar mobiliario u objeto"], "F16": ["interior"], "F15": ["objeto o prop"]}, f02=["E5.5 edición quirúrgica"],
       f30=["estructura y sintaxis del prompt", "luz"], accion=["agregar al prompt"],
       destino=["salida.slots.Change", "salida.slots.Preserve", "salida.slots.Important Details"],
       valor="Swap [furniture]. Preserve camera angle, lighting, shadows, surrounding context. Photorealistic contact shadows.",
-      fund="patrón «Interior swap»; falta el subtipo «cambiar mobiliario»: CONSULTA C2; «Photorealistic» choca con la "
-           "prohibición de esa palabra por Eric (templates §1): se conserva el efecto con atributos visibles", consulta="C2"),
+      fund="patrón «Interior swap» → subtipo «edición: cambiar mobiliario u objeto» (aprobado, consulta C2); «Photorealistic» choca con la "
+           "prohibición de esa palabra por Eric (templates §1): se conserva el efecto con atributos visibles"),
     A("INV-002386", t61="Descripción", t112=["valor de campo"], fuerza=["Permiso"], objeto="campo o esquema", uso=CT,
       r={"F23": REFS}, f02=["E5.3 maestros derivados", "E5.4 cuadros con referencias", "E5.5 edición quirúrgica"],
       f30=["parámetros técnicos"], accion=["validar el prompt"], destino=["entrada.referencias", "salida.validaciones"],
@@ -381,10 +382,6 @@ APLICACIONES = [
 ]
 
 CONSULTAS = {
-    "C1": "La fuente se contradice: «quality: medium | Default starting point» (línea 46) frente a «Стартуй с low» "
-          "(línea 49). Además, la app no inventa quality por defecto (lo elige el usuario). ¿Cuál manda?",
-    "C2": "F10 no tiene subtipos «edición: cambiar vestuario (try-on)» ni «edición: cambiar mobiliario/objeto». "
-          "¿Se agregan, o se quedan como «edición de imagen existente (T5)» + sujeto?",
     "C3": "No hay faceta para «migración desde una versión anterior del modelo»; en el flujo de la app no hay migración. "
           "¿Se agrega, o estas dos filas quedan solo como traza?",
 }
