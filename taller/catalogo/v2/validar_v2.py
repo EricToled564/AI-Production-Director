@@ -165,8 +165,17 @@ def condicion(err, donde, g):
             for x in vals:
                 if x not in VALORES[m["campo"]]:
                     err.append(f"{donde}: valor de condición fuera de {m['campo']}: {x!r}")
-        elif m["campo"] not in VALORES and m["campo"] not in DESTINOS and m["campo"] not in CAMPOS:
-            err.append(f"{donde}: campo de condición desconocido (faceta o ruta del contrato): {m['campo']!r}")
+        elif m["campo"] in CAMPOS and m["operador"] in ("=", "≠", "∈", "∉"):
+            vals = m["valor"] if isinstance(m["valor"], list) else [m["valor"]]
+            for x in vals:
+                if x not in CAMPOS[m["campo"]]:
+                    err.append(f"{donde}: valor de condición fuera de {m['campo']}: {x!r}")
+        elif m["campo"] not in VALORES and m["campo"] not in CAMPOS:
+            # Solo facetas o campos tipados de la taxonomía: una ruta del contrato con texto libre no es
+            # una etiqueta de la taxonomía y rompe la coincidencia del 100%.
+            err.append(f"{donde}: condición sobre un campo que no es faceta ni campo tipado: {m['campo']!r}")
+        if m["campo"] in VALORES and m["operador"] not in ("=", "≠", "∈", "∉", "existe", "no existe"):
+            err.append(f"{donde}: operador {m['operador']!r} no aplica a una faceta de valores cerrados")
 
 
 if __name__ == "__main__":
