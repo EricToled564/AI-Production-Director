@@ -367,13 +367,13 @@ APLICACIONES = [
            "templates §6 se usan como módulo dentro de los 5 slots"),
     A("INV-002410", t61="Descripción", t112=[], fuerza=["Sin fuerza normativa"], objeto="registro de ejecución (run)", uso=CTRL,
       f29=["GPT Image 2", "gpt-image-1.5", "gpt-image-1"], f30=["orquestación y control de flujo"], accion=["solo traza"],
-      destino=["salida.traza.procedencia"], valor="—", fund="«Промпты в основном переносятся как есть»: describe la migración",
-      consulta="C3"),
+      destino=["salida.traza.procedencia"], valor="—", fund="«Промпты в основном переносятся как есть»: describe la "
+      "migración; en la app no hay migración (C3: solo registro)"),
     A("INV-002411", t112=["regla"], fuerza=["Recomendación"], objeto="registro de ejecución (run)", uso=CTRL,
       ambito=["Crítica, validación y aceptación"], f29=["GPT Image 2", "gpt-image-1.5", "gpt-image-1"],
-      f02=["E5.7 crítica", "E5.8 revisión"], f30=["crítica y revisión"], accion=["validar el prompt"],
-      destino=["salida.aceptacion"], valor="tras migrar, revisar calidad, latencia y tasa de reintentos; reajustar",
-      fund="«После переноса — посмотри качество, latency, retry-rate»", consulta="C3"),
+      f02=["E5.7 crítica", "E5.8 revisión"], f30=["crítica y revisión"], accion=["solo traza"],
+      destino=["salida.traza.procedencia"], valor="tras migrar, revisar calidad, latencia y tasa de reintentos; reajustar",
+      fund="«После переноса — посмотри качество, latency, retry-rate»; en la app no hay migración (C3: solo registro)"),
     A("INV-002412", t112=["regla", "selección"], fuerza=["Recomendación"], objeto="campo o esquema", uso=CT,
       ambito=["Creación de imagen", "Orquestación y control de flujo"], f29=["gpt-image-1-mini"], f30=["parámetros técnicos"],
       accion=["seleccionar estructura"], destino=["entrada.modelo.nombre"],
@@ -382,6 +382,4 @@ APLICACIONES = [
 ]
 
 CONSULTAS = {
-    "C3": "No hay faceta para «migración desde una versión anterior del modelo»; en el flujo de la app no hay migración. "
-          "¿Se agrega, o estas dos filas quedan solo como traza?",
 }
