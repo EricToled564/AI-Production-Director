@@ -136,6 +136,9 @@ for f, nombre, vals in (("F32", "Texto en la imagen", ["sin texto", "texto corto
     esquema["facetas"][f] = {"nombre": nombre, "valores": [valor(v, "extension_aprobada_2026-10-23") for v in vals]}
     esquema["extensiones"] += [{"faceta": f, "valor": v} for v in vals]
 
+esquema["campos"]["unidad"].append(valor("imagen fija suelta", "extension_aprobada_2026-10-23", None,
+                                         "imagen individual que no forma parte de una secuencia temporal"))
+esquema["extensiones"].append({"campo": "unidad", "valor": "imagen fija suelta"})
 (AQUI / "esquema_taxonomia.json").write_text(json.dumps(esquema, ensure_ascii=False, indent=1))
 print("facetas", {k: len(v["valores"]) for k, v in sorted(esquema["facetas"].items())})
 print("campos", {k: len(v) for k, v in esquema["campos"].items()})
