@@ -96,6 +96,9 @@ def _post(url, cuerpo, cabeceras, segundos):
 class Proveedor:
     nombre = "base"
     lote_seleccion = 40
+    # Partes en que se divide el desarrollo del brief: por API, varias llamadas cortas (cada una cabe en el
+    # límite de 300 s de Vercel Hobby); en manual, una sola solicitud para no multiplicar el copiar y pegar.
+    partes_desarrollo = 4
 
     def __init__(self, almacen):
         self.almacen = almacen  # objeto con leer_respuesta(clave) / guardar_respuesta(clave, ...)
@@ -123,6 +126,7 @@ class Proveedor:
 class Manual(Proveedor):
     nombre = "manual"
     lote_seleccion = 160
+    partes_desarrollo = 1
 
     def _obtener(self, solicitud, validar):
         pegado = self.almacen.leer_pegado(solicitud["clave"])
@@ -222,6 +226,7 @@ class Fixture(Proveedor):
     """Respuestas programadas para pruebas: función (rol, carga) -> valor."""
     nombre = "fixture"
     lote_seleccion = 50
+    partes_desarrollo = 1
 
     def __init__(self, almacen, responder):
         super().__init__(almacen)
@@ -241,6 +246,7 @@ class UnaLlamadaPorPeticion:
         self.base = base
         self.nombre = base.nombre
         self.lote_seleccion = base.lote_seleccion
+        self.partes_desarrollo = base.partes_desarrollo
         self.almacen = base.almacen
         self.hechas = 0
 

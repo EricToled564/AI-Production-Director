@@ -82,6 +82,10 @@ Reglas de redacción del brief:
 - entrada.restricciones: todas las prohibiciones o invariantes que impuso el usuario; [] solo si no impuso ninguna.
 - Si hay decisiones del usuario sobre un campo, respétalas literalmente.
 
+Si la entrada trae "rutas_a_desarrollar", el brief se desarrolla por partes: devuelve SOLO esos campos, en
+ese orden, y mantén coherencia con "campos_ya_desarrollados" (las partes anteriores, que no repites). En
+las partes que no son la última, "resumen_creativo" puede ir vacío; en la última, resume el brief completo.
+
 Devuelve JSON con esta forma:
 {"campos": [{"path": "...", "estado": "...", "valor": <texto, número, lista u objeto, o null>,
   "cita": "...", "fundamento": "...", "pregunta": "...", "alternativas": ["..."]}],
@@ -89,7 +93,14 @@ Devuelve JSON con esta forma:
  "conflictos": ["conflicto detectado entre datos del usuario, si existe"]}"""
 
 
-def carga_desarrollo(rec, original, aportes, decisiones):
+def carga_desarrollo(rec, original, aportes, decisiones, rutas=None, previos=None, parte=None):
+    carga = _carga_desarrollo(rec, original, aportes, decisiones)
+    if rutas is not None:
+        carga.update({"parte": parte, "rutas_a_desarrollar": rutas, "campos_ya_desarrollados": previos or []})
+    return carga
+
+
+def _carga_desarrollo(rec, original, aportes, decisiones):
     return {
         "texto_original": original,
         "aportes_usuario": aportes,
@@ -102,15 +113,16 @@ def carga_desarrollo(rec, original, aportes, decisiones):
     }
 
 
-def validar_desarrollo(rec, original, aportes):
+def validar_desarrollo(rec, original, aportes, rutas_esperadas=None, exigir_resumen=True):
     fuentes_cita = normalizar(original + "\n" + "\n".join(a["texto"] for a in aportes))
     requeridos = set(rec.contrato_genesis["required_fields"])
+    esperadas = rutas_esperadas if rutas_esperadas is not None else rec.rutas
 
     def validar(valor):
         _exigir(isinstance(valor, dict) and isinstance(valor.get("campos"), list), "Falta la lista 'campos'.")
         rutas = [c.get("path") for c in valor["campos"]]
-        _exigir(rutas == rec.rutas, "Los campos deben ser exactamente los del template, una vez y en orden. "
-                f"Faltan: {sorted(set(rec.rutas) - set(rutas))[:8]}; sobran: {sorted(set(rutas) - set(rec.rutas))[:8]}.")
+        _exigir(rutas == esperadas, "Los campos deben ser exactamente los pedidos, una vez y en orden. "
+                f"Faltan: {sorted(set(esperadas) - set(rutas))[:8]}; sobran: {sorted(set(rutas) - set(esperadas))[:8]}.")
         for c in valor["campos"]:
             ruta, estado = c["path"], c.get("estado")
             _exigir(estado in ESTADOS_CAMPO, f"{ruta}: estado inválido {estado!r}.")
@@ -128,7 +140,8 @@ def validar_desarrollo(rec, original, aportes):
                 _exigir(condicion != "siempre" and ruta not in requeridos,
                         f"{ruta}: condición '{condicion}' no admite condicion_inactiva.")
                 _exigir(c.get("fundamento"), f"{ruta}: condicion_inactiva exige fundamento con la condición.")
-        _exigir(isinstance(valor.get("resumen_creativo"), str) and valor["resumen_creativo"].strip(), "Falta resumen_creativo.")
+        if exigir_resumen:
+            _exigir(isinstance(valor.get("resumen_creativo"), str) and valor["resumen_creativo"].strip(), "Falta resumen_creativo.")
     return validar
 
 
@@ -284,7 +297,8 @@ Si hay comentarios del corrector o decisiones del usuario, corrígelos todos.
 Los parámetros quality y tamano van aparte y ya vienen fijados: cópialos.
 Devuelve JSON: {"slots": {"Scene": "...", "Subject": "...", "Important Details": "...", "Use Case": "...",
 "Constraints": "..."}, "parametros": {"quality": "...", "tamano": "..."},
-"aplicacion": [{"regla_id": "...", "slot": "...", "como": "..."}], "notas": ["..."]}"""
+"aplicacion": [{"regla_id": "...", "slot": "...", "como": "..."}], "notas": ["..."]}
+Cada "como" en 20 palabras o menos."""
 
 
 def carga_redactor(rec, brief_validado, especificas, parametros, previo=None, observaciones=None, decisiones=None, comentario=None):
@@ -328,6 +342,8 @@ datos inventados. Considera las notas contextuales del usuario como aclaraciones
 "entrega" es el paquete que la app exporta junto al prompt (encabezado de modelo, quality, tamaño e
 inferencias del brief separadas del texto visual): evalúa con él las reglas de entrega. Para un problema
 en la entrega, la "cita" copia literalmente el fragmento de "entrega"; para uno del texto, del prompt.
+Sé breve en los PASS: "cita" y "explicacion" de 20 palabras o menos cada una (la respuesta debe caber en el
+límite de tiempo por llamada); el detalle completo es para FAIL y UNCERTAIN.
 Devuelve JSON: {"registros": [{"regla_id": "...", "estado": "PASS|FAIL|UNCERTAIN", "slot": "...",
 "cita": "...", "explicacion": "...", "pregunta": "..."}]} con todas las reglas, una vez cada una."""
 

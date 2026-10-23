@@ -278,10 +278,32 @@ class Proceso:
         caso = self.almacen.leer_caso(caso_id)
         self._exigir_etapa(caso, ORIGINAL, BRIEF_REVISION)
         decisiones = [dict(v, path=k) for k, v in caso["decisiones"].items()]
-        carga = E.carga_desarrollo(self.rec, caso["original"], caso["aportes"], decisiones)
-        carga["ronda_operacion"] = self._ronda(caso, "desarrollar", nueva)
-        valor = self.proveedor.llamar("desarrollador_brief", E.SISTEMA_DESARROLLO, carga,
-                                      E.validar_desarrollo(self.rec, caso["original"], caso["aportes"]))
+        ronda = self._ronda(caso, "desarrollar", nueva)
+        partes = max(1, int(getattr(self.proveedor, "partes_desarrollo", 1)))
+        if partes == 1:
+            carga = E.carga_desarrollo(self.rec, caso["original"], caso["aportes"], decisiones)
+            carga["ronda_operacion"] = ronda
+            valor = self.proveedor.llamar("desarrollador_brief", E.SISTEMA_DESARROLLO, carga,
+                                          E.validar_desarrollo(self.rec, caso["original"], caso["aportes"]))
+        else:
+            # Por partes, cada una con las anteriores como contexto: respuestas cortas que caben en el límite
+            # de tiempo por llamada. El resultado se une en un solo desarrollo con los 109 campos en orden.
+            tam = -(-len(self.rec.rutas) // partes)
+            grupos = [self.rec.rutas[i:i + tam] for i in range(0, len(self.rec.rutas), tam)]
+            campos, conflictos, resumen = [], [], ""
+            for n, rutas in enumerate(grupos, 1):
+                ultima = n == len(grupos)
+                carga = E.carga_desarrollo(self.rec, caso["original"], caso["aportes"], decisiones,
+                                           rutas=rutas, previos=campos, parte=f"{n} de {len(grupos)}")
+                carga["ronda_operacion"] = ronda
+                parcial = self.proveedor.llamar("desarrollador_brief", E.SISTEMA_DESARROLLO, carga,
+                                                E.validar_desarrollo(self.rec, caso["original"], caso["aportes"],
+                                                                     rutas_esperadas=rutas, exigir_resumen=ultima))
+                campos = campos + parcial["campos"]
+                conflictos += [c for c in parcial.get("conflictos") or [] if c not in conflictos]
+                if ultima:
+                    resumen = parcial.get("resumen_creativo", "")
+            valor = {"campos": campos, "resumen_creativo": resumen, "conflictos": conflictos}
         caso["desarrollo"] = valor
         # Las decisiones del usuario se conservan solo si el campo sigue en un estado compatible.
         estados = {c["path"]: c["estado"] for c in valor["campos"]}
