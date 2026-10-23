@@ -30,6 +30,7 @@ class Modelo:
         self.fallar_corrector_una_vez = True
         self.nota_en_corrector = False
         self.cargas_redactor = []
+        self.partes_pedidas = []
         self.borrador_con_slop = True
         self.duda_en_revision = True
 
@@ -57,6 +58,12 @@ class Modelo:
             else:
                 base.update(estado="condicion_inactiva", fundamento=f"Condición «{c['condicion']}» no se cumple.")
             campos.append(base)
+        if "rutas_a_desarrollar" in carga:  # desarrollo por partes
+            self.partes_pedidas.append(carga["parte"])
+            pedidas = set(carga["rutas_a_desarrollar"])
+            campos = [c for c in campos if c["path"] in pedidas]
+            ultima = carga["parte"].split(" de ")[0] == carga["parte"].split(" de ")[1]
+            return {"campos": campos, "resumen_creativo": "Retrato documental al amanecer." if ultima else "", "conflictos": []}
         return {"campos": campos, "resumen_creativo": "Retrato documental al amanecer.", "conflictos": []}
 
     def corrector_brief(self, carga):
@@ -569,3 +576,14 @@ class TestPublicacionRaiz(unittest.TestCase):
         modulo = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(modulo)
         self.assertTrue(hasattr(modulo, "handler"))
+
+
+class TestDesarrolloPorPartes(Base):
+    def test_desarrollo_en_cuatro_partes_une_los_109_campos(self):
+        self.proveedor.partes_desarrollo = 4
+        cid = self.pr.crear_caso(ORIGINAL)["id"]
+        caso = self.pr.desarrollar_brief(cid)
+        self.assertEqual(self.modelo.partes_pedidas, ["1 de 4", "2 de 4", "3 de 4", "4 de 4"])
+        self.assertEqual([c["path"] for c in caso["desarrollo"]["campos"]], cargar().rutas)
+        self.assertTrue(caso["desarrollo"]["resumen_creativo"])
+        self.assertEqual(caso["etapa"], P.BRIEF_REVISION)
