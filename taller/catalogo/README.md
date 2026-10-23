@@ -28,3 +28,17 @@ cabe en la taxonomía va como `EXT: <valor>` y se discute para ampliarla. Instru
 - `validar.py <lote> <salida>`: cobertura total, valores válidos y estados prohibidos.
 - `consolidar.py [--escribir]`: une las salidas, comprueba cobertura contra el universo y lista lo que va a
   discusión.
+
+## Base vectorizada (GPT Image 2)
+
+`vectorizar.py` construye `catalogo_gpt2.sqlite` con los textos no estructurales que aplican a GPT Image 2
+(F29 "TODOS" o con "GPT Image 2"): tablas `textos`, `facetas`, `embeddings` (`intfloat/multilingual-e5-large`,
+1024 dimensiones, decisión 6) y `meta`. Requiere `pip install fastembed` y descarga el modelo la primera vez
+(~2 GB). Los vectores se guardan en `vectores_cache.npz` por huella del texto: reclasificar no revectoriza.
+Reconstruir después de cada cambio del catálogo.
+
+`consultar.py --facetas '<json del caso>' --brief "<texto>"` devuelve las reglas universales (plantilla) y las
+candidatas del caso, filtradas por facetas (una faceta que el caso no define no filtra; F10 hereda del padre;
+`excepto` descarta; `facetas_alternativas` son "o") y ordenadas por similitud. Medido el 2026-10-23 con el caso
+de spinning: filtro 0.004 s, vector del brief 0.09 s con el modelo cargado (6.7 s en frío), 92 universales y
+78 candidatas.
