@@ -38,6 +38,9 @@ class Modelo:
         self.llamadas[rol] = self.llamadas.get(rol, 0) + 1
         return getattr(self, rol)(carga)
 
+    def ortografia(self, carga):
+        return {"texto": carga["texto"].replace("qeiro", "quiero").replace("amaneser", "amanecer")}
+
     def desarrollador_brief(self, carga):
         rec = cargar()
         req = set(rec.contrato_genesis["required_fields"])
@@ -587,3 +590,29 @@ class TestDesarrolloPorPartes(Base):
         self.assertEqual([c["path"] for c in caso["desarrollo"]["campos"]], cargar().rutas)
         self.assertTrue(caso["desarrollo"]["resumen_creativo"])
         self.assertEqual(caso["etapa"], P.BRIEF_REVISION)
+
+
+class TestMenosPreguntas(Base):
+    def test_lo_escrito_en_el_original_no_queda_como_propuesta(self):
+        campos = [{"path": "a", "estado": "propuesta", "valor": "en un muelle al amanecer", "fundamento": "x"},
+                  {"path": "b", "estado": "propuesta", "valor": "luz lateral baja", "fundamento": "x"}]
+        P._promover_literales(campos, ORIGINAL, [])
+        self.assertEqual(campos[0]["estado"], "proporcionado")
+        self.assertEqual(campos[0]["cita"], "en un muelle al amanecer")
+        self.assertNotIn("fundamento", campos[0])
+        self.assertEqual(campos[1]["estado"], "propuesta", "Lo que el usuario no escribió sigue siendo propuesta.")
+
+    def test_aceptar_todas_las_propuestas_deja_solo_las_preguntas(self):
+        cid = self.pr.crear_caso(ORIGINAL)["id"]
+        self.pr.desarrollar_brief(cid)
+        n = self.pr.aceptar_propuestas(cid)
+        self.assertGreater(n, 0)
+        pend = self.pr.leer(cid)["pendientes_brief"]
+        self.assertTrue(pend)
+        self.assertTrue(all(p["motivo"] == "Pregunta sin responder" for p in pend))
+
+    def test_corrector_de_ortografia(self):
+        r = self.pr.corregir_ortografia("qeiro un retrato al amaneser")
+        self.assertEqual(r, {"texto": "quiero un retrato al amanecer", "corregido": True})
+        manual = P.Proceso(self.almacen, llm.Manual(self.almacen))
+        self.assertEqual(manual.corregir_ortografia("qeiro")["corregido"], False, "En manual no se corrige.")

@@ -119,11 +119,40 @@ function avisoTrabajando(ruta) {
   return () => { clearInterval(t); caja.remove(); };
 }
 
+// Campos de texto libre del usuario que se corrigen (ortografía y gramática) antes de enviarse.
+const TEXTOS_CORREGIBLES = { aporte: ["texto"], campo: ["valor", "comentario"], duda: ["comentario"],
+  ambiguedad: ["decision"], comentario: ["texto"] };
+
+async function corregido(texto) {
+  if (!texto || !texto.trim() || ($("#proveedor") || {}).value === "manual") return texto;
+  try {
+    const r = await api("POST", "/api/ortografia", { texto });
+    if (r.corregido) avisoCorreccion(texto, r.texto);
+    return r.texto || texto;
+  } catch (e) { return texto; }
+}
+
+function avisoCorreccion(antes, despues) {
+  const caja = document.createElement("div");
+  caja.className = "nota-cor";
+  caja.innerHTML = `<b>Texto corregido automáticamente antes de enviar:</b> ${esc(despues)}<br><span class="nota">Tecleado: ${esc(antes)}</span>`;
+  $("#principal").prepend(caja);
+  setTimeout(() => caja.remove(), 15000);
+}
+
+async function corregirCuerpo(ruta, cuerpo) {
+  for (const k of TEXTOS_CORREGIBLES[ruta] || []) {
+    if (cuerpo && typeof cuerpo[k] === "string") cuerpo[k] = await corregido(cuerpo[k]);
+  }
+  return cuerpo;
+}
+
 async function accion(ruta, cuerpo) {
   if (trabajando) return;
   trabajando = true;
   let quitar = () => {};
   try {
+    cuerpo = await corregirCuerpo(ruta, cuerpo);
     if (NUBE && NOMBRES_OPERACION[ruta]) quitar = avisoTrabajando(ruta);
     let r = await api("POST", `/api/casos/${casoId}/${ruta}`, cuerpo);
     // En la nube cada petición hace como máximo una llamada al modelo: se repite hasta terminar.
@@ -251,6 +280,7 @@ function renderBrief() {
     ${editable ? `<div class="barra-accion">
       <span>${pend.length ? `<b>${pend.length} pendientes:</b> ${pend.slice(0, 4).map((p) => esc(p.path + " — " + p.motivo)).join("; ")}${pend.length > 4 ? "…" : ""}` : "Sin pendientes."}</span>
       <label><input type="checkbox" id="revisado" ${caso.revision_completa ? "checked" : ""}> Revisé el brief completo</label>
+      ${campos.some((c) => c.estado_desarrollo === "propuesta" && !c.decision_usuario) ? `<button id="aceptar-propuestas">Aceptar todas las propuestas</button>` : ""}
       <button data-op="desarrollar">Re-desarrollar con mis respuestas</button>
       <button class="primario" data-op="corregir" ${pend.length || !caso.revision_completa ? "disabled" : ""}>Enviar al corrector</button></div>` : ""}
     ${caso.brief_hash && caso.etapa !== "aprobado" ? `<div class="controles"><button class="peligro" id="reabrir">Reabrir el brief (invalida selección y prompt)</button></div>` : ""}
@@ -404,6 +434,8 @@ function enlazar() {
   document.querySelectorAll("[data-op]").forEach((b) => b.onclick = () => accion(b.dataset.op));
   document.querySelectorAll(".reintentar").forEach((b) => b.onclick = () => accion(b.dataset.op));
   const ap = $("#enviar-aporte"); if (ap) ap.onclick = () => accion("aporte", { texto: $("#aporte").value });
+  const acp = $("#aceptar-propuestas"); if (acp) acp.onclick = () => accion("aceptar_propuestas", {});
+  document.querySelectorAll("textarea").forEach((t) => { t.spellcheck = true; t.lang = "es"; });
   const rv = $("#revisado"); if (rv) rv.onchange = () => accion("revisado", { revisado: rv.checked });
   const ra = $("#reabrir"); if (ra) ra.onclick = () => confirm("Reabrir invalida la selección y el prompt. ¿Continuar?") && accion("reabrir");
   document.querySelectorAll(".decidir").forEach((b) => b.onclick = () => {
@@ -449,7 +481,7 @@ $("#nuevo").onclick = () => {
     <textarea id="nuevo-original" style="min-height:180px"></textarea>
     <div class="controles"><button class="primario" id="crear">Guardar original</button></div></div>`;
   $("#crear").onclick = async () => {
-    try { const c = await api("POST", "/api/casos", { original: $("#nuevo-original").value }); casoId = c.id; await cargarCaso(); }
+    try { const original = await corregido($("#nuevo-original").value); const c = await api("POST", "/api/casos", { original }); casoId = c.id; await cargarCaso(); }
     catch (e) { alert(e.message); }
   };
 };

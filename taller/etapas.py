@@ -52,6 +52,10 @@ Recibes: el texto original íntegro del usuario (no se modifica), aportes poster
 decisiones ya tomadas por él, la lista COMPLETA de campos del template T-BRIEF-IMG con su condición
 literal ("Cuándo se exige"), el contrato de la operación y las directivas vigentes del usuario.
 
+Antes de proponer o preguntar cualquier campo, búscalo en el original y en los aportes: si el usuario ya
+lo dijo, con esas palabras o con otras equivalentes, el campo es "proporcionado" con su cita. Nunca se
+propone ni se pregunta algo que el usuario ya escribió; preguntarlo otra vez es un error grave.
+
 Devuelve cada campo de la lista exactamente una vez, en el mismo orden, con uno de estos estados:
 - "proporcionado": el dato está explícito en el original o en un aporte. "cita" debe copiar el fragmento
   carácter por carácter, con sus faltas de ortografía tal cual. El valor se redacta limpio en español.
@@ -63,8 +67,9 @@ Devuelve cada campo de la lista exactamente una vez, en el mismo orden, con uno 
   paleta, grade, materiales, texturas, acabado, composición y planos. "fundamento" explica por qué esa
   propuesta sirve a la intención del usuario; "alternativas" puede ofrecer otras opciones concretas.
   Una propuesta nunca se presenta como instrucción del usuario.
-- "falta": solo el usuario puede darlo y no hay base para proponer (o hay un conflicto). "pregunta" debe
-  ser concreta y contestable.
+- "falta": solo el usuario puede darlo, cambia la imagen y no hay base para proponer (o hay un conflicto).
+  "pregunta" debe ser concreta y contestable. Úsalo lo menos posible: si existe una opción razonable, es
+  "propuesta", no "falta".
 - "condicion_inactiva": la condición literal del campo no se cumple en este caso. "fundamento" cita la
   condición y explica por qué no se activa. Prohibido para campos con condición "siempre" y para los
   required_fields del contrato.
@@ -149,6 +154,20 @@ def validar_desarrollo(rec, original, aportes, rutas_esperadas=None, exigir_resu
         if exigir_resumen:
             _exigir(isinstance(valor.get("resumen_creativo"), str) and valor["resumen_creativo"].strip(), "Falta resumen_creativo.")
     return validar
+
+
+# ---------------------------------------------------------------- Corrección de los textos del usuario
+
+SISTEMA_ORTOGRAFIA = """Corrige la ortografía, los acentos, la puntuación, las mayúsculas y la gramática del texto
+del usuario, en su idioma. Corrige también letras cambiadas, sobrantes o faltantes por error de tecleo.
+No cambies el sentido, no resumas, no agregues ni quites información, no cambies sus términos técnicos,
+nombres propios, apodos, cifras ni el registro. Si una palabra es ambigua, deja la más probable por contexto.
+Devuelve JSON: {"texto": "el texto corregido completo"}."""
+
+
+def validar_ortografia(valor):
+    _exigir(isinstance(valor, dict) and isinstance(valor.get("texto"), str) and valor["texto"].strip(),
+            "Falta el texto corregido.")
 
 
 # ---------------------------------------------------------------- 4. Corrector del brief
