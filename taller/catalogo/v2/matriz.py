@@ -17,7 +17,7 @@ from openpyxl.utils import get_column_letter
 
 AQUI = Path(__file__).resolve().parent
 E = json.loads((AQUI / "esquema_taxonomia.json").read_text())
-CASO = [f"F{i:02d}" for i in range(3, 29)] + ["P04", "F32", "F33", "F34"]
+CASO = [f"F{i:02d}" for i in range(3, 29)] + ["P04", "F32", "F33", "F34", "F35"]
 T112 = json.loads((AQUI / "tipos_enunciado_112.json").read_text())
 TIPOS_112 = list(T112["criterio"])
 assert all(t in T112["fuente"] for t in TIPOS_112), "cada tipo debe estar literal en la línea 192 citada"
@@ -37,7 +37,7 @@ def columnas():
     cols.append(("Universal", "aplica a todo caso"))
     orden = ["F01", "F02", "P01", "F03", "F04", "P04", "F05", "F06", "F07", "F08", "F09", "F10", "F11", "F12", "F13",
              "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28",
-             "F32", "F33", "F34", "F30", "F31"]
+             "F32", "F33", "F34", "F35", "F30", "F31"]
     for f in orden:
         cols += [(f"{f} {E['facetas'][f]['nombre']}", x["valor"]) for x in E["facetas"][f]["valores"]]
     for campo, nombre in (("idioma", "Idioma"), ("origen_evidencia", "Origen de evidencia"),
