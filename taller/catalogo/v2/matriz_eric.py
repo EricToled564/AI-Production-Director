@@ -82,7 +82,7 @@ def main(carpeta, archivo):
     ws = wb.active
     ws.title = "matriz"
     fijas_ini = ["número", "línea"]
-    fijas_fin = ["casos", "valor a insertar", "fundamento", "consulta"]
+    fijas_fin = []  # sin texto en la matriz: solo número, línea y X
     for k, h in enumerate(fijas_ini, 1):
         ws.cell(row=2, column=k, value=h).font = Font(bold=True)
     gris = PatternFill("solid", fgColor="DDDDDD")
@@ -104,32 +104,18 @@ def main(carpeta, archivo):
         ws.cell(row=n, column=2, value=int(linea))
         if i in C.CONCILIACIONES:
             t, j = C.CONCILIACIONES[i]
-            mk, extra = {("Tipo de registro", t)}, ["", "", j, ""]
+            mk = {("Tipo de registro", t)}
         else:
             apls = [a for a in C.APLICACIONES if a["id"] == i]
             mk = set().union(*(K.marcas(a) for a in apls))
-            casos = " | ".join(f"{a['sufijo'] or 'A1'}: {describir_caso(a)}" for a in apls) if len(apls) > 1 else ""
-            extra = [casos, " | ".join(a["valor"] for a in apls), " | ".join(a["fund"] for a in apls),
-                     " · ".join(sorted({a["consulta"] for a in apls if a["consulta"]}))]
         for c in mk:
             ws.cell(row=n, column=pos[c], value="X").alignment = Alignment(horizontal="center")
-        for k, v in enumerate(extra, fin0):
-            ws.cell(row=n, column=k, value=v).alignment = Alignment(wrap_text=True, vertical="top")
     ws.column_dimensions["A"].width = 13
     ws.column_dimensions["B"].width = 7
     for k in range(len(fijas_ini) + 1, fin0):
         ws.column_dimensions[get_column_letter(k)].width = 3.2
-    for k, w in zip(range(fin0, fin0 + 4), (40, 50, 50, 10)):
-        ws.column_dimensions[get_column_letter(k)].width = w
     ws.row_dimensions[2].height = 200
     ws.freeze_panes = "C3"
-    hc = wb.create_sheet("criterios")
-    for linea in ((C.__doc__ or "") + "\n" + (__doc__ or "")).strip().splitlines():
-        hc.append([linea])
-    hq = wb.create_sheet("consultas")
-    hq.append(["código", "pregunta"])
-    for q, t in C.CONSULTAS.items():
-        hq.append([q, t])
     hcol = wb.create_sheet("columnas")
     hcol.append(["n", "grupo", "valor"])
     for k, (gr, v) in enumerate(cols, 1):
@@ -141,8 +127,14 @@ def main(carpeta, archivo):
     formato = []
     if leido.cell(row=2, column=1).value != "número" or leido.cell(row=2, column=2).value != "línea":
         formato.append("la columna A no es el número o la B no es la línea")
-    if leido.max_column != fin0 + 3:
+    if leido.max_column != fin0 - 1:
         formato.append("hay columnas de más o de menos")
+    import re
+    for fila in leido.iter_rows(min_row=3, values_only=True):
+        if not re.fullmatch(r"INV-\d{6}", str(fila[0])) or not isinstance(fila[1], int):
+            formato.append(f"fila con número o línea inválidos: {fila[:2]}")
+        if any(v not in (None, "X") for v in fila[2:]):
+            formato.append(f"{fila[0]}: hay texto en una celda de clasificación (solo se admite X o vacío)")
     grupos_leidos = [leido.cell(row=1, column=k).value for k in range(len(fijas_ini) + 1, fin0)
                      if leido.cell(row=1, column=k).value]
     grupos_esperados = list(dict.fromkeys(gr for gr, _ in cols))
@@ -158,7 +150,7 @@ def main(carpeta, archivo):
     linea_de = {i: int(l) for i, l, _, _ in filas_base}
     malas = [n for n, fila in zip(nums, leido.iter_rows(min_row=3, values_only=True)) if linea_de.get(n) != fila[1]]
     faltan, sobran = sorted(set(linea_de) - set(nums)), sorted(set(nums) - set(linea_de))
-    print(f"escrito {salida.name}: {len(nums)} filas (una por texto) × {len(cols) + 6} columnas · números del archivo "
+    print(f"escrito {salida.name}: {len(nums)} filas (una por texto) × {len(cols) + 2} columnas · números del archivo "
           f"en la base {len(linea_de)} · faltan {faltan} · sobran {sobran} · línea distinta {malas}")
     if faltan or sobran or malas:
         sys.exit(1)
