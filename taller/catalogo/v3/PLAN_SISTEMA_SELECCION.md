@@ -1,6 +1,6 @@
 # Plan — sistema de selección de reglas para prompts de GPT Image 2 (imagen)
 
-Versión 2026-10-24 b. Propuesta para Eric; nada se ejecuta sin su OK. Cada afirmación cita su fuente; se comprueba con
+Versión 2026-10-24 c (tras la primera prueba con imágenes). Propuesta para Eric; nada se ejecuta sin su OK. Cada afirmación cita su fuente; se comprueba con
 `python3 -I taller/catalogo/v3/rag/consultar_rag.py`. Qué se leyó, sección por sección, con prueba de que cada línea
 leída está en el índice: `python3 -I taller/catalogo/v3/rag/registrar_lectura.py --ver`.
 
@@ -64,43 +64,69 @@ omite 18 (o 14).
 - En la prueba de retratos, el veredicto del lote 07 sobre APD L5 y L135 dice «conservar atribución Serge Shima»;
   contradice DEC-000024 (ninguna atribución a terceros en material del cliente). Sigue sin corregir.
 
-## 2. Diseño (sin cambios de fondo respecto a tu instrucción)
+## 2. Lo aprendido con imágenes reales (2026-10-24)
 
-1. **Número**: id INV de la base de 13,005 (estable, §1.8). Una fila por aplicación cuando un texto tiene dos condiciones (§7.2).
-2. **Tipo de texto**: los de la tabla de §1 (tipos de §1.12.5 o §6.1, decisión D1). Cada tipo va a su tabla.
-3. **Universalidad de una regla** = el nivel más profundo del orden de §1 en el que tiene VALOR. Universal = UNIVERSAL en
-   todas las columnas, incluidas F29 (modelo) y F02 (paso), que el piloto registra aparte de las demás restricciones.
-   Se decide leyendo cuerpo, encabezado y documento, nunca por palabras.
-4. **Uso**: las universales y las de sintaxis del modelo se incorporan al template (§5.3, DEC-000025) con vínculo
-   regla → bloque → validación, y quedan desactivadas para la selección. Las demás quedan ACTIVO EN SELECCIÓN.
-5. **Matriz**: columnas en el orden de §1; en cada celda «TODOS», el valor o valores de la taxonomía (p. ej. luz =
-   «Contraluz [backlight]») o «excepto: …»; vacío = error. Más acción, destino y contenido literal a aplicar.
-6. **Ejecución por caso**: llamada 1 (texto → valores de columnas, salida restringida a la taxonomía) → selección SQL
-   (milisegundos) → template + reglas seleccionadas → llamada 2 (redacción de los 5 slots) → validación → prompt.
+Evidencia: `produccion/prompts-sistema-20261024/RESULTADOS_20261024.md`, `produccion/template-retrato-gpt2/`.
 
-## 3. Qué mide qué (sin presentar forma como verdad)
-
-| Verificador | Qué prueba | Qué NO prueba |
+| # | Hecho medido | Consecuencia para el sistema |
 |---|---|---|
-| validador de la matriz | que no haya celdas vacías ni valores fuera de la taxonomía | que la clasificación sea correcta |
-| comparación con tu piloto `gpt-image.md` | acierto contra una clasificación aprobada por ti | acierto en otros archivos |
-| tus imágenes | que el prompt funciona | — |
+| A1 | B1–B5 (plano cerrado o medio, rostro grande) salieron como Eric esperaba al primer intento, con prompts de 208–264 palabras que aplicaban reglas de gpt-image.md, golden-rules.md, creative-direction.md, prompt-framework.md y del adaptador de forge | Aplicar las reglas funciona: la hipótesis del sistema se sostiene en este caso |
+| A2 | B6 (cuerpo entero, rostro <20 %) salió con piel de cera, ojos deformes y baja resolución. La regla que lo evitaba («rostro T1 antes que cuerpo T2») estaba en DECISIONES.md:20 y en la taxonomía (F15 persona, L1064); el agente la había leído y no la aplicó | Elegir reglas de memoria falla. La selección tiene que salir de facetas del caso, no del agente |
+| A3 | Esa regla no está en los 1,511 textos del corpus: está en las decisiones de Eric y en las definiciones de la taxonomía | Las fuentes de reglas son tres: corpus, decisiones de Eric y definiciones de la taxonomía |
+| A4 | El caso marcó F22 «<20 %» y ninguna regla del corpus depende de F22; el agente siguió sin avisar | Si un caso marca un valor de faceta que ninguna regla cubre, el sistema avisa antes de entregar |
+| A5 | B2, B3 y B5 llegaron con otra proporción; la app de ChatGPT de escritorio no deja fijar el tamaño (respuesta de Eric en taller/demo) | El formato va también dentro del texto; F29 interfaz condiciona parámetros |
+| A6 | El prompt anterior de spinning tenía 979 palabras; los que funcionaron, ≤300 (techo de GPT 2, templates §6 L355) | La longitud y los ≤5 elementos se validan en código |
+| A7 | En tareas largas el agente se degrada y hace afirmaciones sin base (proyección de tiempo retirada) | Tareas chicas, cada una con un entregable revisable y un alto; solo se informan hechos medidos |
 
-## 4. Tareas cortas, en orden (cada una se entrega y se para)
+## 3. Diseño (ajustado)
 
-| # | Tarea | Entrega | Quién decide |
-|---|---|---|---|
-| T1 | Índice de consulta de las fuentes maestras | `taller/catalogo/v3/rag/` — **hecho** | — |
-| T2 | Medir el minuto: las 2 llamadas + selección con las 61 aplicaciones del piloto, un brief | tiempo y costo reales de una corrida | si no cabe en 60 s, se replantea antes de clasificar nada más |
-| T3 | Matriz de `gpt-image.md` en el formato de §2 desde tu piloto (sin reclasificar) | xlsx | tú lo miras |
-| T4 | Clasificar `golden-rules.md` con el mismo método | xlsx + lista de dudas citadas | tú resuelves solo las dudas |
-| T5 | Prompt de un brief real con T3+T4 y tu generación | imagen | tú |
-| T6+ | Un archivo por tarea hasta cubrir los textos de imagen GPT Image 2 | un xlsx por archivo | dudas citadas |
+1. **Fuentes de reglas**: corpus de 1,511 textos (alcance GPT Image 2) + decisiones de Eric + definiciones de la
+   taxonomía que prescriben (A3). Cada regla con id, fuente literal y línea.
+2. **Clasificación**: formato del piloto (`taller/catalogo/v2/piloto_gpt-image/clasificacion.py`), una fila por
+   aplicación, condiciones por faceta (§7.2), uso operativo (§5.3), acción y destino.
+3. **Selección**: el caso se describe con valores de faceta; la selección es SQL sobre las condiciones, no memoria.
+   Aviso obligatorio por cada valor de faceta del caso sin ninguna regla que lo cubra (A4).
+4. **Template**: las reglas universales y de sintaxis (INCORPORADA A TEMPLATE) se escriben una vez en el template con
+   su vínculo regla → bloque → validación; el validador rechaza el prompt que no las cumple (A6).
+5. **Ejecución por caso**: brief → valores de faceta (llamada 1) → selección → template + reglas del caso → redacción
+   (llamada 2) → validación → prompt + lista de supuestos.
 
-## 5. Decisiones que necesito
+## 4. Qué mide qué
+
+| Prueba | Qué demuestra | Qué no demuestra |
+|---|---|---|
+| verificador de forma del piloto | que cada texto está clasificado una vez y con valores de la taxonomía | que la clasificación sea correcta |
+| prueba de acierto contra B1–B5 | que las reglas universales seleccionadas explican lo que funcionó, y cuáles faltan | acierto fuera de retratos |
+| aviso de cobertura de facetas | que ningún valor del caso quedó sin reglas en silencio | que las reglas que sí hay basten |
+| imágenes de Eric | que el prompt funciona | — |
+
+## 5. Tareas chicas (una a la vez; cada una termina en un entregable y se detiene)
+
+| # | Tarea | Entregable | Cómo se revisa | Estado |
+|---|---|---|---|---|
+| T1 | Índice de consulta y lectura registrada de las fuentes | `taller/catalogo/v3/rag/` | `registrar_lectura.py --ver` | hecho |
+| T2 | Prueba con imágenes reales B1–B6 | RESULTADOS_20261024.md | imágenes de Eric | hecho (A1–A7) |
+| T3 | Lista de reglas de las decisiones de Eric y de las definiciones de la taxonomía que prescriben algo (A3) | tabla id · texto literal · archivo:línea | Eric marca las que no son reglas | pendiente |
+| T4 | `golden-rules.md` lote 2 (L39–L74: contexto, texto entre comillas, plantilla) | filas en `clasificacion_golden-rules/` + verificador sin errores + dudas | Eric revisa solo las dudas | pendiente |
+| T5 | `golden-rules.md` lote 3 (L76–L132: costo, refinamiento, referencias) | ídem | ídem | pendiente |
+| T6 | `golden-rules.md` lote 4 (L134–L198: anclas) | ídem | ídem | pendiente |
+| T7 | Revisión de Eric del lote 1 ya hecho (L1–L37) contra su piloto | dudas resueltas | Eric | pendiente |
+| T8 | Prueba de acierto: cada frase de B1–B5 trazada a una regla clasificada, y cada universal comprobada en los prompts | tabla frase → id; lista de faltantes | Eric lee la lista de faltantes | después de T3–T6 |
+| T9 | Aviso de cobertura de facetas en el selector (A4) | código + prueba con B6 (debe avisar F22) | salida de la prueba | después de T8 |
+| T10 | creative-direction.md, prompt-framework.md, portrait-cinema.md, adaptador forge: un lote de ~20 textos por tarea | como T4 | como T4 | después de T9 |
+| T11 | Template generado desde las reglas INCORPORADA A TEMPLATE, con vínculo regla → bloque → validación | template + validador | reproduce B1–B5 | después de T10 |
+| T12 | Corrida de punta a punta con un brief nuevo, tiempo medido | prompt + tiempos por paso | imagen de Eric | después de T11 |
+
+## 6. Reglas de trabajo del agente
+
+- Una tarea por vez; al terminarla, entregar y parar.
+- Informar solo hechos medidos, con lo que la medición cubre y lo que no. Nada de proyecciones sin base.
+- Ninguna regla se aplica de memoria: si no está clasificada, se dice que falta.
+
+## 7. Decisiones que necesito
 
 | # | Decisión | Opciones |
 |---|---|---|
-| D1 | Tipos de texto | lista de §1.12.5 · lista de §6.1 · ambas (tipo de §1.12.5 dentro de tipo de enunciado de §6.1) |
-| D2 | Orden de columnas | el del árbol 09-13 (tu instrucción) · otro |
-| D3 | Empezar por T2 (medir el minuto) antes de clasificar | sí · no |
+| D1 | ¿Entran las decisiones de Eric y las definiciones de la taxonomía como fuente de reglas (T3)? | sí · no |
+| D2 | ¿Los 7 documentos del bloque del piloto fuera del universo de 1,511 entran? | sí · no |
+| D3 | Orden: T3 primero, o T7 (tu revisión del lote 1) primero | T3 · T7 |
