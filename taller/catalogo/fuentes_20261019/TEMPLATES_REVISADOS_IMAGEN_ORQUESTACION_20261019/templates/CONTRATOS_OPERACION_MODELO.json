@@ -1,0 +1,820 @@
+{
+  "version": "20261019",
+  "operation_contracts": [
+    {
+      "template_id": "T-GENESIS",
+      "operacion": "genesis",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.sujetos",
+        "entrada.escena"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "genesis"
+        ]
+      },
+      "contract": "sin referencias adjuntas",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 0,
+      "references_max": 0,
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-REF-COMP",
+      "operacion": "composicion_referencias",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.referencias",
+        "entrada.composicion"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "composicion_referencias"
+        ]
+      },
+      "contract": "roles y preservaciones explícitos por imagen",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 1,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-ANCLA-REF",
+      "operacion": "ancla_referencia",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.ancla.rol",
+        "entrada.ancla.invariantes"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "ancla_referencia"
+        ]
+      },
+      "contract": "character ref / environment ref / hero-macro / motif insert",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 0,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-ANCLA-FF",
+      "operacion": "ancla_ff",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.ancla.rol",
+        "entrada.ancla.estado_inicial",
+        "entrada.ancla.contexto_clip.camara",
+        "entrada.ancla.contexto_clip.transicion",
+        "entrada.ancla.contexto_clip.audio"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "ancla_ff"
+        ]
+      },
+      "contract": "fotograma inicial visible; movimiento separado en handoff",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 0,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-ANCLA-LF",
+      "operacion": "ancla_lf",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.ancla.rol",
+        "entrada.ancla.estado_final",
+        "entrada.ancla.contexto_clip.camara",
+        "entrada.ancla.contexto_clip.transicion",
+        "entrada.ancla.contexto_clip.audio"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "ancla_lf"
+        ]
+      },
+      "contract": "fotograma final visible; pareja solo cuando requerida",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 0,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-EDIT",
+      "operacion": "edicion",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.edicion.cambio",
+        "entrada.edicion.preservar",
+        "entrada.referencias"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "edicion"
+        ]
+      },
+      "contract": "un cambio por iteración; preservar invariantes",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 1,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-STYLE",
+      "operacion": "transferencia_estilo",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.transferencia.propiedades",
+        "entrada.referencias"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "transferencia_estilo"
+        ]
+      },
+      "contract": "transferir propiedades visibles seleccionadas, preservar contenido indicado",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 1,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    },
+    {
+      "template_id": "T-SKETCH",
+      "operacion": "boceto_a_final",
+      "required_fields": [
+        "entrada.ruta.flujo",
+        "entrada.operacion",
+        "entrada.modelo.nombre",
+        "entrada.modelo.version",
+        "entrada.modelo.interfaz",
+        "entrada.pieza.tipo",
+        "entrada.pieza.objetivo",
+        "entrada.pieza.uso",
+        "entrada.formato.ratio",
+        "entrada.idioma_prompt",
+        "entrada.restricciones",
+        "entrada.selecciones_taxonomicas",
+        "entrada.boceto.estructura_preservada",
+        "entrada.referencias"
+      ],
+      "activation": {
+        "eq": [
+          "entrada.operacion",
+          "boceto_a_final"
+        ]
+      },
+      "contract": "conservar estructura aprobada del boceto",
+      "output": "modelo_adapter + salida_comun",
+      "references_min": 1,
+      "references_max": "según variante y fuente",
+      "dependencies": [
+        "modelo",
+        "operacion",
+        "referencias",
+        "identidad",
+        "formato"
+      ],
+      "invalidates_on_change": [
+        "aprobacion_brief",
+        "seleccion_reglas",
+        "prompt",
+        "validaciones",
+        "aceptacion"
+      ]
+    }
+  ],
+  "model_adapters": [
+    {
+      "id": "GPT2-GEN",
+      "models": [
+        "GPT Image 2"
+      ],
+      "operations": [
+        "genesis",
+        "composicion_referencias",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf",
+        "transferencia_estilo",
+        "boceto_a_final"
+      ],
+      "syntax": "labeled_slots",
+      "slots": [
+        "Scene",
+        "Subject",
+        "Important Details",
+        "Use Case",
+        "Constraints"
+      ],
+      "template": "Scene: {{escena}}\nSubject: {{sujeto_accion}}\nImportant Details: {{detalles_visuales}}\nUse Case: {{uso}}\nConstraints: {{restricciones}}",
+      "params": [
+        "quality",
+        "tamano"
+      ],
+      "source": "image/references/gpt-image.md#5-slots"
+    },
+    {
+      "id": "GPT2-EDIT",
+      "models": [
+        "GPT Image 2"
+      ],
+      "operations": [
+        "edicion"
+      ],
+      "syntax": "labeled_slots",
+      "slots": [
+        "Change",
+        "Preserve",
+        "Constraints"
+      ],
+      "template": "Change: {{cambio_unico}}\nPreserve: {{invariantes}}\nConstraints: {{restricciones}}",
+      "params": [
+        "quality",
+        "tamano"
+      ],
+      "source": "image/references/gpt-image.md#Editing"
+    },
+    {
+      "id": "NB-PROSE",
+      "models": [
+        "Nano Banana 2",
+        "Nano Banana Pro",
+        "Nano Banana 2 Lite"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf",
+        "transferencia_estilo",
+        "boceto_a_final"
+      ],
+      "syntax": "natural_1_2_paragraphs",
+      "template": "{{sujeto_y_accion}}. {{lugar_y_contexto}}. {{composicion_luz_propiedades}}. {{estilo_observable_y_formato}}.",
+      "params": [
+        "image_size"
+      ],
+      "source": "image/references/nano-banana.md#Стиль-промпта"
+    },
+    {
+      "id": "NB-COMP",
+      "models": [
+        "Nano Banana 2",
+        "Nano Banana Pro",
+        "Nano Banana 2 Lite"
+      ],
+      "operations": [
+        "composicion_referencias"
+      ],
+      "syntax": "indexed_refs_then_natural",
+      "template": "{{lineas_Image_indice_rol}}\nCombine: {{elementos_por_referencia_e_invariantes}}. Match {{luz_perspectiva_escala}}.",
+      "params": [
+        "image_size"
+      ],
+      "source": "image/references/nano-banana.md#Multi-Reference"
+    },
+    {
+      "id": "NB-EDIT",
+      "models": [
+        "Nano Banana 2",
+        "Nano Banana Pro",
+        "Nano Banana 2 Lite"
+      ],
+      "operations": [
+        "edicion"
+      ],
+      "syntax": "conversational_edit",
+      "template": "{{cambio_concreto}}. {{sustitucion_coherente_si_requerida}}. Keep {{invariantes}} exactly the same.",
+      "params": [
+        "image_size"
+      ],
+      "source": "image/references/nano-banana.md#Editing"
+    },
+    {
+      "id": "NB-COMPLEX",
+      "models": [
+        "Nano Banana 2",
+        "Nano Banana Pro",
+        "Nano Banana 2 Lite"
+      ],
+      "operations": [
+        "genesis",
+        "composicion_referencias"
+      ],
+      "syntax": "json",
+      "activation_additional": "escena compleja de cinco o más elementos y modo JSON elegido explícitamente",
+      "template": {
+        "subject": {
+          "description": "{{sujeto}}",
+          "expression": "{{expresion_postura}}"
+        },
+        "photography": {
+          "angle": "{{angulo}}",
+          "shot_type": "{{plano}}",
+          "aspect_ratio": "{{ratio}}"
+        },
+        "background": {
+          "setting": "{{entorno}}",
+          "lighting": "{{luz}}"
+        }
+      },
+      "params": [
+        "image_size"
+      ],
+      "source": "image/references/nano-banana.md#JSON"
+    },
+    {
+      "id": "FLUX-GEN",
+      "models": [
+        "Flux"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "natural_sentences",
+      "template": "{{sujeto_accion_composicion}}. {{entorno_luz}}. {{especificacion_visual}}. {{tratamiento_marca_si_corresponde}}.",
+      "params": [
+        "aspect_ratio",
+        "seed",
+        "prompt_upsampling"
+      ],
+      "source": "visual-prompt-forge/adapters/flux.md#Syntax-pattern"
+    },
+    {
+      "id": "MJ-GEN",
+      "models": [
+        "Midjourney"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "comma_phrases_flags",
+      "template": "{{sujeto}}, {{accion}}, {{composicion}}, {{entorno}}, {{luz}}, {{color_tratamiento}}, {{estilo}} --ar {{ratio}} {{flags_admitidos}}",
+      "params": [
+        "flags"
+      ],
+      "source": "visual-prompt-forge/adapters/midjourney.md#Syntax-pattern"
+    },
+    {
+      "id": "IDEOGRAM-COMPOSITED",
+      "models": [
+        "Ideogram"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "natural_sentences",
+      "activation_additional": "texto_integrado_override.habilitado=false",
+      "template": "{{sujeto_composicion}}. {{entorno_luz}}. {{tratamiento_visual_espacio_para_overlay_si_requerido}}.",
+      "params": [
+        "aspect_ratio",
+        "seed",
+        "magic_prompt",
+        "style_type"
+      ],
+      "source": "visual-prompt-forge/adapters/ideogram.md#Mode-1"
+    },
+    {
+      "id": "IDEOGRAM-TEXT",
+      "models": [
+        "Ideogram"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "quoted_text_natural",
+      "activation_additional": "texto_integrado_override.habilitado=true y rationale aprobado",
+      "template": "{{sujeto_composicion}}. {{entorno_luz}}. The text \"{{literal_exacto}}\" appears {{posicion}}, in {{tipografia}}. {{color_tratamiento}}.",
+      "params": [
+        "aspect_ratio",
+        "seed",
+        "magic_prompt",
+        "style_type"
+      ],
+      "source": "visual-prompt-forge/adapters/ideogram.md#Mode-2"
+    },
+    {
+      "id": "SEEDREAM-GEN",
+      "models": [
+        "Seedream"
+      ],
+      "operations": [
+        "genesis",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "comma_phrases",
+      "template": "{{sujeto}}, {{accion}}, {{entorno}}, {{luz}}, {{tratamiento}}, {{nota_formato}}",
+      "params": [
+        "aspect_ratio",
+        "seed",
+        "guidance_scale",
+        "steps"
+      ],
+      "source": "visual-prompt-forge/adapters/seedream.md#Syntax-pattern"
+    },
+    {
+      "id": "GPT15-GEN",
+      "models": [
+        "gpt-image-1.5"
+      ],
+      "operations": [
+        "genesis",
+        "composicion_referencias",
+        "ancla_referencia",
+        "ancla_ff",
+        "ancla_lf"
+      ],
+      "syntax": "three_paragraphs",
+      "template": "{{sujeto_accion_composicion_espacial}}\n\n{{entorno_objetos_contexto}}\n\n{{iluminacion_especificacion_visual_tratamiento}}",
+      "params": [
+        "tamano",
+        "quality"
+      ],
+      "source": "visual-prompt-forge/adapters/gpt-image.md#Syntax-pattern",
+      "execution_requirement": "Sintaxis de generación respaldada para familia1.5. Parámetros técnicos de interfaz y valores históricos requieren contrato exacto; no copiar tamaños antiguos a GPT2."
+    },
+    {
+      "id": "GPT-IMAGE-1-MIGRATION",
+      "models": [
+        "gpt-image-1"
+      ],
+      "operations": [
+        "edicion"
+      ],
+      "syntax": "source_scoped_migration",
+      "template": "{{instruccion_respaldada_para_version}}\n{{preservaciones_y_restricciones_respaldadas}}",
+      "params": [],
+      "source": "image/references/gpt-image.md#Migration-from-Older-GPT-Image",
+      "execution_requirement": "Vincular contrato de versión/interfaz y prueba de sintaxis antes de ejecutar; la fuente enumera la variante pero no acredita una sintaxis completa nueva. Las reglas conservan elegibilidad. GPT1.5/1 object-removal puede citar input_fidelity high; no transferirlo a GPT2."
+    },
+    {
+      "id": "GPT-IMAGE-1-MINI-MIGRATION",
+      "models": [
+        "gpt-image-1-mini"
+      ],
+      "operations": [
+        "genesis"
+      ],
+      "syntax": "source_scoped_migration",
+      "template": "{{instruccion_respaldada_para_version}}\n{{preservaciones_y_restricciones_respaldadas}}",
+      "params": [],
+      "source": "image/references/gpt-image.md#Migration-from-Older-GPT-Image",
+      "execution_requirement": "Vincular contrato de versión/interfaz y prueba de sintaxis antes de ejecutar; la fuente enumera la variante pero no acredita una sintaxis completa nueva. Las reglas conservan elegibilidad. GPT1.5/1 object-removal puede citar input_fidelity high; no transferirlo a GPT2."
+    },
+    {
+      "id": "GPT15-EDIT",
+      "models": [
+        "gpt-image-1.5"
+      ],
+      "operations": [
+        "edicion"
+      ],
+      "syntax": "source_scoped_edit",
+      "template": "{{cambio_concreto}}. Preserve {{invariantes}}. {{restricciones}}.",
+      "params": [],
+      "source": "image/references/gpt-image.md#Edit-паттерны",
+      "execution_requirement": "Conservar alcance del patrón de edición citado; input_fidelity high solo donde la fuente lo permite y la interfaz lo acepta."
+    }
+  ],
+  "binding_contract": {
+    "description": "Relaciones REG reales se incorporan solo desde reclasificación verificada. Este paquete define estructura, no certifica 1887 reglas integradas.",
+    "required_link_fields": [
+      "regla_id",
+      "aplicacion_id",
+      "item_taxonomia_ids",
+      "fuente_literal",
+      "documento",
+      "encabezado",
+      "pagina",
+      "condicion",
+      "campo_brief",
+      "efecto",
+      "destino",
+      "prueba"
+    ]
+  },
+  "variant_contracts": [
+    {
+      "modelo": "Nano Banana 2 Lite",
+      "source_model_id": "gemini-3.1-flash-lite-image",
+      "fuente": "image/references/nano-banana.md",
+      "syntax_adapter_ids": [
+        "NB-PROSE",
+        "NB-COMP",
+        "NB-EDIT",
+        "NB-COMPLEX"
+      ],
+      "resolucion_fuente": [
+        "1K"
+      ],
+      "limites_referencias_por_rol": {
+        "objeto": 14,
+        "personaje_consistente": 0,
+        "estilo": 0
+      },
+      "activar_grounding": false
+    },
+    {
+      "modelo": "Nano Banana 2",
+      "source_model_id": "gemini-3.1-flash-image",
+      "fuente": "image/references/nano-banana.md",
+      "syntax_adapter_ids": [
+        "NB-PROSE",
+        "NB-COMP",
+        "NB-EDIT",
+        "NB-COMPLEX"
+      ],
+      "limites_referencias_por_rol": {
+        "objeto": 10,
+        "personaje_consistente": 4,
+        "estilo": 0
+      },
+      "activar_grounding": "solo lugar/edificio/especie documentados; no personas concretas",
+      "thinking_level_fuente": [
+        "minimal",
+        "high"
+      ]
+    },
+    {
+      "modelo": "Nano Banana Pro",
+      "source_model_id": "gemini-3-pro-image",
+      "fuente": "image/references/nano-banana.md",
+      "syntax_adapter_ids": [
+        "NB-PROSE",
+        "NB-COMP",
+        "NB-EDIT",
+        "NB-COMPLEX"
+      ],
+      "limites_referencias_por_rol": {
+        "objeto": 6,
+        "personaje_consistente": 5,
+        "estilo": 3
+      },
+      "activar_grounding": false,
+      "thinking": "no se desactiva según fuente"
+    }
+  ],
+  "parameter_serialization": {
+    "GPT Image 2": {
+      "salida.parametros.tamano": "size",
+      "salida.parametros.quality": "quality"
+    },
+    "Flux": {
+      "salida.parametros.aspect_ratio": "aspect_ratio",
+      "salida.parametros.seed": "seed",
+      "salida.parametros.prompt_upsampling": "prompt_upsampling"
+    },
+    "Midjourney": {
+      "salida.parametros.flags": "sufijo en prompt"
+    },
+    "Ideogram": {
+      "salida.parametros.aspect_ratio": "aspect_ratio",
+      "salida.parametros.magic_prompt": "magic_prompt",
+      "salida.parametros.style_type": "style_type"
+    },
+    "Seedream": {
+      "salida.parametros.aspect_ratio": "aspect_ratio",
+      "salida.parametros.guidance_scale": "guidance_scale",
+      "salida.parametros.steps": "steps"
+    },
+    "Nano Banana 2": "image_size según fuente; nombre del parámetro de ratio requiere interfaz exacta. aspectRatio de Gemini2.5 no se traslada automáticamente."
+  },
+  "limitations": "Los contratos de variante reproducen el corpus suministrado; no prueban disponibilidad ni parámetros actuales de una API. Las combinaciones modelo/operación sin adaptador completo conservan reglas elegibles; hay que resolver contrato técnico antes de ejecución. No generar prompt de una combinación usando por defecto un adaptador ajeno.",
+  "conditional_modules": [
+    {
+      "id": "fotografia",
+      "condition": "El brief aprobado exige imagen fotográfica y nueva definición de toma/luz; una edición que preserva esos atributos no exige redefinirlos.",
+      "required_fields": [
+        "entrada.camara.plano",
+        "entrada.camara.angulo",
+        "entrada.camara.efecto_optico",
+        "entrada.luz.fuente",
+        "entrada.luz.direccion",
+        "entrada.luz.dureza",
+        "entrada.luz.distribucion",
+        "entrada.luz.contraste"
+      ],
+      "activation_evidence": "Dato aprobado + ítem taxonómico y condición; no activación por palabra suelta."
+    },
+    {
+      "id": "accion_fisica",
+      "condition": "El caso o regla aplicable prescribe acción/régimen físico visible.",
+      "required_fields": [
+        "entrada.accion.tipo",
+        "entrada.accion.estado_visible",
+        "entrada.fisica.regimen"
+      ],
+      "activation_evidence": "Caso y fuente."
+    },
+    {
+      "id": "sujetos_visibles",
+      "condition": "El caso define sujetos representados.",
+      "required_fields": [
+        "entrada.sujetos.cantidad",
+        "entrada.sujetos.items"
+      ],
+      "activation_evidence": "Caso y fuente."
+    },
+    {
+      "id": "materialidad",
+      "condition": "Materialidad/superficie relevante en caso o regla.",
+      "required_fields": [
+        "entrada.color_material.materiales",
+        "entrada.color_material.texturas"
+      ],
+      "activation_evidence": "Caso y fuente."
+    }
+  ]
+}

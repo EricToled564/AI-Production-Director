@@ -1,0 +1,1361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:contenido:templates:20261019",
+  "title": "Instancia de contrato de imagen/orquestación",
+  "type": "object",
+  "properties": {
+    "entrada": {
+      "type": "object",
+      "properties": {
+        "ruta": {
+          "type": "object",
+          "properties": {
+            "flujo": {
+              "type": "string",
+              "description": "siempre",
+              "enum": [
+                "FL01",
+                "FL02",
+                "FL03",
+                "FL04"
+              ]
+            },
+            "seccion": {
+              "type": "string",
+              "description": "si fuente define sección"
+            },
+            "etapa": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "paso": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "operativa": {
+              "type": "string",
+              "description": "si existe ruta operativa en contexto"
+            }
+          },
+          "additionalProperties": false
+        },
+        "operacion": {
+          "type": "string",
+          "description": "siempre",
+          "enum": [
+            "genesis",
+            "composicion_referencias",
+            "ancla_referencia",
+            "ancla_ff",
+            "ancla_lf",
+            "edicion",
+            "transferencia_estilo",
+            "boceto_a_final"
+          ]
+        },
+        "modelo": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "string",
+              "description": "siempre"
+            },
+            "version": {
+              "type": "string",
+              "description": "siempre"
+            },
+            "interfaz": {
+              "type": "string",
+              "description": "siempre"
+            }
+          },
+          "additionalProperties": false
+        },
+        "pieza": {
+          "type": "object",
+          "properties": {
+            "tipo": {
+              "type": "string",
+              "description": "siempre"
+            },
+            "tematica": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si el caso tiene tema/sector"
+            },
+            "objetivo": {
+              "type": "string",
+              "description": "siempre"
+            },
+            "uso": {
+              "type": "string",
+              "description": "siempre"
+            }
+          },
+          "additionalProperties": false
+        },
+        "formato": {
+          "type": "object",
+          "properties": {
+            "ratio": {
+              "type": "string",
+              "description": "siempre",
+              "pattern": "^[1-9][0-9]*(?:\\.[0-9]+)?:[1-9][0-9]*(?:\\.[0-9]+)?$"
+            },
+            "ancho_px": {
+              "type": "integer",
+              "description": "cuando contrato usa tamaño píxel"
+            },
+            "alto_px": {
+              "type": "integer",
+              "description": "cuando contrato usa tamaño píxel"
+            },
+            "resolucion": {
+              "type": "string",
+              "description": "cuando contrato usa resolución nominal"
+            }
+          },
+          "additionalProperties": false
+        },
+        "idioma_prompt": {
+          "type": "string",
+          "description": "siempre"
+        },
+        "sujetos": {
+          "type": "object",
+          "properties": {
+            "cantidad": {
+              "type": "integer",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo",
+              "minimum": 0
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "cada sujeto descrito"
+                  },
+                  "clase": {
+                    "type": "string",
+                    "description": "cada sujeto descrito"
+                  },
+                  "descripcion": {
+                    "type": "string",
+                    "description": "cada sujeto descrito"
+                  },
+                  "edad": {
+                    "type": "number",
+                    "description": "si se prescribe edad"
+                  },
+                  "genero": {
+                    "type": "string",
+                    "description": "si se prescribe"
+                  },
+                  "rasgos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "si se prescriben"
+                  },
+                  "cabello": {
+                    "type": "string",
+                    "description": "si se prescribe"
+                  },
+                  "vestuario": {
+                    "type": "string",
+                    "description": "si se prescribe"
+                  },
+                  "expresion": {
+                    "type": "string",
+                    "description": "cuando expresa emoción"
+                  },
+                  "posicion": {
+                    "type": "string",
+                    "description": "si hay disposición espacial"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "accion": {
+          "type": "object",
+          "properties": {
+            "tipo": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "estado_visible": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "postura": {
+              "type": "string",
+              "description": "si hay acción corporal"
+            },
+            "evidencia_fisica": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si hay movimiento congelado"
+            }
+          },
+          "additionalProperties": false
+        },
+        "fisica": {
+          "type": "object",
+          "properties": {
+            "regimen": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            }
+          },
+          "additionalProperties": false
+        },
+        "escena": {
+          "type": "object",
+          "properties": {
+            "espacio": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "entorno": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "momento": {
+              "type": "string",
+              "description": "si determina luz/acción"
+            },
+            "clima": {
+              "type": "string",
+              "description": "si tiene efecto visual"
+            },
+            "planos": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si la composición tiene capas"
+            }
+          },
+          "additionalProperties": false
+        },
+        "estilo": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+        },
+        "representacion": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+        },
+        "identidad": {
+          "type": "object",
+          "properties": {
+            "invariantes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si exige reconocimiento/continuidad"
+            },
+            "referencias": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si identidad respaldada por referencias"
+            }
+          },
+          "additionalProperties": false
+        },
+        "blocking": {
+          "type": "object",
+          "properties": {
+            "contactos": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si hay contactos"
+            },
+            "relaciones": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si hay múltiples elementos relacionados"
+            }
+          },
+          "additionalProperties": false
+        },
+        "rostro": {
+          "type": "object",
+          "properties": {
+            "ocupacion": {
+              "type": "number",
+              "description": "si rostro visible y condiciona reglas; proporción 0..1",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "detalles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si rostro visible"
+            }
+          },
+          "additionalProperties": false
+        },
+        "camara": {
+          "type": "object",
+          "properties": {
+            "plano": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "angulo": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "altura": {
+              "type": "string",
+              "description": "cuando el ángulo requiere ubicación física"
+            },
+            "efecto_optico": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "lente_intencion": {
+              "type": "string",
+              "description": "cuando se prescribe óptica"
+            }
+          },
+          "additionalProperties": false
+        },
+        "luz": {
+          "type": "object",
+          "properties": {
+            "fuente": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "direccion": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "dureza": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "distribucion": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "contraste": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "specular": {
+              "type": "string",
+              "description": "cuando afecta materiales"
+            }
+          },
+          "additionalProperties": false
+        },
+        "color_material": {
+          "type": "object",
+          "properties": {
+            "paleta": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            },
+            "grade": {
+              "type": "string",
+              "description": "cuando tratamiento de color"
+            },
+            "materiales": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando superficies relevantes"
+            },
+            "texturas": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando superficies relevantes"
+            },
+            "acabado": {
+              "type": "string",
+              "description": "cuando superficies relevantes"
+            }
+          },
+          "additionalProperties": false
+        },
+        "composicion": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+        },
+        "referencias": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "archivo": {
+                "type": "string",
+                "description": "cada referencia"
+              },
+              "sha256": {
+                "type": "string",
+                "description": "cada referencia",
+                "pattern": "^[a-fA-F0-9]{64}$"
+              },
+              "medio": {
+                "type": "string",
+                "description": "cada referencia"
+              },
+              "rol": {
+                "type": "string",
+                "description": "cada referencia"
+              },
+              "indice": {
+                "type": "integer",
+                "description": "cada referencia"
+              },
+              "preservar": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "cada referencia con invariantes"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "archivo",
+              "sha256",
+              "medio",
+              "rol",
+              "indice"
+            ]
+          }
+        },
+        "restricciones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "siempre; [] solo si no se impuso ninguna"
+        },
+        "contexto_narrativo": {
+          "type": "object",
+          "properties": {
+            "genero": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si restringe activo"
+            },
+            "beats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si restringe activo"
+            },
+            "dialogo": {
+              "type": "string",
+              "description": "si restringe efecto visible"
+            }
+          },
+          "additionalProperties": false
+        },
+        "contexto_secuencia": {
+          "type": "object",
+          "properties": {
+            "montaje": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si restringe activo"
+            }
+          },
+          "additionalProperties": false
+        },
+        "plano": {
+          "type": "object",
+          "properties": {
+            "funcion": {
+              "type": "string",
+              "description": "cuando la operación, módulo activado o fuente lo exige; no se inventa un valor para llenar el campo"
+            }
+          },
+          "additionalProperties": false
+        },
+        "publicacion": {
+          "type": "object",
+          "properties": {
+            "destino": {
+              "type": "string",
+              "description": "si destino impone condiciones"
+            },
+            "ubicacion": {
+              "type": "string",
+              "description": "si ubicación impone condiciones"
+            },
+            "literal": {
+              "type": "string",
+              "description": "si fuente especifica publicación"
+            },
+            "fuente": {
+              "type": "string",
+              "description": "si publicación citada"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ancla": {
+          "type": "object",
+          "properties": {
+            "rol": {
+              "type": "string",
+              "description": "operación ancla"
+            },
+            "clip_id": {
+              "type": "string",
+              "description": "FF/LF asociado clip"
+            },
+            "pareja_id": {
+              "type": "string",
+              "description": "solo si exige pareja"
+            },
+            "estado_inicial": {
+              "type": "string",
+              "description": "FF"
+            },
+            "estado_final": {
+              "type": "string",
+              "description": "LF"
+            },
+            "invariantes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "operación ancla"
+            },
+            "series_lock": {
+              "type": "string",
+              "description": "ancla de proyecto con series lock"
+            },
+            "plan_anchors": {
+              "type": "string",
+              "description": "ancla de proyecto con plan"
+            },
+            "contexto_clip": {
+              "type": "object",
+              "properties": {
+                "camara": {
+                  "type": "string",
+                  "description": "FF/LF; estado o contexto efectivo, incluso cámara fija"
+                },
+                "transicion": {
+                  "type": "string",
+                  "description": "FF/LF; relación efectiva"
+                },
+                "audio": {
+                  "type": "string",
+                  "description": "FF/LF; contexto efectivo incluso silencio"
+                },
+                "animacion": {
+                  "type": "string",
+                  "description": "cuando condiciona frame"
+                },
+                "duracion": {
+                  "type": "number",
+                  "description": "cuando handoff lo requiere"
+                },
+                "efecto_visible": {
+                  "type": "string",
+                  "description": "si contexto sonoro tiene efecto visible"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "edicion": {
+          "type": "object",
+          "properties": {
+            "cambio": {
+              "type": "string",
+              "description": "edición"
+            },
+            "preservar": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "edición"
+            },
+            "mascara": {
+              "type": "string",
+              "description": "solo admitida por modelo/interfaz"
+            }
+          },
+          "additionalProperties": false
+        },
+        "transferencia": {
+          "type": "object",
+          "properties": {
+            "propiedades": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "transferencia de estilo"
+            }
+          },
+          "additionalProperties": false
+        },
+        "boceto": {
+          "type": "object",
+          "properties": {
+            "estructura_preservada": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "boceto a final"
+            }
+          },
+          "additionalProperties": false
+        },
+        "texto_marca": {
+          "type": "object",
+          "properties": {
+            "literales": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "texto integrado solicitado"
+            },
+            "posicion": {
+              "type": "string",
+              "description": "texto integrado solicitado"
+            },
+            "tipografia": {
+              "type": "string",
+              "description": "texto integrado solicitado"
+            },
+            "logos_aprobados": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "marca autorizada"
+            }
+          },
+          "additionalProperties": false
+        },
+        "texto_integrado_override": {
+          "type": "object",
+          "properties": {
+            "habilitado": {
+              "type": "boolean",
+              "description": "Ideogram"
+            },
+            "rationale": {
+              "type": "string",
+              "description": "Ideogram integrado"
+            }
+          },
+          "additionalProperties": false
+        },
+        "grounding": {
+          "type": "object",
+          "properties": {
+            "objetivo": {
+              "type": "string",
+              "description": "si grounding"
+            },
+            "evidencia": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "si grounding ejecutado"
+            }
+          },
+          "additionalProperties": false
+        },
+        "presupuesto": {
+          "type": "object",
+          "properties": {
+            "creditos_maximos": {
+              "type": "number",
+              "description": "antes ejecución con costo"
+            }
+          },
+          "additionalProperties": false
+        },
+        "selecciones_taxonomicas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "siempre"
+        },
+        "modulos_activos": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "fotografia",
+              "accion_fisica",
+              "sujetos_visibles",
+              "materialidad"
+            ]
+          },
+          "description": "cuando se activa un módulo condicional"
+        }
+      },
+      "additionalProperties": false
+    },
+    "salida": {
+      "type": "object",
+      "properties": {
+        "uso": {
+          "type": "string",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "slots": {
+          "type": "object",
+          "properties": {
+            "Scene": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Subject": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Important Details": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Use Case": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Constraints": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Change": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "Preserve": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            }
+          },
+          "additionalProperties": false
+        },
+        "parametros": {
+          "type": "object",
+          "properties": {
+            "aspecto": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "tamano": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "quality": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "image_size": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "aspect_ratio": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "aspectRatio": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "seed": {
+              "type": "integer",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "thinking_level": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "prompt_upsampling": {
+              "type": "boolean",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "magic_prompt": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "style_type": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "guidance_scale": {
+              "type": "number",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "steps": {
+              "type": "integer",
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "flags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            }
+          },
+          "additionalProperties": false
+        },
+        "referencias": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "validaciones": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "traza": {
+          "type": "object",
+          "properties": {
+            "ruta": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "materias": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "procedencia": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "decisiones": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "aplicaciones": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "efectos": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "compactacion": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "consultas": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            }
+          },
+          "additionalProperties": false
+        },
+        "notas_entrega": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "handoff": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "aceptacion": {
+          "type": "object",
+          "properties": {
+            "critique": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "detalles_auditados": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "rondas": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "description": "cuando el caso o una obligación lo requiera"
+            },
+            "sha256_activo": {
+              "type": "string",
+              "description": "cuando el caso o una obligación lo requiera"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "orquestacion": {
+      "type": "object",
+      "properties": {
+        "paso": {
+          "type": "string",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "evento": {
+          "type": "string",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "condicion": {
+          "type": "object",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "accion": {
+          "type": "string",
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "compuerta": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        },
+        "evidencia": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "cuando el caso o una obligación lo requiera"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contratos_externos": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "cuando el caso o una obligación lo requiera"
+    },
+    "contrato_id": {
+      "type": "string"
+    },
+    "version": {
+      "const": "20261019"
+    },
+    "procedencia_campos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "origen",
+          "fuente",
+          "valor_sha256",
+          "aprobacion_id"
+        ],
+        "properties": {
+          "path": {
+            "enum": [
+              "entrada",
+              "entrada.ruta",
+              "entrada.ruta.flujo",
+              "entrada.ruta.seccion",
+              "entrada.ruta.etapa",
+              "entrada.ruta.paso",
+              "entrada.ruta.operativa",
+              "entrada.operacion",
+              "entrada.modelo",
+              "entrada.modelo.nombre",
+              "entrada.modelo.version",
+              "entrada.modelo.interfaz",
+              "entrada.pieza",
+              "entrada.pieza.tipo",
+              "entrada.pieza.tematica",
+              "entrada.pieza.tematica[]",
+              "entrada.pieza.objetivo",
+              "entrada.pieza.uso",
+              "entrada.formato",
+              "entrada.formato.ratio",
+              "entrada.formato.ancho_px",
+              "entrada.formato.alto_px",
+              "entrada.formato.resolucion",
+              "entrada.idioma_prompt",
+              "entrada.sujetos",
+              "entrada.sujetos.cantidad",
+              "entrada.sujetos.items",
+              "entrada.sujetos.items[]",
+              "entrada.sujetos.items[].id",
+              "entrada.sujetos.items[].clase",
+              "entrada.sujetos.items[].descripcion",
+              "entrada.sujetos.items[].edad",
+              "entrada.sujetos.items[].genero",
+              "entrada.sujetos.items[].rasgos",
+              "entrada.sujetos.items[].rasgos[]",
+              "entrada.sujetos.items[].cabello",
+              "entrada.sujetos.items[].vestuario",
+              "entrada.sujetos.items[].expresion",
+              "entrada.sujetos.items[].posicion",
+              "entrada.accion",
+              "entrada.accion.tipo",
+              "entrada.accion.estado_visible",
+              "entrada.accion.postura",
+              "entrada.accion.evidencia_fisica",
+              "entrada.accion.evidencia_fisica[]",
+              "entrada.fisica",
+              "entrada.fisica.regimen",
+              "entrada.fisica.regimen[]",
+              "entrada.escena",
+              "entrada.escena.espacio",
+              "entrada.escena.entorno",
+              "entrada.escena.momento",
+              "entrada.escena.clima",
+              "entrada.escena.planos",
+              "entrada.escena.planos[]",
+              "entrada.estilo",
+              "entrada.estilo[]",
+              "entrada.representacion",
+              "entrada.representacion[]",
+              "entrada.identidad",
+              "entrada.identidad.invariantes",
+              "entrada.identidad.invariantes[]",
+              "entrada.identidad.referencias",
+              "entrada.identidad.referencias[]",
+              "entrada.blocking",
+              "entrada.blocking.contactos",
+              "entrada.blocking.contactos[]",
+              "entrada.blocking.relaciones",
+              "entrada.blocking.relaciones[]",
+              "entrada.rostro",
+              "entrada.rostro.ocupacion",
+              "entrada.rostro.detalles",
+              "entrada.rostro.detalles[]",
+              "entrada.camara",
+              "entrada.camara.plano",
+              "entrada.camara.angulo",
+              "entrada.camara.altura",
+              "entrada.camara.efecto_optico",
+              "entrada.camara.lente_intencion",
+              "entrada.luz",
+              "entrada.luz.fuente",
+              "entrada.luz.direccion",
+              "entrada.luz.dureza",
+              "entrada.luz.distribucion",
+              "entrada.luz.contraste",
+              "entrada.luz.specular",
+              "entrada.color_material",
+              "entrada.color_material.paleta",
+              "entrada.color_material.paleta[]",
+              "entrada.color_material.grade",
+              "entrada.color_material.materiales",
+              "entrada.color_material.materiales[]",
+              "entrada.color_material.texturas",
+              "entrada.color_material.texturas[]",
+              "entrada.color_material.acabado",
+              "entrada.composicion",
+              "entrada.composicion[]",
+              "entrada.referencias",
+              "entrada.referencias[]",
+              "entrada.referencias[].archivo",
+              "entrada.referencias[].sha256",
+              "entrada.referencias[].medio",
+              "entrada.referencias[].rol",
+              "entrada.referencias[].indice",
+              "entrada.referencias[].preservar",
+              "entrada.referencias[].preservar[]",
+              "entrada.restricciones",
+              "entrada.restricciones[]",
+              "entrada.contexto_narrativo",
+              "entrada.contexto_narrativo.genero",
+              "entrada.contexto_narrativo.genero[]",
+              "entrada.contexto_narrativo.beats",
+              "entrada.contexto_narrativo.beats[]",
+              "entrada.contexto_narrativo.dialogo",
+              "entrada.contexto_secuencia",
+              "entrada.contexto_secuencia.montaje",
+              "entrada.contexto_secuencia.montaje[]",
+              "entrada.plano",
+              "entrada.plano.funcion",
+              "entrada.publicacion",
+              "entrada.publicacion.destino",
+              "entrada.publicacion.ubicacion",
+              "entrada.publicacion.literal",
+              "entrada.publicacion.fuente",
+              "entrada.ancla",
+              "entrada.ancla.rol",
+              "entrada.ancla.clip_id",
+              "entrada.ancla.pareja_id",
+              "entrada.ancla.estado_inicial",
+              "entrada.ancla.estado_final",
+              "entrada.ancla.invariantes",
+              "entrada.ancla.invariantes[]",
+              "entrada.ancla.series_lock",
+              "entrada.ancla.plan_anchors",
+              "entrada.ancla.contexto_clip",
+              "entrada.ancla.contexto_clip.camara",
+              "entrada.ancla.contexto_clip.transicion",
+              "entrada.ancla.contexto_clip.audio",
+              "entrada.ancla.contexto_clip.animacion",
+              "entrada.ancla.contexto_clip.duracion",
+              "entrada.ancla.contexto_clip.efecto_visible",
+              "entrada.edicion",
+              "entrada.edicion.cambio",
+              "entrada.edicion.preservar",
+              "entrada.edicion.preservar[]",
+              "entrada.edicion.mascara",
+              "entrada.transferencia",
+              "entrada.transferencia.propiedades",
+              "entrada.transferencia.propiedades[]",
+              "entrada.boceto",
+              "entrada.boceto.estructura_preservada",
+              "entrada.boceto.estructura_preservada[]",
+              "entrada.texto_marca",
+              "entrada.texto_marca.literales",
+              "entrada.texto_marca.literales[]",
+              "entrada.texto_marca.posicion",
+              "entrada.texto_marca.tipografia",
+              "entrada.texto_marca.logos_aprobados",
+              "entrada.texto_marca.logos_aprobados[]",
+              "entrada.texto_integrado_override",
+              "entrada.texto_integrado_override.habilitado",
+              "entrada.texto_integrado_override.rationale",
+              "entrada.grounding",
+              "entrada.grounding.objetivo",
+              "entrada.grounding.evidencia",
+              "entrada.grounding.evidencia[]",
+              "entrada.presupuesto",
+              "entrada.presupuesto.creditos_maximos",
+              "entrada.selecciones_taxonomicas",
+              "entrada.selecciones_taxonomicas[]",
+              "entrada.modulos_activos",
+              "entrada.modulos_activos[]",
+              "salida",
+              "salida.uso",
+              "salida.prompt",
+              "salida.slots",
+              "salida.slots.Scene",
+              "salida.slots.Subject",
+              "salida.slots.Important Details",
+              "salida.slots.Use Case",
+              "salida.slots.Constraints",
+              "salida.slots.Change",
+              "salida.slots.Preserve",
+              "salida.parametros",
+              "salida.parametros.aspecto",
+              "salida.parametros.tamano",
+              "salida.parametros.quality",
+              "salida.parametros.image_size",
+              "salida.parametros.aspect_ratio",
+              "salida.parametros.aspectRatio",
+              "salida.parametros.seed",
+              "salida.parametros.thinking_level",
+              "salida.parametros.prompt_upsampling",
+              "salida.parametros.magic_prompt",
+              "salida.parametros.style_type",
+              "salida.parametros.guidance_scale",
+              "salida.parametros.steps",
+              "salida.parametros.flags",
+              "salida.parametros.flags[]",
+              "salida.referencias",
+              "salida.referencias[]",
+              "salida.validaciones",
+              "salida.validaciones[]",
+              "salida.traza",
+              "salida.traza.ruta",
+              "salida.traza.ruta[]",
+              "salida.traza.materias",
+              "salida.traza.materias[]",
+              "salida.traza.procedencia",
+              "salida.traza.procedencia[]",
+              "salida.traza.decisiones",
+              "salida.traza.decisiones[]",
+              "salida.traza.aplicaciones",
+              "salida.traza.aplicaciones[]",
+              "salida.traza.efectos",
+              "salida.traza.efectos[]",
+              "salida.traza.compactacion",
+              "salida.traza.compactacion[]",
+              "salida.traza.consultas",
+              "salida.traza.consultas[]",
+              "salida.notas_entrega",
+              "salida.notas_entrega[]",
+              "salida.handoff",
+              "salida.handoff[]",
+              "salida.aceptacion",
+              "salida.aceptacion.critique",
+              "salida.aceptacion.critique[]",
+              "salida.aceptacion.detalles_auditados",
+              "salida.aceptacion.detalles_auditados[]",
+              "salida.aceptacion.rondas",
+              "salida.aceptacion.rondas[]",
+              "salida.aceptacion.sha256_activo",
+              "orquestacion",
+              "orquestacion.paso",
+              "orquestacion.evento",
+              "orquestacion.condicion",
+              "orquestacion.accion",
+              "orquestacion.compuerta",
+              "orquestacion.compuerta[]",
+              "orquestacion.evidencia",
+              "orquestacion.evidencia[]",
+              "contratos_externos",
+              "contratos_externos[]",
+              "contrato_id",
+              "version",
+              "procedencia_campos",
+              "procedencia_campos[]",
+              "procedencia_campos[].path",
+              "procedencia_campos[].origen",
+              "procedencia_campos[].fuente",
+              "procedencia_campos[].valor_sha256",
+              "procedencia_campos[].aprobacion_id",
+              "aprobacion_brief",
+              "aprobacion_brief.brief_sha256",
+              "aprobacion_brief.mensaje_id",
+              "aprobacion_brief.aprobado"
+            ]
+          },
+          "origen": {
+            "enum": [
+              "usuario",
+              "herencia_aprobada",
+              "inferencia_para_aprobacion",
+              "fuente_documental"
+            ]
+          },
+          "fuente": {
+            "type": "string"
+          },
+          "valor_sha256": {
+            "type": "string"
+          },
+          "aprobacion_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "aprobacion_brief": {
+      "type": "object",
+      "required": [
+        "brief_sha256",
+        "mensaje_id",
+        "aprobado"
+      ],
+      "properties": {
+        "brief_sha256": {
+          "type": "string"
+        },
+        "mensaje_id": {
+          "type": "string"
+        },
+        "aprobado": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "contrato_id",
+    "version",
+    "entrada",
+    "procedencia_campos"
+  ]
+}

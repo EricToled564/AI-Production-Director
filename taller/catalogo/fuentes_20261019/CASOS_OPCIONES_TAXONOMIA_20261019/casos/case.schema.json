@@ -1,0 +1,14 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Caso compuesto del catálogo de opciones taxonómicas",
+ "type":"object","additionalProperties":false,
+ "required":["case_id","taxonomy_sha256","brief_literal","campos","requisitos_de_completitud","aprobacion"],
+ "properties":{
+  "case_id":{"type":"string","minLength":1},
+  "taxonomy_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+  "brief_literal":{"type":"string"},
+  "campos":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["path","valor","origen","option_ids","evidencia","confirmado"],"properties":{"path":{"type":"string"},"valor":{},"origen":{"enum":["USUARIO","HERENCIA_DOCUMENTO","INFERENCIA_PROPUESTA"]},"option_ids":{"type":"array","uniqueItems":true,"items":{"type":"string"}},"evidencia":{"type":"string","minLength":1},"confirmado":{"type":"boolean"}}}},
+  "requisitos_de_completitud":{"type":"array","items":{"type":"object","required":["path","motivo","resuelto"],"properties":{"path":{"type":"string"},"motivo":{"type":"string"},"resuelto":{"type":"boolean"},"pregunta":{"type":"string"}}}},
+  "aprobacion":{"type":"object","required":["aprobado","evidencia"],"properties":{"aprobado":{"type":"boolean"},"evidencia":{"type":"string"}}}
+ }
+}

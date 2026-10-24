@@ -4,19 +4,18 @@ Nada se escribe a mano salvo la cita de las líneas de la taxonomía de donde sa
 está tabulada con ID, y las extensiones aprobadas por Eric el 2026-10-23, que quedan marcadas aparte con
 origen "extension_aprobada" para que el control de coincidencia las cuente por separado.
 
-    python3 construir_esquema.py <carpeta_docs>
+    python3 construir_esquema.py
 """
 import csv
 import hashlib
 import json
-import sys
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
-DOCS = Path(sys.argv[1])
-TAX = DOCS / "p2/ARCHIVOS/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md"
-CASOS = DOCS / "59239886-CASOS_OPCIONES_TAXONOMIA_20261019/casos"
-TPL = DOCS / "08fe4a51-TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019/templates"
+DOCS = AQUI.parent / "fuentes_20261019"  # originales del 2026-10-19; procedencia y hashes en su PROCEDENCIA.md
+TAX = DOCS / "00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md"
+CASOS = DOCS / "CASOS_OPCIONES_TAXONOMIA_20261019/casos"
+TPL = DOCS / "TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019/templates"
 lineas = TAX.read_text().splitlines()
 cat = json.loads((CASOS / "catalogo_opciones.json").read_text())
 mapa = json.loads((CASOS / "mapa_facetas_v5.json").read_text())
