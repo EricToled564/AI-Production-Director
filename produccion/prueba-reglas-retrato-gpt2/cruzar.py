@@ -16,9 +16,19 @@ AQUI = Path(__file__).resolve().parent
 CASOS = ["B1", "B2", "B3", "B4", "B5"]
 
 
+# Lotes revisados en una sola pasada (los revisores del lote 07 se detuvieron por presupuesto a pedido de Eric):
+# la pasada 2 toma el veredicto de la pasada 1, sin desacuerdos posibles, y el resumen los cuenta aparte.
+PASADA_UNICA = {"lote_07"}
+
+
 def cargar(pasada):
     out = {}
-    for f in sorted((AQUI / "veredictos" / pasada).glob("lote_*.json")):
+    for lote in sorted((AQUI / "lotes").glob("lote_*.json")):
+        f = AQUI / "veredictos" / pasada / lote.name
+        if not f.exists() and lote.stem in PASADA_UNICA:
+            f = AQUI / "veredictos" / "pasada_1" / lote.name
+        if not f.exists():
+            continue
         for r in json.loads(f.read_text(encoding="utf-8")):
             out[r["id"]] = r
     return out
@@ -56,6 +66,8 @@ def cruce():
     pares = len(univ) * len(CASOS)
     print(f"textos {len(univ)} · pares texto×caso {pares} · acuerdo {len(acuerdo)} ({100 * len(acuerdo) / pares:.1f} %)"
           f" · desacuerdos {len(desac)}")
+    unica = sum(len(json.loads((AQUI / "lotes" / f"{l}.json").read_text(encoding="utf-8"))) for l in PASADA_UNICA)
+    print(f"  de ellos en pasada única (sin segunda revisión): {unica} textos ({', '.join(sorted(PASADA_UNICA))})")
     for c in CASOS:
         n = sum(1 for (i, cc), e in acuerdo.items() if cc == c and e == "aplica")
         d = sum(1 for x in desac if x["caso"] == c)
@@ -80,7 +92,8 @@ def consolidar():
                     continue
                 ef = adj[k]["efecto"]
             elif estado(p1[u["id"]], c) == "aplica":
-                ef = efecto(p1[u["id"]], c) + " ‖ " + efecto(p2[u["id"]], c)
+                e1, e2 = efecto(p1[u["id"]], c), efecto(p2[u["id"]], c)
+                ef = e1 if e1 == e2 else e1 + " ‖ " + e2
             else:
                 continue
             sel[c].append({"id": u["id"], "archivo": u["archivo"], "linea": u["linea"], "texto": texto[u["id"]]["texto"],
