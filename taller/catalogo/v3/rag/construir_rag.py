@@ -130,11 +130,15 @@ def piloto():
     out = []
     for a in m.APLICACIONES:
         u = cat[a["id"]]
-        cond = json.dumps(a["r"], ensure_ascii=False) if a["r"] else "ninguna restricción de faceta (universal en facetas)"
+        # F29 (modelo) va aparte de r en el piloto; sin él una aplicación de gpt-image-1-mini parece de GPT Image 2
+        cond = (f"F29 {', '.join(a['f29'])} · " + (f"además {json.dumps(a['r'], ensure_ascii=False)}" if a["r"]
+                                                    else "sin otra restricción de faceta"))
         pasos = "todos los pasos de prompt" if a["f02"] == m.PASOS_PROMPT else ", ".join(a["f02"])
         out.append(("piloto-gpt-image", f"{u['archivo']}", int(u["linea"]), u["encabezado"], "aplicación aprobada",
                     f"{a['id']} · tipo {a.get('t61')} / {', '.join(a.get('t112', []))} · fuerza {', '.join(a['fuerza'])} · "
-                    f"uso {a['uso']} · condición {cond} · pasos {pasos} · acción {', '.join(a['accion'])} · destino "
+                    f"uso {a['uso']} · ámbito {', '.join(a['ambito'])} · objeto {a['objeto']} · F30 "
+                    f"{', '.join(a.get('f30', []))} · F31 {a['f31']} · condición {cond} · pasos {pasos} · acción "
+                    f"{', '.join(a['accion'])} · destino "
                     f"{', '.join(a['destino'])} · valor: {a['valor']} · fundamento: {a['fund']} · TEXTO: {u['texto']}"))
     for i, (tipo, just) in m.CONCILIACIONES.items():
         u = cat[i]

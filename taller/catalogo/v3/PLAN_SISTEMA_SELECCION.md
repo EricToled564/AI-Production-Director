@@ -1,7 +1,8 @@
 # Plan — sistema de selección de reglas para prompts de GPT Image 2 (imagen)
 
-Versión 2026-10-24 (reescrita tras leer completas las fuentes de clasificación). Propuesta para Eric; nada se ejecuta
-sin su OK. Cada afirmación cita su fuente; se comprueba con `python3 -I taller/catalogo/v3/rag/consultar_rag.py`.
+Versión 2026-10-24 b. Propuesta para Eric; nada se ejecuta sin su OK. Cada afirmación cita su fuente; se comprueba con
+`python3 -I taller/catalogo/v3/rag/consultar_rag.py`. Qué se leyó, sección por sección, con prueba de que cada línea
+leída está en el índice: `python3 -I taller/catalogo/v3/rag/registrar_lectura.py --ver`.
 
 ## 0. Objetivo y restricciones
 
@@ -12,12 +13,28 @@ sin su OK. Cada afirmación cita su fuente; se comprueba con `python3 -I taller/
 3. Solo textos de producción de imagen para GPT Image 2 (instrucción de Eric del 2026-10-24).
 4. Lo existente se conserva solo si acerca a 1–3.
 
-## 1. Lo que dicen las fuentes (leídas completas el 2026-10-24)
+## 1. Lo que dicen las fuentes
+
+Leídas completas y registradas el 2026-10-24: extracto de la taxonomía 10-19; esquema 10-19 entero (1,197 términos,
+37 facetas con 376 valores, 19 campos con 97 valores, 204 destinos, 29 extensiones, 11 citas); decisiones 10-11,
+10-23 y del repo; templates 10-19; guía v2; taxonomía 09-28; árbol 09-13 (JSON, catálogo y las 4,337 líneas del
+árbol); universales candidatas; piloto `gpt-image.md` (61 aplicaciones, 27 conciliaciones).
+
+Límites de las fuentes, no de la lectura:
+- El archivo completo de la taxonomía 00688 no está en ninguna rama ni en el contenedor; solo existen su extracto
+  (4 tramos) y el esquema construido de ella con número de línea.
+- Las citas de listas del esquema vienen cortadas a ~400 caracteres en el propio JSON.
+- El árbol 09-13 corta el texto de cada regla a ~150 caracteres.
+
+Los 1,511 textos originales (25 archivos) también están en el índice, pero son lo que se va a clasificar, no una
+clasificación: cada uno se lee completo en la tarea que clasifica su archivo (T3, T4, T6+).
 
 | Tema | Lo que establece la fuente | Dónde |
 |---|---|---|
 | Tipos de texto | regla · ejemplo · alternativa · sintaxis · valor de campo · selección «y demás valores existentes» | taxonomía 10-19 §1.12 punto 5 |
-| Tipo de enunciado | Prescripción · Descripción · Ejemplo | taxonomía 10-19 §6.1, líneas 2644–2646 (TRM-1321..1323) |
+| Tipo de enunciado | Prescripción · Descripción · Ejemplo | campo `tipo_enunciado` del esquema, líneas 2644–2646 de la taxonomía (TRM-1321..1323) |
+| Fuerza normativa | Obligación · Prohibición · Recomendación · Permiso · Sin fuerza normativa | campo `fuerza_normativa`, líneas 2650–2657 |
+| Condiciones | grupos TODAS / ALGUNA / NINGUNA; átomo = faceta o campo, operador (=, ≠, ∈, ∉, <, ≤, >, ≥, entre, existe, no existe), valor, unidad | taxonomía §7.2, línea 2800 |
 | Texto no normativo | estructura · código auxiliar · duplicado referenciado · otro contenido no normativo | taxonomía 10-19, gate final punto 1 |
 | Universalidad por faceta | VALOR (valores concretos) o UNIVERSAL (sin restricción de esa faceta, con evidencia) | taxonomía 10-19 §1.2 |
 | De dónde sale una restricción | del cuerpo, del encabezado o del documento; no basta buscar palabras | taxonomía 10-19 §1.6 y §1.12.4; DEC-000023 |
@@ -30,16 +47,30 @@ sin su OK. Cada afirmación cita su fuente; se comprueba con `python3 -I taller/
 ### El árbol del 2026-09-13
 Su **orden de niveles** es instrucción tuya y se conserva como orden de las columnas de la matriz.
 Su **asignación de reglas no sirve**: puso una regla en una rama solo si su texto contenía palabras de un léxico; si no,
-en «TODAS» (642). Eso contradice §1.6, §1.12.4 y DEC-000023. Medido en `gpt-image.md` contra tu piloto: de 6 líneas
-que marcó universales, 4 coinciden, 2 están mal (una es cabecera de tabla, otra es condicional), y faltan 19 de las 23
-universales del piloto.
+en «TODAS» (642). Eso contradice §1.6, §1.12.4 y DEC-000023. Pruebas en el propio árbol: la rama `deportiva` recibe
+«futuristic sports car…» (golden-rules.md:27) por la palabra «sports»; `viaje` recibe «direction of travel»
+(forge SKILL.md:303); `médica` recibe «clinical specification» (brand-lock-extractor SKILL.md:114) y «surgical image
+edit» (production-learnings v3.2:11); «GRUPO DE PERSONAS» tiene 0 reglas propias y ramas idénticas a «UNA PERSONA».
+
+Medido en `gpt-image.md` contra tu piloto. El piloto tiene 22 aplicaciones sin restricción de faceta para GPT Image 2
+(18 si además se exige que valgan en todos los pasos F02). De las 6 líneas que el árbol marcó universales, 4 coinciden
+(L3, L39, L53, L55), 2 no lo son (L34 es cabecera de tabla; L74 está condicionada a F32 «texto extenso o pequeño») y
+omite 18 (o 14).
+
+### Correcciones a lo que dije antes
+- Dije que L186 (INV-002412) era universal: falso. El piloto la restringe a F29 = `gpt-image-1-mini`
+  (clasificacion.py:377–378). Mi índice omitía F29; ya lo muestra.
+- Dije «faltan 19 de las 23»: el 23 contaba INV-002412. Las cifras correctas son las de arriba.
+- En la prueba de retratos, el veredicto del lote 07 sobre APD L5 y L135 dice «conservar atribución Serge Shima»;
+  contradice DEC-000024 (ninguna atribución a terceros en material del cliente). Sigue sin corregir.
 
 ## 2. Diseño (sin cambios de fondo respecto a tu instrucción)
 
 1. **Número**: id INV de la base de 13,005 (estable, §1.8). Una fila por aplicación cuando un texto tiene dos condiciones (§7.2).
 2. **Tipo de texto**: los de la tabla de §1 (tipos de §1.12.5 o §6.1, decisión D1). Cada tipo va a su tabla.
 3. **Universalidad de una regla** = el nivel más profundo del orden de §1 en el que tiene VALOR. Universal = UNIVERSAL en
-   todas las columnas. Se decide leyendo cuerpo, encabezado y documento, nunca por palabras.
+   todas las columnas, incluidas F29 (modelo) y F02 (paso), que el piloto registra aparte de las demás restricciones.
+   Se decide leyendo cuerpo, encabezado y documento, nunca por palabras.
 4. **Uso**: las universales y las de sintaxis del modelo se incorporan al template (§5.3, DEC-000025) con vínculo
    regla → bloque → validación, y quedan desactivadas para la selección. Las demás quedan ACTIVO EN SELECCIÓN.
 5. **Matriz**: columnas en el orden de §1; en cada celda «TODOS», el valor o valores de la taxonomía (p. ej. luz =
