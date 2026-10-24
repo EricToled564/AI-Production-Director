@@ -173,3 +173,41 @@ Inferencias mías, para tu aprobación:
 - Espacio oscuro libre sobre la cabeza para el texto del póster, que se compone después (sin texto en la imagen).
 - Bruma leve de escenario para que el contraluz se lea.
 - F04 no añade «póster o key art»: sin texto en la imagen, las plantillas de póster del piloto (INV-002406) exigen F32 texto corto y no aplican.
+
+## B6 — Hombre mediterráneo bien parecido de 25 años, pelo castaño oscuro y barba salt and pepper, lentes de armazón negro, camisa blanca italiana, zapatos Armani negros, pantalón de vestir gris claro, cinturón negro; retrato de cuerpo entero sobre fondo gris claro, iluminación cálida a 45 grados
+
+Uso: Retrato de cuerpo entero (uso final no indicado) · Formato 2:3
+
+```text
+Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Quality: high
+Size: 1024x1536
+
+Prompt:
+Scene: Create a full-length studio portrait photograph against a seamless light grey backdrop #C9C9C7 that curves smoothly into the floor; his soft shadow falls on the floor behind him to the right.
+Subject: A Mediterranean man of 25, standing full body from head to shoes in the center of the frame, weight on his left leg, body turned slightly toward camera, looking into the lens with a relaxed closed-mouth expression; olive skin, dark brown eyes, a strong jaw, dark brown hair with premature salt-and-pepper grey combed back, a matching short salt-and-pepper beard, black acetate rectangular glasses. He wears a white Italian cotton dress shirt with a spread collar tucked into light grey tailored wool dress trousers with a sharp crease, a black leather belt with a plain silver buckle, and polished black leather oxford shoes.
+Important Details: One warm key light at 45 degrees from camera left and slightly above his head models the face and the shirt folds, with soft falloff into gentle shadow on his right side and a faint low fill; warm skin tones against the neutral grey. Natural fabric folds at the elbows and waist, visible cotton weave on the shirt, fine wool texture on the trousers, small specular highlights on the shoe toes and the glasses frame. Camera at waist height, 85mm feel, the whole body sharp from hair to shoes. Real skin texture with visible pores.
+Use Case: full-length portrait for a menswear lookbook, looks like a real studio photo
+Constraints: Solo portrait of him alone, the full body from head to shoes inside the frame, with natural skin texture and no AI rendering artifacts; the frame stays free of text, logos and brand marks.
+```
+
+Validación: sin fallas · 281 palabras · 21 reglas del piloto seleccionadas
+
+Reglas aplicadas por lectura directa (sin clasificar todavía):
+
+- «Armani» → hechos visuales del zapato, sin marca → image/references/gpt-image.md:38
+- «bien parecido» → rasgos concretos, sin elogio vago → image/references/gpt-image.md:32, :36
+- luz clave única con dirección declarada → image/references/creative-direction.md:7, :11
+- natural skin texture, no AI rendering artifacts → visual-prompt-forge/adapters/gpt-image.md:57, :90
+- microdetalle de tela, especulares y caída → image/references/prompt-framework.md:212–216
+- encuadre positivo («solo portrait») → image/references/golden-rules.md:16
+- fondo con hex → image/references/golden-rules.md:36
+
+Inferencias mías, para tu aprobación:
+
+- Formato 2:3 vertical (1024x1536), porque es cuerpo entero; el brief no fija formato.
+- Luz cálida a 45° desde la izquierda de cámara y un poco arriba; el brief no dice el lado.
+- «Salt and pepper» a los 25 años = canas prematuras; lo declaro así para que el modelo no lo envejezca.
+- Zapatos: oxford de piel negra pulida, sin marca visible (sustituye «Armani»).
+- Uso: lookbook de moda masculina; el brief no lo dice. Cámbialo si es otro.
+- Rasgos: piel oliva, ojos castaño oscuro, mandíbula marcada (traducción de «bien parecido»).
