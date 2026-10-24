@@ -30,23 +30,43 @@ REQUERIDOS = {  # texto fijo que todo prompt debe contener, con su fuente
 
 def armar(b):
     escena = f"Create a photograph {b['escena']}"
+    refs = "".join(r + "\n" for r in b.get("referencias", []))  # gpt-image.md:104–109: cada imagen con su rol
     detalles = (f"{b['luz']} {b['microdetalle']} {b['camara']}. Real skin texture with visible pores. Palette of "
                 + ", ".join(f"{n} {h}" for n, h in b["paleta"][:-1]) + f" and {b['paleta'][-1][0]} {b['paleta'][-1][1]}.")
     restr = (f"Solo portrait of {b['pronombre']} alone{(', ' + b['restriccion_extra']) if b.get('restriccion_extra') else ''}"
              f", with natural skin texture and no AI rendering artifacts; the frame stays free of {b['libre_de']}.")
     slots = {"Scene": escena, "Subject": b["sujeto"], "Important Details": detalles,
              "Use Case": f"{b['uso']}, looks like a real photo", "Constraints": restr}
-    return "\n".join(f"{s}: {slots[s]}" for s in SLOTS)
+    return refs + "\n".join(f"{s}: {slots[s]}" for s in SLOTS)
+
+
+def tamano(b):
+    """Tamaño fijo por ratio, o uno declarado que cumpla gpt-image.md:53–57 (lados <3840, múltiplos de 16, ≤3:1,
+    655 360–8 294 400 px) sin pasar el límite fiable de 2560 px (gpt-image.md:57)."""
+    if "tamano" not in b:
+        return TAMANOS.get(b["ratio"])
+    w, h = (int(x) for x in b["tamano"].split("x"))
+    ok = (max(w, h) <= 2560 and w % 16 == 0 and h % 16 == 0 and max(w, h) / min(w, h) <= 3
+          and 655360 <= w * h <= 8294400)
+    return b["tamano"] if ok else None
 
 
 def validar(b, prompt):
     f = []
-    if b["ratio"] not in TAMANOS:
-        f.append(f"ratio {b['ratio']} sin tamaño aprobado")
+    # DECISIONES.md:20 y taxonomía F15 persona (L1064): rostro T1 antes que cuerpo T2. Un rostro de menos del 20 %
+    # del cuadro (F22) no se resuelve en una génesis: primero el maestro de rostro, después el cuerpo con referencia.
+    if b.get("rostro_menor_20") is None:
+        f.append("declara rostro_menor_20 (F22) true o false")
+    elif b["rostro_menor_20"] and b.get("operacion", "genesis") == "genesis":
+        f.append("rostro <20% en génesis: haz primero el maestro de rostro y el cuerpo con referencia (DECISIONES.md:20)")
+    if b.get("operacion") == "ancla_referencia" and not b.get("referencias"):
+        f.append("ancla con referencia sin «Image N: rol» (gpt-image.md:104–109)")
+    if tamano(b) is None:
+        f.append("tamaño fuera de los límites (gpt-image.md:53–57)")
     for txt, fuente in REQUERIDOS.items():
         if txt.lower() not in prompt.lower():
             f.append(f"falta «{txt}» ({fuente})")
-    if re.findall(r"^([A-Za-z ]+):", prompt, flags=re.M) != SLOTS:
+    if re.findall(r"^([A-Za-z ]+):", prompt, flags=re.M) != SLOTS:  # «Image 1:» no cuenta: lleva dígito
         f.append("los cinco slots no están en orden (gpt-image.md:9–15)")
     for p in PROHIBIDAS:
         if re.search(rf"\b{p}\b", prompt.lower()):
@@ -75,7 +95,7 @@ def main():
         estado = "OK" if not fallas else "RECHAZADO: " + "; ".join(fallas)
         mal += bool(fallas)
         print(f"{b['id']}: {n} palabras · {estado}")
-        out += [f"{b['id']} · Size: {TAMANOS.get(b['ratio'], '?')}", "====", p, "====", ""]
+        out += [f"{b['id']} · Size: {tamano(b) or '?'}", "====", p, "====", ""]
     (Path(sys.argv[1]).parent / "PROMPTS.txt").write_text("\n".join(out), encoding="utf-8")
     sys.exit(1 if mal else 0)
 
