@@ -30,7 +30,25 @@ ESTADO = {
     "arbol-0913": ("HISTÓRICO, NO USAR COMO RESPUESTA", "clasificación por léxico; contradice taxonomía §1.6 y §1.12.4 y DEC-000023"),
     "universales-candidatas": ("CANDIDATO NO ACEPTADO", "universal_rules.json status IMPLEMENTATION_CANDIDATE_NOT_USER_ACCEPTED"),
     "texto-fuente": ("TEXTO ORIGINAL", "unidad de la base de 13,005 textos (universo de la decisión 1); sin clasificación"),
+    "documento-fuente": ("DOCUMENTO ORIGINAL COMPLETO", "copia literal con hash en fuentes/documentos/PROCEDENCIA.md"),
 }
+
+
+def documentos():
+    """Cada línea no vacía de los documentos fuente copiados, con su encabezado vigente."""
+    out = []
+    base = V3F / "documentos"
+    for p in sorted(base.rglob("*.md")):
+        if p.name == "PROCEDENCIA.md":
+            continue
+        rel = str(p.relative_to(RAIZ))
+        enc = ""
+        for n, l in enumerate(lineas(p), 1):
+            if l.strip().startswith("#"):
+                enc = l.strip().lstrip("#").strip()
+            if l.strip():
+                out.append(("documento-fuente", rel, n, enc, "línea de documento", l.strip()))
+    return out
 
 
 def lineas(p):
@@ -179,6 +197,7 @@ def main():
     frag += arbol()
     frag += universales()
     frag += textos()
+    frag += documentos()
 
     db = AQUI / "rag.sqlite"
     previas = []  # el registro de lecturas no se pierde al reconstruir el índice
