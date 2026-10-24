@@ -12,7 +12,7 @@ Size: 1024x1280
 Prompt:
 Scene: Create a photograph on a weathered wooden fishing pier at dawn on an open sea coast; the sun sits just above the horizon at camera left and rakes low across wet planks, coiled rope and a stacked plastic fish crate behind her; sea and pale sky fall soft and out of focus.
 Subject: A fisherwoman of about 60, framed from mid-chest up (medium close-up), body turned three-quarters to camera, looking off-frame to the right toward the water; deep-set eyes, sun-creased skin, grey hair tied back with loose strands lifted by the wind, a faded orange oilskin jacket with dried salt marks.
-Important Details: Hard low side light from camera left grazes her face so wrinkles, pores, sunspots and dry lips cast small shadows; the shadow side of the face stays one to two stops darker left unlit. Eye-level camera, 85mm feel, shallow depth of field. Natural skin color with redness on the cheeks and nose, fine sea spray droplets on the jacket shoulders. Muted palette of slate blue, wet brown wood and faded orange.
+Important Details: Hard low side light from camera left grazes her face so wrinkles, pores, sunspots and dry lips cast small shadows; the shadow side of the face stays one to two stops darker and unlit. Eye-level camera, 85mm feel, shallow depth of field. Natural skin color with redness on the cheeks and nose, fine sea spray droplets on the jacket shoulders. Muted palette of slate blue, wet brown wood and faded orange.
 Use Case: editorial photograph for the cover of a print reportage, looks like a real photo
 Constraints: Solo portrait of her alone, with the frame free of text and watermarks; skin texture and wrinkles stay unsmoothed, with no glamorization, heavy retouching or studio gloss.
 ```
@@ -92,12 +92,12 @@ Size: 1536x1024
 Prompt:
 Scene: Create a photograph in a small home kitchen at night; behind her a window shows only black glass with a faint reflection; tiled backsplash, a wooden counter, and a single warm pendant lamp hanging over the counter as the only light in the room.
 Subject: A woman of about 30, framed from the waist up (medium shot), leaning back against the counter and holding a ceramic mug of tea at chest height with both hands fully visible and wrapped around it, looking down at the rising steam; shoulder-length brown hair, an oversized grey knit sweater.
-Important Details: One warm tungsten-colored pool of light from the pendant above and slightly in front of her; the rest of the kitchen falls into deep shadow left unlit. Warm highlights on her cheek, knuckles and the rim of the mug, thin visible steam. Eye-level camera, 35mm feel, the counter edge leading into the frame. Real skin texture. Palette of amber, dark wood brown and charcoal shadow.
+Important Details: One warm tungsten-colored pool of light from the pendant above and slightly in front of her; the rest of the kitchen falls into deep unlit shadow. Warm highlights on her cheek, knuckles and the rim of the mug, thin visible steam. Eye-level camera, 35mm feel, the counter edge leading into the frame. Real skin texture. Palette of amber, dark wood brown and charcoal shadow.
 Use Case: editorial photograph illustrating a lifestyle article, looks like a real photo
 Constraints: Solo portrait of her alone with exactly two hands, lit only by the pendant lamp, with the frame free of text and watermarks; no glamorization, heavy retouching or studio gloss.
 ```
 
-Validación: sin fallas · 207 palabras · 22 reglas del piloto seleccionadas
+Validación: sin fallas · 206 palabras · 22 reglas del piloto seleccionadas
 
 Inferencias mías, para tu aprobación:
 
