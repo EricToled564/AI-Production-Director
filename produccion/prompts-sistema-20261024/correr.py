@@ -100,7 +100,9 @@ def main():
                    f"Size: {ancho}x{alto}", "", "Prompt:", prompt, "```", "",
                    f"Validación: {'; '.join(fallas) if fallas else 'sin fallas'} · {palabras} palabras · "
                    f"{len(sel)} reglas del piloto seleccionadas", "",
-                   "Inferencias mías, para tu aprobación:", ""] + [f"- {i}" for i in c["inferencias"]] + [""]
+                   "Reglas aplicadas por lectura directa (sin clasificar todavía):", ""]
+        salida += [f"- {f}" for f in c.get("fuentes_aplicadas", [])] + ["", "Inferencias mías, para tu aprobación:", ""]
+        salida += [f"- {i}" for i in c["inferencias"]] + [""]
         if bloqueantes:
             raise SystemExit(f"{c['id']}: {bloqueantes}")
     (AQUI / "prompts.md").write_text("\n".join(salida), encoding="utf-8")
