@@ -21,8 +21,30 @@ CASO = [f"F{i:02d}" for i in range(3, 29)] + ["P04", "F32", "F33", "F34", "F35"]
 T112 = json.loads((AQUI / "tipos_enunciado_112.json").read_text())
 TIPOS_112 = list(T112["criterio"])
 assert all(t in T112["fuente"] for t in TIPOS_112), "cada tipo debe estar literal en la línea 192 citada"
-BASE = ("/tmp/claude-0/-home-user-AI-Production-Director/5525717f-6970-5668-b1ce-508e1e3863a0/scratchpad/docs/"
-        "d4ea0f84-BASE_TEXTOS_ORIGINALES_13005_20261019_055700_1/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite")
+CORPUS = AQUI.parent / "corpus" / "CORPUS_LITERAL_COMPLETO_13005.jsonl"
+BASE = AQUI.parent / "corpus" / "corpus_13005.sqlite"  # se genera desde CORPUS; no se versiona
+
+
+def construir_base():
+    """Genera la tabla textos desde el corpus literal y rechaza cualquier unidad cuyo sha256 no coincida."""
+    import hashlib
+    filas = [json.loads(linea) for linea in CORPUS.read_text().splitlines() if linea.strip()]
+    malas = [r["id"] for r in filas if hashlib.sha256(r["texto"].encode()).hexdigest() != r["sha256_unidad"]]
+    if len(filas) != 13005 or malas:
+        raise SystemExit(f"corpus inválido: {len(filas)} unidades, {len(malas)} con sha256 distinto {malas[:3]}")
+    cols = list(filas[0])
+    tmp = BASE.with_suffix(".tmp")
+    tmp.unlink(missing_ok=True)
+    db = sqlite3.connect(tmp)
+    db.execute(f"CREATE TABLE textos ({', '.join(c + (' TEXT PRIMARY KEY' if c == 'id' else ' TEXT') for c in cols)})")
+    db.executemany(f"INSERT INTO textos VALUES ({','.join('?' * len(cols))})", [[r[c] for c in cols] for r in filas])
+    db.commit()
+    db.close()
+    tmp.replace(BASE)
+
+
+if not BASE.exists():
+    construir_base()
 
 
 def columnas():
