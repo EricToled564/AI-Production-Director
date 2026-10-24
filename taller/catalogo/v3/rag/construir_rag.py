@@ -93,6 +93,13 @@ def esquema():
     for d in s["destinos"]:
         txt = d if isinstance(d, str) else json.dumps(d, ensure_ascii=False)
         out.append(("taxonomia-1019-esquema", rel, None, "destinos del contrato de templates", "destino", txt))
+    for e in s["extensiones"]:
+        dim = f"faceta {e['faceta']}" if "faceta" in e else f"campo {e['campo']}"
+        out.append(("taxonomia-1019-esquema", rel, None, "extensiones aprobadas 2026-10-23", "extensión",
+                    f"extensión aprobada 2026-10-23 · {dim} = {e['valor']}"))
+    for c, x in s["citas_de_listas"].items():
+        out.append(("taxonomia-1019-esquema", rel, x["linea"], f"cita de lista {c}", "cita de lista",
+                    f"cita de la lista del campo {c} · línea de la taxonomía {x['linea']} · {x['texto']}"))
     return out
 
 
@@ -170,8 +177,17 @@ def main():
     frag += textos()
 
     db = AQUI / "rag.sqlite"
+    previas = []  # el registro de lecturas no se pierde al reconstruir el índice
+    if db.exists():
+        v = sqlite3.connect(db)
+        if v.execute("select 1 from sqlite_master where name='lecturas'").fetchone():
+            previas = v.execute("select fecha, ruta, desde, hasta, unidades, indexadas from lecturas order by id").fetchall()
+        v.close()
     db.unlink(missing_ok=True)
     c = sqlite3.connect(db)
+    c.execute("create table lecturas(id integer primary key, fecha text, ruta text, desde integer,"
+              " hasta integer, unidades integer, indexadas integer)")
+    c.executemany("insert into lecturas(fecha,ruta,desde,hasta,unidades,indexadas) values(?,?,?,?,?,?)", previas)
     c.execute("create table fragmentos(id integer primary key, fuente text, ruta text, linea integer, encabezado text,"
               " tipo text, estado text, motivo_estado text, texto text)")
     c.execute("create virtual table fts using fts5(texto, encabezado, content='fragmentos', content_rowid='id',"
