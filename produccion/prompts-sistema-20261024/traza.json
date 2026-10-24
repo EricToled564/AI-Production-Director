@@ -324,7 +324,7 @@
    "sin fallas"
   ],
   "palabras": 264,
-  "ms_seleccion_validacion": 0.75
+  "ms_seleccion_validacion": 2.37
  },
  {
   "brief": "B2",
@@ -646,7 +646,7 @@
    "sin fallas"
   ],
   "palabras": 244,
-  "ms_seleccion_validacion": 0.35
+  "ms_seleccion_validacion": 0.77
  },
  {
   "brief": "B3",
@@ -958,7 +958,7 @@
    "sin fallas"
   ],
   "palabras": 222,
-  "ms_seleccion_validacion": 0.35
+  "ms_seleccion_validacion": 0.63
  },
  {
   "brief": "B4",
@@ -1296,7 +1296,7 @@
    "sin fallas"
   ],
   "palabras": 246,
-  "ms_seleccion_validacion": 0.33
+  "ms_seleccion_validacion": 0.45
  },
  {
   "brief": "B5",
@@ -1620,6 +1620,330 @@
    "sin fallas"
   ],
   "palabras": 208,
-  "ms_seleccion_validacion": 0.28
+  "ms_seleccion_validacion": 0.39
+ },
+ {
+  "brief": "B6",
+  "facetas": {
+   "F04": [
+    "retrato"
+   ],
+   "F05": [
+    "moda"
+   ],
+   "F06": [
+    "2:3"
+   ],
+   "F10": [
+    "génesis sin referencias (caso 1, T1)"
+   ],
+   "F15": [
+    "persona"
+   ],
+   "F16": [
+    "interior"
+   ],
+   "F17": [
+    "comercial pulido"
+   ],
+   "F18": [
+    "fotorrealista"
+   ],
+   "F19": [
+    "1"
+   ],
+   "F22": [
+    "<20%"
+   ],
+   "F23": [
+    "ninguna"
+   ],
+   "F24": [
+    "WS wide"
+   ],
+   "F25": [
+    "eye-level"
+   ],
+   "F32": [
+    "sin texto"
+   ],
+   "F33": [
+    "simple"
+   ],
+   "F35": [
+    "no"
+   ]
+  },
+  "inferencias": [
+   "Formato 2:3 vertical (1024x1536), porque es cuerpo entero; el brief no fija formato.",
+   "Luz cálida a 45° desde la izquierda de cámara y un poco arriba; el brief no dice el lado.",
+   "«Salt and pepper» a los 25 años = canas prematuras; lo declaro así para que el modelo no lo envejezca.",
+   "Zapatos: oxford de piel negra pulida, sin marca visible (sustituye «Armani»).",
+   "Uso: lookbook de moda masculina; el brief no lo dice. Cámbialo si es otro.",
+   "Rasgos: piel oliva, ojos castaño oscuro, mandíbula marcada (traducción de «bien parecido»)."
+  ],
+  "seleccionadas": [
+   {
+    "id": "INV-002332",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "entrada.modelo.nombre"
+    ],
+    "valor": "gpt-image-2 por defecto en producción; gpt-image-1.5 y gpt-image-1 solo migración; gpt-image-1-mini económico"
+   },
+   {
+    "id": "INV-002334",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots"
+    ],
+    "valor": "secciones con etiqueta, no texto corrido"
+   },
+   {
+    "id": "INV-002335",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots.Scene",
+     "salida.slots.Subject",
+     "salida.slots.Important Details",
+     "salida.slots.Use Case",
+     "salida.slots.Constraints"
+    ],
+    "valor": "Scene: location, time of day, background, environment / Subject: primary focus / Important Details: materials, textures, lighting, camera angle, mood, composition / Use Case: editorial, product mockup, UI, poster, infographic / Constraints: what must NOT change/appear"
+   },
+   {
+    "id": "INV-002336",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "agregar al prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.slots.Constraints",
+     "salida.validaciones"
+    ],
+    "valor": "Constraints explícitas (el slot no puede ir vacío)"
+   },
+   {
+    "id": "INV-002338",
+    "uso": "APLICACIÓN EN CONTROL O ENTREGA",
+    "accion": [
+     "validar contra el ejemplo"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "prompt del florista de Lisboa con los 5 slots completos"
+   },
+   {
+    "id": "INV-002340",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "sin elogios vagos"
+   },
+   {
+    "id": "INV-002343",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibido: stunning, incredible, epic, gorgeous, masterpiece → escribir hechos visuales: overcast daylight, brushed aluminum, chipped paint, 50mm feel"
+   },
+   {
+    "id": "INV-002344",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibidas etiquetas de estilo («minimalist brutalist luxury photoreal») → atributos visibles: «cream background, heavy black sans-serif, asymmetrical type block, one hero object, generous negative space»"
+   },
+   {
+    "id": "INV-002345",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "prohibido «como en un anuncio de Apple» → hechos visuales concretos"
+   },
+   {
+    "id": "INV-002346",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "agregar al prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Subject",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibido lenguaje de ambiente que oculta requisitos → enunciado directo: «image must contain a transit kiosk»"
+   },
+   {
+    "id": "INV-002351",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "quality: medium como punto de partida"
+   },
+   {
+    "id": "INV-002352",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "quality: high"
+   },
+   {
+    "id": "INV-002353",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "empezar con quality: low y subir si hace falta"
+   },
+   {
+    "id": "INV-002355",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "lado mayor < 3840 px"
+   },
+   {
+    "id": "INV-002356",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "ambos lados múltiplos de 16"
+   },
+   {
+    "id": "INV-002357",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "relación de aspecto máxima 3:1"
+   },
+   {
+    "id": "INV-002358",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "total de píxeles entre 655 360 y 8 294 400"
+   },
+   {
+    "id": "INV-002359",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "límite fiable 2560×1440"
+   },
+   {
+    "id": "INV-002361",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.tamano"
+    ],
+    "valor": "1024×1536"
+   },
+   {
+    "id": "INV-002394",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "el primer prompt es limpio, sin acumulaciones"
+   },
+   {
+    "id": "INV-002397",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots"
+    ],
+    "valor": "prompts largos en secciones con etiqueta"
+   }
+  ],
+  "tamano": [
+   1024,
+   1536
+  ],
+  "origen_tamano": "INV-002361..2364",
+  "validacion": [
+   "sin fallas"
+  ],
+  "palabras": 281,
+  "ms_seleccion_validacion": 0.45
  }
 ]
