@@ -72,17 +72,11 @@ Un texto tiene **un tipo principal**. Si también cumple otro papel (una regla q
 
 Solo para tipos `regla`, `sintaxis` y `excepción`.
 
-### 3.1 Grado (escala existente: `uso_operativo` del esquema + §1.2 VALOR/UNIVERSAL de la taxonomía)
-
-| Grado | Definición operativa | Destino |
-|---|---|---|
-| universal | aplica a todo prompt de imagen de GPT Image 2 en alcance; ninguna columna de caso la restringe | template base |
-| semi-universal | aplica siempre dentro de una **rama** fijada solo por la operación (F10) y, si hace falta, por texto en imagen (F32) | template de esa rama |
-| específica | depende de valores del caso (pieza, sujeto, luz, plano, estilo…) | matriz de selección |
-
-Ramas propuestas (**D3**): génesis sin referencias · con referencias · edición de imagen existente · análisis de
-imagen a prompt; cada una con variante «con texto en la imagen». `operation_packs.json` ya tiene 4 packs: se
-verifican contra esta lista, no se reescriben a ciegas.
+### 3.1 Grado de universalidad — **se usa la escala que Eric ya definió (por localizar, D3)**
+La escala propuesta en la versión anterior de este plan (universal / semi-universal / específica) **queda retirada**:
+no es la que Eric hizo. Eric definió una escala que va de reglas totalmente universales a totalmente específicas; no
+está en el repo (búsqueda en todos los archivos y en el historial de git del 2026-10-24 sin resultado). Este paso se
+redacta con esa escala cuando Eric indique dónde está.
 
 ### 3.2 Incorporación a template y desactivación
 Para cada regla universal o semi-universal:
@@ -131,18 +125,19 @@ que la excluyó: la traza es automática y la exhaustividad se demuestra, no se 
 
 ## 5. Columnas de caso (lo que el brief fija y la matriz lee)
 
-Solo columnas que cambian el prompt de **imagen** de GPT Image 2. Salen de la taxonomía y de `template_brief.json`:
+Solo columnas que cambian el prompt de **imagen** de GPT Image 2. Todas tienen lista cerrada en la taxonomía
+(`esquema_taxonomia.json`):
 
-| Origen | Columnas |
+| Origen en la taxonomía | Columnas |
 |---|---|
-| Taxonomía (listas ya cerradas en `esquema_taxonomia.json`) | F04 tipo de pieza · P04 lugar de publicación · F05 temática · F06 formato · F10 operación · F13 tipo de acción · F14 régimen físico · F15 sujeto · F16 espacio · F17 estilo · F18 técnica · F19 número de sujetos · F20 identidad · F21 contacto · F22 tamaño de rostro · F23 referencias · F24 tamaño de plano · F25 ángulo · F32 texto en imagen · F33 complejidad · F34 resolución |
-| Brief (`template_brief.json`; **listas cerradas por definir, D4**) | luz.fuente · luz.dirección · luz.dureza · luz.hora · color_material.paleta · color_material.grade · cámara.lente_intención · cámara.efecto_óptico · composición |
+| Facetas | F04 tipo de pieza · P04 lugar de publicación · F05 temática · F06 formato · F10 operación · F13 tipo de acción · F14 régimen físico · F15 sujeto · F16 espacio · F17 estilo · F18 técnica · F19 número de sujetos · F20 identidad · F21 contacto · F22 tamaño de rostro · F23 referencias · F24 tamaño de plano · F25 ángulo · F32 texto en imagen · F33 complejidad · F34 resolución |
+| Términos TRM de F30 por materia | luz (48 términos: luz dura, luz suave, contraluz, luz lateral, fuente única dominante, ventana, lámpara práctica…) · color, grade y textura (34) · encuadre y lente (42) · composición (68) · materialidad y superficie (16) · anatomía, rostro y piel (24) |
+| Destinos de la taxonomía | `entrada.luz.fuente/direccion/dureza/distribucion/contraste/specular` · `entrada.camara.plano/angulo/altura/efecto_optico/lente_intencion` · `entrada.color_material.paleta/grade/materiales/texturas/acabado` |
+
+Los valores de las celdas de luz, color y cámara son los términos TRM de su materia, copiados carácter por carácter.
 
 Fuera de la matriz (fijas por alcance o de video): F01–F03, P01, F07–F09, F11, F12, F26–F28, F29 (siempre GPT Image 2),
-F31, F35 (siempre «no»). F30 «qué regula» no es columna de caso: alimenta `destino`.
-
-La taxonomía no tiene faceta de luz: tu ejemplo (claroscuro, atardecer) obliga a crear las listas cerradas de luz,
-color y cámara. Se proponen desde `creative-direction.md` y `template_brief.json` y Eric las aprueba antes de llenar.
+F31, F35 (siempre «no»).
 
 ## 6. Bases de datos
 
@@ -205,8 +200,8 @@ aplican a ningún retrato (específicos de otras piezas o fuera de alcance); 128
 |---|---|---|
 | D1 | Universo exacto | los 1,511 de la decisión 1, más los textos de imagen GPT Image 2 de `produccion-visual-sw30/SKILL.md` (T1), `visual-prompt-forge` prompt-anatomy y failure-modes, y la rúbrica del crítico; los de Nano Banana solo se marcan fuera de alcance |
 | D2 | Lista cerrada de tipos | la tabla de la §2.3 |
-| D3 | Ramas de semi-universales | las de la §3.1 |
-| D4 | Listas cerradas de luz, color y cámara | las propongo desde `creative-direction.md` y `template_brief.json` y las apruebas antes de llenar |
+| D3 | Escala de universalidad | la que definiste: dime en qué archivo o sesión está, o pégala |
+| D4 | Columnas de luz, color y cámara | términos TRM de F30 por materia y destinos `entrada.luz/camara/color_material.*` (§5) |
 | D5 | ¿La revisión de inferencias del brief cuenta dentro del minuto? | no: se emite el prompt con las inferencias marcadas y un cambio recompila en segundos |
 | D6 | Un archivo con tablas separadas o un archivo por base | un archivo SQLite con tablas separadas y una hoja xlsx por base |
 | D7 | Orden de precedencia en conflictos | brief > excepción > específica > semi-universal > universal; archivo del modelo > genérico |
