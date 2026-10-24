@@ -79,7 +79,7 @@ está en el repo (búsqueda en todos los archivos y en el historial de git del 2
 redacta con esa escala cuando Eric indique dónde está.
 
 ### 3.2 Incorporación a template y desactivación
-Para cada regla universal o semi-universal:
+Para cada regla que la escala de D3 manda al template:
 1. Se ubica la línea del template que la implementa (`template_ref`: archivo, sección, texto).
 2. Se ata a una comprobación automática del validador (`check_id`) que falla si el prompt emitido no la cumple.
 3. Si no está en el template, se propone el cambio del template y Eric lo aprueba.
@@ -111,7 +111,7 @@ Una regla con dos condiciones alternativas son dos filas: `N.1`, `N.2`. Cada fil
 ### 4.3 Celdas de condición (según tu instrucción: valores, no X/0)
 - `TODOS` = la regla no restringe esa columna.
 - Un valor o lista de valores de la lista cerrada de esa columna = aplica solo si el caso tiene uno de esos valores.
-  Ejemplo: columna `luz.tipo` = «claroscuro»; columna `luz.hora` = «atardecer · amanecer».
+  Ejemplo: columna `luz` = «Contraluz [backlight] · Luz de contorno [rim light]»; columna `luz (dureza)` = «Luz dura».
 - `excepto: …` = aplica a todos menos a esos valores.
 - **Vacío = error**: el validador no deja cerrar la matriz con una celda vacía. No existe «no aplica»: no aplicar
   es no estar en la lista de valores.
@@ -119,8 +119,8 @@ Una regla con dos condiciones alternativas son dos filas: `N.1`, `N.2`. Cada fil
 ### 4.4 Selección (determinista)
 Una fila entra en el caso si: está activa, y para **cada** columna de condición la celda es `TODOS` o contiene el
 valor del caso (respetando la jerarquía de F10) y el valor no está en `excepto`.
-Conflictos: `anula a` primero; si no, la precedencia (**D7**): brief > excepción > específica > semi-universal >
-universal, y regla del archivo del modelo > regla genérica. Cada fila no seleccionada queda con la primera columna
+Conflictos: `anula a` primero; si no, la precedencia (**D7**): brief > excepción > regla más específica > regla más
+universal (según la escala de D3), y regla del archivo del modelo > regla genérica. Cada fila no seleccionada queda con la primera columna
 que la excluyó: la traza es automática y la exhaustividad se demuestra, no se supone.
 
 ## 5. Columnas de caso (lo que el brief fija y la matriz lee)
@@ -191,7 +191,7 @@ nuevo: se usan las referencias de la §8. Los desacuerdos van a Eric.
 | taller de 4 llamadas | **se reduce a 2** | PENDIENTES #2 ya apuntaba a 2 llamadas para ≤ 1 minuto |
 
 Dato de tamaño, medido sobre los 1,511 con las dos pasadas de la prueba: 508 sin contenido normativo en ambas;
-164 normativos que aplican a los 5 retratos (candidatos a universal o semi-universal); 711 normativos que no
+164 normativos que aplican a los 5 retratos (candidatos al extremo universal de la escala); 711 normativos que no
 aplican a ningún retrato (específicos de otras piezas o fuera de alcance); 128 con desacuerdo o aplicación parcial.
 
 ## 9. Decisiones que necesito de Eric antes de empezar
@@ -204,5 +204,5 @@ aplican a ningún retrato (específicos de otras piezas o fuera de alcance); 128
 | D4 | Columnas de luz, color y cámara | términos TRM de F30 por materia y destinos `entrada.luz/camara/color_material.*` (§5) |
 | D5 | ¿La revisión de inferencias del brief cuenta dentro del minuto? | no: se emite el prompt con las inferencias marcadas y un cambio recompila en segundos |
 | D6 | Un archivo con tablas separadas o un archivo por base | un archivo SQLite con tablas separadas y una hoja xlsx por base |
-| D7 | Orden de precedencia en conflictos | brief > excepción > específica > semi-universal > universal; archivo del modelo > genérico |
+| D7 | Orden de precedencia en conflictos | brief > excepción > más específica > más universal; archivo del modelo > genérico |
 | D8 | Tope de costo del piloto | lo fijas tú |
