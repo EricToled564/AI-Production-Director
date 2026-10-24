@@ -3,6 +3,7 @@
 python3 -I registrar_lectura.py lineas <ruta> <desde> <hasta>     → cada línea no vacía del archivo en ese rango
 python3 -I registrar_lectura.py terminos <desde> <hasta>          → términos TRM del esquema, por posición 1..1197
 python3 -I registrar_lectura.py esquema facetas|campos|destinos|extensiones|citas  → la sección completa del esquema
+python3 -I registrar_lectura.py fuente <fuente>                   → todos los fragmentos de una fuente del índice
 python3 -I registrar_lectura.py --ver                             → secciones registradas
 
 Una línea cuenta como indexada si su texto (sin marcas de tabla ni de lista) aparece dentro de algún fragmento de la
@@ -40,6 +41,10 @@ def main():
         unidades = [t["id"] for t in ts[desde - 1:hasta]]
         textos = [r[0] for r in c.execute("select texto from fragmentos where tipo='término TRM'")]
         faltan = [u for u in unidades if not any(x.startswith(u + " ") for x in textos)]
+    elif sys.argv[1] == "fuente":  # todos los fragmentos de una fuente del índice, leídos en volcado completo
+        ruta = f"fuente:{sys.argv[2]}"
+        unidades = [r[0] for r in c.execute("select id from fragmentos where fuente=?", (sys.argv[2],))]
+        desde, hasta, faltan = 1, len(unidades), ([] if unidades else ["la fuente no tiene fragmentos"])
     elif sys.argv[1] == "esquema":
         sec = sys.argv[2]
         ruta = f"taller/catalogo/v2/esquema_taxonomia.json#{sec}"
