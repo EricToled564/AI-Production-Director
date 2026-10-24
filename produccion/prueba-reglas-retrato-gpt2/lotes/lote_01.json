@@ -1,0 +1,1724 @@
+[
+{
+"id": "INV-001998",
+"archivo": "skills/image/SKILL.md",
+"linea": "1",
+"encabezado": "",
+"texto": "---\nname: image\nlicense: CC-BY-4.0 (attribution required — Serge Shima, github.com/smixs/visual-skills)\ndescription: >\n  Image prompting skill for Nano Banana (NBP/NB2) and GPT Image 2. Writes ready-to-use\n  prompts with model/quality/size recommendations. Use when: \"нарисуй\", \"сгенерируй\n  картинку\", \"image prompt\", \"промпт для картинки\", blog covers, slides, posters,\n  product shots, UI mockups, storyboards, character sheets, edit/colorize, style transfer,\n  vision analysis, image-to-prompt, nb, NBP, NB2, gpt-image-2, multi-panel grids,\n  ecommerce product photography, fashion editorial, food/beverage ads, cinematic portraits.\n  Do NOT use for: video (use video skill), 3D models, audio, non-image tasks.\n---"
+},
+{
+"id": "INV-001999",
+"archivo": "skills/image/SKILL.md",
+"linea": "14",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2",
+"texto": "# Image Prompting — Nano Banana & GPT Image 2"
+},
+{
+"id": "INV-002000",
+"archivo": "skills/image/SKILL.md",
+"linea": "16",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2",
+"texto": "This skill writes image prompts. It does not generate images. The output is: model name + quality / size / aspect ratio + the prompt itself."
+},
+{
+"id": "INV-002001",
+"archivo": "skills/image/SKILL.md",
+"linea": "18",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2",
+"texto": "The body of this SKILL.md is intentionally thin so you cannot fake a result by reading it alone. The actual rules — what the models reward, what they punish, how to phrase a 5-slot template, when to add `quality: high`, when to use image grounding — live only in the reference files."
+},
+{
+"id": "INV-002002",
+"archivo": "skills/image/SKILL.md",
+"linea": "20",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?",
+"texto": "## Route first — is this actually an image-prompt task?"
+},
+{
+"id": "INV-002003",
+"archivo": "skills/image/SKILL.md",
+"linea": "22",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?",
+"texto": "- **Motion, clips, montage** (Seedance, Kling, Veo, any image-to-video): use the sibling `video` skill. This skill's storyboard and keyframe outputs feed it."
+},
+{
+"id": "INV-002004",
+"archivo": "skills/image/SKILL.md",
+"linea": "23",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?",
+"texto": "- **No idea or script yet** (user wants a concept or an ad scenario, not a picture): if the `creative-director` skill is installed, start there — it develops ideas and scripts for commercials and beyond ([github.com/smixs/creative-director-skill](https://github.com/smixs/creative-director-skill))."
+},
+{
+"id": "INV-002005",
+"archivo": "skills/image/SKILL.md",
+"linea": "24",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?",
+"texto": "- **A concrete image is needed** — this skill. Continue below."
+},
+{
+"id": "INV-002006",
+"archivo": "skills/image/SKILL.md",
+"linea": "26",
+"encabezado": "Image Prompting — Nano Banana & GPT Image 2 › Route first — is this actually an image-prompt task?",
+"texto": "---"
+},
+{
+"id": "INV-002007",
+"archivo": "skills/image/SKILL.md",
+"linea": "28",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS",
+"texto": "# Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS"
+},
+{
+"id": "INV-002008",
+"archivo": "skills/image/SKILL.md",
+"linea": "30",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS",
+"texto": "Past attempts to write prompts directly from this skill body produced lazy, generic results. Each model has its own physics; common rules collapse into mush when applied without model-specific syntax. Read in this order before producing any prompt:"
+},
+{
+"id": "INV-002009",
+"archivo": "skills/image/SKILL.md",
+"linea": "32",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)",
+"texto": "### Step 1 — always read first → [models.md](references/models.md)"
+},
+{
+"id": "INV-002010",
+"archivo": "skills/image/SKILL.md",
+"linea": "34",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)",
+"texto": "Decide: Nano Banana (NB2 or NBP) or GPT Image 2. The choice changes the prompt syntax fundamentally — natural-language paragraphs vs. labeled 5-slot template, quality settings, which features exist (image grounding only on NB, EXACT TEXT discipline only on GPT Image, etc.)."
+},
+{
+"id": "INV-002011",
+"archivo": "skills/image/SKILL.md",
+"linea": "36",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md)",
+"texto": "If the user named a model — confirm and proceed. If not — pick using the table in `models.md`, then state your choice in the output header."
+},
+{
+"id": "INV-002012",
+"archivo": "skills/image/SKILL.md",
+"linea": "38",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 2 — read **one** model file (the one you picked)",
+"texto": "### Step 2 — read **one** model file (the one you picked)"
+},
+{
+"id": "INV-002013",
+"archivo": "skills/image/SKILL.md",
+"linea": "40",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 2 — read **one** model file (the one you picked)",
+"texto": "- **Nano Banana** → [nano-banana.md](references/nano-banana.md)\n  Image grounding for real locations. Extreme aspect ratios (1:8, 8:1, 4:1). Thinking mode. JSON for 5+ elements. Up to 14 reference images. Why you must NOT write `50mm / f-stop / ISO` numbers."
+},
+{
+"id": "INV-002014",
+"archivo": "skills/image/SKILL.md",
+"linea": "43",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 2 — read **one** model file (the one you picked)",
+"texto": "- **GPT Image 2** → [gpt-image.md](references/gpt-image.md)\n  5-slot template (Scene / Subject / Important Details / Use Case / Constraints). Anti-slop banned-words list. `quality: low / medium / high` as a deliberate fidelity lever. Size constraints (multiples of 16, max 3:1, up to 2560×1440). Two-column edit logic (Change / Preserve / Constraints). Up to 16 reference images with explicit roles."
+},
+{
+"id": "INV-002015",
+"archivo": "skills/image/SKILL.md",
+"linea": "46",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 2 — read **one** model file (the one you picked)",
+"texto": "The model file is non-negotiable. Skipping it is the single biggest cause of weak prompts."
+},
+{
+"id": "INV-002016",
+"archivo": "skills/image/SKILL.md",
+"linea": "48",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)",
+"texto": "### Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)"
+},
+{
+"id": "INV-002017",
+"archivo": "skills/image/SKILL.md",
+"linea": "50",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 3 — always read after the model file → [golden-rules.md](references/golden-rules.md)",
+"texto": "Universal rules that apply to both models: start with a verb, positive framing, hex colors, quote text, edit don't re-roll, one change per iteration, reference images."
+},
+{
+"id": "INV-002018",
+"archivo": "skills/image/SKILL.md",
+"linea": "52",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "### Step 4 — task-shaped reading (load only what matches the request)"
+},
+{
+"id": "INV-002019",
+"archivo": "skills/image/SKILL.md",
+"linea": "54",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "Pick zero or more, depending on what the user asked for:"
+},
+{
+"id": "INV-002020",
+"archivo": "skills/image/SKILL.md",
+"linea": "56",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Text in image, infographic, diagram, multilingual rendering → [text-rendering.md](references/text-rendering.md)"
+},
+{
+"id": "INV-002021",
+"archivo": "skills/image/SKILL.md",
+"linea": "57",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Edit existing image (object removal, lighting swap, colorization, restoration, localization) → [editing.md](references/editing.md)"
+},
+{
+"id": "INV-002022",
+"archivo": "skills/image/SKILL.md",
+"linea": "58",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Character continuity across multiple images / panels → [characters.md](references/characters.md)"
+},
+{
+"id": "INV-002023",
+"archivo": "skills/image/SKILL.md",
+"linea": "59",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Presentation slides → [slides.md](references/slides.md)"
+},
+{
+"id": "INV-002024",
+"archivo": "skills/image/SKILL.md",
+"linea": "60",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Sequential narrative (storyboard, comic, panel sequence) → [storyboards.md](references/storyboards.md)"
+},
+{
+"id": "INV-002025",
+"archivo": "skills/image/SKILL.md",
+"linea": "61",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- Sketch → final, wireframes, structural input → [structural.md](references/structural.md)"
+},
+{
+"id": "INV-002026",
+"archivo": "skills/image/SKILL.md",
+"linea": "62",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- 2D → 3D, floor plans, isometric → [dimensional.md](references/dimensional.md)"
+},
+{
+"id": "INV-002027",
+"archivo": "skills/image/SKILL.md",
+"linea": "63",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- **Vision analysis / image-to-prompt / style transfer from a reference image** → [vision-decomposer.md](references/vision-decomposer.md). Load this whenever the user attaches an image and asks to recreate, match, decompose, or transfer its style."
+},
+{
+"id": "INV-002028",
+"archivo": "skills/image/SKILL.md",
+"linea": "64",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- **Multi-panel compositions** (grids, collages, storyboard sheets in ONE image) → [multi-panel.md](references/multi-panel.md). 9-cell TVC grids, 2x2 portrait grids, 3-panel campaign collages, 4x3 borderless grids, 6-frame cinematic sequences, before/after splits, 12-panel storyboard posters."
+},
+{
+"id": "INV-002029",
+"archivo": "skills/image/SKILL.md",
+"linea": "65",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "- **Industry pattern libraries** — proven prompt templates by vertical. Load the matching file:"
+},
+{
+"id": "INV-002030",
+"archivo": "skills/image/SKILL.md",
+"linea": "66",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - E-commerce product shots → [patterns/ecommerce.md](references/patterns/ecommerce.md)"
+},
+{
+"id": "INV-002031",
+"archivo": "skills/image/SKILL.md",
+"linea": "67",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - Fashion editorial campaigns → [patterns/fashion-editorial.md](references/patterns/fashion-editorial.md)"
+},
+{
+"id": "INV-002032",
+"archivo": "skills/image/SKILL.md",
+"linea": "68",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - Food & beverage advertising → [patterns/food-beverage.md](references/patterns/food-beverage.md)"
+},
+{
+"id": "INV-002033",
+"archivo": "skills/image/SKILL.md",
+"linea": "69",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - Cinematic portraits → [patterns/portrait-cinema.md](references/patterns/portrait-cinema.md)"
+},
+{
+"id": "INV-002034",
+"archivo": "skills/image/SKILL.md",
+"linea": "70",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - Posters & illustration → [patterns/poster-illustration.md](references/patterns/poster-illustration.md)"
+},
+{
+"id": "INV-002035",
+"archivo": "skills/image/SKILL.md",
+"linea": "71",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - Character design (turnarounds, expression sheets, outfit grids) → [patterns/character-design.md](references/patterns/character-design.md)"
+},
+{
+"id": "INV-002036",
+"archivo": "skills/image/SKILL.md",
+"linea": "72",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 4 — task-shaped reading (load only what matches the request)",
+"texto": "  - UI mockups & social media formats → [patterns/ui-social.md](references/patterns/ui-social.md)"
+},
+{
+"id": "INV-002037",
+"archivo": "skills/image/SKILL.md",
+"linea": "74",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 5 — read for production language → [creative-direction.md](references/creative-direction.md)",
+"texto": "### Step 5 — read for production language → [creative-direction.md](references/creative-direction.md)"
+},
+{
+"id": "INV-002038",
+"archivo": "skills/image/SKILL.md",
+"linea": "76",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 5 — read for production language → [creative-direction.md](references/creative-direction.md)",
+"texto": "Studio-quality vocabulary for lighting design, camera and hardware, color grading and film stock, materiality and texture. Read when you need precise terms beyond what `golden-rules.md` covers."
+},
+{
+"id": "INV-002039",
+"archivo": "skills/image/SKILL.md",
+"linea": "78",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)",
+"texto": "### Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)"
+},
+{
+"id": "INV-002040",
+"archivo": "skills/image/SKILL.md",
+"linea": "80",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)",
+"texto": "Universal element checklist (subject, context, action, environment, camera, lighting, mood, materials, palette, format), detail modes (concise / standard / verbose / cinematic verbose), parameterized templates, output structure with parameters and exclusions."
+},
+{
+"id": "INV-002041",
+"archivo": "skills/image/SKILL.md",
+"linea": "82",
+"encabezado": "Mandatory reading order — DO NOT WRITE A PROMPT WITHOUT THIS › Step 1 — always read first → [models.md](references/models.md) › Step 6 — read if structuring a complex prompt → [prompt-framework.md](references/prompt-framework.md)",
+"texto": "---"
+},
+{
+"id": "INV-002042",
+"archivo": "skills/image/SKILL.md",
+"linea": "84",
+"encabezado": "Output format",
+"texto": "# Output format"
+},
+{
+"id": "INV-002043",
+"archivo": "skills/image/SKILL.md",
+"linea": "86",
+"encabezado": "Output format",
+"texto": "When you return the prompt, structure it like this:"
+},
+{
+"id": "INV-002044",
+"archivo": "skills/image/SKILL.md",
+"linea": "88",
+"encabezado": "Output format",
+"texto": "```\nModel: <nano-banana-2 | nano-banana-pro | gpt-image-2>\nQuality: <low | medium | high>          (only for gpt-image-2)\nSize / Ratio: <e.g. 1536×1024 or 16:9>\n\nPrompt:\n<the prompt text, ready to copy>\n\nNotes:\n- <anything you inferred or assumed because the user did not specify>\n```"
+},
+{
+"id": "INV-002045",
+"archivo": "skills/image/SKILL.md",
+"linea": "100",
+"encabezado": "Output format",
+"texto": "For edits, also include an explicit preserve-list (mandatory for gpt-image-2, recommended for nano-banana):"
+},
+{
+"id": "INV-002046",
+"archivo": "skills/image/SKILL.md",
+"linea": "102",
+"encabezado": "Output format",
+"texto": "```\nChange: <one concrete thing>\nPreserve: <face, pose, lighting, framing, geometry, ...>\nConstraints: <no extra objects, no drift, ...>\n```"
+},
+{
+"id": "INV-002047",
+"archivo": "skills/image/SKILL.md",
+"linea": "108",
+"encabezado": "Output format",
+"texto": "---"
+},
+{
+"id": "INV-002048",
+"archivo": "skills/image/SKILL.md",
+"linea": "110",
+"encabezado": "Final response style",
+"texto": "# Final response style"
+},
+{
+"id": "INV-002049",
+"archivo": "skills/image/SKILL.md",
+"linea": "112",
+"encabezado": "Final response style",
+"texto": "Prefer: ready-to-copy prompts, hex colors, concrete materials, named compositions, model-specific syntax (5-slot for GPT Image, natural prose for Nano Banana)."
+},
+{
+"id": "INV-002050",
+"archivo": "skills/image/SKILL.md",
+"linea": "114",
+"encabezado": "Final response style",
+"texto": "Avoid: tag soup (\"cool, modern, 4k\"), vague praise (\"stunning, epic, masterpiece\" — actively hurts GPT Image 2), negative framing (\"no people, no cars\" — invert to positive), external comparisons (\"like Apple ad\" — describe the visual properties instead), numerical lens parameters in Nano Banana prompts (it ignores them)."
+},
+{
+"id": "INV-002051",
+"archivo": "skills/image/SKILL.md",
+"linea": "116",
+"encabezado": "Final response style",
+"texto": "---"
+},
+{
+"id": "INV-002052",
+"archivo": "skills/image/SKILL.md",
+"linea": "118",
+"encabezado": "Final response style",
+"texto": "*Author: Serge Shima ([t.me/aimastersme](https://t.me/aimastersme) · [sergeshima.com](https://sergeshima.com) · [aimasters.me](https://aimasters.me)) · License: CC BY 4.0 — attribution required · Source: [smixs/visual-skills](https://github.com/smixs/visual-skills)*"
+},
+{
+"id": "INV-002331",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "1",
+"encabezado": "GPT Image 2 — Specific Rules",
+"texto": "# GPT Image 2 — Specific Rules"
+},
+{
+"id": "INV-002332",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "3",
+"encabezado": "GPT Image 2 — Specific Rules",
+"texto": "Production default OpenAI: `gpt-image-2`. Migration-only: `gpt-image-1.5`, `gpt-image-1`. Бюджетный: `gpt-image-1-mini`."
+},
+{
+"id": "INV-002333",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "5",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots",
+"texto": "## Структура промпта — 5 slots"
+},
+{
+"id": "INV-002334",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "7",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots",
+"texto": "GPT Image 2 сильнее всего реагирует на разделение по секциям. Пиши лейблами, не сплошным текстом."
+},
+{
+"id": "INV-002335",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "9",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots",
+"texto": "```\nScene: location, time of day, background, environment\nSubject: primary focus — who or what is central\nImportant Details: materials, textures, lighting, camera angle, mood, composition\nUse Case: editorial, product mockup, UI, poster, infographic\nConstraints: what must NOT change/appear (no watermarks, preserve face, no extra text)\n```"
+},
+{
+"id": "INV-002336",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "17",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots",
+"texto": "> «The fifth slot is where most mediocre prompts fail silently.» Без явных constraints модель дрейфует."
+},
+{
+"id": "INV-002337",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "19",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots › Минимальный пример",
+"texto": "### Минимальный пример"
+},
+{
+"id": "INV-002338",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "21",
+"encabezado": "GPT Image 2 — Specific Rules › Структура промпта — 5 slots › Минимальный пример",
+"texto": "```\nScene: small Lisbon florist storefront at blue hour, wet cobblestones\nSubject: woman in navy apron locking the front door, half-turned to camera\nImportant Details: warm interior glow spilling onto pavement, 50mm feel,\n  soft contact shadows, brushed brass door handle, \"Florista\" hand-painted sign\nUse Case: editorial photography\nConstraints: no extra signage, no people in background, no text other than the sign\n```"
+},
+{
+"id": "INV-002339",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "30",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "## Anti-Slop Rules"
+},
+{
+"id": "INV-002340",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "32",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "GPT Image 2 особенно чувствителен к качеству формулировок. Vague praise = деградация результата."
+},
+{
+"id": "INV-002341",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "34",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "| ❌ Не пиши | ✅ Пиши |"
+},
+{
+"id": "INV-002342",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "35",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "|-----------|---------|"
+},
+{
+"id": "INV-002343",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "36",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "| stunning, incredible, epic, gorgeous, masterpiece | overcast daylight, brushed aluminum, chipped paint, 50mm feel |"
+},
+{
+"id": "INV-002344",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "37",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "| «minimalist brutalist luxury photoreal» (стиль-теги) | «cream background, heavy black sans-serif, asymmetrical type block, one hero object, generous negative space» |"
+},
+{
+"id": "INV-002345",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "38",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "| «как в Apple-рекламе» | конкретные визуальные факты |"
+},
+{
+"id": "INV-002346",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "39",
+"encabezado": "GPT Image 2 — Specific Rules › Anti-Slop Rules",
+"texto": "| мудовый язык, в котором тонут функциональные требования | прямое заявление: «image must contain a transit kiosk» |"
+},
+{
+"id": "INV-002347",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "41",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "## Quality Settings — рычаг fidelity / latency"
+},
+{
+"id": "INV-002348",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "43",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "| Setting | Когда |"
+},
+{
+"id": "INV-002349",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "44",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "|---------|-------|"
+},
+{
+"id": "INV-002350",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "45",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "| `quality: low` | High-volume, превью, exploratory, latency-sensitive, draft |"
+},
+{
+"id": "INV-002351",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "46",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "| `quality: medium` | **Default starting point** |"
+},
+{
+"id": "INV-002352",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "47",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "| `quality: high` | Маленький/плотный текст, infographics, портреты, identity-sensitive edits, brand assets |"
+},
+{
+"id": "INV-002353",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "49",
+"encabezado": "GPT Image 2 — Specific Rules › Quality Settings — рычаг fidelity / latency",
+"texto": "Стартуй с `low`, апгрейди по необходимости. Часто `low` уже достаточно."
+},
+{
+"id": "INV-002354",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "51",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "## Размеры (gpt-image-2)"
+},
+{
+"id": "INV-002355",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "53",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Max edge: <3840px"
+},
+{
+"id": "INV-002356",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "54",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Обе стороны: кратны 16"
+},
+{
+"id": "INV-002357",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "55",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Aspect ratio: max 3:1 (long:short)"
+},
+{
+"id": "INV-002358",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "56",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Total pixels: 655 360 – 8 294 400"
+},
+{
+"id": "INV-002359",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "57",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Reliable upper bound: 2560×1440"
+},
+{
+"id": "INV-002360",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "59",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "**Ходовые:**"
+},
+{
+"id": "INV-002361",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "60",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Portrait 1024×1536"
+},
+{
+"id": "INV-002362",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "61",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Landscape 1536×1024"
+},
+{
+"id": "INV-002363",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "62",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- Square 1024×1024"
+},
+{
+"id": "INV-002364",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "63",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "- 2K 2560×1440"
+},
+{
+"id": "INV-002365",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "65",
+"encabezado": "GPT Image 2 — Specific Rules › Размеры (gpt-image-2)",
+"texto": "> Экстрим вроде 1:8 / 8:1 GPT Image 2 НЕ умеет — иди в Nano Banana."
+},
+{
+"id": "INV-002366",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "67",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "## Text in Image"
+},
+{
+"id": "INV-002367",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "69",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Литеральный текст в `\"...\"` или ALL CAPS."
+},
+{
+"id": "INV-002368",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "70",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Шрифт, размер, цвет, позиция — явно."
+},
+{
+"id": "INV-002369",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "71",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Сложные слова и бренды: спеллинг по буквам."
+},
+{
+"id": "INV-002370",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "72",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Защита от мусора: «**no extra words, no duplicate text, no watermarks**»."
+},
+{
+"id": "INV-002371",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "73",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Для нечитаемого мелкого текста: «**100 percent readable and physically believable**»."
+},
+{
+"id": "INV-002372",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "74",
+"encabezado": "GPT Image 2 — Specific Rules › Text in Image",
+"texto": "- Маленький/плотный/multi-font → `quality: high` обязательно."
+},
+{
+"id": "INV-002373",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "76",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "## Editing — двухколоночная логика"
+},
+{
+"id": "INV-002374",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "78",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "Endpoint: `openai/gpt-image-2/edit` (на fal.ai) или соответствующий через OpenAI API."
+},
+{
+"id": "INV-002375",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "80",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "```\nChange: [single concrete change]\nPreserve: face, identity, pose, lighting, framing, background, geometry, text, layout\nConstraints: no extra objects, no redesign, no drift\n```"
+},
+{
+"id": "INV-002376",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "86",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "**Правила edit:**"
+},
+{
+"id": "INV-002377",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "87",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "- **Один edit за итерацию.** Не пытайся менять всё разом."
+},
+{
+"id": "INV-002378",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "88",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "- **Preserve list повторять каждую итерацию.** Иначе дрейф."
+},
+{
+"id": "INV-002379",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "89",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "- **Surgical edits:** явно перечисли что НЕ трогать (saturation, contrast, layout, arrows, labels, camera angle)."
+},
+{
+"id": "INV-002380",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "90",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика",
+"texto": "- Опционально: `mask_image_url` для точечных edits."
+},
+{
+"id": "INV-002381",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "92",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны",
+"texto": "### Edit-паттерны"
+},
+{
+"id": "INV-002382",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "94",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны",
+"texto": "**Virtual try-on:** «Change garments only. Preserve exact face, body shape, pose, hair, expression, background, camera angle. Match lighting/shadows so outfit looks naturally worn.»"
+},
+{
+"id": "INV-002383",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "96",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны",
+"texto": "**Object removal:** «Remove [X]. Do not change anything else. Use `input_fidelity: high` to maintain surrounding context» (только gpt-image-1.5/1, в gpt-image-2 high-fidelity по умолчанию)."
+},
+{
+"id": "INV-002384",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "98",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны",
+"texto": "**Lighting/weather swap:** «Change ONLY environmental conditions: lighting direction/quality, shadows, atmosphere, precipitation. Preserve identity, geometry, camera angle, object placement.»"
+},
+{
+"id": "INV-002385",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "100",
+"encabezado": "GPT Image 2 — Specific Rules › Editing — двухколоночная логика › Edit-паттерны",
+"texto": "**Interior swap:** «Swap [furniture]. Preserve camera angle, lighting, shadows, surrounding context. Photorealistic contact shadows.»"
+},
+{
+"id": "INV-002386",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "102",
+"encabezado": "GPT Image 2 — Specific Rules › Multi-Image — до 16 рефов",
+"texto": "## Multi-Image — до 16 рефов"
+},
+{
+"id": "INV-002387",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "104",
+"encabezado": "GPT Image 2 — Specific Rules › Multi-Image — до 16 рефов",
+"texto": "Индексируй с **ролью**, не только номером:"
+},
+{
+"id": "INV-002388",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "105",
+"encabezado": "GPT Image 2 — Specific Rules › Multi-Image — до 16 рефов",
+"texto": "```\nImage 1: base scene\nImage 2: jacket reference (apply only the jacket fabric/cut to subject in Image 1)\nImage 3: lighting reference (apply golden-hour quality from Image 3)\n```"
+},
+{
+"id": "INV-002389",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "111",
+"encabezado": "GPT Image 2 — Specific Rules › Style Transfer",
+"texto": "## Style Transfer"
+},
+{
+"id": "INV-002390",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "113",
+"encabezado": "GPT Image 2 — Specific Rules › Style Transfer",
+"texto": "Не пиши абстрактно («minimalist», «editorial»). Назови конкретные визуальные свойства референса: палитра, edge treatment, силуэт, обработка теней, plane логика."
+},
+{
+"id": "INV-002391",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "115",
+"encabezado": "GPT Image 2 — Specific Rules › World Knowledge",
+"texto": "## World Knowledge"
+},
+{
+"id": "INV-002392",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "117",
+"encabezado": "GPT Image 2 — Specific Rules › World Knowledge",
+"texto": "GPT Image 2 умеет домысливать контекст: «Bethel, NY, August 1969» → выведет Woodstock-эстетику. Используй: дай исторический/культурный анкер, не расписывай каждую деталь."
+},
+{
+"id": "INV-002393",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "119",
+"encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy",
+"texto": "## Iteration Strategy"
+},
+{
+"id": "INV-002394",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "121",
+"encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy",
+"texto": "- Стартуй с **чистого** базового промпта."
+},
+{
+"id": "INV-002395",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "122",
+"encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy",
+"texto": "- Один change за раунд. «Make lighting warmer», «remove extra tree», «restore original background»."
+},
+{
+"id": "INV-002396",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "123",
+"encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy",
+"texto": "- При drift — перечисли invariants заново."
+},
+{
+"id": "INV-002397",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "124",
+"encabezado": "GPT Image 2 — Specific Rules › Iteration Strategy",
+"texto": "- Для длинных промптов — labeled sections, не одна простыня."
+},
+{
+"id": "INV-002398",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "126",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates",
+"texto": "## Use-Case Templates"
+},
+{
+"id": "INV-002399",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "128",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Photoreal Editorial",
+"texto": "### Photoreal Editorial"
+},
+{
+"id": "INV-002400",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "129",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Photoreal Editorial",
+"texto": "```\nScene: [location, time, weather]\nSubject: [who, action, framing]\nImportant Details: [lens feel, light source, surface wear, imperfections, real texture]\nUse Case: editorial photograph, looks like a real photo\nConstraints: no glamorization, no heavy retouching, no studio gloss\n```"
+},
+{
+"id": "INV-002401",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "137",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Product Mockup (Clean Background)",
+"texto": "### Product Mockup (Clean Background)"
+},
+{
+"id": "INV-002402",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "138",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Product Mockup (Clean Background)",
+"texto": "```\nScene: plain white opaque background\nSubject: [product] centered\nImportant Details: crisp silhouette, no halos/fringing, light contact shadow,\n  preserve label legibility exactly, preserve geometry\nUse Case: product mockup\nConstraints: no restyling, only background removal + light polish\n```"
+},
+{
+"id": "INV-002403",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "147",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › UI Mockup",
+"texto": "### UI Mockup"
+},
+{
+"id": "INV-002404",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "148",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › UI Mockup",
+"texto": "```\nScene: [device frame, e.g. iPhone 15 Pro]\nSubject: [screen/app name] — describe AS IF IT EXISTS, not concept art\nImportant Details: layout, hierarchy, real interface elements, exact copy in quotes,\n  typography behavior, spacing, state\nUse Case: shipped product screenshot\nConstraints: no sketch language, no placeholder text, no Lorem Ipsum\nQuality: high (for small UI text)\n```"
+},
+{
+"id": "INV-002405",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "158",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Marketing Creative with Text",
+"texto": "### Marketing Creative with Text"
+},
+{
+"id": "INV-002406",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "159",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Marketing Creative with Text",
+"texto": "```\nScene: [environment]\nSubject: [hero element]\nImportant Details: [composition, palette, mood]\nUse Case: ad creative for [audience]\nText: \"EXACT HEADLINE\" in [font style], [color], [position]\n      \"exact subhead\" in [font style], [color], [position]\nConstraints: no extra text, no duplicate text, no watermarks, no unrelated logos\nQuality: high\n```"
+},
+{
+"id": "INV-002407",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "170",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Infographic / Diagram",
+"texto": "### Infographic / Diagram"
+},
+{
+"id": "INV-002408",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "171",
+"encabezado": "GPT Image 2 — Specific Rules › Use-Case Templates › Infographic / Diagram",
+"texto": "```\nTitle: \"[TITLE]\"\nContent flow: [step 1] → [step 2] → [step 3]\nVisual format: [layout type — flowchart, pyramid, isometric, etc.]\nUse Case: educational infographic for [audience]\nConstraints: readable labels at all sizes, clear hierarchy, no clutter,\n  no decorative noise, ample whitespace\nQuality: high\nSize: 1536×1024\n```"
+},
+{
+"id": "INV-002409",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "182",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "## Migration from Older GPT-Image"
+},
+{
+"id": "INV-002410",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "184",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "- Промпты в основном переносятся как есть."
+},
+{
+"id": "INV-002411",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "185",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "- После переноса — посмотри качество, latency, retry-rate; ретюнь."
+},
+{
+"id": "INV-002412",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "186",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "- `gpt-image-1-mini` — только если главное снизить цену batch'а на низкорисковых задачах."
+},
+{
+"id": "INV-002413",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "188",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "---"
+},
+{
+"id": "INV-002414",
+"archivo": "skills/image/references/gpt-image.md",
+"linea": "190",
+"encabezado": "GPT Image 2 — Specific Rules › Migration from Older GPT-Image",
+"texto": "*Author: Serge Shima ([t.me/aimastersme](https://t.me/aimastersme) · [sergeshima.com](https://sergeshima.com) · [aimasters.me](https://aimasters.me)) · License: CC BY 4.0 — attribution required · Source: [smixs/visual-skills](https://github.com/smixs/visual-skills)*"
+},
+{
+"id": "INV-002415",
+"archivo": "skills/image/references/models.md",
+"linea": "1",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2",
+"texto": "# Model Selection — Nano Banana vs GPT Image 2"
+},
+{
+"id": "INV-002416",
+"archivo": "skills/image/references/models.md",
+"linea": "3",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2",
+"texto": "Skill пишет промпты под две семьи моделей. Они мыслят по-разному — выбор модели меняет структуру промпта."
+},
+{
+"id": "INV-002417",
+"archivo": "skills/image/references/models.md",
+"linea": "5",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "## TL;DR"
+},
+{
+"id": "INV-002418",
+"archivo": "skills/image/references/models.md",
+"linea": "7",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Задача | Модель |"
+},
+{
+"id": "INV-002419",
+"archivo": "skills/image/references/models.md",
+"linea": "8",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "|--------|--------|"
+},
+{
+"id": "INV-002420",
+"archivo": "skills/image/references/models.md",
+"linea": "9",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Реальное место/объект (с грунтингом) | **Nano Banana** (NB2/NBP) |"
+},
+{
+"id": "INV-002421",
+"archivo": "skills/image/references/models.md",
+"linea": "10",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Сложная сцена с физикой/композицией | **Nano Banana Pro** |"
+},
+{
+"id": "INV-002422",
+"archivo": "skills/image/references/models.md",
+"linea": "11",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Длинные горизонтальные/вертикальные форматы (1:8, 8:1, 4:1) | **Nano Banana** (только NB поддерживает экстрим) |"
+},
+{
+"id": "INV-002423",
+"archivo": "skills/image/references/models.md",
+"linea": "12",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Дешёвая массовая генерация | **Nano Banana 2 Lite** или **gpt-image-1-mini** |"
+},
+{
+"id": "INV-002424",
+"archivo": "skills/image/references/models.md",
+"linea": "13",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Фотореализм с тонкой типографикой/UI | **GPT Image 2** |"
+},
+{
+"id": "INV-002425",
+"archivo": "skills/image/references/models.md",
+"linea": "14",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Точное editing с preservation (try-on, swap, weather) | **GPT Image 2** (в editing у него лучшая identity-preservation) |"
+},
+{
+"id": "INV-002426",
+"archivo": "skills/image/references/models.md",
+"linea": "15",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Маленький плотный текст в кадре | **GPT Image 2** (`quality: high`) |"
+},
+{
+"id": "INV-002427",
+"archivo": "skills/image/references/models.md",
+"linea": "16",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Брендовая полиграфия / постеры с EXACT TEXT | **GPT Image 2** |"
+},
+{
+"id": "INV-002428",
+"archivo": "skills/image/references/models.md",
+"linea": "17",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Сториборды, комиксы (последовательность) | **Nano Banana** (extreme ratios + thinking) |"
+},
+{
+"id": "INV-002429",
+"archivo": "skills/image/references/models.md",
+"linea": "18",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Storyboard с фокусом на типографике | **GPT Image 2** |"
+},
+{
+"id": "INV-002430",
+"archivo": "skills/image/references/models.md",
+"linea": "19",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Style transfer без упоминаемых референс-картинок | **GPT Image 2** (concrete visual targets) |"
+},
+{
+"id": "INV-002431",
+"archivo": "skills/image/references/models.md",
+"linea": "20",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › TL;DR",
+"texto": "| Рендер из 14+ референсов | **Nano Banana Pro** (до 14) или **GPT Image 2** (до 16) |"
+},
+{
+"id": "INV-002432",
+"archivo": "skills/image/references/models.md",
+"linea": "22",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает",
+"texto": "## Когда что выигрывает"
+},
+{
+"id": "INV-002433",
+"archivo": "skills/image/references/models.md",
+"linea": "24",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в",
+"texto": "### Nano Banana выигрывает в"
+},
+{
+"id": "INV-002434",
+"archivo": "skills/image/references/models.md",
+"linea": "25",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в",
+"texto": "- **Image grounding.** NB2 ищет реальные изображения в интернете перед генерацией — точная архитектура конкретного храма, моста, площади; конкретные виды животных, растений. GPT Image 2 этого не делает."
+},
+{
+"id": "INV-002435",
+"archivo": "skills/image/references/models.md",
+"linea": "26",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в",
+"texto": "- **Экстремальные пропорции.** 1:8, 8:1, 1:4, 4:1 — баннеры, скроллы, комикс-стрипы. У GPT Image 2 max 3:1."
+},
+{
+"id": "INV-002436",
+"archivo": "skills/image/references/models.md",
+"linea": "27",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в",
+"texto": "- **«Thinking» режим.** Сложные инфографики со spatial logic."
+},
+{
+"id": "INV-002437",
+"archivo": "skills/image/references/models.md",
+"linea": "28",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Nano Banana выигрывает в",
+"texto": "- **Цена/скорость.** NB2 = $0.04/img."
+},
+{
+"id": "INV-002438",
+"archivo": "skills/image/references/models.md",
+"linea": "30",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "### GPT Image 2 выигрывает в"
+},
+{
+"id": "INV-002439",
+"archivo": "skills/image/references/models.md",
+"linea": "31",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "- **Identity preservation в edit.** Меняешь одежду / погоду / фон — лицо, поза, геометрия не плывут. Двухколоночная логика (change / preserve) работает как контракт."
+},
+{
+"id": "INV-002440",
+"archivo": "skills/image/references/models.md",
+"linea": "32",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "- **Тонкий текст в кадре.** Маленькие подписи, легенды, footnotes, multi-font layouts. На `quality: high` рендерит чётче."
+},
+{
+"id": "INV-002441",
+"archivo": "skills/image/references/models.md",
+"linea": "33",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "- **UI-моки и продуктовые скриншоты.** Иерархия, реальные интерфейс-элементы, читаемые лейблы."
+},
+{
+"id": "INV-002442",
+"archivo": "skills/image/references/models.md",
+"linea": "34",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "- **Структурированный 5-slot промпт.** Чёткое разделение Scene/Subject/Details/Use case/Constraints даёт предсказуемость."
+},
+{
+"id": "INV-002443",
+"archivo": "skills/image/references/models.md",
+"linea": "35",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › GPT Image 2 выигрывает в",
+"texto": "- **`quality` рычаг.** low/medium/high — осознанный trade-off скорости и точности."
+},
+{
+"id": "INV-002444",
+"archivo": "skills/image/references/models.md",
+"linea": "37",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши",
+"texto": "### Где обе модели одинаково хороши"
+},
+{
+"id": "INV-002445",
+"archivo": "skills/image/references/models.md",
+"linea": "38",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши",
+"texto": "- Photorealistic портреты."
+},
+{
+"id": "INV-002446",
+"archivo": "skills/image/references/models.md",
+"linea": "39",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши",
+"texto": "- Product shots на нейтральном фоне."
+},
+{
+"id": "INV-002447",
+"archivo": "skills/image/references/models.md",
+"linea": "40",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши",
+"texto": "- Минималистичные постеры."
+},
+{
+"id": "INV-002448",
+"archivo": "skills/image/references/models.md",
+"linea": "41",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Когда что выигрывает › Где обе модели одинаково хороши",
+"texto": "- Editorial-фотография."
+},
+{
+"id": "INV-002449",
+"archivo": "skills/image/references/models.md",
+"linea": "43",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "## Различия в синтаксисе промпта"
+},
+{
+"id": "INV-002450",
+"archivo": "skills/image/references/models.md",
+"linea": "45",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Аспект | Nano Banana | GPT Image 2 |"
+},
+{
+"id": "INV-002451",
+"archivo": "skills/image/references/models.md",
+"linea": "46",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "|--------|-------------|-------------|"
+},
+{
+"id": "INV-002452",
+"archivo": "skills/image/references/models.md",
+"linea": "47",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Стиль промпта | Натуральный язык, 1-2 параграфа | 5-slot с лейблами секций |"
+},
+{
+"id": "INV-002453",
+"archivo": "skills/image/references/models.md",
+"linea": "48",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Камера/линза | **Не указывать** числа (50mm, f/2.8) — NB игнорит | Можно «50mm feel», но как high-level look |"
+},
+{
+"id": "INV-002454",
+"archivo": "skills/image/references/models.md",
+"linea": "49",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| «Stunning/epic/masterpiece» | Игнорит, не вредит | **Anti-slop**: вредит, делает результат хуже |"
+},
+{
+"id": "INV-002455",
+"archivo": "skills/image/references/models.md",
+"linea": "50",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Text in image | `\"...\"` в кавычках, font + position | `\"...\"` или ALL CAPS + «no extra words / no duplicate text» |"
+},
+{
+"id": "INV-002456",
+"archivo": "skills/image/references/models.md",
+"linea": "51",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Negative framing | Использовать позитив | Использовать позитив + явный preserve list |"
+},
+{
+"id": "INV-002457",
+"archivo": "skills/image/references/models.md",
+"linea": "52",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Сложные сцены | JSON для 5+ элементов | 5-slot template со секциями |"
+},
+{
+"id": "INV-002458",
+"archivo": "skills/image/references/models.md",
+"linea": "53",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Edit | «Keep X same, change Y» | «Change: X / Preserve: Y / Constraints: Z» — повторять preserve каждую итерацию |"
+},
+{
+"id": "INV-002459",
+"archivo": "skills/image/references/models.md",
+"linea": "54",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Различия в синтаксисе промпта",
+"texto": "| Множественные референсы | До 14, индексировать | До 16, индексировать с ролью («Image 1: base», «Image 2: jacket reference») |"
+},
+{
+"id": "INV-002460",
+"archivo": "skills/image/references/models.md",
+"linea": "56",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "## Стоимость (ориентир)"
+},
+{
+"id": "INV-002461",
+"archivo": "skills/image/references/models.md",
+"linea": "58",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| Модель | Цена | Заметки |"
+},
+{
+"id": "INV-002462",
+"archivo": "skills/image/references/models.md",
+"linea": "59",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "|--------|------|---------|"
+},
+{
+"id": "INV-002463",
+"archivo": "skills/image/references/models.md",
+"linea": "60",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| Nano Banana 2 Lite | ~$0.034/img | Только 1K, ~4 сек. Черновики и массовые батчи |"
+},
+{
+"id": "INV-002464",
+"archivo": "skills/image/references/models.md",
+"linea": "61",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| Nano Banana 2 (Flash) | ~$0.04/img | Default для большинства задач |"
+},
+{
+"id": "INV-002465",
+"archivo": "skills/image/references/models.md",
+"linea": "62",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| Nano Banana Pro | ~$0.15/img | Сложные сцены, до 14 рефов |"
+},
+{
+"id": "INV-002466",
+"archivo": "skills/image/references/models.md",
+"linea": "63",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| GPT Image 2 (`low`) | дёшево | Latency-sensitive, превью |"
+},
+{
+"id": "INV-002467",
+"archivo": "skills/image/references/models.md",
+"linea": "64",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| GPT Image 2 (`medium`) | средне | Default для GPT Image |"
+},
+{
+"id": "INV-002468",
+"archivo": "skills/image/references/models.md",
+"linea": "65",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| GPT Image 2 (`high`) | дороже | Маленький текст, brand-sensitive, photorealism |"
+},
+{
+"id": "INV-002469",
+"archivo": "skills/image/references/models.md",
+"linea": "66",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "| gpt-image-1-mini | дешёвый | Высокообъёмная exploratory-генерация |"
+},
+{
+"id": "INV-002470",
+"archivo": "skills/image/references/models.md",
+"linea": "68",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "> Скилл сам не запускает генерацию — выдаёт промпт. Модель/quality указываем рядом с промптом как мета."
+},
+{
+"id": "INV-002471",
+"archivo": "skills/image/references/models.md",
+"linea": "70",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "---"
+},
+{
+"id": "INV-002472",
+"archivo": "skills/image/references/models.md",
+"linea": "72",
+"encabezado": "Model Selection — Nano Banana vs GPT Image 2 › Стоимость (ориентир)",
+"texto": "*Author: Serge Shima ([t.me/aimastersme](https://t.me/aimastersme) · [sergeshima.com](https://sergeshima.com) · [aimasters.me](https://aimasters.me)) · License: CC BY 4.0 — attribution required · Source: [smixs/visual-skills](https://github.com/smixs/visual-skills)*"
+},
+{
+"id": "INV-011718",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "1",
+"encabezado": "Adapter: GPT Image (1.5 / 2)",
+"texto": "# Adapter: GPT Image (1.5 / 2)"
+},
+{
+"id": "INV-011719",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "3",
+"encabezado": "Adapter: GPT Image (1.5 / 2)",
+"texto": "> Capability data (length ceiling, text/motion support, aspect param) is canonical in `_capabilities.json`. This file is the how-to-prompt guidance. `max_prompt_words` there is a ceiling; the range below is the recommended target and has to sit inside it. Where a fact here and a fact in the JSON disagree, the JSON wins, and `tools/validate_capabilities.py` fails the build instead of letting the two drift."
+},
+{
+"id": "INV-011720",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "5",
+"encabezado": "Adapter: GPT Image (1.5 / 2)",
+"texto": "GPT Image rewards paragraph-form prompts with explicit spatial reasoning and complex composition descriptions. It interprets relational language (\"to the left of\", \"behind\", \"in the foreground\") more accurately than any other generator. Choose GPT Image when the brief requires precise scene composition, multiple objects, or accurate text rendering."
+},
+{
+"id": "INV-011721",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "7",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern",
+"texto": "## Syntax pattern"
+},
+{
+"id": "INV-011722",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "9",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern",
+"texto": "```\n{Paragraph 1: subject, action, spatial composition}\n\n{Paragraph 2: environment and contextual details}\n\n{Paragraph 3: lighting, photographic specs, mood}\n```"
+},
+{
+"id": "INV-011723",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "17",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Syntax pattern",
+"texto": "Paragraph breaks help GPT Image parse separate beats. One long monolithic paragraph underperforms, the model loses track of which detail applies where."
+},
+{
+"id": "INV-011724",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "19",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "## Parameters"
+},
+{
+"id": "INV-011725",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "21",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "GPT Image is API-driven through OpenAI:"
+},
+{
+"id": "INV-011726",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "23",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "| Parameter | Default for storyboard work | Notes |"
+},
+{
+"id": "INV-011727",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "24",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "|---|---|---|"
+},
+{
+"id": "INV-011728",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "25",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "| `size` | `1024x1792` for 9:16, `1792x1024` for 16:9, `1024x1024` for 1:1 | Native aspect ratios |"
+},
+{
+"id": "INV-011729",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "26",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "| `quality` | `high` for hero shots, `medium` for series | |"
+},
+{
+"id": "INV-011730",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "27",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "| `style` | `natural` for photoreal, `vivid` for stylized | |"
+},
+{
+"id": "INV-011731",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "28",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "| `model` | `gpt-image-1.5` (or `gpt-image-2` if available) | |"
+},
+{
+"id": "INV-011732",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "30",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "Document in comment:"
+},
+{
+"id": "INV-011733",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "31",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Parameters",
+"texto": "```\n# shot_01, params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5\n{prompt}\n```"
+},
+{
+"id": "INV-011734",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "36",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Length",
+"texto": "## Length"
+},
+{
+"id": "INV-011735",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "38",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Length",
+"texto": "GPT Image handles **150–300 words** comfortably. Longer than other generators. Use the headroom for explicit spatial descriptions."
+},
+{
+"id": "INV-011736",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "40",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "## Spatial language strength"
+},
+{
+"id": "INV-011737",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "42",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "GPT Image's distinctive capability, describe spatial relationships explicitly:"
+},
+{
+"id": "INV-011738",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "44",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "- \"The founder is positioned in the left third of the frame, leaving the right two-thirds open.\""
+},
+{
+"id": "INV-011739",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "45",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "- \"A laptop sits on the desk in the foreground, a window with afternoon light is visible in the background.\""
+},
+{
+"id": "INV-011740",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "46",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "- \"The subject's shoulders are angled 30 degrees toward the camera, face turned to look at the off-frame light source.\""
+},
+{
+"id": "INV-011741",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "48",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Spatial language strength",
+"texto": "Use this when the shot's composition is load-bearing."
+},
+{
+"id": "INV-011742",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "50",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Composition pattern",
+"texto": "## Composition pattern"
+},
+{
+"id": "INV-011743",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "52",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Composition pattern",
+"texto": "```\n{Subject paragraph: who is in the frame, what they're doing, where they are positioned in the composition. Reference series_lock character anchor verbatim.}\n\n{Environment paragraph: setting, props, contextual elements. Pull from series_lock environment.}\n\n{Technical paragraph: lighting from series_lock, photographic spec, color grade from brand_lock, mood. Close with \"natural skin texture, no AI rendering artifacts\" if photoreal.}\n```"
+},
+{
+"id": "INV-011744",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "60",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Example",
+"texto": "## Example"
+},
+{
+"id": "INV-011745",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "62",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Example",
+"texto": "**Same shot data as previous examples.**"
+},
+{
+"id": "INV-011746",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "64",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Example",
+"texto": "**Output prompt:**"
+},
+{
+"id": "INV-011747",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "65",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Example",
+"texto": "```\nA founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck sweater, leans forward at his laptop. He is positioned in the left third of the frame, his face turned partially toward the window light off-camera left. The composition deliberately reserves the right two-thirds of the frame as negative space.\n\nThe setting is a minimalist home office. White walls, an oak desk in the immediate foreground, the laptop screen partially visible. A large window is implied off-frame to the left, source of the natural light. No clutter, no decorative objects.\n\nSoft natural side-light from the window left, warm afternoon golden hour temperature, gentle shadow rolloff. Shot on a 50mm prime lens at f/2.0, shallow depth of field with the background softly out of focus. Warm filmic color grade with muted teal shadows. The mood is calm and considered, operator energy, not creator energy. Natural skin texture, no AI rendering artifacts.\n```"
+},
+{
+"id": "INV-011748",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "73",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "## Text rendering"
+},
+{
+"id": "INV-011749",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "75",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "GPT Image handles text-in-image at roughly 95% accuracy, second only to Ideogram. When text is required:"
+},
+{
+"id": "INV-011750",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "77",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "- Put the exact text in straight double-quotes within the prompt"
+},
+{
+"id": "INV-011751",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "78",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "- Specify position explicitly (\"centered in the lower third\")"
+},
+{
+"id": "INV-011752",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "79",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "- Specify approximate typeface character (\"bold sans-serif\", \"elegant serif\")"
+},
+{
+"id": "INV-011753",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "80",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "- Limit to one text element per prompt for reliability"
+},
+{
+"id": "INV-011754",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "82",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Text rendering",
+"texto": "Default for storyboard work is still composited text, keep the override flag pattern from the Ideogram adapter."
+},
+{
+"id": "INV-011755",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "84",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "## Pitfalls to avoid"
+},
+{
+"id": "INV-011756",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "86",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "- **Don't write Midjourney-style comma stacks**. GPT Image parses them as a list of disconnected concepts"
+},
+{
+"id": "INV-011757",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "87",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "- **Don't omit spatial language when the shot has specific composition**, you're paying for the model's strength; use it"
+},
+{
+"id": "INV-011758",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "88",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "- **Don't pile too many objects**, five or fewer distinct elements per scene; more degrades fidelity"
+},
+{
+"id": "INV-011759",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "89",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "- **Don't include `--ar` flags or weight syntax**. GPT Image ignores them"
+},
+{
+"id": "INV-011760",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "90",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › Pitfalls to avoid",
+"texto": "- **Don't forget that GPT Image's \"AI look\" is real**, the closing \"natural skin texture, no AI rendering artifacts\" line meaningfully helps but isn't a complete fix. For pure photoreal, Flux is still stronger"
+},
+{
+"id": "INV-011761",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "92",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › API access",
+"texto": "## API access"
+},
+{
+"id": "INV-011762",
+"archivo": "skills/visual-prompt-forge/adapters/gpt-image.md",
+"linea": "94",
+"encabezado": "Adapter: GPT Image (1.5 / 2) › API access",
+"texto": "GPT Image is OpenAI-only as of Q2 2026. Standard `images.generate` endpoint. Pricing roughly $0.04–0.08 per image depending on size and quality. ChatGPT Plus and above gives UI access."
+},
+{
+"id": "INV-012202",
+"archivo": "skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt",
+"linea": "1",
+"encabezado": "",
+"texto": "# Storyboard: WhyStrohm, The Content Infrastructure Pitch\n# Generator: gpt-image (1.5)\n# Aspect: 9:16\n# Brand-lock: brand-lock.snapshot.md\n# Generated: 2026-05-07"
+},
+{
+"id": "INV-012203",
+"archivo": "skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt",
+"linea": "7",
+"encabezado": "",
+"texto": "# shot_04, reframe, 11.0-16.0s, MCU eye-level push\n# params: size=1024x1792, quality=high, style=natural, model=gpt-image-1.5\nA founder in his mid-thirties with salt-and-pepper hair, wearing a navy crewneck sweater, looks directly at the camera. He is positioned in the center of the frame, with his shoulders square and his head tilted slightly toward the camera-left light source. His expression captures a transition: the tiredness in his eyes is giving way to clarity, and a small, almost-smile is just beginning to form at the corners of his mouth. The camera is dollying slowly forward into the scene over the duration of the shot."
+},
+{
+"id": "INV-012204",
+"archivo": "skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt",
+"linea": "11",
+"encabezado": "",
+"texto": "The setting is a minimalist home office. White walls, an oak desk in the lower portion of the frame, and a single houseplant visible in the soft-focus background. There are no decorative objects or clutter, the environment is deliberately spare."
+},
+{
+"id": "INV-012205",
+"archivo": "skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt",
+"linea": "13",
+"encabezado": "",
+"texto": "Soft natural side-light enters from a large window camera-left, casting a warm afternoon golden-hour temperature across the subject's face. Shot on a 50mm prime lens at f/2.0, with shallow depth of field that softens the background while keeping the subject's eyes razor-sharp. Warm filmic color grade with muted teal shadows and a slight grain. The mood is calm and considered, operator energy, not creator energy. Natural skin texture, no AI rendering artifacts."
+}
+]
