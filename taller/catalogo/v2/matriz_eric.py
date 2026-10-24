@@ -1,17 +1,18 @@
 """matriz_eric.py: matriz en el formato pedido por Eric (2026-10-24), para cualquier archivo clasificado.
 
-- Columna A: el texto original completo. Columna B: su número (id persistente de la base de 13,005 textos).
+- Sin textos en la matriz (instrucción de Eric): columna A = número del texto (id persistente de la base de 13,005
+  textos originales), columna B = línea del archivo. El texto se localiza en la base por ese número.
 - Una fila por texto. Si el texto tiene casos alternativos (§7.2), sus X van en la misma fila y la columna "casos"
   dice qué valores se combinan en cada caso.
 - Columnas de lo general a lo particular: tipo de texto → imagen o video → modelo → universal → interno o externo →
   tipo de pieza → sujeto → número de personas → resto de facetas → proceso → atributos → acción, destino, valor
   a insertar y fundamento al final.
-- Antes de escribir corre la verificación de la clasificación; después reabre el Excel y compara cada texto con el
-  original (carácter y sha256). Si algo falla, sale con error.
+- Antes de escribir corre la verificación de la clasificación; después reabre el Excel y comprueba el formato y que
+  los números sean exactamente los textos del archivo en la base, sin faltantes ni repetidos. Si algo falla, sale
+  con error.
 
     python3 matriz_eric.py <carpeta_con_clasificacion.py> <archivo_fuente>
 """
-import hashlib
 import importlib.util
 import sqlite3
 import sys
@@ -80,7 +81,7 @@ def main(carpeta, archivo):
     wb = Workbook()
     ws = wb.active
     ws.title = "matriz"
-    fijas_ini = ["texto original", "número"]
+    fijas_ini = ["número", "línea"]
     fijas_fin = ["casos", "valor a insertar", "fundamento", "consulta"]
     for k, h in enumerate(fijas_ini, 1):
         ws.cell(row=2, column=k, value=h).font = Font(bold=True)
@@ -99,8 +100,8 @@ def main(carpeta, archivo):
     for k, h in enumerate(fijas_fin, fin0):
         ws.cell(row=2, column=k, value=h).font = Font(bold=True)
     for n, (i, linea, texto, _) in enumerate(filas_base, 3):
-        ws.cell(row=n, column=1, value=texto).alignment = Alignment(wrap_text=True, vertical="top")
-        ws.cell(row=n, column=2, value=f"{i} (línea {linea})")
+        ws.cell(row=n, column=1, value=i)
+        ws.cell(row=n, column=2, value=int(linea))
         if i in C.CONCILIACIONES:
             t, j = C.CONCILIACIONES[i]
             mk, extra = {("Tipo de registro", t)}, ["", "", j, ""]
@@ -114,8 +115,8 @@ def main(carpeta, archivo):
             ws.cell(row=n, column=pos[c], value="X").alignment = Alignment(horizontal="center")
         for k, v in enumerate(extra, fin0):
             ws.cell(row=n, column=k, value=v).alignment = Alignment(wrap_text=True, vertical="top")
-    ws.column_dimensions["A"].width = 70
-    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["A"].width = 13
+    ws.column_dimensions["B"].width = 7
     for k in range(len(fijas_ini) + 1, fin0):
         ws.column_dimensions[get_column_letter(k)].width = 3.2
     for k, w in zip(range(fin0, fin0 + 4), (40, 50, 50, 10)):
@@ -138,32 +139,28 @@ def main(carpeta, archivo):
     leido = load_workbook(salida)["matriz"]
     # Formato pedido por Eric: el programa lo comprueba igual que el contenido; si no se cumple, sale con error.
     formato = []
-    if leido.cell(row=2, column=1).value != "texto original" or leido.cell(row=2, column=2).value != "número":
-        formato.append("la columna A no es el texto original o la B no es el número")
+    if leido.cell(row=2, column=1).value != "número" or leido.cell(row=2, column=2).value != "línea":
+        formato.append("la columna A no es el número o la B no es la línea")
+    if leido.max_column != fin0 + 3:
+        formato.append("hay columnas de más o de menos")
     grupos_leidos = [leido.cell(row=1, column=k).value for k in range(len(fijas_ini) + 1, fin0)
                      if leido.cell(row=1, column=k).value]
     grupos_esperados = list(dict.fromkeys(gr for gr, _ in cols))
     if grupos_leidos != grupos_esperados:
         formato.append("el orden de los grupos de columnas no es el de lo general a lo particular definido en ORDEN")
-    nums = [fila[1].split(" ")[0] for fila in leido.iter_rows(min_row=3, values_only=True)]
+    nums = [fila[0] for fila in leido.iter_rows(min_row=3, values_only=True)]
     if len(nums) != len(set(nums)):
         formato.append("hay textos repetidos en más de una fila")
-    print("formato: " + ("CORRECTO (texto en A, número en B, una fila por texto, columnas de general a particular)"
+    print("formato: " + ("CORRECTO (número en A, línea en B, sin textos, una fila por texto, columnas de general a particular)"
                          if not formato else " · ".join(formato)))
     if formato:
         sys.exit(1)
-    sha = {i: h for i, _, _, h in filas_base}
-    orig = {i: t for i, _, t, _ in filas_base}
-    malos, vistos = [], []
-    for fila in leido.iter_rows(min_row=3, values_only=True):
-        texto, num = fila[0], fila[1].split(" ")[0]
-        vistos.append(num)
-        if texto != orig[num] or hashlib.sha256(texto.encode("utf-8")).hexdigest() != sha[num]:
-            malos.append(num)
-    faltan = sorted(set(orig) - set(vistos))
-    print(f"escrito {salida.name}: {len(vistos)} filas (una por texto) × {len(cols) + 6} columnas · texto idéntico al "
-          f"original en {len(vistos) - len(malos)} de {len(orig)} · distintos {malos} · faltan {faltan}")
-    if malos or faltan or len(vistos) != len(orig):
+    linea_de = {i: int(l) for i, l, _, _ in filas_base}
+    malas = [n for n, fila in zip(nums, leido.iter_rows(min_row=3, values_only=True)) if linea_de.get(n) != fila[1]]
+    faltan, sobran = sorted(set(linea_de) - set(nums)), sorted(set(nums) - set(linea_de))
+    print(f"escrito {salida.name}: {len(nums)} filas (una por texto) × {len(cols) + 6} columnas · números del archivo "
+          f"en la base {len(linea_de)} · faltan {faltan} · sobran {sobran} · línea distinta {malas}")
+    if faltan or sobran or malas:
         sys.exit(1)
 
 
