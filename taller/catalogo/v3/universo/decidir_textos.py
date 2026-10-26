@@ -7,8 +7,10 @@ relevante únicamente para modelos que no son GPT Image 2. Un texto que no nombr
 otro modelo» y entra. Por eso aquí se leen, uno por uno, los textos de secciones «dentro» que nombran un modelo
 (regex MODELO, 217 textos), más la sección 1344, cuyo documento declara gpt-image-1.5.
 
-INV-002054 («Up to 14 reference images (6 high-fidelity)», characters.md:3) no nombra ningún modelo y su cifra es de
-Nano Banana: un dato de un solo modelo puede ir sin el nombre del modelo. Por eso también se leen todos los textos
+INV-002054 («Up to 14 reference images (6 high-fidelity)», characters.md:3) no nombra ningún modelo. Su documento
+aplica a los dos modelos: image/SKILL.md lo carga en el Paso 4 (L52, L58), después de elegir modelo (Pasos 1 y 2). Pero
+su cifra es la de Nano Banana (SKILL.md:41, nano-banana.md:64) y contradice la de GPT Image 2, que es 16 (SKILL.md:44,
+gpt-image.md:102, golden-rules.md:93): un dato que no vale para un modelo puede ir sin nombre. Por eso también se leen todos los textos
 «dentro» de los 13 documentos que no declaran a qué modelo aplican (SIN_DECLARACION). Los documentos que sí lo declaran
 (golden-rules, prompt-framework, text-rendering, editing, image/SKILL, models: los dos modelos; gpt-image.md y los 7
 patterns: GPT Image 2; adaptador forge: GPT Image 1.5/2; flujos y director) se rigen por su declaración.
@@ -122,8 +124,9 @@ NOTA = {
     "INV-000477": "la columna de modelo es de Nano Banana; entran el resto de la fila (auditar anatomía y pelaje)",
     "INV-000479": "«Cualquiera; NBP si…»: aplica a cualquier modelo",
     "INV-000605": "grounding es de NB2; la verificación contra la realidad es genérica",
-    "INV-002054": "«Up to 14 reference images (6 high-fidelity)» es la cifra de Nano Banana (nano-banana.md:64); "
-                  "para GPT Image 2 son 16 (gpt-image.md:102)",
+    "INV-002054": "el documento aplica a los dos modelos (image/SKILL.md lo carga en el Paso 4, L58), pero «Up to 14 "
+                  "reference images (6 high-fidelity)» repite la cifra de Nano Banana (SKILL.md:41, nano-banana.md:64) "
+                  "y contradice la de GPT Image 2: 16 (SKILL.md:44, gpt-image.md:102, golden-rules.md:93)",
     "INV-003035": "el imperativo «formula en positivo» es genérico; NBP es el ejemplo",
     "INV-003039": "dice qué solo hace Nano Banana, es decir, qué no pedirle a GPT Image 2",
     "INV-009814": "regla genérica de re-roll; Flux es el ejemplo",
