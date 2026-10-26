@@ -331,7 +331,7 @@
    "sin fallas"
   ],
   "palabras": 264,
-  "ms_seleccion_validacion": 1.67
+  "ms_seleccion_validacion": 0.79
  },
  {
   "brief": "B2",
@@ -658,7 +658,7 @@
    "sin fallas"
   ],
   "palabras": 244,
-  "ms_seleccion_validacion": 0.41
+  "ms_seleccion_validacion": 0.35
  },
  {
   "brief": "B3",
@@ -975,7 +975,7 @@
    "sin fallas"
   ],
   "palabras": 222,
-  "ms_seleccion_validacion": 0.3
+  "ms_seleccion_validacion": 0.31
  },
  {
   "brief": "B4",
@@ -1320,7 +1320,7 @@
    "sin fallas"
   ],
   "palabras": 246,
-  "ms_seleccion_validacion": 0.31
+  "ms_seleccion_validacion": 0.41
  },
  {
   "brief": "B5",
@@ -1652,7 +1652,7 @@
   "ms_seleccion_validacion": 0.26
  },
  {
-  "brief": "B6",
+  "brief": "B6-T1",
   "facetas": {
    "F04": [
     "retrato"
@@ -1661,7 +1661,7 @@
     "moda"
    ],
    "F06": [
-    "2:3"
+    "4:5"
    ],
    "F10": [
     "génesis sin referencias (caso 1, T1)"
@@ -1682,10 +1682,334 @@
     "1"
    ],
    "F22": [
-    "<20%"
+    "≥20%"
    ],
    "F23": [
     "ninguna"
+   ],
+   "F24": [
+    "CU close-up"
+   ],
+   "F25": [
+    "eye-level"
+   ],
+   "F32": [
+    "sin texto"
+   ],
+   "F33": [
+    "simple"
+   ],
+   "F35": [
+    "no"
+   ],
+   "F20": [
+    "todas"
+   ]
+  },
+  "inferencias": [
+   "Luz cálida a 45° desde la izquierda de cámara y un poco arriba; el brief no dice el lado.",
+   "«Salt and pepper» a los 25 años = canas prematuras; lo declaro así para que el modelo no lo envejezca.",
+   "Zapatos: oxford de piel negra pulida, sin marca visible (sustituye «Armani»).",
+   "Uso: lookbook de moda masculina; el brief no lo dice. Cámbialo si es otro.",
+   "Rasgos: piel oliva, ojos castaño oscuro, mandíbula marcada (traducción de «bien parecido»).",
+   "F20 «todas»: su rostro debe reconocerse. La taxonomía separa reconocimiento de cantidad (L1210) y define «todas» como cada persona del cuadro con rostro reconocible, sin figuras anónimas (TRM-0175, L1220).",
+   "Sin F34: GPT Image 2 usa tamaño en píxeles, no resolución nominal (T-BRIEF-IMG L40–42; CONTRATOS_OPERACION_MODELO.json:750–752).",
+   "Dos pasos por TRM-0130 (flujos/flujo-spot.html:358, INV-000474): «primero el retrato de rostro T1 sin referencia, se canoniza con hash; después el cuerpo entero T2 con el rostro adjunto como Image 1 […]. Nunca cuerpo entero de un solo tiro»; DECISIONES.md:20. Textos tomados de produccion/template-retrato-gpt2/b6-corregido/PROMPTS.txt.",
+   "Formato 4:5 (1024x1280) para el maestro de rostro, igual que b6-corregido; F24 «CU close-up» por «head and shoulders (close-up)»; F22 «≥20%»."
+  ],
+  "seleccionadas": [
+   {
+    "id": "INV-002332",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "entrada.modelo.nombre"
+    ],
+    "valor": "gpt-image-2 por defecto en producción; gpt-image-1.5 y gpt-image-1 solo migración; gpt-image-1-mini económico"
+   },
+   {
+    "id": "INV-002334",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots"
+    ],
+    "valor": "secciones con etiqueta, no texto corrido"
+   },
+   {
+    "id": "INV-002335",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots.Scene",
+     "salida.slots.Subject",
+     "salida.slots.Important Details",
+     "salida.slots.Use Case",
+     "salida.slots.Constraints"
+    ],
+    "valor": "Scene: location, time of day, background, environment / Subject: primary focus / Important Details: materials, textures, lighting, camera angle, mood, composition / Use Case: editorial, product mockup, UI, poster, infographic / Constraints: what must NOT change/appear"
+   },
+   {
+    "id": "INV-002336",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "agregar al prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.slots.Constraints",
+     "salida.validaciones"
+    ],
+    "valor": "Constraints explícitas (el slot no puede ir vacío)"
+   },
+   {
+    "id": "INV-002338",
+    "uso": "APLICACIÓN EN CONTROL O ENTREGA",
+    "accion": [
+     "validar contra el ejemplo"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "prompt del florista de Lisboa con los 5 slots completos"
+   },
+   {
+    "id": "INV-002340",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "sin elogios vagos"
+   },
+   {
+    "id": "INV-002343",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibido: stunning, incredible, epic, gorgeous, masterpiece → escribir hechos visuales: overcast daylight, brushed aluminum, chipped paint, 50mm feel"
+   },
+   {
+    "id": "INV-002344",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibidas etiquetas de estilo («minimalist brutalist luxury photoreal») → atributos visibles: «cream background, heavy black sans-serif, asymmetrical type block, one hero object, generous negative space»"
+   },
+   {
+    "id": "INV-002345",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "prohibido «como en un anuncio de Apple» → hechos visuales concretos"
+   },
+   {
+    "id": "INV-002346",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "excluir del prompt",
+     "agregar al prompt"
+    ],
+    "destino": [
+     "salida.validaciones",
+     "salida.slots.Subject",
+     "salida.slots.Important Details"
+    ],
+    "valor": "prohibido lenguaje de ambiente que oculta requisitos → enunciado directo: «image must contain a transit kiosk»"
+   },
+   {
+    "id": "INV-002351",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "quality: medium como punto de partida"
+   },
+   {
+    "id": "INV-002352",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "quality: high"
+   },
+   {
+    "id": "INV-002353",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "fijar parámetro"
+    ],
+    "destino": [
+     "salida.parametros.quality"
+    ],
+    "valor": "empezar con quality: low y subir si hace falta"
+   },
+   {
+    "id": "INV-002355",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "lado mayor < 3840 px"
+   },
+   {
+    "id": "INV-002356",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "ambos lados múltiplos de 16"
+   },
+   {
+    "id": "INV-002357",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "relación de aspecto máxima 3:1"
+   },
+   {
+    "id": "INV-002358",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "total de píxeles entre 655 360 y 8 294 400"
+   },
+   {
+    "id": "INV-002359",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.parametros.tamano",
+     "salida.validaciones"
+    ],
+    "valor": "límite fiable 2560×1440"
+   },
+   {
+    "id": "INV-002394",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "validar el prompt"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "el primer prompt es limpio, sin acumulaciones"
+   },
+   {
+    "id": "INV-002397",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "seleccionar estructura"
+    ],
+    "destino": [
+     "salida.slots"
+    ],
+    "valor": "prompts largos en secciones con etiqueta"
+   }
+  ],
+  "acciones_dependencia": [],
+  "datos_faltantes": [
+   "entrada.modelo.interfaz"
+  ],
+  "seleccion": "exploratoria",
+  "tamano": [
+   1024,
+   1280
+  ],
+  "origen_tamano": "calculado con INV-002355..2358",
+  "validacion": [
+   "sin fallas"
+  ],
+  "palabras": 193,
+  "ms_seleccion_validacion": 0.27
+ },
+ {
+  "brief": "B6-T2",
+  "facetas": {
+   "F04": [
+    "retrato"
+   ],
+   "F05": [
+    "moda"
+   ],
+   "F06": [
+    "2:3"
+   ],
+   "F10": [
+    "ancla con referencias (caso 2, T2 a T4)"
+   ],
+   "F15": [
+    "persona"
+   ],
+   "F16": [
+    "interior"
+   ],
+   "F17": [
+    "comercial pulido"
+   ],
+   "F18": [
+    "fotorrealista"
+   ],
+   "F19": [
+    "1"
+   ],
+   "F22": [
+    "<20%"
+   ],
+   "F23": [
+    "persona"
    ],
    "F24": [
     "WS wide"
@@ -1714,7 +2038,9 @@
    "Uso: lookbook de moda masculina; el brief no lo dice. Cámbialo si es otro.",
    "Rasgos: piel oliva, ojos castaño oscuro, mandíbula marcada (traducción de «bien parecido»).",
    "F20 «todas»: su rostro debe reconocerse. La taxonomía separa reconocimiento de cantidad (L1210) y define «todas» como cada persona del cuadro con rostro reconocible, sin figuras anónimas (TRM-0175, L1220).",
-   "Sin F34: GPT Image 2 usa tamaño en píxeles, no resolución nominal (T-BRIEF-IMG L40–42; CONTRATOS_OPERACION_MODELO.json:750–752)."
+   "Sin F34: GPT Image 2 usa tamaño en píxeles, no resolución nominal (T-BRIEF-IMG L40–42; CONTRATOS_OPERACION_MODELO.json:750–752).",
+   "Dos pasos por TRM-0130 (flujos/flujo-spot.html:358, INV-000474): «primero el retrato de rostro T1 sin referencia, se canoniza con hash; después el cuerpo entero T2 con el rostro adjunto como Image 1 […]. Nunca cuerpo entero de un solo tiro»; DECISIONES.md:20. Textos tomados de produccion/template-retrato-gpt2/b6-corregido/PROMPTS.txt.",
+   "F23 «persona»: el maestro de rostro B6-T1 aprobado entra como Image 1."
   ],
   "seleccionadas": [
    {
@@ -1947,15 +2273,39 @@
     "valor": "1024×1536"
    },
    {
-    "id": "INV-002394",
+    "id": "INV-002386",
     "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
     "accion": [
      "validar el prompt"
     ],
     "destino": [
+     "entrada.referencias",
      "salida.validaciones"
     ],
-    "valor": "el primer prompt es limpio, sin acumulaciones"
+    "valor": "hasta 16 imágenes de referencia"
+   },
+   {
+    "id": "INV-002387",
+    "uso": "APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE",
+    "accion": [
+     "agregar al prompt"
+    ],
+    "destino": [
+     "entrada.referencias[].rol",
+     "salida.referencias"
+    ],
+    "valor": "cada referencia indexada con su rol: «Image N: rol»"
+   },
+   {
+    "id": "INV-002388",
+    "uso": "APLICACIÓN EN CONTROL O ENTREGA",
+    "accion": [
+     "validar contra el ejemplo"
+    ],
+    "destino": [
+     "salida.validaciones"
+    ],
+    "valor": "Image 1: base scene / Image 2: jacket reference (apply only…) / Image 3: lighting reference (apply…)"
    },
    {
     "id": "INV-002397",
@@ -1982,7 +2332,7 @@
   "validacion": [
    "sin fallas"
   ],
-  "palabras": 281,
+  "palabras": 295,
   "ms_seleccion_validacion": 0.34
  }
 ]
