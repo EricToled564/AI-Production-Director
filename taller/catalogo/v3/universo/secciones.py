@@ -2,7 +2,9 @@
 
     python3 -I secciones.py   → secciones.json (una fila por sección, con sus ids) y secciones.txt (para leer)
 
-Los textos de .md y .tpl traen su encabezado en la base original. Los que no lo traen se ubican así:
+Los textos de .md y .tpl traen su encabezado en la base original. 62 de ellos (image/SKILL.md y video/SKILL.md) lo
+traen mal: «Step 2…» quedó anidado bajo «Step 1», que en el original es su hermano. Para esos se usa el encabezado
+reconstruido del original por verificar_origen.py (verificacion_origen.json, fallos de la prueba D). Los que no lo traen se ubican así:
 - flujos/*.html: por el último marcador de sección del propio documento («Nivel …», «Paso …» o fila de etapa
   «| E0 |» a «| E7 |» y «| POST |») que aparece antes de la línea;
 - .json, .py, .sh, .txt, licencias y avisos: el documento completo es la sección.
@@ -21,8 +23,12 @@ def main():
     db = sqlite3.connect(f"file:{BASE}?mode=ro", uri=True)
     filas = db.execute("SELECT id, archivo, encabezado, CAST(linea_inicial AS INTEGER), texto FROM textos "
                        "ORDER BY archivo, 4, id").fetchall()
+    verif = json.loads((AQUI / "verificacion_origen.json").read_text(encoding="utf-8"))
+    corregido = {f["id"]: f["reconstruido"] for f in verif["fallos"] if f["prueba"] == "D"}
+    assert len(corregido) == 62 and not [f for f in verif["fallos"] if f["prueba"] != "D"]
     secciones, actual = {}, {}
     for i, a, e, l, t in filas:
+        e = corregido.get(i, e)
         if e.strip():
             s = e.strip()
         elif a.startswith("flujos/"):
