@@ -128,5 +128,5 @@ Evidencia: `produccion/prompts-sistema-20261024/RESULTADOS_20261024.md`, `produc
 | # | Decisión | Opciones |
 |---|---|---|
 | D1 | ¿Entran las decisiones de Eric y las definiciones de la taxonomía como fuente de reglas (T3)? | sí · no |
-| D2 | ¿Los 7 documentos del bloque del piloto fuera del universo de 1,511 entran? | sí · no |
+| D2 | ¿Los 7 documentos del bloque del piloto fuera del universo de 1,511 entran? | **Resuelta: sí, y el universo se amplía a todo texto relevante para crear imágenes salvo lo que solo aplica a otros modelos** (`v2/decisiones/DECISIONES_ERIC_20261024.md` §1) |
 | D3 | Orden: T3 primero, o T7 (tu revisión del lote 1) primero | T3 · T7 |
