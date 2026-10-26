@@ -37,6 +37,13 @@ def aplica(a, facetas, paso):
     return all(set(v) & set(facetas.get(f, [])) for f, v in a["r"].items())
 
 
+def separar_por_dependencia(sel):
+    """Las reglas con campo dependencia no se aplican solas: su validez cambia con la interfaz (TRM-0683, «Diferencia de
+    soporte entre API, aplicación o integración») o con la versión del modelo (TRM-0684, «Cambio de soporte entre
+    versiones del mismo modelo»), y ningún caso declara interfaz ni versión. Se reportan aparte (método del 2026-10-24)."""
+    return [a for a in sel if not a.get("dependencia")], [a for a in sel if a.get("dependencia")]
+
+
 def tamano(ratio):
     """Tamaño de la fuente si existe; si no, el menor múltiplo de 16 con lado corto 1024 que cumple 002355–002358."""
     if ratio in TAMANOS:
@@ -82,7 +89,7 @@ def main():
     salida, traza = ["# Prompts GPT Image 2 — briefs B1–B5 (PILOTO_V5 §5)", ""], []
     for c in casos:
         t1 = time.perf_counter()
-        sel = [a for a in m.APLICACIONES if aplica(a, c["facetas"], c["paso"])]
+        sel, condicionadas = separar_por_dependencia([a for a in m.APLICACIONES if aplica(a, c["facetas"], c["paso"])])
         (ancho, alto), origen_tam = tamano(c["facetas"]["F06"][0])
         prompt = "\n".join(f"{s}: {c['slots'][s]}" for s in SLOTS)
         fallas, palabras = validar(prompt, c["slots"], ancho, alto)
@@ -91,6 +98,9 @@ def main():
         traza.append({"brief": c["id"], "facetas": c["facetas"], "inferencias": c["inferencias"],
                       "seleccionadas": [{"id": a["id"], "uso": a["uso"], "accion": a["accion"], "destino": a["destino"],
                                          "valor": a["valor"]} for a in sel],
+                      "condicionadas": [{"id": a["id"], "dependencia": a["dependencia"],
+                                         "modelo_citado": a["modelo_citado"], "accion": a["accion"],
+                                         "valor": a["valor"]} for a in condicionadas],
                       "tamano": [ancho, alto], "origen_tamano": origen_tam, "validacion": fallas or ["sin fallas"],
                       "palabras": palabras, "ms_seleccion_validacion": round(t_caso * 1000, 2)})
         salida += [f"## {c['id']} — {c['brief']}", "",
@@ -110,7 +120,8 @@ def main():
     total = time.perf_counter() - t0
     print(f"carga del piloto {t_carga * 1000:.1f} ms · total determinista {total * 1000:.1f} ms")
     for t in traza:
-        print(f"{t['brief']}: {len(t['seleccionadas'])} reglas · {t['palabras']} palabras · {t['tamano']} · "
+        print(f"{t['brief']}: {len(t['seleccionadas'])} reglas · {len(t['condicionadas'])} condicionadas · "
+              f"{t['palabras']} palabras · {t['tamano']} · "
               f"{t['validacion']} · {t['ms_seleccion_validacion']} ms")
 
 

@@ -211,3 +211,5 @@ Inferencias mías, para tu aprobación:
 - Zapatos: oxford de piel negra pulida, sin marca visible (sustituye «Armani»).
 - Uso: lookbook de moda masculina; el brief no lo dice. Cámbialo si es otro.
 - Rasgos: piel oliva, ojos castaño oscuro, mandíbula marcada (traducción de «bien parecido»).
+- F20 «todas»: su rostro debe reconocerse. La taxonomía separa reconocimiento de cantidad (L1210) y define «todas» como cada persona del cuadro con rostro reconocible, sin figuras anónimas (TRM-0175, L1220).
+- F34 «1K»: 1024x1536 es un tamaño «ходовой» de gpt-image.md:60; la fuente solo nombra 2K (2560×1440, gpt-image.md:63) y la extensión F34 (DECISIONES_ERIC_20261023 §4) no define los escalones.
