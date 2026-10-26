@@ -37,6 +37,7 @@ clasificación: cada uno se lee completo en la tarea que clasifica su archivo (T
 | Condiciones | grupos TODAS / ALGUNA / NINGUNA; átomo = faceta o campo, operador (=, ≠, ∈, ∉, <, ≤, >, ≥, entre, existe, no existe), valor, unidad | taxonomía §7.2, línea 2800 |
 | Texto no normativo | estructura · código auxiliar · duplicado referenciado · otro contenido no normativo | taxonomía 10-19, gate final punto 1 |
 | Universalidad por faceta | VALOR (valores concretos) o UNIVERSAL (sin restricción de esa faceta, con evidencia) | taxonomía 10-19 §1.2 |
+| Niveles de generalidad (la escala de Eric, localizada el 2026-10-26) | universal para todas las imágenes del alcance · universal para un modelo · universal para un tipo de imagen de un modelo y todos sus casos · aplicable a varios casos enumerados de ese modelo y tipo · específica de modelo, operación, tipo de imagen y caso · combinaciones transversales respaldadas. «Universal» se interpreta dentro del dominio fijado; la de un modelo no se extiende a otros | PLAN_V5 §13.2, `fuentes_20261019/PLAN_V5_…054300.md` L627–636 |
 | De dónde sale una restricción | del cuerpo, del encabezado o del documento; no basta buscar palabras | taxonomía 10-19 §1.6 y §1.12.4; DEC-000023 |
 | Uso de cada regla | ACTIVO EN SELECCIÓN · INCORPORADA A TEMPLATE · APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE · APLICACIÓN EN CONTROL O ENTREGA | taxonomía 10-19 §5.3 |
 | Sintaxis de modelo en el template | se aplica una vez al template y no se vuelve a extraer | DEC-000025 |
