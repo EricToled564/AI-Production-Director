@@ -137,6 +137,11 @@ for f, nombre, vals in (("F32", "Texto en la imagen", ["sin texto", "texto corto
     esquema["facetas"][f] = {"nombre": nombre, "valores": [valor(v, "extension_aprobada_2026-10-23") for v in vals]}
     esquema["extensiones"] += [{"faceta": f, "valor": v} for v in vals]
 
+# Extensión aprobada por Eric el 2026-10-26 (DECISIONES_ERIC_20261026 §6): un objeto entero que llena el cuadro.
+esquema["facetas"]["F24"]["valores"].append(valor("objeto entero", "extension_aprobada_2026-10-26", None,
+                                                  "un objeto completo como sujeto del cuadro"))
+esquema["extensiones"].append({"faceta": "F24", "valor": "objeto entero"})
+
 esquema["campos"]["unidad"].append(valor("imagen fija suelta", "extension_aprobada_2026-10-23", None,
                                          "imagen individual que no forma parte de una secuencia temporal"))
 esquema["extensiones"].append({"campo": "unidad", "valor": "imagen fija suelta"})
