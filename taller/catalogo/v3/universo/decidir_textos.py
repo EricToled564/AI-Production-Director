@@ -9,8 +9,9 @@ otro modelo» y entra. Por eso aquí se leen, uno por uno, los textos de seccion
 
 INV-002054 («Up to 14 reference images (6 high-fidelity)», characters.md:3) no nombra ningún modelo. Su documento
 no restringe modelo: image/SKILL.md lo carga en el Paso 4 (L52, L58), después de elegir modelo (Pasos 1 y 2). Sus
-cifras solo coinciden con las que el corpus asigna a Nano Banana (14 refs: SKILL.md:40, golden-rules.md:93; 6 de alta
-fidelidad: nano-banana.md:64); para GPT Image 2 el corpus da 16 y alta fidelidad por defecto (gpt-image.md:96, :102).
+cifras son exactamente el desglose de NBP: 14 refs = 6 objetos de alta fidelidad + 5 character + 3 style
+(nano-banana.md:64-66, :144; models.md:20, :62); para GPT Image 2 el corpus da 16 y alta fidelidad por defecto
+(gpt-image.md:96, :102).
 Un texto sin nombre de modelo puede no valer para GPT Image 2. Por eso también se leen todos los textos
 «dentro» de los 13 documentos que no declaran a qué modelo aplican (SIN_DECLARACION). Los documentos que sí lo declaran
 (golden-rules, prompt-framework, text-rendering, editing, image/SKILL, models: los dos modelos; gpt-image.md y los 7
@@ -126,10 +127,10 @@ NOTA = {
     "INV-000479": "«Cualquiera; NBP si…»: aplica a cualquier modelo",
     "INV-000605": "grounding es de NB2; la verificación contra la realidad es genérica",
     "INV-002054": "el documento no dice a qué modelo se refiere y image/SKILL.md lo carga en el Paso 4 (L58) sin "
-                  "restringir modelo. En el corpus, 14 referencias solo se asigna a Nano Banana (SKILL.md:40, "
-                  "golden-rules.md:93, models.md:20, :54, :62) y 6 de alta fidelidad solo a NBP (nano-banana.md:64). "
-                  "Para GPT Image 2 el corpus da 16 (SKILL.md:43, golden-rules.md:93, gpt-image.md:102, models.md:20, "
-                  ":54) y alta fidelidad por defecto en todas (gpt-image.md:96)",
+                  "restringir modelo. «14 (6 high-fidelity)» es exactamente el desglose de NBP: hasta 14 refs "
+                  "(models.md:20, :62) = 6 objetos de alta fidelidad + 5 character + 3 style (nano-banana.md:64-66, "
+                  ":144). Para GPT Image 2 el corpus da hasta 16 con rol (SKILL.md:43, golden-rules.md:93, "
+                  "gpt-image.md:102, models.md:20, :54) y alta fidelidad por defecto (gpt-image.md:96)",
     "INV-003035": "el imperativo «formula en positivo» es genérico; NBP es el ejemplo",
     "INV-003039": "dice qué solo hace Nano Banana, es decir, qué no pedirle a GPT Image 2",
     "INV-009814": "regla genérica de re-roll; Flux es el ejemplo",
