@@ -11,18 +11,13 @@
    "F06": ["2:3"],
    "F10": ["edición de imagen existente (T5)", "edición: cambiar vestuario"],
    "F15": ["persona"],
-   "F16": ["interior"],
    "F17": ["comercial pulido"],
    "F18": ["fotorrealista"],
    "F19": ["1"],
    "F20": ["todas"],
-   "F22": ["<20%"],
    "F23": ["persona", "vestuario"],
-   "F24": ["MS medium"],
-   "F25": ["eye-level"],
    "F32": ["sin texto"],
    "F33": ["simple"],
-   "F34": ["1K"],
    "F35": ["no"]
   },
   "fuentes_del_caso": [
@@ -35,10 +30,9 @@
   "inferencias": [
    "F10 lleva el padre «edición de imagen existente (T5)» y el hijo «edición: cambiar vestuario» (DECISIONES_ERIC_20261023 §4 los declara hijos), para que se evalúen también las reglas del padre (p. ej. INV-002375 a INV-002380).",
    "F23 «persona» (la foto que se edita, Image 1) y «vestuario» (la foto de la chaqueta, Image 2).",
-   "Plano medio, de la cintura hacia arriba (F24 «MS medium», TRM-0194): el rostro ocupa menos del 20% del cuadro (F22 «<20%»).",
-   "F16 «interior»: estudio de catálogo bajo techo; formato 2:3 (1024x1536, gpt-image.md:60), igual al de la foto original.",
+   "Formato 2:3 (1024x1536, gpt-image.md:60), igual al de la foto original.",
    "F20 «todas»: el rostro del modelo debe seguir reconocible (TRM-0175, L1220).",
-   "F34 «1K»: 1024x1536 es un tamaño «ходовой» de gpt-image.md:60; la fuente solo nombra 2K (2560×1440, gpt-image.md:63)."
+   "Sin F16, F22, F24, F25 ni F34: la edición conserva encuadre, ángulo y fondo de la foto original, y el módulo fotografía no exige redefinirlos (CONTRATOS_OPERACION_MODELO.json:778); el esquema dice «no se inventa un valor para llenar el campo»; GPT Image 2 usa tamaño en píxeles, no resolución nominal (T-BRIEF-IMG L40–42)."
   ],
   "consultas": [
    {"campo": "entrada.modelo.interfaz", "pregunta": "¿La edición se hará en la API de OpenAI o en fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre; activa las acciones de INV-002374 (endpoint) e INV-002380 (máscara)"},
@@ -65,7 +59,6 @@
    "F25": ["low"],
    "F32": ["texto corto"],
    "F33": ["simple"],
-   "F34": ["1K"],
    "F35": ["no"]
   },
   "fuentes_del_caso": [
@@ -78,12 +71,12 @@
    "Tema, objeto, palabras del titular y fechas son míos; el caso existe para ejercitar texto corto en imagen.",
    "F19 «0»: la taxonomía define 0 como «placa de entorno vacío sostenida por la luz, la atmósfera, un objeto o un fenómeno» (TRM-0171, L1200); el saxofón no es un sujeto individual con identidad.",
    "F25 «low»: el saxofón visto desde abajo, con el cielo detrás (TRM-0320, eje de cámara hacia arriba).",
-   "Formato 2:3 (1024x1536, gpt-image.md:60), vertical de póster; F34 «1K» por el mismo motivo que C1."
+   "Formato 2:3 (1024x1536, gpt-image.md:60), vertical de póster.",
+   "Sin F20 ni F22: no hay personas; identidad.invariantes se exige «si exige reconocimiento/continuidad» y rostro.ocupacion «si rostro visible» (esquema), así que omitirlos es una omisión legítima (T-BRIEF-IMG L19)."
   ],
   "consultas": [
    {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
-   {"campo": "F20, F22", "pregunta": "No hay personas en el cuadro. Los valores de F20 (todas, solo los héroes, ninguna; L1214-1216) y de F22 (≥20%, <20%, sin rostro visible; TRM-0184 «rostro oculto, fuera de cuadro, de espaldas o cubierto») describen personas. ¿Se marca F20 «ninguna» y F22 «sin rostro visible», o se crea un valor para «sin personas»?", "por_que": "§2 de los templates: ningún campo vacío habilita selección definitiva; ampliar la taxonomía exige consultarte (taxonomía §1.12.11)"},
-   {"campo": "F24", "pregunta": "La escala de planos describe personas (CU «cabeza, o mano con objeto», L1334). Para un objeto que llena el cuadro, ¿qué valor se usa?", "por_que": "ningún valor de F24 nombra un objeto solo"}
+   {"campo": "F24", "pregunta": "La escala de planos describe personas (CU «cabeza, o mano con objeto», L1334). Para un objeto que llena el cuadro, ¿qué valor se usa?", "por_que": "génesis fotográfica: el módulo fotografía exige entrada.camara.plano (CONTRATOS_OPERACION_MODELO.json:780) y ningún valor de F24 nombra un objeto solo"}
   ]
  },
  {
@@ -98,15 +91,12 @@
    "F06": ["1:1"],
    "F10": ["ancla con referencias (caso 2, T2 a T4)"],
    "F15": ["producto"],
-   "F16": ["interior"],
    "F17": ["comercial pulido"],
    "F18": ["fotorrealista"],
    "F19": ["0"],
    "F23": ["producto o prop"],
-   "F25": ["eye-level"],
    "F32": ["texto extenso o pequeño"],
    "F33": ["simple"],
-   "F34": ["1K"],
    "F35": ["no"]
   },
   "fuentes_del_caso": [
@@ -117,13 +107,11 @@
   "inferencias": [
    "La botella llega como foto adjunta (F23 «producto o prop») porque la etiqueta es real; por eso F10 «ancla con referencias» y el paso E5.4.",
    "La etiqueta es texto pequeño: F32 «texto extenso o pequeño».",
-   "F16 «interior»: estudio (ecommerce.md:14 «tabletop studio»); F25 «eye-level», como en ecommerce.md:16 para un producto.",
-   "F19 «0» por el mismo motivo que C2; F34 «1K» por el mismo motivo que C1 (1024x1024, gpt-image.md:62)."
+   "F19 «0» por el mismo motivo que C2; formato 1:1 (1024x1024, gpt-image.md:62).",
+   "Sin F16, F24 ni F25: la plantilla Product Mockup conserva la toma de la foto de la botella («no restyling, only background removal + light polish», gpt-image.md:144), así que el módulo fotografía no exige redefinirla (CONTRATOS_OPERACION_MODELO.json:778). Sin F20 ni F22: no hay personas (ver C2)."
   ],
   "consultas": [
-   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
-   {"campo": "F20, F22", "pregunta": "Igual que en C2: no hay personas. ¿F20 «ninguna» y F22 «sin rostro visible», o un valor nuevo?", "por_que": "ver C2"},
-   {"campo": "F24", "pregunta": "Igual que en C2: ¿qué tamaño de plano para un producto entero centrado?", "por_que": "ver C2"}
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"}
   ]
  },
  {
@@ -144,7 +132,6 @@
    "F23": ["ninguna"],
    "F32": ["texto extenso o pequeño"],
    "F33": ["compleja (5 o más elementos)"],
-   "F34": ["1K"],
    "F35": ["no"]
   },
   "fuentes_del_caso": [
@@ -157,12 +144,11 @@
    "F06 «3:2» por el tamaño 1536×1024 de la plantilla (gpt-image.md:179).",
    "F33 «compleja»: título, 4 ilustraciones, 4 etiquetas y flechas superan 5 elementos.",
    "F17 «minimalista» (TRM-0152, espacio negativo) por «no decorative noise, ample whitespace» (gpt-image.md:176-177); F18 «ilustración».",
-   "F19 «0» por el mismo motivo que C2; F34 «1K» por el mismo motivo que C1."
+   "F19 «0» por el mismo motivo que C2.",
+   "Sin F16, F24 ni F25: es un diagrama ilustrado, el módulo fotografía no se activa y T-BRIEF-IMG §12 dice que cámara y luz no se exige inventarlas «para un icono, plano abstracto»; el esquema dice «no se inventa un valor para llenar el campo». Sin F20 ni F22: no hay personas (ver C2)."
   ],
   "consultas": [
-   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
-   {"campo": "F20, F22", "pregunta": "Igual que en C2: no hay personas. ¿F20 «ninguna» y F22 «sin rostro visible», o un valor nuevo?", "por_que": "ver C2"},
-   {"campo": "F16, F24, F25", "pregunta": "Un diagrama plano no tiene espacio interior o exterior, tamaño de plano ni ángulo de cámara, y las tres facetas solo tienen valores para escenas. ¿Qué valores se usan?", "por_que": "§2 de los templates: ningún campo vacío habilita selección definitiva"}
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"}
   ]
  }
 ]
