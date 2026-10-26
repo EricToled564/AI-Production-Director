@@ -27,3 +27,6 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
 6. **Extensión F24 + «objeto entero»** (decisión 3 de 6): un objeto completo como sujeto del cuadro. Los 8 valores
    originales describen el sujeto por el cuerpo (taxonomía L1329–1336). Se registra en `v2/construir_esquema.py` con
    origen `extension_aprobada_2026-10-26`, aparte de la taxonomía original. Primer uso: C2 (póster del saxofón).
+7. **F05 de B1 y B4 deja de ser lista vacía** (decisión 4 de 6; la lista vacía viola taxonomía §1.12.8): B1 (pescadora en
+   el muelle) = «hospitalidad y viajes»; B4 (cocina, artículo de estilo de vida) = valor nuevo «estilo de vida», extensión
+   de F05 registrada en `v2/construir_esquema.py`. Ninguna regla del piloto condiciona F05: la selección no cambia.
