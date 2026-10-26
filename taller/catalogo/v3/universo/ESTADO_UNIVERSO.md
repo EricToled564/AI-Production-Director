@@ -52,7 +52,12 @@ Leídos uno por uno 1,914 textos. Cada decisión y su motivo están en `decision
 ## 4. Universo de la prueba
 
 **2,722 textos** = 2,350 de secciones «dentro» − 72 que salen + 444 de secciones mixtas que entran.
-La lista de ids está en `universo_prueba.json`.
+La lista de ids está en `universo_prueba.json`. El texto de cada uno, con su documento, encabezado (62 reparados) y
+las correcciones decididas por Eric, está en `universo_prueba_textos.jsonl` (`textos_universo.py`).
+
+Correcciones (`correcciones.json`, `v2/decisiones/DECISIONES_ERIC_20261026.md` §1): 1. INV-002054,
+`characters.md:3`, «Up to 14 reference images (6 high-fidelity)» (desglose de NBP) pasa a «Up to 16 reference images,
+each indexed with its role (GPT Image 2; high fidelity by default)».
 
 | Origen | Textos |
 |---|---:|

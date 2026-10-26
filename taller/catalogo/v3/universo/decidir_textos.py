@@ -130,7 +130,8 @@ NOTA = {
                   "restringir modelo. «14 (6 high-fidelity)» es exactamente el desglose de NBP: hasta 14 refs "
                   "(models.md:20, :62) = 6 objetos de alta fidelidad + 5 character + 3 style (nano-banana.md:64-66, "
                   ":144). Para GPT Image 2 el corpus da hasta 16 con rol (SKILL.md:43, golden-rules.md:93, "
-                  "gpt-image.md:102, models.md:20, :54) y alta fidelidad por defecto (gpt-image.md:96)",
+                  "gpt-image.md:102, models.md:20, :54) y alta fidelidad por defecto (gpt-image.md:96). Corregido a la "
+                  "cifra de GPT Image 2 por decisión de Eric (correcciones.json, DECISIONES_ERIC_20261026.md §1)",
     "INV-003035": "el imperativo «formula en positivo» es genérico; NBP es el ejemplo",
     "INV-003039": "dice qué solo hace Nano Banana, es decir, qué no pedirle a GPT Image 2",
     "INV-009814": "regla genérica de re-roll; Flux es el ejemplo",
