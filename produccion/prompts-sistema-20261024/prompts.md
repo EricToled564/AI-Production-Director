@@ -19,6 +19,9 @@ Constraints: Solo portrait of her alone with natural skin texture and no AI rend
 
 Validación: sin fallas · 264 palabras · 21 reglas del piloto seleccionadas
 
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
+
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
 - natural skin texture, no AI rendering artifacts → visual-prompt-forge/adapters/gpt-image.md:57, :90
@@ -54,6 +57,9 @@ Constraints: Solo portrait of him alone in a real office with natural skin textu
 
 Validación: sin fallas · 244 palabras · 21 reglas del piloto seleccionadas
 
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
+
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
 - natural skin texture, no AI rendering artifacts → visual-prompt-forge/adapters/gpt-image.md:57, :90
@@ -87,6 +93,9 @@ Constraints: Solo portrait of her alone with natural skin texture and no AI rend
 ```
 
 Validación: sin fallas · 222 palabras · 20 reglas del piloto seleccionadas
+
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -123,6 +132,9 @@ Constraints: Solo portrait of her alone with exactly two hands, lit only by the 
 
 Validación: sin fallas · 246 palabras · 22 reglas del piloto seleccionadas
 
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
+
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
 - natural skin texture, no AI rendering artifacts → visual-prompt-forge/adapters/gpt-image.md:57, :90
@@ -158,6 +170,9 @@ Constraints: Solo portrait of him alone against plain darkness with natural skin
 
 Validación: sin fallas · 208 palabras · 21 reglas del piloto seleccionadas
 
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
+
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
 - natural skin texture, no AI rendering artifacts → visual-prompt-forge/adapters/gpt-image.md:57, :90
@@ -192,6 +207,9 @@ Constraints: Solo portrait of him alone, the full body from head to shoes inside
 ```
 
 Validación: sin fallas · 281 palabras · 21 reglas del piloto seleccionadas
+
+Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
+
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 

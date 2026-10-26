@@ -26,18 +26,23 @@
    "F35": ["no"]
   },
   "fuentes_del_caso": [
-   "Virtual try-on: «Change garments only. Preserve exact face, body shape, pose, hair, expression, background, camera angle» → image/references/gpt-image.md:94",
+   "Virtual try-on: «Change garments only. Preserve exact face, body shape, pose, hair, expression, background, camera angle» → image/references/gpt-image.md:94; término TRM-1140, MÁS ESPECÍFICO → edición de imagen existente (T5) (taxonomía L925)",
+   "referencia de la chaqueta con rol: «Image 2: jacket reference (apply only the jacket fabric/cut to subject in Image 1)» → image/references/gpt-image.md:107",
    "edición Change / Preserve / Constraints, un edit por iteración → image/references/gpt-image.md:76-90; image/references/editing.md:6, :8",
-   "referencias con rol → image/references/gpt-image.md:102-109",
-   "valor F10 «edición: cambiar vestuario» → v2/decisiones/DECISIONES_ERIC_20261023.md §4"
+   "valor F10 «edición: cambiar vestuario» → v2/decisiones/DECISIONES_ERIC_20261023.md §4",
+   "plantilla de salida GPT2-EDIT (Change / Preserve / Constraints) → TEMPLATES_REVISADOS §6"
   ],
   "inferencias": [
-   "F10 lleva el padre «edición de imagen existente (T5)» y el hijo «edición: cambiar vestuario» (DECISIONES_ERIC_20261023 §4 los declara hijos), para que las reglas escritas para el padre también se evalúen.",
-   "F23 «persona» (la foto que se edita) y «vestuario» (la foto de la chaqueta).",
-   "Encuadre de plano medio, de la cintura hacia arriba: el rostro ocupa menos del 20% del cuadro (F22 «<20%»).",
-   "Estudio con fondo neutro (F16 «interior»); formato 2:3 (1024x1536, gpt-image.md:60) igual al de la foto original.",
+   "F10 lleva el padre «edición de imagen existente (T5)» y el hijo «edición: cambiar vestuario» (DECISIONES_ERIC_20261023 §4 los declara hijos), para que se evalúen también las reglas del padre (p. ej. INV-002375 a INV-002380).",
+   "F23 «persona» (la foto que se edita, Image 1) y «vestuario» (la foto de la chaqueta, Image 2).",
+   "Plano medio, de la cintura hacia arriba (F24 «MS medium», TRM-0194): el rostro ocupa menos del 20% del cuadro (F22 «<20%»).",
+   "F16 «interior»: estudio de catálogo bajo techo; formato 2:3 (1024x1536, gpt-image.md:60), igual al de la foto original.",
    "F20 «todas»: el rostro del modelo debe seguir reconocible (TRM-0175, L1220).",
-   "F34 «1K»: tamaño de gpt-image.md:60; la fuente solo nombra 2K (gpt-image.md:63)."
+   "F34 «1K»: 1024x1536 es un tamaño «ходовой» de gpt-image.md:60; la fuente solo nombra 2K (2560×1440, gpt-image.md:63)."
+  ],
+  "consultas": [
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿La edición se hará en la API de OpenAI o en fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre; activa las acciones de INV-002374 (endpoint) e INV-002380 (máscara)"},
+   {"campo": "mascara_admitida", "pregunta": "¿Tu interfaz admite mask_image_url para ediciones puntuales?", "por_que": "INV-002380 (gpt-image.md:90) la permite; T-BRIEF-IMG §3 la admite «solo admitida por modelo/interfaz» y el corpus no dice qué interfaz la admite"}
   ]
  },
  {
@@ -56,10 +61,7 @@
    "F17": ["comercial pulido"],
    "F18": ["fotorrealista"],
    "F19": ["0"],
-   "F20": [],
-   "F22": ["sin rostro visible"],
    "F23": ["ninguna"],
-   "F24": ["CU close-up"],
    "F25": ["low"],
    "F32": ["texto corto"],
    "F33": ["simple"],
@@ -68,15 +70,20 @@
   },
   "fuentes_del_caso": [
    "Marketing Creative with Text: hero element, «EXACT HEADLINE», «exact subhead», no extra text, quality high → image/references/gpt-image.md:158-168",
-   "texto en imagen: literal entre comillas o ALL CAPS, fuente, tamaño, color y posición explícitos → image/references/gpt-image.md:67-74; image/references/text-rendering.md:6",
-   "póster con EXACT TEXT → GPT Image 2 → image/references/models.md:16"
+   "texto en imagen: literal entre comillas o ALL CAPS, fuente, tamaño, color y posición explícitos, «no extra words, no duplicate text, no watermarks» → image/references/gpt-image.md:67-74; image/references/text-rendering.md:6",
+   "póster con titular y subtítulo exactos → image/references/patterns/poster-illustration.md:73-77 (Lavender Smartphone Hero Ad) y :95-98 (Emerald Street Fashion Poster)",
+   "póster con EXACT TEXT → GPT Image 2 → image/references/models.md:16; TRM-0009 Póster (taxonomía L530)"
   ],
   "inferencias": [
    "Tema, objeto, palabras del titular y fechas son míos; el caso existe para ejercitar texto corto en imagen.",
-   "F20 vacío: no hay personas en el cuadro. Los tres valores de F20 describen personas (L1214-1216); ninguno corresponde a cero personas.",
-   "F19 «0» y F22 «sin rostro visible»: el sujeto es un objeto.",
-   "F24 «CU close-up» y F25 «low»: el saxofón llena el cuadro visto desde abajo, con el cielo detrás.",
+   "F19 «0»: la taxonomía define 0 como «placa de entorno vacío sostenida por la luz, la atmósfera, un objeto o un fenómeno» (TRM-0171, L1200); el saxofón no es un sujeto individual con identidad.",
+   "F25 «low»: el saxofón visto desde abajo, con el cielo detrás (TRM-0320, eje de cámara hacia arriba).",
    "Formato 2:3 (1024x1536, gpt-image.md:60), vertical de póster; F34 «1K» por el mismo motivo que C1."
+  ],
+  "consultas": [
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
+   {"campo": "F20, F22", "pregunta": "No hay personas en el cuadro. Los valores de F20 (todas, solo los héroes, ninguna; L1214-1216) y de F22 (≥20%, <20%, sin rostro visible; TRM-0184 «rostro oculto, fuera de cuadro, de espaldas o cubierto») describen personas. ¿Se marca F20 «ninguna» y F22 «sin rostro visible», o se crea un valor para «sin personas»?", "por_que": "§2 de los templates: ningún campo vacío habilita selección definitiva; ampliar la taxonomía exige consultarte (taxonomía §1.12.11)"},
+   {"campo": "F24", "pregunta": "La escala de planos describe personas (CU «cabeza, o mano con objeto», L1334). Para un objeto que llena el cuadro, ¿qué valor se usa?", "por_que": "ningún valor de F24 nombra un objeto solo"}
   ]
  },
  {
@@ -95,10 +102,7 @@
    "F17": ["comercial pulido"],
    "F18": ["fotorrealista"],
    "F19": ["0"],
-   "F20": [],
-   "F22": ["sin rostro visible"],
    "F23": ["producto o prop"],
-   "F24": ["MS medium"],
    "F25": ["eye-level"],
    "F32": ["texto extenso o pequeño"],
    "F33": ["simple"],
@@ -106,15 +110,20 @@
    "F35": ["no"]
   },
   "fuentes_del_caso": [
-   "Product Mockup (Clean Background): plain white background, product centered, light contact shadow, preserve label legibility exactly, preserve geometry → image/references/gpt-image.md:137-145",
+   "Product Mockup (Clean Background): plain white background, product centered, light contact shadow, preserve label legibility exactly, preserve geometry → image/references/gpt-image.md:137-145; clasificado en el piloto como INV-002402 con F04 e-commerce, F15 producto, F23 producto o prop y F10 edición T5 o ancla con referencias",
    "texto pequeño → quality high obligatoria → image/references/gpt-image.md:74",
-   "«Un producto con logo o etiqueta real no nace de texto: es flujo con referencia» → .claude/rules/DECISIONES.md:23"
+   "producto con etiqueta real: la referencia aprobada se exige (F15 producto, taxonomía L1068; TRM-0141, L1085); .claude/rules/DECISIONES.md:23"
   ],
   "inferencias": [
    "La botella llega como foto adjunta (F23 «producto o prop») porque la etiqueta es real; por eso F10 «ancla con referencias» y el paso E5.4.",
    "La etiqueta es texto pequeño: F32 «texto extenso o pequeño».",
-   "F24 «MS medium»: la botella entera centrada con margen; la escala de planos de la taxonomía está pensada para personas.",
-   "F20 vacío por el mismo motivo que C2; F34 «1K» por el mismo motivo que C1 (1024x1024, gpt-image.md:62)."
+   "F16 «interior»: estudio (ecommerce.md:14 «tabletop studio»); F25 «eye-level», como en ecommerce.md:16 para un producto.",
+   "F19 «0» por el mismo motivo que C2; F34 «1K» por el mismo motivo que C1 (1024x1024, gpt-image.md:62)."
+  ],
+  "consultas": [
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
+   {"campo": "F20, F22", "pregunta": "Igual que en C2: no hay personas. ¿F20 «ninguna» y F22 «sin rostro visible», o un valor nuevo?", "por_que": "ver C2"},
+   {"campo": "F24", "pregunta": "Igual que en C2: ¿qué tamaño de plano para un producto entero centrado?", "por_que": "ver C2"}
   ]
  },
  {
@@ -129,15 +138,10 @@
    "F06": ["3:2"],
    "F10": ["génesis sin referencias (caso 1, T1)"],
    "F15": ["objeto o prop"],
-   "F16": [],
    "F17": ["minimalista"],
    "F18": ["ilustración"],
    "F19": ["0"],
-   "F20": [],
-   "F22": ["sin rostro visible"],
    "F23": ["ninguna"],
-   "F24": [],
-   "F25": [],
    "F32": ["texto extenso o pequeño"],
    "F33": ["compleja (5 o más elementos)"],
    "F34": ["1K"],
@@ -145,16 +149,20 @@
   },
   "fuentes_del_caso": [
    "Infographic / Diagram: Title, Content flow, Visual format, readable labels, no clutter, ample whitespace, Quality high, Size 1536×1024 → image/references/gpt-image.md:170-180",
-   "infografía en text-rendering.md (estilos y tipos de layout) → image/references/text-rendering.md:3",
-   "valor F04 «infografía o diagrama» → v2/decisiones/DECISIONES_ERIC_20261023.md §4"
+   "estructura de infografía educativa y layout «Step-by-Step Flow» → image/references/text-rendering.md:8-18, :54",
+   "valor F04 «infografía o diagrama» → v2/decisiones/DECISIONES_ERIC_20261023.md §4; F05 «educación», TRM-0063 (taxonomía L628)"
   ],
   "inferencias": [
    "Tema y número de pasos son míos; el caso existe para ejercitar diagrama con muchas etiquetas.",
    "F06 «3:2» por el tamaño 1536×1024 de la plantilla (gpt-image.md:179).",
    "F33 «compleja»: título, 4 ilustraciones, 4 etiquetas y flechas superan 5 elementos.",
-   "F17 «minimalista» por «no decorative noise, ample whitespace» (gpt-image.md:176-177); F18 «ilustración».",
-   "F16, F24 y F25 vacíos: un diagrama plano no tiene espacio interior o exterior, tamaño de plano ni ángulo de cámara. F20 vacío por el mismo motivo que C2.",
-   "F34 «1K» por el mismo motivo que C1."
+   "F17 «minimalista» (TRM-0152, espacio negativo) por «no decorative noise, ample whitespace» (gpt-image.md:176-177); F18 «ilustración».",
+   "F19 «0» por el mismo motivo que C2; F34 «1K» por el mismo motivo que C1."
+  ],
+  "consultas": [
+   {"campo": "entrada.modelo.interfaz", "pregunta": "¿API de OpenAI o fal.ai?", "por_que": "T-BRIEF-IMG §3 lo exige siempre"},
+   {"campo": "F20, F22", "pregunta": "Igual que en C2: no hay personas. ¿F20 «ninguna» y F22 «sin rostro visible», o un valor nuevo?", "por_que": "ver C2"},
+   {"campo": "F16, F24, F25", "pregunta": "Un diagrama plano no tiene espacio interior o exterior, tamaño de plano ni ángulo de cámara, y las tres facetas solo tienen valores para escenas. ¿Qué valores se usan?", "por_que": "§2 de los templates: ningún campo vacío habilita selección definitiva"}
   ]
  }
 ]

@@ -37,11 +37,52 @@ def aplica(a, facetas, paso):
     return all(set(v) & set(facetas.get(f, [])) for f, v in a["r"].items())
 
 
-def separar_por_dependencia(sel):
-    """Las reglas con campo dependencia no se aplican solas: su validez cambia con la interfaz (TRM-0683, «Diferencia de
-    soporte entre API, aplicación o integración») o con la versión del modelo (TRM-0684, «Cambio de soporte entre
-    versiones del mismo modelo»), y ningún caso declara interfaz ni versión. Se reportan aparte (método del 2026-10-24)."""
-    return [a for a in sel if not a.get("dependencia")], [a for a in sel if a.get("dependencia")]
+INTERFACES = ("OpenAI API", "fal.ai")
+
+
+def acciones_de_dependencia(sel, caso):
+    """Acción concreta de cada regla seleccionada que declara dependencia (TRM-0683 interfaz: «Diferencia de soporte
+    entre API, aplicación o integración»; TRM-0684 versión: «Cambio de soporte entre versiones del mismo modelo»).
+
+    La regla sigue seleccionada: la dependencia no veta la selección (taxonomía §Seleccionabilidad 2 y 5, §7.4). La
+    versión ya la evalúa F29 (INV-002383 A3 solo vale para gpt-image-1.5/1 y nunca entra con GPT Image 2). Acciones:
+    - interfaz ausente en el caso → dato faltante: T-BRIEF-IMG §3 exige entrada.modelo.interfaz siempre, y §2 «Ningún
+      campo vacío o pregunta abierta habilita selección definitiva». La selección queda exploratoria.
+    - INV-002374 (destino entrada.modelo.interfaz) → escribir en la traza el endpoint que da gpt-image.md:78 para esa
+      interfaz.
+    - INV-002380 (mask_image_url, gpt-image.md:90) → T-BRIEF-IMG §3 admite entrada.edicion.mascara «solo admitida por
+      modelo/interfaz» y el corpus no dice qué interfaz la admite: preguntar al usuario; solo con «sí» se habilita.
+    - INV-002383 A2 (versión: «no enviar input_fidelity a gpt-image-2») → validación bloqueante en validar().
+    Devuelve (acciones, datos_faltantes)."""
+    acciones, faltantes = [], []
+    interfaz = caso.get("interfaz")
+    if interfaz is not None and interfaz not in INTERFACES:
+        raise SystemExit(f"{caso['id']}: interfaz «{interfaz}» fuera de {INTERFACES}")
+    if interfaz is None:  # T-BRIEF-IMG L34: entrada.modelo.interfaz obligatoria «siempre», haya o no regla con dependencia
+        faltantes.append("entrada.modelo.interfaz")
+    for a in sel:
+        dep = a.get("dependencia")
+        if not dep:
+            continue
+        rid = a["id"] + a.get("sufijo", "")
+        if dep == "Dependencia de interfaz" and interfaz is None:
+            accion = "pedir al usuario la interfaz (OpenAI API o fal.ai) antes de la selección definitiva"
+        elif rid == "INV-002374":
+            accion = ("traza: endpoint «openai/gpt-image-2/edit»" if interfaz == "fal.ai"
+                      else "traza: endpoint equivalente de la API de OpenAI (gpt-image.md:78 no lo nombra)")
+        elif rid == "INV-002380":
+            if caso.get("mascara_admitida") is None:
+                faltantes.append("confirmación de que la interfaz admite mask_image_url")
+                accion = "preguntar al usuario si su interfaz admite mask_image_url; sin «sí» no se ofrece máscara"
+            else:
+                accion = ("habilitar entrada.edicion.mascara (opcional, ediciones puntuales)" if caso["mascara_admitida"]
+                          else "no ofrecer máscara: la interfaz no la admite")
+        elif rid == "INV-002383A2":
+            accion = "validación bloqueante: el prompt y los parámetros no llevan input_fidelity"
+        else:
+            raise SystemExit(f"{rid}: dependencia «{dep}» sin acción concreta definida en correr.py")
+        acciones.append({"id": rid, "dependencia": dep, "accion_concreta": accion})
+    return acciones, faltantes
 
 
 def tamano(ratio):
@@ -73,6 +114,8 @@ def validar(prompt, slots, ancho, alto):
         fallas.append("ratio > 3:1")
     if not 655360 <= ancho * alto <= 8294400:  # INV-002358
         fallas.append("píxeles fuera de rango")
+    if "input_fidelity" in bajo:  # INV-002383 A2: en gpt-image-2 la alta fidelidad es por defecto (gpt-image.md:96)
+        fallas.append("parámetro prohibido en gpt-image-2: input_fidelity")
     if ancho > 2560 or alto > 2560:  # INV-002359, recomendación
         fallas.append("aviso: sobre el límite fiable 2560×1440")
     palabras = len(prompt.split())
@@ -89,7 +132,8 @@ def main():
     salida, traza = ["# Prompts GPT Image 2 — briefs B1–B5 (PILOTO_V5 §5)", ""], []
     for c in casos:
         t1 = time.perf_counter()
-        sel, condicionadas = separar_por_dependencia([a for a in m.APLICACIONES if aplica(a, c["facetas"], c["paso"])])
+        sel = [a for a in m.APLICACIONES if aplica(a, c["facetas"], c["paso"])]
+        acciones, faltantes = acciones_de_dependencia(sel, c)
         (ancho, alto), origen_tam = tamano(c["facetas"]["F06"][0])
         prompt = "\n".join(f"{s}: {c['slots'][s]}" for s in SLOTS)
         fallas, palabras = validar(prompt, c["slots"], ancho, alto)
@@ -98,9 +142,9 @@ def main():
         traza.append({"brief": c["id"], "facetas": c["facetas"], "inferencias": c["inferencias"],
                       "seleccionadas": [{"id": a["id"], "uso": a["uso"], "accion": a["accion"], "destino": a["destino"],
                                          "valor": a["valor"]} for a in sel],
-                      "condicionadas": [{"id": a["id"], "dependencia": a["dependencia"],
-                                         "modelo_citado": a["modelo_citado"], "accion": a["accion"],
-                                         "valor": a["valor"]} for a in condicionadas],
+                      "acciones_dependencia": acciones,
+                      "datos_faltantes": faltantes,
+                      "seleccion": "exploratoria" if faltantes else "definitiva",
                       "tamano": [ancho, alto], "origen_tamano": origen_tam, "validacion": fallas or ["sin fallas"],
                       "palabras": palabras, "ms_seleccion_validacion": round(t_caso * 1000, 2)})
         salida += [f"## {c['id']} — {c['brief']}", "",
@@ -109,8 +153,12 @@ def main():
                    "Quality: high",
                    f"Size: {ancho}x{alto}", "", "Prompt:", prompt, "```", "",
                    f"Validación: {'; '.join(fallas) if fallas else 'sin fallas'} · {palabras} palabras · "
-                   f"{len(sel)} reglas del piloto seleccionadas", "",
-                   "Reglas aplicadas por lectura directa (sin clasificar todavía):", ""]
+                   f"{len(sel)} reglas del piloto seleccionadas", ""]
+        if acciones or faltantes:
+            salida += [f"Selección {'exploratoria' if faltantes else 'definitiva'}. Datos que faltan: "
+                       f"{', '.join(faltantes) or 'ninguno'}.", ""]
+            salida += [f"- {x['id']} ({x['dependencia']}): {x['accion_concreta']}" for x in acciones] + [""]
+        salida += ["Reglas aplicadas por lectura directa (sin clasificar todavía):", ""]
         salida += [f"- {f}" for f in c.get("fuentes_aplicadas", [])] + ["", "Inferencias mías, para tu aprobación:", ""]
         salida += [f"- {i}" for i in c["inferencias"]] + [""]
         if bloqueantes:
@@ -120,7 +168,8 @@ def main():
     total = time.perf_counter() - t0
     print(f"carga del piloto {t_carga * 1000:.1f} ms · total determinista {total * 1000:.1f} ms")
     for t in traza:
-        print(f"{t['brief']}: {len(t['seleccionadas'])} reglas · {len(t['condicionadas'])} condicionadas · "
+        print(f"{t['brief']}: {len(t['seleccionadas'])} reglas · selección {t['seleccion']} "
+              f"(faltan: {t['datos_faltantes'] or 'nada'}) · "
               f"{t['palabras']} palabras · {t['tamano']} · "
               f"{t['validacion']} · {t['ms_seleccion_validacion']} ms")
 
