@@ -146,13 +146,10 @@ NOTA = {
     "INV-012366": "rendimientos decrecientes del prompt; NB es una de las dos salidas, la otra es postproducción",
     "INV-012401": "el texto nunca va en el prompt; Ideogram es la excepción",
     # Leídos entre los 910 sin nombre de modelo: entran, con una tensión que la clasificación debe resolver
-    "INV-002125": "lente: «50mm, f/2.8 menos fiable que lo descriptivo» es la regla de Nano Banana (image/SKILL.md:114); "
-                  "en GPT Image 2 se admite «50mm feel» como look (prompt-framework.md:42)",
-    "INV-003433": "«solo keywords separadas por comas» choca con el adaptador GPT Image: «Don't write Midjourney-style "
-                  "comma stacks» (adapters/gpt-image.md:86)",
-    "INV-012272": "«same person no sirve» choca con multi-panel.md:308, que lo exige dentro de una sola imagen",
-    "INV-012287": "«50mm prime, f/2.0»: números de lente; Nano Banana los ignora, GPT Image 2 solo como look "
-                  "(prompt-framework.md:42)",
+    "INV-002125": "lente: vale para los dos modelos, coherente con prompt-framework.md:42-44 (ver CONTRADICCIONES.md §2)",
+    "INV-003433": "contradicción real con gpt-image.md:7 y golden-rules.md:25-28; decisión pendiente de Eric (CONTRADICCIONES.md §3)",
+    "INV-012272": "no choca con multi-panel.md:308 (una sola imagen); queda abierta con storyboards.md (CONTRADICCIONES.md §4)",
+    "INV-012287": "«50mm prime, f/2.0» es borrador del forge; en el prompt final de GPT Image 2 va como «50mm feel» (director §6.4; CONTRADICCIONES.md §2)",
 }
 
 def ids(a, b):

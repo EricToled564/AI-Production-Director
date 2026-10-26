@@ -13,3 +13,6 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
      `v3/universo/correcciones.json` y las aplica `v3/universo/textos_universo.py`.
 2. «No estás aprobado para asumir nada, siempre lo verificas»: toda afirmación sobre un texto se comprueba leyendo el
    documento completo y su jerarquía hacia arriba, no por coincidencia de números o palabras.
+3. «Siempre que hay una supuesta contradicción o incoherencia tienes que leer exhaustivamente los textos
+   relacionados»: ninguna contradicción se declara, se corrige ni se marca sin haber leído completos todos los textos
+   del corpus que tratan el mismo punto, con su sección y su jerarquía de carga.
