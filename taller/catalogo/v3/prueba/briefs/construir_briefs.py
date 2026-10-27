@@ -221,15 +221,16 @@ def opcion(faceta, valor):
     return ids[:1]
 
 
-def contrato(kid, d):
-    p = PLAN[kid]
-    e = {"ruta": {"flujo": "FL04", "paso": "E5.2 génesis"}, "operacion": p["operacion"], "modelo": dict(MODELO),
+def contrato(kid, d, p=None):
+    p = p or PLAN[kid]
+    e = {"ruta": {"flujo": "FL04", "paso": d.get("paso", "E5.2 génesis")}, "operacion": p["operacion"],
+         "modelo": dict(MODELO),
          "pieza": dict(zip(("tipo", "objetivo", "uso"), d["pieza"])),
          "formato": {"ratio": d["ratio"], "ancho_px": d["px"][0], "alto_px": d["px"][1]}, "idioma_prompt": "en",
          "escena": d["escena"], "camara": d["camara"], "luz": d["luz"], "restricciones": d["restricciones"],
          "estilo": d["estilo"], "representacion": d["representacion"],
          "sujetos": {"cantidad": len(d["sujetos"]), "items": d["sujetos"]}}
-    for k in ("rostro", "texto_marca"):
+    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking"):
         if k in d:
             e[k] = d[k]
     if "accion" in d:
@@ -238,7 +239,9 @@ def contrato(kid, d):
     sel = [f"F10: {p['F10']}", f"F15: {p['F15']}", f"F32: {p['F32']}", f"F04: {p['F04']}", "F29: GPT Image 2",
            "F18: fotorrealista"]
     sel += [f"{f}: {p[f]}" for f in ("F11", "F13", "F14") if p[f]]
-    sel += [f"F16: {d['escena']['espacio']}", f"F24: {d['camara']['plano']}", f"F25: {d['camara']['angulo']}"]
+    sel += [f"F16: {d['escena']['espacio']}"]
+    sel += [f"F24: {v}" for v in d.get("f24", [d["camara"]["plano"]])]
+    sel += [f"F25: {v}" for v in d.get("f25", [d["camara"]["angulo"]])]
     sel += [f"F17: {v}" for v in d["estilo"]]
     e["selecciones_taxonomicas"] = sel
     modulos = ["fotografia"] + (["sujetos_visibles"] if d["sujetos"] else []) + (["accion_fisica"] if "accion" in d else [])
@@ -266,7 +269,7 @@ def contrato(kid, d):
         planas[f"entrada.camara.{k}"] = v
     for k, v in d["luz"].items():
         planas[f"entrada.luz.{k}"] = v
-    for k in ("rostro", "texto_marca"):
+    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking"):
         if k in d:
             planas[f"entrada.{k}"] = d[k]
     if "accion" in d:
@@ -274,11 +277,12 @@ def contrato(kid, d):
         planas["entrada.fisica.regimen"] = d["fisica"]
     for path, val in planas.items():
         add(path, val)
-    return {"contrato_id": f"{kid}:T-GENESIS+GPT2-GEN", "version": "20261019", "entrada": e, "procedencia_campos": proc}
+    return {"contrato_id": f"{kid}:{d.get('plantilla_id', 'T-GENESIS')}+GPT2-GEN", "version": "20261019", "entrada": e,
+            "procedencia_campos": proc}
 
 
-def caso_catalogo(kid, d, x):
-    p = PLAN[kid]
+def caso_catalogo(kid, d, x, p=None):
+    p = p or PLAN[kid]
     campos = []
     for f in ("F04", "F10", "F11", "F13", "F14", "F15", "F32"):
         v = p[f]
@@ -296,6 +300,7 @@ def caso_catalogo(kid, d, x):
                        "evidencia": FUENTE_PROPUESTA.format(kid), "confirmado": False})
     req = [{"path": r, "motivo": "campo exigido por T-GENESIS o el módulo fotografía", "resuelto": True}
            for r in ("entrada.sujetos", "entrada.escena", "entrada.camara.plano", "entrada.luz.fuente")]
+    req += d.get("requisitos", [])
     return {"case_id": kid, "taxonomy_sha256": SHA_TAX, "brief_literal": d["brief"], "campos": campos,
             "requisitos_de_completitud": req, "aprobacion": {"aprobado": False, "evidencia": ""}}
 

@@ -15,8 +15,19 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 lote = sys.argv[1] if len(sys.argv) > 1 else "1"
 md = (AQUI / f"LOTE_{lote}.md").read_text(encoding="utf-8")
-ids = re.findall(r"^## (K\d\d)", md, re.M)
+ids = re.findall(r"^## ([KG]\d+)", md, re.M)
 PLAN = {c["id"]: c for c in json.loads((AQUI.parent / "casos.json").read_text(encoding="utf-8"))["casos"]}
+# G1 y G2 son del mismo tipo que K01 (PLAN §4, tabla de entradas); su fila sale de construir_briefs_lote2.G_PLAN.
+for g, m in (("G1", "B"), ("G2", "C")):
+    PLAN[g] = dict(PLAN["K01"], id=g, descripcion=f"rostro maestro T1 del miembro {m} de K12")
+INTRO = {"1": "Cada caso se aprueba por su sha256. Lo que no viene de la lista de casos aprobada (26 §16) es propuesta "
+              "del sistema: usted aprueba, cambia o quita. Personas, lugares y objetos son inventados, salvo los "
+              "sujetos reales de K03, K04 y K07, que se verifican contra fotos reales.",
+         "2": "G1 y G2 se aprueban por el sha256 del brief, como el lote 1. K10–K13 usan como referencia imágenes que "
+              "todavía no existen (K01, K02, G1, G2): se aprueba su contenido, que es el brief más las referencias "
+              "previstas, por el «sha256 del contenido». Cuando exista cada imagen se escribe su sha256 y se aprueba "
+              "de nuevo (PLAN §5, tarea 3). Lo que no viene de la lista de casos aprobada (26 §16) es propuesta del "
+              "sistema: usted aprueba, cambia o quita. Las personas son inventadas."}
 ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima": "Clima", "planos": "Planos",
        "plano": "Plano", "angulo": "Ángulo", "altura": "Altura de cámara", "efecto_optico": "Efecto óptico",
        "lente_intencion": "Lente", "fuente": "Fuente", "direccion": "Dirección", "dureza": "Dureza",
@@ -24,7 +35,9 @@ ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima"
        "descripcion": "Descripción", "edad": "Edad", "genero": "Género", "rasgos": "Rasgos", "cabello": "Cabello",
        "vestuario": "Vestuario", "expresion": "Expresión", "posicion": "Posición", "ocupacion": "Ocupación del rostro",
        "detalles": "Detalles", "literales": "Texto literal", "tipografia": "Tipografía", "tipo": "Tipo",
-       "estado_visible": "Estado visible", "evidencia_fisica": "Evidencia física", "regimen": "Régimen"}
+       "estado_visible": "Estado visible", "evidencia_fisica": "Evidencia física", "regimen": "Régimen",
+       "postura": "Postura", "invariantes": "Invariantes", "referencias": "Referencias", "relaciones": "Relaciones",
+       "contactos": "Contactos"}
 
 
 def e(v):
@@ -48,10 +61,13 @@ for kid in ids:
     x = json.loads((AQUI / f"{kid}.contrato.json").read_text(encoding="utf-8"))
     c = json.loads((AQUI / f"{kid}.caso.json").read_text(encoding="utf-8"))
     en, p = x["entrada"], PLAN[kid]
-    digest = hashlib.sha256(json.dumps(en, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    rp = AQUI / f"{kid}.referencias.json"
+    refs = json.loads(rp.read_text(encoding="utf-8")) if rp.exists() else None
+    objeto = {"entrada": en, "referencias_previstas": refs} if refs else en
+    digest = hashlib.sha256(json.dumps(objeto, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     facetas = " · ".join(f"<b>{f}</b> {e(p[f])}" for f in ("F10", "F15", "F32", "F04", "F11", "F13", "F14") if p[f])
     s = [f"<section><h2>{kid} · {e(p['descripcion'])}</h2>", f"<p class='brief'>{e(c['brief_literal'])}</p>",
-         f"<p class='fac'>Lista aprobada (26 §16): {facetas}</p>",
+         f"<p class='fac'>{'Mismo tipo que K01 (PLAN §4, tabla de entradas)' if kid.startswith('G') else 'Lista aprobada (26 §16)'}: {facetas}</p>",
          "<table>",
          f"<tr><th>Formato</th><td>{e(en['formato']['ratio'])} · referencia {en['formato']['ancho_px']}x"
          f"{en['formato']['alto_px']} · quality {e(p['quality'])}</td></tr>",
@@ -63,13 +79,20 @@ for kid in ids:
     s.append(f"<h4>Escena</h4><table>{filas(en['escena'])}</table>")
     s.append(f"<h4>Cámara</h4><table>{filas(en['camara'])}</table>")
     s.append(f"<h4>Luz</h4><table>{filas(en['luz'])}</table>")
-    for k, t in (("accion", "Acción"), ("fisica", "Física"), ("rostro", "Rostro"), ("texto_marca", "Texto en la imagen")):
+    for k, t in (("accion", "Acción"), ("fisica", "Física"), ("rostro", "Rostro"), ("texto_marca", "Texto en la imagen"),
+                 ("identidad", "Identidad"), ("blocking", "Posiciones y miradas")):
         if k in en:
             s.append(f"<h4>{t}</h4><table>{filas(en[k])}</table>")
+    if "composicion" in en:
+        s.append(f"<h4>Composición</h4><table><tr><th>Composición</th><td>{valor(en['composicion'])}</td></tr></table>")
+    if refs:
+        s.append("<h4>Referencias previstas (la imagen aún no existe)</h4><table>" + "".join(
+            f"<tr><th>Image {r['indice']}: {e(r['entrada'])}</th><td><b>Rol:</b> {e(r['rol'])}<br><b>Preservar:</b> "
+            f"{valor(r['preservar'])}</td></tr>" for r in refs) + "</table>")
     s.append(f"<h4>Estilo y restricciones</h4><table><tr><th>Estilo</th><td>{valor(en['estilo'])}</td></tr>"
              f"<tr><th>Restricciones</th><td>{valor(en['restricciones'])}</td></tr>"
              f"<tr><th>Módulos activos</th><td>{valor(en['modulos_activos'])}</td></tr></table>")
-    s.append(f"<p class='sha'>sha256 del brief: <code>{digest}</code></p></section>")
+    s.append(f"<p class='sha'>{'sha256 del contenido' if refs else 'sha256 del brief'}: <code>{digest}</code></p></section>")
     partes.append("\n".join(s))
 
 doc = f"""<!doctype html><html lang="es"><head><meta charset="utf-8">
@@ -85,9 +108,7 @@ th{{width:30%;color:var(--mut);font-weight:600}} .brief{{font-size:15px}} .fac{{
 code{{font-size:12px;word-break:break-all}} .sha{{margin-top:10px}}
 </style></head><body>
 <h1>Lote {lote} de briefs ({ids[0]}–{ids[-1]})</h1>
-<p>Cada caso se aprueba por su sha256. Lo que no viene de la lista de casos aprobada (26 §16) es propuesta del sistema:
-usted aprueba, cambia o quita. Personas, lugares y objetos son inventados, salvo los sujetos reales de K03, K04 y K07,
-que se verifican contra fotos reales.</p>
+<p>{INTRO[lote]}</p>
 {''.join(partes)}
 </body></html>"""
 (AQUI / f"LOTE_{lote}.html").write_text(doc, encoding="utf-8")
