@@ -78,3 +78,21 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     toda falla repetida se diagnostica a, b o c. La regla de Nano Banana 2 con grounding para edificación, animal y planta
     (`flujo-spot.html:620`, `flujo-anclas.html:436`) está fuera del alcance por 23 §6, no es regla pertinente de esta
     prueba; esos sujetos se resuelven con las reglas de GPT Image 2. Una falla que ninguna regla del corpus cubre es c.
+16. **Lista de casos de la prueba** (2026-10-27, responde la pregunta 1 de `v3/revision/04_preguntas_eric.md`). Eric
+    aprobó la recomendación tal como está escrita en esa pregunta:
+    - Un caso por cada valor de F10, incluidos los 8 hijos de edición de 23 §4 y la descripción de imagen.
+    - Un caso por cada valor de F15: persona, lugar, edificación, animal, producto, objeto, planta.
+    - Un caso por cada valor de F32: sin texto, texto corto, texto extenso o pequeño.
+    - Un caso por cada una de las 4 plantillas de edición fotográfica sin hijo: cambio de fondo con la misma persona (`characters.md:80`), textura de material (`editing.md:98`), relleno con física (`editing.md:92`) y adaptación de anuncio a otro mercado (`editing.md:82`).
+    - F11, F13, F14 y los valores fotográficos de F04 quedan cubiertos dentro de esos casos, cada valor al menos una vez.
+    - Quedan fuera de esta prueba, aunque siguen en el universo: identidad de marca, diapositiva, infografía y diagrama, diseño de personaje, UI de pantalla y scroll.
+    - También quedan fuera: colorizar manga, máscara y refinamiento conversacional.
+17. **Boceto o plano a final: 5 casos** (2026-10-27). Eric eligió un caso por cada plantilla fotográfica, igual que en
+    edición:
+    - plano 2D → interior (`dimensional.md:5–18`, `:61–68`);
+    - boceto → concepto 3D (`dimensional.md:20–27`);
+    - alzado → exterior (`dimensional.md:53–59`);
+    - diseño plano → mockup de producto (`dimensional.md:70–77`);
+    - boceto → final (`structural.md`).
+
+    3D → 2D técnico y meme no dan foto y quedan fuera.

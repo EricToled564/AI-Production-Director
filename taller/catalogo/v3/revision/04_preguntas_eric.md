@@ -55,6 +55,9 @@ Eric (2026-10-27): «no lo sé, dame una recomendación». Recomendación detall
   (logo y sistema, TRM-0022), slide (TRM-0016), infografía y diagrama (TRM-1258, 1259), diseño de personaje (hojas de
   giro, expresiones, chibi: TRM-1116–1120), UI de pantalla (TRM-0014), scroll (CAT-F04-SCROLL).
 
+**Respuesta de Eric (2026-10-27):** aprueba la recomendación y elige 5 casos de boceto o plano. Registradas en
+`DECISIONES_ERIC_20261026.md` §16 y §17.
+
 ## 2. El caso de descripción de imagen
 
 Lo que es: se le da al sistema una foto, el sistema la analiza y escribe un prompt para recrearla sin adjuntarla; la
