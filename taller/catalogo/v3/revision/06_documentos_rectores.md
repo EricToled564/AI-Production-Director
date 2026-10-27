@@ -78,3 +78,14 @@ para el alcance anterior; este archivo los completa y, donde difieren, manda est
 | L1040–1332 | `procedencia_campos`: path, origen (usuario, herencia_aprobada, inferencia_para_aprobacion, fuente_documental), fuente, valor_sha256, aprobacion_id | C: en el caso de descripción de imagen, lo que el sistema saca de la foto entra como `inferencia_para_aprobacion` con la foto y su sha256 como fuente; el schema no necesita cambios para eso (ajustado en la pregunta 2) |
 | L1333–1352 | `aprobacion_brief`: brief_sha256, mensaje_id, aprobado = true | N: tarea 3 |
 | L1354–1360 | `additionalProperties: false`; obligatorios contrato_id, version, entrada, procedencia_campos | N: no se agregan campos fuera del schema |
+
+## 4. Registro de destinos — `…/templates/REGISTRO_DESTINOS_TEMPLATE.json` (2,759 líneas; leído completo como datos: 36 destinos de faceta, 3 alias, 156 campos, 24 destinos de F30, 8 destinos de alcance)
+
+| Parte | Qué dice | Consecuencia |
+|---|---|---|
+| `facet_destinations` | F01–F31, P-01, P-02, P-04, P-05 y E, cada una con su ruta del schema (F04 → `pieza.tipo`, F10 → `operacion`, F11 → `ancla.rol`, F15 → `sujetos.items[].clase`, F18 → `representacion`, F23 → `referencias[]`…) | C: F32 a F35 son extensiones aprobadas el 2026-10-23 y no tienen destino propio; su valor de cada caso va en `selecciones_taxonomicas`, y el texto literal de F32 en `texto_marca` (destino de F30 «texto en pantalla»). La tarea 3 lo hace así |
+| `aliases` | `sujetos[].clase`, `estilo_representacion`, `contexto_narrativo.montaje` | N |
+| `f30_destinations` | cada materia de F30 con sus rutas; «crítica y revisión» → `salida.aceptacion` y `salida.validaciones`; «texto en pantalla» → `texto_marca` y el override; «trazabilidad» → `salida.traza` y notas | N: coincide con lo anotado en el schema |
+| `scope_destinations` | creación de imagen → `entrada` y `salida.prompt`; crítica → `salida.aceptacion`; video, audio y post → `contratos_externos` | N |
+| `fields` (155 de 156) | origen permitido: usuario, herencia aprobada, inferencia para aprobación o fuente documental; «todo valor inferido o heredado alterado requiere aprobación de su contenido; cada cambio invalida la aprobación dependiente»; cuándo se exige cada campo, igual que T-BRIEF L22–134 | N: tarea 3 |
+| `fields`: `entrada.modulos_activos` | origen sin inferencia; «activación debe quedar en brief aprobado»; depende de operación, modelo y representación | N: la representación «fotorrealista» y una operación que no sea edición activan el módulo fotografía en el brief que Eric aprueba (contratos L775–790) |
