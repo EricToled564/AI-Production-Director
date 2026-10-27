@@ -45,6 +45,10 @@ Cada tarea termina con un control que sale con código 1 si no se cumple.
    tocar la base de 13,005. Leer completos los 30 informes de la raíz del zip y los casos de prueba de `repo/examples`;
    entra lo que sea regla original de generación de imágenes, sale lo derivado de las skills, con motivo.
    Control: cada texto de la adenda con veredicto y motivo.
+   Hecha (2026-10-27): `v3/universo/adenda/construir_adenda.py` lee del zip `apd/originales/…v3.4.0_COMPLETE.zip` y
+   escribe `adenda_universo.jsonl`: 125 textos de 68 archivos, 40 entran (21 de SW30 SKILL.md, las 18 reglas
+   aprendidas con su condición y fuerza, 1 nota normativa del brief de ejemplo del clavadista) y 85 salen con motivo.
+   Sale con código 0.
 2. **Casos.** Rehacer B1–B5 con su ruta (rostro T1 → placa del lugar → T3) y B6 (T1 → T2, ya hecho); C1–C4 con su
    ruta. Cada paso lleva `ruta.flujo` FL04, su operación y los campos obligatorios de esa operación, los módulos que
    activa y `procedencia_campos` por valor (usuario, herencia aprobada, inferencia para aprobación o fuente
