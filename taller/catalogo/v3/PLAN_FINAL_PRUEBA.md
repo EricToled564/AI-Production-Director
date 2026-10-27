@@ -25,7 +25,7 @@ caso. Los tipos que la prueba cubre están en las decisiones 26 §16 y §17. Las
 **Registros de lo leído para este plan:**
 - `LECTURA_PLAN.md`;
 - `LECTURA_4_DOCUMENTOS.md`;
-- `revision/01_texto_en_imagen.md` a `revision/07_auditoria_salidas_universo.md`.
+- `revision/01_texto_en_imagen.md` a `revision/08_verificacion_antes_tarea2.md`.
 
 Cuando un registro de `revision/` difiere de los anteriores, manda el de `revision/`.
 
@@ -75,7 +75,7 @@ descripción de imagen se ejecuta como génesis (26 §14).
 
 ### Génesis por clase de sujeto
 
-- **Persona:** plantilla T1 (INV-000604, 000553, 000558, 000561), armada con `armar.py` (CLAUDE.md). La regla de lente y cámara de la cara (24 §3) se escribe con el resultado visible en palabras, además del número (`camera-lighting-vocabulary.md:228`, taxonomía L1686–1695).
+- **Persona:** plantilla T1 (INV-000604, 000553, 000558, 000561), armada con `armar.py` (CLAUDE.md). La regla de lente y cámara de la cara (24 §3) se escribe con el resultado visible en palabras, no solo con el número: términos descriptivos antes que parámetros de lente y «50mm feel» como look (INV-002125, INV-003020), compresión del retrato y distorsión de proximidad (INV-008157–008167), sin vocabulario de «AI face» (INV-008582–008584).
 - **Lugar:** placa vacía, sin persona, una presión ambiental (INV-000607, 000555, 000560).
 - **Edificación o landmark:** lugar real anclado por época y cultura, sin geometría exacta (INV-000431–000432, 000450–000452, 000476; `golden-rules.md:140–150`, INV-002298–002318).
 - **Animal:** cabeza y pelaje antes que poses (INV-000433–000434, 000456, 000477, 000480).
@@ -286,8 +286,8 @@ al repo al cerrar cada tarea.
     - Lo que no se puede verificar mirando la imagen se marca así, no como PASS (ADD-0047).
     - **Después, la crítica de `visual-asset-critic`:**
       - seis capas y veredicto ACCEPT / REVISE / REJECT;
-      - JSON 1.1 con el sha256 de la imagen y del prompt, `generator` gpt-image-2, y `shot_id`, `brand_lock_ref` y `seed` en null (INV-009776–009871; taxonomía L2427–2442);
-      - validada con `tools/validate_critique.py`;
+      - JSON 1.1 con `run_id`, `round` (1, y 2 o 3 en las repeticiones de 26 §10) y `created_at`; el sha256 de la imagen y del prompt; `generator` «gpt-image» (id de la matriz de capacidades) y `model_version` «2»; `shot_id`, `brand_lock_ref` y `seed` en null; confianza MEDIUM como máximo (INV-009776–009871; taxonomía L2427–2442; `revision/08_verificacion_antes_tarea2.md`);
+      - validada con `tools/validate_critique.py`, corrido desde un entorno con la estructura que el validador espera (`tools/` y `skills/…`, copiados del skill instalado), porque en la copia instalada no encuentra su schema;
       - escrita en `salida.aceptacion` del caso (schema L757–990; T-BRIEF-IMG L375–376).
 
     Control: ninguna imagen se da por buena sin las tablas mecánica y visual y la crítica validada escritas en el repo.
