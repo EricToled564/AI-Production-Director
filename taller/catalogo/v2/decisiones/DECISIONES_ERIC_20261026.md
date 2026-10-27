@@ -51,3 +51,11 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     La longitud que mencionan las reglas no bloquea: es una referencia aspiracional. Se espera que el prompt sea lo más
     corto posible, sin repeticiones ni ninguna otra ineficiencia del lenguaje, pero sin sacrificar la sintaxis que exigen
     los textos del modelo. Vale también para `armar.py`: su rechazo por más de 300 palabras (L84–85) pasa a aviso.
+12. **Alcance de la prueba: solo imagen con aspecto de foto real** (2026-10-27). Palabras de Eric: «solo quiero que se
+    prueben casos de foto realismo»; «quedan fuera de la prueba no del universo y sus reglas tienen que ser
+    clasificadas»; «eso se hará en una prueba posterior, no es prioritario, todos los casos que involucren fotografía con
+    aspecto real como transferencia de imagen, descripción de imagen, etc. tienen que tener una prueba específica en este
+    ejercicio» (transcripción normalizada de los mensajes de la sesión). Consecuencias: cada tipo de imagen fotográfica
+    tiene su propio caso en esta prueba; las técnicas no fotográficas (F18 distinto de «fotorrealista») quedan fuera de
+    la prueba pero siguen en el universo; la clasificación de sus reglas se hace en una prueba posterior. La palabra
+    «photorealistic» / «fotorealista» sigue prohibida dentro de los prompts.
