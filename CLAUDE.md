@@ -15,3 +15,11 @@ Todo prompt de retrato (una persona, sin referencias) para GPT Image 2 se arma c
 
 El alcance de las reglas es solo GPT Image 2 (decisión de Eric, 2026-10-24). La palabra «photorealistic» está prohibida
 en los prompts.
+
+## Antes de decir que algo no existe
+
+Nunca se afirma que el corpus no tiene una regla, un texto o un dato sin haber leído completos todos los textos que
+podrían contenerlo (el universo de la prueba o el documento entero). Buscar por palabras clave no basta y no se presenta
+como lectura. Ejemplo del 2026-10-27: a la pregunta «¿hay reglas para la imagen fija de un choque de auto?» se respondió
+tras buscar por palabras y leer 63 coincidencias recortadas; la lectura completa de los 2,722 textos
+(`taller/catalogo/v3/universo/universo_prueba_textos.jsonl`) encontró muchas más reglas aplicables que la búsqueda.
