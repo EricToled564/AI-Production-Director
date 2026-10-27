@@ -138,7 +138,7 @@ Los aprobó Eric (decisiones 26 §16 y §17).
 | K15 | edición: añadir objeto | edificación | sin texto | editorial | — | K03 | `editing.md:21–27` | usuario |
 | K16 | edición: cambiar luz o clima | edificación | sin texto | editorial | — | K03 | `gpt-image.md:98`; `editing.md:29–46` | usuario |
 | K17 | edición: colorizar | persona en foto blanco y negro | sin texto | editorial | — | E5 | `editing.md:48–55` | high |
-| K18 | edición: restaurar | foto antigua dañada | sin texto | editorial | — | E6 | `editing.md:65–71` | usuario |
+| K18 | edición: restaurar | foto antigua dañada | sin texto | editorial | — | E6 | `editing.md:65–71` | high |
 | K19 | edición: traducir texto | producto con etiqueta | texto extenso o pequeño | e-commerce o catálogo | — | K09 | `editing.md:73–78` | high |
 | K20 | edición: cambiar vestuario | persona | sin texto | post o historia para redes | — | K10 | `gpt-image.md:94` (INV-002382) | high |
 | K21 | edición: cambiar mobiliario u objeto | interior | sin texto | visualización arquitectónica | — | K30 | `gpt-image.md:100` (INV-002385) | usuario |
