@@ -195,6 +195,12 @@ La tarea 2 comprueba esta tabla contra el esquema.
 Cada tarea termina con un control que sale con código 1 si no se cumple. Todo resultado se escribe en archivo y se sube
 al repo al cerrar cada tarea.
 
+Toda herramienta se prueba antes de usarla: con un caso que debe pasar y otro que debe fallar, comprobando el código de
+salida o la lista de errores que entrega. Las herramientas que ya existen están probadas en
+`revision/09_verificacion_herramientas.md`. Las que crea una tarea (el `rule_answer_check` adaptado de la tarea 4, el
+verificador de forma extendido de la tarea 6, `seleccionar.py` de la tarea 8, `armar_contrato.py` de la tarea 9 y el
+script de QA mecánica de la tarea 11) se prueban así dentro de su tarea, antes de usarlas.
+
 1. **Universo y adenda.** Hechos: 2,724 textos (26 §18) y la adenda con 40 textos que entran, código 0.
    - Control: `textos_universo.py` regenera `universo_prueba_textos.jsonl` con 2,724 textos.
 2. **Mapa en datos.** La tabla del §3 y la del §4 se pasan a `v3/prueba/mapa_tipos.json` y `v3/prueba/casos.json`. Control `verificar_mapa.py`:
@@ -220,7 +226,12 @@ al repo al cerrar cada tarea.
    - `mensaje_id` es el uuid del evento de su mensaje en esta sesión (`list_events`).
    - En los casos con entradas se aprueba primero el contenido. Cuando existe la imagen de entrada se escribe su sha256 y Eric aprueba de nuevo, porque el cambio invalida la aprobación.
 
-   Controles: `verificar_templates.validate_instance(caso, 'brief')` sin errores, y `casos/validar.py caso.json` sin errores tras la aprobación.
+   Controles:
+   - `verificar_templates.validate_instance(caso, 'brief')` sin errores, con `modelo.nombre` exactamente «GPT Image 2»;
+   - `casos/validar.py caso.json` con `case_gate_errors` vacío tras la aprobación. Se lee esa lista: `validar.py` sale con código 0 aunque haya errores.
+   - Los valores de extensión (hijos de edición, F32, F24 «objeto entero», F05 «estilo de vida») no tienen id en `catalogo_opciones.json`. Van con `option_ids` vacío y su decisión como evidencia.
+   - Lo leído de la foto en K32 va con origen `INFERENCIA_PROPUESTA` en el caso del catálogo y `inferencia_para_aprobacion` en el contrato.
+   - Pruebas de las herramientas: `prueba/probar_verificar_templates.py` y `prueba/probar_validar_caso.py`.
 4. **Lista de referencia por caso (pregunta a).** Se lee completo cada texto del universo y de la adenda contra cada caso aprobado, sin facetas ni selector.
    - Cada par texto × caso se marca APLICABLE CONFIRMADA, FUERA DE ESTE CASO o EXCLUIDA POR DECISIÓN, con motivo (taxonomía §7.4).
    - Las reglas que piden otro modelo son FUERA DE ESTE CASO. Los textos de atribución a terceros son EXCLUIDA POR DECISIÓN (DEC-000024).
@@ -243,7 +254,7 @@ al repo al cerrar cada tarea.
 
    Control: frente a la lista congelada, 0 faltantes y 0 sobrantes. Cada diferencia se resuelve releyendo el texto fuente y se registra qué se corrigió.
 9. **Redacción y traza (pregunta b).**
-   - **K01, G1 y G2** se arman con `armar.py` (CLAUDE.md), con su control de más de 300 palabras pasado de rechazo a aviso (26 §11). Su traza enlaza cada aplicación con el campo del brief de `armar.py` que la lleva, o con el texto fijo del programa que la cubre.
+   - **K01, G1 y G2** se arman con `armar.py` (CLAUDE.md). Su control de más de 300 palabras ya es aviso y no rechazo (26 §11, cambio hecho el 2026-10-27). Su traza enlaza cada aplicación con el campo del brief de `armar.py` que la lleva, o con el texto fijo del programa que la cubre.
    - **Los demás** se arman con `armar_contrato.py`, que escribe la salida del contrato:
      - GPT2-GEN con el mapeo de slots del §3, o GPT2-EDIT con Change / Preserve / Constraints y la lista de preservación;
      - roles de referencia dentro de su slot;
@@ -251,6 +262,8 @@ al repo al cerrar cada tarea.
      - prompt en inglés y texto del mundo entre comillas rectas en su idioma.
    - Cada aplicación seleccionada se enlaza con los 12 campos del `binding_contract` (CONTRATOS L671–687), con su slot como destino y su control como prueba.
    - Una regla cuyo efecto es un parámetro que la app no expone lleva ese destino (26 §8).
+   - `modelo.nombre` va exactamente como «GPT Image 2»: con otro nombre, `validate_instance` no revisa los slots y no avisa.
+   - Ningún texto del prompt lleva «...» ni «…», ni dentro de un literal: `validate_instance` lo rechaza (L59).
 
    Controles:
    - `validate_instance(caso, 'salida')` sin errores;
@@ -264,7 +277,7 @@ al repo al cerrar cada tarea.
 10. **Entrega a Eric, paso a paso de la cadena.**
     - **Por prompt:** Model, Quality, Size / Ratio, References (cada Image N con su archivo y su rol), el prompt tal como lo escribe el armador, y Notes con lo inferido (ADD-0004, INV-002044).
     - **Formato del mensaje:** abre con la cabecera SKILL / RIESGOS / TÉCNICA. El prompt va en bloque cercado, con una línea `OVERRIDE: R1 - GPT2-GEN abre con el rótulo Scene: y el verbo dentro del slot (INV-002335)`.
-    - **Control:** los tres gates de Stop (`gate_microgate`, `gate_dramaturgy`, `gate_image`), corridos en local sobre el mensaje, salen con código 0 antes de enviarlo.
+    - **Control:** los tres gates de Stop (`gate_microgate`, `gate_dramaturgy`, `gate_image`), corridos en local sobre el mensaje, salen con código 0 antes de enviarlo. Prueba de los gates con este formato: `prueba/probar_gates_entrega.py`.
     - **Instrucciones a Eric:**
       - un chat nuevo por prompt;
       - adjuntar exactamente los archivos indicados, en el orden de Image N;
@@ -287,7 +300,7 @@ al repo al cerrar cada tarea.
     - **Después, la crítica de `visual-asset-critic`:**
       - seis capas y veredicto ACCEPT / REVISE / REJECT;
       - JSON 1.1 con `run_id`, `round` (1, y 2 o 3 en las repeticiones de 26 §10) y `created_at`; el sha256 de la imagen y del prompt; `generator` «gpt-image» (id de la matriz de capacidades) y `model_version` «2»; `shot_id`, `brand_lock_ref` y `seed` en null; confianza MEDIUM como máximo (INV-009776–009871; taxonomía L2427–2442; `revision/08_verificacion_antes_tarea2.md`);
-      - validada con `tools/validate_critique.py`, corrido desde un entorno con la estructura que el validador espera (`tools/` y `skills/…`, copiados del skill instalado), porque en la copia instalada no encuentra su schema;
+      - validada con `prueba/validar_critica.py`, que corre `tools/validate_critique.py` del skill instalado desde un entorno con la estructura que espera (en la copia instalada no encuentra su schema);
       - escrita en `salida.aceptacion` del caso (schema L757–990; T-BRIEF-IMG L375–376).
 
     Control: ninguna imagen se da por buena sin las tablas mecánica y visual y la crítica validada escritas en el repo.
