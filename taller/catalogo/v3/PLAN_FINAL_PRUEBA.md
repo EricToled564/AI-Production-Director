@@ -7,13 +7,17 @@ corpus (c). El alcance no cambia: solo lo decidido hasta hoy.
 
 ## 1. Documentos leídos para este plan
 
-- Universo de la prueba: 2,722 textos, completos (`v3/universo/universo_prueba_textos.jsonl`).
-- Taxonomía 00688, T-BRIEF-IMG y contratos (`fuentes_20261019/`), esquema `v2/esquema_taxonomia.json`.
-- Decisiones: `DECISIONES_ERIC_20261023.md`, `_20261024.md`, `_20261026.md` (§1–§9), `DECISIONES_repo_20260925.md`,
-  `CLAUDE.md`.
+Leídos completos en esta sesión:
+- Universo de la prueba: 2,722 textos (`v3/universo/universo_prueba_textos.jsonl`).
+- SW30 SKILL.md (152 líneas) y las 18 reglas aprendidas (`learned/`), fuera de la base de 13,005.
+- Decisiones: `DECISIONES_ERIC_20261023.md` (§1–§5), `_20261024.md`, `_20261026.md` (§1–§9),
+  `DECISIONES_repo_20260925.md`, `CLAUDE.md`.
 - Casos y código: `produccion/prompts-sistema-20261024/` (casos.json, casos_contraste.json, correr.py),
-  `produccion/template-retrato-gpt2/` (armar.py, LEEME, aprobados, b6-corregido, pelirroja), `v3/MAPA_PERSONA.md`.
-- Fuera de la base de 13,005: SW30 SKILL.md (152 líneas) y las 18 reglas aprendidas (`learned/`), leídos completos.
+  `produccion/template-retrato-gpt2/pelirroja-ecu-20261025/` y `b6-corregido/`, `v3/MAPA_PERSONA.md`.
+
+Consultados por secciones, no completos: taxonomía 00688 (§0.1, §1.12.8, §7.2, F15, F20, F22, F24), T-BRIEF-IMG
+(L19, L34, L40–42, L122, §12), `CONTRATOS_OPERACION_MODELO.json` (L750–789), `armar.py` (L45–75). Antes de la tarea 3
+se leen completos.
 
 ## 2. Mapa del proceso: qué decisión y qué reglas gobiernan cada paso
 
