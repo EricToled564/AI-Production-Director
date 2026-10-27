@@ -9,5 +9,13 @@ fecha).
 | `fuentes_20261019/00688_TAXONOMIA_…_054122.md` | §1.12–§1.13 (L184–201) y §7 (L2784–2830); no el resto | §1.12 doce puntos del contrato de lectura y clasificación por texto; §1.13 correspondencia taxonomía → templates; §7.1 registro; §7.2 lógica de condiciones; §7.3 discriminantes; §7.4 consulta y tres clases | Reglas del registro, de las condiciones y de la selección |
 | `v2/GUIA_CLASIFICACION.md` | completo, 114 l | formato del registro de regla (bloque_E, bloque_D, aplicaciones, todas las facetas en VALOR o UNIVERSAL con evidencia); consultas; validación con `validar_v2.py` | Formato de salida de la clasificación |
 | `INSTRUCCIONES.md` | completo, 63 l | formato anterior (TODOS / lista, EXT:) | Superado por GUIA v2 y por 23 §2 (no se reutiliza la catalogación previa) |
-| `PILOTO_V5_INSTRUCCIONES_20261019.md` | completo, 177 l | §9 L156–161: Eric fija el tope de costo antes de la Ronda 1; reporte tras 10 textos; parada si la proyección lo supera | El tope de costo no está en ninguna decisión registrada (búsqueda de «tope» y «presupuesto» en decisiones y revisiones): es el único dato que falta |
-| `v2/piloto_gpt-image/clasificacion.py` | docstring, constantes y las primeras 31 aplicaciones; las 34 siguientes son filas del mismo formato | formato de aplicación con acción al activarse y destinos | Formato del registro de aplicaciones |
+| `PILOTO_V5_INSTRUCCIONES_20261019.md` (borrado el 2026-10-27, prueba preliminar) | completo, 177 l | §3: hashes de entrada; §9: tope de costo antes de clasificar | Los hashes se copian abajo. El control de costo se sostiene en PLAN_V5 §21.3 y R16 (desvío del presupuesto autorizado bloquea). El tope no está en ninguna decisión registrada |
+| `v2/piloto_gpt-image/clasificacion.py` (borrado el 2026-10-27, prueba preliminar) | docstring, constantes y 31 de 65 aplicaciones | formato de aplicación | Sin consecuencia: el formato del registro es el de `v2/GUIA_CLASIFICACION.md` |
+
+## Hashes de entrada (copiados de PILOTO_V5 §3 antes de borrarlo)
+
+| Archivo | SHA-256 |
+|---|---|
+| `TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `7ec912aa92d8d1a6f54a6158550c0bcfa48861a05bbf6f6146b5b93b1f9bfeaa` (también PLAN_V5 §7.6 L297) |
+| `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` (tabla `textos`, 13,005 filas) | `c991437028d9d731bf46e516efa315f08d9da71bd596495c119fa41d30f6c8d9` |
+| `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.csv` | `a2c5a59d3531512058d8bfc6f1446fd45942a49ea40b25c6b179febd5608a1cc` |
