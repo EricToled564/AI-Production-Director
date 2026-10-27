@@ -39,3 +39,6 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
    que es el modelo de texto de la app anterior; la app vigente, `taller/`, escribe brief y prompt con la API de Anthropic
    (`taller/llm.py:3`) y no genera imágenes. Tamaño de B6-T2 1440x2160: máximo fiable en 2:3 por INV-002359
    (gpt-image.md:59), protocolo de rostro <20 % de `template-retrato-gpt2/b6-corregido`.
+9. **Muestra de auditoría** (2026-10-27): Eric revisa al azar el 10 % del total de reglas marcadas «no aplica» en cada
+   caso (redondeo hacia arriba, mínimo 1). Palabras de Eric: «la muestra debe de ser 10 % del número total de reglas que
+   se marcaron como no aplica».
