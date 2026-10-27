@@ -48,7 +48,7 @@ Cada tarea termina con un control que sale con código 1 si no se cumple.
 2. **Casos.** Rehacer B1–B5 con su ruta (rostro T1 → placa del lugar → T3) y B6 (T1 → T2, ya hecho); C1–C4 con su
    ruta. Cada paso lleva `ruta.flujo` FL04, su operación y los campos obligatorios de esa operación, los módulos que
    activa y `procedencia_campos` por valor (usuario, herencia aprobada, inferencia para aprobación o fuente
-   documental). Hoy `casos.json` no tiene flujo, operación, procedencia ni aprobación. Después Eric aprueba cada brief
+   documental). Después Eric aprueba cada brief
    completo por su sha256 (`aprobacion_brief`); sin esa aprobación no hay selección definitiva. Control: cada caso
    valida contra `CONTRATO_IMAGEN_ORQUESTACION.schema.json` y los `required_fields` de su operación; `correr.py` sin
    fallas; formato en el texto de cada prompt.
