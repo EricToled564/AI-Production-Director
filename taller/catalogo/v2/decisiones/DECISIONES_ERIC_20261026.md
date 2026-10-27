@@ -30,9 +30,12 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
 7. **F05 de B1 y B4 deja de ser lista vacía** (decisión 4 de 6; la lista vacía viola taxonomía §1.12.8): B1 (pescadora en
    el muelle) = «hospitalidad y viajes»; B4 (cocina, artículo de estilo de vida) = valor nuevo «estilo de vida», extensión
    de F05 registrada en `v2/construir_esquema.py`. Ninguna regla del piloto condiciona F05: la selección no cambia.
-8. **Interfaz de la prueba: OpenAI API** (2026-10-27). Eric: «ya creé el API y ya está en la app». Verificado en el
-   repo: la app llama a OpenAI con `OPENAI_API_KEY` de Vercel (`api/sample.js:11`, `:85`; `api/config.js:11`). Todos los
-   casos llevan `interfaz: "OpenAI API"`. Máscara en C1: la referencia oficial de `images.edit`
-   (developers.openai.com) documenta `mask`, «An additional image whose fully transparent areas (e.g. where alpha is zero)
-   indicate where `image` should be edited … Must be a valid PNG file, less than 4MB, and have the same dimensions as
-   `image`»; en la API de OpenAI el parámetro es `mask`, no `mask_image_url` (nombre de fal.ai, gpt-image.md:90).
+8. **Interfaz de generación de la prueba: App de ChatGPT para escritorio** (corregido 2026-10-27). Palabras de Eric
+   registradas en `taller/demo/generar_desarrollo_spinning.py:47`: «interfaz es la app de chat gpt para deshtop». La app no
+   expone parámetros: el tamaño y quality quedan como referencia y el formato se escribe en el texto del prompt
+   (`taller/demo/PRUEBA_SPINNING_prompt_exportado.md:242`); por eso el Scene de cada caso nombra su ratio y `correr.py`
+   lo valida. Sin parámetro `mask` en C1 (inferencia: la app no expone parámetros de API). Corrección de un error del
+   agente: el primer registro de este punto tomó como interfaz de imagen la clave `OPENAI_API_KEY` de `api/sample.js`,
+   que es el modelo de texto de la app anterior; la app vigente, `taller/`, escribe brief y prompt con la API de Anthropic
+   (`taller/llm.py:3`) y no genera imágenes. Tamaño de B6-T2 1440x2160: máximo fiable en 2:3 por INV-002359
+   (gpt-image.md:59), protocolo de rostro <20 % de `template-retrato-gpt2/b6-corregido`.

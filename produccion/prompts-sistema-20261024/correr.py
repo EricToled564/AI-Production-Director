@@ -37,7 +37,8 @@ def aplica(a, facetas, paso):
     return all(set(v) & set(facetas.get(f, [])) for f, v in a["r"].items())
 
 
-INTERFACES = ("OpenAI API", "fal.ai")
+APP = "App de ChatGPT para escritorio"  # interfaz de Eric: taller/demo/generar_desarrollo_spinning.py:47
+INTERFACES = ("OpenAI API", "fal.ai", APP)
 
 
 def acciones_de_dependencia(sel, caso):
@@ -69,6 +70,8 @@ def acciones_de_dependencia(sel, caso):
             accion = "pedir al usuario la interfaz (OpenAI API o fal.ai) antes de la selección definitiva"
         elif rid == "INV-002374":
             accion = ("traza: endpoint «openai/gpt-image-2/edit»" if interfaz == "fal.ai"
+                      else "traza: sin endpoint; la app no expone parámetros, tamaño y quality quedan como referencia "
+                           "(taller/demo/PRUEBA_SPINNING_prompt_exportado.md:242)" if interfaz == APP
                       else "traza: endpoint images.edit de la API de OpenAI (developers.openai.com, referencia de images.edit)")
         elif rid == "INV-002380":
             if caso.get("mascara_admitida") is None:
@@ -146,6 +149,9 @@ def main():
         # «Image N: rol» antes de los slots (gpt-image.md:104–109); el regex de slots no las cuenta porque llevan dígito
         prompt = "\n".join(c.get("referencias", []) + [f"{s}: {c['slots'][s]}" for s in SLOTS])
         fallas, palabras = validar(prompt, c["slots"], ancho, alto)
+        if c.get("interfaz") == APP and c["facetas"]["F06"][0] not in prompt:
+            # la app no fija el tamaño: el formato va escrito en el texto (PRUEBA_SPINNING_prompt_exportado.md:242)
+            fallas.append(f"falta el formato {c['facetas']['F06'][0]} en el texto del prompt")
         t_caso = time.perf_counter() - t1
         bloqueantes = [f for f in fallas if not f.startswith("aviso")]
         traza.append({"brief": c["id"], "facetas": c["facetas"], "inferencias": c["inferencias"],
@@ -159,8 +165,8 @@ def main():
         salida += [f"## {c['id']} — {c['brief']}", "",
                    f"Uso: {c['uso']} · Formato {c['facetas']['F06'][0]}", "", "```text",
                    f"Model: gpt-image-2 ({c.get('interfaz') or 'interfaz sin definir'})",
-                   "Quality: high",
-                   f"Size: {ancho}x{alto}", "", "Prompt:", prompt, "```", "",
+                   "Quality: high" + (" (referencia: la app no lo fija)" if c.get("interfaz") == APP else ""),
+                   f"Size: {ancho}x{alto}" + (" (referencia: la app no lo fija; el formato va en el texto)" if c.get("interfaz") == APP else ""), "", "Prompt:", prompt, "```", "",
                    f"Validación: {'; '.join(fallas) if fallas else 'sin fallas'} · {palabras} palabras · "
                    f"{len(sel)} reglas del piloto seleccionadas", ""]
         if acciones or faltantes:
