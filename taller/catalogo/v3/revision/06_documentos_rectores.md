@@ -56,3 +56,25 @@ para el alcance anterior; este archivo los completa y, donde difieren, manda est
 | L774 | «las combinaciones modelo/operación sin adaptador completo … hay que resolver contrato técnico antes de ejecución. No generar prompt de una combinación usando por defecto un adaptador ajeno» | C: la descripción de imagen no tiene contrato; no se ejecuta sin la respuesta a la pregunta 2 |
 | L775–790 | módulo fotografía: plano, ángulo, efecto óptico, luz fuente, dirección, dureza, distribución y contraste cuando el brief exige imagen fotográfica y nueva toma; una edición que preserva no lo exige | C: con 26 §12 todo caso que no sea edición activa el módulo fotografía; la tarea 3 lo marca en `modulos_activos` |
 | L791–818 | módulos acción física, sujetos visibles y materialidad, por caso y fuente | N: tarea 3 |
+
+## 3. Schema — `…/templates/CONTRATO_IMAGEN_ORQUESTACION.schema.json` (1,361 líneas, leídas completas)
+
+| Líneas | Qué dice | Consecuencia |
+|---|---|---|
+| L7–41 | `ruta`: flujo FL01–FL04 obligatorio; sección, etapa, paso, operativa solo si la fuente lo define, «no se inventa un valor» | N: la prueba es FL04 (activo directo) |
+| L42–55 | `operacion`: 8 valores; no hay análisis de imagen a prompt | C: pregunta 2 de `04_preguntas_eric.md` |
+| L56–125 | modelo, pieza, formato (ratio con patrón N:M), idioma | N: tarea 3 |
+| L126–255 | sujetos (clase, rasgos, cabello, vestuario, expresión, posición), acción, física, escena | N |
+| L256–269 | `estilo` y `representacion` | N: `representacion` lleva F18 «fotorrealista» como valor de faceta, nunca como palabra del prompt |
+| L270–426 | identidad, blocking, rostro (ocupación 0..1), cámara, luz, color y material, composición | N: módulo fotografía (contratos L775–790) |
+| L427–470 | `referencias[]`: archivo, sha256 de 64 hex, medio, rol, índice obligatorios; preservar | N: tarea 3 (se aprueba de nuevo cuando existe la imagen de entrada) |
+| L471–616 | restricciones, contexto narrativo y de secuencia, función del plano, publicación, ancla con contexto de clip | N |
+| L618–664 | edición (máscara solo si la interfaz la admite), transferencia, boceto | N |
+| L665–692 | `texto_marca`: literales, posición, tipografía, logos aprobados | C: campos de los casos con texto (ya anotado en T-BRIEF L125–128) |
+| L693–740 | override de Ideogram, grounding, presupuesto, selecciones taxonómicas | N |
+| L741–753 | `modulos_activos`: fotografía, acción física, sujetos visibles, materialidad | N: tarea 3 |
+| L757–990 | `salida`: prompt, slots, parámetros, referencias, validaciones, traza (ruta, materias, procedencia, decisiones, aplicaciones, efectos, compactación, consultas), notas, handoff, aceptación (critique, detalles auditados, rondas, sha256 del activo) | C: la QA de la tarea 11 se escribe en `salida.aceptacion` de cada caso, con la crítica de `visual-asset-critic` en `critique` |
+| L991–1033 | orquestación y contratos externos | N |
+| L1040–1332 | `procedencia_campos`: path, origen (usuario, herencia_aprobada, inferencia_para_aprobacion, fuente_documental), fuente, valor_sha256, aprobacion_id | C: en el caso de descripción de imagen, lo que el sistema saca de la foto entra como `inferencia_para_aprobacion` con la foto y su sha256 como fuente; el schema no necesita cambios para eso (ajustado en la pregunta 2) |
+| L1333–1352 | `aprobacion_brief`: brief_sha256, mensaje_id, aprobado = true | N: tarea 3 |
+| L1354–1360 | `additionalProperties: false`; obligatorios contrato_id, version, entrada, procedencia_campos | N: no se agregan campos fuera del schema |

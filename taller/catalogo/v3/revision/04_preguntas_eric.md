@@ -31,7 +31,9 @@ Dos choques con lo que ya existe:
 
 - **No hay operación en el contrato.** El schema tiene 8 operaciones y ninguna es esta (L45–54), y la taxonomía dice
   que un modo sin contrato «permanece no habilitado» (L260). Propuesta: probarlo como una génesis (cero referencias),
-  con el brief lleno a partir del análisis de la foto y ese origen marcado en `procedencia_campos`.
+  con el brief lleno a partir del análisis de la foto; cada valor sacado de la foto entra con el origen que el schema ya
+  tiene, `inferencia_para_aprobacion`, y la foto con su sha256 como fuente (schema L1312–1318). No hace falta cambiar el
+  schema.
 - **Formato del prompt.** `vision-decomposer.md:61` pide el prompt como palabras sueltas separadas por comas; para GPT
   Image 2, `gpt-image.md:7–15` y el validador del contrato (`verificar_templates.py` L62–65) exigen los 5 apartados
   (Scene, Subject, Important Details, Use Case, Constraints). Es la contradicción de `CONTRADICCIONES.md` §3, que ahora
