@@ -5,7 +5,7 @@
 Uso: Portada de reportaje · Formato 4:5
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1024x1280
 
@@ -18,9 +18,6 @@ Constraints: Solo portrait of her alone with natural skin texture and no AI rend
 ```
 
 Validación: sin fallas · 264 palabras · 21 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -43,7 +40,7 @@ Inferencias mías, para tu aprobación:
 Uso: Página «equipo» de un sitio web corporativo · Formato 3:2
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1536x1024
 
@@ -56,9 +53,6 @@ Constraints: Solo portrait of him alone in a real office with natural skin textu
 ```
 
 Validación: sin fallas · 244 palabras · 21 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -80,7 +74,7 @@ Inferencias mías, para tu aprobación:
 Uso: Campaña de un club deportivo · Formato 4:5
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1024x1280
 
@@ -93,9 +87,6 @@ Constraints: Solo portrait of her alone with natural skin texture and no AI rend
 ```
 
 Validación: sin fallas · 222 palabras · 20 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -118,7 +109,7 @@ Inferencias mías, para tu aprobación:
 Uso: Ilustración de artículo de estilo de vida · Formato 3:2
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1536x1024
 
@@ -131,9 +122,6 @@ Constraints: Solo portrait of her alone with exactly two hands, lit only by the 
 ```
 
 Validación: sin fallas · 246 palabras · 22 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -156,7 +144,7 @@ Inferencias mías, para tu aprobación:
 Uso: Póster de concierto (sin texto en la imagen) · Formato 2:3
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1024x1536
 
@@ -169,9 +157,6 @@ Constraints: Solo portrait of him alone against plain darkness with natural skin
 ```
 
 Validación: sin fallas · 208 palabras · 21 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -194,7 +179,7 @@ Inferencias mías, para tu aprobación:
 Uso: Maestro de rostro para el retrato de cuerpo entero B6-T2 (uso final no indicado) · Formato 4:5
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1024x1280
 
@@ -207,9 +192,6 @@ Constraints: Solo portrait of him alone, with natural skin texture and no AI ren
 ```
 
 Validación: sin fallas · 193 palabras · 20 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 
@@ -238,7 +220,7 @@ Inferencias mías, para tu aprobación:
 Uso: Retrato de cuerpo entero (uso final no indicado) · Formato 2:3
 
 ```text
-Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)
+Model: gpt-image-2 (OpenAI API)
 Quality: high
 Size: 1024x1536
 
@@ -252,9 +234,6 @@ Constraints: Solo portrait of him alone, with the full body from head to shoes i
 ```
 
 Validación: sin fallas · 295 palabras · 23 reglas del piloto seleccionadas
-
-Selección exploratoria. Datos que faltan: entrada.modelo.interfaz.
-
 
 Reglas aplicadas por lectura directa (sin clasificar todavía):
 

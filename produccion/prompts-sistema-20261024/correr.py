@@ -69,14 +69,15 @@ def acciones_de_dependencia(sel, caso):
             accion = "pedir al usuario la interfaz (OpenAI API o fal.ai) antes de la selección definitiva"
         elif rid == "INV-002374":
             accion = ("traza: endpoint «openai/gpt-image-2/edit»" if interfaz == "fal.ai"
-                      else "traza: endpoint equivalente de la API de OpenAI (gpt-image.md:78 no lo nombra)")
+                      else "traza: endpoint images.edit de la API de OpenAI (developers.openai.com, referencia de images.edit)")
         elif rid == "INV-002380":
             if caso.get("mascara_admitida") is None:
                 faltantes.append("confirmación de que la interfaz admite mask_image_url")
                 accion = "preguntar al usuario si su interfaz admite mask_image_url; sin «sí» no se ofrece máscara"
             else:
-                accion = ("habilitar entrada.edicion.mascara (opcional, ediciones puntuales)" if caso["mascara_admitida"]
-                          else "no ofrecer máscara: la interfaz no la admite")
+                param = "mask (PNG con alfa, mismas dimensiones que la imagen)" if interfaz == "OpenAI API" else "mask_image_url"
+                accion = (f"habilitar entrada.edicion.mascara con el parámetro {param} (opcional, ediciones puntuales)"
+                          if caso["mascara_admitida"] else "no ofrecer máscara: la interfaz no la admite")
         elif rid == "INV-002383A2":
             accion = "validación bloqueante: el prompt y los parámetros no llevan input_fidelity"
         else:
@@ -150,7 +151,7 @@ def main():
                       "palabras": palabras, "ms_seleccion_validacion": round(t_caso * 1000, 2)})
         salida += [f"## {c['id']} — {c['brief']}", "",
                    f"Uso: {c['uso']} · Formato {c['facetas']['F06'][0]}", "", "```text",
-                   "Model: gpt-image-2 (OpenAI API o fal.ai openai/gpt-image-2)",
+                   f"Model: gpt-image-2 ({c.get('interfaz') or 'interfaz sin definir'})",
                    "Quality: high",
                    f"Size: {ancho}x{alto}", "", "Prompt:", prompt, "```", "",
                    f"Validación: {'; '.join(fallas) if fallas else 'sin fallas'} · {palabras} palabras · "
