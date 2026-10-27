@@ -36,3 +36,23 @@ para el alcance anterior; este archivo los completa y, donde difieren, manda est
 | L380–381 | REGISTRO_DESTINOS resuelve 31 facetas; `verificar_templates.py` acredita estructura, no pertinencia | N |
 | L383–384 | atribución CC BY 4.0 | N: DEC-000024 rige el material al cliente |
 | L386–387 | obligatoriedad por módulo: cámara y luz solo cuando hay que definir la toma | N: tarea 3 (módulo fotografía) |
+
+## 2. Contratos — `…/templates/CONTRATOS_OPERACION_MODELO.json` (820 líneas, leídas completas)
+
+| Líneas | Qué dice | Consecuencia |
+|---|---|---|
+| L4–47 | T-GENESIS: 12 campos base + `sujetos` + `escena`; 0 referencias; cambiar modelo, operación, referencias, identidad o formato invalida aprobación, selección, prompt, validaciones y aceptación | N: tarea 3 y control de re-aprobación |
+| L48–91 | T-REF-COMP: + `referencias` + `composicion`; ≥1 referencia con roles y preservaciones | N |
+| L92–135 | T-ANCLA-REF: + `ancla.rol` + `ancla.invariantes`; 0 o más referencias; roles character, environment, hero-macro, motif insert | C: igual que T-BRIEF L144–182 (hero/macro y motif insert según pregunta 1) |
+| L136–229 | T-ANCLA-FF y T-ANCLA-LF: + estado inicial o final + contexto del clip (cámara, transición, audio); 0 o más referencias | N: §3 del plan |
+| L230–274 | T-EDIT: + `edicion.cambio` + `edicion.preservar` + `referencias`; ≥1; un cambio por iteración | N: cada hijo de edición es una instancia de T-EDIT con un solo cambio |
+| L275–318 | T-STYLE: + `transferencia.propiedades` + `referencias`; ≥1 | N: K07 |
+| L319–362 | T-SKETCH: + `boceto.estructura_preservada` + `referencias`; ≥1 | N: vale para boceto (`structural.md`) y para plano 2D (`dimensional.md`) |
+| L364–414 | GPT2-GEN para 7 operaciones y GPT2-EDIT para edición; params quality y tamaño | N: tarea 9 |
+| L415–669 | adaptadores de Nano Banana, Flux, Midjourney, Ideogram, Seedream, GPT 1.5 y migraciones | N: otros modelos (23 §6) |
+| L671–687 | `binding_contract`: 12 campos de enlace por aplicación | N: tarea 9 |
+| L688–748 | contratos de variante de Nano Banana (límites de referencias, grounding solo NB2) | N: excluido por 23 §6; el grounding es la regla que el veredicto d nombra (pregunta 3) |
+| L749–773 | serialización de parámetros: GPT Image 2 size y quality | N: la app no los expone (26 §8) |
+| L774 | «las combinaciones modelo/operación sin adaptador completo … hay que resolver contrato técnico antes de ejecución. No generar prompt de una combinación usando por defecto un adaptador ajeno» | C: la descripción de imagen no tiene contrato; no se ejecuta sin la respuesta a la pregunta 2 |
+| L775–790 | módulo fotografía: plano, ángulo, efecto óptico, luz fuente, dirección, dureza, distribución y contraste cuando el brief exige imagen fotográfica y nueva toma; una edición que preserva no lo exige | C: con 26 §12 todo caso que no sea edición activa el módulo fotografía; la tarea 3 lo marca en `modulos_activos` |
+| L791–818 | módulos acción física, sujetos visibles y materialidad, por caso y fuente | N: tarea 3 |
