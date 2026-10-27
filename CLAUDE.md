@@ -23,3 +23,10 @@ podrían contenerlo (el universo de la prueba o el documento entero). Buscar por
 como lectura. Ejemplo del 2026-10-27: a la pregunta «¿hay reglas para la imagen fija de un choque de auto?» se respondió
 tras buscar por palabras y leer 63 coincidencias recortadas; la lectura completa de los 2,722 textos
 (`taller/catalogo/v3/universo/universo_prueba_textos.jsonl`) encontró muchas más reglas aplicables que la búsqueda.
+
+## Toda lectura deja registro en el repo
+
+Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sección, qué dice (con su línea) y qué
+consecuencia tiene para el trabajo en curso, o por qué no tiene ninguna. El registro se escribe mientras se lee y se sube
+al terminar cada documento, para que una compactación del contexto no obligue a volver a leer. Registros vigentes de la
+prueba de GPT Image 2: `taller/catalogo/v3/revision/` (Eric, 2026-10-27).
