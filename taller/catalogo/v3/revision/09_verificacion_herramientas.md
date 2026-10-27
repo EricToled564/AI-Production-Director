@@ -32,3 +32,16 @@ Las herramientas que el plan manda crear en tareas posteriores todavía no exist
 - el script de QA mecánica (tarea 11).
 
 El plan (§5) obliga a probar cada una igual, con un caso que pasa y uno que falla, antes de usarla.
+
+## Añadido el 2026-10-27: herramientas de los insumos del universo y del esquema
+
+La respuesta «Sí» a la tercera pregunta se dio antes de volver a correr estas herramientas. Se corrieron después:
+
+| Herramienta | Prueba | Resultado |
+|---|---|---|
+| `v3/universo/verificar_origen.py` | contra los originales (`apd/originales`, SHA256SUMS OK, extraídos en el scratchpad); con una carpeta vacía | A, B, C 13,005/13,005, E 6/6, solo los 62 fallos D conocidos, `verificacion_origen.json` idéntico; con la carpeta vacía, código 1 |
+| `secciones.py`, `decidir_secciones.py`, `clasificacion_misma_posicion.py` | regenerar | código 0; todas sus salidas idénticas byte a byte |
+| `v2/construir_esquema.py` | regenerar | código 0; `esquema_taxonomia.json` idéntico |
+
+La primera vez `verificar_origen.py` se corrió sin su argumento (la carpeta de originales) y dio código 1 por ese motivo.
+Corrido como indica su uso, pasa.
