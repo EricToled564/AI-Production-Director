@@ -35,6 +35,8 @@ CASOS_CAT = CAT / "fuentes_20261019/CASOS_OPCIONES_TAXONOMIA_20261019/casos"
 sys.path.insert(0, str(TPL))
 from verificar_templates import validate_instance  # noqa: E402
 
+_AP = AQUI / "aprobaciones.json"
+APROBACIONES = json.loads(_AP.read_text(encoding="utf-8")) if _AP.exists() else {}
 PLAN = {c["id"]: c for c in json.loads((PRUEBA / "casos.json").read_text(encoding="utf-8"))["casos"]}
 OPCIONES = json.loads((CASOS_CAT / "catalogo_opciones.json").read_text(encoding="utf-8"))
 ESQ = json.loads((CAT / "v2/esquema_taxonomia.json").read_text(encoding="utf-8"))
@@ -316,6 +318,7 @@ def main():
                       "viene de la lista de casos aprobada (26 §16) es propuesta del sistema: Eric aprueba, cambia o quita.",
                       "Las personas, lugares y objetos de los briefs son inventados, salvo los sujetos reales de K03, K04 y",
                       "K07, que se verifican contra fotos reales.", ""]
+    aprobados = []
     for kid, d in LOTE_1.items():
         x = contrato(kid, d)
         errs = validate_instance(x, "brief")
@@ -325,15 +328,31 @@ def main():
                 errs.append(f"{fac} «{val}» no está en el esquema")
         if x["entrada"]["modelo"]["nombre"] != "GPT Image 2":
             errs.append("modelo.nombre distinto de «GPT Image 2»")
+        c = caso_catalogo(kid, d, x)
+        # Aprobación de Eric ligada al sha256 del brief (T-BRIEF-IMG L13–15): solo vale si el brief no cambió.
+        ap = APROBACIONES.get(kid)
+        aprobado = bool(ap) and ap["brief_sha256"] == brief_sha(x)
+        if ap and not aprobado:
+            print(f"  aviso {kid}: el brief cambió desde su aprobación; la aprobación queda invalidada")
+        if aprobado:
+            x["aprobacion_brief"] = {"aprobado": True, "mensaje_id": ap["mensaje_id"], "brief_sha256": ap["brief_sha256"]}
+            for pc in x["procedencia_campos"]:
+                pc["aprobacion_id"] = ap["mensaje_id"]
+            for campo in c["campos"]:
+                campo["confirmado"] = True
+            c["aprobacion"] = {"aprobado": True, "evidencia": f"mensaje {ap['mensaje_id']} ({ap['fecha']}): "
+                               f"«{ap['texto']}» sobre {ap['documento']}; sha256 {ap['brief_sha256']}"}
+            errs += validate_instance(x, "seleccion")
         if errs:
             fallas.append(f"{kid} contrato: {errs}")
         (AQUI / f"{kid}.contrato.json").write_text(json.dumps(x, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-        c = caso_catalogo(kid, d, x)
         cp = AQUI / f"{kid}.caso.json"
         cp.write_text(json.dumps(c, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-        resto = [e for e in validar_caso(cp) if not e.startswith(("Dato propuesto sin confirmar", "Falta aprobación"))]
+        pendiente = () if aprobado else ("Dato propuesto sin confirmar", "Falta aprobación")
+        resto = [e for e in validar_caso(cp) if not e.startswith(pendiente)] if pendiente else validar_caso(cp)
         if resto:
             fallas.append(f"{kid} caso: {resto}")
+        aprobados.append(kid) if aprobado else None
         if "armar" in d:
             ap = AQUI / kid / "briefs.json"
             ap.parent.mkdir(exist_ok=True)
@@ -360,7 +379,7 @@ def main():
     (AQUI / "LOTE_1.md").write_text("\n".join(md), encoding="utf-8")
     for f in fallas:
         print("  FALLA", f)
-    print(f"lote 1: {len(LOTE_1)} casos · " + ("OK" if not fallas else f"{len(fallas)} fallas"))
+    print(f"lote 1: {len(LOTE_1)} casos · aprobados {len(aprobados)} · " + ("OK" if not fallas else f"{len(fallas)} fallas"))
     sys.exit(1 if fallas else 0)
 
 
