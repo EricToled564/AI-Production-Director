@@ -22,7 +22,7 @@ cambia. Lo leído para escribir este plan está en `LECTURA_PLAN.md` y `LECTURA_
 | Formato escrito en el texto (Scene nombra el ratio); tamaño y quality como referencia; sin máscara | decisión 26 §8 |
 | Model, Quality, Size, References y Notes van fuera del cuerpo del prompt. El ratio va además dentro de Scene: la app no expone parámetros (26 §8), y ADD-0042 pide el parámetro solo «when the platform exposes them»; en ese punto 26 §8 manda sobre ADD-0011 | ADD-0004, ADD-0010, ADD-0011, ADD-0042; decisión 26 §8 |
 | Ninguna atribución a terceros en material al cliente | DEC-000024 |
-| Longitud: objetivo alrededor de 250 palabras; aviso si el prompt o un slot pasa de 300; la longitud nunca se resuelve suprimiendo reglas aplicables. En K01, `armar.py` rechaza más de 300 (L84–85): duda 2 del §7 | ADD-0008; T-BRIEF-IMG L355; DECISIONES.md decisión 2; CLAUDE.md |
+| Longitud: objetivo alrededor de 250 palabras; aviso si el prompt o un slot pasa de 300; la longitud nunca se resuelve suprimiendo reglas aplicables. En K01, `armar.py` rechaza más de 300 (L84–85): duda del §7 | ADD-0008; T-BRIEF-IMG L355; DECISIONES.md decisión 2; CLAUDE.md |
 | Aceptar una imagen solo después de su QA, con los controles mecánicos separados de los visuales | ADD-0047 |
 | Un chat nuevo por prompt y las referencias adjuntas en cada uno: el generador no conserva estado | INV-012218; cierra `CONTRADICCIONES.md` §4 |
 | Brief aprobado por Eric ligado a su sha256; cualquier cambio invalida la aprobación | T-BRIEF-IMG L13–15; schema L1333–1352; PILOTO §5 |
@@ -40,14 +40,16 @@ restricciones, selecciones_taxonomicas), `procedencia_campos` por valor y `aprob
 | Génesis sin referencias | `genesis` · T-GENESIS | FL04 D01–D05 (taxonomía L257–261); técnica FL02 E5.2 (INV-000525–000614 del universo; INV-000529, 000542, 000543 y 000546 salieron por ser solo de Nano Banana) | 0 (INV-000610) | sujetos, escena | GPT2-GEN | Por clase de sujeto (INV-000539, 000593): persona → plantilla T1 (INV-000604, 000553, 000558, 000561) armada con `armar.py` (CLAUDE.md); lugar → placa vacía, sin persona, una presión ambiental (INV-000607, 000555, 000560); producto → etiquetas en quality high, logo nunca de texto, marca real solo con referencia (INV-000606, 000554, 000559, 000611); objeto → legible en macro y en general (INV-000608). Edificación, animal y planta: la fuente pide grounding de Nano Banana 2 (INV-000605), fuera del alcance (decisiones 23 §6, 24 §1) |
 | Composición con referencias | `composicion_referencias` · T-REF-COMP | FL04; técnica E5.3 (cuerpo T2 con el rostro adjunto) y E5.4 (persona en lugar, mundos por dos pasos) | ≥1, cada una con índice, rol y preservaciones | referencias, composicion | GPT2-GEN; el rol de cada imagen va dentro del slot que gobierna (verificar_templates L65: nada antes de «Scene:») | INV-000395, 000396, 000428, 000474, 000486–000487, 000490, 000508–000512, 000590, 000203; taxonomía L263 (con referencias no es génesis; una imagen independiente no es ancla); «Rostro T1 antes que cuerpo T2, siempre» (DECISIONES.md); hasta 16 referencias con rol (INV-002054 corregido) |
 | Edición | `edicion` · T-EDIT | FL04; técnica E5.5 | ≥1 (la imagen a editar) | edicion.cambio, edicion.preservar, referencias | GPT2-EDIT: Change / Preserve / Constraints, un cambio por iteración | INV-000397, 000584–000585; `editing.md` (INV-002021); hijos de F10 de la decisión 23 §4; sin máscara (26 §8) |
-| Transferencia de estilo | `transferencia_estilo` · T-STYLE | FL04 | ≥1 | transferencia.propiedades, referencias | GPT2-GEN | `vision-decomposer.md` (INV-002027), con la duda del §7 |
+| Transferencia de estilo | `transferencia_estilo` · T-STYLE | FL04 | ≥1 | transferencia.propiedades, referencias | GPT2-GEN; la imagen de estilo va adjunta con su rol | `gpt-image.md` Style Transfer: nombrar las propiedades visuales concretas del referente (INV-002389–002390); referencias con rol (INV-002386–002388); estilo como referencia adjunta (`golden-rules.md`, INV-002294–002295) |
 | Boceto a final | `boceto_a_final` · T-SKETCH | FL04 | ≥1 (el boceto) | boceto.estructura_preservada, referencias | GPT2-GEN | `structural.md` (INV-002025) |
 | Ancla sin referencia | `ancla_referencia` (0 refs) · T-ANCLA-REF | FL03 A0–A12 (INV-000069–000118) | 0 | ancla.rol (F11), ancla.invariantes; D1–D9 completos (verificar_templates L43) | GPT2-GEN | F26–F28 son contexto del clip, no instrucciones al prompt (decisión 2026-10-11 16:56) |
 | Ancla con referencia | `ancla_referencia`, `ancla_ff`, `ancla_lf` | FL03 | ≥1 | además estado inicial o final y contexto del clip (cámara, transición, audio; efectivo incluso cámara fija y silencio) | GPT2-GEN | ídem |
 
 F10 «análisis de imagen a prompt» no es operación del contrato (schema L45–54) y no produce una imagen: no tiene caso
-propio. `vision-decomposer.md` sí entra por la transferencia de estilo (INV-002027), y con él `CONTRADICCIONES.md` §3
-(duda del §7). Todos los casos llevan F32 «sin texto».
+propio. `vision-decomposer.md` es de ese tipo («Image-to-Prompt Analysis», `:1–3`): de una imagen saca un prompt para
+recrearla sin adjuntarla, y su salida es una lista de palabras clave (`:61`, `:93`). La transferencia de estilo de K07
+es otra cosa: la imagen de estilo va adjunta al generador con su rol y la gobierna `gpt-image.md` Style Transfer. Por
+eso `CONTRADICCIONES.md` §3 no entra en esta prueba. Todos los casos llevan F32 «sin texto».
 
 ## 4. Casos: instancias del mapa
 
@@ -151,18 +153,9 @@ sube al repo al cerrar cada tarea.
 
 ## 7. Dudas que solo Eric puede resolver
 
-Las dos se necesitan antes de la tarea 9 y no detienen las tareas 2 a 8.
+Una. Se necesita antes de la tarea 9 y no detiene las tareas 2 a 8.
 
-**1.** `image/SKILL.md:63` (INV-002027) manda cargar `vision-decomposer.md` «whenever the user attaches an image and asks
-to recreate, match, decompose, or transfer its style». Aplica a K07 y a cualquier otro caso en que la tarea 4 lo
-marque. Ese archivo pide «solo keywords separadas por comas» (`:61`), contra los 5 slots de `gpt-image.md:7–15`; está
-registrado como pendiente de Eric en `v3/universo/CONTRADICCIONES.md` §3.
-
-Para GPT Image 2, ¿el resultado de vision-decomposer se reescribe a los 5 slots o se entrega como keywords?
-Recomendación: 5 slots, por `image/SKILL.md:46` («The model file is non-negotiable»), `:112` y DEC-000025 (los
-templates siguen la sintaxis del modelo). Vale para todos los casos.
-
-**2.** `armar.py` (obligatorio para K01 por CLAUDE.md) rechaza un prompt de más de 300 palabras (L84–85), y CLAUDE.md
+`armar.py` (obligatorio para K01 por CLAUDE.md) rechaza un prompt de más de 300 palabras (L84–85), y CLAUDE.md
 prohíbe entregar un prompt rechazado. La decisión 2 de `.claude/rules/DECISIONES.md` dice que el conteo de palabras
 nunca bloquea y que los prompts de 5 slots de GPT Image pasan; T-BRIEF-IMG L355 llama a 300 «techo editorial» y dice
 que la longitud nunca se resuelve suprimiendo reglas aplicables. Si K01, con todas sus reglas aplicables, no cabe en 300
