@@ -4,9 +4,11 @@
     python3 -I produccion/consultorio-libro-20261027/construir.py --probar   → casos que deben fallar
 
 Cada paso se instancia con `herramientas/template_engine.py` (SW30 §Motor de plantillas: T5 para la edición, T3 para
-cada inserción), se audita con `herramientas/audit_gi2.py` (SW30 §Verificación mecánica, 15 columnas) y pasa los
-controles de `verificar()`, que comprueban por código las reglas que el auditor no cubre. Los tres pasos salen de la
-regla crítica 1 de `produccion-visual-sw30/SKILL.md` («un sujeto por generación») y de la 7 («mundos por dos pasos»).
+la inserción del hombre, T4 para la de la mujer porque el cuadro queda con dos personas, RULES_MATRIX.md:13), se audita
+con `herramientas/audit_gi2.py` (SW30 §Verificación mecánica, 15 columnas) y pasa los controles de `verificar()`, que
+comprueban por código las reglas que el auditor no cubre. Los tres pasos salen de flujo-anclas.html:384 (2 personas sin
+contacto: placa → A → B), de la regla crítica 1 de `produccion-visual-sw30/SKILL.md` («un sujeto por generación», sin
+técnica de colocación probada para dos personas) y de la 7 («mundos por dos pasos»). Ver LECTURA_CORPUS.md.
 """
 import json
 import re
@@ -47,7 +49,7 @@ PASOS = {
                "where the book meets the marble; natural unretouched skin with visible pores; fine film grain."),
   notes="Paso 1 de 3: prepara el mundo antes de insertar personas (SW30 regla 7)."),
  "paso2": dict(
-  tipo="T3", refs=["Image 1: resultado aprobado del paso 1", "Image 2: primer plano del rostro del hombre (Image 1)",
+  tipo="T3", personas=1, refs=["Image 1: resultado aprobado del paso 1", "Image 2: primer plano del rostro del hombre (Image 1)",
                    "Image 3: placa aprobada de cuerpo entero del hombre (Image 2)"],
   jobs=1,
   scene=("Scene: Create a photograph in the office of Image 1, seen from the doctor's seat. Keep the world of Image "
@@ -73,7 +75,7 @@ PASOS = {
                "the open doorway stays empty."),
   notes="Paso 2 de 3: un sujeto por generación (SW30 regla 1)."),
  "paso3": dict(
-  tipo="T3", refs=["Image 1: resultado aprobado del paso 2", "Image 2: primer plano del rostro de la mujer (Image 3)",
+  tipo="T4", personas=2, refs=["Image 1: resultado aprobado del paso 2", "Image 2: primer plano del rostro de la mujer (Image 3)",
                    "Image 3: placa aprobada de cuerpo entero de la mujer (Image 4)"],
   jobs=1,
   scene=("Scene: Create a photograph in the office of Image 1, seen from the doctor's seat. Keep the world of Image "
@@ -86,16 +88,18 @@ PASOS = {
   anatomy=("Important Details: Her shoulders are as wide as the chair back and her head sits level with the bottom "
            "edge of the painting, so the whole desk lies between her and the camera; the desk top sits at the "
            "height of her elbows and her whole chest and upper arms rise above it. Frozen mid-reach: she leans "
-           "forward, her left arm extended across the desk, her hand halfway to the closed book with fingers "
-           "slightly open to take it, eyes on the book, a quiet closed-lip smile."),
+           "forward, her left arm extended across the desk, fingers slightly open to take the book, eyes on the "
+           "book, a quiet closed-lip smile."),
+  contact=("Her left hand stops halfway to the closed book and touches nothing; only the doctor's hand rests on "
+           "the book. The man and the woman do not touch."),
   idlock="Keep facial features exactly the same as Image 2.",  # characters.md:14
-  optics=("Five fingers on each hand; natural unretouched skin with visible pores; the knit texture of the polo; "
-          "deep focus, natural contrast, fine film grain."),
+  optics=("Five fingers on each hand; natural unretouched skin with visible pores; deep focus, natural contrast, "
+          "fine film grain."),
   usecase=("Use Case: editorial documentary photograph that looks like a real photo; key frame of a film in which "
            "a doctor closes a woman's book while a couple listens."),
-  constraints=("Constraints: her face clean and sharp, eyes clear; only the couple and the "
-               "doctor's hand in frame; the man, the book and the hand stay as they are in Image 1."),
-  notes="Paso 3 de 3: un sujeto por generación (SW30 regla 1)."),
+  constraints=("Constraints: her face clean and sharp, eyes clear; only the couple and the doctor's hand in "
+               "frame."),
+  notes="Paso 3 de 3: un sujeto por generación (SW30 regla 1); T4 porque el cuadro queda con dos personas."),
 }
 
 
@@ -103,8 +107,9 @@ def armar(d):
     if d["tipo"] == "T5":
         return build("T5", metadata=META, references=d["refs"], change=d["change"], preserve=d["preserve"],
                      constraints=d["constraints"], notes=d["notes"])
-    return build("T3", metadata=META, references=d["refs"], scene=d["scene"], subject=d["subject"],
-                 anatomy=block("anatomy", d["anatomy"]), idlock=block("idlock", d["idlock"]),
+    extra = {"contact": block("contact", d["contact"])} if d["tipo"] == "T4" else {}
+    return build(d["tipo"], metadata=META, references=d["refs"], scene=d["scene"], subject=d["subject"],
+                 anatomy=block("anatomy", d["anatomy"]), idlock=block("idlock", d["idlock"]), **extra,
                  optics=block("optics_deep", d["optics"]),
                  usecase=d["usecase"], constraints=d["constraints"], notes=d["notes"])
 
@@ -132,6 +137,8 @@ def verificar(nombre, d, p):
     usadas = {int(x) for t in re.findall(r"Images? (\d)(?: and (\d))?", txt) for x in t if x}
     if usadas and max(usadas) > len(d["refs"]):
         f.append(f"cita Image {max(usadas)} con {len(d['refs'])} referencias adjuntas (SW30 regla 4)")
+    if d.get("personas", 0) >= 2 and d["tipo"] != "T4":
+        f.append("cuadro con dos personas armado como " + d["tipo"] + "; debe ser T4 (RULES_MATRIX.md:13)")
     if not re.search(r"#[0-9A-Fa-f]{6}", txt) and d["tipo"] != "T5":
         f.append("colores nuevos sin hex (golden-rules.md, SKILL.md:50)")
     if d["tipo"] == "T5":
@@ -149,8 +156,8 @@ def verificar(nombre, d, p):
         if "create a photograph" not in low:
             f.append("falta el verbo dentro del slot Scene (golden-rules.md §1)")
     art = dict(p.to_dict(), audit_context={"max_prompt_words": TECHO_PALABRAS, "jobs": d["jobs"],
-                                           "identity_required": d["tipo"] == "T3", "hands_required": True,
-                                           "gaze_required": d["tipo"] == "T3", "colour_required": d["tipo"] == "T3"})
+                                           "identity_required": d["tipo"] != "T5", "hands_required": True,
+                                           "gaze_required": d["tipo"] != "T5", "colour_required": d["tipo"] != "T5"})
     cols = audit(art)
     f += [f"audit_gi2 {c.name}: {c.detail}" for c in cols if c.status == "FAIL"]
     return f, cols
@@ -190,9 +197,10 @@ def probar():
     casos = [("lote tal cual", None, None),
              ("palabra prohibida", ("paso2", "optics", "deep focus", "stunning deep focus"), "palabra prohibida: stunning"),
              ("posición vaga", ("paso3", "anatomy", "Frozen mid-reach", "In the centre, frozen mid-reach"), "posición vaga"),
+             ("dos personas como T3", ("paso3", "tipo", None, "T3"), "debe ser T4"),
              ("sin frase de inserción", ("paso2", "subject", "use only the person from Images 2 and 3, ignore their "
                                          "setting, and ", ""), "SW30 regla 7"),
-             ("imagen no adjunta", ("paso3", "constraints", "Image 1.", "Image 4."), "SW30 regla 4"),
+             ("imagen no adjunta", ("paso3", "scene", "office of Image 1,", "office of Image 4,"), "SW30 regla 4"),
              ("dos trabajos", ("paso2", "jobs", None, 2), "single_job"),
              ("sección obligatoria vacía", ("paso3", "usecase", None, ""), "missing required section"),
              ("edición con narrativa", ("paso1", "change", "Replace the open book", "Replace again the open book"),

@@ -51,11 +51,11 @@ Lo exigen dos reglas críticas de `produccion-visual-sw30/SKILL.md`:
 - la 1: «Un solo trabajo por generación. Con dos personajes: un sujeto por generación, o técnica de colocación probada»;
 - la 7: «Mundos por dos pasos: placa vacía primero».
 
-No hay técnica probada para meter a dos personas con referencias en una sola pasada de GPT Image 2. En `.claude/rules/research/09-grupo-ensamble.md` esa pregunta quedó «sin evidencia».
+Para dos personas sin contacto, el corpus manda «placa → A → B» (`flujos/flujo-anclas.html:384`, INV-000194; diagrama en :308–314). La única pasada única del corpus (EN.4, `flujo-anclas.html:402`) es para ensambles de 3 a 8 y se declara «inferencia hasta probarla», así que no es técnica de colocación probada para la regla 1. Detalle en `LECTURA_CORPUS.md`.
 
 1. **Paso 1 (edición):** sobre Image 7, el libro abierto pasa a ser el libro cerrado de Image 6, con la mano de la doctora de Image 5.
 2. **Paso 2:** el hombre (Image 1 y 2) sobre el resultado del paso 1.
-3. **Paso 3:** la mujer (Image 3 y 4) sobre el resultado del paso 2.
+3. **Paso 3:** la mujer (Image 3 y 4) sobre el resultado del paso 2. Es tipo T4, porque el cuadro queda con dos personas (`RULES_MATRIX.md:13`).
 
 ## Lo que se infirió o se cambió, porque el texto no lo decía o una regla lo exigía
 

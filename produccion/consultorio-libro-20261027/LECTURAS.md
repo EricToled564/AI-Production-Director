@@ -14,7 +14,7 @@ Todos los archivos leídos completos en este turno. Al lado de cada uno, la cons
 | `image/references/creative-direction.md` | Términos descriptivos y no números de diafragma (:55–56); se usa «deep focus». Materiales concretos (:78). |
 | `image/references/prompt-framework.md` | Micro-detalles de cinematic verbose (:208–219): se aplican poros y tejido (:213), sombra de contacto (:217) y el instante congelado (:219). El resto se hereda de Image 7. |
 | `image/references/patterns/portrait-cinema.md` | Ninguno de sus cinco patrones es esta escena; no se usa plantilla. |
-| `production-package/RULES_MATRIX.md` | Tipos: T5 para el paso 1, T3 para los pasos 2 y 3; secciones exigidas por tipo. |
+| `production-package/RULES_MATRIX.md` | Tipos: T5 para el paso 1, T3 para el paso 2 y T4 para el paso 3 (dos personas en cuadro, :13); secciones exigidas por tipo. |
 | `production-package/template_engine.py` | Motor: secciones, bloques nombrados y metadatos fuera del cuerpo. Su autoprueba da 6/6. |
 | `production-package/audit_gi2.py` | 15 columnas; identity_lock exige frase de identidad, lo que llevó a añadir el idlock. Su autoprueba pasa. |
 | `.claude/hooks/gate_image.py`, `gate_microgate.py` | Requisitos de la entrega: cabecera de tres líneas con un archivo .md real, verbo al inicio o línea OVERRIDE de R1, modelo nombrado. |
