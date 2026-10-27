@@ -15,11 +15,16 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 lote = sys.argv[1] if len(sys.argv) > 1 else "1"
 md = (AQUI / f"LOTE_{lote}.md").read_text(encoding="utf-8")
-ids = re.findall(r"^## ([KG]\d+)", md, re.M)
+ids = re.findall(r"^## ([KGE]\d+)", md, re.M)
 PLAN = {c["id"]: c for c in json.loads((AQUI.parent / "casos.json").read_text(encoding="utf-8"))["casos"]}
 # G1 y G2 son del mismo tipo que K01 (PLAN §4, tabla de entradas); su fila sale de construir_briefs_lote2.G_PLAN.
 for g, m in (("G1", "B"), ("G2", "C")):
     PLAN[g] = dict(PLAN["K01"], id=g, descripcion=f"rostro maestro T1 del miembro {m} de K12")
+# E5 y E6: entradas de K17 y K18; sus facetas son propuesta (construir_briefs_lote4.E_PLAN).
+for e_, desc_, caso_ in (("E5", "foto en blanco y negro de una persona", "K17"),
+                         ("E6", "foto antigua dañada de una persona", "K18")):
+    PLAN[e_] = dict(PLAN["K01"], id=e_, descripcion=desc_, F04="editorial",
+                    etiqueta=f"Propuesta del sistema ({e_} es entrada de {caso_}, no caso)")
 INTRO = {"1": "Cada caso se aprueba por su sha256. Lo que no viene de la lista de casos aprobada (26 §16) es propuesta "
               "del sistema: usted aprueba, cambia o quita. Personas, lugares y objetos son inventados, salvo los "
               "sujetos reales de K03, K04 y K07, que se verifican contra fotos reales.",
@@ -33,7 +38,12 @@ INTRO = {"1": "Cada caso se aprueba por su sha256. Lo que no viene de la lista d
               "no existe: se aprueba el contenido, que es el brief más la referencia prevista, por el «sha256 del "
               "contenido», y se aprueba de nuevo cuando exista (PLAN §5, tarea 3). K17, K18 y K21 van con el lote de "
               "sus entradas (E5, E6 y K30). Lo que no viene de la lista de casos aprobada (26 §16) es propuesta del "
-              "sistema: usted aprueba, cambia o quita."}
+              "sistema: usted aprueba, cambia o quita.",
+         "4": "E5 y E6 son entradas, no casos: génesis de persona con armar.py, que se aprueban por el sha256 del "
+              "brief; sus facetas son propuesta del sistema y su QA solo comprueba que sirven de entrada. K17 y K18 "
+              "editan E5 y E6; K26 transfiere el estilo de K02 al vaso de K05. Esas tres usan imágenes que aún no "
+              "existen: se aprueba el contenido por el «sha256 del contenido» y se aprueba de nuevo cuando existan "
+              "(PLAN §5, tarea 3). Las personas son inventadas."}
 ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima": "Clima", "planos": "Planos",
        "plano": "Plano", "angulo": "Ángulo", "altura": "Altura de cámara", "efecto_optico": "Efecto óptico",
        "lente_intencion": "Lente", "fuente": "Fuente", "direccion": "Dirección", "dureza": "Dureza",
@@ -43,7 +53,8 @@ ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima"
        "detalles": "Detalles", "literales": "Texto literal", "tipografia": "Tipografía", "tipo": "Tipo",
        "estado_visible": "Estado visible", "evidencia_fisica": "Evidencia física", "regimen": "Régimen",
        "postura": "Postura", "invariantes": "Invariantes", "referencias": "Referencias", "relaciones": "Relaciones",
-       "contactos": "Contactos", "cambio": "Cambio (uno solo)", "preservar": "Se preserva"}
+       "contactos": "Contactos", "cambio": "Cambio (uno solo)", "preservar": "Se preserva",
+       "propiedades": "Propiedades que se transfieren"}
 
 
 def e(v):
@@ -73,7 +84,7 @@ for kid in ids:
     digest = hashlib.sha256(json.dumps(objeto, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     facetas = " · ".join(f"<b>{f}</b> {e(p[f])}" for f in ("F10", "F15", "F32", "F04", "F11", "F13", "F14") if p[f])
     s = [f"<section><h2>{kid} · {e(p['descripcion'] or p['F10'])}</h2>", f"<p class='brief'>{e(c['brief_literal'])}</p>",
-         f"<p class='fac'>{'Mismo tipo que K01 (PLAN §4, tabla de entradas)' if kid.startswith('G') else 'Lista aprobada (26 §16)'}: {facetas}</p>",
+         f"<p class='fac'>{p.get('etiqueta') or ('Mismo tipo que K01 (PLAN §4, tabla de entradas)' if kid.startswith('G') else 'Lista aprobada (26 §16)')}: {facetas}</p>",
          "<table>",
          f"<tr><th>Formato</th><td>{e(en['formato']['ratio'])} · referencia {en['formato']['ancho_px']}x"
          f"{en['formato']['alto_px']} · quality {e(p['quality'])}</td></tr>",
@@ -86,7 +97,7 @@ for kid in ids:
         if k in en:
             s.append(f"<h4>{t}</h4><table>{filas(en[k])}</table>")
     for k, t in (("edicion", "Edición"), ("accion", "Acción"), ("fisica", "Física"), ("rostro", "Rostro"), ("texto_marca", "Texto en la imagen"),
-                 ("identidad", "Identidad"), ("blocking", "Posiciones y miradas")):
+                 ("identidad", "Identidad"), ("blocking", "Posiciones y miradas"), ("transferencia", "Transferencia de estilo")):
         if k in en:
             s.append(f"<h4>{t}</h4><table>{filas(en[k])}</table>")
     if "composicion" in en:

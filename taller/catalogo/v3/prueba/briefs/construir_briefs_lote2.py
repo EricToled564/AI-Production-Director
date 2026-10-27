@@ -26,6 +26,7 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 import construir_briefs as cb  # noqa: E402
+import verificar_templates as vt  # noqa: E402  (cb ya puso su carpeta en sys.path)
 
 G_PLAN = {g: dict(cb.PLAN["K01"], id=g, descripcion=f"rostro maestro T1 del miembro {m} de K12")
           for g, m in (("G1", "B"), ("G2", "C"))}
@@ -289,18 +290,26 @@ CABECERA_2 = ["# Lote 2 de briefs: G1, G2 y composición K10–K13 (tarea 3)", "
               "(PLAN §5, tarea 3). Todo lo que no viene de la lista de casos aprobada es propuesta del sistema.", ""]
 
 
-def construir(n, lote, cabecera):
+def construir(n, lote, cabecera, planes=None):
     """Escribe los archivos de cada caso del lote y `LOTE_<n>.md`, corre los controles y sale con código 1 si fallan."""
     fallas, aprobados = [], []
     md = list(cabecera)
     for kid, d in lote.items():
-        p = G_PLAN.get(kid) or cb.PLAN[kid]
+        p = (planes or {}).get(kid) or G_PLAN.get(kid) or cb.PLAN[kid]
         d = dict(d)
         refs = d.pop("referencias", None)
         if refs:
             d["requisitos"] = [dict(PENDIENTE_REF, motivo=d["motivo_ref"]) if "motivo_ref" in d else PENDIENTE_REF]
         x = cb.contrato(kid, d, p)
         errs = cb.validate_instance(x, "brief")
+        # verificar_templates.py:32 solo rechaza '' y None: una lista vacía en un campo exigido pasa. Se rechaza aquí.
+        contrato_op = next(o for o in vt.C["operation_contracts"] if o["operacion"] == x["entrada"]["operacion"])
+        for ruta in contrato_op["required_fields"]:
+            try:
+                if vt.get(x, ruta) == []:
+                    errs.append(f"Lista vacía en campo exigido: {ruta}")
+            except (KeyError, TypeError):
+                pass
         if refs:
             faltan = ESPERADOS_CONTRATO - set(errs)
             errs = [e for e in errs if e not in ESPERADOS_CONTRATO]
@@ -357,7 +366,7 @@ def construir(n, lote, cabecera):
                 fallas.append(f"{kid} armar.py: {r.stdout.strip()}")
         e = x["entrada"]
         md += [f"## {kid} · {p['descripcion'] or p['F10']}", "", d["brief"], "",
-               f"- Facetas ({'mismo tipo que K01, PLAN §4' if kid.startswith('G') else 'lista aprobada'}): F10 {p['F10']} · F15 {p['F15']} · F32 {p['F32']} · F04 {p['F04']}"
+               f"- Facetas ({p.get('etiqueta_facetas') or ('mismo tipo que K01, PLAN §4' if kid.startswith('G') else 'lista aprobada')}): F10 {p['F10']} · F15 {p['F15']} · F32 {p['F32']} · F04 {p['F04']}"
                + "".join(f" · {f} {p[f]}" for f in ("F11", "F13", "F14") if p[f]),
                f"- Formato: {d['ratio']} · tamaño de referencia {d['px'][0]}x{d['px'][1]} · quality {p['quality']}",
                "- Propuesto por el sistema (inferencia para aprobación): " + "; ".join(

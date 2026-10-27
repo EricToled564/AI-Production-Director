@@ -237,7 +237,7 @@ def contrato(kid, d, p=None):
             e[k] = d[k]
     if "sujetos" in d:
         e["sujetos"] = {"cantidad": len(d["sujetos"]), "items": d["sujetos"]}
-    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking", "edicion"):
+    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking", "edicion", "transferencia"):
         if k in d:
             e[k] = d[k]
     if "accion" in d:
@@ -259,6 +259,9 @@ def contrato(kid, d, p=None):
     proc = []
     lista = {"entrada.operacion", "entrada.pieza.tipo", "entrada.selecciones_taxonomicas", "entrada.modelo.nombre",
              "entrada.modelo.version", "entrada.modelo.interfaz", "entrada.idioma_prompt", "entrada.modulos_activos"}
+
+    if not d.get("lista_aprobada", True):  # entradas E: sus facetas no están en la lista aprobada (PLAN §4)
+        lista = {"entrada.modelo.nombre", "entrada.modelo.version", "entrada.modelo.interfaz", "entrada.idioma_prompt"}
 
     def add(path, val):
         heredado = path in lista
@@ -283,7 +286,7 @@ def contrato(kid, d, p=None):
         planas[f"entrada.luz.{k}"] = v
     for k, v in d.get("edicion", {}).items():
         planas[f"entrada.edicion.{k}"] = v
-    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking"):
+    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking", "transferencia"):
         if k in d:
             planas[f"entrada.{k}"] = d[k]
     if "accion" in d:
@@ -304,9 +307,10 @@ def caso_catalogo(kid, d, x, p=None):
         if not v:
             continue
         ids = opcion(f, v)
-        campos.append({"path": FACETA_RUTA[f], "valor": v, "origen": "USUARIO", "option_ids": ids,
-                       "evidencia": FUENTE_LISTA if ids else FUENTE_LISTA + "; valor de extensión aprobada sin id en el "
-                       "catálogo (DECISIONES_ERIC_20261023 §4)", "confirmado": False})
+        fuente = d.get("fuente_facetas", FUENTE_LISTA)
+        campos.append({"path": FACETA_RUTA[f], "valor": v, "origen": d.get("origen_facetas", "USUARIO"),
+                       "option_ids": ids, "evidencia": fuente if ids else fuente + "; valor de extensión aprobada sin "
+                       "id en el catálogo (DECISIONES_ERIC_20261023 §4)", "confirmado": False})
     for path in ("entrada.escena", "entrada.camara", "entrada.luz", "entrada.sujetos", "entrada.edicion",
                  "entrada.texto_marca", "entrada.formato.ratio"):
         if path.split(".")[1] not in x["entrada"] or (path == "entrada.texto_marca" and "edicion" not in x["entrada"]):
