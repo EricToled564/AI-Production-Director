@@ -27,7 +27,13 @@ INTRO = {"1": "Cada caso se aprueba por su sha256. Lo que no viene de la lista d
               "todavía no existen (K01, K02, G1, G2): se aprueba su contenido, que es el brief más las referencias "
               "previstas, por el «sha256 del contenido». Cuando exista cada imagen se escribe su sha256 y se aprueba "
               "de nuevo (PLAN §5, tarea 3). Lo que no viene de la lista de casos aprobada (26 §16) es propuesta del "
-              "sistema: usted aprueba, cambia o quita. Las personas son inventadas."}
+              "sistema: usted aprueba, cambia o quita. Las personas son inventadas.",
+         "3": "Cada edición cambia una sola cosa de una imagen ya aprobada en los lotes 1 y 2 y lista lo que se "
+              "preserva; no redefine la toma (escena, cámara y luz vienen de la imagen). La imagen a editar todavía "
+              "no existe: se aprueba el contenido, que es el brief más la referencia prevista, por el «sha256 del "
+              "contenido», y se aprueba de nuevo cuando exista (PLAN §5, tarea 3). K17, K18 y K21 van con el lote de "
+              "sus entradas (E5, E6 y K30). Lo que no viene de la lista de casos aprobada (26 §16) es propuesta del "
+              "sistema: usted aprueba, cambia o quita."}
 ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima": "Clima", "planos": "Planos",
        "plano": "Plano", "angulo": "Ángulo", "altura": "Altura de cámara", "efecto_optico": "Efecto óptico",
        "lente_intencion": "Lente", "fuente": "Fuente", "direccion": "Dirección", "dureza": "Dureza",
@@ -37,7 +43,7 @@ ETQ = {"espacio": "Espacio", "entorno": "Entorno", "momento": "Momento", "clima"
        "detalles": "Detalles", "literales": "Texto literal", "tipografia": "Tipografía", "tipo": "Tipo",
        "estado_visible": "Estado visible", "evidencia_fisica": "Evidencia física", "regimen": "Régimen",
        "postura": "Postura", "invariantes": "Invariantes", "referencias": "Referencias", "relaciones": "Relaciones",
-       "contactos": "Contactos"}
+       "contactos": "Contactos", "cambio": "Cambio (uno solo)", "preservar": "Se preserva"}
 
 
 def e(v):
@@ -66,20 +72,20 @@ for kid in ids:
     objeto = {"entrada": en, "referencias_previstas": refs} if refs else en
     digest = hashlib.sha256(json.dumps(objeto, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     facetas = " · ".join(f"<b>{f}</b> {e(p[f])}" for f in ("F10", "F15", "F32", "F04", "F11", "F13", "F14") if p[f])
-    s = [f"<section><h2>{kid} · {e(p['descripcion'])}</h2>", f"<p class='brief'>{e(c['brief_literal'])}</p>",
+    s = [f"<section><h2>{kid} · {e(p['descripcion'] or p['F10'])}</h2>", f"<p class='brief'>{e(c['brief_literal'])}</p>",
          f"<p class='fac'>{'Mismo tipo que K01 (PLAN §4, tabla de entradas)' if kid.startswith('G') else 'Lista aprobada (26 §16)'}: {facetas}</p>",
          "<table>",
          f"<tr><th>Formato</th><td>{e(en['formato']['ratio'])} · referencia {en['formato']['ancho_px']}x"
          f"{en['formato']['alto_px']} · quality {e(p['quality'])}</td></tr>",
          f"<tr><th>Pieza</th><td>{valor(en['pieza'])}</td></tr></table>",
          "<h3>Propuesto por el sistema, para su aprobación</h3>"]
-    if en["sujetos"]["items"]:
+    if en.get("sujetos", {}).get("items"):
         for it in en["sujetos"]["items"]:
             s.append(f"<h4>Sujeto: {e(it['id'])}</h4><table>{filas(it)}</table>")
-    s.append(f"<h4>Escena</h4><table>{filas(en['escena'])}</table>")
-    s.append(f"<h4>Cámara</h4><table>{filas(en['camara'])}</table>")
-    s.append(f"<h4>Luz</h4><table>{filas(en['luz'])}</table>")
-    for k, t in (("accion", "Acción"), ("fisica", "Física"), ("rostro", "Rostro"), ("texto_marca", "Texto en la imagen"),
+    for k, t in (("escena", "Escena"), ("camara", "Cámara"), ("luz", "Luz")):
+        if k in en:
+            s.append(f"<h4>{t}</h4><table>{filas(en[k])}</table>")
+    for k, t in (("edicion", "Edición"), ("accion", "Acción"), ("fisica", "Física"), ("rostro", "Rostro"), ("texto_marca", "Texto en la imagen"),
                  ("identidad", "Identidad"), ("blocking", "Posiciones y miradas")):
         if k in en:
             s.append(f"<h4>{t}</h4><table>{filas(en[k])}</table>")
@@ -89,9 +95,11 @@ for kid in ids:
         s.append("<h4>Referencias previstas (la imagen aún no existe)</h4><table>" + "".join(
             f"<tr><th>Image {r['indice']}: {e(r['entrada'])}</th><td><b>Rol:</b> {e(r['rol'])}<br><b>Preservar:</b> "
             f"{valor(r['preservar'])}</td></tr>" for r in refs) + "</table>")
-    s.append(f"<h4>Estilo y restricciones</h4><table><tr><th>Estilo</th><td>{valor(en['estilo'])}</td></tr>"
-             f"<tr><th>Restricciones</th><td>{valor(en['restricciones'])}</td></tr>"
-             f"<tr><th>Módulos activos</th><td>{valor(en['modulos_activos'])}</td></tr></table>")
+    s.append("<h4>Estilo y restricciones</h4><table>"
+             + (f"<tr><th>Estilo</th><td>{valor(en['estilo'])}</td></tr>" if "estilo" in en else "")
+             + f"<tr><th>Restricciones</th><td>{valor(en['restricciones'])}</td></tr>"
+             f"<tr><th>Módulos activos</th><td>{valor(en['modulos_activos']) or 'ninguno (la edición conserva la toma)'}"
+             "</td></tr></table>")
     s.append(f"<p class='sha'>{'sha256 del contenido' if refs else 'sha256 del brief'}: <code>{digest}</code></p></section>")
     partes.append("\n".join(s))
 

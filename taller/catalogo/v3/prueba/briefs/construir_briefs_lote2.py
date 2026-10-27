@@ -281,19 +281,24 @@ def contenido_sha(entrada, refs):
                                      sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
-def main():
+CABECERA_2 = ["# Lote 2 de briefs: G1, G2 y composición K10–K13 (tarea 3)", "",
+              "G1 y G2 se aprueban por el sha256 del brief, como el lote 1. K10–K13 llevan referencias a imágenes que "
+              "aún",
+              "no existen: se aprueba su contenido (la entrada sin `referencias` más las referencias previstas) por el",
+              "«sha256 del contenido». Cuando exista cada imagen de entrada se escribe su sha256 y se aprueba de nuevo",
+              "(PLAN §5, tarea 3). Todo lo que no viene de la lista de casos aprobada es propuesta del sistema.", ""]
+
+
+def construir(n, lote, cabecera):
+    """Escribe los archivos de cada caso del lote y `LOTE_<n>.md`, corre los controles y sale con código 1 si fallan."""
     fallas, aprobados = [], []
-    md = ["# Lote 2 de briefs: G1, G2 y composición K10–K13 (tarea 3)", "",
-          "G1 y G2 se aprueban por el sha256 del brief, como el lote 1. K10–K13 llevan referencias a imágenes que aún",
-          "no existen: se aprueba su contenido (la entrada sin `referencias` más las referencias previstas) por el",
-          "«sha256 del contenido». Cuando exista cada imagen de entrada se escribe su sha256 y se aprueba de nuevo",
-          "(PLAN §5, tarea 3). Todo lo que no viene de la lista de casos aprobada es propuesta del sistema.", ""]
-    for kid, d in LOTE_2.items():
+    md = list(cabecera)
+    for kid, d in lote.items():
         p = G_PLAN.get(kid) or cb.PLAN[kid]
         d = dict(d)
         refs = d.pop("referencias", None)
         if refs:
-            d["requisitos"] = [PENDIENTE_REF]
+            d["requisitos"] = [dict(PENDIENTE_REF, motivo=d["motivo_ref"]) if "motivo_ref" in d else PENDIENTE_REF]
         x = cb.contrato(kid, d, p)
         errs = cb.validate_instance(x, "brief")
         if refs:
@@ -351,15 +356,16 @@ def main():
             if r.returncode != 0:
                 fallas.append(f"{kid} armar.py: {r.stdout.strip()}")
         e = x["entrada"]
-        md += [f"## {kid} · {p['descripcion']}", "", d["brief"], "",
+        md += [f"## {kid} · {p['descripcion'] or p['F10']}", "", d["brief"], "",
                f"- Facetas ({'mismo tipo que K01, PLAN §4' if kid.startswith('G') else 'lista aprobada'}): F10 {p['F10']} · F15 {p['F15']} · F32 {p['F32']} · F04 {p['F04']}"
                + "".join(f" · {f} {p[f]}" for f in ("F11", "F13", "F14") if p[f]),
                f"- Formato: {d['ratio']} · tamaño de referencia {d['px'][0]}x{d['px'][1]} · quality {p['quality']}",
-               f"- Propuesto por el sistema (inferencia para aprobación): escena {json.dumps(e['escena'], ensure_ascii=False)}; "
-               f"cámara {json.dumps(e['camara'], ensure_ascii=False)}; luz {json.dumps(e['luz'], ensure_ascii=False)}; "
-               f"sujetos {json.dumps(e['sujetos']['items'], ensure_ascii=False)}"
-               + "".join(f"; {k} {json.dumps(e[k], ensure_ascii=False)}"
-                         for k in ("accion", "rostro", "identidad", "blocking", "composicion") if k in e),
+               "- Propuesto por el sistema (inferencia para aprobación): " + "; ".join(
+                   [f"{t} {json.dumps(e[k], ensure_ascii=False)}" for k, t in (("escena", "escena"), ("camara", "cámara"),
+                                                                              ("luz", "luz")) if k in e]
+                   + ([f"sujetos {json.dumps(e['sujetos']['items'], ensure_ascii=False)}"] if "sujetos" in e else [])
+                   + [f"{k} {json.dumps(e[k], ensure_ascii=False)}" for k in
+                      ("accion", "rostro", "identidad", "blocking", "composicion", "edicion", "texto_marca") if k in e]),
                f"- Restricciones: {'; '.join(d['restricciones'])}",
                f"- Módulos activos: {', '.join(e['modulos_activos'])}"]
         if refs:
@@ -368,12 +374,12 @@ def main():
             md += [f"- **sha256 del contenido (referencias pendientes):** `{digest}`", ""]
         else:
             md += [f"- **sha256 del brief:** `{digest}`", ""]
-    (AQUI / "LOTE_2.md").write_text("\n".join(md), encoding="utf-8")
+    (AQUI / f"LOTE_{n}.md").write_text("\n".join(md), encoding="utf-8")
     for f in fallas:
         print("  FALLA", f)
-    print(f"lote 2: {len(LOTE_2)} casos · aprobados {len(aprobados)} · " + ("OK" if not fallas else f"{len(fallas)} fallas"))
+    print(f"lote {n}: {len(lote)} casos · aprobados {len(aprobados)} · " + ("OK" if not fallas else f"{len(fallas)} fallas"))
     sys.exit(1 if fallas else 0)
 
 
 if __name__ == "__main__":
-    main()
+    construir(2, LOTE_2, CABECERA_2)

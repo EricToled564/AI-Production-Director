@@ -226,11 +226,18 @@ def contrato(kid, d, p=None):
     e = {"ruta": {"flujo": "FL04", "paso": d.get("paso", "E5.2 génesis")}, "operacion": p["operacion"],
          "modelo": dict(MODELO),
          "pieza": dict(zip(("tipo", "objetivo", "uso"), d["pieza"])),
-         "formato": {"ratio": d["ratio"], "ancho_px": d["px"][0], "alto_px": d["px"][1]}, "idioma_prompt": "en",
-         "escena": d["escena"], "camara": d["camara"], "luz": d["luz"], "restricciones": d["restricciones"],
-         "estilo": d["estilo"], "representacion": d["representacion"],
-         "sujetos": {"cantidad": len(d["sujetos"]), "items": d["sujetos"]}}
-    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking"):
+         "formato": {"ratio": d["ratio"], "ancho_px": d["px"][0], "alto_px": d["px"][1]}, "idioma_prompt": "en"}
+    # Una edición que conserva la toma no redefine escena, cámara ni luz (PLAN §3, módulos condicionales).
+    for k in ("escena", "camara", "luz"):
+        if k in d:
+            e[k] = d[k]
+    e["restricciones"] = d["restricciones"]
+    for k in ("estilo", "representacion"):
+        if k in d:
+            e[k] = d[k]
+    if "sujetos" in d:
+        e["sujetos"] = {"cantidad": len(d["sujetos"]), "items": d["sujetos"]}
+    for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking", "edicion"):
         if k in d:
             e[k] = d[k]
     if "accion" in d:
@@ -239,12 +246,15 @@ def contrato(kid, d, p=None):
     sel = [f"F10: {p['F10']}", f"F15: {p['F15']}", f"F32: {p['F32']}", f"F04: {p['F04']}", "F29: GPT Image 2",
            "F18: fotorrealista"]
     sel += [f"{f}: {p[f]}" for f in ("F11", "F13", "F14") if p[f]]
-    sel += [f"F16: {d['escena']['espacio']}"]
-    sel += [f"F24: {v}" for v in d.get("f24", [d["camara"]["plano"]])]
-    sel += [f"F25: {v}" for v in d.get("f25", [d["camara"]["angulo"]])]
-    sel += [f"F17: {v}" for v in d["estilo"]]
+    if "escena" in d:
+        sel += [f"F16: {d['escena']['espacio']}"]
+    if "camara" in d:
+        sel += [f"F24: {v}" for v in d.get("f24", [d["camara"]["plano"]])]
+        sel += [f"F25: {v}" for v in d.get("f25", [d["camara"]["angulo"]])]
+    sel += [f"F17: {v}" for v in d.get("estilo", [])]
     e["selecciones_taxonomicas"] = sel
-    modulos = ["fotografia"] + (["sujetos_visibles"] if d["sujetos"] else []) + (["accion_fisica"] if "accion" in d else [])
+    modulos = (["fotografia"] if "camara" in d else []) + (["sujetos_visibles"] if d.get("sujetos") else []) \
+        + (["accion_fisica"] if "accion" in d else [])
     e["modulos_activos"] = modulos
     proc = []
     lista = {"entrada.operacion", "entrada.pieza.tipo", "entrada.selecciones_taxonomicas", "entrada.modelo.nombre",
@@ -262,13 +272,17 @@ def contrato(kid, d, p=None):
               "entrada.pieza.uso": e["pieza"]["uso"], "entrada.formato.ratio": d["ratio"],
               "entrada.formato.ancho_px": d["px"][0], "entrada.formato.alto_px": d["px"][1],
               "entrada.idioma_prompt": "en", "entrada.restricciones": d["restricciones"],
-              "entrada.selecciones_taxonomicas": sel, "entrada.sujetos": e["sujetos"], "entrada.escena": d["escena"],
-              "entrada.estilo": d["estilo"], "entrada.representacion": d["representacion"],
-              "entrada.modulos_activos": modulos}
-    for k, v in d["camara"].items():
+              "entrada.selecciones_taxonomicas": sel}
+    for k in ("sujetos", "escena", "estilo", "representacion"):
+        if k in e:
+            planas[f"entrada.{k}"] = e[k]
+    planas["entrada.modulos_activos"] = modulos
+    for k, v in d.get("camara", {}).items():
         planas[f"entrada.camara.{k}"] = v
-    for k, v in d["luz"].items():
+    for k, v in d.get("luz", {}).items():
         planas[f"entrada.luz.{k}"] = v
+    for k, v in d.get("edicion", {}).items():
+        planas[f"entrada.edicion.{k}"] = v
     for k in ("rostro", "texto_marca", "identidad", "composicion", "blocking"):
         if k in d:
             planas[f"entrada.{k}"] = d[k]
@@ -277,7 +291,8 @@ def contrato(kid, d, p=None):
         planas["entrada.fisica.regimen"] = d["fisica"]
     for path, val in planas.items():
         add(path, val)
-    return {"contrato_id": f"{kid}:{d.get('plantilla_id', 'T-GENESIS')}+GPT2-GEN", "version": "20261019", "entrada": e,
+    return {"contrato_id": f"{kid}:{d.get('plantilla_id', 'T-GENESIS')}+{d.get('adaptador', 'GPT2-GEN')}",
+            "version": "20261019", "entrada": e,
             "procedencia_campos": proc}
 
 
@@ -292,14 +307,18 @@ def caso_catalogo(kid, d, x, p=None):
         campos.append({"path": FACETA_RUTA[f], "valor": v, "origen": "USUARIO", "option_ids": ids,
                        "evidencia": FUENTE_LISTA if ids else FUENTE_LISTA + "; valor de extensión aprobada sin id en el "
                        "catálogo (DECISIONES_ERIC_20261023 §4)", "confirmado": False})
-    for path in ("entrada.escena", "entrada.camara", "entrada.luz", "entrada.sujetos", "entrada.formato.ratio"):
+    for path in ("entrada.escena", "entrada.camara", "entrada.luz", "entrada.sujetos", "entrada.edicion",
+                 "entrada.texto_marca", "entrada.formato.ratio"):
+        if path.split(".")[1] not in x["entrada"] or (path == "entrada.texto_marca" and "edicion" not in x["entrada"]):
+            continue
         node = x["entrada"]
         for part in path.split(".")[1:]:
             node = node[part]
         campos.append({"path": path, "valor": node, "origen": "INFERENCIA_PROPUESTA", "option_ids": [],
                        "evidencia": FUENTE_PROPUESTA.format(kid), "confirmado": False})
-    req = [{"path": r, "motivo": "campo exigido por T-GENESIS o el módulo fotografía", "resuelto": True}
-           for r in ("entrada.sujetos", "entrada.escena", "entrada.camara.plano", "entrada.luz.fuente")]
+    req = [{"path": r, "motivo": d.get("motivo_requisitos", "campo exigido por T-GENESIS o el módulo fotografía"),
+            "resuelto": True} for r in d.get("requisitos_base", ("entrada.sujetos", "entrada.escena",
+                                                                 "entrada.camara.plano", "entrada.luz.fuente"))]
     req += d.get("requisitos", [])
     return {"case_id": kid, "taxonomy_sha256": SHA_TAX, "brief_literal": d["brief"], "campos": campos,
             "requisitos_de_completitud": req, "aprobacion": {"aprobado": False, "evidencia": ""}}
