@@ -47,3 +47,7 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     mala hacemos por lo menos dos más antes de auditar». Coincide con INV-010355 («Budget 2–3 re-rolls») e INV-010387.
     INV-000591 («máximo dos intentos por método») rige los bucles de corrección del flujo (editar, cambio de método,
     replantear; INV-000584–000588), no la repetición del mismo prompt para diagnosticar.
+11. **Longitud del prompt** (2026-10-27): ya estaba decidida (`.claude/rules/DECISIONES.md` decisión 2; T-BRIEF-IMG L355).
+    La longitud que mencionan las reglas no bloquea: es una referencia aspiracional. Se espera que el prompt sea lo más
+    corto posible, sin repeticiones ni ninguna otra ineficiencia del lenguaje, pero sin sacrificar la sintaxis que exigen
+    los textos del modelo. Vale también para `armar.py`: su rechazo por más de 300 palabras (L84–85) pasa a aviso.

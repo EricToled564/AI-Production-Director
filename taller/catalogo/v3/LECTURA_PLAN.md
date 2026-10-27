@@ -76,8 +76,8 @@ campo por campo con volcado completo, o regenerado byte a byte desde fuentes ya 
 - `.claude/hooks/rule_answer_check.py` (cobertura; ids de 12 hex y APLICA/NO APLICA: hay que adaptarlo).
 - `produccion/template-retrato-gpt2/armar.py` (104 l) y `LEEME.md`: obligatorio para retrato de una persona sin
   referencias (CLAUDE.md). Releído completo el 2026-10-27 contra la adenda: los bloques T1 de ADD-0006 caben en sus
-  campos (luz, microdetalle, uso, restriccion_extra); rechaza más de 300 palabras (L84–85), contra la decisión 2 y
-  T-BRIEF-IMG L355: duda del plan.
+  campos (luz, microdetalle, uso, restriccion_extra); rechaza más de 300 palabras (L84–85); por la decisión 26 §11
+  ese rechazo pasa a aviso en la tarea 9.
 - `v3/rag/*.py`: índice BM25 de búsqueda; no acredita cobertura (taxonomía §7.4).
 - `v3/fuentes/PROCEDENCIA.md` y `documentos/PROCEDENCIA.md`: taxonomías del 2026-09-13 y 2026-09-28 son anteriores a
   la entrada autorizada (PILOTO §3); no gobiernan.

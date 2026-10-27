@@ -22,7 +22,7 @@ cambia. Lo leído para escribir este plan está en `LECTURA_PLAN.md` y `LECTURA_
 | Formato escrito en el texto (Scene nombra el ratio); tamaño y quality como referencia; sin máscara | decisión 26 §8 |
 | Model, Quality, Size, References y Notes van fuera del cuerpo del prompt. El ratio va además dentro de Scene: la app no expone parámetros (26 §8), y ADD-0042 pide el parámetro solo «when the platform exposes them»; en ese punto 26 §8 manda sobre ADD-0011 | ADD-0004, ADD-0010, ADD-0011, ADD-0042; decisión 26 §8 |
 | Ninguna atribución a terceros en material al cliente | DEC-000024 |
-| Longitud: objetivo alrededor de 250 palabras; aviso si el prompt o un slot pasa de 300; la longitud nunca se resuelve suprimiendo reglas aplicables. En K01, `armar.py` rechaza más de 300 (L84–85): duda del §7 | ADD-0008; T-BRIEF-IMG L355; DECISIONES.md decisión 2; CLAUDE.md |
+| Longitud: referencia aspiracional, nunca bloquea. El prompt es lo más corto posible, sin repeticiones ni otra ineficiencia del lenguaje, sin sacrificar la sintaxis que exigen los textos del modelo; aviso si el prompt o un slot pasa de 300. En `armar.py` el rechazo por más de 300 (L84–85) pasa a aviso (tarea 9) | decisión 26 §11; DECISIONES.md decisión 2; T-BRIEF-IMG L355; ADD-0008 |
 | Aceptar una imagen solo después de su QA, con los controles mecánicos separados de los visuales | ADD-0047 |
 | Un chat nuevo por prompt y las referencias adjuntas en cada uno: el generador no conserva estado | INV-012218; cierra `CONTRADICCIONES.md` §4 |
 | Brief aprobado por Eric ligado a su sha256; cualquier cambio invalida la aprobación | T-BRIEF-IMG L13–15; schema L1333–1352; PILOTO §5 |
@@ -108,7 +108,8 @@ sube al repo al cerrar cada tarea.
    las tres clases, con la traza de consulta (caso, valores evaluados, descartes por aplicación, motivo). Antes de usarlo,
    pruebas unitarias por operador, por grupo y por excepción. Control: frente a la lista congelada, 0 faltantes y 0
    sobrantes; cada diferencia se resuelve releyendo el texto fuente y se registra qué se corrigió.
-9. **Redacción y traza (pregunta b).** K01 con `armar.py` (CLAUDE.md); su traza enlaza cada aplicación con el campo
+9. **Redacción y traza (pregunta b).** K01 con `armar.py` (CLAUDE.md), con su control de más de 300 palabras pasado de rechazo a aviso (decisión 26
+   §11); su traza enlaza cada aplicación con el campo
    del brief de `armar.py` que la lleva o con el texto fijo del programa que la cubre. Los demás con `armar_contrato.py`, que escribe
    la salida del contrato: GPT2-GEN o GPT2-EDIT, roles de referencia dentro de su slot, Scene con el ratio, prompt en
    inglés. Cada aplicación seleccionada se enlaza con los 12 campos del `binding_contract` (CONTRATOS L671–687), con su
@@ -153,14 +154,6 @@ sube al repo al cerrar cada tarea.
 
 ## 7. Dudas que solo Eric puede resolver
 
-Una. Se necesita antes de la tarea 9 y no detiene las tareas 2 a 8.
-
-`armar.py` (obligatorio para K01 por CLAUDE.md) rechaza un prompt de más de 300 palabras (L84–85), y CLAUDE.md
-prohíbe entregar un prompt rechazado. La decisión 2 de `.claude/rules/DECISIONES.md` dice que el conteo de palabras
-nunca bloquea y que los prompts de 5 slots de GPT Image pasan; T-BRIEF-IMG L355 llama a 300 «techo editorial» y dice
-que la longitud nunca se resuelve suprimiendo reglas aplicables. Si K01, con todas sus reglas aplicables, no cabe en 300
-palabras, ¿el exceso de `armar.py` pasa a aviso o se mantiene el rechazo? Recomendación: aviso solo cuando no se pueda
-acortar la redacción sin perder una regla aplicable, por L355 y la decisión 2. La respuesta vale para K01 y para
-cualquier otro retrato de una persona sin referencias.
+Ninguna.
 
 Eric aprueba los briefs (tarea 3) y revisa la muestra (tarea 5): son pasos del método, no dudas.
