@@ -22,6 +22,23 @@ valor, y F11, F13, F14 y F04 cubiertos dentro de esos mismos casos, cada valor a
 Pregunta aparte de F04: identidad de marca, infografía, diapositiva, diseño de personaje y concept art suelen no ser
 fotográficos. ¿Quedan fuera como las técnicas no fotográficas?
 
+Eric (2026-10-27): «no lo sé, dame una recomendación». Recomendación detallada, con las definiciones de la taxonomía
+00688 L486–503 y L525–591:
+
+- **Un caso por valor:** F10 (cada modo, con los 8 hijos de edición y la descripción de imagen), F15 (persona, lugar,
+  edificación, animal, producto, objeto, planta) y F32 (sin texto, texto corto, texto extenso o pequeño). Son las tres
+  facetas que cambian la técnica del prompt: otro adaptador u otra operación (F10), otra génesis por clase de sujeto
+  (INV-000539, 000593), otro tratamiento del texto (`gpt-image.md:67–74`).
+- **Cubiertas dentro de esos casos, cada valor al menos una vez:** F11 (los 6 roles del ancla), F13 y F14 (tipos de
+  acción y regímenes) y F04 en sus valores fotográficos: editorial, key visual, e-commerce o catálogo, retrato
+  (individual y de grupo, TRM-1260), visualización arquitectónica (`dimensional.md:51`), multipanel de fotos, mockup de
+  dispositivo fotografiado. Póster, post o historia para redes y miniatura son una foto más un titular o un CTA
+  sobrepuesto; ese texto sobrepuesto nunca va en el prompt y se compone después (`01_texto_en_imagen.md`), así que la
+  parte que genera el modelo es una foto cubierta por los casos de F15 y F32.
+- **Fuera de esta prueba (siguen en el universo, se clasifican en la prueba posterior, 26 §12):** identidad de marca
+  (logo y sistema, TRM-0022), slide (TRM-0016), infografía y diagrama (TRM-1258, 1259), diseño de personaje (hojas de
+  giro, expresiones, chibi: TRM-1116–1120), UI de pantalla (TRM-0014), scroll (CAT-F04-SCROLL).
+
 ## 2. El caso de descripción de imagen
 
 Lo que es: se le da al sistema una foto, el sistema la analiza y escribe un prompt para recrearla sin adjuntarla; la
@@ -42,6 +59,9 @@ Dos choques con lo que ya existe:
 Pregunta: ¿se prueba como génesis con el brief salido del análisis, y el prompt sale en los 5 apartados? Recomendación:
 sí a las dos (DEC-000025: los templates siguen la sintaxis del modelo).
 
+**Respuesta de Eric (2026-10-27):** sí, como génesis; aprueba si la imagen generada se parece a la foto. Registrada en
+`DECISIONES_ERIC_20261026.md` §14.
+
 ## 3. Un veredicto de diagnóstico que falta
 
 Hoy cada falla repetida se clasifica a (el selector no tomó la regla), b (el prompt no la cumple) o c (falta la regla
@@ -56,3 +76,6 @@ en el corpus). El corpus describe dos causas más que no caben en ninguna:
 
 Pregunta: ¿se añade un veredicto d, «límite documentado del modelo o regla excluida por decisión», con la cita del texto
 que lo documenta como evidencia? Recomendación: sí; sin él, esas fallas quedarían mal clasificadas como b o c.
+
+**Respuesta de Eric (2026-10-27):** no. Solo a, b o c; la regla de grounding está fuera del alcance y no es pertinente.
+Registrada en `DECISIONES_ERIC_20261026.md` §15.

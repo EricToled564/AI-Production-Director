@@ -64,3 +64,17 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     imagen saca un prompt para recrearla. La transferencia de estilo con la imagen adjunta al generador la gobierna
     `gpt-image.md` Style Transfer (`:111–113`). La mención de «style transfer from a reference image» en
     `image/SKILL.md:63` (INV-002027) no lleva la transferencia con imagen adjunta a vision-decomposer.
+14. **Caso de descripción de imagen** (2026-10-27, responde la pregunta 2 de `v3/revision/04_preguntas_eric.md`).
+    Palabras de Eric: «se le proporciona una imagen, el sistema la describe y se crea un prompt de generación génesis con
+    esa descripción y se genera; si la imagen es similar, entonces pasa la prueba» (transcripción normalizada).
+    Consecuencias: el caso se ejecuta como génesis (cero referencias; la foto no se adjunta al generador); lo que el
+    sistema saca de la foto entra al brief con origen `inferencia_para_aprobacion` y la foto con su sha256 como fuente
+    (schema L1040–1332); el prompt es de génesis para GPT Image 2, así que sale en los 5 apartados del adaptador GPT2-GEN
+    (`gpt-image.md:7–15`, `verificar_templates.py` L62–65), no en las palabras sueltas de `vision-decomposer.md:61`. El
+    criterio de aprobado es el parecido de la imagen generada con la foto de entrada.
+15. **Sin veredicto d en el diagnóstico** (2026-10-27, responde la pregunta 3). Palabras de Eric: «no hay límite de
+    modelo porque es un modelo frontera, y regla excluida no puede ser porque el modelo no va a excluir reglas relevantes
+    bajo ninguna circunstancia, a menos que estén fuera del scope correcto» (transcripción normalizada). Consecuencias:
+    toda falla repetida se diagnostica a, b o c. La regla de Nano Banana 2 con grounding para edificación, animal y planta
+    (`flujo-spot.html:620`, `flujo-anclas.html:436`) está fuera del alcance por 23 §6, no es regla pertinente de esta
+    prueba; esos sujetos se resuelven con las reglas de GPT Image 2. Una falla que ninguna regla del corpus cubre es c.
