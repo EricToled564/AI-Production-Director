@@ -159,7 +159,7 @@ que existen en el universo llevan ese veredicto (los huecos son textos fuera del
 
 | Ids | Veredicto | Motivo |
 |---|---|---|
-| 002473–002567 | N1 | rejillas, collage, secuencia de 6 cuadros, antes/después en una sola imagen: son el valor F04 «storyboard o multipanel»; entran como casos si Eric cuenta F04 como tipo (`02_facetas_tipo_imagen.md` §C) |
+| 002473–002530, 002532–002567 | N1 | rejillas, collage, secuencia de 6 cuadros, antes/después en una sola imagen: son el valor F04 «storyboard o multipanel»; entran como casos si Eric cuenta F04 como tipo (`02_facetas_tipo_imagen.md` §C) |
 | 002568–002596 | N1 | póster de 12 paneles y consejos generales de multipanel (mismo veredicto que el bloque anterior); atribución (DEC-000024) |
 
 ## skills/image/references/patterns/character-design.md

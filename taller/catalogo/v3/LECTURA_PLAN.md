@@ -1,5 +1,19 @@
 # Lectura para el plan de la prueba — 2026-10-27
 
+**Reescritura del 2026-10-27 (alcance 26 §12–§19).** El plan se reescribió con los registros de
+`v3/revision/`, que completan este archivo y mandan donde difieren:
+- `01_texto_en_imagen.md`: texto en la imagen.
+- `02_facetas_tipo_imagen.md`: facetas que definen el tipo de imagen.
+- `03_citas_plan.md`: cada cita del plan anterior y las correcciones B1–B12.
+- `04_preguntas_eric.md`: preguntas a Eric con sus respuestas.
+- `05_lectura_universo.md`: los 2,724 textos del universo y los 40 de la adenda, uno por uno. Control
+  `verificar_lectura.py`: 2,764 textos, 0 sin veredicto, 0 con dos.
+- `06_documentos_rectores.md`: T-BRIEF-IMG, contratos, schema, registro de destinos, PLAN_V5 y taxonomía, completos.
+- `07_auditoria_salidas_universo.md`: los 410 textos excluidos uno por uno, con 2 errores corregidos (26 §18).
+
+Decisiones de Eric nuevas: 26 §12 a §19 (`v2/decisiones/DECISIONES_ERIC_20261026.md`). El universo pasa de 2,722 a
+2,724 textos (26 §18). Las cifras de 2,722 que siguen más abajo son del registro anterior.
+
 Registro de lo leído para escribir `PLAN_FINAL_PRUEBA.md`. Cada entrada dice cómo se leyó: completo línea a línea,
 campo por campo con volcado completo, o regenerado byte a byte desde fuentes ya leídas. Las cuatro fuentes mayores
 (taxonomía, T-BRIEF-IMG, contratos, schema) tienen su registro por tramo en `LECTURA_4_DOCUMENTOS.md`.
