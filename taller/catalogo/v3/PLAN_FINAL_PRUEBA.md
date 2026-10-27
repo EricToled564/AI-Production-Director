@@ -20,8 +20,10 @@ cambia. Lo leído para escribir este plan está en `LECTURA_PLAN.md` y `LECTURA_
 | Brief en español; prompt siempre en inglés | `taller/recursos/directivas_taller.json` (ERIC-IDIOMA-PROMPT-INGLES) |
 | Prohibidos «photorealistic» y «fotorealista»; Aurora excluida; el vocabulario prohibido gana | CLAUDE.md; `user_directives.json`; PILOTO §0.4; taxonomía §6.2 |
 | Formato escrito en el texto (Scene nombra el ratio); tamaño y quality como referencia; sin máscara | decisión 26 §8 |
+| Model, Quality, Size, References y Notes van fuera del cuerpo del prompt. El ratio va además dentro de Scene: la app no expone parámetros (26 §8), y ADD-0042 pide el parámetro solo «when the platform exposes them»; en ese punto 26 §8 manda sobre ADD-0011 | ADD-0004, ADD-0010, ADD-0011, ADD-0042; decisión 26 §8 |
 | Ninguna atribución a terceros en material al cliente | DEC-000024 |
-| 300 palabras es techo editorial: aviso, no bloqueo | T-BRIEF-IMG L355; DECISIONES.md decisión 2 |
+| Longitud: objetivo alrededor de 250 palabras; aviso si el prompt o un slot pasa de 300; la longitud nunca se resuelve suprimiendo reglas aplicables. En K01, `armar.py` rechaza más de 300 (L84–85): duda 2 del §7 | ADD-0008; T-BRIEF-IMG L355; DECISIONES.md decisión 2; CLAUDE.md |
+| Aceptar una imagen solo después de su QA, con los controles mecánicos separados de los visuales | ADD-0047 |
 | Un chat nuevo por prompt y las referencias adjuntas en cada uno: el generador no conserva estado | INV-012218; cierra `CONTRADICCIONES.md` §4 |
 | Brief aprobado por Eric ligado a su sha256; cualquier cambio invalida la aprobación | T-BRIEF-IMG L13–15; schema L1333–1352; PILOTO §5 |
 
@@ -44,8 +46,8 @@ restricciones, selecciones_taxonomicas), `procedencia_campos` por valor y `aprob
 | Ancla con referencia | `ancla_referencia`, `ancla_ff`, `ancla_lf` | FL03 | ≥1 | además estado inicial o final y contexto del clip (cámara, transición, audio; efectivo incluso cámara fija y silencio) | GPT2-GEN | ídem |
 
 F10 «análisis de imagen a prompt» no es operación del contrato (schema L45–54) y no produce una imagen: no tiene caso
-y sus textos quedan FUERA DE ESTE CASO en todos los casos. Por eso `CONTRADICCIONES.md` §3 no se presenta en esta
-prueba. Todos los casos llevan F32 «sin texto».
+propio. `vision-decomposer.md` sí entra por la transferencia de estilo (INV-002027), y con él `CONTRADICCIONES.md` §3
+(duda del §7). Todos los casos llevan F32 «sin texto».
 
 ## 4. Casos: instancias del mapa
 
@@ -78,7 +80,8 @@ sube al repo al cerrar cada tarea.
    `model_adapters`; cada INV citado existe en el universo o la adenda.
 3. **Casos y aprobación.** Por caso: brief en español, instancia del contrato (`entrada`, `procedencia_campos`,
    `modulos_activos`) y caso del catálogo (`case.schema.json`), con valores de `v2/esquema_taxonomia.json` y las
-   inferencias aparte. Controles: `verificar_templates.validate_instance(caso, 'brief')` sin errores y
+   inferencias aparte. K01 lleva además el brief de `armar.py` con los campos de su `LEEME.md` (CLAUDE.md, paso 1);
+   las reglas del template T1 (ADD-0006, ADD-0007) que la tarea 4 marque aplicables entran por esos campos. Controles: `verificar_templates.validate_instance(caso, 'brief')` sin errores y
    `casos/validar.py caso.json` sin errores tras la aprobación. Eric aprueba cada brief por su sha256 (serialización de
    `verificar_templates.py`); `mensaje_id` es el uuid del evento de su mensaje en esta sesión (`list_events`). En los
    casos con entradas se aprueba primero el contenido; cuando existe la imagen de entrada se escribe su sha256 y Eric
@@ -103,23 +106,35 @@ sube al repo al cerrar cada tarea.
    las tres clases, con la traza de consulta (caso, valores evaluados, descartes por aplicación, motivo). Antes de usarlo,
    pruebas unitarias por operador, por grupo y por excepción. Control: frente a la lista congelada, 0 faltantes y 0
    sobrantes; cada diferencia se resuelve releyendo el texto fuente y se registra qué se corrigió.
-9. **Redacción y traza (pregunta b).** K01 con `armar.py` (CLAUDE.md). Los demás con `armar_contrato.py`, que escribe
+9. **Redacción y traza (pregunta b).** K01 con `armar.py` (CLAUDE.md); su traza enlaza cada aplicación con el campo
+   del brief de `armar.py` que la lleva o con el texto fijo del programa que la cubre. Los demás con `armar_contrato.py`, que escribe
    la salida del contrato: GPT2-GEN o GPT2-EDIT, roles de referencia dentro de su slot, Scene con el ratio, prompt en
    inglés. Cada aplicación seleccionada se enlaza con los 12 campos del `binding_contract` (CONTRATOS L671–687), con su
    slot como destino y su control como prueba; una regla cuyo efecto es un parámetro que la app no expone lleva ese
    destino (decisión 26 §8). Controles: `validate_instance(caso, 'salida')` sin errores; 0 aplicaciones con un campo
-   vacío; 0 apariciones de «photorealistic» o «fotorealista»; más de 300 palabras da aviso.
-10. **Entrega a Eric, paso a paso de la cadena.** Por prompt: Model, Quality, Size / Ratio, el prompt tal como lo
-    escribe el armador, y Notes con lo inferido (INV-002044). El mensaje abre con la cabecera SKILL / RIESGOS / TÉCNICA,
+   vacío; 0 apariciones de «photorealistic» o «fotorealista»; 0 metadatos (Model, Quality, Size) dentro del cuerpo;
+   aviso si el prompt o un slot pasa de 300 palabras. Si una aplicación necesita un dato que el brief no tiene, el
+   armado se detiene: se completa el brief, Eric lo aprueba de nuevo y se repite desde la tarea 7 (ADD-0053).
+10. **Entrega a Eric, paso a paso de la cadena.** Por prompt: Model, Quality, Size / Ratio, References (cada Image N con
+    su archivo y su rol), el prompt tal como lo escribe el armador, y Notes con lo inferido (ADD-0004, INV-002044). El mensaje abre con la cabecera SKILL / RIESGOS / TÉCNICA,
     el prompt va en bloque cercado y una línea `OVERRIDE: R1 - GPT2-GEN abre con el rótulo Scene: y el verbo dentro del
     slot (INV-002335)`. Control: los tres gates de Stop (`gate_microgate`, `gate_dramaturgy`, `gate_image`) corridos en
     local sobre el mensaje salen con código 0 antes de enviarlo. Instrucciones a Eric: un chat nuevo por prompt; adjuntar
     exactamente los archivos indicados en el orden de Image N; subir aquí la imagen generada. Si el archivo subido no
     queda en el disco de la sesión, Eric lo sube por GitHub a `taller/catalogo/v3/prueba/imagenes/`. El sha256 se
     calcula sobre ese archivo, y ese mismo archivo es el que Eric adjunta en el paso siguiente.
-11. **Diagnóstico.** Si una imagen sale mal, Eric genera el mismo prompt por lo menos dos veces más (decisión 26 §10).
+11. **QA de cada imagen recibida.** Controles mecánicos, por script: sha256 y ratio del archivo contra el pedido; hasta
+    1 % de desvío es corrección menor, más de 1 % bloquea (ADD-0043). Controles visuales, por cada aplicación de la
+    traza del caso, con zoom al 100 % de rostros y manos cuando el caso los tiene (ADD-0031). Lo que no se puede
+    verificar mirando la imagen se marca así, no como PASS (ADD-0047). Control: ninguna imagen se da por buena sin
+    las dos tablas escritas en el repo.
+12. **Diagnóstico.** Si una imagen sale mal, Eric genera el mismo prompt por lo menos dos veces más (decisión 26 §10).
     Solo la falla que se repite se diagnostica: a si la regla que la evita está en la lista de referencia y el selector
     no la tomó; b si se tomó y el prompt no la cumple según su traza; c si a y b pasan, y entonces se sigue DEC-000004.
+    La repetición para diagnosticar es la de 26 §10. Los bucles de corrección posteriores siguen sus propias reglas:
+    editar si el resultado es correcto en un 80 % o más, y máximo dos intentos por método (ADD-0029, ADD-0030;
+    INV-000584–000591; 26 §10). Control: cada falla repetida tiene en el repo su veredicto a, b o c con la evidencia
+    (entrada de la lista de referencia, traza del selector, traza del prompt).
 
 ## 6. Eventos inciertos y su mitigación, ya dentro de las tareas
 
@@ -131,18 +146,28 @@ sube al repo al cerrar cada tarea.
 | Un gate del repo bloquea la entrega | gates corridos en local con código 0 antes de enviar (tarea 10) |
 | La imagen subida no llega al disco | subida por GitHub a la carpeta indicada (tarea 10) |
 | El generador arrastra contexto de otra imagen | chat nuevo por prompt y referencias adjuntas (§2) |
+| La imagen sale con otro ratio, porque la app no expone el parámetro | ratio dentro de Scene (§2) y QA de ratio con tolerancia del 1 % (tarea 11) |
 | Pérdida de estado por compactación del contexto | cada tarea escribe archivos y se sube al repo; los controles recalculan desde archivos |
 
 ## 7. Dudas que solo Eric puede resolver
 
-Una. `image/SKILL.md:63` (INV-002027) manda cargar `vision-decomposer.md` «whenever the user attaches an image and asks
+Las dos se necesitan antes de la tarea 9 y no detienen las tareas 2 a 8.
+
+**1.** `image/SKILL.md:63` (INV-002027) manda cargar `vision-decomposer.md` «whenever the user attaches an image and asks
 to recreate, match, decompose, or transfer its style». Aplica a K07 y a cualquier otro caso en que la tarea 4 lo
 marque. Ese archivo pide «solo keywords separadas por comas» (`:61`), contra los 5 slots de `gpt-image.md:7–15`; está
 registrado como pendiente de Eric en `v3/universo/CONTRADICCIONES.md` §3.
 
 Para GPT Image 2, ¿el resultado de vision-decomposer se reescribe a los 5 slots o se entrega como keywords?
 Recomendación: 5 slots, por `image/SKILL.md:46` («The model file is non-negotiable»), `:112` y DEC-000025 (los
-templates siguen la sintaxis del modelo). La respuesta se necesita antes de la tarea 9 y vale para todos los casos; no
-detiene las tareas 2 a 8.
+templates siguen la sintaxis del modelo). Vale para todos los casos.
+
+**2.** `armar.py` (obligatorio para K01 por CLAUDE.md) rechaza un prompt de más de 300 palabras (L84–85), y CLAUDE.md
+prohíbe entregar un prompt rechazado. La decisión 2 de `.claude/rules/DECISIONES.md` dice que el conteo de palabras
+nunca bloquea y que los prompts de 5 slots de GPT Image pasan; T-BRIEF-IMG L355 llama a 300 «techo editorial» y dice
+que la longitud nunca se resuelve suprimiendo reglas aplicables. Si K01, con todas sus reglas aplicables, no cabe en 300
+palabras, ¿el exceso de `armar.py` pasa a aviso o se mantiene el rechazo? Recomendación: aviso solo cuando no se pueda
+acortar la redacción sin perder una regla aplicable, por L355 y la decisión 2. La respuesta vale para K01 y para
+cualquier otro retrato de una persona sin referencias.
 
 Eric aprueba los briefs (tarea 3) y revisa la muestra (tarea 5): son pasos del método, no dudas.

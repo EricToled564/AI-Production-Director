@@ -59,14 +59,25 @@ campo por campo con volcado completo, o regenerado byte a byte desde fuentes ya 
   contra los originales (SHA256SUMS OK): A, B, C 13,005/13,005, E 6/6, 62 fallos D conocidos; salida idéntica.
   `UNIVERSO.md`, `ESTADO_UNIVERSO.md`, `DECISION_SECCIONES.md`, `CONTRADICCIONES.md`,
   `CLASIFICACION_MISMA_POSICION.md`. Universo: 2,722 textos de 41 archivos.
-- `v3/universo/adenda`: 125 textos, 40 entran (`construir_adenda.py`, sale con código 0).
+- Los 2,722 textos del universo, leídos completos uno por uno (`universo_prueba_textos.jsonl` volcado por archivo y
+  línea con su encabezado, 2,803 líneas). Solo el universo: las secciones y documentos excluidos por decisión no se
+  leyeron, porque no son parte de la prueba.
+- `v3/universo/adenda`: 125 textos, 40 entran (`construir_adenda.py`, sale con código 0). Los 40 que entran, leídos
+  completos. Cambios que dejaron en el plan: References fuera del cuerpo (ADD-0004); objetivo de unas 250 palabras y aviso
+  por slot (ADD-0008); ratio en Scene con 26 §8 por encima de ADD-0011, y ADD-0042 condicionado a que la plataforma
+  exponga el parámetro; QA de ratio con tolerancia del 1 % (ADD-0043); QA antes de aceptar, con los controles mecánicos
+  separados de los visuales (ADD-0047); zoom al 100 % de rostros y manos (ADD-0031); bucles de corrección R12 y R13
+  distintos de la repetición de 26 §10 (ADD-0029, ADD-0030). `audit_gi2.py` (ADD-0014) no está en el repo; el plan no
+  depende de él, porque cada regla seleccionada se controla por su traza.
 - `v2/piloto_gpt-image/clasificacion.py` y `construir.py` (formato de aplicación y verificador de forma), `GUIA_CLASIFICACION.md`,
   `validar_v2.py`, `match_taxonomia.py`, `matriz.py`, `matriz_eric.py`, `construir_esquema.py`, `taxonomia_extracto.md`,
   `PENDIENTES.md`. La condición del formato del piloto (`r`: por faceta, al menos un valor común) no expresa NINGUNA ni
   átomos con operador sobre campos: hay que llevarla a §7.2.
 - `.claude/hooks/rule_answer_check.py` (cobertura; ids de 12 hex y APLICA/NO APLICA: hay que adaptarlo).
 - `produccion/template-retrato-gpt2/armar.py` (104 l) y `LEEME.md`: obligatorio para retrato de una persona sin
-  referencias (CLAUDE.md).
+  referencias (CLAUDE.md). Releído completo el 2026-10-27 contra la adenda: los bloques T1 de ADD-0006 caben en sus
+  campos (luz, microdetalle, uso, restriccion_extra); rechaza más de 300 palabras (L84–85), contra la decisión 2 y
+  T-BRIEF-IMG L355: duda 2 del plan.
 - `v3/rag/*.py`: índice BM25 de búsqueda; no acredita cobertura (taxonomía §7.4).
 - `v3/fuentes/PROCEDENCIA.md` y `documentos/PROCEDENCIA.md`: taxonomías del 2026-09-13 y 2026-09-28 son anteriores a
   la entrada autorizada (PILOTO §3); no gobiernan.
@@ -83,12 +94,16 @@ campo por campo con volcado completo, o regenerado byte a byte desde fuentes ya 
 - `gate_image.py`: la primera línea del bloque empieza con verbo (golden-rules §1), sin keyword soup, modelo nombrado;
   admite `OVERRIDE: R1 - <razón>`. Probado hoy en local: un prompt GPT2-GEN en bloque cercado, que por contrato abre con
   «Scene:», se bloquea por R1; con la línea OVERRIDE y la cabecera, los tres gates salen con código 0.
-- `rule_query.py`, `rules_v3.py`: base de reglas de skills con ids sha1 y casos T1…T5; no operan sobre el universo INV
-  de la prueba; no se usan.
+- `rule_query.py`, `rules_v3.py`: base de reglas de skills con ids sha1 y casos T1…T5. `cmd_build` (L685–774) toma
+  las reglas de `rule_registry.build_v3` sobre los skills y los regímenes; ninguno de los dos archivos lee el universo
+  ni ids INV. No se usan.
+- `list_events` (servidor claude-code-remote) con `kinds: ["user"]` sobre esta sesión devuelve el uuid de cada mensaje
+  de Eric. Probado hoy: es el `mensaje_id` de la aprobación.
 
 ## E. No necesarios para el plan, con motivo
 
-- Los 41 documentos fuente del universo: leerlos completos contra cada caso es el trabajo de la tarea 4 del plan.
+- Clasificar cada texto del universo contra cada caso aprobado es la tarea 4 del plan. Para escribir el plan, los
+  textos ya se leyeron completos (sección C).
 - App `taller/`, `apd/`, `app/`, `api/`, `public/`: la prueba no usa ninguna app.
 - Lotes y salidas de catalogaciones anteriores (`taller/catalogo/lotes`, `salidas`, `amp`, `f32`, `v2/lotes`,
   `v2/salidas`, `catalogo_imagen_gpt2.json`): no se reutilizan (decisión 23 §2; `v2/PENDIENTES.md` §4).
