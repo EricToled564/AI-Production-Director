@@ -59,3 +59,4 @@ Todo lo demás construido por el agente se borró por instrucción de Eric. Hash
 | `v3/fuentes/documentos/skills/image/references/prompt-framework.md` | `31c66f4a6d4fb88fdcc0c74c986d04ee753e20234914e0e7ce7cb90b365e3eb4` |
 | `v3/fuentes/documentos/skills/visual-prompt-forge/adapters/gpt-image.md` | `5ca38f9f1d53282837dacfab10e686279a2b5641e8da42adfd89ef4fea3ebc97` |
 | `v3/fuentes/taxonomia-0928_TAXONOMIA.md` | `f10f5ad36eb5c81e3a4555c4908094811f6dc2d6f48bc25fb6afcb9ef988c0ce` |
+| `fuentes_20261019/PLAN_V5_COMPLETO_TAXONOMIA_TEMPLATES_20261019_054300.md` (diseño entregado por Eric el 2026-10-24; restaurado) | `36abfa00f28033c6422342285cd393071a6fade22c2707d62206a29d13e7a493` |
