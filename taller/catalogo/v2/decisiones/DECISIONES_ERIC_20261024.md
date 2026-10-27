@@ -8,8 +8,14 @@ difiere, manda el mensaje original.
    con «sí»):
    «TODOS LOS TEXTOS QUE SON RELEVANTES Y NECESARIOS PARA LA CREACIÓN DE IMÁGENES DE CUALQUIER MODELO TIENE QUE SER
    PARTE DEL SCOPE, LOS TEXTOS QUE SOLO SON RELEVANTES PARA MODELOS QUE NO SON GPT IMAGE 2 NO SON PARTE DEL SCOPE».
-   - Entran: textos genéricos de creación de imagen o aplicables a GPT Image 2, de cualquier archivo de los 13,005.
-   - Quedan fuera: textos que solo aplican a otros modelos.
+   - Ratificado por Eric el 2026-10-27, palabras suyas: «EL ALCANCE ES TODOS LOS TEXTOS QUE TIENEN QUE VER CON
+     GENERACIÓN DE IMÁGENES DE FORMA UNIVERSAL O PARCIALMENTE UNIVERSAL QUE INCLUYE IMAGE 2 Y LOS TEXTOS ESPECÍFICOS DE
+     IMAGE 2; CUALQUIER OTRA COSA ESTÁ FUERA DEL ALCANCE».
+   - Entran: textos de generación de imágenes universales, parcialmente universales que incluyen GPT Image 2, y
+     específicos de GPT Image 2.
+   - Quedan fuera: todo lo demás.
+   - Corrección del 2026-10-27: la versión anterior de este punto añadía «de cualquier archivo de los 13,005». Esa
+     restricción no es de Eric; la escribió el agente. El alcance se define por contenido, no por la base.
 2. «SI EXISTE LA CLASIFICACIÓN EN LA TAXONOMÍA ES PORQUE LA REGLA EXISTE EN EL CORPUS».
 3. «EL SOLO HACER LA GENERACIÓN EN DOS PASOS NO ES SUFICIENTE, HAY VARIAS REGLAS MUY ESPECÍFICAS SOBRE EL LENTE Y EL
    TIPO DE CÁMARA QUE SE USA PARA QUE SE COMPACTEN LOS PÍXELES Y LA CARA NO SE DEFORME». Esas reglas se buscan leyendo,
