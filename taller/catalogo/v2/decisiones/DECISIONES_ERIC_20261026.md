@@ -42,3 +42,8 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
 9. **Muestra de auditoría** (2026-10-27): Eric revisa al azar el 10 % del total de reglas marcadas «no aplica» en cada
    caso (redondeo hacia arriba, mínimo 1). Palabras de Eric: «la muestra debe de ser 10 % del número total de reglas que
    se marcaron como no aplica».
+10. **Repetición antes de auditar** (2026-10-27): si una imagen sale mal, se genera el mismo prompt por lo menos dos veces
+    más antes de auditar; solo la falla que se repite se diagnostica como a, b o c. Palabras de Eric: «si la imagen es
+    mala hacemos por lo menos dos más antes de auditar». Coincide con INV-010355 («Budget 2–3 re-rolls») e INV-010387.
+    INV-000591 («máximo dos intentos por método») rige los bucles de corrección del flujo (editar, cambio de método,
+    replantear; INV-000584–000588), no la repetición del mismo prompt para diagnosticar.

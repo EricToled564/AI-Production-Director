@@ -52,9 +52,9 @@ Cada tarea termina con un control que sale con código 1 si no se cumple.
 6. **Traza por regla (pregunta b).** Por cada regla seleccionada: el slot donde se cumple o el control que la
    verifica. Control: 0 reglas sin una de las dos.
 7. **Entrega a Eric.** Prompts listos, con su orden y las imágenes que hay que adjuntar en cada paso.
-8. **Diagnóstico.** Con las imágenes y el veredicto de Eric. Si una imagen sale mal, Eric genera el mismo prompt una
-   segunda vez: una muestra mala del generador no es falla del prompt (INV-010355, INV-010387), y el tope es de dos
-   intentos (INV-000591). Solo la falla que se repite se diagnostica: a si la regla que la evita está en la lista de
+8. **Diagnóstico.** Con las imágenes y el veredicto de Eric. Si una imagen sale mal, Eric genera el mismo prompt por lo
+   menos dos veces más antes de auditar (decisión 26 §10): una muestra mala del generador no es falla del prompt
+   (INV-010355, «Budget 2–3 re-rolls»; INV-010387). Solo la falla que se repite se diagnostica: a si la regla que la evita está en la lista de
    referencia y el selector no la tomó; b si se tomó y el prompt no la cumple según su traza; c si a y b pasan. Así
    ninguna falla queda sin veredicto. La certeza de a depende de la lista de referencia, que se verifica con la muestra
    de auditoría del 10 % (decisión 26 §9).
