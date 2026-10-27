@@ -222,7 +222,7 @@ Uso: Retrato de cuerpo entero (uso final no indicado) · Formato 2:3
 ```text
 Model: gpt-image-2 (OpenAI API)
 Quality: high
-Size: 1024x1536
+Size: 1440x2160
 
 Prompt:
 Image 1: face reference; use only his face, hair, beard and glasses, keep them exactly the same, and ignore its framing and background.

@@ -135,7 +135,14 @@ def main():
         t1 = time.perf_counter()
         sel = [a for a in m.APLICACIONES if aplica(a, c["facetas"], c["paso"])]
         acciones, faltantes = acciones_de_dependencia(sel, c)
-        (ancho, alto), origen_tam = tamano(c["facetas"]["F06"][0])
+        if "tamano" in c:  # tamaño propio del caso; validar() aplica los límites INV-002355..2359
+            ancho, alto = (int(x) for x in c["tamano"].split("x"))
+            w, h = (int(x) for x in c["facetas"]["F06"][0].split(":"))
+            if ancho * h != alto * w:
+                raise SystemExit(f"{c['id']}: tamaño {c['tamano']} no es {w}:{h}")
+            origen_tam = c["origen_tamano"]
+        else:
+            (ancho, alto), origen_tam = tamano(c["facetas"]["F06"][0])
         # «Image N: rol» antes de los slots (gpt-image.md:104–109); el regex de slots no las cuenta porque llevan dígito
         prompt = "\n".join(c.get("referencias", []) + [f"{s}: {c['slots'][s]}" for s in SLOTS])
         fallas, palabras = validar(prompt, c["slots"], ancho, alto)
