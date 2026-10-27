@@ -29,6 +29,16 @@ Eric (2026-10-27): «no lo sé, dame una recomendación». Recomendación detall
   edificación, animal, producto, objeto, planta) y F32 (sin texto, texto corto, texto extenso o pequeño). Son las tres
   facetas que cambian la técnica del prompt: otro adaptador u otra operación (F10), otra génesis por clase de sujeto
   (INV-000539, 000593), otro tratamiento del texto (`gpt-image.md:67–74`).
+- **Edición: un caso por cada plantilla fotográfica de la fuente.** Los 8 hijos de 23 §4 (quitar objeto, añadir
+  objeto, cambiar luz o clima, colorizar, restaurar, traducir texto, cambiar vestuario, cambiar mobiliario u objeto)
+  tienen plantilla en `editing.md` y `gpt-image.md:94–100`. La fuente trae además cuatro plantillas de edición
+  fotográfica que no caben en ningún hijo (taxonomía L858, L865, L867, L927): cambio de fondo o entorno con la misma
+  persona («Change background to [SCENE], maintain lighting on face», `characters.md:80`, TRM-0511); textura de material
+  («Add [MATERIAL] texture to [SURFACE]», `editing.md:98`, TRM-0518); relleno con física («Fill this glass with
+  [LIQUID]», `editing.md:92`, TRM-1142); adaptación de un anuncio a otro mercado (escenario e idioma, `editing.md:82`,
+  TRM-0520). Recomendación: un caso para cada una de las cuatro, igual que los 8 hijos. Quedan fuera: colorizar manga
+  (no es foto, `editing.md:59`), máscara (la app no la expone, 26 §8) y refinamiento conversacional (es la forma de
+  iterar, no un tipo de imagen).
 - **Cubiertas dentro de esos casos, cada valor al menos una vez:** F11 (los 6 roles del ancla), F13 y F14 (tipos de
   acción y regímenes) y F04 en sus valores fotográficos: editorial, key visual, e-commerce o catálogo, retrato
   (individual y de grupo, TRM-1260), visualización arquitectónica (`dimensional.md:51`), multipanel de fotos, mockup de
