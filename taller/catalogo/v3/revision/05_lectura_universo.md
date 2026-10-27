@@ -416,3 +416,10 @@ que existen en el universo llevan ese veredicto (los huecos son textos fuera del
 | ADD-0047 | N3 | QA antes de declarar éxito: §2 y tarea 11 |
 | ADD-0052–ADD-0055 | N3 | brief congelado por sha256, campos resueltos antes de compilar, delta autorizado, AST inmutable: tareas 3, 7 y 9 |
 | ADD-0092 | N1 | la nacionalidad no se expande a rasgos estereotipados: la tarea 4 la marca para los casos con persona |
+
+## Textos añadidos al universo el 2026-10-27 (26 §18)
+
+| Id | Clase | Consecuencia |
+|---|---|---|
+| 002383 | C | `gpt-image.md:96`, quitar objeto: «Remove [X]. Do not change anything else.». Es la plantilla GPT Image 2 del caso «edición: quitar objeto» (26 §16), junto con `editing.md:10–19` |
+| 002531 | C | `multi-panel.md:162`: tamaño 1536x1024 (horizontal) para la plantilla 4×3. En el caso multipanel de fotos con esa plantilla, el Size es el que la fuente recomienda |

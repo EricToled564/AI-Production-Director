@@ -51,7 +51,13 @@ Leídos uno por uno 1,914 textos. Cada decisión y su motivo están en `decision
 
 ## 4. Universo de la prueba
 
-**2,722 textos** = 2,350 de secciones «dentro» − 72 que salen + 444 de secciones mixtas que entran.
+**2,724 textos** = 2,350 de secciones «dentro» − 70 que salen + 444 de secciones mixtas que entran.
+
+Hasta el 2026-10-27 eran 2,722 (salían 72). La auditoría de los 410 textos excluidos texto por texto
+(`v3/revision/07_auditoria_salidas_universo.md`) encontró dos que también valen para GPT Image 2. Eric los metió
+(`DECISIONES_ERIC_20261026.md` §18), cada uno con su corrección en `correcciones.json`:
+- INV-002383, `gpt-image.md:96`: la plantilla de quitar objeto, sin la cláusula de gpt-image-1.5/1.
+- INV-002531, `multi-panel.md:162`: el tamaño de la plantilla 4×3, sin la línea de NBP.
 La lista de ids está en `universo_prueba.json`. El texto de cada uno, con su documento, encabezado (62 reparados) y
 las correcciones decididas por Eric, está en `universo_prueba_textos.jsonl` (`textos_universo.py`).
 

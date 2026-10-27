@@ -96,3 +96,12 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     - boceto → final (`structural.md`).
 
     3D → 2D técnico y meme no dan foto y quedan fuera.
+18. **Dos textos mal excluidos entran al universo** (2026-10-27). Eric respondió «Sí, meterlos» a la pregunta «¿Meto
+    al universo los 2 textos mal excluidos?». Origen: la auditoría de los 410 textos excluidos uno por uno
+    (`v3/revision/07_auditoria_salidas_universo.md`). Los dos textos:
+    - INV-002383, `gpt-image.md:96`: entra como «**Object removal:** «Remove [X]. Do not change anything else.» (в
+      gpt-image-2 high-fidelity по умолчанию).».
+    - INV-002531, `multi-panel.md:162`: entra solo con la línea del tamaño 1536x1024.
+
+    Mecanismo: `correcciones.json`, el mismo de INV-002054. `decidir_textos.py` los pasa de SALE a NOTA. El universo
+    queda en 2,724 textos. Se comprobó que no cambió ninguna otra decisión ni el orden del resto.

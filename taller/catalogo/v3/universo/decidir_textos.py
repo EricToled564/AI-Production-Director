@@ -60,9 +60,7 @@ SALE = {
     "INV-002196": "edición en Nano Banana",
     "INV-002227": "«NBP understands materials»",
     "INV-002276": "recorrido de costo en Nano Banana",
-    "INV-002383": "input_fidelity: solo gpt-image-1.5/1; el propio texto dice que en gpt-image-2 ya es alto por defecto",
     "INV-002412": "gpt-image-1-mini",
-    "INV-002531": "Borderless Grid: modelo NBP",
     "INV-002593": "sin texto y composición compleja: NBP",
     "INV-002755": "patrón Inflatable: recomendado NBP",
     "INV-002789": "patrón Roller Skating: recomendado NB2",
@@ -122,6 +120,10 @@ SALE = {
 # Entran, pero con una nota para la clasificación: el modelo nombrado es solo ejemplo, o el texto lleva una cifra de
 # otro modelo junto a contenido genérico.
 NOTA = {
+    "INV-002383": "entra (Eric, 2026-10-27, 26 §18): «Remove [X]. Do not change anything else.» es la plantilla de quitar "
+                  "objeto de GPT Image 2; la cláusula input_fidelity es de gpt-image-1.5/1 y se quita en correcciones.json",
+    "INV-002531": "entra (Eric, 2026-10-27, 26 §18): L162, el tamaño 1536x1024 de la plantilla 4x3, no depende del "
+                  "modelo; L163 (NBP) y L164 (rótulo) se quitan en correcciones.json",
     "INV-000220": "entra porque fija el papel de GPT Image 2 (solo anclas de época, no geometría real)",
     "INV-000477": "la columna de modelo es de Nano Banana; entran el resto de la fila (auditar anatomía y pelaje)",
     "INV-000479": "«Cualquiera; NBP si…»: aplica a cualquier modelo",
