@@ -39,6 +39,12 @@ Eric (2026-10-27): «no lo sé, dame una recomendación». Recomendación detall
   TRM-0520). Recomendación: un caso para cada una de las cuatro, igual que los 8 hijos. Quedan fuera: colorizar manga
   (no es foto, `editing.md:59`), máscara (la app no la expone, 26 §8) y refinamiento conversacional (es la forma de
   iterar, no un tipo de imagen).
+- **Boceto o plano a final: pregunta abierta (2026-10-27, al cerrar la lectura de la taxonomía).** Leí completo
+  `dimensional.md` (L1–88). Cuatro de sus plantillas dan una foto: plano 2D → interior (L5–18, L61–68), boceto →
+  concepto 3D (L20–27), alzado → exterior (L53–59) y diseño plano → mockup de producto (L70–77). A esas se suma
+  boceto → final de `structural.md`. Si se aplica el mismo criterio que en edición (un caso por plantilla
+  fotográfica), salen 5 casos en lugar de 1. Recomendación: los 5, por coherencia con edición. Registro:
+  `06_documentos_rectores.md`, fila L3916–4020.
 - **Cubiertas dentro de esos casos, cada valor al menos una vez:** F11 (los 6 roles del ancla), F13 y F14 (tipos de
   acción y regímenes) y F04 en sus valores fotográficos: editorial, key visual, e-commerce o catálogo, retrato
   (individual y de grupo, TRM-1260), visualización arquitectónica (`dimensional.md:51`), multipanel de fotos, mockup de
