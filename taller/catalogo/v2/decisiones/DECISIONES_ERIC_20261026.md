@@ -59,3 +59,8 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
     tiene su propio caso en esta prueba; las técnicas no fotográficas (F18 distinto de «fotorrealista») quedan fuera de
     la prueba pero siguen en el universo; la clasificación de sus reglas se hace en una prueba posterior. La palabra
     «photorealistic» / «fotorealista» sigue prohibida dentro de los prompts.
+13. **vision-decomposer y transferencia de estilo son cosas distintas** (2026-10-27). Palabras de Eric: «porque si son
+    para cosas diferentes, o no te das cuenta?». `vision-decomposer.md` es análisis de imagen a prompt (`:1–3`): de una
+    imagen saca un prompt para recrearla. La transferencia de estilo con la imagen adjunta al generador la gobierna
+    `gpt-image.md` Style Transfer (`:111–113`). La mención de «style transfer from a reference image» en
+    `image/SKILL.md:63` (INV-002027) no lleva la transferencia con imagen adjunta a vision-decomposer.

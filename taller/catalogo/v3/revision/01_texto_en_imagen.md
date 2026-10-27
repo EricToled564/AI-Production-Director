@@ -49,3 +49,10 @@ Letrero, etiqueta, póster, pantalla, todo lo que forma parte de lo fotografiado
 F32 «texto corto» y «texto extenso o pequeño» son tipos de imagen fotográfica válidos para GPT Image 2 cuando el texto
 pertenece al mundo fotografiado y no es una marca real. Entran a la prueba con caso propio. El texto superpuesto no es un
 tipo de imagen: se compone aparte y no entra.
+
+## Añadido tras leer la taxonomía §6.2
+
+Taxonomía 00688 §6.2 fila 11: «Texto en imagen solo con override explícito en rationale (Ideogram Modo 2). Ámbito: texto
+en prompts del forge» (INV-011363). Su ámbito es el forge; fila 4 (INV-000704): «visual-prompt-forge es dueño del flujo
+de datos; video/image del texto final». El prompt final de GPT Image 2 lo gobierna `image` (`gpt-image.md:67–74`). La
+conclusión no cambia.
