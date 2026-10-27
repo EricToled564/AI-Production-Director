@@ -105,3 +105,17 @@ Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados tex
 
     Mecanismo: `correcciones.json`, el mismo de INV-002054. `decidir_textos.py` los pasa de SALE a NOTA. El universo
     queda en 2,724 textos. Se comprobó que no cambió ninguna otra decisión ni el orden del resto.
+19. **La decisión por sección se mantiene** (2026-10-27, 00:28–00:37 UTC; registrada tarde, el 2026-10-27). Se decidió en
+    esta sesión y no se había anotado en este archivo.
+    - **Condición de Eric** (mensaje de las 00:28:45 UTC, transcripción normalizada): «si el documento del skill hace
+      sentido no dejaría una regla que no corresponde a creación de imagen fuera de la sección de creación de imagen […]
+      hacemos esto si me das un solo ejemplo de una regla que aplique al scope de la prueba que esté en los documentos
+      que se quedarían fuera por sección y que no esté en los textos que están dentro de la sección de creación de
+      imagen y que sea relevante para la creación de imágenes; te dejo que clasifiques esos documentos si no; mantenemos
+      la decisión de catalogar por sección».
+    - **Resultado** (respuesta del agente a las 00:37:19 UTC): los ejemplos propuestos fueron el crash zoom INV-009044,
+      `camera-lighting-vocabulary.md` §10 y director §7. Ninguno cumplía la condición: son reglas de clip o de
+      enrutamiento, no de imagen suelta. «Se mantiene la decisión por sección».
+    - **Consecuencia:** los 9,873 textos de secciones «otro_modelo» y «fuera» no se leen uno por uno
+      (`v3/LECTURA_PLAN.md:62–63`). Los dos errores de la auditoría de 2026-10-27 (26 §18) no reabren esta decisión.
+      Salieron de textos de secciones de imagen decididos uno por uno, no de secciones excluidas.

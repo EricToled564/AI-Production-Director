@@ -58,6 +58,7 @@ cubiertos 410 de 410, faltan 0, sobran 0.
 | INV-002383 (`gpt-image.md:96`) | La plantilla de GPT Image 2 para quitar objeto: «Remove [X]. Do not change anything else.». La cláusula `input_fidelity: high` es de gpt-image-1.5/1 y no aplica; el mismo texto dice que en gpt-image-2 la fidelidad alta viene por defecto | edición: quitar objeto (26 §16) |
 | INV-002531 (`multi-panel.md:162`) | «Recommended size: 1536x1024 (landscape) — gives each cell enough resolution», el tamaño de la plantilla 4×3 «Template (5-slot format)». L163 (NBP) sigue fuera | multipanel de fotos (F04, 26 §16) |
 
-**Lo que no cubre esta auditoría** (`ESTADO_UNIVERSO.md` §5):
-- 9,873 textos decididos por sección, sin leerlos uno por uno: 408 de secciones «otro_modelo» y 9,465 de secciones «fuera».
-- Los textos de documentos que declaran su modelo y no nombran otro, que entraron sin leerse uno por uno.
+**Lo que esta auditoría no cubre, por decisión.** Los 9,873 textos de secciones «otro_modelo» y «fuera» se quedan con la
+decisión por sección. Eric la mantuvo el 2026-10-27 porque no se encontró ningún ejemplo de regla de imagen suelta en
+ellos (`DECISIONES_ERIC_20261026.md` §19). Los dos errores de arriba no reabren esa decisión: los dos son textos de
+secciones de imagen que se decidieron uno por uno.
