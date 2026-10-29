@@ -24,6 +24,16 @@ como lectura. Ejemplo del 2026-10-27: a la pregunta «¿hay reglas para la image
 tras buscar por palabras y leer 63 coincidencias recortadas; la lectura completa de los 2,722 textos
 (archivo borrado el 2026-10-27) encontró muchas más reglas aplicables que la búsqueda.
 
+## Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29)
+
+- Prohibido dejar riesgos abiertos, salvo los que estén totalmente fuera de control del agente. Todo lo demás se
+  entrega con su plan de solución ya incluido, con riesgo cero del lado del agente. Si algo es un riesgo fuera de
+  control, se dice claramente que lo es y por qué.
+- Un riesgo no es una decisión que no se ha tomado ni una contradicción sin resolver: eso son **pendientes**, y se
+  presentan como pendientes, con quién los resuelve.
+- Prohibido avanzar a una etapa nueva mientras los pendientes de la etapa anterior no estén cubiertos al 100 %, salvo
+  que Eric lo autorice expresamente.
+
 ## Toda lectura deja registro en el repo
 
 Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sección, qué dice (con su línea) y qué
