@@ -32,13 +32,14 @@ Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos;
 
 ### 1.3 Si impacta: alcance y destino
 
-El alcance decide adónde va la regla: al template, como instrucción de llenado, o a la selección caso por caso.
+El alcance decide adónde va la regla: al template como instrucción de llenado, a la inserción mecánica por tipo de pieza o a la selección caso por caso.
 
 | Valor | Definición | Destino |
 |---|---|---|
 | Universal | Vale para todo brief o prompt de imagen, de cualquier modelo y cualquier caso. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
-| Semiuniversal | Depende solo del modelo, de la operación o de los dos, y de ningún otro dato del caso | Instrucción de llenado en el template de ese modelo u operación; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
-| Específica del caso | Depende de algún otro dato del caso (los del nivel 3: tipo de pieza, sujeto, acción, estilo, cámara, etc.) | Se selecciona caso por caso con su condición. Uso operativo: ACTIVO EN SELECCIÓN |
+| Semiuniversal por modelo u operación | Depende solo del modelo, de la operación o de los dos, y de ningún otro dato del caso | Instrucción de llenado en el template de ese modelo u operación; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
+| Semiuniversal por tipo de pieza | Se aplica siempre a un tipo de pieza (F04), sin depender de otro dato del caso. No hay templates por tipo de pieza | Se inserta de forma mecánica, sin selección, en cuanto el brief identifica el tipo de pieza. Uso operativo: INSERCIÓN MECÁNICA POR TIPO DE PIEZA |
+| Específica del caso | Depende de algún otro dato del caso (los del nivel 3: sujeto, acción, estilo, cámara, etc.), o del tipo de pieza junto con otro dato | Se selecciona caso por caso con su condición. Uso operativo: ACTIVO EN SELECCIÓN |
 
 ### Si no impacta: qué es el texto
 
@@ -2270,6 +2271,7 @@ Son las materias de F30 cuyo vocabulario describe el caso (el catálogo las marc
 | INCORPORADA A TEMPLATE | aplicación incorporada y verificada en su template; incluye sintaxis de modelo aplicada una vez a la ficha. No se vuelve a extraer para cada caso; permanece clasificada. La incorporación exige vínculo regla → campo/bloque → condición → validación; si varía por caso, esa condición se evalúa al instanciar el template. |
 | APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE | instrucción estructural seleccionable durante la construcción o actualización del template; exige destino y prueba de incorporación antes de publicar ese template. Expresa cuándo se usa, no aplaza su clasificación. |
 | APLICACIÓN EN CONTROL O ENTREGA | aplicación de crítica, audio, postproducción o entrega seleccionable en su ruta específica, con disparador y destino. Su separación de recuperación de prompts requiere decisión aplicable y alcance documentados; una regla mixta conserva cada ruta. |
+| INSERCIÓN MECÁNICA POR TIPO DE PIEZA | la regla se aplica siempre a un tipo de pieza; se agrega al brief o al prompt sin selección en cuanto el brief identifica ese tipo de pieza |
 
 #### METADATOS · Campos de la regla
 
