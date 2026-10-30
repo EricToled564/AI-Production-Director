@@ -10,12 +10,12 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 |---|---|
 | Instrucciones de trabajo vigentes | `CLAUDE.md` (sección 2 de este índice) |
 | ¿Eric ya decidió esto? | Sección 2 de este índice: todas las decisiones con archivo y línea. Orden de autoridad: decisiones de Eric → taxonomía 00688 → C18 base → textos del corpus → PLAN_V5, TEMPLATES y CASOS (capítulo 3 §3.1) |
-| Pendientes abiertos y quién los resuelve; qué etapa sigue | `taller/catalogo/PENDIENTES.md` |
-| Diseño de la aplicación y del procedimiento de clasificación (propuesta del 2026-10-29) | `taller/catalogo/DISENO_APLICACION_Y_CLASIFICACION.md` |
+| Pendientes abiertos y quién los resuelve; qué etapa sigue | `PENDIENTES.md` |
+| Diseño de la aplicación y del procedimiento de clasificación (propuesta del 2026-10-29) | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` |
 | Objetivo del sistema | PLAN_V5 L29 (capítulo 3 §3.4): aplicación que extrae exhaustivamente las reglas aplicables a un tipo y caso de imagen y las convierte en prompts de apariencia fotográfica al primer intento. El sistema genera prompts; Eric genera las imágenes |
 | Qué contiene un documento del corpus | Sección 3 de este índice → su explicación verificada. La explicación orienta; lo que vale es el texto original de la base |
-| Texto original de una regla | Base `taller/catalogo/corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Fiel al original: los 206 archivos coinciden por sha256 y los textos coinciden con sus líneas, salvo los HTML, que son el texto visible sin etiquetas (sus números de línea no son líneas del HTML crudo) |
-| Taxonomía: bloques, facetas, valores y términos | `fuentes_20261019/00688_…md`; explicada en el capítulo 7 y detallada en el 8 |
+| Texto original de una regla | Base `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Fiel al original: los 206 archivos coinciden por sha256 y los textos coinciden con sus líneas, salvo los HTML, que son el texto visible sin etiquetas (sus números de línea no son líneas del HTML crudo) |
+| Taxonomía: bloques, facetas, valores y términos | `3_taxonomia/00688_…md`; explicada en el capítulo 7 y detallada en el 8 |
 | Etapas y flujos | Capítulo 6; taxonomía §2 |
 | Matriz de casos | Capítulo 11; `casos/` |
 | Brief, contratos y adaptadores por modelo | Capítulo 12; `templates/` |
@@ -33,7 +33,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 - L3 **Alcance y vocabulario de los prompts** — El alcance de las reglas es solo GPT Image 2 (decisión de Eric, 2026-10-24). La palabra «photorealistic» está prohibida
 - L8 **Antes de decir que algo no existe** — Nunca se afirma que el corpus no tiene una regla, un texto o un dato sin haber leído completos todos los textos que
-- L16 **Consultar el mapa antes de preguntar o de dar algo por faltante (instrucción de Eric, 202…** — El mapa (`taller/catalogo/mapa/`) es la memoria del agente, no un documento para Eric. Antes de preguntarle algo a Eric
+- L16 **Consultar el mapa antes de preguntar o de dar algo por faltante (instrucción de Eric, 202…** — El mapa (`6_mapa/`) es la memoria del agente, no un documento para Eric. Antes de preguntarle algo a Eric
 - L25 **Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29)** — - Prohibido dejar riesgos abiertos, salvo los que estén totalmente fuera de control del agente. Todo lo demás se
 - L35 **Toda lectura deja registro en el repo** — Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sección, qué dice (con su línea) y qué
 
@@ -50,13 +50,13 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L16 | 9 | Quién clasifica sin NotebookLM | NotebookLM eliminado del flujo por completo. Clasificador de dos capas, determinista por ruta y regex más similitud vectorial con …
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo** — - La génesis fija solo la parte del sujeto que lleva la identidad; todo lo que la extiende es un paso posterior con esa génesis adjunta como referencia. Rostro T1 antes …
 
-### `taller/catalogo/v2/decisiones/01021_DECISIONES_APLICADAS_20261011_224300.md`
+### `5_decisiones/01021_DECISIONES_APLICADAS_20261011_224300.md`
 
 - L15 **Decisión explícita de las 16:56:54.532502 UTC** — Sentinel_d46f126e89e081919ccb3a120d2ce227: anclas/keyframes en ruta de video llevan F26–F28 VALOR o UNIVERSAL, nunca NO APLICA. F11 y flujo separan imagen/video por apli…
 - L19 **Verificación documental y límites de capacidad** — REG-000658/660/663: discrepancia de versiones registrada y delimitada por modelo/interfaz, sin trasladar límites del adaptador histórico a otra versión. REG-000714: resp…
 - L23 **Cierre del trabajo de candidatas** — Resultado del trabajo de candidatas: se conciliaron las 3.723 aplicaciones, no se fabricó una lista de 509. Se identificaron 1.976 candidatas documentales: 1.967 activas…
 
-### `taller/catalogo/v2/decisiones/01022_DELTA_DECISIONES_CONSOLIDADO_20261011_224300.md`
+### `5_decisiones/01022_DELTA_DECISIONES_CONSOLIDADO_20261011_224300.md`
 
 - L3 **Estado y autorización** — Correcciones solicitadas y aprobadas por el usuario en dos mensajes de esta conversación:
 - L11 **Cambios del contrato** — | Identificador estable de categoría | Campo y valor | Definición y alcance | Evidencia |
@@ -92,7 +92,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L216 **Cierre de verificación documental, sin inventar rendimiento actual** — Resolución documental de Nano Banana en esta consolidación: REG-000658/660/663 conservan los identificadores exactos de nano-banana.md:7–9. El adaptador forge histórico …
 - L224 **Resultado de aplicación de la decisión de anclas/keyframes** — Resultado del trabajo de candidatas: se conciliaron las 3.723 aplicaciones, no se fabricó una lista de 509. Se identificaron 1.976 candidatas documentales: 1.967 activas…
 
-### `taller/catalogo/v2/decisiones/01062_registro_decisiones_DOC01.md`
+### `5_decisiones/01062_registro_decisiones_DOC01.md`
 
 - L4 **DEC-000001** — [Mensaje del usuario] esraba ya decididio que si derrnate la clasificacin neneceustabqmos ampliar la taxonomi entoncers lo hacuamos auqi es un claor ejemplp d euq evamos…
 - L8 **DEC-000002** — [Mensaje del usuario] tu ;ectura es cirrecta 6.2 solo aplica si no jhat archivo smixs
@@ -120,7 +120,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L81 **DEC-000024** — [Mensaje del usuario] las licencias la saplicas al sustemna una vez y ya, y no quieor que parezca ningun tipop de TRUBUCION A UN TERCERO EN NINGUN MATEIRLA QE VA AL CLIN…
 - L84 **DEC-000025** — [Mensaje del usuario] LPS TEMPLATES DEBEN DE SEHUIRO LA S REGLAS D ESUNTAXIOS D ELOS MODELOS QUE SE APLICNA UNA VEZ AL TEMPLATE Y NO SE VUELVEN A EXTARER
 
-### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_20261023.md`
+### `5_decisiones/DECISIONES_ERIC_20261023.md`
 
 - L3 1. Alcance de esta fase: solo textos de imagen y GPT Image 2. Universo: los 1,511 textos de `skills/image/**`
 - L7 2. La catalogación previa (2026-10-11, 1,887 registros) y la catalogación provisional del 2026-10-23 no se
@@ -131,14 +131,14 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L32 7. quality en GPT Image 2 (consulta C1 del piloto): la elige el usuario; «medium como punto de partida» y «empieza con
 - L34 8. Biblioteca de prompts efectivos (precisada por Eric el 2026-10-23):
 
-### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_20261024.md`
+### `5_decisiones/DECISIONES_ERIC_20261024.md`
 
 - L7 1. **Alcance del universo de textos** (amplía la decisión 1 de `DECISIONES_ERIC_20261023.md` y responde D2 del plan v3
 - L19 2. «SI EXISTE LA CLASIFICACIÓN EN LA TAXONOMÍA ES PORQUE LA REGLA EXISTE EN EL CORPUS».
 - L20 3. «EL SOLO HACER LA GENERACIÓN EN DOS PASOS NO ES SUFICIENTE, HAY VARIAS REGLAS MUY ESPECÍFICAS SOBRE EL LENTE Y EL
 - L23 4. Método de prueba aprobado el 2026-10-24: bloque armado por casos (universo completo → filtro por caso → controles
 
-### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_20261026.md`
+### `5_decisiones/DECISIONES_ERIC_20261026.md`
 
 - L5 1. **Cuando un texto da una cifra que no es la de GPT Image 2, vale la cifra que el corpus da para GPT Image 2**, y el
 - L14 2. «No estás aprobado para asumir nada, siempre lo verificas»: toda afirmación sobre un texto se comprueba leyendo el
@@ -160,7 +160,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L99 18. **Dos textos mal excluidos entran al universo** (2026-10-27). Eric respondió «Sí, meterlos» a la pregunta «¿Meto
 - L108 19. **La decisión por sección se mantiene** (2026-10-27, 00:28–00:37 UTC; registrada tarde, el 2026-10-27). Se decidió en
 
-### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_20261027_30.md`
+### `5_decisiones/DECISIONES_ERIC_20261027_30.md`
 
 - L7 1. **Objetivo y reparto** (2026-10-27): «EL SISTEMA NO GENERA IMÁGENES, GENERA PROMPTS Y YO HAGO LAS IMÁGENES». El
 - L9 2. **Qué se queda en el repo** (2026-10-27): «LOS ARCHIVOS QUE SE QUEDAN SON LOS QUE NECESITAS PARA EL SISTEMA ENTERO,
@@ -174,12 +174,12 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L43 10. **PLAN_V5 fuera** (2026-10-30): «no hace sentido que nada dependa de un plan fracasado; ya te dije que necesitamos otro plan». Se
 - L46 11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
 
-### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`
+### `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`
 
 - L5 **De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28)** — - `| 14 | director (Eric) | D1: CF-MOTOR-SW30 → b (5 slots de GPT Image), política permanente para todo brief |`
 - L10 **De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuentes_eric_20261021/`)** — - `user_directives.json`: ERIC-B1-PHOTOREALISTIC («Prohibido el término photorealistic en prompts») y
 
-### `taller/catalogo/v2/decisiones/DECISIONES_repo_20260925.md`
+### `5_decisiones/DECISIONES_repo_20260925.md`
 
 - L8 | 1 | Dónde viven las familias de régimen físico, el vocabulario ampliado del linter y su copia parcheada | En el repo, `.claude/rules/regimenes/` y `.claude/hooks/auror…
 - L9 | 2 | Alcance del linter aurora | Copia parcheada en el repo. El conteo de palabras nunca bloquea: es advertencia con el presupuesto de la plataforma como referencia. Si…
@@ -192,12 +192,12 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L16 | 9 | Quién clasifica sin NotebookLM | NotebookLM eliminado del flujo por completo. Clasificador de dos capas, determinista por ruta y regex más similitud vectorial con …
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo** — - La génesis fija solo la parte del sujeto que lleva la identidad; todo lo que la extiende es un paso posterior con esa génesis adjunta como referencia. Rostro T1 antes …
 
-### `taller/catalogo/fuentes_eric_20261021/directivas_taller.json`
+### `5_decisiones/directivas_20261021/directivas_taller.json`
 
 - `ERIC-IDIOMA-PROMPT-INGLES`: «en ingles esto es siemore»
 - `ERIC-BLOQUES-1-2-NO-TOPE`: «La expectativa de una o dos reglas por bloque sirve para evaluar los filtros, no para imponer un tope ni excluir reglas válidas.»
 
-### `taller/catalogo/fuentes_eric_20261021/user_directives.json`
+### `5_decisiones/directivas_20261021/user_directives.json`
 
 - `ERIC-B1-PHOTOREALISTIC`: «Prohibido el término photorealistic en prompts»
 - `ERIC-DELEGATION-TERMS`: «Se perdió la prohibición explícita del usuario de photorealistic y fotorealista.»
@@ -206,147 +206,147 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 | Documento | Explicación | Utilidad |
 |---|---|---|
-| `flujos/flujo-anclas.html` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L1 | ALTA |
-| `flujos/flujo-spot.html` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L51 | ALTA |
-| `skills/ai-production-director/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L92 | ALTA |
-| `skills/ai-production-director/references/creative-strategy.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L137 | MEDIA |
-| `skills/ai-production-director/references/production-package.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L157 | ALTA |
-| `skills/ai-video-storyboard/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L175 | ALTA |
-| `skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L207 | ALTA |
-| `skills/brand-lock-extractor/LICENSE` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L237 | NULA |
-| `skills/brand-lock-extractor/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L255 | MEDIA |
-| `skills/brand-lock-extractor/brand-packs/README.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L288 | MEDIA |
-| `skills/brand-lock-extractor/brand-packs/_template.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L306 | ALTA |
-| `skills/brand-lock-extractor/brand-packs/examples/saas-clean.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L328 | ALTA |
-| `skills/brand-lock-extractor/examples/brand-lock.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L350 | ALTA |
-| `skills/brand-lock-extractor/examples/input-brief.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L369 | ALTA |
-| `skills/brand-lock-extractor/references/extraction-rubric.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L383 | ALTA |
-| `skills/brand-lock-extractor/templates/brand-lock.md.tpl` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L415 | ALTA |
-| `skills/brand-lock-extractor/tools/README.md` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L433 | ALTA |
-| `skills/brand-lock-extractor/tools/_shotkit.py` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L467 | MEDIA |
-| `skills/brand-lock-extractor/tools/_template.py` | `taller/catalogo/mapa/documentos/verificado/lote1.md` L486 | NULA |
-| `skills/brand-lock-extractor/tools/check.sh` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L1 | MEDIA |
-| `skills/brand-lock-extractor/tools/copy-prompt.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L26 | MEDIA |
-| `skills/brand-lock-extractor/tools/shots-to-html.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L49 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_brand_lock.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L80 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_capabilities.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L111 | ALTA |
-| `skills/brand-lock-extractor/tools/validate_critique.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L143 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_prompts.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L168 | ALTA |
-| `skills/brand-lock-extractor/tools/validate_provenance.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L204 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_schemas.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L244 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_shots.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L259 | MEDIA |
-| `skills/brand-lock-extractor/tools/validate_skills.py` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L296 | MEDIA |
-| `skills/image/LICENSE` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L311 | NULA |
-| `skills/image/NOTICE` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L331 | NULA |
-| `skills/image/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L345 | ALTA |
-| `skills/image/references/characters.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L373 | ALTA |
-| `skills/image/references/creative-direction.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L392 | ALTA |
-| `skills/image/references/dimensional.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L408 | ALTA |
-| `skills/image/references/editing.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L426 | ALTA |
-| `skills/image/references/golden-rules.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L446 | ALTA |
-| `skills/image/references/gpt-image.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L473 | ALTA |
-| `skills/image/references/models.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L497 | ALTA |
-| `skills/image/references/multi-panel.md` | `taller/catalogo/mapa/documentos/verificado/lote2.md` L515 | ALTA |
-| `skills/image/references/nano-banana.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L1 | ALTA |
-| `skills/image/references/patterns/character-design.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L38 | ALTA |
-| `skills/image/references/patterns/ecommerce.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L62 | ALTA |
-| `skills/image/references/patterns/fashion-editorial.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L86 | ALTA |
-| `skills/image/references/patterns/food-beverage.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L110 | ALTA |
-| `skills/image/references/patterns/portrait-cinema.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L134 | ALTA |
-| `skills/image/references/patterns/poster-illustration.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L158 | ALTA |
-| `skills/image/references/patterns/ui-social.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L182 | ALTA |
-| `skills/image/references/prompt-framework.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L206 | ALTA |
-| `skills/image/references/slides.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L236 | ALTA |
-| `skills/image/references/storyboards.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L276 | ALTA |
-| `skills/image/references/structural.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L306 | ALTA |
-| `skills/image/references/text-rendering.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L336 | ALTA |
-| `skills/image/references/vision-decomposer.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L366 | ALTA |
-| `skills/screenwriter/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L392 | MEDIA |
-| `skills/screenwriter/references/advanced-techniques.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L423 | MEDIA |
-| `skills/screenwriter/references/pipeline-integration.md` | `taller/catalogo/mapa/documentos/verificado/lote3.md` L445 | MEDIA |
-| `skills/storyboard-architect/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L1 | ALTA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L44 | ALTA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/preview.html` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L66 | ALTA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/run.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L88 | MEDIA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/shots.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L104 | ALTA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L127 | ALTA |
-| `skills/storyboard-architect/examples/30s-pain-proof-promise/text-overlays.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L145 | MEDIA |
-| `skills/storyboard-architect/examples/60s-founder-explainer/preview.html` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L165 | ALTA |
-| `skills/storyboard-architect/examples/60s-founder-explainer/run.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L188 | MEDIA |
-| `skills/storyboard-architect/examples/60s-founder-explainer/shots.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L204 | ALTA |
-| `skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L228 | ALTA |
-| `skills/storyboard-architect/examples/60s-founder-explainer/text-overlays.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L246 | MEDIA |
-| `skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L265 | ALTA |
-| `skills/storyboard-architect/examples/shotkit-explainer/preview.html` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L288 | ALTA |
-| `skills/storyboard-architect/examples/shotkit-explainer/run.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L309 | MEDIA |
-| `skills/storyboard-architect/examples/shotkit-explainer/shots.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L325 | ALTA |
-| `skills/storyboard-architect/examples/shotkit-explainer/storyboard.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L347 | ALTA |
-| `skills/storyboard-architect/examples/shotkit-explainer/text-overlays.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L365 | MEDIA |
-| `skills/storyboard-architect/references/beat-frameworks.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L386 | MEDIA |
-| `skills/storyboard-architect/references/on-screen-text.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L404 | ALTA |
-| `skills/storyboard-architect/references/shot-grammar.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L427 | ALTA |
-| `skills/storyboard-architect/references/timing-rules.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L446 | MEDIA |
-| `skills/storyboard-architect/templates/run.schema.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L464 | MEDIA |
-| `skills/storyboard-architect/templates/shots.schema.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L485 | MEDIA |
-| `skills/storyboard-architect/templates/storyboard.md.tpl` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L505 | MEDIA |
-| `skills/storyboard-architect/templates/text-overlays.schema.json` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L523 | ALTA |
-| `skills/storyboard-html-preview/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote4.md` L544 | MEDIA |
-| `skills/storyboard-html-preview/templates/preview.html.tpl` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L1 | MEDIA |
-| `skills/storyboard-html-preview/templates/print.css.tpl` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L20 | MEDIA |
-| `skills/storyboard-html-preview/templates/styles.css.tpl` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L39 | MEDIA |
-| `skills/video/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L63 | ALTA |
-| `skills/video/references/animatic-keyframes.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L85 | ALTA |
-| `skills/video/references/camera-lighting-vocabulary.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L106 | ALTA |
-| `skills/video/references/dramaturgy.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L129 | ALTA |
-| `skills/video/references/fixes-and-skeletons.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L156 | ALTA |
-| `skills/video/references/kling.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L188 | ALTA |
-| `skills/video/references/patterns-and-genres.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L212 | ALTA |
-| `skills/video/references/race-and-speed.md` | `taller/catalogo/mapa/documentos/verificado/lote5.md` L227 | ALTA |
-| `skills/video/references/role-modes.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L1 | ALTA |
-| `skills/video/references/seedance-25.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L37 | ALTA |
-| `skills/video/references/seedance.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L87 | ALTA |
-| `skills/video/references/universal-rules.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L133 | ALTA |
-| `skills/video/references/veo.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L177 | ALTA |
-| `skills/visual-asset-critic/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L209 | ALTA |
-| `skills/visual-asset-critic/examples/critique.accept.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L246 | MEDIA |
-| `skills/visual-asset-critic/examples/critique.revise.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L260 | ALTA |
-| `skills/visual-asset-critic/examples/worked-run/critiques/round-1/shot_01.critique.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L274 | MEDIA |
-| `skills/visual-asset-critic/examples/worked-run/critiques/round-1/shot_02.critique.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L289 | ALTA |
-| `skills/visual-asset-critic/examples/worked-run/critiques/round-2/shot_02.critique.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L304 | MEDIA |
-| `skills/visual-asset-critic/examples/worked-run/preview.html` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L319 | MEDIA |
-| `skills/visual-asset-critic/examples/worked-run/prompts/round-1/flux.txt` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L335 | ALTA |
-| `skills/visual-asset-critic/examples/worked-run/prompts/round-2/revised-flux.txt` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L349 | ALTA |
-| `skills/visual-asset-critic/examples/worked-run/run.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L362 | MEDIA |
-| `skills/visual-asset-critic/examples/worked-run/shots.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L378 | MEDIA |
-| `skills/visual-asset-critic/examples/worked-run/text-overlays.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L392 | MEDIA |
-| `skills/visual-asset-critic/references/critique-rubric.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L406 | ALTA |
-| `skills/visual-asset-critic/templates/critique.schema.json` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L427 | MEDIA |
-| `skills/visual-media/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L444 | MEDIA |
-| `skills/visual-prompt-forge/SKILL.md` | `taller/catalogo/mapa/documentos/verificado/lote6.md` L478 | ALTA |
-| `skills/visual-prompt-forge/adapters/_capabilities.json` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L1 | ALTA |
-| `skills/visual-prompt-forge/adapters/capabilities.schema.json` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L28 | MEDIA |
-| `skills/visual-prompt-forge/adapters/flux.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L52 | ALTA |
-| `skills/visual-prompt-forge/adapters/gpt-image.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L84 | ALTA |
-| `skills/visual-prompt-forge/adapters/hailuo.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L114 | ALTA |
-| `skills/visual-prompt-forge/adapters/ideogram.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L142 | ALTA |
-| `skills/visual-prompt-forge/adapters/kling.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L174 | ALTA |
-| `skills/visual-prompt-forge/adapters/midjourney.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L204 | ALTA |
-| `skills/visual-prompt-forge/adapters/nano-banana.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L234 | ALTA |
-| `skills/visual-prompt-forge/adapters/seedance.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L266 | ALTA |
-| `skills/visual-prompt-forge/adapters/seedream.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L294 | ALTA |
-| `skills/visual-prompt-forge/adapters/veo.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L326 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L356 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/flux.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L378 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L392 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/ideogram.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L412 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/kling.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L426 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/midjourney.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L440 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/nano-banana.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L454 | ALTA |
-| `skills/visual-prompt-forge/examples/one-shot-all-adapters/seedream.txt` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L470 | ALTA |
-| `skills/visual-prompt-forge/references/consistency-locks.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L484 | ALTA |
-| `skills/visual-prompt-forge/references/failure-modes.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L516 | ALTA |
-| `skills/visual-prompt-forge/references/prompt-anatomy.md` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L544 | ALTA |
-| `skills/visual-prompt-forge/tools/validate_prompts.py` | `taller/catalogo/mapa/documentos/verificado/lote7.md` L570 | ALTA |
+| `flujos/flujo-anclas.html` | `6_mapa/documentos/verificado/lote1.md` L1 | ALTA |
+| `flujos/flujo-spot.html` | `6_mapa/documentos/verificado/lote1.md` L51 | ALTA |
+| `skills/ai-production-director/SKILL.md` | `6_mapa/documentos/verificado/lote1.md` L92 | ALTA |
+| `skills/ai-production-director/references/creative-strategy.md` | `6_mapa/documentos/verificado/lote1.md` L137 | MEDIA |
+| `skills/ai-production-director/references/production-package.md` | `6_mapa/documentos/verificado/lote1.md` L157 | ALTA |
+| `skills/ai-video-storyboard/SKILL.md` | `6_mapa/documentos/verificado/lote1.md` L175 | ALTA |
+| `skills/ai-video-storyboard/examples/tiktok-reel-30s-coffee.md` | `6_mapa/documentos/verificado/lote1.md` L207 | ALTA |
+| `skills/brand-lock-extractor/LICENSE` | `6_mapa/documentos/verificado/lote1.md` L237 | NULA |
+| `skills/brand-lock-extractor/SKILL.md` | `6_mapa/documentos/verificado/lote1.md` L255 | MEDIA |
+| `skills/brand-lock-extractor/brand-packs/README.md` | `6_mapa/documentos/verificado/lote1.md` L288 | MEDIA |
+| `skills/brand-lock-extractor/brand-packs/_template.md` | `6_mapa/documentos/verificado/lote1.md` L306 | ALTA |
+| `skills/brand-lock-extractor/brand-packs/examples/saas-clean.md` | `6_mapa/documentos/verificado/lote1.md` L328 | ALTA |
+| `skills/brand-lock-extractor/examples/brand-lock.md` | `6_mapa/documentos/verificado/lote1.md` L350 | ALTA |
+| `skills/brand-lock-extractor/examples/input-brief.md` | `6_mapa/documentos/verificado/lote1.md` L369 | ALTA |
+| `skills/brand-lock-extractor/references/extraction-rubric.md` | `6_mapa/documentos/verificado/lote1.md` L383 | ALTA |
+| `skills/brand-lock-extractor/templates/brand-lock.md.tpl` | `6_mapa/documentos/verificado/lote1.md` L415 | ALTA |
+| `skills/brand-lock-extractor/tools/README.md` | `6_mapa/documentos/verificado/lote1.md` L433 | ALTA |
+| `skills/brand-lock-extractor/tools/_shotkit.py` | `6_mapa/documentos/verificado/lote1.md` L467 | MEDIA |
+| `skills/brand-lock-extractor/tools/_template.py` | `6_mapa/documentos/verificado/lote1.md` L486 | NULA |
+| `skills/brand-lock-extractor/tools/check.sh` | `6_mapa/documentos/verificado/lote2.md` L1 | MEDIA |
+| `skills/brand-lock-extractor/tools/copy-prompt.py` | `6_mapa/documentos/verificado/lote2.md` L26 | MEDIA |
+| `skills/brand-lock-extractor/tools/shots-to-html.py` | `6_mapa/documentos/verificado/lote2.md` L49 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_brand_lock.py` | `6_mapa/documentos/verificado/lote2.md` L80 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_capabilities.py` | `6_mapa/documentos/verificado/lote2.md` L111 | ALTA |
+| `skills/brand-lock-extractor/tools/validate_critique.py` | `6_mapa/documentos/verificado/lote2.md` L143 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_prompts.py` | `6_mapa/documentos/verificado/lote2.md` L168 | ALTA |
+| `skills/brand-lock-extractor/tools/validate_provenance.py` | `6_mapa/documentos/verificado/lote2.md` L204 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_schemas.py` | `6_mapa/documentos/verificado/lote2.md` L244 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_shots.py` | `6_mapa/documentos/verificado/lote2.md` L259 | MEDIA |
+| `skills/brand-lock-extractor/tools/validate_skills.py` | `6_mapa/documentos/verificado/lote2.md` L296 | MEDIA |
+| `skills/image/LICENSE` | `6_mapa/documentos/verificado/lote2.md` L311 | NULA |
+| `skills/image/NOTICE` | `6_mapa/documentos/verificado/lote2.md` L331 | NULA |
+| `skills/image/SKILL.md` | `6_mapa/documentos/verificado/lote2.md` L345 | ALTA |
+| `skills/image/references/characters.md` | `6_mapa/documentos/verificado/lote2.md` L373 | ALTA |
+| `skills/image/references/creative-direction.md` | `6_mapa/documentos/verificado/lote2.md` L392 | ALTA |
+| `skills/image/references/dimensional.md` | `6_mapa/documentos/verificado/lote2.md` L408 | ALTA |
+| `skills/image/references/editing.md` | `6_mapa/documentos/verificado/lote2.md` L426 | ALTA |
+| `skills/image/references/golden-rules.md` | `6_mapa/documentos/verificado/lote2.md` L446 | ALTA |
+| `skills/image/references/gpt-image.md` | `6_mapa/documentos/verificado/lote2.md` L473 | ALTA |
+| `skills/image/references/models.md` | `6_mapa/documentos/verificado/lote2.md` L497 | ALTA |
+| `skills/image/references/multi-panel.md` | `6_mapa/documentos/verificado/lote2.md` L515 | ALTA |
+| `skills/image/references/nano-banana.md` | `6_mapa/documentos/verificado/lote3.md` L1 | ALTA |
+| `skills/image/references/patterns/character-design.md` | `6_mapa/documentos/verificado/lote3.md` L38 | ALTA |
+| `skills/image/references/patterns/ecommerce.md` | `6_mapa/documentos/verificado/lote3.md` L62 | ALTA |
+| `skills/image/references/patterns/fashion-editorial.md` | `6_mapa/documentos/verificado/lote3.md` L86 | ALTA |
+| `skills/image/references/patterns/food-beverage.md` | `6_mapa/documentos/verificado/lote3.md` L110 | ALTA |
+| `skills/image/references/patterns/portrait-cinema.md` | `6_mapa/documentos/verificado/lote3.md` L134 | ALTA |
+| `skills/image/references/patterns/poster-illustration.md` | `6_mapa/documentos/verificado/lote3.md` L158 | ALTA |
+| `skills/image/references/patterns/ui-social.md` | `6_mapa/documentos/verificado/lote3.md` L182 | ALTA |
+| `skills/image/references/prompt-framework.md` | `6_mapa/documentos/verificado/lote3.md` L206 | ALTA |
+| `skills/image/references/slides.md` | `6_mapa/documentos/verificado/lote3.md` L236 | ALTA |
+| `skills/image/references/storyboards.md` | `6_mapa/documentos/verificado/lote3.md` L276 | ALTA |
+| `skills/image/references/structural.md` | `6_mapa/documentos/verificado/lote3.md` L306 | ALTA |
+| `skills/image/references/text-rendering.md` | `6_mapa/documentos/verificado/lote3.md` L336 | ALTA |
+| `skills/image/references/vision-decomposer.md` | `6_mapa/documentos/verificado/lote3.md` L366 | ALTA |
+| `skills/screenwriter/SKILL.md` | `6_mapa/documentos/verificado/lote3.md` L392 | MEDIA |
+| `skills/screenwriter/references/advanced-techniques.md` | `6_mapa/documentos/verificado/lote3.md` L423 | MEDIA |
+| `skills/screenwriter/references/pipeline-integration.md` | `6_mapa/documentos/verificado/lote3.md` L445 | MEDIA |
+| `skills/storyboard-architect/SKILL.md` | `6_mapa/documentos/verificado/lote4.md` L1 | ALTA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/brand-lock.snapshot.md` | `6_mapa/documentos/verificado/lote4.md` L44 | ALTA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/preview.html` | `6_mapa/documentos/verificado/lote4.md` L66 | ALTA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/run.json` | `6_mapa/documentos/verificado/lote4.md` L88 | MEDIA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/shots.json` | `6_mapa/documentos/verificado/lote4.md` L104 | ALTA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/storyboard.md` | `6_mapa/documentos/verificado/lote4.md` L127 | ALTA |
+| `skills/storyboard-architect/examples/30s-pain-proof-promise/text-overlays.json` | `6_mapa/documentos/verificado/lote4.md` L145 | MEDIA |
+| `skills/storyboard-architect/examples/60s-founder-explainer/preview.html` | `6_mapa/documentos/verificado/lote4.md` L165 | ALTA |
+| `skills/storyboard-architect/examples/60s-founder-explainer/run.json` | `6_mapa/documentos/verificado/lote4.md` L188 | MEDIA |
+| `skills/storyboard-architect/examples/60s-founder-explainer/shots.json` | `6_mapa/documentos/verificado/lote4.md` L204 | ALTA |
+| `skills/storyboard-architect/examples/60s-founder-explainer/storyboard.md` | `6_mapa/documentos/verificado/lote4.md` L228 | ALTA |
+| `skills/storyboard-architect/examples/60s-founder-explainer/text-overlays.json` | `6_mapa/documentos/verificado/lote4.md` L246 | MEDIA |
+| `skills/storyboard-architect/examples/shotkit-explainer/brand-lock.snapshot.md` | `6_mapa/documentos/verificado/lote4.md` L265 | ALTA |
+| `skills/storyboard-architect/examples/shotkit-explainer/preview.html` | `6_mapa/documentos/verificado/lote4.md` L288 | ALTA |
+| `skills/storyboard-architect/examples/shotkit-explainer/run.json` | `6_mapa/documentos/verificado/lote4.md` L309 | MEDIA |
+| `skills/storyboard-architect/examples/shotkit-explainer/shots.json` | `6_mapa/documentos/verificado/lote4.md` L325 | ALTA |
+| `skills/storyboard-architect/examples/shotkit-explainer/storyboard.md` | `6_mapa/documentos/verificado/lote4.md` L347 | ALTA |
+| `skills/storyboard-architect/examples/shotkit-explainer/text-overlays.json` | `6_mapa/documentos/verificado/lote4.md` L365 | MEDIA |
+| `skills/storyboard-architect/references/beat-frameworks.md` | `6_mapa/documentos/verificado/lote4.md` L386 | MEDIA |
+| `skills/storyboard-architect/references/on-screen-text.md` | `6_mapa/documentos/verificado/lote4.md` L404 | ALTA |
+| `skills/storyboard-architect/references/shot-grammar.md` | `6_mapa/documentos/verificado/lote4.md` L427 | ALTA |
+| `skills/storyboard-architect/references/timing-rules.md` | `6_mapa/documentos/verificado/lote4.md` L446 | MEDIA |
+| `skills/storyboard-architect/templates/run.schema.json` | `6_mapa/documentos/verificado/lote4.md` L464 | MEDIA |
+| `skills/storyboard-architect/templates/shots.schema.json` | `6_mapa/documentos/verificado/lote4.md` L485 | MEDIA |
+| `skills/storyboard-architect/templates/storyboard.md.tpl` | `6_mapa/documentos/verificado/lote4.md` L505 | MEDIA |
+| `skills/storyboard-architect/templates/text-overlays.schema.json` | `6_mapa/documentos/verificado/lote4.md` L523 | ALTA |
+| `skills/storyboard-html-preview/SKILL.md` | `6_mapa/documentos/verificado/lote4.md` L544 | MEDIA |
+| `skills/storyboard-html-preview/templates/preview.html.tpl` | `6_mapa/documentos/verificado/lote5.md` L1 | MEDIA |
+| `skills/storyboard-html-preview/templates/print.css.tpl` | `6_mapa/documentos/verificado/lote5.md` L20 | MEDIA |
+| `skills/storyboard-html-preview/templates/styles.css.tpl` | `6_mapa/documentos/verificado/lote5.md` L39 | MEDIA |
+| `skills/video/SKILL.md` | `6_mapa/documentos/verificado/lote5.md` L63 | ALTA |
+| `skills/video/references/animatic-keyframes.md` | `6_mapa/documentos/verificado/lote5.md` L85 | ALTA |
+| `skills/video/references/camera-lighting-vocabulary.md` | `6_mapa/documentos/verificado/lote5.md` L106 | ALTA |
+| `skills/video/references/dramaturgy.md` | `6_mapa/documentos/verificado/lote5.md` L129 | ALTA |
+| `skills/video/references/fixes-and-skeletons.md` | `6_mapa/documentos/verificado/lote5.md` L156 | ALTA |
+| `skills/video/references/kling.md` | `6_mapa/documentos/verificado/lote5.md` L188 | ALTA |
+| `skills/video/references/patterns-and-genres.md` | `6_mapa/documentos/verificado/lote5.md` L212 | ALTA |
+| `skills/video/references/race-and-speed.md` | `6_mapa/documentos/verificado/lote5.md` L227 | ALTA |
+| `skills/video/references/role-modes.md` | `6_mapa/documentos/verificado/lote6.md` L1 | ALTA |
+| `skills/video/references/seedance-25.md` | `6_mapa/documentos/verificado/lote6.md` L37 | ALTA |
+| `skills/video/references/seedance.md` | `6_mapa/documentos/verificado/lote6.md` L87 | ALTA |
+| `skills/video/references/universal-rules.md` | `6_mapa/documentos/verificado/lote6.md` L133 | ALTA |
+| `skills/video/references/veo.md` | `6_mapa/documentos/verificado/lote6.md` L177 | ALTA |
+| `skills/visual-asset-critic/SKILL.md` | `6_mapa/documentos/verificado/lote6.md` L209 | ALTA |
+| `skills/visual-asset-critic/examples/critique.accept.json` | `6_mapa/documentos/verificado/lote6.md` L246 | MEDIA |
+| `skills/visual-asset-critic/examples/critique.revise.json` | `6_mapa/documentos/verificado/lote6.md` L260 | ALTA |
+| `skills/visual-asset-critic/examples/worked-run/critiques/round-1/shot_01.critique.json` | `6_mapa/documentos/verificado/lote6.md` L274 | MEDIA |
+| `skills/visual-asset-critic/examples/worked-run/critiques/round-1/shot_02.critique.json` | `6_mapa/documentos/verificado/lote6.md` L289 | ALTA |
+| `skills/visual-asset-critic/examples/worked-run/critiques/round-2/shot_02.critique.json` | `6_mapa/documentos/verificado/lote6.md` L304 | MEDIA |
+| `skills/visual-asset-critic/examples/worked-run/preview.html` | `6_mapa/documentos/verificado/lote6.md` L319 | MEDIA |
+| `skills/visual-asset-critic/examples/worked-run/prompts/round-1/flux.txt` | `6_mapa/documentos/verificado/lote6.md` L335 | ALTA |
+| `skills/visual-asset-critic/examples/worked-run/prompts/round-2/revised-flux.txt` | `6_mapa/documentos/verificado/lote6.md` L349 | ALTA |
+| `skills/visual-asset-critic/examples/worked-run/run.json` | `6_mapa/documentos/verificado/lote6.md` L362 | MEDIA |
+| `skills/visual-asset-critic/examples/worked-run/shots.json` | `6_mapa/documentos/verificado/lote6.md` L378 | MEDIA |
+| `skills/visual-asset-critic/examples/worked-run/text-overlays.json` | `6_mapa/documentos/verificado/lote6.md` L392 | MEDIA |
+| `skills/visual-asset-critic/references/critique-rubric.md` | `6_mapa/documentos/verificado/lote6.md` L406 | ALTA |
+| `skills/visual-asset-critic/templates/critique.schema.json` | `6_mapa/documentos/verificado/lote6.md` L427 | MEDIA |
+| `skills/visual-media/SKILL.md` | `6_mapa/documentos/verificado/lote6.md` L444 | MEDIA |
+| `skills/visual-prompt-forge/SKILL.md` | `6_mapa/documentos/verificado/lote6.md` L478 | ALTA |
+| `skills/visual-prompt-forge/adapters/_capabilities.json` | `6_mapa/documentos/verificado/lote7.md` L1 | ALTA |
+| `skills/visual-prompt-forge/adapters/capabilities.schema.json` | `6_mapa/documentos/verificado/lote7.md` L28 | MEDIA |
+| `skills/visual-prompt-forge/adapters/flux.md` | `6_mapa/documentos/verificado/lote7.md` L52 | ALTA |
+| `skills/visual-prompt-forge/adapters/gpt-image.md` | `6_mapa/documentos/verificado/lote7.md` L84 | ALTA |
+| `skills/visual-prompt-forge/adapters/hailuo.md` | `6_mapa/documentos/verificado/lote7.md` L114 | ALTA |
+| `skills/visual-prompt-forge/adapters/ideogram.md` | `6_mapa/documentos/verificado/lote7.md` L142 | ALTA |
+| `skills/visual-prompt-forge/adapters/kling.md` | `6_mapa/documentos/verificado/lote7.md` L174 | ALTA |
+| `skills/visual-prompt-forge/adapters/midjourney.md` | `6_mapa/documentos/verificado/lote7.md` L204 | ALTA |
+| `skills/visual-prompt-forge/adapters/nano-banana.md` | `6_mapa/documentos/verificado/lote7.md` L234 | ALTA |
+| `skills/visual-prompt-forge/adapters/seedance.md` | `6_mapa/documentos/verificado/lote7.md` L266 | ALTA |
+| `skills/visual-prompt-forge/adapters/seedream.md` | `6_mapa/documentos/verificado/lote7.md` L294 | ALTA |
+| `skills/visual-prompt-forge/adapters/veo.md` | `6_mapa/documentos/verificado/lote7.md` L326 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/README.md` | `6_mapa/documentos/verificado/lote7.md` L356 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/flux.txt` | `6_mapa/documentos/verificado/lote7.md` L378 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt` | `6_mapa/documentos/verificado/lote7.md` L392 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/ideogram.txt` | `6_mapa/documentos/verificado/lote7.md` L412 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/kling.txt` | `6_mapa/documentos/verificado/lote7.md` L426 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/midjourney.txt` | `6_mapa/documentos/verificado/lote7.md` L440 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/nano-banana.txt` | `6_mapa/documentos/verificado/lote7.md` L454 | ALTA |
+| `skills/visual-prompt-forge/examples/one-shot-all-adapters/seedream.txt` | `6_mapa/documentos/verificado/lote7.md` L470 | ALTA |
+| `skills/visual-prompt-forge/references/consistency-locks.md` | `6_mapa/documentos/verificado/lote7.md` L484 | ALTA |
+| `skills/visual-prompt-forge/references/failure-modes.md` | `6_mapa/documentos/verificado/lote7.md` L516 | ALTA |
+| `skills/visual-prompt-forge/references/prompt-anatomy.md` | `6_mapa/documentos/verificado/lote7.md` L544 | ALTA |
+| `skills/visual-prompt-forge/tools/validate_prompts.py` | `6_mapa/documentos/verificado/lote7.md` L570 | ALTA |
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
@@ -360,22 +360,29 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 **`./`**
 
 - `.gitignore`
-- `CLAUDE.md`
 
-**`apd/originales/`**
+**`1_originales/`**
 
 - `AI_Production_Director_v3.4.0_COMPLETE.zip`
 - `SHA256SUMS`
 - `flujo-anclas.html`
 - `flujo-spot.html`
 
-**`taller/catalogo/`**
+**`2_corpus/`**
+
+- `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`
+- `CORPUS_LITERAL_COMPLETO_13005.jsonl`
+
+**`3_taxonomia/`**
+
+- `00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md`
+
+**`4_diseno/`**
 
 - `DISENO_APLICACION_Y_CLASIFICACION.md`
-- `ORIGINALES.md`
-- `PENDIENTES.md`
+- `PLAN_V5_COMPLETO_TAXONOMIA_TEMPLATES_20261019_054300.md`
 
-**`taller/catalogo/casos/`**
+**`4_diseno/casos/`**
 
 - `README_CASOS_DE_USO.md`
 - `bind_templates.py`
@@ -395,25 +402,42 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `validar.py`
 - `verificacion.json`
 
-**`taller/catalogo/corpus/`**
-
-- `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`
-- `CORPUS_LITERAL_COMPLETO_13005.jsonl`
-
-**`taller/catalogo/fuentes_20261019/`**
-
-- `00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md`
-
-**`taller/catalogo/fuentes_20261019/CASOS_OPCIONES_TAXONOMIA_20261019/templates/`**
+**`4_diseno/copias_identicas/casos_templates/`**
 
 - `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
 - `REGISTRO_DESTINOS_TEMPLATE.json`
 
-**`taller/catalogo/fuentes_20261019/`**
+**`4_diseno/copias_identicas/decisiones/`**
 
-- `PLAN_V5_COMPLETO_TAXONOMIA_TEMPLATES_20261019_054300.md`
+- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
 
-**`taller/catalogo/fuentes_eric_20261021/`**
+**`4_diseno/templates/`**
+
+- `CONTRATOS_OPERACION_MODELO.json`
+- `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
+- `FIELD_MAP.csv`
+- `FUENTES_CONTRATOS.json`
+- `MANIFIESTO.json`
+- `REGISTRO_DESTINOS_TEMPLATE.json`
+- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`
+- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
+- `VERIFICACION_ESTRUCTURAL.json`
+- `probar_contratos.py`
+- `verificar_templates.py`
+
+**`5_decisiones/`**
+
+- `01021_DECISIONES_APLICADAS_20261011_224300.md`
+- `01022_DELTA_DECISIONES_CONSOLIDADO_20261011_224300.md`
+- `01062_registro_decisiones_DOC01.md`
+- `DECISIONES_ERIC_20261023.md`
+- `DECISIONES_ERIC_20261024.md`
+- `DECISIONES_ERIC_20261026.md`
+- `DECISIONES_ERIC_20261027_30.md`
+- `DECISIONES_ERIC_RESCATADAS_20261027.md`
+- `DECISIONES_repo_20260925.md`
+
+**`5_decisiones/directivas_20261021/`**
 
 - `MANIFIESTO.json`
 - `canonical_sources.json`
@@ -424,7 +448,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `universal_rules.json`
 - `user_directives.json`
 
-**`taller/catalogo/mapa/`**
+**`6_mapa/`**
 
 - `00_indice.md`
 - `01_archivos_fuera_del_catalogo.md`
@@ -445,12 +469,13 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `10_metodologia_clasificacion.md`
 - `11_veredicto.md`
 - `CONSULTA.md`
+- `INVENTARIO_SHA256.md`
 - `MAPA_ANEXO_DATOS.html`
 - `MAPA_ANEXO_DATOS.pdf`
 - `MAPA_DEL_REPO.html`
 - `MAPA_DEL_REPO.pdf`
 
-**`taller/catalogo/mapa/documentos/verificado/`**
+**`6_mapa/documentos/verificado/`**
 
 - `lote1.md`
 - `lote2.md`
@@ -460,7 +485,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `lote6.md`
 - `lote7.md`
 
-**`taller/catalogo/mapa/herramientas/`**
+**`6_mapa/herramientas/`**
 
 - `construir_pdf.py`
 - `generar_datos.py`
@@ -472,29 +497,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `verificar_capitulos_datos.py`
 - `verificar_documentos.py`
 
-**`taller/catalogo/templates/`**
+**`./`**
 
-- `CONTRATOS_OPERACION_MODELO.json`
-- `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
-- `FIELD_MAP.csv`
-- `FUENTES_CONTRATOS.json`
-- `MANIFIESTO.json`
-- `REGISTRO_DESTINOS_TEMPLATE.json`
-- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`
-- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
-- `VERIFICACION_ESTRUCTURAL.json`
-- `probar_contratos.py`
-- `verificar_templates.py`
-
-**`taller/catalogo/v2/decisiones/`**
-
-- `01021_DECISIONES_APLICADAS_20261011_224300.md`
-- `01022_DELTA_DECISIONES_CONSOLIDADO_20261011_224300.md`
-- `01062_registro_decisiones_DOC01.md`
-- `DECISIONES_ERIC_20261023.md`
-- `DECISIONES_ERIC_20261024.md`
-- `DECISIONES_ERIC_20261026.md`
-- `DECISIONES_ERIC_20261027_30.md`
-- `DECISIONES_ERIC_RESCATADAS_20261027.md`
-- `DECISIONES_repo_20260925.md`
-- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
+- `CLAUDE.md`
+- `PENDIENTES.md`

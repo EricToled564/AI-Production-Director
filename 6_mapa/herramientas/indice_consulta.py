@@ -1,7 +1,7 @@
 """indice_consulta.py: escribe ../CONSULTA.md, el índice que el agente consulta antes de preguntar a Eric o de afirmar
 que algo no existe.
 
-    python3 -I indice_consulta.py      (desde taller/catalogo/mapa/herramientas)
+    python3 -I indice_consulta.py      (desde 6_mapa/herramientas)
 
 Todo lo que no es la guía de la sección 1 se genera mecánicamente desde los archivos, con su ruta y su línea:
   2. cada decisión e instrucción de Eric (texto literal de su primera línea, recortado);
@@ -15,7 +15,7 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 MAPA = AQUI.parent
-REPO = MAPA.parents[2]
+REPO = MAPA.parent
 
 
 def rel(p):
@@ -39,12 +39,12 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 |---|---|
 | Instrucciones de trabajo vigentes | `CLAUDE.md` (sección 2 de este índice) |
 | ¿Eric ya decidió esto? | Sección 2 de este índice: todas las decisiones con archivo y línea. Orden de autoridad: decisiones de Eric → taxonomía 00688 → C18 base → textos del corpus → PLAN_V5, TEMPLATES y CASOS (capítulo 3 §3.1) |
-| Pendientes abiertos y quién los resuelve; qué etapa sigue | `taller/catalogo/PENDIENTES.md` |
-| Diseño de la aplicación y del procedimiento de clasificación (propuesta del 2026-10-29) | `taller/catalogo/DISENO_APLICACION_Y_CLASIFICACION.md` |
+| Pendientes abiertos y quién los resuelve; qué etapa sigue | `PENDIENTES.md` |
+| Diseño de la aplicación y del procedimiento de clasificación (propuesta del 2026-10-29) | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` |
 | Objetivo del sistema | PLAN_V5 L29 (capítulo 3 §3.4): aplicación que extrae exhaustivamente las reglas aplicables a un tipo y caso de imagen y las convierte en prompts de apariencia fotográfica al primer intento. El sistema genera prompts; Eric genera las imágenes |
 | Qué contiene un documento del corpus | Sección 3 de este índice → su explicación verificada. La explicación orienta; lo que vale es el texto original de la base |
-| Texto original de una regla | Base `taller/catalogo/corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Fiel al original: los 206 archivos coinciden por sha256 y los textos coinciden con sus líneas, salvo los HTML, que son el texto visible sin etiquetas (sus números de línea no son líneas del HTML crudo) |
-| Taxonomía: bloques, facetas, valores y términos | `fuentes_20261019/00688_…md`; explicada en el capítulo 7 y detallada en el 8 |
+| Texto original de una regla | Base `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Fiel al original: los 206 archivos coinciden por sha256 y los textos coinciden con sus líneas, salvo los HTML, que son el texto visible sin etiquetas (sus números de línea no son líneas del HTML crudo) |
+| Taxonomía: bloques, facetas, valores y términos | `3_taxonomia/00688_…md`; explicada en el capítulo 7 y detallada en el 8 |
 | Etapas y flujos | Capítulo 6; taxonomía §2 |
 | Matriz de casos | Capítulo 11; `casos/` |
 | Brief, contratos y adaptadores por modelo | Capítulo 12; `templates/` |
@@ -59,7 +59,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 def decisiones():
     o = ["\n## 2. Decisiones e instrucciones de Eric (literal, con archivo y línea)\n"]
     fuentes = [REPO / "CLAUDE.md", REPO / ".claude/rules/DECISIONES.md"] + sorted(
-        (REPO / "taller/catalogo/v2/decisiones").glob("*.md"))
+        (REPO / "5_decisiones").glob("*.md"))
     for f in fuentes:
         if f.name.startswith("TEMPLATES_REVISADOS"):
             continue
@@ -71,7 +71,7 @@ def decisiones():
                 o.append(f"- L{i} **{corta(l.lstrip('# '), 90)}** — {corta(sig)}")
             elif re.match(r"^\d+\. ", l) or re.match(r"^\| \d+ \|", l) or re.match(r"^- \*\*", l):
                 o.append(f"- L{i} {corta(l)}")
-    for f in sorted((REPO / "taller/catalogo/fuentes_eric_20261021").glob("*directiv*.json")):
+    for f in sorted((REPO / "5_decisiones/directivas_20261021").glob("*directiv*.json")):
         o.append(f"\n### `{rel(f)}`\n")
         for d in json.loads(f.read_text(encoding="utf-8")):
             o.append(f"- `{d['constraint_id']}`: «{corta(d['literal'])}»")
