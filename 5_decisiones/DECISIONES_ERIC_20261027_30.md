@@ -61,3 +61,7 @@ las del 29 y del 30, de esta conversación.
     5. Sobre el argumento del agente de que borrar los gates dejaba sin ejecutar el paso de validación de los flujos
        originales (INV-000247, INV-000248, INV-000565): «estamos haciendo un sistema nuevo, esto no aplica más». Ese
        paso y sus herramientas no obligan al sistema nuevo. Las reglas que esos gates revisaban siguen en el corpus.
+    6. «Todo del sistema anterior se borra, porque por eso te vuelves loco cada vez que revisas algo y metes cosas que no
+       tienen nada que ver con el nuevo sistema y perdemos millones de tokens con eso». Hecho: el zip quedó solo con
+       `skills/` (`1_originales/AI_Production_Director_v3.4.0_skills.zip`) y se borraron los hooks de
+       `4_diseno/validadores/`, lo que deja sin efecto el punto 12.3.

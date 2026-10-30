@@ -43,7 +43,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Qué falta y quién lo resuelve | `PENDIENTES.md` (§3) |
 | Texto original de una regla | `2_corpus/…sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Secciones de un documento: `SELECT DISTINCT encabezado FROM textos WHERE archivo=?` |
 | Qué documentos tiene el corpus | §4 |
-| Taxonomía, templates, casos, validadores | §1, carpetas `3_taxonomia/` y `4_diseno/` |
+| Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 | Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado |
 """
 
@@ -87,8 +87,8 @@ def describe(a):
             arch = [i.filename for i in z.infolist() if not i.is_dir()]
             top = collections.Counter(x.split("/")[1] if x.count("/") > 1 else "(raíz)" for x in arch)
             return (f"{len(arch)} archivos: " + ", ".join(f"{k} {v}" for k, v in top.most_common()) +
-                    ". Los de `skills/` son el corpus (§4); los demás no están en el corpus (PENDIENTES P-18). "
-                    "Guías: `START_HERE.md`, `INDEX.md`, `repo/.claude/hooks/README.md`")
+                    ". Las skills del paquete v3.4.0: el corpus (§4) sale de ellas, salvo `aurora-prompt-linter`, "
+                    "`produccion-visual-sw30` y 3 imágenes PNG (taxonomía §0.1)")
     except (ValueError, SyntaxError, sqlite3.Error) as e:
         return f"no se pudo leer ({type(e).__name__})"
     return f"{f.stat().st_size:,} bytes"

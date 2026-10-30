@@ -11,11 +11,11 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Qué falta y quién lo resuelve | `PENDIENTES.md` (§3) |
 | Texto original de una regla | `2_corpus/…sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Secciones de un documento: `SELECT DISTINCT encabezado FROM textos WHERE archivo=?` |
 | Qué documentos tiene el corpus | §4 |
-| Taxonomía, templates, casos, validadores | §1, carpetas `3_taxonomia/` y `4_diseno/` |
+| Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 | Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado |
 
 
-## 1. Archivos del repo (112)
+## 1. Archivos del repo (103)
 
 
 **`.claude/rules/`**
@@ -28,8 +28,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`1_originales/`**
 
-- `AI_Production_Director_v3.4.0_COMPLETE.zip`: 750 archivos: repo 496, skills 214, (raíz) 30, project_knowledge_pack 8, original_source 2. Los de `skills/` son el corpus (§4); los demás no están en el corpus (PENDIENTES P-18). Guías: `START_HERE.md`, `INDEX.md`, `repo/.claude/hooks/README.md`
-- `SHA256SUMS`: 365 bytes
+- `SHA256SUMS`: 273 bytes
 - `flujo-anclas.html`: 121,772 bytes
 - `flujo-spot.html`: 161,157 bytes
 
@@ -94,16 +93,6 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `probar_contratos.py`: Fixtures sintéticos de estructura: no son testigos semánticos de reglas.
 - `verificar_templates.py`: Structural checks plus instance checks. No claim of corpus semantic review.
 
-**`4_diseno/validadores/`**
-
-- `gate_dramaturgy.py`: Stop hook: blocks delivery of visual prompts that carry banned vocabulary.
-- `gate_image.py`: Stop hook: enforces the image skill's own golden rules on delivered prompts.
-- `gate_microgate.py`: Stop hook: enforce the 3-line micro-gate header on any visual delivery.
-- `gate_shots.py`: PostToolUse hook: runs the shotkit validator whenever shots.json is written.
-- `inject_rules.py`: UserPromptSubmit hook: put the mandatory rules in context before Claude chooses.
-- `prompt_detect.py`: Decide si un bloque cercado es la entrega de un prompt visual.
-- `settings.json`: 1 claves: hooks
-
 **`5_decisiones/`**
 
 - `01021_DECISIONES_APLICADAS_20261011_224300.md`: 25 líneas: L1 Decisiones aplicadas a la entrega corregida — 2026-10-11 · L15 Decisión explícita de las 16:56:54.532502 UTC · L19 Verificación documental y límites de capacidad · L23 Cierre del trabajo de candidatas
@@ -112,7 +101,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `DECISIONES_ERIC_20261023.md`: 41 líneas: L1 Decisiones de Eric Toledano — 2026-10-23
 - `DECISIONES_ERIC_20261024.md`: 25 líneas: L1 Decisiones de Eric Toledano — 2026-10-24
 - `DECISIONES_ERIC_20261026.md`: 121 líneas: L1 Decisiones de Eric Toledano — 2026-10-26
-- `DECISIONES_ERIC_20261027_30.md`: 63 líneas: L1 Instrucciones de Eric dadas en conversación (2026-10-27 a 2026-10-30)
+- `DECISIONES_ERIC_20261027_30.md`: 67 líneas: L1 Instrucciones de Eric dadas en conversación (2026-10-27 a 2026-10-30)
 - `DECISIONES_ERIC_RESCATADAS_20261027.md`: 16 líneas: L1 Decisiones de Eric rescatadas antes de borrar las apps (2026-10-27) · L5 De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28) · L10 De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuent…
 - `DECISIONES_repo_20260925.md`: 24 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo
 
@@ -177,14 +166,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `verificar_capitulos_datos.py`: verificar_capitulos_datos.py: comprueba de forma mecánica que los capítulos de datos del mapa copian bien sus fuentes.
 - `verificar_documentos.py`: verificar_documentos.py: comprobaciones deterministas de las 141 explicaciones del capítulo 5 contra el corpus.
 
-**`6_mapa/lecturas/`**
-
-- `zip_v3.4.0_documentos_de_hooks.md`: 46 líneas: L1 Lectura: documentos del zip original que explican los hooks (2026-10-… · L13 `repo/.claude/hooks/README.md` · L30 `START_HERE.md` · L40 `INDEX.md` (L1–120 de 318)
-
 **`./`**
 
 - `CLAUDE.md`: 42 líneas: L1 Instrucciones de proyecto · L3 Alcance y vocabulario de los prompts · L8 Antes de decir que algo no existe · L16 Consultar el mapa antes de preguntar o de dar algo por faltante (inst… · L25 Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29) · L35 Toda lectura deja registro en el repo
-- `LEEME.md`: 25 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
+- `LEEME.md`: 24 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
 ## 2. Decisiones e instrucciones de Eric (archivo y línea)
@@ -378,8 +363,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L16 **P-03** (Agente; Cerrado 2026-10-30: muestras con semilla 20261030…): Tercera lectura sellada del 10 % (muestra sellada)
 - L17 **P-04** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar `produc…): `CLAUDE.md` dice que `aprobados-20261024/briefs.json` tiene «seis casos»; tiene cinco (B1–B5). B6 está en `b6-corregido…
 - L18 **P-16** (Agente; el costo lo aprueba Eric; Abierto): Verificar los capítulos del mapa que escribió el agente (1–4 y 6–14) contra sus fuentes, con el mismo método que las 14…
-- L19 **P-17** (Eric; Cerrado 2026-10-30: Eric ordenó restaurarlos todo…): Hooks del paquete original, borrados el 2026-10-30 sobre una evaluación del agente que estuvo mal hecha («el sistema no…
-- L20 **P-18** (Agente lee y registra; Eric decide si a…; Abierto): El zip original trae 750 archivos: 214 en `skills/` y 536 fuera (contados el 2026-10-30). Entre los de fuera hay un sis…
+- L19 **P-17** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar todo el…): Hooks del paquete original
+- L20 **P-18** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar todo el…): Los 536 archivos del zip fuera de `skills/` (el sistema anterior)
 - L21 **P-19** (Eric; Cerrado 2026-10-30: extraídos literal a `4_diseno…): Los niveles de generalidad y la jerarquía de lectura solo estaban completos en PLAN_V5 §13.1–13.2
 - L22 **P-05** (Eric; Después de P-01 a P-03): Aprobación del mapa
 - L28 **P-06** (Agente, con aprobación de Eric; Abierto): Incorporar las extensiones de la taxonomía del 23 y del 26 de octubre (F32–F35 y valores nuevos en F04, F05, F06, F10, …
