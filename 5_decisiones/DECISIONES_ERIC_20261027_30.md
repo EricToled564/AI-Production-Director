@@ -69,3 +69,6 @@ las del 29 y del 30, de esta conversación.
        refiere a NotebookLM». Hecho: el zip se restauró desde el historial y solo se le quitaron 30 archivos de
        NotebookLM (`notebooklm-corpus/`, `nblm-ids/`, `nblm_*.py`, `.mcp.json` y `rule_export.py`). Queda en
        `1_originales/AI_Production_Director_v3.4.0.zip`.
+    8. Borrar los archivos viejos del mapa: los capítulos, los PDF y HTML, las 141 explicaciones del corpus y los
+       programas que los generaban. El mapa queda en `6_mapa/CONSULTA.md` (el índice), su generador,
+       `utilidad_corpus.json` (la utilidad de cada documento del corpus) e `INVENTARIO_SHA256.md`.

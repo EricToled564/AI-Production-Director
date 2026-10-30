@@ -12,6 +12,7 @@ Se regenera cada vez que cambia una decisión o un archivo del repo.
 """
 import ast
 import collections
+import hashlib
 import json
 import re
 import sqlite3
@@ -60,6 +61,13 @@ def secciones_md(f):
 def describe(a):
     f = REPO / a
     suf = f.suffix.lower()
+    if a in ("CLAUDE.md", ".claude/rules/DECISIONES.md") or (a.startswith("5_decisiones/") and suf == ".md"):
+        return "sus decisiones, en §2"
+    if a.startswith("4_diseno/copias_identicas/"):
+        h = hashlib.sha256(f.read_bytes()).hexdigest()
+        for g in sorted((REPO / "4_diseno/templates").iterdir()):
+            if g.is_file() and hashlib.sha256(g.read_bytes()).hexdigest() == h:
+                return f"copia idéntica de `{g.relative_to(REPO)}`"
     try:
         if suf == ".md":
             s = secciones_md(f)
@@ -136,20 +144,31 @@ def pendientes():
 def corpus():
     util = json.loads((AQUI / "utilidad_corpus.json").read_text(encoding="utf-8"))
     c = sqlite3.connect(DB)
-    filas = c.execute("SELECT archivo, sha256_archivo, COUNT(*), MIN(id), MAX(id) FROM textos "
-                      "GROUP BY archivo ORDER BY archivo").fetchall()
+    filas = c.execute("SELECT archivo, sha256_archivo, COUNT(*) FROM textos GROUP BY archivo ORDER BY archivo").fetchall()
     por_sha = collections.defaultdict(list)
-    for f in filas:
-        por_sha[f[1]].append(f[0])
-    o = [f"\n## 4. Corpus: {len(filas)} archivos, {len(por_sha)} contenidos distintos\n",
-         "Utilidad: ALTA, dice qué va o no va en un prompt; MEDIA, regula el proceso; NULA, ninguna de las dos.\n",
-         "| Documento | Textos | Ids | Utilidad | Copias idénticas |", "|---|---:|---|---|---|"]
-    for arch, sha, n, a, b in filas:
-        grupo = por_sha[sha]
-        if arch != grupo[0]:
-            continue
-        o.append(f"| `{arch}` | {n} | {a}–{b} | {util.get(arch, '—')} | "
-                 + (", ".join(f"`{x}`" for x in grupo[1:]) or "—") + " |")
+    for arch, sha, _ in filas:
+        por_sha[sha].append(arch)
+    o = [f"\n## 4. Corpus: {len(filas)} archivos, {len(por_sha)} contenidos distintos, "
+         f"{sum(f[2] for f in filas):,} textos\n",
+         "Por skill: sus documentos (ruta dentro de la skill). Utilidad ALTA salvo que diga [MEDIA] (regula el proceso) "
+         "o [NULA] (ni una ni otra). «= x» marca una copia idéntica de x. Textos, ids y secciones de un documento: "
+         "`SELECT id, encabezado, linea_inicial FROM textos WHERE archivo=?`.\n"]
+    grupos = collections.defaultdict(list)
+    for arch, sha, n in filas:
+        partes = arch.split("/")
+        skill = partes[1] if partes[0] == "skills" else partes[0]
+        resto = "/".join(partes[2:]) if partes[0] == "skills" else "/".join(partes[1:])
+        original = por_sha[sha][0]
+        if arch != original:
+            resto += f" = `{original}`"
+        else:
+            u = util.get(arch, "ALTA")
+            if u != "ALTA":
+                resto += f" [{u}]"
+        grupos[skill].append((resto, n))
+    for skill, docs in grupos.items():
+        o.append(f"- **{skill}** ({len(docs)} archivos, {sum(n for _, n in docs):,} textos): "
+                 + "; ".join(d for d, _ in docs))
     return o
 
 
