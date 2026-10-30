@@ -9,7 +9,7 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 
 | Carpeta | Qué hay | Para qué sirve |
 |---|---|---|
-| `1_originales/` | Zip con las skills del paquete v3.4.0 (lo demás del paquete era el sistema anterior y se borró), `flujo-spot.html`, `flujo-anclas.html` y `SHA256SUMS` | La fuente de todo; no se modifica |
+| `1_originales/` | Zip del paquete v3.4.0 sin los 30 archivos de NotebookLM (lo demás se revisa con Eric antes de decidir), `flujo-spot.html`, `flujo-anclas.html` y `SHA256SUMS` | La fuente de todo; no se modifica |
 | `2_corpus/` | Los 13,005 textos de los originales (SQLite y JSONL) | El material del que salen las reglas |
 | `3_taxonomia/` | La taxonomía 00688 | Los ejes con que se clasifica cada texto |
 | `4_diseno/templates/` | Brief, contratos por operación y adaptadores por modelo | Lo que entra al sistema y lo que sale |

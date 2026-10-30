@@ -7,7 +7,7 @@ Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapa
 | `.claude/rules/DECISIONES.md` | `abc55abddfa65ec9aa18cf0e2146abd65b40a51eb96121514f244f53cee89ec1` |
 | `.gitignore` | `d05f275d32dbae3cff24a3ae9bc1c407ca65de1cdd95f36a21ff623a7c5dc3e4` |
 | `CLAUDE.md` | `b69b14d9c6858c7e801470b95ab23eebcf6cc47821361d9d9b5508532120c90c` |
-| `1_originales/AI_Production_Director_v3.4.0_skills.zip` | `854ef178c4f4b0ed58e4ca822ae8e5d90e41019fc41c523ee4e25d0820bf0101` (2026-10-30: solo `skills/`; el resto del paquete se borró) |
+| `1_originales/AI_Production_Director_v3.4.0.zip` | `493461020426a0bb5c3fde16594d52cc6ce088dffc79b8fdb3872fcde4f8da6b` (2026-10-30: el paquete sin los 30 archivos de NotebookLM) |
 | `1_originales/SHA256SUMS` | `78b2615504dc4cb0025f52cd25d88a2f8d3cb60900ef15cb1024d18a5ebceb7c` |
 | `1_originales/flujo-anclas.html` | `08dc81cc4614c80b8440d2f02a75e25f1cfc27178af1ce95ddf3986e6f718817` |
 | `1_originales/flujo-spot.html` | `a18c2094ad802142cc50a81b3a34b11ef2467ec4df6d5b53a1ed64d6e0a7618d` |

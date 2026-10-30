@@ -87,8 +87,8 @@ def describe(a):
             arch = [i.filename for i in z.infolist() if not i.is_dir()]
             top = collections.Counter(x.split("/")[1] if x.count("/") > 1 else "(raíz)" for x in arch)
             return (f"{len(arch)} archivos: " + ", ".join(f"{k} {v}" for k, v in top.most_common()) +
-                    ". Las skills del paquete v3.4.0: el corpus (§4) sale de ellas, salvo `aurora-prompt-linter`, "
-                    "`produccion-visual-sw30` y 3 imágenes PNG (taxonomía §0.1)")
+                    ". El corpus (§4) sale de `skills/`, salvo `aurora-prompt-linter`, `produccion-visual-sw30` y 3 PNG "
+                    "(taxonomía §0.1). Lo demás es el sistema anterior, en revisión con Eric (PENDIENTES P-18)")
     except (ValueError, SyntaxError, sqlite3.Error) as e:
         return f"no se pudo leer ({type(e).__name__})"
     return f"{f.stat().st_size:,} bytes"

@@ -65,3 +65,7 @@ las del 29 y del 30, de esta conversación.
        tienen nada que ver con el nuevo sistema y perdemos millones de tokens con eso». Hecho: el zip quedó solo con
        `skills/` (`1_originales/AI_Production_Director_v3.4.0_skills.zip`) y se borraron los hooks de
        `4_diseno/validadores/`, lo que deja sin efecto el punto 12.3.
+    7. Corrección del punto 12.6: «no borres los archivos del zip hasta que no los revisemos, excepto por lo que se
+       refiere a NotebookLM». Hecho: el zip se restauró desde el historial y solo se le quitaron 30 archivos de
+       NotebookLM (`notebooklm-corpus/`, `nblm-ids/`, `nblm_*.py`, `.mcp.json` y `rule_export.py`). Queda en
+       `1_originales/AI_Production_Director_v3.4.0.zip`.
