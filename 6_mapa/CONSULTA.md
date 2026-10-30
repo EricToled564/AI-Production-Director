@@ -146,7 +146,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`7_auditorias_y_verificaciones/`**
 
 - `decision4_casos_en_taxonomia.md`: 21 líneas: L1 Lectura: los casos de la decisión 4 (25-sep) en la taxonomía 00688 (2…
-- `prueba_taxonomia_imagenes_20261030.md`: 78 líneas: L1 Investigación y prueba del nivel 1 de la taxonomía para imágenes (202… · L6 1. Investigación · L29 2. Prueba con 24 textos reales · L64 3. Lo que decidió la prueba
+- `prueba_taxonomia_imagenes_20261030.md`: 79 líneas: L1 Investigación y prueba del nivel 1 de la taxonomía para imágenes (202… · L6 1. Investigación · L30 2. Prueba con 24 textos reales · L65 3. Lo que decidió la prueba
 - `revision_estructura_taxonomia_y_casos_20261030.md`: 260 líneas: L1 Revisión de la estructura: taxonomía y catálogo de casos de uso (2026… · L6 Qué se revisó · L20 1. Qué hay hoy dentro de la taxonomía · L36 2. Veredicto por sección · L75 3. Comprobaciones de las 2,796 filas de término · L113 4. Hallazgos en el catálogo de casos (`4_diseno/casos/`) · L153 5. Recomendación final · L157 5.1 La taxonomía (`3_taxonomia/`) · L197 5.2 El catálogo (`4_diseno/casos/`) · L211 5.3 Qué cambia y qué no · L226 5.4 Cómo se verifica · L241 6. Pendientes que resuelve Eric antes de reestructurar · L253 7. Hallado de paso, fuera de la taxonomía y del catálogo
 - `taxonomia_que_sale_20261030.md`: 134 líneas: L1 Taxonomía: lo que se queda, lo que sale y sirve, lo que sale y no sir… · L10 Lo que se queda (esto es la taxonomía) · L43 Lista 1. Sale de la taxonomía y sirve · L58 Lista 2. Sale de la taxonomía y no sirve (para revisar y borrar) · L88 Coincidencia entre el catálogo de casos y la taxonomía (verificado el… · L119 Forma más barata y rápida de hacerlo
 - `taxonomia_sin_estados_de_exclusion_20261030.md`: 47 líneas: L1 Verificación: la taxonomía prohíbe y no usa estados que dejen una reg… · L7 Dónde lo prohíbe · L25 Si los usa · L38 Catálogo de casos · L44 Límite
@@ -160,7 +160,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 26 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 27 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
