@@ -2,7 +2,7 @@
 
 ## Qué contiene esta entrega
 
-Base estructurada derivada de la taxonomía consolidada del 19 de octubre y del Plan V5. Contiene 1.729 registros: los 1.369 términos TRM preservados y 360 valores autorizados de facetas, procesos, modelos y publicación. Las 31 facetas tienen registros. Cada registro conserva definición, faceta, materia cuando existe, sección/línea, huella de taxonomía y destino físico comprobado en el contrato de templates del paquete.
+Base estructurada derivada de la taxonomía consolidada del 19 de octubre. Contiene 1.729 registros: los 1.369 términos TRM preservados y 360 valores autorizados de facetas, procesos, modelos y publicación. Las 31 facetas tienen registros. Cada registro conserva definición, faceta, materia cuando existe, sección/línea, huella de taxonomía y destino físico comprobado en el contrato de templates del paquete.
 
 Un caso de uso es una combinación de valores con datos concretos. No se materializa el producto cartesiano de todos los valores: muchas combinaciones son incompatibles, y edades, posiciones y literales son dominios abiertos. Esta entrega no afirma contener todas las imágenes posibles. Conserva todo el vocabulario TRM y los valores tabulados de la taxonomía consultada; una necesidad no representada se investiga y se propone como extensión explícita antes de convertirla en nueva categoría canónica.
 
@@ -11,8 +11,8 @@ Un caso de uso es una combinación de valores con datos concretos. No se materia
 - `casos_opciones.sqlite`: base consultable, tabla `opciones`, índice por faceta.
 - `catalogo_opciones.json` y `.csv`: mismos registros con procedencia y destinos.
 - `case.schema.json`: formato de un caso, valores por campo, origen, evidencia, confirmación y aprobación.
-- `mapa_facetas_v5.json`: las 31 facetas y destinos lógicos literales del Plan V5.
-- `mapa_materias_f30_v5.json`: los 24 contratos de efecto de F30, literales del plan.
+- `mapa_facetas.json`: las 31 facetas y sus destinos lógicos literales.
+- `mapa_materias_f30.json`: los 24 contratos de efecto de F30, literales.
 - `mapa_materias_f30_paths.json`: destinos físicos por materia, comprobados contra el schema real del paquete.
 - `jerarquia_valores.json`: padres de faceta y vínculos literales a valores, sin equivalencias inferidas.
 - `rutas_documentadas.json`: 184 filas de estructura de flujos conservadas literalmente, incluidos los pasos editoriales FL04; no se convierten automáticamente en condiciones.

@@ -14,7 +14,8 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 | `3_taxonomia/` | La taxonomía 00688 | Los ejes con que se clasifica cada texto |
 | `4_diseno/templates/` | Brief, contratos por operación y adaptadores por modelo | Lo que entra al sistema y lo que sale |
 | `4_diseno/casos/` | Catálogo de 1,729 opciones de caso y su validador | Cómo se arma un caso |
-| `4_diseno/` (raíz) | PLAN_V5 y la propuesta de aplicación y clasificación | El método |
+| `4_diseno/` (raíz) | `jerarquia_de_lectura.md`, `niveles_de_generalidad.md` y la propuesta de aplicación y clasificación | El método |
+| `4_diseno/validadores/` | Los 6 gates del paquete original y su `settings.json`, sin activar | Validar los prompts (paso de validación de los flujos) |
 | `4_diseno/copias_identicas/` | 3 copias idénticas de archivos de `templates/` | No se usan; esperan decisión |
 | `5_decisiones/` | Las decisiones de Eric por fecha y, en `directivas_20261021/`, sus directivas | Mandan sobre todo lo demás |
 | `6_mapa/` | La memoria del agente; empieza en `6_mapa/CONSULTA.md` | Saber rápido qué existe y qué está decidido |

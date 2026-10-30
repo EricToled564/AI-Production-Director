@@ -48,3 +48,13 @@ las del 29 y del 30, de esta conversación.
     las primeras lecturas y copias del mapa, los registros de verificación y auditoría, los hooks y `settings.json`, y
     `produccion/template-retrato-gpt2/` con sus prompts de prueba. Después, por la misma instrucción, las 9 familias
     de régimen físico y su investigación (`.claude/rules/regimenes/` y `research/`): «bórralos, no lo sigues».
+12. **Repo, PLAN_V5, hooks y mapa** (2026-10-30, segunda parte):
+    1. Los templates y los casos de uso van en carpetas propias, y el repo se acomoda «de una forma profesional, fácil
+       de encontrar y navegar y que haga sentido al desarrollo del sistema». Hecho: carpetas `1_originales/` a
+       `6_mapa/` y `LEEME.md`.
+    2. De PLAN_V5 se extraen los niveles de generalidad y la jerarquía de lectura a archivos propios, y se borra el
+       resto del plan. Hecho: `4_diseno/niveles_de_generalidad.md` y `4_diseno/jerarquia_de_lectura.md`.
+    3. «Restaura todos los hooks y ponlos en un archivo en la sección que les corresponde». Hecho:
+       `4_diseno/validadores/`. Esto deja sin efecto, para los hooks, el borrado del punto 11.
+    4. El mapa tiene que cumplir su función: el agente decide su tamaño, pero debe cubrir todos los puntos que
+       contienen los archivos, sin duplicar la información; solo los indexa. Hecho: `6_mapa/CONSULTA.md`.

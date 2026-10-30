@@ -1,8 +1,8 @@
 # Lectura: documentos del zip original que explican los hooks (2026-10-30)
 
 Archivo: `1_originales/AI_Production_Director_v3.4.0_COMPLETE.zip`, carpeta interna `AI_Production_Director_v3.4.0_COMPLETE/`.
-El zip tiene 750 archivos: 214 en `skills/` y 536 fuera. Los 536 no están en el corpus (taxonomía §0.1, L37–76) y nunca
-se leyeron completos (PENDIENTES P-18).
+El zip tiene 750 archivos: 214 en `skills/` y 536 fuera. Los 536 no están en el corpus (taxonomía §0.1, L37–76) y no hay
+registro de que se hayan leído (PENDIENTES P-18).
 
 | Documento | Líneas | Leído |
 |---|---:|---|

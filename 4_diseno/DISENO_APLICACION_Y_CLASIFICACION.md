@@ -1,7 +1,7 @@
 # Diseño de la aplicación y del procedimiento de clasificación
 
-Propuesta para aprobación de Eric. Recoge su instrucción del 2026-10-29 y la monta sobre el diseño ya aprobado:
-- PLAN_V5;
+Propuesta para aprobación de Eric. Recoge su instrucción del 2026-10-29 y la monta sobre:
+- la jerarquía de lectura (`4_diseno/jerarquia_de_lectura.md`) y los niveles de generalidad (`4_diseno/niveles_de_generalidad.md`);
 - el paquete TEMPLATES (brief T-BRIEF-IMG, contratos por operación, adaptadores por modelo y orquestación T-ORQ);
 - el paquete CASOS;
 - la taxonomía 00688;
@@ -19,11 +19,11 @@ El sistema no genera imágenes: genera prompts. Eric genera las imágenes y las 
 |---|---|---|
 | **A. Corpus** | Guarda los 13,005 textos con su documento y su ruta completa de encabezados | Base del corpus y originales |
 | **B. Matriz de clasificación** | Una fila por texto. Columnas: tipo de texto y cada categoría de la taxonomía. Cada celda vale X (aplica) o 0 (no aplica) | Taxonomía 00688 y catálogo CASOS |
-| **C. Consola de clasificación** (gobierno) | Ejecuta las rondas, muestra el avance celda por celda, las auditorías y los pendientes. Ninguna ronda avanza con pendientes abiertos | PLAN_V5 §5, `PENDIENTES.md` |
+| **C. Consola de clasificación** (gobierno) | Ejecuta las rondas, muestra el avance celda por celda, las auditorías y los pendientes. Ninguna ronda avanza con pendientes abiertos | `PENDIENTES.md` |
 | **D. Brief** | Formulario del contrato T-BRIEF-IMG. Cada valor guarda su origen: lo dio el usuario, lo hereda de un documento o es una inferencia propuesta | TEMPLATES §3, `case.schema.json` |
 | **E. Catalogador de caso** | Ubica el pedido dentro de la taxonomía, usando las columnas de la matriz marcadas como reglas de selección o catálogo | Matriz B, CASOS |
 | **F. Selector de reglas** | Lee la matriz y da a cada regla una sola salida: excluida por decisión, fuera de este caso o aplicable confirmada | Taxonomía §7.4 |
-| **G. Compilador** | Arma el prompt con las reglas aplicables, en el contrato de la operación y el adaptador del modelo (para GPT Image 2: GPT2-GEN o GPT2-EDIT) | TEMPLATES §5–§6, PLAN_V5 §16.11 |
+| **G. Compilador** | Arma el prompt con las reglas aplicables, en el contrato de la operación y el adaptador del modelo (para GPT Image 2: GPT2-GEN o GPT2-EDIT) | TEMPLATES §5–§6 |
 | **H. Validadores** | Comprueban el prompt antes de entregarlo: vocabulario prohibido (incluida «photorealistic»), secciones, ratio en el Scene y longitud (solo aviso) | Decisiones de Eric y reglas del corpus clasificado |
 | **I. Biblioteca de prompts efectivos** | Guarda el prompt aprobado con su traza. Si un brief nuevo se parece al menos en un 85 % a uno guardado, sugiere reusar su prompt | Decisión 23 §8 |
 | **J. Traza** | Une cada regla aplicada con su texto original, su condición, el campo del brief y su efecto en el prompt | T-TRAZA, `binding_contract` |
