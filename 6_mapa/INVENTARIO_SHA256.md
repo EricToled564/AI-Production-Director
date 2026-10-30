@@ -1,6 +1,6 @@
 # Lo que queda en el repo (2026-10-27)
 
-Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapas y todos los modelos. Todo lo demás se borró el 2026-10-27; cualquier archivo borrado se recupera desde el commit anterior a cada borrado: lo de `f545972` con `git checkout db8f5ee -- <ruta>`, lo de `7b630af` con `git checkout 0db1d11 -- <ruta>` y lo de `0db1d11` con `git checkout e7e1c6e -- <ruta>`. Hashes calculados al cerrar el borrado.
+Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapas y todos los modelos. Todo lo demás se borró el 2026-10-27; cualquier archivo borrado se recupera desde el commit anterior a cada borrado: lo de `163e903` con `git checkout bd5eb2b -- <ruta>`, lo de `039d558` con `git checkout 6840461 -- <ruta>` y lo de `6840461` con `git checkout a6d59d1 -- <ruta>`. Hashes calculados al cerrar el borrado.
 
 | Archivo | sha256 |
 |---|---|
