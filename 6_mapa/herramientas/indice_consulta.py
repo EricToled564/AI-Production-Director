@@ -45,7 +45,6 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Texto original de una regla | `2_corpus/…sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Secciones de un documento: `SELECT DISTINCT encabezado FROM textos WHERE archivo=?` |
 | Qué documentos tiene el corpus | §4 |
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
-| Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado, salvo lo que Eric ordenó borrar de forma irrecuperable, que ya no está en el historial de `main` |
 """
 
 
@@ -96,7 +95,7 @@ def describe(a):
             top = collections.Counter(x.split("/")[1] if x.count("/") > 1 else "(raíz)" for x in arch)
             return (f"{len(arch)} archivos: " + ", ".join(f"{k} {v}" for k, v in top.most_common()) +
                     ". El corpus (§4) sale de `skills/`, salvo `aurora-prompt-linter`, `produccion-visual-sw30` y 3 PNG "
-                    "(taxonomía §0.1). Lo demás es el sistema anterior, en revisión con Eric (PENDIENTES P-18)")
+                    "(taxonomía §0.1). Lo demás está en revisión con Eric (PENDIENTES P-18)")
     except (ValueError, SyntaxError, sqlite3.Error) as e:
         return f"no se pudo leer ({type(e).__name__})"
     return f"{f.stat().st_size:,} bytes"

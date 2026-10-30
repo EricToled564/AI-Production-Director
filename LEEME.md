@@ -9,13 +9,13 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 
 | Carpeta | Qué hay | Para qué sirve |
 |---|---|---|
-| `1_originales/` | Zip del paquete v3.4.0 sin los 30 archivos de NotebookLM (lo demás se revisa con Eric antes de decidir), `flujo-spot.html`, `flujo-anclas.html` y `SHA256SUMS` | La fuente de todo; no se modifica |
-| `2_corpus/` | Los 13,005 textos de los originales (SQLite y JSONL) | El material del que salen las reglas |
+| `1_originales/` | Zip del paquete v3.4.0 (en revisión con Eric), `flujo-spot.html`, `flujo-anclas.html` y `SHA256SUMS` | La fuente de todo; no se modifica |
+| `2_corpus/` | Los textos de los originales (SQLite y JSONL) | El material del que salen las reglas |
 | `3_taxonomia/` | La taxonomía 00688 | Los ejes con que se clasifica cada texto |
 | `4_diseno/templates/` | Brief, contratos por operación y adaptadores por modelo | Lo que entra al sistema y lo que sale |
 | `4_diseno/casos/` | Catálogo de 1,729 opciones de caso y su validador | Cómo se arma un caso |
 | `4_diseno/` (raíz) | `jerarquia_de_lectura.md`, `niveles_de_generalidad.md` y la propuesta de aplicación y clasificación | El método |
-| `4_diseno/copias_identicas/` | 3 copias idénticas de archivos de `templates/` | No se usan; esperan decisión |
+| `4_diseno/copias_identicas/` | 3 copias idénticas de archivos de `4_diseno/templates/` | No se usan; esperan decisión |
 | `4_diseno/validadores/` | Los 6 gates del paquete original y su `settings.json`, sin activar como hooks | Restaurados por orden de Eric |
 | `5_decisiones/` | Las decisiones de Eric por fecha y, en `directivas_20261021/`, sus directivas | Mandan sobre todo lo demás |
 | `6_mapa/` | La memoria del agente; empieza en `6_mapa/CONSULTA.md` | Saber rápido qué existe y qué está decidido |

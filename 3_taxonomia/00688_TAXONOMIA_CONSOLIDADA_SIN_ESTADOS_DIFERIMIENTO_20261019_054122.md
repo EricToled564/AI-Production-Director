@@ -13,7 +13,7 @@ Precedencia documental: decisiones aprobadas aplicables → este delta consolida
 - ORQUESTACIÓN es codificación editorial de reglas de control del proceso. Su aplicación mecánica conserva disparadores y condiciones; «al cerrar cada gate» no equivale a siempre. No se convierte automáticamente toda regla multietapa en orquestación.
 - Cada faceta se resuelve con VALOR o UNIVERSAL, respaldados por texto y contexto documental. UNIVERSAL requiere demostrar ausencia de restricción en cuerpo, encabezados y documento dentro del alcance examinado, con procedencia y decisión aplicable; jamás sustituye una duda. La duda se investiga y, si persiste, se consulta antes de terminar ese texto. Véase §1.12.
 - TRM-0249 permanece en F31 sin valor padre. TRM-0178/0179 tienen ubicación canónica F14, remisión F20 y columnas históricas preservadas.
-- Las definiciones, niveles de respaldo y 57 exclusiones SIN PRESENCIA del tesauro base se conservan. Los 112 PRESENCIA son índices documentales; no activan categorías por sí solos.
+- Las definiciones, niveles de respaldo y 58 exclusiones SIN PRESENCIA del tesauro base se conservan. Los 111 PRESENCIA son índices documentales; no activan categorías por sí solos.
 
 Aprobación HISTÓRICA de ejecución del paquete anterior, no de la clasificación actual: Sentinel_cc1735b76d108191a3854e435f5e4c2c, 2026-10-11 16:44:30 UTC: «ok procede», tras «si y dmae este formato con las correcciones ne un format que pueda copiar».
 
@@ -51,8 +51,8 @@ Autoridad: Instrucciones del usuario Sentinel_784a28a62eb48191a58c9b859e371b7b y
 | visual-asset-critic | 30 | 5589 | 1417 |
 | visual-media | 1 | 334 | 83 |
 | visual-prompt-forge | 39 | 6571 | 1774 |
-| flujos (flujo-spot.html, flujo-anclas.html) | 2 | 1220 | 614 |
-| **Total** | 206 | 41702 | 13005 |
+| flujos (flujo-spot.html, flujo-anclas.html) | 2 | 1220 | 612 |
+| **Total** | 206 | 41702 | 13003 |
 
 Fuera del corpus, con motivo (los archivos no se leen como fuente ni se inventarían):
 
@@ -71,7 +71,7 @@ Fuera del corpus, con motivo (los archivos no se leen como fuente ni se inventar
 | taxonomia/TAXONOMIA_original_aprobada_2026-09-28_32_facetas.md | Taxonomía derivada; no es fuente del corpus |
 | taxonomia/TAXONOMIA.md | Taxonomía derivada; no es fuente del corpus |
 | scratchpad (diagrams.js y demás) | No es fuente suministrada; las etiquetas de los diagramas están en el SVG de los flujos HTML, que sí se inventarían |
-| produccion-visual-sw30, regímenes del repo, DECISIONES.md, refs.yaml | Citados por las fuentes pero no suministrados: no se crean registros ni se les atribuye autoridad |
+| produccion-visual-sw30, DECISIONES.md, refs.yaml | Citados por las fuentes pero no suministrados: no se crean registros ni se les atribuye autoridad |
 | Templates de entrada (punto 3 y V3) | Productos derivados en revisión; no son fuente |
 
 ### 0.2 Inventario literal (primer paso del orden de trabajo)
@@ -114,7 +114,7 @@ El inventario no clasifica. La columna «señal léxica normativa» es un marcad
 | P-09 Seedance | versión vigente 2.5; identidad por referencia | decisión del usuario: reglas validadas contra 2.5; identidad + primer fotograma habilitados |
 | Metadatos de la regla (Bloque E) | campos de §6.0 | especificación |
 | Términos del tesauro | 1 369 | conservados; respaldo en §0.5 |
-| Unidades del inventario del corpus | 13005 | universo autorizado; cobertura completa no certificada por esta consolidación |
+| Unidades del inventario del corpus | 13003 | universo autorizado; cobertura completa no certificada por esta consolidación |
 
 Los 1 369 términos del tesauro y las unidades del inventario son conjuntos distintos: los términos son vocabulario de la taxonomía; las unidades son el texto de las fuentes sujeto a conciliación y clasificación.
 
@@ -138,8 +138,8 @@ Los 1 369 términos del tesauro y las unidades del inventario son conjuntos dist
 |---|---|---|
 | COMPLETO | 1200 | cada afirmación de la definición tiene pasaje en una fuente autorizada |
 | PARCIAL | 0 | parte respaldada; la parte restante se identifica como ampliación editorial |
-| PRESENCIA | 112 | la fuente acredita que el término existe (p. ej. en una lista), no la explicación |
-| SIN PRESENCIA EN FUENTE AUTORIZADA | 57 | el término no aparece en las fuentes autorizadas, o solo en material excluido del corpus, o la única aparición no corresponde al concepto |
+| PRESENCIA | 111 | la fuente acredita que el término existe (p. ej. en una lista), no la explicación |
+| SIN PRESENCIA EN FUENTE AUTORIZADA | 58 | el término no aparece en las fuentes autorizadas, o solo en material excluido del corpus, o la única aparición no corresponde al concepto |
 
 Citas autorizadas individualizadas: 3096; 18 referencias excluidas no cuentan como respaldo; una coincidencia de «release» con otro sentido tampoco cuenta (TRM-1278). No quedan citas autorizadas sin localizar. Toda ampliación editorial no respaldada se retira del uso operativo conforme al corpus único; se conserva únicamente en la conciliación para explicar el recorte, nunca como regla ni como hecho del corpus. TRM-1292 «Sabio [Sage]» conserva únicamente su sentido respaldado; la extensión «y se posiciona desde el conocimiento y la experticia» está retirada en la conciliación C12.
 
@@ -441,7 +441,7 @@ Nota sobre E6.5: el texto original asigna este paso a aurora-prompt-linter; se c
 | Paso 5 · dimensión D8 | flujos/flujo-anclas.html:428 [INV-000216] |
 | Paso 6 | flujos/flujo-anclas.html:448 [INV-000226] |
 | Paso 7 | flujos/flujo-anclas.html:518 [INV-000261] |
-| Paso 8 · familias de régimen físico | flujos/flujo-anclas.html:536 [INV-000270] |
+| (fila retirada el 2026-10-30 por orden de Eric) | — |
 
 | Código | Texto literal | Localizador [unidad] |
 |---|---|---|
@@ -1027,7 +1027,7 @@ Términos colgados de esta faceta: 20.
 
 Términos colgados de esta faceta: 9.
 
-### 4.5 Faceta 14. Régimen físico — ¿en qué medio físico ocurre? (regimenes/README)
+### 4.5 Faceta 14. Régimen físico — ¿en qué medio físico ocurre?
 
 
 Corrección v4 (punto 14): TRM-0178 «Multitud anónima» y TRM-0179 «Grupo ensamble» describen configuración y cantidad del grupo y se cuelgan aquí, equivalentes a «08 multitud anónima» y «09 grupo ensamble». El requisito de reconocimiento se registra aparte en la faceta 20; entre ambas facetas solo hay relación temática.
@@ -2641,7 +2641,7 @@ Valores añadidos en C16 sin término del tesauro; cada uno procede de una oblig
 
 | ID v3 | Término | Alias EN | Definición propuesta | ID origen | Relación con valor original | Respaldo de la definición | Ampliación editorial no admitida (historial en CSV) | Cita en fuente autorizada [unidad de inventario] | Destino secundario |
 |---|---|---|---|---|---|---|---|---|---|
-| TRM-1321 | Prescripción | prescription / rule | Etiqueta documental «Prescripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | F090.V001 | — | PRESENCIA | Etiqueta documental «Prescripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | flujos/flujo-anclas.html:540 [INV-000272] «Los huecos detectados se cierran con nueve familias por régimen físico, no por caso. Cada familia es un archivo en el repo, .claude/rules/regimenes/, con el mismo esqueleto de nueve secciones, y cada regla lleva etiqueta de origen. Decisiones 1, 7 y 8 del 2026-09-25.» |  |
+| TRM-1321 | Prescripción | prescription / rule | «Prescripción»: concepto no admitido en el vocabulario operativo por ausencia de respaldo en el corpus autorizado. Se conserva su ID solo para conciliación. | F090.V001 | — | SIN PRESENCIA EN FUENTE AUTORIZADA | «Prescripción»: concepto no admitido en el vocabulario operativo por ausencia de respaldo en el corpus autorizado. Se conserva su ID solo para conciliación. | — |  |
 | TRM-1322 | Descripción | description | Etiqueta documental «Descripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | F090.V002 | — | PRESENCIA | Etiqueta documental «Descripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | skills/brand-lock-extractor/SKILL.md:52 [INV-001004] «1. **Identity** (brand, one-line description, archetype, voice posture)» |  |
 | TRM-1323 | Ejemplo | example | Caso ilustrativo de la calidad de salida esperada, que sirve de referencia para comprender el resultado requerido. | F090.V003 | — | COMPLETO | — | skills/storyboard-architect/SKILL.md:289 [INV-004018] «Read these to understand the expected output quality, especially the rationale fields.» |  |
 
@@ -4167,7 +4167,7 @@ Una regla original con fuente y autoridad resueltas se clasifica por su contenid
 | TRM-1318 | F088.V013 | Veo 3 | Veo 3 | F088 Versiones históricas adicionales | faceta 29 · Modelo (solo etapas 5 y 6) |  | SIN CORRESPONDENCIA | COMPLETO | — | skills/video/references/veo.md:24 [INV-009663] «- Veo 3. Text-to-video, native audio, 4 / 6 / 8 second clips.» |  |
 | TRM-1319 | F088.V014 | Hailuo 02 Pro | Hailuo 02 Pro | F088 Versiones históricas adicionales | faceta 29 · Modelo (solo etapas 5 y 6) |  | MÁS ESPECÍFICO → Hailuo (rama Video) | COMPLETO | — | skills/visual-prompt-forge/adapters/hailuo.md:1 [INV-011763] «# Adapter: Hailuo 02 Pro (motion-aware video, budget iteration)» |  |
 | TRM-1320 | F088.V015 | Minimax H3 | Minimax H3 | F088 Versiones históricas adicionales | faceta 29 · Modelo (solo etapas 5 y 6) |  | TEMÁTICO → Hailuo (rama Video) | COMPLETO | — | skills/video/references/seedance-25.md:337 [INV-009375] «- Versus Minimax H3 (the other frontier model of this launch window): **H3 errs by omission, Seedance 2.5 errs by commission**» |  |
-| TRM-1321 | F090.V001 | Prescripción | prescription / rule | F090 Metadatos de norma, evidencia y aplicación | Bloque E → campo «tipo de enunciado» |  | — | PRESENCIA | Etiqueta documental «Prescripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | flujos/flujo-anclas.html:540 [INV-000272] «Los huecos detectados se cierran con nueve familias por régimen físico, no por caso. Cada familia es un archivo en el repo, .claude/rules/regimenes/, con el mismo esqueleto de nueve secciones, y cada regla lleva etiqueta de origen. Decisiones 1, 7 y 8 del 2026-09-25.» |  |
+| TRM-1321 | F090.V001 | Prescripción | prescription / rule | F090 Metadatos de norma, evidencia y aplicación | Bloque E → campo «tipo de enunciado» |  | — | SIN PRESENCIA EN FUENTE AUTORIZADA | «Prescripción»: concepto no admitido en el vocabulario operativo por ausencia de respaldo en el corpus autorizado. Se conserva su ID solo para conciliación. | — |  |
 | TRM-1322 | F090.V002 | Descripción | description | F090 Metadatos de norma, evidencia y aplicación | Bloque E → campo «tipo de enunciado» |  | — | PRESENCIA | Etiqueta documental «Descripción» presente en la fuente citada. Su mención no acredita la explicación editorial anterior ni constituye por sí sola una regla. | skills/brand-lock-extractor/SKILL.md:52 [INV-001004] «1. **Identity** (brand, one-line description, archetype, voice posture)» |  |
 | TRM-1323 | F090.V003 | Ejemplo | example | F090 Metadatos de norma, evidencia y aplicación | Bloque E → campo «tipo de enunciado» |  | — | COMPLETO | — | skills/storyboard-architect/SKILL.md:289 [INV-004018] «Read these to understand the expected output quality, especially the rationale fields.» |  |
 | TRM-1324 | F090.V004 | Obligación | mandatory | F090 Metadatos de norma, evidencia y aplicación | Bloque E → campo «fuerza normativa» |  | — | COMPLETO | — | skills/image/SKILL.md:100 [INV-002045] «For edits, also include an explicit preserve-list (mandatory for gpt-image-2, recommended for nano-banana):» |  |
@@ -4279,6 +4279,7 @@ Remisiones del borrador conservadas: F089.V003 → F092.V003 · F082.V038 → F0
 | TRM-1279 | F086.V004 | Licencia de activo | asset license | faceta 30 → «trazabilidad y entrega» | El corpus solo contiene licencias de software de los skills, no licencias de activos con medios, territorio y plazo. |
 | TRM-1280 | F086.V005 | Crédito IPTC | IPTC credit | faceta 30 → «trazabilidad y entrega» | IPTC no aparece en el corpus. |
 | TRM-1281 | F086.V006 | Metadatos EXIF | EXIF metadata | faceta 30 → «trazabilidad y entrega» | EXIF no aparece en el corpus. |
+| TRM-1321 | F090.V001 | Prescripción | prescription / rule | Bloque E → campo «tipo de enunciado» | Su única cita en el corpus se retiró el 2026-10-30. |
 | TRM-1330 | F090.V010 | Propuesta editorial | proposed edit / proposal | Bloque E → campo «origen de evidencia» | El corpus presenta formulaciones propuestas que requieren aprobación antes de adoptarse. |
 
 Estas entradas permanecen exclusivamente en la conciliación histórica. Quedan fuera del vocabulario operativo y de la expansión de consultas; no se solicita aprobar contenido sin fuente ni se lo convierte en regla.

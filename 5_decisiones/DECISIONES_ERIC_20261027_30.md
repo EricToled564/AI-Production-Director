@@ -31,8 +31,7 @@ las del 29 y del 30, de esta conversación.
    La propuesta del agente que lo desarrolla, pendiente de aprobación, está en
    `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md`.
 7. **Auditoría con prueba** (2026-10-29): Eric pidió auditar 100 textos corregidos y traer prueba de que están
-   correctos. La prueba es el texto original sacado de la base, al lado de cada corrección
-   (registro borrado el 2026-10-30 por instrucción de Eric, punto 11).
+   correctos. La prueba es el texto original sacado de la base, al lado de cada corrección.
 8. **Nada sin verificar** (2026-10-30): «no me des una aseveración que no has verificado personalmente». Toda
    afirmación del agente se verifica en el archivo o en la base antes de darla. Si no se verificó, se dice que no se
    verificó.
@@ -40,20 +39,13 @@ las del 29 y del 30, de esta conversación.
    instrucciones de Eric, de la estructura del repo, de lo que existe y lo que no, y de las decisiones ya tomadas. No se
    da por faltante algo que ya existe ni se repite una decisión tomada. Registrado en CLAUDE.md, sección «Consultar el
    mapa antes de preguntar».
-10. **PLAN_V5 fuera** (2026-10-30): «no hace sentido que nada dependa de un plan fracasado; ya te dije que necesitamos otro plan». Se
-    borra PLAN_V5 y ningún archivo lo nombra ni depende de él. Su estado era «propuesta consolidada para aprobación» y no
-    hay registro de que Eric lo aprobara.
-11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
-    escondas en algún archivo para que al rato los puedas recuperar, es borrarlos de forma irrecuperable». Se borraron
-    las primeras lecturas y copias del mapa, los registros de verificación y auditoría, los hooks y `settings.json`, y
-    `produccion/template-retrato-gpt2/` con sus prompts de prueba. Después, por la misma instrucción, las 9 familias
-    de régimen físico y su investigación (`.claude/rules/regimenes/` y `research/`): «bórralos, no lo sigues».
-12. **Repo, PLAN_V5, hooks y mapa** (2026-10-30, segunda parte):
+11. **Borrar de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los escondas en algún archivo
+    para que al rato los puedas recuperar, es borrarlos de forma irrecuperable». Lo que Eric ordena borrar se borra
+    también del historial de git.
+12. **Repo, hooks y mapa** (2026-10-30, segunda parte):
     1. Los templates y los casos de uso van en carpetas propias, y el repo se acomoda «de una forma profesional, fácil
        de encontrar y navegar y que haga sentido al desarrollo del sistema». Hecho: carpetas `1_originales/` a
        `6_mapa/` y `LEEME.md`.
-    2. De PLAN_V5 se extraen los niveles de generalidad y la jerarquía de lectura a archivos propios, y se borra el
-       resto del plan. Hecho: `4_diseno/niveles_de_generalidad.md` y `4_diseno/jerarquia_de_lectura.md`.
     3. «Restaura todos los hooks y ponlos en un archivo en la sección que les corresponde». Hecho:
        `4_diseno/validadores/`. Esto deja sin efecto, para los hooks, el borrado del punto 11.
     4. El mapa tiene que cumplir su función: el agente decide su tamaño, pero debe cubrir todos los puntos que
@@ -62,19 +54,16 @@ las del 29 y del 30, de esta conversación.
        originales (INV-000247, INV-000248, INV-000565): «estamos haciendo un sistema nuevo, esto no aplica más». Ese
        paso y sus herramientas no obligan al sistema nuevo. Las reglas que esos gates revisaban siguen en el corpus.
     6. «Todo del sistema anterior se borra, porque por eso te vuelves loco cada vez que revisas algo y metes cosas que no
-       tienen nada que ver con el nuevo sistema y perdemos millones de tokens con eso». Hecho: el zip quedó solo con
-       `skills/` (`1_originales/AI_Production_Director_v3.4.0_skills.zip`) y se borraron los hooks de
-       `4_diseno/validadores/`, lo que deja sin efecto el punto 12.3.
-    7. Corrección del punto 12.6: «no borres los archivos del zip hasta que no los revisemos, excepto por lo que se
-       refiere a NotebookLM». Hecho: el zip se restauró desde el historial y solo se le quitaron 30 archivos de
-       NotebookLM (`notebooklm-corpus/`, `nblm-ids/`, `nblm_*.py`, `.mcp.json` y `rule_export.py`). Queda en
-       `1_originales/AI_Production_Director_v3.4.0.zip`.
-    8. Borrar los archivos viejos del mapa: los capítulos, los PDF y HTML, las 141 explicaciones del corpus y los
-       programas que los generaban. El mapa queda en `6_mapa/CONSULTA.md` (el índice), su generador,
-       `utilidad_corpus.json` (la utilidad de cada documento del corpus) e `INVENTARIO_SHA256.md`.
+       tienen nada que ver con el nuevo sistema y perdemos millones de tokens con eso». Lo precisan los puntos 7 y 9.
+    7. Corrección del punto 6: los archivos del zip no se borran hasta revisarlos con Eric, salvo los que él ya ordenó
+       borrar.
+    9. Los hooks que Eric ordenó restaurar (punto 3) se quedan. El agente los había borrado al aplicar el punto 6, que
+       no los incluía; se restauraron el 2026-10-30 en `4_diseno/validadores/`.
 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
     carpeta en el repo para auditorías y verificaciones, con todo lo que tenga que ver con eso; un registro de cambios
     en el que se anota cada cambio a partir de que el contenido del repo se dio por bueno. Registrado en `CLAUDE.md`;
     carpeta `7_auditorias_y_verificaciones/`; registro `CAMBIOS.md`.
-    9. Los hooks que Eric ordenó restaurar (punto 12.3) se quedan. El agente los había borrado al aplicar el punto 12.6,
-       que no los incluía; se restauraron el 2026-10-30 en `4_diseno/validadores/`.
+14. **Ninguna referencia a documentos borrados** (2026-10-30): se borran todos los documentos que Eric ordenó borrar y toda
+    referencia a ellos, sin excepción, también en la taxonomía, el catálogo de casos, el corpus y los flujos originales.
+    El zip no se modifica salvo lo que Eric ordenó. Para los textos borrados queda sin efecto que la base del corpus no se
+    modifica (26-oct, punto 1).

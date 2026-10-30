@@ -1,6 +1,5 @@
 # Jerarquía de lectura de la clasificación
 
-Extraído literal el 2026-10-30, por instrucción de Eric, del plan de clasificación del 19 de octubre (sha256 `36abfa00f28033c6422342285cd393071a6fade22c2707d62206a29d13e7a493`), que después se borró. Origen: §13.1, L612–624. «C18» es la edición base de la taxonomía (`3_taxonomia/00688_…`, Anexo 4).
 
 ## Texto
 
