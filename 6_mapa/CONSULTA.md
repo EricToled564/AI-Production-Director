@@ -114,7 +114,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 375 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (68) · L146 2. Decisiones e instrucciones de Eric (archivo y línea) · L340 3. Pendientes (`PENDIENTES.md`) · L360 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
+- `CONSULTA.md`: 376 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (69) · L147 2. Decisiones e instrucciones de Eric (archivo y línea) · L341 3. Pendientes (`PENDIENTES.md`) · L361 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
 - `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
 
 **`6_mapa/herramientas/`**
@@ -139,7 +139,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 25 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 26 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 26 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
@@ -170,8 +170,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo**
 - L26 **Cambios**
 - L32 | 1 | `.claude/hooks/aurora/` y `rule_registry.py` ya no existen | Borrados el 2026-10-27 por orden de Eric de dejar solo lo que necesita el sistema …
-- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `163e903`). El 2026-10-30 Eric ordenó borrar todo el sistema …
-- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `163e903`…
+- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `a93d641`). El 2026-10-30 Eric ordenó borrar todo el sistema …
+- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `a93d641`…
 
 **`5_decisiones/01021_DECISIONES_APLICADAS_20261011_224300.md`**
 
@@ -325,8 +325,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo**
 - L26 **Cambios**
 - L32 | 1 | `.claude/hooks/aurora/` y `rule_registry.py` ya no existen | Borrados el 2026-10-27 por orden de Eric de dejar solo lo que necesita el sistema …
-- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `163e903`). El 2026-10-30 Eric ordenó borrar todo el sistema …
-- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `163e903`…
+- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `a93d641`). El 2026-10-30 Eric ordenó borrar todo el sistema …
+- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `a93d641`…
 
 **`5_decisiones/directivas_20261021/directivas_taller.json`**
 

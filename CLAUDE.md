@@ -38,7 +38,7 @@ Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sec
 consecuencia tiene para el trabajo en curso, o por qué no tiene ninguna. El registro se escribe mientras se lee y se sube
 al terminar cada documento, para que una compactación del contexto no obligue a volver a leer. Registro vigente:
 `6_mapa/lecturas/`, un archivo por documento leído. Lo borrado el 2026-10-27 (pruebas, planes, registros, herramientas y
-resultados anteriores del agente) se recupera desde el commit anterior a cada borrado: lo de `163e903` con `git checkout bd5eb2b -- <ruta>`, lo de `039d558` con `git checkout 6840461 -- <ruta>` y lo de `6840461` con `git checkout a6d59d1 -- <ruta>`.
+resultados anteriores del agente) se recupera desde el commit anterior a cada borrado: lo de `a93d641` con `git checkout 0a40c7f -- <ruta>`, lo de `87f71af` con `git checkout ffbb94a -- <ruta>` y lo de `ffbb94a` con `git checkout 58b8cbd -- <ruta>`.
 
 ## Basura, auditorías y registro de cambios (instrucción de Eric, 2026-10-30)
 
