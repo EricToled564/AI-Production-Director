@@ -74,6 +74,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
 | `7_auditorias_y_verificaciones/revision_estructura_taxonomia_y_casos_20261030.md` | `49ccdd9c6d91b213a1e35d5d483517d86be22dfdb1c66920542e8e14968e9044` |
+| `7_auditorias_y_verificaciones/taxonomia_que_sale_20261030.md` | `e81f942b22d2dd0994360149c5b55ef0ddc0c277e9c0d6caee2914b17934e55b` |
 | `7_auditorias_y_verificaciones/taxonomia_sin_estados_de_exclusion_20261030.md` | `19df4385636a5363103d520321f9832e4976883b5cb314e45ae20067ffdb1072` |
 | `7_auditorias_y_verificaciones/templates/RESULTADOS_PRUEBAS_ESTRUCTURALES.json` | `69755063876cad8ece87c67aebedab0d631cffbd17e0d1193cc17b20def4f962` |
 | `7_auditorias_y_verificaciones/templates/VERIFICACION_ESTRUCTURAL.json` | `36fb2000b8859ef5b3a6069e89d07e76d1f51c0975936a00a6a00ce10c6ffb48` |
