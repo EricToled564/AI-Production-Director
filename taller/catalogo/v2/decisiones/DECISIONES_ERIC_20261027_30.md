@@ -32,7 +32,7 @@ las del 29 y del 30, de esta conversación.
    `taller/catalogo/DISENO_APLICACION_Y_CLASIFICACION.md`.
 7. **Auditoría con prueba** (2026-10-29): Eric pidió auditar 100 textos corregidos y traer prueba de que están
    correctos. La prueba es el texto original sacado de la base, al lado de cada corrección
-   (`mapa/documentos/auditoria/`).
+   (registro borrado el 2026-10-30 por instrucción de Eric, punto 11).
 8. **Nada sin verificar** (2026-10-30): «no me des una aseveración que no has verificado personalmente». Toda
    afirmación del agente se verifica en el archivo o en la base antes de darla. Si no se verificó, se dice que no se
    verificó.
@@ -40,3 +40,10 @@ las del 29 y del 30, de esta conversación.
    instrucciones de Eric, de la estructura del repo, de lo que existe y lo que no, y de las decisiones ya tomadas. No se
    da por faltante algo que ya existe ni se repite una decisión tomada. Registrado en CLAUDE.md, sección «Consultar el
    mapa antes de preguntar».
+10. **PLAN_V5 fuera** (2026-10-30): «no hace sentido que nada dependa de un plan fracasado; ya te dije que necesitamos otro plan». Se
+    borra PLAN_V5 y ningún archivo lo nombra ni depende de él. Su estado era «propuesta consolidada para aprobación» y no
+    hay registro de que Eric lo aprobara.
+11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
+    escondas en algún archivo para que al rato los puedas recuperar, es borrarlos de forma irrecuperable». Se borraron
+    las primeras lecturas y copias del mapa, los registros de verificación y auditoría, los hooks y `settings.json`, y
+    `produccion/template-retrato-gpt2/` con sus prompts de prueba.

@@ -24,7 +24,7 @@ El sistema no genera imágenes: genera prompts. Eric genera las imágenes y las 
 | **E. Catalogador de caso** | Ubica el pedido dentro de la taxonomía, usando las columnas de la matriz marcadas como reglas de selección o catálogo | Matriz B, CASOS |
 | **F. Selector de reglas** | Lee la matriz y da a cada regla una sola salida: excluida por decisión, fuera de este caso o aplicable confirmada | Taxonomía §7.4 |
 | **G. Compilador** | Arma el prompt con las reglas aplicables, en el contrato de la operación y el adaptador del modelo (para GPT Image 2: GPT2-GEN o GPT2-EDIT) | TEMPLATES §5–§6, PLAN_V5 §16.11 |
-| **H. Validadores** | Comprueban el prompt antes de entregarlo: vocabulario prohibido (incluida «photorealistic»), secciones, ratio en el Scene y longitud (solo aviso) | Decisiones, hooks, `armar.py` |
+| **H. Validadores** | Comprueban el prompt antes de entregarlo: vocabulario prohibido (incluida «photorealistic»), secciones, ratio en el Scene y longitud (solo aviso) | Decisiones de Eric y reglas del corpus clasificado |
 | **I. Biblioteca de prompts efectivos** | Guarda el prompt aprobado con su traza. Si un brief nuevo se parece al menos en un 85 % a uno guardado, sugiere reusar su prompt | Decisión 23 §8 |
 | **J. Traza** | Une cada regla aplicada con su texto original, su condición, el campo del brief y su efecto en el prompt | T-TRAZA, `binding_contract` |
 

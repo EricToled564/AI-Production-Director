@@ -1,17 +1,6 @@
 # Instrucciones de proyecto
 
-## Prompts de retrato para GPT Image 2
-
-Todo prompt de retrato (una persona, sin referencias) para GPT Image 2 se arma con
-`produccion/template-retrato-gpt2/armar.py`. No se escribe a mano.
-
-1. Pasar el brief del usuario a un JSON con los campos de `produccion/template-retrato-gpt2/LEEME.md`.
-   Copiar la forma de `produccion/template-retrato-gpt2/aprobados-20261024/briefs.json` (seis casos que Eric aprobó
-   al primer intento el 2026-10-24).
-2. `python3 -I produccion/template-retrato-gpt2/armar.py <briefs.json>`.
-3. Si sale con código 1, corregir el campo que nombra el rechazo y repetir. Nunca entregar un prompt rechazado.
-4. Entregar el prompt tal como lo escribe `PROMPTS.txt`, con Model `gpt-image-2`, Quality `high` y el Size que indica,
-   y aparte la lista de lo que se infirió porque el brief no lo decía.
+## Alcance y vocabulario de los prompts
 
 El alcance de las reglas es solo GPT Image 2 (decisión de Eric, 2026-10-24). La palabra «photorealistic» está prohibida
 en los prompts.

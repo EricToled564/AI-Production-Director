@@ -4,12 +4,6 @@ Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapa
 
 | Archivo | sha256 |
 |---|---|
-| `.claude/hooks/gate_dramaturgy.py` | `c0d8ebbd74fa1307b13f5c33c01af3397f2e5275ef2d61451cfe0e349f4c141c` |
-| `.claude/hooks/gate_image.py` | `ab6d11c8d1d675d8ac07656cd4b9e1020440c8711cb253fa29127b8f5eded8b0` |
-| `.claude/hooks/gate_microgate.py` | `b41420ee20e06eac5c972d8590d27246378e2124edd5349a197258d6fa74062d` |
-| `.claude/hooks/gate_shots.py` | `ea9a1cd946d80b2b3e9016af8aaab08b8bb7bad1df6084952f350f158d78a4ff` |
-| `.claude/hooks/inject_rules.py` | `53d3f7015f6463727dd8b522887271bd38b5d0e1f2448e4604a052ac78369a67` |
-| `.claude/hooks/prompt_detect.py` | `78f97c3c94b8f2c81c80883c97a85a72f40b2c03dfb8737c082235088c3d3135` |
 | `.claude/rules/DECISIONES.md` | `abc55abddfa65ec9aa18cf0e2146abd65b40a51eb96121514f244f53cee89ec1` |
 | `.claude/rules/regimenes/01-agua-superficie.md` | `ccb6986883f75bf1888fc9334de0dea9476c2854cc86347da56b0313adb897b7` |
 | `.claude/rules/regimenes/02-agua-ruptura.md` | `018ed3e9f369c13a2c9cd19095444800f52172f093bd30e427a5a0e6f2806354` |
@@ -30,23 +24,12 @@ Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapa
 | `.claude/rules/research/07-luz-y-clima.md` | `2553b8a96539e57ce201b2e8ef882e874d8d11fe94b753eee0df8d65dda723e5` |
 | `.claude/rules/research/08-multitud-anonima.md` | `c0dc78f5271b43c4cc05f9f8d67354b2530a124ae0d23e0eb3776feb804061ee` |
 | `.claude/rules/research/09-grupo-ensamble.md` | `5c5612ded919d9ebba086e4317cac2bd31387b6982d2888f1f55c021ed942475` |
-| `.claude/settings.json` | `47c3bc75bf0f918d871762b79b6491743d8bff87d12ecff467a00ccf260dcef5` |
 | `.gitignore` | `d05f275d32dbae3cff24a3ae9bc1c407ca65de1cdd95f36a21ff623a7c5dc3e4` |
 | `CLAUDE.md` | `b69b14d9c6858c7e801470b95ab23eebcf6cc47821361d9d9b5508532120c90c` |
 | `apd/originales/AI_Production_Director_v3.4.0_COMPLETE.zip` | `5c55b7886d7e8955be52144f002f1e8b0c8254de6ea846bfbb944fe5242111dc` |
 | `apd/originales/SHA256SUMS` | `78b2615504dc4cb0025f52cd25d88a2f8d3cb60900ef15cb1024d18a5ebceb7c` |
 | `apd/originales/flujo-anclas.html` | `08dc81cc4614c80b8440d2f02a75e25f1cfc27178af1ce95ddf3986e6f718817` |
 | `apd/originales/flujo-spot.html` | `a18c2094ad802142cc50a81b3a34b11ef2467ec4df6d5b53a1ed64d6e0a7618d` |
-| `produccion/template-retrato-gpt2/LEEME.md` | `ee6d0f5fc82a6e6e9e2e9a8cc2a0e1c11bd58d2bcc60cf8e5f9e7c5ea37cf481` |
-| `produccion/template-retrato-gpt2/aprobados-20261024/PROMPTS.txt` | `d8a38888b2e078adbd8d821b68b553f709d4ca42f196213a20aafaa6359d17c8` |
-| `produccion/template-retrato-gpt2/aprobados-20261024/briefs.json` | `593c55a961f5d175383d60749658ff4ceadfb37763edd20b908ddcb81189ad20` |
-| `produccion/template-retrato-gpt2/armar.py` | `e279fffb19e718a238cf2090af1fa7c44f4cb986fbab6ae47bf207251fad5951` |
-| `produccion/template-retrato-gpt2/b6-corregido/PROMPTS.txt` | `85aa742216707abfe797a16992983c2e45be12ac5b9e14147cf7e92ea028a9f6` |
-| `produccion/template-retrato-gpt2/b6-corregido/briefs.json` | `cb0a8afd70cbc904f2687bbf6300ad510b6153a2e622d6a6c85b911bb5c8b90a` |
-| `produccion/template-retrato-gpt2/pelirroja-ecu-20261025/PROMPTS.txt` | `4a33c26800c55383c305b9c821a89c383c1a367707c3103b5e3dae8fa430b321` |
-| `produccion/template-retrato-gpt2/pelirroja-ecu-20261025/RESULTADO.md` | `e0795821323531576362531218cba25dc1f24b0bfa377f7b482626ed10d4bca4` |
-| `produccion/template-retrato-gpt2/pelirroja-ecu-20261025/briefs.json` | `f2ec0e99e237b8724dee7fc990ce88359d30990b8af81d32603dc08c702beb52` |
-| `produccion/template-retrato-gpt2/pelirroja-ecu-20261025/resultado_1.webp` | `be359a67936ea57b6c155c46157d1afa41e15e521c2a329f6e1b60433614833c` |
 | `taller/catalogo/corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `c991437028d9d731bf46e516efa315f08d9da71bd596495c119fa41d30f6c8d9` |
 | `taller/catalogo/corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `d75acf41d4520eb12c7d892b2ebc8dcece08b9b4665624592771b50a00789519` |
 | `taller/catalogo/fuentes_20261019/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `7ec912aa92d8d1a6f54a6158550c0bcfa48861a05bbf6f6146b5b93b1f9bfeaa` |
