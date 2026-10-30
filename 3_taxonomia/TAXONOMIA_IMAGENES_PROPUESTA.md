@@ -10,6 +10,13 @@ Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; 
 | Impacta | El texto cambia lo que se escribe en el brief o en el prompt de una imagen |
 | No impacta | El texto no cambia el brief ni el prompt; se clasifica solo por lo que es |
 
+### Si impacta: ¿se aplica siempre o depende del caso?
+
+| Valor | Definición |
+|---|---|
+| Siempre: va en el template | Se aplica a todo brief o prompt de imagen, sea cual sea el caso. Se escribe una vez en el template de cada modelo, con la forma que ese modelo pide, y no se vuelve a seleccionar caso por caso. Uso operativo: INCORPORADA A TEMPLATE. Ejemplo: el estilo de prompt que favorece cada generador |
+| Según el caso: se selecciona | Se aplica solo cuando el caso cumple su condición. Se elige caso por caso con los niveles 3 y 4. Uso operativo: ACTIVO EN SELECCIÓN |
+
 ### Si no impacta: qué es el texto
 
 Propuesta: los tipos que la base del corpus ya asigna a cada texto, sin leerlos.
