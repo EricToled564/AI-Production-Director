@@ -58,3 +58,6 @@ las del 29 y del 30, de esta conversación.
        `4_diseno/validadores/`. Esto deja sin efecto, para los hooks, el borrado del punto 11.
     4. El mapa tiene que cumplir su función: el agente decide su tamaño, pero debe cubrir todos los puntos que
        contienen los archivos, sin duplicar la información; solo los indexa. Hecho: `6_mapa/CONSULTA.md`.
+    5. Sobre el argumento del agente de que borrar los gates dejaba sin ejecutar el paso de validación de los flujos
+       originales (INV-000247, INV-000248, INV-000565): «estamos haciendo un sistema nuevo, esto no aplica más». Ese
+       paso y sus herramientas no obligan al sistema nuevo. Las reglas que esos gates revisaban siguen en el corpus.

@@ -112,7 +112,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `DECISIONES_ERIC_20261023.md`: 41 líneas: L1 Decisiones de Eric Toledano — 2026-10-23
 - `DECISIONES_ERIC_20261024.md`: 25 líneas: L1 Decisiones de Eric Toledano — 2026-10-24
 - `DECISIONES_ERIC_20261026.md`: 121 líneas: L1 Decisiones de Eric Toledano — 2026-10-26
-- `DECISIONES_ERIC_20261027_30.md`: 60 líneas: L1 Instrucciones de Eric dadas en conversación (2026-10-27 a 2026-10-30)
+- `DECISIONES_ERIC_20261027_30.md`: 63 líneas: L1 Instrucciones de Eric dadas en conversación (2026-10-27 a 2026-10-30)
 - `DECISIONES_ERIC_RESCATADAS_20261027.md`: 16 líneas: L1 Decisiones de Eric rescatadas antes de borrar las apps (2026-10-27) · L5 De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28) · L10 De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuent…
 - `DECISIONES_repo_20260925.md`: 24 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo
 
@@ -147,7 +147,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `09a_templates_explicacion.md`: 169 líneas: L1 12. Templates y contratos, explicados · L5 12.1 Qué es un contrato · L16 12.2 Autoridad (TEMPLATES §1) · L25 12.3 El brief T-BRIEF-IMG (TEMPLATES §3) · L72 12.4 Módulos condicionales (`CONTRATOS_OPERACION_MODELO.json`) · L83 12.5 Contratos por operación (TEMPLATES §5) · L98 12.6 La salida de GPT Image 2 (TEMPLATES §6 y PLAN_V5 §16.11) · L145 12.7 Orquestación, aceptación y traza (TEMPLATES §8 y §9) · L161 12.8 Destinos ya resueltos
 - `10_metodologia_clasificacion.md`: 88 líneas: L1 13. La metodología de clasificación · L9 13.1 El contrato de clasificación por texto (taxonomía §1.12, 12 punt… · L24 13.2 Correspondencia con los templates (§1.13) · L32 13.3 El registro de una regla (taxonomía §7.1) · L44 13.4 La lógica de condiciones (§7.2) · L54 13.5 El procedimiento del PLAN_V5 · L86 13.6 Lo que el método no dice
 - `11_veredicto.md`: 60 líneas: L1 14. Qué está construido y qué falta para el sistema · L5 14.1 Lo que ya existe · L21 14.2 Lo que falta · L32 14.3 Contradicciones que la lectura encontró dentro del corpus · L54 14.4 Lo que cuesta en cada turno de trabajo
-- `CONSULTA.md`: 522 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (101) · L173 2. Decisiones e instrucciones de Eric (archivo y línea) · L356 3. Pendientes (`PENDIENTES.md`) · L376 4. Corpus: 206 archivos, 141 contenidos distintos
+- `CONSULTA.md`: 540 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (112) · L190 2. Decisiones e instrucciones de Eric (archivo y línea) · L374 3. Pendientes (`PENDIENTES.md`) · L394 4. Corpus: 206 archivos, 141 contenidos distintos
 - `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
 - `MAPA_ANEXO_DATOS.html`: 753,469 bytes
 - `MAPA_ANEXO_DATOS.pdf`: 2,296,809 bytes
