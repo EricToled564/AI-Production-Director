@@ -164,6 +164,18 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L99 18. **Dos textos mal excluidos entran al universo** (2026-10-27). Eric respondió «Sí, meterlos» a la pregunta «¿Meto
 - L108 19. **La decisión por sección se mantiene** (2026-10-27, 00:28–00:37 UTC; registrada tarde, el 2026-10-27). Se decidió en
 
+### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_20261027_30.md`
+
+- L7 1. **Objetivo y reparto** (2026-10-27): «EL SISTEMA NO GENERA IMÁGENES, GENERA PROMPTS Y YO HAGO LAS IMÁGENES». El
+- L9 2. **Qué se queda en el repo** (2026-10-27): «LOS ARCHIVOS QUE SE QUEDAN SON LOS QUE NECESITAS PARA EL SISTEMA ENTERO,
+- L11 3. **No repetir preguntas ya respondidas** (2026-10-27): no volver a preguntar lo que Eric ya contestó en conversaciones
+- L13 4. **Planes** (2026-10-27): un plan tiene como máximo 10 pasos, extremadamente claros y sin riesgos sin mitigar.
+- L14 5. **Riesgos y pendientes** (2026-10-29): registrado en CLAUDE.md, sección «Riesgos, pendientes y avance de etapa».
+- L15 6. **Procedimiento para terminar** (2026-10-29, palabras de Eric resumidas punto por punto):
+- L33 7. **Auditoría con prueba** (2026-10-29): Eric pidió auditar 100 textos corregidos y traer prueba de que están
+- L36 8. **Nada sin verificar** (2026-10-30): «no me des una aseveración que no has verificado personalmente». Toda
+- L39 9. **Para qué es el mapa** (2026-10-30): el mapa es para que el agente lo consulte y no pierda la memoria de las
+
 ### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`
 
 - L5 **De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28)** — - `| 14 | director (Eric) | D1: CF-MOTOR-SW30 → b (5 slots de GPT Image), política permanente para todo brief |`
@@ -340,7 +352,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (166)
+## 4. Archivos versionados del repo (168)
 
 
 **`.claude/hooks/`**
@@ -511,6 +523,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `09a_templates_explicacion.md`
 - `10_metodologia_clasificacion.md`
 - `11_veredicto.md`
+- `CONSULTA.md`
 - `MAPA_ANEXO_DATOS.html`
 - `MAPA_ANEXO_DATOS.pdf`
 - `MAPA_DEL_REPO.html`
@@ -575,6 +588,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
 - `construir_pdf.py`
 - `generar_datos.py`
+- `indice_consulta.py`
 - `muestra_auditoria.py`
 - `taxonomia.json`
 - `taxonomia_a_json.py`
