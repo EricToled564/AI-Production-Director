@@ -16,14 +16,14 @@ Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; 
 
 Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos; se marcan todos.
 
-| Valor | Definición |
-|---|---|
-| Agrega contenido | Pide que se escriba algo: un dato, un elemento, una descripción o un valor |
-| Fija la forma | Fija cómo se escribe: estilo de redacción, estructura, formato, apartados, longitud o sintaxis |
-| Establece un orden | Fija en qué orden van los bloques o los elementos |
-| Fija restricciones | Excluye palabras o elementos, o fija lo que no debe cambiar |
-| Fija un parámetro | Fija un valor técnico de la generación: modelo, calidad, tamaño, ratio u otro |
-| Da un ejemplo o una plantilla | Da una frase, un prompt o una plantilla con huecos que sirven de modelo |
+| Valor | Definición | Incluye | No incluye |
+|---|---|---|---|
+| Agrega contenido | Pide que se escriba algo de la imagen: sujeto, acción, escena, detalles, estilo visual, luz, color, materiales, texto que debe aparecer, términos de calidad | Las frases que describen la imagen, incluido su estilo visual | Cómo se redacta el prompt (eso es «fija la forma») |
+| Fija la forma | Fija cómo se redacta el prompt: apartados, formato, etiquetas, sintaxis, longitud, estilo de redacción, cómo se nombran las referencias adjuntas | La estructura y la manera de escribir | El estilo visual de la imagen (eso es «agrega contenido») |
+| Establece un orden | Fija en qué orden van los bloques o los elementos del prompt | Orden de apartados y de elementos | — |
+| Fija restricciones | Excluye palabras o elementos, o fija lo que no debe cambiar | Prohibiciones, exclusiones, prompt negativo, lo que se preserva en una edición | — |
+| Fija un parámetro | Fija un valor técnico de la generación fuera de la descripción | Modelo, calidad, tamaño, ratio, fondo transparente, formato de salida | Lo que se describe dentro del prompt |
+| Da un ejemplo o una plantilla | Da una frase, un prompt o una plantilla con huecos que sirve de modelo | Ejemplos, plantillas, opciones de redacción | — |
 
 ### 1.3 Si impacta: dónde actúa
 
@@ -39,7 +39,7 @@ Decide el destino de la regla. Solo lo que necesita interpretación pasa por sel
 
 | Valor | Cuándo | Destino | Uso operativo |
 |---|---|---|---|
-| Template | No depende de ningún dato del caso, o depende solo del modelo o de la operación. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo, o en el de ese modelo u operación. Se usa una vez y no se vuelve a seleccionar | INCORPORADA A TEMPLATE |
+| Template | No depende de ningún dato del caso, o depende solo del modelo o de la operación. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo, o en el de ese modelo u operación. Se usa una vez y no se vuelve a seleccionar. El template guarda la instrucción, no copia texto a cada prompt, para que el prompt siga siendo corto | INCORPORADA A TEMPLATE |
 | Inserción mecánica | Su condición se resuelve con datos de lista cerrada que fija el brief (tipo de pieza, sujeto, operación de edición, técnica, texto en la imagen, etc.), uno o varios | Se inserta sin selección en cuanto el brief fija esos datos | INSERCIÓN MECÁNICA |
 | Biblioteca de plantillas | Es la plantilla de un look concreto | Se ofrece por tipo de pieza y estilo; el usuario confirma como máximo una y se inserta | BIBLIOTECA DE PLANTILLAS |
 | Selección | Su condición depende de un valor abierto (número, edad, posición, texto literal) o necesita interpretar el caso | Se selecciona caso por caso | ACTIVO EN SELECCIÓN |

@@ -5,25 +5,26 @@ aplicado en `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md`, nivel 1.
 
 ## 1. Investigación
 
-Cómo se leyeron las fuentes:
-- **Extracto automático.** Ninguna se leyó completa de forma directa. Las citas salen de extractos que hizo una
-  herramienta (Firecrawl o WebFetch) sobre cada página: pueden no ser literales.
-- **Anthropic.** No se leyó: la página redirigió a otra, y lo de abajo sale del resumen de un buscador.
-- ***The Prompt Report*.** Solo se leyó el primer 27 % del documento.
-- **OpenAI.** La guía está marcada como archivada.
-- **Normas NISO Z39.19 e ISO 25964.** No se leyeron: son de pago.
+Todas las fuentes de esta tabla se leyeron completas: se descargaron y se leyó su texto entero. Hay dos excepciones:
+- *The Prompt Report*: solo §1 a §1.3, que es su terminología.
+- NISO Z39.19: §2.5, §2.6, §5 completo y §6.2.2 a §6.2.3.
 
-| Fuente | Qué dice | Qué se decidió con eso |
+La página de Anthropic *Use prompt templates and variables*, citada en la versión anterior de este archivo, ya no existe:
+redirige a otra página. Por eso se quitó.
+
+| Fuente | Qué dice (leído completo) | Qué se decidió con eso |
 |---|---|---|
-| A. Fitzgerald, *Purpose-Driven Taxonomy Design* (2025), andyfitzgeraldconsulting.com | «build a taxonomy "of" a topic rather than "for" a purpose» es el error común; primero objetivos y usos, después estructura; probar contra los usos | El nivel 1 se ordena por lo que se hace con cada texto: dónde entra al prompt |
-| Wikipedia, *Faceted classification* | Facetas: «clearly defined, mutually exclusive, and collectively exhaustive aspects» | Facetas separadas: impacto, efecto, dónde actúa, cómo entra, qué es |
-| H. Hedden, *Faceted Classification and Faceted Taxonomies* (2024) | Un término en una sola faceta; «a logical and practical number of facets tends to be in the range of three to seven» | 5 facetas en el nivel 1 |
-| Nielsen Norman Group, *Taxonomy 101* | Faceta = jerarquías pequeñas que describen aspectos distintos; revisar y mantener | Cada faceta con valores definidos |
-| Schulhoff et al., *The Prompt Report* (arXiv 2406.06608), §1.2.1 | Componentes de un prompt: directiva, ejemplos, formato de salida, instrucciones de estilo («a type of output formatting»), rol, información adicional | Efecto: «da un ejemplo o una plantilla» como valor propio; el estilo va dentro de «fija la forma» |
-| OpenAI, *Image generation models prompting guide* (cookbook) | Orden «background/scene → subject → key details → constraints»; «State exclusions and invariants explicitly»; edición «change only X» + «keep everything else the same» | Efecto: «establece un orden»; «fija restricciones» incluye excluir y fijar lo que no cambia |
-| Anthropic, *Use prompt templates and variables* | La plantilla combina contenido fijo (igual en cada llamada) y variable (cambia en cada pedido) | Destino «template» para lo fijo |
-| MindStudio, *Static vs Dynamic Context in AI Agents* | Lo fijo debe ser universal, pequeño y estable; «Use conditional context loading for task-specific blocks where your workflow supports branching» | Destino «inserción mecánica»: bloques que se cargan por datos del brief sin selección |
-| Decisión de Eric, `5_decisiones/DECISIONES_ERIC_20261023.md` §4 | Las plantillas de un look se tratan como biblioteca, se ofrecen por tipo de pieza y estilo y se confirma como máximo una | Destino «biblioteca de plantillas» |
+| A. Fitzgerald, *Purpose-Driven Taxonomy Design* (2025) | El error común es hacer una taxonomía «of» un tema y no «for» un propósito: primero objetivos y usos, después estructura. Evitar la polijerarquía sin razón. Una categoría que vale para todo («all content») no acota. Definir cada término uno mismo. Probar con contenido real, etiquetando 5 piezas y siguiendo el resultado | El nivel 1 se ordena por lo que se hace con cada texto: cómo entra al prompt. Cada valor con definición. Prueba con 24 textos reales |
+| H. Hedden, *Faceted Classification and Faceted Taxonomies* (2024) | Un concepto pertenece a una sola faceta. «A logical and practical number of facets tends to be in the range of three to seven». La mayoría de las facetas debe aplicar a la mayoría del contenido | 5 facetas en el nivel 1. «Qué es» queda solo para lo que no impacta, y los tipos de documento salen del nivel 1 |
+| Nielsen Norman Group, *Taxonomy 101* | Lista cerrada de términos. Hacer inventario del contenido, buscar primero una taxonomía estándar, evitar términos con muy poco contenido, revisar con los expertos y mantenerla con gobierno | Los valores de «qué es» salen de lo observado en el corpus. La propuesta pasa por Eric |
+| Wikipedia, *Faceted classification* | Facetas «clearly defined, mutually exclusive, and collectively exhaustive aspects». Se pueden crear facetas nuevas sin desarmar las demás | Facetas que no se pisan. Las extensiones (F32–F35) entran como facetas nuevas |
+| ANSI/NISO Z39.19-2005 (R2010) | Cada término con un solo significado. La nota de alcance dice el significado elegido y lo que se excluye. Facetas para atributos del contenido; con menos de unos cien términos basta una lista simple. Elegir términos por «warrant» del propio contenido. Probar y evaluar periódicamente | Cada efecto lleva «incluye» y «no incluye» (estilo visual frente a forma de redacción). Listas simples para facetas pequeñas. Valores tomados del corpus |
+| Schulhoff et al., *The Prompt Report* (arXiv 2406.06608), §1 | Componentes del prompt: directiva, ejemplos, formato de salida, instrucciones de estilo («a type of output formatting»), rol, información adicional. «A prompt template is a function that contains one or more variables». Una técnica puede tener lógica condicional o de ramas | Efecto «da un ejemplo o una plantilla». La forma de redacción separada del contenido. El template con variables que se llenan desde el brief |
+| J. Oppenlaender, *A Taxonomy of Prompt Modifiers for Text-to-Image Generation* (2023) | Seis tipos de modificadores: sujeto, estilo, prompt de imagen, potenciador de calidad, repetición y términos mágicos. El sujeto es obligatorio y el resto opcional. Pesos negativos para excluir | En imagen, estilo y calidad son contenido de la imagen y entran en «agrega contenido». Las exclusiones van en «fija restricciones» |
+| V. Liu y L. Chilton, *Design Guidelines for Prompt Engineering Text-to-Image Generative Models* (CHI 2022) | Prompts como plantilla con parámetros («SUBJECT in the style of STYLE»). Las palabras de enlace no cambiaron la calidad; sí el sujeto y el estilo. Generar 3 a 9 variantes | El prompt es una plantilla que se llena con datos del caso, lo que respalda el destino «template + llenado» |
+| OpenAI, *Image generation models prompting guide* (cookbook, archivada) | Orden «background/scene → subject → key details → constraints». «State exclusions and invariants explicitly». Edición: «change only X» + «keep everything else the same». Fundamentos generales más guías por caso de uso (infografías, logos, anuncios, UI, cómics, edición, transferencia de estilo, prueba virtual de ropa, eliminar objetos…) | «Establece un orden». «Fija restricciones» incluye lo que se preserva. Lo general va al template; lo de cada caso de uso u operación se inserta al fijarse en el brief |
+| MindStudio, *Static vs Dynamic Context in AI Agents* | Lo fijo debe ser universal, pequeño y estable; las reglas críticas, fijas. Bloques condicionales que se cargan cuando el flujo detecta el tipo de tarea. Lo grande o variable, por recuperación. Las capas no deben contradecirse | Template para lo universal, con instrucciones y no texto copiado. Inserción mecánica por datos del brief. Selección solo para lo que hay que interpretar |
+| Decisión de Eric, `5_decisiones/DECISIONES_ERIC_20261023.md` §4 | Las plantillas de un look son biblioteca: se ofrecen por tipo de pieza y estilo y se confirma como máximo una | Destino «biblioteca de plantillas» |
 
 ## 2. Prueba con 24 textos reales
 
