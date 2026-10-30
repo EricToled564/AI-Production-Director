@@ -46,4 +46,5 @@ las del 29 y del 30, de esta conversación.
 11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
     escondas en algún archivo para que al rato los puedas recuperar, es borrarlos de forma irrecuperable». Se borraron
     las primeras lecturas y copias del mapa, los registros de verificación y auditoría, los hooks y `settings.json`, y
-    `produccion/template-retrato-gpt2/` con sus prompts de prueba.
+    `produccion/template-retrato-gpt2/` con sus prompts de prueba. Después, por la misma instrucción, las 9 familias
+    de régimen físico y su investigación (`.claude/rules/regimenes/` y `research/`): «bórralos, no lo sigues».

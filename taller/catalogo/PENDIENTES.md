@@ -33,12 +33,7 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 
 ## Línea aparte — Familias de régimen físico
 
-No bloquea la clasificación del corpus: las familias no son corpus autorizado (taxonomía §0.1) mientras no se canonicen.
-
-| # | Pendiente | Responsable | Estado | Cómo se cierra |
-|---|---|---|---|---|
-| P-14 | Aplicar los veredictos de `.claude/rules/research/` a las etiquetas de `.claude/rules/regimenes/` (`[CAMPO: url]`, `[REFUTADA: url]`) | Agente | Abierto | Etiquetas aplicadas, cada una con su URL de la investigación |
-| P-15 | Ejercicio real por familia de régimen para canonizar (decisión 8 del 2026-09-25) | Eric genera las imágenes; el agente prepara los prompts | Abierto | `[CANONICA fecha]` con el template que funcionó |
+P-14 y P-15: sin objeto. Las familias y su investigación se borraron el 2026-10-30 por instrucción de Eric.
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 

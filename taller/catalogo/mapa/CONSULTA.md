@@ -350,37 +350,12 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (119)
+## 4. Archivos versionados del repo (100)
 
 
 **`.claude/rules/`**
 
 - `DECISIONES.md`
-
-**`.claude/rules/regimenes/`**
-
-- `01-agua-superficie.md`
-- `02-agua-ruptura.md`
-- `03-subacuatico.md`
-- `04-objeto-balistico.md`
-- `05-vehiculo.md`
-- `06-cuerpo-en-esfuerzo.md`
-- `07-luz-y-clima.md`
-- `08-multitud-anonima.md`
-- `09-grupo-ensamble.md`
-- `README.md`
-
-**`.claude/rules/research/`**
-
-- `01-agua-superficie.md`
-- `02-agua-ruptura.md`
-- `03-subacuatico.md`
-- `04-objeto-balistico.md`
-- `05-vehiculo.md`
-- `06-cuerpo-en-esfuerzo.md`
-- `07-luz-y-clima.md`
-- `08-multitud-anonima.md`
-- `09-grupo-ensamble.md`
 
 **`./`**
 

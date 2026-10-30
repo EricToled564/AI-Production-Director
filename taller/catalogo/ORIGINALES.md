@@ -5,25 +5,6 @@ Criterio de Eric: solo lo que necesita el sistema completo, para todas las etapa
 | Archivo | sha256 |
 |---|---|
 | `.claude/rules/DECISIONES.md` | `abc55abddfa65ec9aa18cf0e2146abd65b40a51eb96121514f244f53cee89ec1` |
-| `.claude/rules/regimenes/01-agua-superficie.md` | `ccb6986883f75bf1888fc9334de0dea9476c2854cc86347da56b0313adb897b7` |
-| `.claude/rules/regimenes/02-agua-ruptura.md` | `018ed3e9f369c13a2c9cd19095444800f52172f093bd30e427a5a0e6f2806354` |
-| `.claude/rules/regimenes/03-subacuatico.md` | `418262f280ba5cb8691d0ffbced7f5be861ae8bce887e62f136888cf8e8f72a5` |
-| `.claude/rules/regimenes/04-objeto-balistico.md` | `532a1f1e3be0ef9ccd8ee6238931080a1c7d4a8a594cc85d0857582634990926` |
-| `.claude/rules/regimenes/05-vehiculo.md` | `f51a17b104a166849377b41697bbcd8b916123039bb366e7d34147ec397ca065` |
-| `.claude/rules/regimenes/06-cuerpo-en-esfuerzo.md` | `1f72de111d344e9181fc1ac4bf485dbeae99dc9544ce80454703ea6c665b5af9` |
-| `.claude/rules/regimenes/07-luz-y-clima.md` | `d9d023ab4536ce4ed410a1fbdfc33701f91aef16114fac790cdcdf123ad3a164` |
-| `.claude/rules/regimenes/08-multitud-anonima.md` | `4da57eca3213fa3082205bbbc47af5b99d3414151d647aa64442eb543f277158` |
-| `.claude/rules/regimenes/09-grupo-ensamble.md` | `74ce11b78044929478d5ac9e8ca773e3bcbaaadec7e3b2414b4d023c781df683` |
-| `.claude/rules/regimenes/README.md` | `d5b612810fc4fda1e843c48f588a9aac8b20751d10463bb1a6c38a07933da9d0` |
-| `.claude/rules/research/01-agua-superficie.md` | `9aa88659d0ae3e1b4c5c43e29a4b48a84aaa37748c159d2d6258620f40288edc` |
-| `.claude/rules/research/02-agua-ruptura.md` | `ddf2354a0705de46ac1d49fcba12cebc6501cd04a9934cac5d770c9b8e3a4d99` |
-| `.claude/rules/research/03-subacuatico.md` | `aef8b35b15e20b05a1a19c9d0ea2b5031f349c9a1bf78948345560b19928925e` |
-| `.claude/rules/research/04-objeto-balistico.md` | `7bb2162c4a87b6c1998909154bac72a805937448b304796cf78c6d386a2b59e6` |
-| `.claude/rules/research/05-vehiculo.md` | `835ea1218b400810ce5b68ee74caa3edf5ca813d7fd2735fadb45468b5516df5` |
-| `.claude/rules/research/06-cuerpo-en-esfuerzo.md` | `7a564caad85d1c3f083b19ce821061b85b12e88c923736d30fc2e77c59b0848a` |
-| `.claude/rules/research/07-luz-y-clima.md` | `2553b8a96539e57ce201b2e8ef882e874d8d11fe94b753eee0df8d65dda723e5` |
-| `.claude/rules/research/08-multitud-anonima.md` | `c0dc78f5271b43c4cc05f9f8d67354b2530a124ae0d23e0eb3776feb804061ee` |
-| `.claude/rules/research/09-grupo-ensamble.md` | `5c5612ded919d9ebba086e4317cac2bd31387b6982d2888f1f55c021ed942475` |
 | `.gitignore` | `d05f275d32dbae3cff24a3ae9bc1c407ca65de1cdd95f36a21ff623a7c5dc3e4` |
 | `CLAUDE.md` | `b69b14d9c6858c7e801470b95ab23eebcf6cc47821361d9d9b5508532120c90c` |
 | `apd/originales/AI_Production_Director_v3.4.0_COMPLETE.zip` | `5c55b7886d7e8955be52144f002f1e8b0c8254de6ea846bfbb944fe5242111dc` |
