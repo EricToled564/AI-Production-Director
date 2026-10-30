@@ -20,4 +20,5 @@ identificadores de abajo son los vigentes.
 | 2026-10-30 | `7d03066` | NotebookLM quitado del zip anidado y de `project_knowledge_pack/` | Eric |
 | 2026-10-30 | `26f5023` | Identificadores de commit citados, actualizados tras reescribir el historial | — |
 | 2026-10-30 | — | Historial de `main` y de `wip-verificacion` reescrito: sin NotebookLM; `wip-verificacion` además sin las familias de régimen ni su investigación | Eric |
-| 2026-10-30 | este commit | Regla de basura, auditorías y registro de cambios (`CLAUDE.md`); carpeta `7_auditorias_y_verificaciones/` con los verificadores de templates y casos, sus resultados y la verificación de la decisión 4; `MANIFIESTO.json` de templates con las rutas nuevas y la huella vigente de `FUENTES_CONTRATOS.json`; este registro | Eric |
+| 2026-10-30 | `55d2b4f` | Regla de basura, auditorías y registro de cambios (`CLAUDE.md`); carpeta `7_auditorias_y_verificaciones/` con los verificadores de templates y casos, sus resultados y la verificación de la decisión 4; `MANIFIESTO.json` de templates con las rutas nuevas y la huella vigente de `FUENTES_CONTRATOS.json`; este registro | Eric |
+| 2026-10-30 | este commit | Identificador del commit anterior anotado en este registro | — |
