@@ -1,6 +1,6 @@
 # Inventario del repo con sha256
 
-Regenerado el 2026-10-30, después de la revisión de referencias a lo borrado. Lista cada archivo versionado, salvo este, con su sha256. El inventario anterior, del 2026-10-27, está en el historial de git.
+Regenerado el 2026-10-30, después de la revisión de referencias a lo borrado. Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian en cada commit), con su sha256. El inventario anterior, del 2026-10-27, está en el historial de git.
 
 | Archivo | sha256 |
 |---|---|
@@ -42,13 +42,20 @@ Regenerado el 2026-10-30, después de la revisión de referencias a lo borrado. 
 | `4_diseno/templates/MANIFIESTO.json` | `cbc8b4acc6cbf868f81e28dd50e6c2291f2ca323177ec822fcee3f7cf2f030e3` |
 | `4_diseno/templates/REGISTRO_DESTINOS_TEMPLATE.json` | `c1ac0ec3c47884000fc2bb6cc0f06b3878bc7f6fafcbacffc0c733fbd9271518` |
 | `4_diseno/templates/TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md` | `ef46fa11a526ed3e3c11a652bcb98935879553239b298150233cb94eea08f1a9` |
+| `4_diseno/validadores/gate_dramaturgy.py` | `c0d8ebbd74fa1307b13f5c33c01af3397f2e5275ef2d61451cfe0e349f4c141c` |
+| `4_diseno/validadores/gate_image.py` | `ab6d11c8d1d675d8ac07656cd4b9e1020440c8711cb253fa29127b8f5eded8b0` |
+| `4_diseno/validadores/gate_microgate.py` | `b41420ee20e06eac5c972d8590d27246378e2124edd5349a197258d6fa74062d` |
+| `4_diseno/validadores/gate_shots.py` | `ea9a1cd946d80b2b3e9016af8aaab08b8bb7bad1df6084952f350f158d78a4ff` |
+| `4_diseno/validadores/inject_rules.py` | `53d3f7015f6463727dd8b522887271bd38b5d0e1f2448e4604a052ac78369a67` |
+| `4_diseno/validadores/prompt_detect.py` | `78f97c3c94b8f2c81c80883c97a85a72f40b2c03dfb8737c082235088c3d3135` |
+| `4_diseno/validadores/settings.json` | `47c3bc75bf0f918d871762b79b6491743d8bff87d12ecff467a00ccf260dcef5` |
 | `5_decisiones/01021_DECISIONES_APLICADAS_20261011_224300.md` | `88291704c359e92de80ad2f7676c79afc0ae5e8b0faf2a9b7b93045046c5b070` |
 | `5_decisiones/01022_DELTA_DECISIONES_CONSOLIDADO_20261011_224300.md` | `e15aa1c4d221cb786b874532048d63aaef80a9578166c8ec99fc9271db8a1a8d` |
 | `5_decisiones/01062_registro_decisiones_DOC01.md` | `3cdd35cd52a667dcd3b2a9a986fe682e12f147ba79a12f0113688164eac7cc46` |
 | `5_decisiones/DECISIONES_ERIC_20261023.md` | `0cda566f49bbc84e92d5c55f4cf2166bf1459f87d92d3a9c9c2f959436609b28` |
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `96eab4c2396dc9b16f73eced9a3fd1e6ebd79aff7e4cf1fbfff50fa6e09f0249` |
-| `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `c53b0f83c4fa108717111531d46f07c745bdaa9c1d93b3f0b5651e285d43b657` |
+| `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7de16fbe4eac21112ee80286296786861d186f07a1cee1e38801ed277e06814c` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `2f27843594f5e3aa75c81a42841685869fa392d2b667d7d86001914cb5428fe2` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `4adbdaa37307606bf5e843e81b71bdf236f6b2f2b60b18e52a7f3dabd1e07c96` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -59,7 +66,6 @@ Regenerado el 2026-10-30, después de la revisión de referencias a lo borrado. 
 | `5_decisiones/directivas_20261021/template_brief.json` | `a0a7e6abdbb1f8ef1a951791d488e9f16c0cd43160c1257f8b8a9c56b8f4e633` |
 | `5_decisiones/directivas_20261021/universal_rules.json` | `6ee5529a12efdbc4a7564c6e78f422ef8b80e760cca15485516c116aea407071` |
 | `5_decisiones/directivas_20261021/user_directives.json` | `b7b1c60f4400a6de02c73896f09eb30d536b1faf5202f7ed8aabd36a1c186372` |
-| `6_mapa/CONSULTA.md` | `3b5bace9933c0d473811cc5a1998596d881a36c95752e6cdc07377857a45d982` |
 | `6_mapa/herramientas/indice_consulta.py` | `d54cbef9028a4de4b9cff779096be40d22fba00120aa0caebd123d9ebb6da014` |
 | `6_mapa/herramientas/utilidad_corpus.json` | `1ade26d6c3af16eae5f03f6300e57437dc27518ff36120c020f290d35a0b9892` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
@@ -68,7 +74,6 @@ Regenerado el 2026-10-30, después de la revisión de referencias a lo borrado. 
 | `7_auditorias_y_verificaciones/templates/VERIFICACION_ESTRUCTURAL.json` | `36fb2000b8859ef5b3a6069e89d07e76d1f51c0975936a00a6a00ce10c6ffb48` |
 | `7_auditorias_y_verificaciones/templates/probar_contratos.py` | `5607afb64d6be6914633e7dbbf7b8804bf7636a986c7b82a29843bf7e433b3de` |
 | `7_auditorias_y_verificaciones/templates/verificar_templates.py` | `d5619b01c8bd56faf8529917280da4fb568c2152a777fd3744faf8babaf3ccac` |
-| `CAMBIOS.md` | `f177ae4d462dbe1a214df7b4fc11f63461d8c525aa67f6b4140358b9b8b010d1` |
 | `CLAUDE.md` | `21973e9d8f6c05fc47ad868a980848e069f18e755934900fc1ad87fd4d0da546` |
-| `LEEME.md` | `1508778b5164ad7e043392149068e39c85e224fa0e00fc70bcc49da7227197f3` |
-| `PENDIENTES.md` | `1a9eadc43611788e92066e0116f2f28da291cadfbe1d0060a88eaf1e1050d97c` |
+| `LEEME.md` | `1cb6443f8181f412ce45dae4e851776b6723af382e30e1606f97b69d57adaf09` |
+| `PENDIENTES.md` | `9cb4b55f20f7fb6351118bd8d364c499b4519c7bf84068ac8afb9760d1782a95` |

@@ -15,7 +15,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado, salvo lo que Eric ordenó borrar de forma irrecuperable, que ya no está en el historial de `main` |
 
 
-## 1. Archivos del repo (69)
+## 1. Archivos del repo (76)
 
 
 **`.claude/rules/`**
@@ -89,6 +89,16 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `REGISTRO_DESTINOS_TEMPLATE.json`: 7 claves: version, schema_file, facet_destinations, aliases, fields, f30_destinations, scope_destinations
 - `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`: 387 líneas: L1 Templates revisados de entrada y salida: imagen y orquestación · L5 1. Autoridad y alcance · L9 2. Secuencia obligatoria de uso · L21 3. Ficha rellenables T-BRIEF-IMG · L138 4. Tarjeta de ancla D1–D9 · L142 5. Contratos por operación · L144 T-GENESIS · L149 T-REF-COMP · L154 T-ANCLA-REF · L159 T-ANCLA-FF · L164 T-ANCLA-LF · L169 T-EDIT · L174 T-STYLE · L179 T-SKETCH · L184 6. Templates de salida por modelo · L187 GPT2-GEN · L201 GPT2-EDIT · L213 NB-PROSE · L223 NB-COMP · L234 NB-EDIT · L244 NB-COMPLEX · L268 FLUX-GEN · L278 MJ-GEN · L288 IDEOGRAM-COMPOSITED · L298 IDEOGRAM-TEXT · L308 SEEDREAM-GEN · L318 GPT15-GEN · L329 GPT-IMAGE-1-MIGRATION · L340 GPT-IMAGE-1-MINI-MIGRATION · L351 Reglas de serialización de variantes · L357 7. Salida común rellenables · L371 8. T-ORQ: contrato ejecutable de eventos y gates · L375 9. T-ACEPTACIÓN y T-TRAZA · L379 10. Cobertura y validación · L383 11. Fuentes y atribución · L386 12. Obligatoriedad revisada por módulo
 
+**`4_diseno/validadores/`**
+
+- `gate_dramaturgy.py`: Stop hook: blocks delivery of visual prompts that carry banned vocabulary.
+- `gate_image.py`: Stop hook: enforces the image skill's own golden rules on delivered prompts.
+- `gate_microgate.py`: Stop hook: enforce the 3-line micro-gate header on any visual delivery.
+- `gate_shots.py`: PostToolUse hook: runs the shotkit validator whenever shots.json is written.
+- `inject_rules.py`: UserPromptSubmit hook: put the mandatory rules in context before Claude chooses.
+- `prompt_detect.py`: Decide si un bloque cercado es la entrega de un prompt visual.
+- `settings.json`: 1 claves: hooks
+
 **`5_decisiones/`**
 
 - `01021_DECISIONES_APLICADAS_20261011_224300.md`: sus decisiones, en §2
@@ -139,9 +149,9 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 27 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 28 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
-- `LEEME.md`: 26 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
+- `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
 ## 2. Decisiones e instrucciones de Eric (archivo y línea)
@@ -345,7 +355,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L16 **P-03** (Agente; Cerrado 2026-10-30: muestras con semilla 20261030…): Tercera lectura sellada del 10 % (muestra sellada)
 - L17 **P-04** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar `produc…): `CLAUDE.md` dice que `aprobados-20261024/briefs.json` tiene «seis casos»; tiene cinco (B1–B5). B6 está en `b6-corregido…
 - L18 **P-16** (Agente; Sin objeto 2026-10-30: Eric ordenó borrar los cap…): Verificar los capítulos del mapa
-- L19 **P-17** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar todo el…): Hooks del paquete original
+- L19 **P-17** (Eric; Cerrado 2026-10-30: restaurados por orden de Eric…): Hooks del paquete original
 - L20 **P-18** (Eric, con el agente; Abierto. Eric ordenó no borrar archivos del zip h…): Revisar con Eric los 506 archivos del zip que no son `skills/` ni NotebookLM (el sistema anterior) antes de decidir qué…
 - L21 **P-19** (Eric; Cerrado 2026-10-30: extraídos literal a `4_diseno…): Los niveles de generalidad y la jerarquía de lectura solo estaban completos en PLAN_V5 §13.1–13.2
 - L22 **P-05** (Eric; Abierto): Aprobación del índice `6_mapa/CONSULTA.md`

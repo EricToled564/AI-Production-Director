@@ -76,3 +76,5 @@ las del 29 y del 30, de esta conversación.
     carpeta en el repo para auditorías y verificaciones, con todo lo que tenga que ver con eso; un registro de cambios
     en el que se anota cada cambio a partir de que el contenido del repo se dio por bueno. Registrado en `CLAUDE.md`;
     carpeta `7_auditorias_y_verificaciones/`; registro `CAMBIOS.md`.
+    9. Los hooks que Eric ordenó restaurar (punto 12.3) se quedan. El agente los había borrado al aplicar el punto 12.6,
+       que no los incluía; se restauraron el 2026-10-30 en `4_diseno/validadores/`.
