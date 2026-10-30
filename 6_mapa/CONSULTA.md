@@ -24,7 +24,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `.gitignore`: 180 bytes
+- `.gitignore`: 19 bytes
 
 **`1_originales/`**
 
@@ -115,7 +115,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`6_mapa/`**
 
 - `CONSULTA.md`: 376 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (69) · L147 2. Decisiones e instrucciones de Eric (archivo y línea) · L341 3. Pendientes (`PENDIENTES.md`) · L361 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
-- `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
+- `INVENTARIO_SHA256.md`: 74 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -139,7 +139,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 26 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 27 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 26 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
@@ -263,25 +263,25 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`5_decisiones/DECISIONES_ERIC_20261026.md`**
 
-- L5 1. **Cuando un texto da una cifra que no es la de GPT Image 2, vale la cifra que el corpus da para GPT Image 2**, y el
-- L14 2. «No estás aprobado para asumir nada, siempre lo verificas»: toda afirmación sobre un texto se comprueba leyendo el
-- L16 3. «Siempre que hay una supuesta contradicción o incoherencia tienes que leer exhaustivamente los textos
-- L19 4. **Interfaces de GPT Image 2: OpenAI API y fal.ai** (respuesta a la decisión 1 de 6). Manda
-- L24 5. **F20 con una sola persona que debe seguir reconocible: «todas»** (decisión 2 de 6). Base: TRM-0175 (taxonomía L1220,
-- L27 6. **Extensión F24 + «objeto entero»** (decisión 3 de 6): un objeto completo como sujeto del cuadro. Los 8 valores
-- L30 7. **F05 de B1 y B4 deja de ser lista vacía** (decisión 4 de 6; la lista vacía viola taxonomía §1.12.8): B1 (pescadora en
-- L33 8. **Interfaz de generación de la prueba: App de ChatGPT para escritorio** (corregido 2026-10-27). Palabras de Eric
-- L42 9. **Muestra de auditoría** (2026-10-27): Eric revisa al azar el 10 % del total de reglas marcadas «no aplica» en cada
-- L45 10. **Repetición antes de auditar** (2026-10-27): si una imagen sale mal, se genera el mismo prompt por lo menos dos veces
-- L50 11. **Longitud del prompt** (2026-10-27): ya estaba decidida (`.claude/rules/DECISIONES.md` decisión 2; T-BRIEF-IMG L355).
-- L54 12. **Alcance de la prueba: solo imagen con aspecto de foto real** (2026-10-27). Palabras de Eric: «solo quiero que se
-- L62 13. **vision-decomposer y transferencia de estilo son cosas distintas** (2026-10-27). Palabras de Eric: «porque si son
-- L67 14. **Caso de descripción de imagen** (2026-10-27, responde la pregunta 2 de `v3/revision/04_preguntas_eric.md`).
-- L75 15. **Sin veredicto d en el diagnóstico** (2026-10-27, responde la pregunta 3). Palabras de Eric: «no hay límite de
-- L81 16. **Lista de casos de la prueba** (2026-10-27, responde la pregunta 1 de `v3/revision/04_preguntas_eric.md`). Eric
-- L90 17. **Boceto o plano a final: 5 casos** (2026-10-27). Eric eligió un caso por cada plantilla fotográfica, igual que en
-- L99 18. **Dos textos mal excluidos entran al universo** (2026-10-27). Eric respondió «Sí, meterlos» a la pregunta «¿Meto
-- L108 19. **La decisión por sección se mantiene** (2026-10-27, 00:28–00:37 UTC; registrada tarde, el 2026-10-27). Se decidió en
+- L7 1. **Cuando un texto da una cifra que no es la de GPT Image 2, vale la cifra que el corpus da para GPT Image 2**, y el
+- L16 2. «No estás aprobado para asumir nada, siempre lo verificas»: toda afirmación sobre un texto se comprueba leyendo el
+- L18 3. «Siempre que hay una supuesta contradicción o incoherencia tienes que leer exhaustivamente los textos
+- L21 4. **Interfaces de GPT Image 2: OpenAI API y fal.ai** (respuesta a la decisión 1 de 6). Manda
+- L26 5. **F20 con una sola persona que debe seguir reconocible: «todas»** (decisión 2 de 6). Base: TRM-0175 (taxonomía L1220,
+- L29 6. **Extensión F24 + «objeto entero»** (decisión 3 de 6): un objeto completo como sujeto del cuadro. Los 8 valores
+- L32 7. **F05 de B1 y B4 deja de ser lista vacía** (decisión 4 de 6; la lista vacía viola taxonomía §1.12.8): B1 (pescadora en
+- L35 8. **Interfaz de generación de la prueba: App de ChatGPT para escritorio** (corregido 2026-10-27). Palabras de Eric
+- L44 9. **Muestra de auditoría** (2026-10-27): Eric revisa al azar el 10 % del total de reglas marcadas «no aplica» en cada
+- L47 10. **Repetición antes de auditar** (2026-10-27): si una imagen sale mal, se genera el mismo prompt por lo menos dos veces
+- L52 11. **Longitud del prompt** (2026-10-27): ya estaba decidida (`.claude/rules/DECISIONES.md` decisión 2; T-BRIEF-IMG L355).
+- L56 12. **Alcance de la prueba: solo imagen con aspecto de foto real** (2026-10-27). Palabras de Eric: «solo quiero que se
+- L64 13. **vision-decomposer y transferencia de estilo son cosas distintas** (2026-10-27). Palabras de Eric: «porque si son
+- L69 14. **Caso de descripción de imagen** (2026-10-27, responde la pregunta 2 de `v3/revision/04_preguntas_eric.md`).
+- L77 15. **Sin veredicto d en el diagnóstico** (2026-10-27, responde la pregunta 3). Palabras de Eric: «no hay límite de
+- L83 16. **Lista de casos de la prueba** (2026-10-27, responde la pregunta 1 de `v3/revision/04_preguntas_eric.md`). Eric
+- L92 17. **Boceto o plano a final: 5 casos** (2026-10-27). Eric eligió un caso por cada plantilla fotográfica, igual que en
+- L101 18. **Dos textos mal excluidos entran al universo** (2026-10-27). Eric respondió «Sí, meterlos» a la pregunta «¿Meto
+- L110 19. **La decisión por sección se mantiene** (2026-10-27, 00:28–00:37 UTC; registrada tarde, el 2026-10-27). Se decidió en
 
 **`5_decisiones/DECISIONES_ERIC_20261027_30.md`**
 
@@ -309,7 +309,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`**
 
 - L5 **De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28)**
-- L10 **De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuentes_eric_20261021/`)**
+- L10 **De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuentes_eric_20261021/`; …**
 
 **`5_decisiones/DECISIONES_repo_20260925.md`**
 
@@ -340,7 +340,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 ## 3. Pendientes (`PENDIENTES.md`)
 
-- L14 **P-01** (Agente; Cerrado 2026-10-29: 141 de 141 verificadas por un…): Verificar las 141 explicaciones del capítulo 5 contra su original
+- L14 **P-01** (Agente; Cerrado 2026-10-29: 141 de 141 verificadas por un…): Verificar las 141 explicaciones del corpus (borradas el 2026-10-30) contra su original
 - L15 **P-02** (Agente; Cerrado 2026-10-29: criterio objetivo aplicado; c…): La utilidad ALTA, MEDIA o NULA era el juicio de cada lector
 - L16 **P-03** (Agente; Cerrado 2026-10-30: muestras con semilla 20261030…): Tercera lectura sellada del 10 % (muestra sellada)
 - L17 **P-04** (Eric; Sin objeto 2026-10-30: Eric ordenó borrar `produc…): `CLAUDE.md` dice que `aprobados-20261024/briefs.json` tiene «seis casos»; tiene cinco (B1–B5). B6 está en `b6-corregido…
@@ -350,7 +350,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L21 **P-19** (Eric; Cerrado 2026-10-30: extraídos literal a `4_diseno…): Los niveles de generalidad y la jerarquía de lectura solo estaban completos en PLAN_V5 §13.1–13.2
 - L22 **P-05** (Eric; Abierto): Aprobación del índice `6_mapa/CONSULTA.md`
 - L28 **P-06** (Agente, con aprobación de Eric; Abierto): Incorporar las extensiones de la taxonomía del 23 y del 26 de octubre (F32–F35 y valores nuevos en F04, F05, F06, F10, …
-- L29 **P-07** (Agente propone, Eric aprueba; Abierto): Mecanismo para clasificar sin perder el estado (el diseño no lo especifica, capítulo 13)
+- L29 **P-07** (Agente propone, Eric aprueba; Abierto): Mecanismo para clasificar sin perder el estado: cómo retoma el trabajo un agente cuya conversación se compacta a mitad …
 - L30 **P-08** (Eric; Abierto): `text-rendering.md`: Nano Banana con más de 100 idiomas (INV-003296); en la sección «Multilingual / Localization», sin …
 - L31 **P-09** (Eric; Abierto): `screenwriter/SKILL.md`: 8–15 escenas (INV-003470) frente a 6–10 para 5 minutos (INV-003574)
 - L32 **P-10** (Eric; Abierto): Seedream y el texto: `_capabilities.json` frente a su adaptador

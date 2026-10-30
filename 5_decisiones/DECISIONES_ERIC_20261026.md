@@ -2,6 +2,8 @@
 
 Fuente: sesión `session_01RkzWqCTfrzRXTVrroB7zfi`, mensajes de Eric citados textualmente.
 
+Nota del 2026-10-30: los archivos que este registro cita de `taller/`, de `v3/` y de `produccion/template-retrato-gpt2/` (`armar.py`, `b6-corregido`) ya no existen; se borraron el 27 y el 30 de octubre por orden de Eric. Las citas quedan como procedencia de cada decisión.
+
 1. **Cuando un texto da una cifra que no es la de GPT Image 2, vale la cifra que el corpus da para GPT Image 2**, y el
    texto se corrige para que la especifique: «entonces las que valen son las que da el corpus, modifica el texto para
    que especifique el número de GPT 2».

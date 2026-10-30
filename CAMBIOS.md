@@ -24,3 +24,4 @@ identificadores de abajo son los vigentes.
 | 2026-10-30 | `ee80e66` | Identificador del commit anterior anotado en este registro | — |
 | 2026-10-30 | `29d88ce` | `METODO.md` borrado del zip, del zip anidado y de la parte 1 de `project_knowledge_pack/` (describía el método en el que NotebookLM decidía las reglas); también se borran del historial de `main` y de `wip-verificacion` sus versiones en `.claude/rules/METODO.md`. Corregida en `DECISIONES.md` la fila que decía que `wip-verificacion` no se había reescrito | Eric: opción A |
 | 2026-10-30 | este commit | Historial de `main` y `wip-verificacion` reescrito sin `METODO.md`; identificadores de commit citados actualizados | Eric: opción A |
+| 2026-10-30 | este commit | Referencias vivas a documentos borrados corregidas en `PENDIENTES.md`, registros de decisiones y extractos del plan; `.gitignore` sin patrones del sistema anterior; inventario regenerado | Eric |

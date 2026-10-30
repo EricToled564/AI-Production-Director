@@ -1,6 +1,6 @@
 # Niveles de generalidad de una regla (universalidad)
 
-Extraído literal de `PLAN_V5_COMPLETO_TAXONOMIA_TEMPLATES_20261019_054300.md` (sha256 `36abfa00f28033c6422342285cd393071a6fade22c2707d62206a29d13e7a493`) el 2026-10-30, por instrucción de Eric, antes de borrar el resto de ese plan. Origen: §13.2, L626–636.
+Extraído literal el 2026-10-30, por instrucción de Eric, del plan de clasificación del 19 de octubre (sha256 `36abfa00f28033c6422342285cd393071a6fade22c2707d62206a29d13e7a493`), que después se borró. Origen: §13.2, L626–636.
 
 ## Texto
 

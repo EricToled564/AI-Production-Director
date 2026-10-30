@@ -9,7 +9,7 @@ las del 29 y del 30, de esta conversación.
 2. **Qué se queda en el repo** (2026-10-27): «LOS ARCHIVOS QUE SE QUEDAN SON LOS QUE NECESITAS PARA EL SISTEMA ENTERO,
    PARA TODAS LAS ETAPAS Y TODOS LOS MODELOS, NO SOLO PARA EL PILOTO». Lo demás se borra.
 3. **No repetir preguntas ya respondidas** (2026-10-27): no volver a preguntar lo que Eric ya contestó en conversaciones
-   anteriores. Se cumple consultando `taller/catalogo/mapa/CONSULTA.md` (CLAUDE.md).
+   anteriores. Se cumple consultando `6_mapa/CONSULTA.md` (CLAUDE.md).
 4. **Planes** (2026-10-27): un plan tiene como máximo 10 pasos, extremadamente claros y sin riesgos sin mitigar.
 5. **Riesgos y pendientes** (2026-10-29): registrado en CLAUDE.md, sección «Riesgos, pendientes y avance de etapa».
 6. **Procedimiento para terminar** (2026-10-29, palabras de Eric resumidas punto por punto):
@@ -29,7 +29,7 @@ las del 29 y del 30, de esta conversación.
    7. La matriz lleva X si aplica para esa categoría y 0 si no; al final todas las celdas deben estar llenas.
 
    La propuesta del agente que lo desarrolla, pendiente de aprobación, está en
-   `taller/catalogo/DISENO_APLICACION_Y_CLASIFICACION.md`.
+   `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md`.
 7. **Auditoría con prueba** (2026-10-29): Eric pidió auditar 100 textos corregidos y traer prueba de que están
    correctos. La prueba es el texto original sacado de la base, al lado de cada corrección
    (registro borrado el 2026-10-30 por instrucción de Eric, punto 11).
