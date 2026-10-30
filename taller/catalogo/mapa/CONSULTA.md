@@ -17,8 +17,8 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 | Texto original de una regla | Base `taller/catalogo/corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Fiel al original: los 206 archivos coinciden por sha256 y los textos coinciden con sus líneas, salvo los HTML, que son el texto visible sin etiquetas (sus números de línea no son líneas del HTML crudo) |
 | Taxonomía: bloques, facetas, valores y términos | `fuentes_20261019/00688_…md`; explicada en el capítulo 7 y detallada en el 8 |
 | Etapas y flujos | Capítulo 6; taxonomía §2 |
-| Matriz de casos | Capítulo 11; `fuentes_20261019/CASOS_OPCIONES_TAXONOMIA_20261019/casos/` |
-| Brief, contratos y adaptadores por modelo | Capítulo 12; `fuentes_20261019/TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019/templates/` |
+| Matriz de casos | Capítulo 11; `casos/` |
+| Brief, contratos y adaptadores por modelo | Capítulo 12; `templates/` |
 | Universalidad | Capítulo 10 |
 | Contradicciones del corpus ya resueltas o pendientes | Capítulo 14 §14.3 |
 | Prompt de retrato para GPT Image 2 | `produccion/template-retrato-gpt2/` con `armar.py` (CLAUDE.md) |
@@ -350,7 +350,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (100)
+## 4. Archivos versionados del repo (101)
 
 
 **`.claude/rules/`**
@@ -375,16 +375,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `ORIGINALES.md`
 - `PENDIENTES.md`
 
-**`taller/catalogo/corpus/`**
-
-- `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`
-- `CORPUS_LITERAL_COMPLETO_13005.jsonl`
-
-**`taller/catalogo/fuentes_20261019/`**
-
-- `00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md`
-
-**`taller/catalogo/fuentes_20261019/CASOS_OPCIONES_TAXONOMIA_20261019/casos/`**
+**`taller/catalogo/casos/`**
 
 - `README_CASOS_DE_USO.md`
 - `bind_templates.py`
@@ -404,6 +395,15 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `validar.py`
 - `verificacion.json`
 
+**`taller/catalogo/corpus/`**
+
+- `BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite`
+- `CORPUS_LITERAL_COMPLETO_13005.jsonl`
+
+**`taller/catalogo/fuentes_20261019/`**
+
+- `00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md`
+
 **`taller/catalogo/fuentes_20261019/CASOS_OPCIONES_TAXONOMIA_20261019/templates/`**
 
 - `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
@@ -412,20 +412,6 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 **`taller/catalogo/fuentes_20261019/`**
 
 - `PLAN_V5_COMPLETO_TAXONOMIA_TEMPLATES_20261019_054300.md`
-
-**`taller/catalogo/fuentes_20261019/TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019/templates/`**
-
-- `CONTRATOS_OPERACION_MODELO.json`
-- `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
-- `FIELD_MAP.csv`
-- `FUENTES_CONTRATOS.json`
-- `MANIFIESTO.json`
-- `REGISTRO_DESTINOS_TEMPLATE.json`
-- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`
-- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
-- `VERIFICACION_ESTRUCTURAL.json`
-- `probar_contratos.py`
-- `verificar_templates.py`
 
 **`taller/catalogo/fuentes_eric_20261021/`**
 
@@ -479,11 +465,26 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `construir_pdf.py`
 - `generar_datos.py`
 - `indice_consulta.py`
+- `muestra_auditoria.py`
 - `taxonomia.json`
 - `taxonomia_a_json.py`
 - `unir_documentos.py`
 - `verificar_capitulos_datos.py`
 - `verificar_documentos.py`
+
+**`taller/catalogo/templates/`**
+
+- `CONTRATOS_OPERACION_MODELO.json`
+- `CONTRATO_IMAGEN_ORQUESTACION.schema.json`
+- `FIELD_MAP.csv`
+- `FUENTES_CONTRATOS.json`
+- `MANIFIESTO.json`
+- `REGISTRO_DESTINOS_TEMPLATE.json`
+- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`
+- `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
+- `VERIFICACION_ESTRUCTURAL.json`
+- `probar_contratos.py`
+- `verificar_templates.py`
 
 **`taller/catalogo/v2/decisiones/`**
 
