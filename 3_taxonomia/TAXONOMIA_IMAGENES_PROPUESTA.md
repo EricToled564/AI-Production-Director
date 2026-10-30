@@ -10,12 +10,35 @@ Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; 
 | Impacta | El texto cambia lo que se escribe en el brief o en el prompt de una imagen |
 | No impacta | El texto no cambia el brief ni el prompt; se clasifica solo por lo que es |
 
-### Si impacta: ¿se aplica siempre o depende del caso?
+### 1.1 Si impacta: efecto en la redacción
+
+Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos; se marcan todos.
 
 | Valor | Definición |
 |---|---|
-| Siempre: va en el template | Se aplica a todo brief o prompt de imagen, sea cual sea el caso. Se escribe una vez en el template de cada modelo, con la forma que ese modelo pide, y no se vuelve a seleccionar caso por caso. Uso operativo: INCORPORADA A TEMPLATE. Ejemplo: el estilo de prompt que favorece cada generador |
-| Según el caso: se selecciona | Se aplica solo cuando el caso cumple su condición. Se elige caso por caso con los niveles 3 y 4. Uso operativo: ACTIVO EN SELECCIÓN |
+| Agrega contenido | Pide que se escriba algo: un dato, un elemento, una descripción o un valor |
+| Fija la forma | Fija cómo se escribe: estilo de redacción, estructura, formato, apartados, longitud o sintaxis |
+| Establece un orden | Fija en qué orden van los bloques o los elementos |
+| Excluye | Prohíbe palabras, elementos o formas de escribir |
+| Fija un parámetro | Fija un valor técnico de la generación: ratio, tamaño, calidad u otro |
+
+### 1.2 Si impacta: dónde actúa
+
+| Valor | Definición |
+|---|---|
+| Brief | Cambia lo que el brief pide o registra |
+| Prompt | Cambia lo que se escribe en el prompt |
+| Brief y prompt | Cambia los dos |
+
+### 1.3 Si impacta: alcance y destino
+
+El alcance decide adónde va la regla: al template, como instrucción de llenado, o a la selección caso por caso.
+
+| Valor | Definición | Destino |
+|---|---|---|
+| Universal | Vale para todo brief o prompt de imagen, de cualquier modelo y cualquier caso. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
+| Semiuniversal | Depende solo del modelo, de la operación o de los dos, y de ningún otro dato del caso | Instrucción de llenado en el template de ese modelo u operación; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
+| Específica del caso | Depende de algún otro dato del caso (los del nivel 3: tipo de pieza, sujeto, acción, estilo, cámara, etc.) | Se selecciona caso por caso con su condición. Uso operativo: ACTIVO EN SELECCIÓN |
 
 ### Si no impacta: qué es el texto
 
