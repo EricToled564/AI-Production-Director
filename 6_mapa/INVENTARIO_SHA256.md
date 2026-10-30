@@ -13,6 +13,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `ef5437c6688acf30059d0e83e923a3062df7b6bfaf43dea369818f5dc9f235c4` |
 | `2_corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `2b9c1610864d8ef630ddae4734aee021ba154eb14452afc18042bfccbc4bbbfd` |
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
+| `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md` | `e2d3aca6cd7aa7232bfb5a55a54cc9bbcd673ace4f19b0b59cf3cbaa1ee7a592` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `6fd4ea6aef0f863b498530dbaea984ea0198868e8cf93fdbadcd4e7e5114abd1` |
 | `4_diseno/casos/README_CASOS_DE_USO.md` | `368964ebf62be1894f2a36747a47f92b82486edc98f1297d25f6407f85701086` |
 | `4_diseno/casos/bind_templates.py` | `05f7ba976f87ade32af61b856c0ae933717c0486767e333678dacbb55fa6d619` |
