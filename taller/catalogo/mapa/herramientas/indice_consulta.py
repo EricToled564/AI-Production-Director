@@ -51,7 +51,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 | Universalidad | Capítulo 10 |
 | Contradicciones del corpus ya resueltas o pendientes | Capítulo 14 §14.3 |
 | Prompt de retrato para GPT Image 2 | `produccion/template-retrato-gpt2/` con `armar.py` (CLAUDE.md) |
-| Algo borrado del repo | `git checkout 77678d8 -- <ruta>`; qué se borró, en el capítulo 1 §1.4 |
+| Algo borrado del repo | Desde el commit anterior a cada borrado: `439ddb5` → `git checkout 77678d8 -- <ruta>`; `dfcc4fb` → `git checkout d54bf46 -- <ruta>`; `d54bf46` → `git checkout 4fed3e8 -- <ruta>`; qué se borró, en el capítulo 1 §1.4 |
 | Estructura del repo | Sección 4 de este índice |
 """
 

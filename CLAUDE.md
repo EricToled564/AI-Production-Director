@@ -50,4 +50,4 @@ consecuencia tiene para el trabajo en curso, o por qué no tiene ninguna. El reg
 al terminar cada documento, para que una compactación del contexto no obligue a volver a leer. Registro vigente: el mapa
 (`taller/catalogo/mapa/`), con la explicación verificada de cada documento del corpus en
 `taller/catalogo/mapa/documentos/verificado/`. Lo borrado el 2026-10-27 (pruebas, planes, registros, herramientas y
-resultados anteriores del agente) se recupera con `git checkout 77678d8 -- <ruta>`.
+resultados anteriores del agente) se recupera desde el commit anterior a cada borrado: lo de `439ddb5` con `git checkout 77678d8 -- <ruta>`, lo de `dfcc4fb` con `git checkout d54bf46 -- <ruta>` y lo de `d54bf46` con `git checkout 4fed3e8 -- <ruta>`.

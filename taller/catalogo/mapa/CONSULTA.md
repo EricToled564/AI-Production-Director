@@ -22,7 +22,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 | Universalidad | Capítulo 10 |
 | Contradicciones del corpus ya resueltas o pendientes | Capítulo 14 §14.3 |
 | Prompt de retrato para GPT Image 2 | `produccion/template-retrato-gpt2/` con `armar.py` (CLAUDE.md) |
-| Algo borrado del repo | `git checkout 77678d8 -- <ruta>`; qué se borró, en el capítulo 1 §1.4 |
+| Algo borrado del repo | Desde el commit anterior a cada borrado: `439ddb5` → `git checkout 77678d8 -- <ruta>`; `dfcc4fb` → `git checkout d54bf46 -- <ruta>`; `d54bf46` → `git checkout 4fed3e8 -- <ruta>`; qué se borró, en el capítulo 1 §1.4 |
 | Estructura del repo | Sección 4 de este índice |
 
 
@@ -352,7 +352,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (169)
+## 4. Archivos versionados del repo (173)
 
 
 **`.claude/hooks/`**
@@ -593,7 +593,14 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `taxonomia.json`
 - `taxonomia_a_json.py`
 - `unir_documentos.py`
+- `verificar_capitulos_datos.py`
 - `verificar_documentos.py`
+
+**`taller/catalogo/mapa/verificacion_capitulos/`**
+
+- `grupo2.md`
+- `grupo3.md`
+- `grupo4.md`
 
 **`taller/catalogo/v2/decisiones/`**
 

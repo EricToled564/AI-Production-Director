@@ -24,7 +24,7 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 |---|---|---|---|---|
 | P-06 | Incorporar las extensiones de la taxonomía del 23 y del 26 de octubre (F32–F35 y valores nuevos en F04, F05, F06, F10, F17 y F24) al catálogo CASOS y a los destinos de TEMPLATES | Agente, con aprobación de Eric | Abierto | Catálogo y destinos actualizados, verificados con `validar.py` y `verificar_templates.py` |
 | P-07 | Mecanismo para clasificar sin perder el estado (el diseño no lo especifica, capítulo 13) | Agente propone, Eric aprueba | Abierto | Especificación escrita y aprobada |
-| P-08 | `text-rendering.md`: Nano Banana con más de 100 idiomas (INV-003296) y con más de 10 (INV-003375) | Eric | Abierto | Decisión. Propuesta en el capítulo 14 §14.3 |
+| P-08 | `text-rendering.md`: Nano Banana con más de 100 idiomas (INV-003296); en la sección «Multilingual / Localization», sin nombrar modelo, «Supports 10+ languages» (INV-003375). Hay que decidir a qué modelo se aplica la cifra de 10 | Eric | Abierto | Decisión. Propuesta en el capítulo 14 §14.3 |
 | P-09 | `screenwriter/SKILL.md`: 8–15 escenas (INV-003470) frente a 6–10 para 5 minutos (INV-003574) | Eric | Abierto | Decisión. Propuesta en §14.3 |
 | P-10 | Seedream y el texto: `_capabilities.json` frente a su adaptador | Eric | Abierto | Decisión. Propuesta en §14.3 |
 | P-11 | `validate_prompts.py`: la regla del tercio lleva `or True` (INV-012830) | Eric | Abierto | Decisión. Propuesta en §14.3 |
