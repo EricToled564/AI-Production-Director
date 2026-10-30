@@ -148,7 +148,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 13 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 14 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
@@ -306,8 +306,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L38 9. **Para qué es el mapa** (2026-10-30): el mapa es para que el agente lo consulte y no pierda la memoria de las
 - L42 11. **Borrar de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los escondas en algún archivo
 - L45 12. **Repo, hooks y mapa** (2026-10-30, segunda parte):
-- L62 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
-- L66 14. **Ninguna referencia a documentos borrados** (2026-10-30): se borran todos los documentos que Eric ordenó borrar y toda
+- L64 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
+- L68 14. **Ninguna referencia a documentos borrados** (2026-10-30): se borran todos los documentos que Eric ordenó borrar y toda
 
 **`5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`**
 

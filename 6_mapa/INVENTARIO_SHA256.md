@@ -42,6 +42,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `4_diseno/templates/MANIFIESTO.json` | `c0c376c7be4614a5065caf4247c497aa5ee7373d27c77bba405eb89d19d80a13` |
 | `4_diseno/templates/REGISTRO_DESTINOS_TEMPLATE.json` | `c1ac0ec3c47884000fc2bb6cc0f06b3878bc7f6fafcbacffc0c733fbd9271518` |
 | `4_diseno/templates/TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md` | `ef46fa11a526ed3e3c11a652bcb98935879553239b298150233cb94eea08f1a9` |
+| `4_diseno/validadores/README.md` | `ebab248433189db670a5252c8d946aeb4418dd208fc215300ac820d162ef3fbf` |
 | `4_diseno/validadores/gate_dramaturgy.py` | `c0d8ebbd74fa1307b13f5c33c01af3397f2e5275ef2d61451cfe0e349f4c141c` |
 | `4_diseno/validadores/gate_image.py` | `ab6d11c8d1d675d8ac07656cd4b9e1020440c8711cb253fa29127b8f5eded8b0` |
 | `4_diseno/validadores/gate_microgate.py` | `b41420ee20e06eac5c972d8590d27246378e2124edd5349a197258d6fa74062d` |
@@ -55,7 +56,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261023.md` | `0cda566f49bbc84e92d5c55f4cf2166bf1459f87d92d3a9c9c2f959436609b28` |
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
-| `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `19d5464519684e8892ec2f34a7665acf10377ba4cdff2df112ccf8008dc6e2ff` |
+| `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -75,5 +76,5 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/templates/probar_contratos.py` | `5607afb64d6be6914633e7dbbf7b8804bf7636a986c7b82a29843bf7e433b3de` |
 | `7_auditorias_y_verificaciones/templates/verificar_templates.py` | `d5619b01c8bd56faf8529917280da4fb568c2152a777fd3744faf8babaf3ccac` |
 | `CLAUDE.md` | `b55fa30b5dce29369e9618f1dec13ed584c2dfacaa4a6744acdbac45eff0499a` |
-| `LEEME.md` | `1cd449fbb095a13a8e8626843195ed6dd93e8e98983947c45696f933d5a6934b` |
+| `LEEME.md` | `ec24891cb9f1bd52aa65b982e59128b318d7767c8d1fc6952cc6cb544b996b31` |
 | `PENDIENTES.md` | `95422f0ca6c6d0dda3ad41c468057a8114e4413c18a8ce95ba226c3e338c40de` |

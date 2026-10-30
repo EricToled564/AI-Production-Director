@@ -16,7 +16,7 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 | `4_diseno/casos/` | Catálogo de 1,729 opciones de caso y su validador | Cómo se arma un caso |
 | `4_diseno/` (raíz) | `jerarquia_de_lectura.md`, `niveles_de_generalidad.md` y la propuesta de aplicación y clasificación | El método |
 | `4_diseno/copias_identicas/` | 3 copias idénticas de archivos de `4_diseno/templates/` | No se usan; esperan decisión |
-| `4_diseno/validadores/` | Los 6 gates del paquete original y su `settings.json`, sin activar como hooks | Restaurados por orden de Eric |
+| `4_diseno/validadores/` | Los 6 gates del paquete original, su `settings.json` y su `README.md`, sin activar como hooks | Restaurados por orden de Eric |
 | `5_decisiones/` | Las decisiones de Eric por fecha y, en `directivas_20261021/`, sus directivas | Mandan sobre todo lo demás |
 | `6_mapa/` | La memoria del agente; empieza en `6_mapa/CONSULTA.md` | Saber rápido qué existe y qué está decidido |
 | `7_auditorias_y_verificaciones/` | Verificadores de templates y casos, sus resultados y las verificaciones del agente | Comprobar que lo demás está bien |

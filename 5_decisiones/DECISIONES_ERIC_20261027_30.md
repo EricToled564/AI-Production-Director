@@ -59,6 +59,8 @@ las del 29 y del 30, de esta conversación.
        borrar.
     9. Los hooks que Eric ordenó restaurar (punto 3) se quedan. El agente los había borrado al aplicar el punto 6, que
        no los incluía; se restauraron el 2026-10-30 en `4_diseno/validadores/`.
+       Su `README.md`, que el agente había borrado el 27 de octubre y no restauró con ellos, se restauró el mismo día
+       en la misma carpeta, literal, por orden de Eric.
 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
     carpeta en el repo para auditorías y verificaciones, con todo lo que tenga que ver con eso; un registro de cambios
     en el que se anota cada cambio a partir de que el contenido del repo se dio por bueno. Registrado en `CLAUDE.md`;

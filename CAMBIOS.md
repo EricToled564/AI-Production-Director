@@ -11,3 +11,4 @@ día al borrar, por orden de Eric, los documentos que ordenó borrar y toda refe
 | 2026-10-30 | — | Los 6 gates y su `settings.json` en `4_diseno/validadores/`, idénticos a los del zip y sin activar | Eric |
 | 2026-10-30 | — | Regla de basura, auditorías y registro de cambios en `CLAUDE.md`; verificadores de templates y casos y sus resultados en `7_auditorias_y_verificaciones/` | Eric |
 | 2026-10-30 | — | Borrados del repo y del historial los documentos que Eric ordenó borrar, y toda referencia a ellos: archivos del agente, registros de decisiones, taxonomía (L74, L444, L1030; TRM-1321 pasa a SIN PRESENCIA), catálogo de casos regenerado, corpus (2 textos menos: 13,003) y `flujo-anclas.html`. El zip solo cambió en lo que Eric ordenó | Eric: OK a la lista única |
+| 2026-10-30 | este commit | `README.md` de los hooks restaurado literal en `4_diseno/validadores/`, idéntico a la copia del zip | Eric: restaurarlo junto a los hooks |
