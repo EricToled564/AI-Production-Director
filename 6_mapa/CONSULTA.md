@@ -124,7 +124,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 367 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (76) · L156 2. Decisiones e instrucciones de Eric (archivo y línea) · L338 3. Pendientes (`PENDIENTES.md`) · L352 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
+- `CONSULTA.md`: 368 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (77) · L157 2. Decisiones e instrucciones de Eric (archivo y línea) · L339 3. Pendientes (`PENDIENTES.md`) · L353 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
 - `INVENTARIO_SHA256.md`: 80 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
@@ -149,7 +149,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 15 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 16 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
