@@ -31,15 +31,11 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 ### `CLAUDE.md`
 
-- L3 **Prompts de retrato para GPT Image 2** — Todo prompt de retrato (una persona, sin referencias) para GPT Image 2 se arma con
-- L8 1. Pasar el brief del usuario a un JSON con los campos de `produccion/template-retrato-gpt2/LEEME.md`.
-- L11 2. `python3 -I produccion/template-retrato-gpt2/armar.py <briefs.json>`.
-- L12 3. Si sale con código 1, corregir el campo que nombra el rechazo y repetir. Nunca entregar un prompt rechazado.
-- L13 4. Entregar el prompt tal como lo escribe `PROMPTS.txt`, con Model `gpt-image-2`, Quality `high` y el Size que indica,
-- L19 **Antes de decir que algo no existe** — Nunca se afirma que el corpus no tiene una regla, un texto o un dato sin haber leído completos todos los textos que
-- L27 **Consultar el mapa antes de preguntar o de dar algo por faltante (instrucción de Eric, 202…** — El mapa (`taller/catalogo/mapa/`) es la memoria del agente, no un documento para Eric. Antes de preguntarle algo a Eric
-- L36 **Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29)** — - Prohibido dejar riesgos abiertos, salvo los que estén totalmente fuera de control del agente. Todo lo demás se
-- L46 **Toda lectura deja registro en el repo** — Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sección, qué dice (con su línea) y qué
+- L3 **Alcance y vocabulario de los prompts** — El alcance de las reglas es solo GPT Image 2 (decisión de Eric, 2026-10-24). La palabra «photorealistic» está prohibida
+- L8 **Antes de decir que algo no existe** — Nunca se afirma que el corpus no tiene una regla, un texto o un dato sin haber leído completos todos los textos que
+- L16 **Consultar el mapa antes de preguntar o de dar algo por faltante (instrucción de Eric, 202…** — El mapa (`taller/catalogo/mapa/`) es la memoria del agente, no un documento para Eric. Antes de preguntarle algo a Eric
+- L25 **Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29)** — - Prohibido dejar riesgos abiertos, salvo los que estén totalmente fuera de control del agente. Todo lo demás se
+- L35 **Toda lectura deja registro en el repo** — Una lectura no cuenta como hecha sin su registro en el repo: por texto o por sección, qué dice (con su línea) y qué
 
 ### `.claude/rules/DECISIONES.md`
 
@@ -175,6 +171,8 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 - L33 7. **Auditoría con prueba** (2026-10-29): Eric pidió auditar 100 textos corregidos y traer prueba de que están
 - L36 8. **Nada sin verificar** (2026-10-30): «no me des una aseveración que no has verificado personalmente». Toda
 - L39 9. **Para qué es el mapa** (2026-10-30): el mapa es para que el agente lo consulte y no pierda la memoria de las
+- L43 10. **PLAN_V5 fuera** (2026-10-30): «no hace sentido que nada dependa de un plan fracasado; ya te dije que necesitamos otro plan». Se
+- L46 11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
 
 ### `taller/catalogo/v2/decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`
 
@@ -352,17 +350,8 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (173)
+## 4. Archivos versionados del repo (119)
 
-
-**`.claude/hooks/`**
-
-- `gate_dramaturgy.py`
-- `gate_image.py`
-- `gate_microgate.py`
-- `gate_shots.py`
-- `inject_rules.py`
-- `prompt_detect.py`
 
 **`.claude/rules/`**
 
@@ -393,10 +382,6 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `08-multitud-anonima.md`
 - `09-grupo-ensamble.md`
 
-**`.claude/`**
-
-- `settings.json`
-
 **`./`**
 
 - `.gitignore`
@@ -408,31 +393,6 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `SHA256SUMS`
 - `flujo-anclas.html`
 - `flujo-spot.html`
-
-**`produccion/template-retrato-gpt2/`**
-
-- `LEEME.md`
-
-**`produccion/template-retrato-gpt2/aprobados-20261024/`**
-
-- `PROMPTS.txt`
-- `briefs.json`
-
-**`produccion/template-retrato-gpt2/`**
-
-- `armar.py`
-
-**`produccion/template-retrato-gpt2/b6-corregido/`**
-
-- `PROMPTS.txt`
-- `briefs.json`
-
-**`produccion/template-retrato-gpt2/pelirroja-ecu-20261025/`**
-
-- `PROMPTS.txt`
-- `RESULTADO.md`
-- `briefs.json`
-- `resultado_1.webp`
 
 **`taller/catalogo/`**
 
@@ -529,45 +489,6 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `MAPA_DEL_REPO.html`
 - `MAPA_DEL_REPO.pdf`
 
-**`taller/catalogo/mapa/documentos/auditoria/`**
-
-- `muestra.json`
-- `muestra.md`
-- `tercera_lectura.md`
-- `tercera_lectura_2.md`
-- `tercera_lectura_2_muestra.json`
-- `tercera_lectura_3.md`
-- `tercera_lectura_3_muestra.json`
-- `tercera_lectura_muestra.json`
-- `veredictos.md`
-
-**`taller/catalogo/mapa/documentos/`**
-
-- `lote1.md`
-- `lote2.md`
-- `lote3.md`
-- `lote4.md`
-- `lote5.md`
-- `lote6.md`
-- `lote7.md`
-
-**`taller/catalogo/mapa/documentos/verificacion/`**
-
-- `deterministas_documentos.json`
-- `deterministas_documentos.md`
-- `deterministas_verificado.json`
-- `deterministas_verificado.md`
-- `lote1.md`
-- `lote2.md`
-- `lote2_r2.md`
-- `lote3.md`
-- `lote4.md`
-- `lote5.md`
-- `lote6.md`
-- `lote6_r2.md`
-- `lote7.md`
-- `lote7_r2.md`
-
 **`taller/catalogo/mapa/documentos/verificado/`**
 
 - `lote1.md`
@@ -578,29 +499,16 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `lote6.md`
 - `lote7.md`
 
-**`taller/catalogo/mapa/documentos/verificado_r2/`**
-
-- `lote2.md`
-- `lote6.md`
-- `lote7.md`
-
 **`taller/catalogo/mapa/herramientas/`**
 
 - `construir_pdf.py`
 - `generar_datos.py`
 - `indice_consulta.py`
-- `muestra_auditoria.py`
 - `taxonomia.json`
 - `taxonomia_a_json.py`
 - `unir_documentos.py`
 - `verificar_capitulos_datos.py`
 - `verificar_documentos.py`
-
-**`taller/catalogo/mapa/verificacion_capitulos/`**
-
-- `grupo2.md`
-- `grupo3.md`
-- `grupo4.md`
 
 **`taller/catalogo/v2/decisiones/`**
 
