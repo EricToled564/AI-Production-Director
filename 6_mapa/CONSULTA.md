@@ -119,7 +119,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 363 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (67) · L136 2. Decisiones e instrucciones de Eric (archivo y línea) · L328 3. Pendientes (`PENDIENTES.md`) · L348 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
+- `CONSULTA.md`: 367 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (68) · L140 2. Decisiones e instrucciones de Eric (archivo y línea) · L332 3. Pendientes (`PENDIENTES.md`) · L352 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
 - `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
 
 **`6_mapa/herramientas/`**
