@@ -30,6 +30,6 @@ Registrados por el agente el 2026-10-30, según la regla de la línea 4. Las fil
 | # | Qué ya no corresponde al repo | Desde cuándo y por qué |
 |---|---|---|
 | 1 | `.claude/hooks/aurora/` y `rule_registry.py` ya no existen | Borrados el 2026-10-27 por orden de Eric de dejar solo lo que necesita el sistema (commit `f545972`) |
-| 1 y 7 | Las nueve familias de régimen físico y `.claude/rules/regimenes/` ya no existen, tampoco su investigación (`research/`) | Borradas el 2026-10-30 por orden de Eric («bórralos, no lo sigues»), y borradas también del historial de git el mismo día. Los valores de la faceta 14 (régimen físico) siguen en la taxonomía 00688 |
+| 1 y 7 | Las nueve familias de régimen físico y `.claude/rules/regimenes/` ya no existen, tampoco su investigación (`research/`) | Borradas el 2026-10-30 por orden de Eric («bórralos, no lo sigues»), y borradas del historial de `main` el mismo día. Siguen en la rama `wip-verificacion`, que no se ha reescrito. Los valores de la faceta 14 (régimen físico) siguen en la taxonomía 00688 |
 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `f545972`). El 2026-10-30 Eric ordenó borrar todo el sistema anterior. Que la longitud no bloquea sigue vigente: decisión del 26-oct (`5_decisiones/DECISIONES_ERIC_20261026.md`) y el último principio de este archivo |
 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `f545972`) |

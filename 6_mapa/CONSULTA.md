@@ -12,10 +12,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Texto original de una regla | `2_corpus/…sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Secciones de un documento: `SELECT DISTINCT encabezado FROM textos WHERE archivo=?` |
 | Qué documentos tiene el corpus | §4 |
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
-| Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado |
+| Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado, salvo lo que Eric ordenó borrar de forma irrecuperable, que ya no está en el historial de `main` |
 
 
-## 1. Archivos del repo (67)
+## 1. Archivos del repo (68)
 
 
 **`.claude/rules/`**
@@ -126,6 +126,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 - `indice_consulta.py`: indice_consulta.py: escribe ../CONSULTA.md, el índice que el agente consulta antes de preguntar a Eric o de afirmar
 - `utilidad_corpus.json`: 141 claves: flujos/flujo-anclas.html, flujos/flujo-spot.html, skills/ai-production-director/SKILL.md, skills/ai-production-director/reference…, skills/ai-production-director/reference…, skills/ai-video-storyboard/SKILL.md, skills/ai-video-storyboard/examples/tik…, skills/brand-lock-extractor/LICENSE, skills/brand-lock-extractor/SKILL.md, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs… …
+
+**`6_mapa/lecturas/`**
+
+- `decision4_casos_en_taxonomia.md`: 21 líneas: L1 Lectura: los casos de la decisión 4 (25-sep) en la taxonomía 00688 (2…
 
 **`./`**
 

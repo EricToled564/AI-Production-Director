@@ -45,7 +45,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Texto original de una regla | `2_corpus/…sqlite`, tabla `textos`, por `id` (INV-xxxxxx). Secciones de un documento: `SELECT DISTINCT encabezado FROM textos WHERE archivo=?` |
 | Qué documentos tiene el corpus | §4 |
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
-| Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado |
+| Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado, salvo lo que Eric ordenó borrar de forma irrecuperable, que ya no está en el historial de `main` |
 """
 
 
