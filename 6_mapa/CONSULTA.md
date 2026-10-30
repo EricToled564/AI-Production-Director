@@ -15,12 +15,12 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado |
 
 
-## 1. Archivos del repo (103)
+## 1. Archivos del repo (104)
 
 
 **`.claude/rules/`**
 
-- `DECISIONES.md`: 24 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo
+- `DECISIONES.md`: 35 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo · L26 Cambios
 
 **`./`**
 
@@ -28,6 +28,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`1_originales/`**
 
+- `AI_Production_Director_v3.4.0_skills.zip`: 214 archivos: skills 214. Las skills del paquete v3.4.0: el corpus (§4) sale de ellas, salvo `aurora-prompt-linter`, `produccion-visual-sw30` y 3 imágenes PNG (taxonomía §0.1)
 - `SHA256SUMS`: 273 bytes
 - `flujo-anclas.html`: 121,772 bytes
 - `flujo-spot.html`: 161,157 bytes
@@ -103,7 +104,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `DECISIONES_ERIC_20261026.md`: 121 líneas: L1 Decisiones de Eric Toledano — 2026-10-26
 - `DECISIONES_ERIC_20261027_30.md`: 67 líneas: L1 Instrucciones de Eric dadas en conversación (2026-10-27 a 2026-10-30)
 - `DECISIONES_ERIC_RESCATADAS_20261027.md`: 16 líneas: L1 Decisiones de Eric rescatadas antes de borrar las apps (2026-10-27) · L5 De `apd/demo/LEEME.md` (líneas 39–40; app apd, 2026-09-28) · L10 De `taller/recursos/` (movidos, no copiados, a `taller/catalogo/fuent…
-- `DECISIONES_repo_20260925.md`: 24 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo
+- `DECISIONES_repo_20260925.md`: 35 líneas: L1 Decisiones de dirección — 2026-09-25 · L18 Principios que salieron de la sesión y quedan como reglas de trabajo · L26 Cambios
 
 **`5_decisiones/directivas_20261021/`**
 
@@ -136,7 +137,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `09a_templates_explicacion.md`: 169 líneas: L1 12. Templates y contratos, explicados · L5 12.1 Qué es un contrato · L16 12.2 Autoridad (TEMPLATES §1) · L25 12.3 El brief T-BRIEF-IMG (TEMPLATES §3) · L72 12.4 Módulos condicionales (`CONTRATOS_OPERACION_MODELO.json`) · L83 12.5 Contratos por operación (TEMPLATES §5) · L98 12.6 La salida de GPT Image 2 (TEMPLATES §6 y PLAN_V5 §16.11) · L145 12.7 Orquestación, aceptación y traza (TEMPLATES §8 y §9) · L161 12.8 Destinos ya resueltos
 - `10_metodologia_clasificacion.md`: 88 líneas: L1 13. La metodología de clasificación · L9 13.1 El contrato de clasificación por texto (taxonomía §1.12, 12 punt… · L24 13.2 Correspondencia con los templates (§1.13) · L32 13.3 El registro de una regla (taxonomía §7.1) · L44 13.4 La lógica de condiciones (§7.2) · L54 13.5 El procedimiento del PLAN_V5 · L86 13.6 Lo que el método no dice
 - `11_veredicto.md`: 60 líneas: L1 14. Qué está construido y qué falta para el sistema · L5 14.1 Lo que ya existe · L21 14.2 Lo que falta · L32 14.3 Contradicciones que la lectura encontró dentro del corpus · L54 14.4 Lo que cuesta en cada turno de trabajo
-- `CONSULTA.md`: 540 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (112) · L190 2. Decisiones e instrucciones de Eric (archivo y línea) · L374 3. Pendientes (`PENDIENTES.md`) · L394 4. Corpus: 206 archivos, 141 contenidos distintos
+- `CONSULTA.md`: 525 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (103) · L175 2. Decisiones e instrucciones de Eric (archivo y línea) · L359 3. Pendientes (`PENDIENTES.md`) · L379 4. Corpus: 206 archivos, 141 contenidos distintos
 - `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
 - `MAPA_ANEXO_DATOS.html`: 753,469 bytes
 - `MAPA_ANEXO_DATOS.pdf`: 2,296,809 bytes
@@ -195,6 +196,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L15 | 8 | Cómo entran las inferencias | Con etiqueta `[A PRUEBA]`; investigación de campo en foros y tutoriales para confirmar o refutar cada una; un eje…
 - L16 | 9 | Quién clasifica sin NotebookLM | NotebookLM eliminado del flujo por completo. Clasificador de dos capas, determinista por ruta y regex más simi…
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo**
+- L26 **Cambios**
+- L32 | 1 | `.claude/hooks/aurora/` y `rule_registry.py` ya no existen | Borrados el 2026-10-27 por orden de Eric de dejar solo lo que necesita el sistema …
+- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `d8ad519`). El 2026-10-30 Eric ordenó borrar todo el sistema …
+- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `d8ad519`…
 
 **`5_decisiones/01021_DECISIONES_APLICADAS_20261011_224300.md`**
 
@@ -345,6 +350,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L15 | 8 | Cómo entran las inferencias | Con etiqueta `[A PRUEBA]`; investigación de campo en foros y tutoriales para confirmar o refutar cada una; un eje…
 - L16 | 9 | Quién clasifica sin NotebookLM | NotebookLM eliminado del flujo por completo. Clasificador de dos capas, determinista por ruta y regex más simi…
 - L18 **Principios que salieron de la sesión y quedan como reglas de trabajo**
+- L26 **Cambios**
+- L32 | 1 | `.claude/hooks/aurora/` y `rule_registry.py` ya no existen | Borrados el 2026-10-27 por orden de Eric de dejar solo lo que necesita el sistema …
+- L34 | 2 | La copia parcheada del linter aurora ya no existe | Borrada el 2026-10-27 (commit `d8ad519`). El 2026-10-30 Eric ordenó borrar todo el sistema …
+- L35 | 9 | `rule_answer_check.py` ya no existe, aunque esta fila dice que «se conserva» | Borrado el 2026-10-27 con los scripts `rule_*` (commit `d8ad519`…
 
 **`5_decisiones/directivas_20261021/directivas_taller.json`**
 
