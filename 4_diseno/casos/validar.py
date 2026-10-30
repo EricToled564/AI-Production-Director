@@ -41,4 +41,4 @@ if len(sys.argv)>1:
  if not c.get('aprobacion',{}).get('aprobado') or not c.get('aprobacion',{}).get('evidencia'):errors.append('Falta aprobación comprobable')
  result['case_gate_errors']=errors;result['case_gate']='BLOQUEADO' if errors else 'ESTRUCTURA_COMPLETA; selección de reglas y validación semántica aún necesarias'
 print(json.dumps(result,ensure_ascii=False,indent=2))
-if len(sys.argv)==1:(R/'verificacion.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+if len(sys.argv)==1:(R.parent.parent/'7_auditorias_y_verificaciones'/'casos'/'verificacion.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

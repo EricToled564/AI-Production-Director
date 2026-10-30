@@ -64,7 +64,6 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `relaciones_documentadas.json`: lista de 473 elementos
 - `rutas_documentadas.json`: lista de 184 elementos
 - `validar.py`: sin docstring
-- `verificacion.json`: 9 claves: rutas_comprobadas_en_schema, validacion_estructural, registros, TRM, IDs_duplicados, destinos_vacios, facetas, asociaciones_REG, compatibilidad_semantica
 
 **`4_diseno/copias_identicas/casos_templates/`**
 
@@ -88,11 +87,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `FUENTES_CONTRATOS.json`: 3 claves: taxonomia, fuentes, alcance
 - `MANIFIESTO.json`: 2 claves: version, files
 - `REGISTRO_DESTINOS_TEMPLATE.json`: 7 claves: version, schema_file, facet_destinations, aliases, fields, f30_destinations, scope_destinations
-- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`: 4 claves: scope, tests, passed, total
 - `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`: 387 líneas: L1 Templates revisados de entrada y salida: imagen y orquestación · L5 1. Autoridad y alcance · L9 2. Secuencia obligatoria de uso · L21 3. Ficha rellenables T-BRIEF-IMG · L138 4. Tarjeta de ancla D1–D9 · L142 5. Contratos por operación · L144 T-GENESIS · L149 T-REF-COMP · L154 T-ANCLA-REF · L159 T-ANCLA-FF · L164 T-ANCLA-LF · L169 T-EDIT · L174 T-STYLE · L179 T-SKETCH · L184 6. Templates de salida por modelo · L187 GPT2-GEN · L201 GPT2-EDIT · L213 NB-PROSE · L223 NB-COMP · L234 NB-EDIT · L244 NB-COMPLEX · L268 FLUX-GEN · L278 MJ-GEN · L288 IDEOGRAM-COMPOSITED · L298 IDEOGRAM-TEXT · L308 SEEDREAM-GEN · L318 GPT15-GEN · L329 GPT-IMAGE-1-MIGRATION · L340 GPT-IMAGE-1-MINI-MIGRATION · L351 Reglas de serialización de variantes · L357 7. Salida común rellenables · L371 8. T-ORQ: contrato ejecutable de eventos y gates · L375 9. T-ACEPTACIÓN y T-TRAZA · L379 10. Cobertura y validación · L383 11. Fuentes y atribución · L386 12. Obligatoriedad revisada por módulo
-- `VERIFICACION_ESTRUCTURAL.json`: 9 claves: schema_valid, facets, f30_materials, typed_fields, operation_contracts, model_adapter_contracts, path_occurrences_checked, invalid_paths, scope
-- `probar_contratos.py`: Fixtures sintéticos de estructura: no son testigos semánticos de reglas.
-- `verificar_templates.py`: Structural checks plus instance checks. No claim of corpus semantic review.
 
 **`5_decisiones/`**
 
@@ -127,14 +122,25 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `indice_consulta.py`: indice_consulta.py: escribe ../CONSULTA.md, el índice que el agente consulta antes de preguntar a Eric o de afirmar
 - `utilidad_corpus.json`: 141 claves: flujos/flujo-anclas.html, flujos/flujo-spot.html, skills/ai-production-director/SKILL.md, skills/ai-production-director/reference…, skills/ai-production-director/reference…, skills/ai-video-storyboard/SKILL.md, skills/ai-video-storyboard/examples/tik…, skills/brand-lock-extractor/LICENSE, skills/brand-lock-extractor/SKILL.md, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs… …
 
-**`6_mapa/lecturas/`**
+**`7_auditorias_y_verificaciones/casos/`**
+
+- `verificacion.json`: 9 claves: rutas_comprobadas_en_schema, validacion_estructural, registros, TRM, IDs_duplicados, destinos_vacios, facetas, asociaciones_REG, compatibilidad_semantica
+
+**`7_auditorias_y_verificaciones/`**
 
 - `decision4_casos_en_taxonomia.md`: 21 líneas: L1 Lectura: los casos de la decisión 4 (25-sep) en la taxonomía 00688 (2…
+
+**`7_auditorias_y_verificaciones/templates/`**
+
+- `RESULTADOS_PRUEBAS_ESTRUCTURALES.json`: 4 claves: scope, tests, passed, total
+- `VERIFICACION_ESTRUCTURAL.json`: 9 claves: schema_valid, facets, f30_materials, typed_fields, operation_contracts, model_adapter_contracts, path_occurrences_checked, invalid_paths, scope
+- `probar_contratos.py`: Fixtures sintéticos de estructura: no son testigos semánticos de reglas.
+- `verificar_templates.py`: Structural checks plus instance checks. No claim of corpus semantic review.
 
 **`./`**
 
 - `CLAUDE.md`: sus decisiones, en §2
-- `LEEME.md`: 24 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
+- `LEEME.md`: 26 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
 ## 2. Decisiones e instrucciones de Eric (archivo y línea)
@@ -147,6 +153,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L16 **Consultar el mapa antes de preguntar o de dar algo por faltante (instrucción de Eric, 202…**
 - L25 **Riesgos, pendientes y avance de etapa (decisión de Eric, 2026-10-29)**
 - L35 **Toda lectura deja registro en el repo**
+- L43 **Basura, auditorías y registro de cambios (instrucción de Eric, 2026-10-30)**
 
 **`.claude/rules/DECISIONES.md`**
 
@@ -296,6 +303,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L43 10. **PLAN_V5 fuera** (2026-10-30): «no hace sentido que nada dependa de un plan fracasado; ya te dije que necesitamos otro plan». Se
 - L46 11. **Borrar lo que el sistema no usa, de forma irrecuperable** (2026-10-30): «cuando digo bórralos no es para que los
 - L51 12. **Repo, PLAN_V5, hooks y mapa** (2026-10-30, segunda parte):
+- L75 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
 
 **`5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`**
 

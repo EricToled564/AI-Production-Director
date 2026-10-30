@@ -72,3 +72,7 @@ las del 29 y del 30, de esta conversación.
     8. Borrar los archivos viejos del mapa: los capítulos, los PDF y HTML, las 141 explicaciones del corpus y los
        programas que los generaban. El mapa queda en `6_mapa/CONSULTA.md` (el índice), su generador,
        `utilidad_corpus.json` (la utilidad de cada documento del corpus) e `INVENTARIO_SHA256.md`.
+13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
+    carpeta en el repo para auditorías y verificaciones, con todo lo que tenga que ver con eso; un registro de cambios
+    en el que se anota cada cambio a partir de que el contenido del repo se dio por bueno. Registrado en `CLAUDE.md`;
+    carpeta `7_auditorias_y_verificaciones/`; registro `CAMBIOS.md`.

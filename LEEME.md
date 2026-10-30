@@ -18,7 +18,9 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 | `4_diseno/copias_identicas/` | 3 copias idénticas de archivos de `templates/` | No se usan; esperan decisión |
 | `5_decisiones/` | Las decisiones de Eric por fecha y, en `directivas_20261021/`, sus directivas | Mandan sobre todo lo demás |
 | `6_mapa/` | La memoria del agente; empieza en `6_mapa/CONSULTA.md` | Saber rápido qué existe y qué está decidido |
+| `7_auditorias_y_verificaciones/` | Verificadores de templates y casos, sus resultados y las verificaciones del agente | Comprobar que lo demás está bien |
+| `CAMBIOS.md` | Cada cambio al repo, con fecha, commit y orden | Saber qué cambió y por qué |
 | `PENDIENTES.md` | Los pendientes por etapa y quién los resuelve | Qué falta |
 | `CLAUDE.md` y `.claude/rules/DECISIONES.md` | Las instrucciones que el agente carga en cada sesión | Cómo trabaja el agente |
 
-Verificación: `python3 4_diseno/casos/validar.py`, `python3 4_diseno/templates/verificar_templates.py`, `python3 4_diseno/templates/probar_contratos.py` y, desde `1_originales/`, `sha256sum -c SHA256SUMS`.
+Verificación: `python3 4_diseno/casos/validar.py`, `python3 7_auditorias_y_verificaciones/templates/verificar_templates.py`, `python3 7_auditorias_y_verificaciones/templates/probar_contratos.py` y, desde `1_originales/`, `sha256sum -c SHA256SUMS`.

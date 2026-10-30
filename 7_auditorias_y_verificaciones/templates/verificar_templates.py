@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Structural checks plus instance checks. No claim of corpus semantic review."""
 import json,re,pathlib,hashlib
-P=pathlib.Path(__file__).parent
+P=pathlib.Path(__file__).resolve().parents[2]/'4_diseno'/'templates'  # templates que se verifican
+OUT=pathlib.Path(__file__).resolve().parent
 S=json.loads((P/'CONTRATO_IMAGEN_ORQUESTACION.schema.json').read_text())
 R=json.loads((P/'REGISTRO_DESTINOS_TEMPLATE.json').read_text())
 C=json.loads((P/'CONTRATOS_OPERACION_MODELO.json').read_text())
@@ -78,7 +79,7 @@ def main():
  import jsonschema
  jsonschema.Draft202012Validator.check_schema(S)
  result={'schema_valid':True,'facets':len([k for k in R['facet_destinations'] if re.fullmatch(r'F\d\d',k)]),'f30_materials':len(R['f30_destinations']),'typed_fields':len(R['fields']),'operation_contracts':len(C['operation_contracts']),'model_adapter_contracts':len(C['model_adapters']),'path_occurrences_checked':len(paths),'invalid_paths':failures,'scope':'Integridad estructural. No certifica enlaces REG, lectura semántica ni selección de corpus.'}
- (P/'VERIFICACION_ESTRUCTURAL.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+ (OUT/'VERIFICACION_ESTRUCTURAL.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
  print(json.dumps(result,ensure_ascii=False))
  assert not failures
 if __name__=='__main__': main()

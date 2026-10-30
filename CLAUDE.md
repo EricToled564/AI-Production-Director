@@ -39,3 +39,12 @@ consecuencia tiene para el trabajo en curso, o por qué no tiene ninguna. El reg
 al terminar cada documento, para que una compactación del contexto no obligue a volver a leer. Registro vigente:
 `6_mapa/lecturas/`, un archivo por documento leído. Lo borrado el 2026-10-27 (pruebas, planes, registros, herramientas y
 resultados anteriores del agente) se recupera desde el commit anterior a cada borrado: lo de `163e903` con `git checkout bd5eb2b -- <ruta>`, lo de `039d558` con `git checkout 6840461 -- <ruta>` y lo de `6840461` con `git checkout a6d59d1 -- <ruta>`.
+
+## Basura, auditorías y registro de cambios (instrucción de Eric, 2026-10-30)
+
+- Se borran todos los archivos basura que genere el agente: la carpeta temporal (scratchpad), las cachés y las copias
+  de trabajo. El agente no puede saber cuándo se cierra la sesión, así que lo hace al terminar cada tarea, antes de la
+  respuesta final.
+- Todo lo que tenga que ver con auditorías y verificaciones va en `7_auditorias_y_verificaciones/`.
+- Cada cambio al repo se registra en `CAMBIOS.md`, en el mismo commit que lo hace: fecha, commit, qué cambió y con qué
+  orden.

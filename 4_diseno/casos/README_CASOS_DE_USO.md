@@ -17,7 +17,7 @@ Un caso de uso es una combinación de valores con datos concretos. No se materia
 - `jerarquia_valores.json`: padres de faceta y vínculos literales a valores, sin equivalencias inferidas.
 - `rutas_documentadas.json`: 184 filas de estructura de flujos conservadas literalmente, incluidos los pasos editoriales FL04; no se convierten automáticamente en condiciones.
 - `relaciones_documentadas.json`: relaciones explícitas e interpretación delimitada, sin inventar incompatibilidades globales.
-- `manifest_fuentes.json`, `conteos.json`, `verificacion.json`: huellas, conteos y verificación mecánica.
+- `manifest_fuentes.json`, `conteos.json`: huellas y conteos. La verificación mecánica (`verificacion.json`) está en `7_auditorias_y_verificaciones/casos/`.
 - `validar.py`: verifica estructura, IDs, cobertura, destinos y, opcionalmente, completitud/aprobación de un caso.
 - `build_catalog.py` y `bind_templates.py`: reproducción de extracción estructural y vinculación.
 
