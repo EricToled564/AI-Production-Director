@@ -14,7 +14,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 
 
-## 1. Archivos del repo (76)
+## 1. Archivos del repo (77)
 
 
 **`.claude/rules/`**
@@ -90,6 +90,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`4_diseno/validadores/`**
 
+- `README.md`: 214 líneas: L1 Gates de producción — enforcement fuera del modelo · L11 Qué hace cada gate · L21 El gate que importa más que los demás · L86 Verificación · L99 Cobertura real — el número que ningún gate verde reemplaza · L113 Medición · L135 Cómo se usa el ledger · L151 Dos contradicciones encontradas en los skills · L169 Estado de verificación — honesto · L197 Requisito · L206 Límites reales
 - `gate_dramaturgy.py`: Stop hook: blocks delivery of visual prompts that carry banned vocabulary.
 - `gate_image.py`: Stop hook: enforces the image skill's own golden rules on delivered prompts.
 - `gate_microgate.py`: Stop hook: enforce the 3-line micro-gate header on any visual delivery.
@@ -124,7 +125,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`6_mapa/`**
 
 - `CONSULTA.md`: 367 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (76) · L156 2. Decisiones e instrucciones de Eric (archivo y línea) · L338 3. Pendientes (`PENDIENTES.md`) · L352 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 79 líneas: L1 Inventario del repo con sha256
+- `INVENTARIO_SHA256.md`: 80 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -148,7 +149,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 14 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 15 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)

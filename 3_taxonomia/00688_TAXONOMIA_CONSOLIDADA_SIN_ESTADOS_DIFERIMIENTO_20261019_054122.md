@@ -68,9 +68,9 @@ Fuera del corpus, con motivo (los archivos no se leen como fuente ni se inventar
 | aurora-prompt-linter/references/system_prompt_v6_1_rule28.md | Aurora excluida por decisión del usuario |
 | aurora-prompt-linter/scripts/prompt_linter.py | Aurora excluida por decisión del usuario |
 | aurora-prompt-linter/scripts/vocabularies.yaml | Aurora excluida por decisión del usuario |
-| taxonomia/TAXONOMIA_original_aprobada_2026-09-28_32_facetas.md | Taxonomía derivada; no es fuente del corpus |
-| taxonomia/TAXONOMIA.md | Taxonomía derivada; no es fuente del corpus |
-| scratchpad (diagrams.js y demás) | No es fuente suministrada; las etiquetas de los diagramas están en el SVG de los flujos HTML, que sí se inventarían |
+| (fila retirada el 2026-10-30 por orden de Eric) | — |
+| (fila retirada el 2026-10-30 por orden de Eric) | — |
+| (fila retirada el 2026-10-30 por orden de Eric) | — |
 | produccion-visual-sw30, DECISIONES.md, refs.yaml | Citados por las fuentes pero no suministrados: no se crean registros ni se les atribuye autoridad |
 | Templates de entrada (punto 3 y V3) | Productos derivados en revisión; no son fuente |
 
