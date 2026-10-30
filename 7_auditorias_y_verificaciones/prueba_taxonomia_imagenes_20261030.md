@@ -5,6 +5,14 @@ aplicado en `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md`, nivel 1.
 
 ## 1. Investigación
 
+Cómo se leyeron las fuentes:
+- **Extracto automático.** Ninguna se leyó completa de forma directa. Las citas salen de extractos que hizo una
+  herramienta (Firecrawl o WebFetch) sobre cada página: pueden no ser literales.
+- **Anthropic.** No se leyó: la página redirigió a otra, y lo de abajo sale del resumen de un buscador.
+- ***The Prompt Report*.** Solo se leyó el primer 27 % del documento.
+- **OpenAI.** La guía está marcada como archivada.
+- **Normas NISO Z39.19 e ISO 25964.** No se leyeron: son de pago.
+
 | Fuente | Qué dice | Qué se decidió con eso |
 |---|---|---|
 | A. Fitzgerald, *Purpose-Driven Taxonomy Design* (2025), andyfitzgeraldconsulting.com | «build a taxonomy "of" a topic rather than "for" a purpose» es el error común; primero objetivos y usos, después estructura; probar contra los usos | El nivel 1 se ordena por lo que se hace con cada texto: dónde entra al prompt |

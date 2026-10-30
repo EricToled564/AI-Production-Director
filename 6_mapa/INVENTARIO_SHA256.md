@@ -75,7 +75,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `6_mapa/lecturas/taxonomia_00688.md` | `562b9219f9dd101018db475a64bf05631a8399ba017ea979f19122d0387195f0` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
-| `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `9487f00f4d724a71798db612c101a52b016e30f68ab6e02aa217e4dc289388d7` |
+| `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `5a1f72ea23d896127690f5d09c3aba1f7dd48518a8ab5b0e89cd08c290ff26d7` |
 | `7_auditorias_y_verificaciones/revision_estructura_taxonomia_y_casos_20261030.md` | `49ccdd9c6d91b213a1e35d5d483517d86be22dfdb1c66920542e8e14968e9044` |
 | `7_auditorias_y_verificaciones/taxonomia_que_sale_20261030.md` | `267543fd776b8cdc47680597d11fca6e2c3de67020b09a6e57328f793a64aa23` |
 | `7_auditorias_y_verificaciones/taxonomia_sin_estados_de_exclusion_20261030.md` | `19df4385636a5363103d520321f9832e4976883b5cb314e45ae20067ffdb1072` |
