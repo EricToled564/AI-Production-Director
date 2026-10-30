@@ -352,7 +352,7 @@ Si la respuesta está aquí o en el archivo que señala, no se pregunta: se lee 
 
 Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 
-## 4. Archivos versionados del repo (168)
+## 4. Archivos versionados del repo (169)
 
 
 **`.claude/hooks/`**
@@ -603,6 +603,7 @@ Las 65 copias idénticas remiten al original: capítulo 5 §5.2.
 - `DECISIONES_ERIC_20261023.md`
 - `DECISIONES_ERIC_20261024.md`
 - `DECISIONES_ERIC_20261026.md`
+- `DECISIONES_ERIC_20261027_30.md`
 - `DECISIONES_ERIC_RESCATADAS_20261027.md`
 - `DECISIONES_repo_20260925.md`
 - `TEMPLATES_REVISADOS_IMAGEN_ORQUESTACION_20261019.md`
