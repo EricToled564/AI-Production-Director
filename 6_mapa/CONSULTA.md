@@ -14,7 +14,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 
 
-## 1. Archivos del repo (77)
+## 1. Archivos del repo (81)
 
 
 **`.claude/rules/`**
@@ -125,12 +125,17 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`6_mapa/`**
 
 - `CONSULTA.md`: 368 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (77) · L157 2. Decisiones e instrucciones de Eric (archivo y línea) · L339 3. Pendientes (`PENDIENTES.md`) · L353 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 80 líneas: L1 Inventario del repo con sha256
+- `INVENTARIO_SHA256.md`: 84 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
 - `indice_consulta.py`: indice_consulta.py: escribe ../CONSULTA.md, el índice que el agente consulta antes de preguntar a Eric o de afirmar
 - `utilidad_corpus.json`: 141 claves: flujos/flujo-anclas.html, flujos/flujo-spot.html, skills/ai-production-director/SKILL.md, skills/ai-production-director/reference…, skills/ai-production-director/reference…, skills/ai-video-storyboard/SKILL.md, skills/ai-video-storyboard/examples/tik…, skills/brand-lock-extractor/LICENSE, skills/brand-lock-extractor/SKILL.md, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs…, skills/brand-lock-extractor/brand-packs… …
+
+**`6_mapa/lecturas/`**
+
+- `catalogo_casos_de_uso.md`: 17 líneas: L1 Lectura: catálogo de casos de uso (2026-10-30)
+- `taxonomia_00688.md`: 16 líneas: L1 Lectura: taxonomía 00688 (2026-10-30)
 
 **`7_auditorias_y_verificaciones/casos/`**
 
@@ -139,6 +144,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`7_auditorias_y_verificaciones/`**
 
 - `decision4_casos_en_taxonomia.md`: 21 líneas: L1 Lectura: los casos de la decisión 4 (25-sep) en la taxonomía 00688 (2…
+- `revision_estructura_taxonomia_y_casos_20261030.md`: 260 líneas: L1 Revisión de la estructura: taxonomía y catálogo de casos de uso (2026… · L6 Qué se revisó · L20 1. Qué hay hoy dentro de la taxonomía · L36 2. Veredicto por sección · L75 3. Comprobaciones de las 2,796 filas de término · L113 4. Hallazgos en el catálogo de casos (`4_diseno/casos/`) · L153 5. Recomendación final · L157 5.1 La taxonomía (`3_taxonomia/`) · L197 5.2 El catálogo (`4_diseno/casos/`) · L211 5.3 Qué cambia y qué no · L226 5.4 Cómo se verifica · L241 6. Pendientes que resuelve Eric antes de reestructurar · L253 7. Hallado de paso, fuera de la taxonomía y del catálogo
+- `taxonomia_sin_estados_de_exclusion_20261030.md`: 47 líneas: L1 Verificación: la taxonomía prohíbe y no usa estados que dejen una reg… · L7 Dónde lo prohíbe · L25 Si los usa · L38 Catálogo de casos · L44 Límite
 
 **`7_auditorias_y_verificaciones/templates/`**
 
@@ -149,7 +156,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 16 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 17 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
