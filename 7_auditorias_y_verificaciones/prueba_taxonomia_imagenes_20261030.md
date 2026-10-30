@@ -32,32 +32,32 @@ redirige a otra página. Por eso se quitó.
 Muestra al azar (semilla 20261030) de los 1,135 textos de párrafo, lista, tabla, código y cita del universo de imagen
 (decisión del 23 de octubre §1).
 
-| Texto | Documento | Lo que dice (resumen) | Impacta | Efecto | Actúa en | Entra por | Qué es (si no impacta) |
-|---|---|---|---|---|---|---|---|
-| INV-002072 | characters.md L67 | «Mid-stride, dynamic motion» (control de pose) | Sí | Ejemplo | Prompt | Selección (hay que interpretar qué acción es) | — |
-| INV-002103 | creative-direction.md L28 | Nombrar el tipo de cámara cambia el ADN visual | Sí | Agrega contenido | Prompt | Template | — |
-| INV-002217 | editing.md L51 | Plantilla de colorización con [DECADE] | Sí | Ejemplo o plantilla; agrega contenido | Prompt | Inserción mecánica (edición: colorizar) | — |
-| INV-002323 | golden-rules.md L176 | «Cultural anchor + новый контекст:» | No | — | — | — | Rótulo |
-| INV-002372 | gpt-image.md L74 | Texto pequeño, denso o con varias fuentes → quality high obligatorio | Sí | Fija un parámetro | Prompt | Inserción mecánica (F32 texto extenso o pequeño) | — |
-| INV-002374 | gpt-image.md L78 | Endpoint `openai/gpt-image-2/edit` | No | — | — | — | Dato técnico de interfaz |
-| INV-002390 | gpt-image.md L113 | No escribir en abstracto; nombrar propiedades visuales concretas de la referencia | Sí | Fija restricciones; agrega contenido | Prompt | Template (GPT Image 2, transferencia de estilo) | — |
-| INV-002429 | models.md L18 | Storyboard con foco tipográfico → GPT Image 2 | Sí | Fija un parámetro (modelo) | Brief | Inserción mecánica (tipo de pieza) | — |
-| INV-002586 | multi-panel.md L306 | Más paneles, menos detalle; 12 paneles: 3–8 palabras cada uno | Sí | Fija la forma | Prompt | Selección (número de paneles, valor abierto) | — |
-| INV-002704 | character-design.md L108 | Chibi: GPT Image 2 con quality medium; high para close-ups de marketing | Sí | Fija un parámetro | Brief y prompt | Biblioteca de plantillas | — |
-| INV-002731 | ecommerce.md L33 | Plantilla completa de cosmético de lujo con huecos | Sí | Plantilla | Prompt | Biblioteca de plantillas | — |
-| INV-002773 | fashion-editorial.md L37 | Plantilla de retrato editorial 2x2 | Sí | Plantilla | Prompt | Biblioteca de plantillas | — |
-| INV-002786 | fashion-editorial.md L81 | Comentario HTML «Source concept: …» | No | — | — | — | Nota interna o de origen |
-| INV-002882 | portrait-cinema.md L61 | «Key levers»: los huecos de la plantilla y sus opciones | Sí | Agrega contenido | Brief | Biblioteca de plantillas | — |
-| INV-002912 | poster-illustration.md L32 | Versión Nano Banana de una plantilla de póster | Sí | Plantilla | Prompt | Biblioteca de plantillas (F29 Nano Banana) | — |
-| INV-002929 | poster-illustration.md L88 | «Use for fashion drops, event announcements…» | No | — | — | — | Condición de uso de una plantilla |
-| INV-002963 | ui-social.md L55 | «Use to create a polished App Store…» | No | — | — | — | Condición de uso de una plantilla |
-| INV-003137 | slides.md L144 | Colores de texto #ffffff, #e0e0e0 | Sí | Agrega contenido | Prompt | Biblioteca de plantillas (paleta) | — |
-| INV-003138 | slides.md L146 | «Light palette:» | No | — | — | — | Rótulo |
-| INV-003147 | slides.md L158 | «Subtle gradient haze» | Sí | Ejemplo | Prompt | Selección (elegir efecto) | — |
-| INV-003214 | slides.md L301 | Especificación glassmorphism (material, bordes, sombra) | Sí | Agrega contenido | Prompt | Biblioteca de plantillas | — |
-| INV-003408 | vision-decomposer.md L26 | Tamaños de plano para describir la imagen | Sí | Agrega contenido | Prompt | Inserción mecánica (operación: análisis de imagen a prompt) | — |
-| INV-011730 | adapters/gpt-image.md L27 | `style`: natural para foto, vivid para estilizado | Sí | Fija un parámetro | Prompt | Inserción mecánica (F18 técnica) | — |
-| INV-011745 | adapters/gpt-image.md L62 | «Same shot data as previous examples.» | No | — | — | — | Nota interna o de origen |
+| Texto | Documento | Lo que dice (resumen) | Impacta | Efecto | Entra por | Qué es (si no impacta) |
+|---|---|---|---|---|---|---|
+| INV-002072 | characters.md L67 | «Mid-stride, dynamic motion» (control de pose) | Sí | Ejemplo | Selección (hay que interpretar qué acción es) | — |
+| INV-002103 | creative-direction.md L28 | Nombrar el tipo de cámara cambia el ADN visual | Sí | Agrega contenido | Template | — |
+| INV-002217 | editing.md L51 | Plantilla de colorización con [DECADE] | Sí | Ejemplo o plantilla; agrega contenido | Inserción mecánica (edición: colorizar) | — |
+| INV-002323 | golden-rules.md L176 | «Cultural anchor + новый контекст:» | No | — | — | Rótulo |
+| INV-002372 | gpt-image.md L74 | Texto pequeño, denso o con varias fuentes → quality high obligatorio | Sí | Fija un parámetro | Inserción mecánica (F32 texto extenso o pequeño) | — |
+| INV-002374 | gpt-image.md L78 | Endpoint `openai/gpt-image-2/edit` | No | — | — | Dato técnico de interfaz |
+| INV-002390 | gpt-image.md L113 | No escribir en abstracto; nombrar propiedades visuales concretas de la referencia | Sí | Fija restricciones; agrega contenido | Template (GPT Image 2, transferencia de estilo) | — |
+| INV-002429 | models.md L18 | Storyboard con foco tipográfico → GPT Image 2 | Sí | Fija un parámetro (modelo) | Inserción mecánica (tipo de pieza) | — |
+| INV-002586 | multi-panel.md L306 | Más paneles, menos detalle; 12 paneles: 3–8 palabras cada uno | Sí | Fija la forma | Selección (número de paneles, valor abierto) | — |
+| INV-002704 | character-design.md L108 | Chibi: GPT Image 2 con quality medium; high para close-ups de marketing | Sí | Fija un parámetro | Biblioteca de plantillas | — |
+| INV-002731 | ecommerce.md L33 | Plantilla completa de cosmético de lujo con huecos | Sí | Plantilla | Biblioteca de plantillas | — |
+| INV-002773 | fashion-editorial.md L37 | Plantilla de retrato editorial 2x2 | Sí | Plantilla | Biblioteca de plantillas | — |
+| INV-002786 | fashion-editorial.md L81 | Comentario HTML «Source concept: …» | No | — | — | Nota interna o de origen |
+| INV-002882 | portrait-cinema.md L61 | «Key levers»: los huecos de la plantilla y sus opciones | Sí | Agrega contenido | Biblioteca de plantillas | — |
+| INV-002912 | poster-illustration.md L32 | Versión Nano Banana de una plantilla de póster | Sí | Plantilla | Biblioteca de plantillas (F29 Nano Banana) | — |
+| INV-002929 | poster-illustration.md L88 | «Use for fashion drops, event announcements…» | No | — | — | Condición de uso de una plantilla |
+| INV-002963 | ui-social.md L55 | «Use to create a polished App Store…» | No | — | — | Condición de uso de una plantilla |
+| INV-003137 | slides.md L144 | Colores de texto #ffffff, #e0e0e0 | Sí | Agrega contenido | Biblioteca de plantillas (paleta) | — |
+| INV-003138 | slides.md L146 | «Light palette:» | No | — | — | Rótulo |
+| INV-003147 | slides.md L158 | «Subtle gradient haze» | Sí | Ejemplo | Selección (elegir efecto) | — |
+| INV-003214 | slides.md L301 | Especificación glassmorphism (material, bordes, sombra) | Sí | Agrega contenido | Biblioteca de plantillas | — |
+| INV-003408 | vision-decomposer.md L26 | Tamaños de plano para describir la imagen | Sí | Agrega contenido | Inserción mecánica (operación: análisis de imagen a prompt) | — |
+| INV-011730 | adapters/gpt-image.md L27 | `style`: natural para foto, vivid para estilizado | Sí | Fija un parámetro | Inserción mecánica (F18 técnica) | — |
+| INV-011745 | adapters/gpt-image.md L62 | «Same shot data as previous examples.» | No | — | — | Nota interna o de origen |
 
 También se probaron los textos vistos antes: INV-011267 (impacta, fija la forma, template), INV-008288 (control o
 validación), INV-011268 (descripción) e INV-001428 (código).
@@ -77,3 +77,7 @@ validación), INV-011268 (descripción) e INV-001428 (código).
   para no mezclar facetas.
 - **Límite.** La muestra es de 24 textos de un solo universo. Si la clasificación encuentra un texto que no cabe en
   ningún valor, se informa, no se fuerza.
+
+## 4. Corrección del 2026-10-30 (orden de Eric)
+
+El brief no se clasifica: lo que debe entregar sale de la taxonomía (nivel 3) y de los campos de los templates. Se quitó la faceta «dónde actúa» y la columna correspondiente de la tabla §2. Los dos textos que estaban marcados «brief» quedan así: INV-002429 fija un parámetro (modelo) por tipo de pieza; INV-002882 da los huecos de una plantilla de la biblioteca.

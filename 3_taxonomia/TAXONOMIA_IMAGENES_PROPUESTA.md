@@ -3,18 +3,20 @@
 Vale igual para cualquier modelo. La clasificación se hace modelo por modelo (hoy GPT Image 2) con el valor de F29 de cada texto.
 Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía actual, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía actual los define como etiquetas que cuelgan de las categorías).
 
-## Nivel 1 · Qué hace el texto con el brief o el prompt
+## Nivel 1 · Qué hace el texto con el prompt
+
+El brief no se clasifica: traduce el pedido del usuario a todos los datos que hacen falta para buscar reglas, y lo que debe entregar sale de las categorías de esta taxonomía (nivel 3) y de los campos de los templates del prompt.
 
 ### 1.1 ¿Impacta la redacción?
 
 | Valor | Definición |
 |---|---|
-| Impacta | El texto dice qué se escribe, o qué no se escribe, en el brief o en el prompt |
-| No impacta | El brief y el prompt quedan iguales con o sin el texto; se clasifica solo por lo que es (1.5) |
+| Impacta | El texto dice qué se escribe, o qué no se escribe, en el prompt |
+| No impacta | El prompt queda igual con o sin el texto; se clasifica solo por lo que es (1.4) |
 
 ### 1.2 Si impacta: efecto
 
-Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos; se marcan todos.
+Qué le hace el texto al prompt. Un texto puede tener varios efectos; se marcan todos.
 
 | Valor | Definición | Incluye | No incluye |
 |---|---|---|---|
@@ -25,15 +27,7 @@ Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos;
 | Fija un parámetro | Fija un valor técnico de la generación fuera de la descripción | Modelo, calidad, tamaño, ratio, fondo transparente, formato de salida | Lo que se describe dentro del prompt |
 | Da un ejemplo o una plantilla | Da una frase, un prompt o una plantilla con huecos que sirve de modelo | Ejemplos, plantillas, opciones de redacción | — |
 
-### 1.3 Si impacta: dónde actúa
-
-| Valor | Definición |
-|---|---|
-| Brief | Cambia lo que el brief pide o registra |
-| Prompt | Cambia lo que se escribe en el prompt |
-| Brief y prompt | Cambia los dos |
-
-### 1.4 Si impacta: cómo entra al prompt
+### 1.3 Si impacta: cómo entra al prompt
 
 Decide el destino de la regla. Solo lo que necesita interpretación pasa por selección.
 
@@ -44,7 +38,7 @@ Decide el destino de la regla. Solo lo que necesita interpretación pasa por sel
 | Biblioteca de plantillas | Es la plantilla de un look concreto | Se ofrece por tipo de pieza y estilo; el usuario confirma como máximo una y se inserta | BIBLIOTECA DE PLANTILLAS |
 | Selección | Su condición depende de un valor abierto (número, edad, posición, texto literal) o necesita interpretar el caso | Se selecciona caso por caso | ACTIVO EN SELECCIÓN |
 
-### 1.5 Si no impacta: qué es
+### 1.4 Si no impacta: qué es
 
 | Valor | Definición |
 |---|---|
