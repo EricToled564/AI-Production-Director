@@ -3,14 +3,16 @@
 Vale igual para cualquier modelo. La clasificación se hace modelo por modelo (hoy GPT Image 2) con el valor de F29 de cada texto.
 Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía actual, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía actual los define como etiquetas que cuelgan de las categorías).
 
-## Nivel 1 · ¿El texto impacta la redacción del brief o del prompt?
+## Nivel 1 · Qué hace el texto con el brief o el prompt
+
+### 1.1 ¿Impacta la redacción?
 
 | Valor | Definición |
 |---|---|
-| Impacta | El texto cambia lo que se escribe en el brief o en el prompt de una imagen |
-| No impacta | El texto no cambia el brief ni el prompt; se clasifica solo por lo que es |
+| Impacta | El texto dice qué se escribe, o qué no se escribe, en el brief o en el prompt |
+| No impacta | El brief y el prompt quedan iguales con o sin el texto; se clasifica solo por lo que es (1.5) |
 
-### 1.1 Si impacta: efecto en la redacción
+### 1.2 Si impacta: efecto
 
 Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos; se marcan todos.
 
@@ -19,10 +21,11 @@ Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos;
 | Agrega contenido | Pide que se escriba algo: un dato, un elemento, una descripción o un valor |
 | Fija la forma | Fija cómo se escribe: estilo de redacción, estructura, formato, apartados, longitud o sintaxis |
 | Establece un orden | Fija en qué orden van los bloques o los elementos |
-| Excluye | Prohíbe palabras, elementos o formas de escribir |
-| Fija un parámetro | Fija un valor técnico de la generación: ratio, tamaño, calidad u otro |
+| Fija restricciones | Excluye palabras o elementos, o fija lo que no debe cambiar |
+| Fija un parámetro | Fija un valor técnico de la generación: modelo, calidad, tamaño, ratio u otro |
+| Da un ejemplo o una plantilla | Da una frase, un prompt o una plantilla con huecos que sirven de modelo |
 
-### 1.2 Si impacta: dónde actúa
+### 1.3 Si impacta: dónde actúa
 
 | Valor | Definición |
 |---|---|
@@ -30,50 +33,29 @@ Qué le hace el texto al brief o al prompt. Un texto puede tener varios efectos;
 | Prompt | Cambia lo que se escribe en el prompt |
 | Brief y prompt | Cambia los dos |
 
-### 1.3 Si impacta: alcance y destino
+### 1.4 Si impacta: cómo entra al prompt
 
-El alcance decide adónde va la regla: al template como instrucción de llenado, a la inserción mecánica por tipo de pieza o a la selección caso por caso.
+Decide el destino de la regla. Solo lo que necesita interpretación pasa por selección.
 
-| Valor | Definición | Destino |
-|---|---|---|
-| Universal | Vale para todo brief o prompt de imagen, de cualquier modelo y cualquier caso. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
-| Semiuniversal por modelo u operación | Depende solo del modelo, de la operación o de los dos, y de ningún otro dato del caso | Instrucción de llenado en el template de ese modelo u operación; se usa una vez y no se vuelve a seleccionar. Uso operativo: INCORPORADA A TEMPLATE |
-| Semiuniversal por tipo de pieza | Se aplica siempre a un tipo de pieza (F04), sin depender de otro dato del caso. No hay templates por tipo de pieza | Se inserta de forma mecánica, sin selección, en cuanto el brief identifica el tipo de pieza. Uso operativo: INSERCIÓN MECÁNICA POR TIPO DE PIEZA |
-| Específica del caso | Depende de algún otro dato del caso (los del nivel 3: sujeto, acción, estilo, cámara, etc.), o del tipo de pieza junto con otro dato | Se selecciona caso por caso con su condición. Uso operativo: ACTIVO EN SELECCIÓN |
+| Valor | Cuándo | Destino | Uso operativo |
+|---|---|---|---|
+| Template | No depende de ningún dato del caso, o depende solo del modelo o de la operación. Si su forma cambia según el modelo, cada template la lleva en la forma de su modelo | Instrucción de llenado en el template de cada modelo, o en el de ese modelo u operación. Se usa una vez y no se vuelve a seleccionar | INCORPORADA A TEMPLATE |
+| Inserción mecánica | Su condición se resuelve con datos de lista cerrada que fija el brief (tipo de pieza, sujeto, operación de edición, técnica, texto en la imagen, etc.), uno o varios | Se inserta sin selección en cuanto el brief fija esos datos | INSERCIÓN MECÁNICA |
+| Biblioteca de plantillas | Es la plantilla de un look concreto | Se ofrece por tipo de pieza y estilo; el usuario confirma como máximo una y se inserta | BIBLIOTECA DE PLANTILLAS |
+| Selección | Su condición depende de un valor abierto (número, edad, posición, texto literal) o necesita interpretar el caso | Se selecciona caso por caso | ACTIVO EN SELECCIÓN |
 
-### Si no impacta: qué es el texto
+### 1.5 Si no impacta: qué es
 
-Propuesta: los tipos que la base del corpus ya asigna a cada texto, sin leerlos.
-
-| Tipo de documento | Textos |
+| Valor | Definición |
 |---|---|
-| referencia | 4,010 |
-| herramienta | 2,892 |
-| ejemplo | 2,171 |
-| SKILL | 1,165 |
-| plantilla | 853 |
-| adaptador | 745 |
-| flujo | 612 |
-| licencia | 337 |
-| brand-pack | 218 |
-
-| Tipo de unidad | Textos |
-|---|---|
-| bloque de código fuente | 2,487 |
-| ítem de lista | 2,416 |
-| párrafo | 1,972 |
-| línea JSON | 1,483 |
-| encabezado | 1,263 |
-| línea de texto (HTML) | 1,223 |
-| fila de tabla | 536 |
-| bloque de código | 429 |
-| puntuación JSON | 380 |
-| bloque de texto | 359 |
-| separador | 189 |
-| separador de tabla | 104 |
-| cabecera de tabla | 90 |
-| cita en bloque | 61 |
-| frontmatter | 11 |
+| Rótulo o encabezado | Título, subtítulo o rótulo que solo nombra lo que sigue |
+| Descripción o explicación | Dice qué es o qué hace la skill, el documento o un método, sin decir qué escribir |
+| Condición de uso de una plantilla | Dice para qué casos sirve una plantilla; se usa para ofrecerla en la biblioteca, no para escribir |
+| Control o validación | Revisión, gate o comprobación que se hace después de escribir |
+| Código o herramienta | Código, script, esquema o instrucción de una herramienta |
+| Dato técnico de interfaz | Endpoint, API o forma de llamar al generador |
+| Nota interna o de origen | Comentario, remisión interna o procedencia del texto |
+| Licencia o crédito | Texto legal, autoría o atribución |
 
 ## Nivel 2 · Documento y encabezado
 
@@ -2271,7 +2253,8 @@ Son las materias de F30 cuyo vocabulario describe el caso (el catálogo las marc
 | INCORPORADA A TEMPLATE | aplicación incorporada y verificada en su template; incluye sintaxis de modelo aplicada una vez a la ficha. No se vuelve a extraer para cada caso; permanece clasificada. La incorporación exige vínculo regla → campo/bloque → condición → validación; si varía por caso, esa condición se evalúa al instanciar el template. |
 | APLICACIÓN EN CONSTRUCCIÓN DE TEMPLATE | instrucción estructural seleccionable durante la construcción o actualización del template; exige destino y prueba de incorporación antes de publicar ese template. Expresa cuándo se usa, no aplaza su clasificación. |
 | APLICACIÓN EN CONTROL O ENTREGA | aplicación de crítica, audio, postproducción o entrega seleccionable en su ruta específica, con disparador y destino. Su separación de recuperación de prompts requiere decisión aplicable y alcance documentados; una regla mixta conserva cada ruta. |
-| INSERCIÓN MECÁNICA POR TIPO DE PIEZA | la regla se aplica siempre a un tipo de pieza; se agrega al brief o al prompt sin selección en cuanto el brief identifica ese tipo de pieza |
+| INSERCIÓN MECÁNICA | la regla se agrega al brief o al prompt sin selección en cuanto el brief fija los datos de lista cerrada de su condición |
+| BIBLIOTECA DE PLANTILLAS | plantilla de un look concreto: se ofrece por tipo de pieza y estilo, el usuario confirma como máximo una y se inserta |
 
 #### METADATOS · Campos de la regla
 
