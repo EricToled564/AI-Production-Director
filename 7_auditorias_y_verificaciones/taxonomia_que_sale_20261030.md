@@ -23,7 +23,9 @@ tabla de F3. Columnas:
 - definición;
 - relación con el valor y destino secundario;
 - respaldo: se queda porque decide si el término se ofrece como opción (§0.6);
-- nota: las 97 notas que explican la ubicación del término o lo remiten a otro.
+- nota: las 97 notas que explican la ubicación del término o lo remiten a otro. Las 17 que remiten a otro término están
+  leídas. Las otras 80 están clasificadas por los patrones más frecuentes, no leídas una por una: se leen completas
+  antes de ejecutar.
 
 **Reglas de clasificación:**
 - contrato: L13, sobre ORQUESTACIÓN;
@@ -81,6 +83,7 @@ tabla de F3. Columnas:
 | 22 | Gate final: el párrafo de que no certifica y el de C17 | L4349, L4351 |
 | 23 | Historial C18 (salvo la canonización, que pasa en la lista 1), con `MANIFIESTO_C18_SHA256.json` | L4352–4355 |
 | 24 | Anexo de tracks: el texto con REG-000034 a 049 y la tabla, una vez pasados los tres términos a F3 | L4356–4366 |
+| 25 | Números de decisión DEC dentro de las categorías. Las decisiones están en `5_decisiones/`; en la taxonomía son origen. Faltaban en la primera versión de esta lista | L226 (DEC-000026) · L471, L476, L477, L829 (DEC-000022) · L2578 (DEC-000025) |
 
 ## Coincidencia entre el catálogo de casos y la taxonomía (verificado el 2026-10-30, registro por registro)
 
@@ -89,17 +92,43 @@ tabla de F3. Columnas:
 - Los 360 valores del catálogo están en su línea de la taxonomía con su nombre.
 - Todos los valores de las tablas de categorías de la taxonomía están en el catálogo, salvo los 5 de abajo.
 
-**No coincide (4 diferencias):**
+**No coincide (7 diferencias; la primera versión de esta lista decía 4 y omitía las 5, 6 y 7):**
 
 1. **TRM-0001, 0002 y 0003 (EXPRESS, STANDARD, FILM).** En el catálogo su definición es «—»; la taxonomía sí la tiene
    (L4362–4364). El script no lee el anexo de tracks y toma por error otra columna del Anexo 2.
 2. **Los pasos D01–D05 de FL04 (L257–261).** No están en el catálogo como opciones; solo en `rutas_documentadas.json`.
 3. **AMBITO.** Mezcla los 8 valores de ámbito con los 4 del campo «uso operativo», que la taxonomía define aparte (§5.3).
 4. **Los 19 campos de metadatos de §6.0.** No están en el catálogo como registros; sí sus valores.
+5. **42 nombres de término.** El catálogo usa el nombre del Anexo 2, sin el aclarador que tiene la tabla de faceta
+   (ejemplo: «editorial» frente a «editorial (Tipo de pieza)»).
+6. **Relación de TRM-1366 a 1368.** El catálogo usa la del Anexo 2 («EQUIVALENTE (valor F29 incorporado)»); la tabla de
+   faceta dice «EQUIVALENTE → gpt-image-…».
+7. **Definición de los 16 valores de modelo de F29.** La escribió el script («Modelo documentado de rama …»); no está
+   en la taxonomía.
+
+No es diferencia, pero conviene saberlo: los 45 pasos de F02 no tienen definición en la taxonomía, y el catálogo pone
+como definición su propio nombre.
 
 **Lo que falta en los dos:** las facetas F32–F35 y los valores nuevos de las decisiones de Eric del 23 y el 26 de octubre
 (`5_decisiones/DECISIONES_ERIC_20261023.md` L12–25). Es el pendiente P-06. Además, en la taxonomía «faceta 32» nombra hoy
 otra cosa: una faceta retirada en septiembre (L106 y L4294). Esa mención sale con la lista 2.
 
-Con la nueva estructura, las diferencias 1 y 3 se corrigen solas. La 2 y la 4 se corrigen generando el catálogo desde
-la taxonomía nueva.
+Ninguna se corrige sola: las siete se corrigen cambiando `build_catalog.py` para que lea la taxonomía nueva. La primera
+versión de este archivo decía que la 1 y la 3 se corregían solas, y era falso.
+
+## Forma más barata y rápida de hacerlo
+
+1. **Un solo script hace la taxonomía nueva** a partir de la actual. Borra por rangos de líneas los anexos y las
+   secciones de la lista 2, y quita por columnas «ID origen» y «Ampliación editorial». Así no se reescribe a mano.
+2. **Tres archivos de destino en vez de siete**, con los textos movidos tal cual:
+   - `5_decisiones/` para P-01 a P-09 y la canonización;
+   - `2_corpus/` para §0.1, §0.2 y la paginación;
+   - un solo archivo en `4_diseno/` para precedencias, autoridad, P-07, reglas de selección y la correspondencia con
+     templates.
+3. **El respaldo de cada término** (ID, respaldo y cita) sale a un CSV generado por el mismo script.
+4. **`build_catalog.py`** lee solo las tablas de faceta. Se quitan la lectura del Anexo 2 y las cuatro facetas fijadas a
+   mano, y el script genera también los tres archivos derivados.
+5. **Un script de comparación** verifica que no cambie ningún contenido.
+6. **Los informes viejos de `7_auditorias_y_verificaciones/`** no se reescriben: citan la taxonomía con su sha, que
+   identifica la versión que auditaron. Solo se actualizan las citas por línea en `4_diseno/jerarquia_de_lectura.md`,
+   `4_diseno/niveles_de_generalidad.md` y `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md`.
