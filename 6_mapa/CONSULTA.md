@@ -15,7 +15,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Algo borrado del repo | `git log --diff-filter=D --name-only`; se recupera desde el commit anterior al borrado, salvo lo que Eric ordenó borrar de forma irrecuperable, que ya no está en el historial de `main` |
 
 
-## 1. Archivos del repo (68)
+## 1. Archivos del repo (69)
 
 
 **`.claude/rules/`**
@@ -28,7 +28,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`1_originales/`**
 
-- `AI_Production_Director_v3.4.0.zip`: 720 archivos: repo 466, skills 214, (raíz) 30, project_knowledge_pack 8, original_source 2. El corpus (§4) sale de `skills/`, salvo `aurora-prompt-linter`, `produccion-visual-sw30` y 3 PNG (taxonomía §0.1). Lo demás es el sistema anterior, en revisión con Eric (PENDIENTES P-18)
+- `AI_Production_Director_v3.4.0.zip`: 719 archivos: repo 465, skills 214, (raíz) 30, project_knowledge_pack 8, original_source 2. El corpus (§4) sale de `skills/`, salvo `aurora-prompt-linter`, `produccion-visual-sw30` y 3 PNG (taxonomía §0.1). Lo demás es el sistema anterior, en revisión con Eric (PENDIENTES P-18)
 - `SHA256SUMS`: 266 bytes
 - `flujo-anclas.html`: 121,772 bytes
 - `flujo-spot.html`: 161,157 bytes
@@ -114,7 +114,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 367 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (68) · L140 2. Decisiones e instrucciones de Eric (archivo y línea) · L332 3. Pendientes (`PENDIENTES.md`) · L352 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
+- `CONSULTA.md`: 375 líneas: L1 Índice del repo (memoria del agente) · L18 1. Archivos del repo (68) · L146 2. Decisiones e instrucciones de Eric (archivo y línea) · L340 3. Pendientes (`PENDIENTES.md`) · L360 4. Corpus: 206 archivos, 141 contenidos distintos, 13,005 textos
 - `INVENTARIO_SHA256.md`: 66 líneas: L1 Lo que queda en el repo (2026-10-27)
 
 **`6_mapa/herramientas/`**
@@ -139,6 +139,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
+- `CAMBIOS.md`: 25 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 26 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L24 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L37 Línea aparte — Familias de régimen físico · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
