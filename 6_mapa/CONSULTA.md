@@ -45,7 +45,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`4_diseno/`**
 
-- `CRITERIOS_CLASIFICACION.md`: 78 líneas: L1 Criterios, instrucciones y definiciones para clasificar · L7 1. Qué se clasifica · L19 2. Cómo se lee cada texto · L28 3. Pasos de clasificación, en este orden · L39 4. Árbol para «cómo entra al prompt» · L48 5. Valores y etiquetas · L55 6. Dudas y textos que no caben · L63 7. Registro de cada texto · L74 8. Prueba de concordancia antes de clasificar a escala
+- `CRITERIOS_CLASIFICACION.md`: 77 líneas: L1 Criterios, instrucciones y definiciones para clasificar · L7 1. Qué se clasifica · L19 2. Cómo se lee cada texto · L29 3. Pasos de clasificación, en este orden · L40 4. Árbol para «cómo entra al prompt» · L49 5. Valores y etiquetas · L56 6. Dudas y textos que no caben · L62 7. Registro de cada texto · L73 8. Prueba de concordancia antes de clasificar a escala
 - `DISENO_APLICACION_Y_CLASIFICACION.md`: 133 líneas: L1 Diseño de la aplicación y del procedimiento de clasificación · L16 1. La aplicación: qué partes tiene · L31 2. La experiencia del usuario: el flujo de un pedido · L46 3. Procedimiento de clasificación [NUEVO 29-oct] · L48 3.0 Estructura de cada texto (mecánica, antes de clasificar) · L65 3.1 Ronda de tipo de texto · L85 3.2 La matriz · L93 3.3 Primera ronda: mecánica · L103 3.4 Segunda ronda: revisión del texto, una categoría por vez · L107 3.5 Controles de cada ronda · L114 4. Pendientes de este diseño (decide Eric) · L125 5. Orden de ejecución
 - `HERRAMIENTA_INVESTIGACION_MOVIMIENTO.md`: 88 líneas: L1 Herramienta de investigación del movimiento y bloque «Acción» del pro… · L8 1. Cuándo se activa · L19 2. La herramienta: dos búsquedas por caso · L35 3. El bloque «Acción» del prompt · L49 4. Ejemplo: caballo al galope en la playa al atardecer
 
@@ -171,7 +171,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 45 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 46 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)

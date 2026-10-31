@@ -45,3 +45,6 @@
    Precisión de Eric, el mismo día: «SE BUSCA EN EL TÍTULO DEL DOCUMENTO Y EN DOS NIVELES JERÁRQUICOS DE ENCABEZADOS, Y
    DESPUÉS SE DECIDE SI PERSISTE LA DUDA; VERIFICAR EN LOS 3 NIVELES ES OBLIGATORIO EN CASO DE DUDA». Los tres niveles son
    el título del documento, el encabezado del texto y el encabezado inmediatamente superior.
+   Segunda precisión de Eric: «MEJOR COLOCA QUE ES OBLIGATORIO VERIFICAR EN LOS 3 NIVELES DE FORMA OBLIGATORIA». La
+   verificación de los tres niveles se hace siempre, en todo texto, no solo ante una duda (`4_diseno/CRITERIOS_CLASIFICACION.md`
+   §2 y §6).

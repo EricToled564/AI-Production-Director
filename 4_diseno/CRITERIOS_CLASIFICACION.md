@@ -18,8 +18,9 @@ agente de clasificación.
 
 ## 2. Cómo se lee cada texto
 
-1. Se lee el texto completo, su ruta de encabezados y el documento al que pertenece. Nunca se clasifica por palabras
-   clave.
+1. Se lee el texto completo y, siempre y de forma obligatoria, sus tres niveles: el título del documento, el
+   encabezado del texto y el encabezado inmediatamente superior (decisión de Eric, 2026-10-31). Nunca se clasifica por
+   palabras clave.
 2. Se usa la sección del nivel 2 (`3_taxonomia/precatalogacion_por_encabezado.csv`) solo como punto de partida: el
    texto manda sobre la sección.
 3. Si un texto depende del anterior o del siguiente (una lista bajo un párrafo, una fila bajo su tabla), se leen
@@ -54,9 +55,7 @@ agente de clasificación.
 
 ## 6. Dudas y textos que no caben
 
-- Ante una duda es obligatorio verificar los tres niveles: el título del documento, el encabezado del texto y el
-  encabezado inmediatamente superior. Después se decide. Si la duda persiste, se lleva a Eric antes de terminar ese
-  texto (decisión de Eric, 2026-10-31).
+- Si la duda persiste después de verificar los tres niveles de la §2, se lleva a Eric antes de terminar ese texto.
 - Un texto que no cabe en ningún valor se informa a Eric; no se fuerza ni se amplía la taxonomía sin él (decisión del 23
   de octubre §3).
 
