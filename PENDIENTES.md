@@ -27,8 +27,15 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 | P-11 | `validate_prompts.py`: la regla del tercio lleva `or True` (INV-012830) | Eric | Abierto | Decisión. Propuesta del agente: tratarla como regla solo de planos de cruce o de ancla, que es lo que sugieren las condiciones escritas antes del `or True` («crossing», «crosses the», «anchor»); el código no tiene un comentario que lo diga |
 | P-12 | `patterns-and-genres.md` (7 o 8 géneros) y `shot-grammar.md` (`rack`) | Eric | Abierto | Decisión. Propuesta del agente: tomar los 8 géneros y admitir `rack`, como dice el esquema. Sin efecto en GPT Image 2 |
 | P-13 | Tope de costo de la clasificación | Eric | Abierto | Decisión |
-| P-19 | Regenerar el catálogo de casos (`4_diseno/casos/`) desde la taxonomía canónica; hoy `build_catalog.py` lo construye desde la 00688. Absorbe la parte de catálogo de P-06 | Agente, con aprobación de Eric | Abierto | Catálogo regenerado, validado y aprobado |
+| P-19 | Regenerar el catálogo de casos (`4_diseno/casos/`) desde la taxonomía canónica; hoy `build_catalog.py` lo construye desde la 00688. Absorbe la parte de catálogo de P-06. Espera a P-22, P-24, P-25 y P-26 para no regenerarlo dos veces | Agente, con aprobación de Eric | Abierto | Catálogo regenerado, validado y aprobado |
 | P-20 | Qué se hace con la taxonomía anterior 00688, que dejó de ser canónica y sigue en `3_taxonomia/` | Eric | Abierto | Decisión de Eric |
+| P-21 | Criterios centralizados de clasificación (`4_diseno/CRITERIOS_CLASIFICACION.md`) | Eric | Abierto | Eric los aprueba; antes no se crea ningún agente |
+| P-22 | Ampliar el universo de la fase con `flujos/flujo-anclas.html` y `skills/visual-media/SKILL.md`, donde están las reglas de documental, régimen físico y fotografía (piloto, H1) | Eric | Abierto | Decisión. Propuesta del agente: ampliarlo |
+| P-23 | Calidad de GPT Image 2: medium por defecto, empezar en low, high para fotorrealismo, high en hero (piloto, H2) | Eric | Abierto | Decisión. Propuesta del agente: high cuando F18 es fotorrealista; medium en los demás |
+| P-24 | F04 sin tipo para una foto suelta; el slot Use Case lo necesita (piloto, H3) | Eric | Abierto | Decisión. Propuesta del agente: con «Pieza única», Use Case se llena con F17 |
+| P-25 | F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4) | Eric | Abierto | Decisión. Propuesta del agente: fijarlas solo cuando F15 es persona |
+| P-26 | Definiciones de hora dorada y atardecer (piloto, H5) | Eric | Abierto | Decisión. Propuesta del agente en el informe del piloto |
+| P-27 | Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezado» (piloto, H6) | Agente | Abierto | CSV corregido y revisado en todos los documentos |
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 

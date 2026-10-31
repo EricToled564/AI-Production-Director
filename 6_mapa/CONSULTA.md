@@ -127,8 +127,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 391 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (89) · L175 2. Decisiones e instrucciones de Eric (archivo y línea) · L362 3. Pendientes (`PENDIENTES.md`) · L376 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 92 líneas: L1 Inventario del repo con sha256
+- `CONSULTA.md`: 394 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (89) · L175 2. Decisiones e instrucciones de Eric (archivo y línea) · L363 3. Pendientes (`PENDIENTES.md`) · L379 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
+- `INVENTARIO_SHA256.md`: 95 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -167,10 +167,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 36 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 37 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
-- `PENDIENTES.md`: 35 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L33 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
+- `PENDIENTES.md`: 42 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L40 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
 ## 2. Decisiones e instrucciones de Eric (archivo y línea)
 
@@ -375,6 +375,13 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L29 **P-13** (Eric; Abierto): Tope de costo de la clasificación
 - L30 **P-19** (Agente, con aprobación de Eric; Abierto): Regenerar el catálogo de casos (`4_diseno/casos/`) desde la taxonomía canónica; hoy `build_catalog.py` lo construye des…
 - L31 **P-20** (Eric; Abierto): Qué se hace con la taxonomía anterior 00688, que dejó de ser canónica y sigue en `3_taxonomia/`
+- L32 **P-21** (Eric; Abierto): Criterios centralizados de clasificación (`4_diseno/CRITERIOS_CLASIFICACION.md`)
+- L33 **P-22** (Eric; Abierto): Ampliar el universo de la fase con `flujos/flujo-anclas.html` y `skills/visual-media/SKILL.md`, donde están las reglas …
+- L34 **P-23** (Eric; Abierto): Calidad de GPT Image 2: medium por defecto, empezar en low, high para fotorrealismo, high en hero (piloto, H2)
+- L35 **P-24** (Eric; Abierto): F04 sin tipo para una foto suelta; el slot Use Case lo necesita (piloto, H3)
+- L36 **P-25** (Eric; Abierto): F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4)
+- L37 **P-26** (Eric; Abierto): Definiciones de hora dorada y atardecer (piloto, H5)
+- L38 **P-27** (Agente; Abierto): Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezad…
 
 ## 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
 
