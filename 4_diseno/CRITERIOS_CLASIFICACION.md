@@ -14,7 +14,7 @@ agente de clasificación.
   regla puede aplicar a varios casos de uso (decisión de Eric, 2026-10-31). La columna `copia_de` solo indica de qué texto
   es copia; no traslada la clasificación.
 - **Modelo:** la taxonomía vale para cualquier modelo. Un texto que solo vale para otro modelo se clasifica igual,
-  con su F29, y el filtro de modelo lo deja fuera al armar el prompt.
+  con su F29.
 
 ## 2. Cómo se lee cada texto
 
@@ -45,14 +45,10 @@ agente de clasificación.
    operación, texto en la imagen, momento del día, etc.)? → **Inserción mecánica.**
 4. Si no (depende de un número, una edad, una posición, un texto literal o de interpretar el caso) → **Selección.**
 
-## 5. Definiciones que no se reinterpretan
+## 5. Valores y etiquetas
 
-- **Dato libre del caso:** prohibido (decisión de Eric, 2026-10-31). Todo valor del caso cae en un valor de la
-  taxonomía. Lo que el corpus traduce a hechos visibles entra como su traducción (por ejemplo, F36 Ánimo de la imagen).
 - **Prohibidos como valor:** «no aplica», «pendiente», «ausente», «no encontrado», «propuesta», «duda» o cualquier
   equivalente (decisión del 23 de octubre §3).
-- **«Photorealistic»:** nunca se escribe en un prompt. El valor «fotorrealista» de F18 es una clasificación, no una
-  palabra del prompt.
 - **Etiquetas:** cada valor usado debe coincidir al 100 % con la taxonomía canónica. Si no coincide, se corrige y se
   repite.
 
