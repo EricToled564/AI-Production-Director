@@ -60,7 +60,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
 | `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
-| `5_decisiones/DECISIONES_ERIC_20261031.md` | `d61f93108783a3a2858e8c2d13e7628569f989a260799dc160520e0a1dfd4bbb` |
+| `5_decisiones/DECISIONES_ERIC_20261031.md` | `25d6ddeb3c2ff6d70adb2b94d3ccef1e0008e82a323a8b97350753b5829cebfb` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -81,7 +81,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `d877c65075e9f2c690aeeae5e7435a3a9b093a2715c4b7c641fc1733593b5dfb` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
-| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `271d47a57036c6b0be4ffa4baab1e09d120f08878c14db12912964ef888e0214` |
+| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `4d5b4198f7594fbf3f32d716dcb72a0b5db83798bf223e8a64e9ffade9162bfa` |
 | `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `be1c6a9c46bed1be157bf42ee55029beb43638ed9a6252392cc8628c9104e796` |
 | `7_auditorias_y_verificaciones/revision_estructura_taxonomia_y_casos_20261030.md` | `49ccdd9c6d91b213a1e35d5d483517d86be22dfdb1c66920542e8e14968e9044` |
 | `7_auditorias_y_verificaciones/taxonomia_que_sale_20261030.md` | `267543fd776b8cdc47680597d11fca6e2c3de67020b09a6e57328f793a64aa23` |
@@ -92,4 +92,4 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/templates/verificar_templates.py` | `d5619b01c8bd56faf8529917280da4fb568c2152a777fd3744faf8babaf3ccac` |
 | `CLAUDE.md` | `b55fa30b5dce29369e9618f1dec13ed584c2dfacaa4a6744acdbac45eff0499a` |
 | `LEEME.md` | `eb95acd9ae770fe46a129bacbeb6b74a3cf5d24a4894ebf5bcc08c1e36d2c949` |
-| `PENDIENTES.md` | `76da7ade9bfa0c613d3b92b2e415a06135453fb50060cbc42cd65eeec852e92f` |
+| `PENDIENTES.md` | `a7421b940d48d4a71b35a03cf34032d65816074c69d6edb506fbb1b0d942052f` |

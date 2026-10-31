@@ -13,3 +13,21 @@
    `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md`. Desde hoy la taxonomía canónica
    es `3_taxonomia/TAXONOMIA_CANONICA.md`, la que era la propuesta para imágenes con los valores aprobados en el punto 2.
    La 00688 deja de ser canónica; no se borra mientras Eric no lo ordene (PENDIENTES P-20).
+4. **Aporte de Eric: biomecánica del galope** (2026-10-31), tras ver que el prompt del piloto produjo un caballo al trote.
+   Texto de Eric, literal:
+   «EL PROMPT ESTÁ MAL, EL CABALLO ESTÁ AL TROTE, UN CABALLO A GALOPE COMBINA 3 MOVIMIENTOS MÁS UNA SUSPENSIÓN DE TODAS
+   LAS PATAS EN EL AIRE O SUSPENSIÓN O VUELO.» El galope es un aire asimétrico, basculado y de tres tiempos seguido de una
+   fase de suspensión en el aire.
+   - Extremidades: pie exterior (posterior de propulsión), que inicia el tranco; bípedo diagonal (pie interior y mano
+     exterior), que apoyan casi a la vez, reciben la carga y transfieren la energía; mano directriz (anterior interior),
+     que se extiende más adelante, absorbe el peso antes del vuelo y determina si el caballo va a la derecha o a la
+     izquierda.
+   - Secuencia (galope a la derecha): 1) impulsión, apoya solo el pie posterior izquierdo; 2) soporte diagonal, apoyan el
+     pie posterior derecho y la mano anterior izquierda; 3) proyección, apoya la mano anterior derecha (directriz);
+     4) suspensión, las cuatro extremidades en el aire mientras el caballo reúne sus miembros bajo la masa.
+   - Conceptos: galopar en firme (la mano que guía corresponde al sentido de la marcha); galope en trocado o
+     contra-galope (a la mano contraria, sin desunirse); galope desunido o cruzado (anteriores a una mano y posteriores a
+     la otra; pierde el ritmo de tres tiempos); galope de carrera de cuatro tiempos (a máxima velocidad el pie interior
+     apoya una fracción antes que la mano exterior).
+   Uso: corrección del prompt del piloto (`7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` §8). Su entrada
+   como regla del sistema queda en PENDIENTES P-28.

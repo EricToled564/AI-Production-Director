@@ -98,3 +98,31 @@ quedan en 2.1, y 2.1 más 2.2 cubren 135 de los 138.
 
 El catálogo de casos (P-19) no se regeneró: H1, H3, H4 y H5 pueden cambiar la taxonomía, y regenerarlo antes obligaría a
 hacerlo dos veces. Se regenera en cuanto Eric resuelva esos cuatro hallazgos.
+
+## 8. Resultado de la generación (Eric, 2026-10-31) y corrección
+
+Eric generó la imagen: el caballo sale **al trote**, no al galope. Causa: el prompt describía las patas de forma ambigua
+(«una mano adelante y los posteriores impulsando»), que el modelo resolvió como trote; y el universo no tiene ninguna
+regla sobre la marcha de los animales (hallazgo H8). Eric aportó la biomecánica del galope (registrada en
+`5_decisiones/DECISIONES_ERIC_20261031.md`, punto 4): aire asimétrico de tres tiempos seguido de una fase de suspensión
+con las cuatro extremidades en el aire.
+
+Corrección: el prompt fija una sola fase del tranco, la que no se confunde con el trote (la suspensión, con las patas
+reunidas bajo el cuerpo), nombra la mano de galope y excluye los bípedos diagonales del trote. 282 palabras.
+
+```text
+Model: gpt-image-2
+Quality: high
+Size / Ratio: 1536×1024 (3:2)
+
+Prompt:
+Scene: A wide, empty sandy beach at sunset. The sun sits just above the horizon behind the subject, and the low surf and the wet sand along the waterline reflect the warm sky. Open sea and a clean horizon fill the background.
+Subject: One horse at full gallop on the right lead, moving left to right along the waterline, shown at the suspension phase of the stride: all four hooves are off the sand at the same instant, the legs gathered under the belly, the hind legs swinging forward beneath the body and the forelegs folded back, head and neck stretched forward, mane and tail streaming back.
+Important Details: Low, hard sunlight from behind the horse rims its mane, back and ears in warm gold and throws a long shadow on the wet sand directly beneath and toward the camera, separated from the hooves to show the horse is airborne. No fill light; the near flank falls into soft shadow. Sand kicked up by the last hoof hangs in the backlight. Slight motion blur only on the lower legs and flying sand; the head and eye stay sharp. Wide shot at eye level, 50mm feel, slightly handheld framing; the horse sits in the left third, moving toward open space on the right. Real coat texture and fine visible film grain.
+Use Case: documentary photograph of a single unstaged moment.
+Constraints: three-beat gallop with a moment of suspension, never a trot: no diagonal pairs of legs moving together, no hoof touching the ground; one horse only, no rider, no saddle or tack, no people, no text, no watermarks, no glamorization, no heavy retouching, no studio gloss, natural coat texture, no AI rendering artifacts.
+```
+
+| # | Hallazgo | Quién lo resuelve | Propuesta |
+|---|---|---|---|
+| H8 | El corpus no tiene reglas de marcha animal; el prompt ambiguo produjo trote | Eric | Que el aporte de Eric sobre el galope entre como regla de selección para sujeto animal (caballo) con acción de movimiento continuo, y que el prompt fije siempre una fase concreta del movimiento |
