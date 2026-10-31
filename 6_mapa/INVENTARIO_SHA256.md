@@ -82,7 +82,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `d877c65075e9f2c690aeeae5e7435a3a9b093a2715c4b7c641fc1733593b5dfb` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
-| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `b8dfdd8ae782bcf4e0774212b7db7b1df8b415ec0efd9bb6701a5f7901504168` |
+| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `75cbf2049f7fceebfcf3fe1ec4cd2f3c68e80f20b7b25883d6ffceec98c76ad7` |
 | `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `be1c6a9c46bed1be157bf42ee55029beb43638ed9a6252392cc8628c9104e796` |
 | `7_auditorias_y_verificaciones/revision_estructura_taxonomia_y_casos_20261030.md` | `49ccdd9c6d91b213a1e35d5d483517d86be22dfdb1c66920542e8e14968e9044` |
 | `7_auditorias_y_verificaciones/taxonomia_que_sale_20261030.md` | `267543fd776b8cdc47680597d11fca6e2c3de67020b09a6e57328f793a64aa23` |

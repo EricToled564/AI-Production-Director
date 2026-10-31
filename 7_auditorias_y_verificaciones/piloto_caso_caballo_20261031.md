@@ -133,3 +133,37 @@ Las dos búsquedas del caso (anatomía y mecánica del galope), sus fuentes y el
 `4_diseno/HERRAMIENTA_INVESTIGACION_MOVIMIENTO.md` §4. Corrección al §8: «three-beat gallop» era incorrecto en inglés;
 según la fuente, el galope rápido es de cuatro tiempos y el de tres es el canter. El prompt nuevo dice «galloping» y fija
 la fase de suspensión con las patas dobladas, que es común a los dos.
+
+## 10. Cobertura del prompt frente a las 138 reglas del universo (pregunta de Eric)
+
+El prompt de la herramienta de movimiento no cubría todo lo que aplica del universo. Faltaba:
+
+| Regla del universo | Qué faltaba | Corrección |
+|---|---|---|
+| INV-002049, 002259: colores en hex | El prompt no daba ningún color en hex | Cielo de #E8894A a #3E5A78; borde de luz #F2B35B |
+| INV-002262–002265, 003010: contexto de uso | Use Case sin para qué ni para quién | «documentary photograph for an editorial feature» |
+| INV-002121–002124: foco | No decía la profundidad de campo | Cabeza y ojo nítidos, horizonte algo suave |
+| INV-002127–002139: grade | Solo decía grano; no el tratamiento de color | «natural true-to-life color» |
+| INV-002400: Photoreal Editorial (desgaste, imperfecciones, «no studio gloss») | Se había quitado «no studio gloss»; no había rastro real en la superficie | Huellas en la arena mojada; «no studio gloss» de vuelta |
+| INV-002044, 003036: Notes con supuestos | La última entrega no traía Notes | Notes de vuelta |
+
+Lo que no se cubre porque depende de decisiones de Eric: universo sin reglas de documental, animal y movimiento (P-22),
+calidad (P-23), F04 (P-24), F20–F22 (P-25) y definición de atardecer (P-26).
+
+Prompt corregido (GPT Image 2, 276 palabras):
+
+```text
+Model: gpt-image-2
+Quality: high
+Size / Ratio: 1536×1024 (3:2)
+
+Prompt:
+Scene: A wide, empty sandy beach at sunset. The sun sits just above the horizon behind the subject; low surf and wet sand at the waterline reflect a sky graded from amber #E8894A to dusk blue #3E5A78. Hoofprints trail behind in the wet sand.
+Subject: One horse galloping on the right lead, left to right along the waterline, at the suspension phase of the stride: the leading right foreleg has just pushed off and all four hooves are in the air at once, every leg bent, the hind legs swinging forward under the belly and the forelegs folded at the knees, head and neck stretched forward, mane and tail streaming back.
+Important Details: Hindquarters bunched, hamstring muscles flexing the stifles; along the neck the brachiocephalic muscle draws the forelegs forward; lower-leg tendons taut. Low, hard backlight rims the mane, back and ears in warm gold #F2B35B; the shadow on the wet sand sits apart from the hooves. No fill light; the near flank falls into soft shadow. Sand from the last hoof hangs in the light. Slight motion blur only on the lower legs; head and eye sharp, horizon slightly soft. Wide shot at eye level, 50mm feel, slightly handheld; horse in the left third. Real coat texture, natural true-to-life color, fine film grain.
+Use Case: documentary photograph for an editorial feature, a single unstaged moment.
+Constraints: a gallop with every leg bent in the air, never a trot: no diagonal leg pairs, no outstretched legs, no hoof on the sand; one horse only, no rider, no tack, no people, no text, no watermarks, no glamorization, no heavy retouching, no studio gloss, no AI rendering artifacts.
+
+Notes:
+- Supuestos: formato 3:2; plano general a la altura de los ojos; sin jinete; colores hex y uso editorial elegidos por el agente.
+```
