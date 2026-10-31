@@ -79,6 +79,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `6_mapa/lecturas/prueba_24_textos_imagen.md` | `b798698f5a671aaeda2cf999f9396152450c074ee72bfd3b43e01aa5593714ef` |
 | `6_mapa/lecturas/taxonomia_00688.md` | `562b9219f9dd101018db475a64bf05631a8399ba017ea979f19122d0387195f0` |
 | `6_mapa/lecturas/universo_imagen_piloto_caballo_20261031.md` | `937860b7b6d2ab152ba255dbd3253c10c35ab458381baf7c252a9c080ead4363` |
+| `6_mapa/lecturas/universo_imagen_relectura_caballo_20261031.md` | `52e436b8384a76e59568f8fc6face431b3385c5c9d4226c7c333c4d0398efff5` |
 | `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `d877c65075e9f2c690aeeae5e7435a3a9b093a2715c4b7c641fc1733593b5dfb` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
