@@ -54,8 +54,9 @@ agente de clasificación.
 
 ## 6. Dudas y textos que no caben
 
-- Una duda se investiga en el propio texto, su encabezado y su documento. Si persiste, se consulta a Eric antes de
-  terminar ese texto.
+- Una duda se resuelve subiendo hasta dos niveles en la jerarquía de encabezados del texto: primero se lee completa la
+  sección de su encabezado; si no basta, la del encabezado inmediatamente superior. Si no se resuelve, se lleva a Eric
+  antes de terminar ese texto (decisión de Eric, 2026-10-31).
 - Un texto que no cabe en ningún valor se informa a Eric; no se fuerza ni se amplía la taxonomía sin él (decisión del 23
   de octubre §3).
 
