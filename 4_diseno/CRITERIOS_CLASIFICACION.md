@@ -49,8 +49,6 @@ agente de clasificación.
 
 - **Dato libre del caso:** prohibido (decisión de Eric, 2026-10-31). Todo valor del caso cae en un valor de la
   taxonomía. Lo que el corpus traduce a hechos visibles entra como su traducción (por ejemplo, F36 Ánimo de la imagen).
-- **Brief:** no se clasifica. Lo que el brief debe entregar sale de la taxonomía (nivel 3) y de los campos de los
-  templates.
 - **Prohibidos como valor:** «no aplica», «pendiente», «ausente», «no encontrado», «propuesta», «duda» o cualquier
   equivalente (decisión del 23 de octubre §3).
 - **«Photorealistic»:** nunca se escribe en un prompt. El valor «fotorrealista» de F18 es una clasificación, no una
