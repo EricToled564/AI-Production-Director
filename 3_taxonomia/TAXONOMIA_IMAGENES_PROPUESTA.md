@@ -1,7 +1,7 @@
 # Taxonomía de clasificación para imágenes — PROPUESTA para aprobación de Eric
 
 Vale igual para cualquier modelo. La clasificación se hace modelo por modelo (hoy GPT Image 2) con el valor de F29 de cada texto.
-Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados, asignados a las categorías de la taxonomía; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía actual, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía actual los define como etiquetas que cuelgan de las categorías).
+Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados, asignados a las categorías de la taxonomía; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía actual, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre y los valores que faltaban, aprobados el 31 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía actual los define como etiquetas que cuelgan de las categorías).
 
 ## Nivel 1 · Qué hace el texto con el prompt
 
@@ -86,7 +86,7 @@ Si un encabezado tiene varias categorías, va a la primera sección de este orde
 
 ## Nivel 3 · Caso de uso, de lo general a lo específico
 
-El orden es el del catálogo de casos de uso (construcción del caso, de lo general a lo específico). Las categorías y sus valores son los de la taxonomía actual, tal cual; se dejan fuera solo los valores de las ramas de video.
+El orden es el del catálogo de casos de uso (construcción del caso, de lo general a lo específico). Las categorías y sus valores son los de la taxonomía actual, más los valores que el corpus usa y que faltaban; se dejan fuera solo los valores de las ramas de video. Ningún valor es un dato libre del caso: lo que el corpus traduce a hechos visibles entra como su traducción.
 
 
 ### 3.1 Qué se hace
@@ -149,7 +149,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Generaci
 
 | Valor | Definición | Tipos |
 |---|---|---|
-| editorial | imagen con lenguaje de revista; se combina con la temática: editorial de moda, deportiva, musical, gastronómica | — |
+| editorial | imagen con lenguaje de revista; se combina con la temática: editorial de moda, deportiva, musical, gastronómica | Lookbook |
 | key visual de campaña | imagen principal de una campaña publicitaria | — |
 | e-commerce o catálogo | producto para tienda o catálogo | Imagen de comercio electrónico · Imagen de catálogo |
 | retrato | una o varias personas como sujeto de la pieza (retrato individual o de grupo) | Retrato grupal |
@@ -166,6 +166,8 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Generaci
 | infografía o diagrama | — | — |
 | concept art | — | — |
 | pieza de portafolio | — | — |
+| portada de álbum | portada cuadrada de un disco o un single | — |
+| lámina artística | imagen para imprimir y colgar como obra | — |
 
 Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Pieza única · Esquema de interfaz [UI/UX Wireframe] · Tablero analítico [Dashboard] · Manual de ensamblaje sin palabras [IKEA Manual] · Infografía · Diagrama.
 
@@ -177,6 +179,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Pieza ú
 | Instagram → alcance de plataforma; ubicación sin restricción documental | Plataforma social con varias ubicaciones de publicación citadas en las fuentes (feed, Stories, carrusel, anuncio). | — |
 | Instagram → Stories | Ubicación vertical a pantalla completa de Instagram. | — |
 | Instagram → feed | Ubicación de publicaciones en el feed de Instagram. | — |
+| Instagram → carrusel | Varias imágenes en una sola publicación de Instagram. | — |
 | YouTube → alcance de plataforma; ubicación sin restricción documental | Plataforma de video con formato horizontal y ubicación Shorts. | — |
 | YouTube → Shorts | Ubicación de video vertical corto dentro de YouTube. | — |
 | Superficie literal Reels; sin condición de plataforma inferida | Ubicación de video vertical corto. Las fuentes la nombran sola («Reels») y como «TikTok Reel»; no establecen a qué plataforma pertenece. | — |
@@ -396,8 +399,8 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Referenc
 
 | Valor | Definición | Tipos |
 |---|---|---|
-| interior | bajo techo | — |
-| exterior | al aire libre, incluida el agua abierta | — |
+| interior | bajo techo | Estudio · Cocina · Oficina · Hogar · Tienda |
+| exterior | al aire libre, incluida el agua abierta | Calle o ciudad · Azotea |
 
 #### F32 · Texto en la imagen
 
@@ -435,6 +438,21 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Referenc
 | futurista | — | — |
 
 Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Diseño brutalista [Brutalist] · Glassmorfismo [Glassmorphism] · Surrealismo inflable [Inflatable Surrealism] · Cuaderno científico renacentista [Da Vinci Notebook] · Ciberpunk de neón [Cyberpunk; Neon] · Lámina científica vintage [Vintage Science Poster] · Arte pop [Pop Art] · Memphis corporativo [Corporate Memphis; Flat Art].
+
+#### F36 · Ánimo de la imagen
+
+El ánimo no se escribe en el prompt: cada valor se define por los valores de la taxonomía en que se traduce, y esos son
+los que entran al prompt y los que llevan las reglas.
+
+| Valor | Traducción |
+|---|---|
+| dramática | Fuente única dominante · Luz dura · Luz lateral · Contraste alto · Claroscuro; ángulo contrapicado |
+| sombría | Clave baja · Luz lateral · humo o bruma · Paleta restringida · fondo oscuro degradado |
+| lujo o premium | Según el tipo de pieza. Producto: estudio oscuro, una sola Luz principal, Reflexión en la superficie, Condensación, Luz volumétrica, Paleta restringida, fondo oscuro degradado, Sombra de contacto. Slide: Glassmorfismo y Luz volumétrica. Diseño gráfico: fondo liso, sans-serif pesada, un objeto héroe, Espacio negativo |
+| nostálgica | Cámara desechable · película de los años 80 · Grano fotoquímico · Negativo envejecido · Negros levantados · Desaturación · Sobreexposición; estilo retro o vintage |
+| calma | Luz suave de Ventana · Luz lateral · hora dorada · Espacio negativo · Profundidad de campo reducida · Altas luces cálidas con Sombras frías |
+
+«Elegante» se traduce a Familia tipográfica: serif o script.
 
 #### F18 · Técnica de representación
 
@@ -561,7 +579,7 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Tipo | Valores |
 |---|---|
 | Tipo de óptica | Gran angular [wide angle] · Óptica normal · Teleobjetivo · Óptica macro · Óptica anamórfica · Distancia focal |
-| Efecto óptico | Perspectiva de proximidad · Compresión aparente · Distorsión de barril · Distorsión de perspectiva · Inclinación y descentramiento [tilt-shift] · Bloom · Destello de lente [flare] · Destello anamórfico · Aberración cromática |
+| Efecto óptico | Perspectiva de proximidad · Compresión aparente · Distorsión de barril · Distorsión de perspectiva · Inclinación y descentramiento [tilt-shift] · Bloom · Destello de lente [flare] · Destello anamórfico · Aberración cromática · Viñeteado |
 | Enfoque y profundidad de campo | Profundidad de campo reducida [shallow DOF] · Foco profundo [deep focus] · Plano de enfoque · Desenfoque de fondo · Foco dividido [split diopter] · Bokeh · Cambio de foco [rack focus] |
 | Tipo de cámara | Cámara de acción · Cámara de teléfono · Formato medio · Cámara instantánea · Cámara desechable · Cámara fotográfica digital |
 | Soporte y montaje de cámara | Cámara fija en soporte [hard mount] · Montaje de capó · Montaje de parachoques · Montaje de eje · Cámara de cabina · Cámara corporal [body mount] · Grúa · Estabilizador · Dron |
@@ -586,6 +604,7 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Tipo | Valores |
 |---|---|
 | Exposición | Subexposición · Sobreexposición |
+| Momento del día | Amanecer · Mañana · Tarde · Hora dorada · Atardecer · Hora azul · Noche |
 | Luz natural y ambiente | Luz solar directa · Cielo cubierto · Luz lunar · Ventana · Luz ambiente continua |
 | Fuente práctica o artificial | Lámpara práctica · LED de techo · Fluorescente · Neón · Pantalla de teléfono · Monitor · Refrigerador · Faro de vehículo · Farola · Vapor de sodio · Vela · Hoguera · Foco escénico · Luz de emergencia · Estrobo · Luz de baño [Wash light] |
 | Equipo de iluminación | Softbox · Anillo luminoso [ring light] · Rebote [bounce] · Luz de modelado [Modeling Light] · Máscara de sombra [Gobo] |
@@ -593,6 +612,8 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Dirección de la luz | Contraluz [backlight] · Luz de contorno [rim light] · Luz frontal · Luz lateral · Luz cenital [top light] · Luz inferior [underlight] |
 | Calidad y contraste | Difusión · Luz dura · Luz suave · Contraste alto · Contraste bajo · Relación de iluminación · Clave baja [low-key] · Clave alta [high-key] · Claroscuro [Chiaroscuro] · Contraste óptico-visual [OVK; Optical and Visual Contrast] |
 | Patrón y efecto de luz | Luz filtrada por persianas · Luz moteada · Silueta · Brillo especular · Luz volumétrica · Vapor a contraluz · Reflejo húmedo · Parpadeo · Derrame luminoso [spill] · Reflexión cromática de entorno [Color Reflex] |
+
+Momento del día: Amanecer equivale a DAWN, Mañana y Tarde a DAY, Atardecer a DUSK y Noche a NIGHT en la Circunstancia temporal de escena del guion.
 
 #### composición
 
@@ -602,6 +623,7 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Recorrido de la mirada | Líneas de fuga · Líneas guía · Encuadre interno · Punto focal · Jerarquía visual |
 | Espacio y márgenes | Espacio de desplazamiento · Aire superior [headroom] · Zona segura · Espacio negativo |
 | Profundidad y capas | Oclusión · Primer término [foreground] · Plano medio espacial [midground] · Fondo [background] · Separación de planos · Superposición · Función de capa de profundidad [Depth-layer job] · Relación figura–fondo [Figure and Ground] · Perspectiva aérea o tonal [Aerial Perspective; Tonal Perspective] · Compresión espacial expresiva [Claustrophobic Compression] · Fondo opaco |
+| Tipo de fondo | Fondo liso (blanco u otro color sólido) · Fondo degradado · Fondo de estudio |
 | Escala y densidad | Escala relativa · Densidad visual · Diorama en miniatura [Miniature Diorama] |
 | Sujetos en cuadro | Plano de dos sujetos [Two-Shot] · Plano de tres sujetos [Three-Shot] |
 | Diagrama e infografía | Mapa de transporte [Subway Map; Transit Map] · Ordenación cenital ortogonal [Knolling] · Cronología horizontal [Horizontal Timeline] · Flujo paso a paso [Step-by-Step Flow] · Hoja de ruta sinuosa [Winding Roadmap] · Comparación en pantalla dividida [Split Screen; Versus] · Matriz comparativa [Comparison Matrix] · Antes y después [Before and After] · Diagrama de Venn [Venn Diagram] · Pirámide [Pyramid] · Embudo [Funnel] · Iceberg [Iceberg] · Núcleo y radios [Hub and Spoke] · Árbol ramificado [Tree; Branching Map] · Círculos concéntricos [Concentric Circles] · Retícula bento [Bento Grid] · Retícula de tabla periódica [Periodic Table Grid] · Rompecabezas [Jigsaw] · Mapa isométrico [Isometric Map] · Corte transversal [Cross-Section; Cutaway] · Llamada anatómica [Anatomical Call-out] · Vista explosionada [Exploded View] |
@@ -617,6 +639,7 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Señal de velocidad | Señal de velocidad · Vector de postura [Posture vector; trajectory vector] |
 | Agua y líquido | Flotación · Salpicadura · Ruptura de superficie · Refracción subacuática · Visibilidad subacuática · Cáusticas · Burbujas ascendentes · Flotación de pelo y tejido · Spray direccional |
 | Atmósfera y partículas | Estela · Partículas · Reverberación de calor |
+| Clima | Niebla o bruma · Lluvia · Nieve · Polvo · Humo · Vapor |
 
 #### anatomía, rostro y piel
 
@@ -640,7 +663,8 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 
 | Tipo | Valores |
 |---|---|
-| Acabado de superficie | Superficie mate · Superficie brillante · Superficie satinada · Rugosidad · Textura visible · Microcontraste [Micro-Contrast] |
+| Tipo de material | Metal · Vidrio · Madera · Tejido · Plástico o vinilo · Piedra o mármol · Cuero · Cerámica |
+| Acabado de superficie | Superficie mate · Superficie brillante · Superficie satinada · Iridiscente · Rugosidad · Textura visible · Microcontraste [Micro-Contrast] |
 | Transparencia y reflexión | Opacidad · Translucidez · Transparencia · Refracción · Reflexión · Reflexión del entorno [Environmental Reflection] |
 | Desgaste y envejecimiento | Pátina · Desgaste · Suciedad · Imperfección material |
 | Humedad y líquido | Condensación · Menisco · Superficie mojada · Gotas adheridas · Sudor visible |
@@ -655,6 +679,7 @@ Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: 
 | Función del texto | Sustitución de voz en reproducción silenciada [Mute-autoplay text] · Compresión conceptual [Concept compression] · Dato o prueba textual [Stat / proof point] · Puntuación textual [Beat punctuation] · Persistencia entre planos [Persistent overlay] |
 | Posición del texto | Posición central [center] · Tercio inferior [lower-third] · Tercio superior [upper-third] · Tercio izquierdo [left-third] · Tercio derecho [right-third] · Posición porcentual [x/y percentages] |
 | Tamaño y jerarquía | Tamaño de exhibición [display] · Tamaño de titular [headline] · Tamaño de cuerpo [body] · Tamaño de nota [caption] · Jerarquía tipográfica |
+| Familia tipográfica | Serif · Sans-serif · Script o cursiva · Versalitas |
 | Peso tipográfico | Peso regular [regular] · Peso negrita [bold] · Peso negro [black] · Peso fino [thin] · Peso extranegrita [extra bold] · Peso medio [medium tipográfico] |
 | Entrada, salida y lectura (video) | Entrada por aparición directa [hard-cut enter] · Salida por desaparición directa [hard-cut exit] · Entrada por fundido [fade-in enter] · Salida por fundido [fade-out exit] · Deslizamiento ascendente [slide-up] · Deslizamiento descendente [slide-down] · Revelado de escritura [type-on] · Tiempo de lectura [Read-time] |
 

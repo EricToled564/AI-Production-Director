@@ -13,7 +13,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `ef5437c6688acf30059d0e83e923a3062df7b6bfaf43dea369818f5dc9f235c4` |
 | `2_corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `2b9c1610864d8ef630ddae4734aee021ba154eb14452afc18042bfccbc4bbbfd` |
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
-| `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md` | `290eddd12b6f7fef687299292505b11c8ef484d2f68daf74ce83b91ae82bbc46` |
+| `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md` | `6b80fbb9ce435a7d117edf8bd1f9bddcfb56ec8fb4329f23dbbe11d42113c3aa` |
 | `3_taxonomia/precatalogacion_por_encabezado.csv` | `253d4f2e1e4f0bef00f8924b4019323cac24047fdcbd9a6268ca5ef295f7cb79` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `6fd4ea6aef0f863b498530dbaea984ea0198868e8cf93fdbadcd4e7e5114abd1` |
 | `4_diseno/casos/README_CASOS_DE_USO.md` | `368964ebf62be1894f2a36747a47f92b82486edc98f1297d25f6407f85701086` |
@@ -59,7 +59,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
 | `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
-| `5_decisiones/DECISIONES_ERIC_20261031.md` | `e19992b5c1c5d6ceee3fc300a360fdb9f86bd7caed61806346a3fda57a23ab72` |
+| `5_decisiones/DECISIONES_ERIC_20261031.md` | `6ff9265c70f0ee6ed8f865a7358d58dfbafb8dae6fa523bb7ccee95068c35ef1` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -76,7 +76,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `6_mapa/lecturas/catalogo_lectura_completa_huecos_20261031.md` | `74d7116b23f3c6f6cc0fdb12539bf7862f7b14036e0a6eaaad0eaf8968d2c337` |
 | `6_mapa/lecturas/prueba_24_textos_imagen.md` | `b798698f5a671aaeda2cf999f9396152450c074ee72bfd3b43e01aa5593714ef` |
 | `6_mapa/lecturas/taxonomia_00688.md` | `562b9219f9dd101018db475a64bf05631a8399ba017ea979f19122d0387195f0` |
-| `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `c36d6e4d166f77cb13210a2ff5821ce97006e11581ca989ed3536cb3db0f3ac8` |
+| `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `b24a5b3376710374bf3dae2bac027e27c494055cf0eb282f7acdbf44b6cc7825` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
 | `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `276275b4a659ed94efdffa1b6b1223d71b81730a9d72d9ea3d9c41107bbd800a` |
