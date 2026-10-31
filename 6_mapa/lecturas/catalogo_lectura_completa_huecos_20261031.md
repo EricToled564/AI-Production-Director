@@ -1,7 +1,7 @@
 # Lectura: taxonomía completa para la búsqueda de huecos (2026-10-31)
 
 Documento: `4_diseno/casos/catalogo_opciones.json`, los 1,729 registros leídos uno por uno (nombre, alias y definición),
-más las extensiones F32 a F35 de `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md`. Motivo: Eric preguntó si la búsqueda de
+más las extensiones F32 a F35 de `3_taxonomia/TAXONOMIA_CANONICA.md`. Motivo: Eric preguntó si la búsqueda de
 huecos había leído la taxonomía completa o solo palabras clave; la respuesta era no, y se rehízo.
 
 | Tramo | Qué dice para los huecos | Consecuencia |

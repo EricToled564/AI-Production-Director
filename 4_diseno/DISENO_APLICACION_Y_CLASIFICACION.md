@@ -4,7 +4,7 @@ Propuesta para aprobación de Eric. Recoge su instrucción del 2026-10-29 y la m
 - la jerarquía de lectura (`4_diseno/jerarquia_de_lectura.md`) y los niveles de generalidad (`4_diseno/niveles_de_generalidad.md`);
 - el paquete TEMPLATES (brief T-BRIEF-IMG, contratos por operación, adaptadores por modelo y orquestación T-ORQ);
 - el paquete CASOS;
-- la taxonomía 00688;
+- la taxonomía canónica (`3_taxonomia/TAXONOMIA_CANONICA.md`), que desde el 2026-10-31 reemplaza a la 00688;
 - las decisiones del 23, 24 y 26 de octubre.
 
 Lo que la instrucción del 29 cambia del diseño anterior está marcado **[NUEVO 29-oct]**. Lo que queda por decidir está en la §4 como pendiente, con su propuesta.

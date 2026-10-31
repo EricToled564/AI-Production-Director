@@ -1,7 +1,7 @@
 # Investigación y prueba del nivel 1 de la taxonomía para imágenes (2026-10-30)
 
 Orden de Eric: investigar las mejores prácticas, probar con ejemplos reales y decidir con esa evidencia. Resultado
-aplicado en `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md`, nivel 1.
+aplicado en `3_taxonomia/TAXONOMIA_CANONICA.md`, nivel 1.
 
 ## 1. Investigación
 

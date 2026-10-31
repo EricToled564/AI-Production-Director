@@ -11,7 +11,7 @@ Las carpetas siguen el orden del sistema, de la fuente al prompt.
 |---|---|---|
 | `1_originales/` | Zip del paquete v3.4.0 (en revisión con Eric), `flujo-spot.html`, `flujo-anclas.html` y `SHA256SUMS` | La fuente de todo; no se modifica |
 | `2_corpus/` | Los textos de los originales (SQLite y JSONL) | El material del que salen las reglas |
-| `3_taxonomia/` | La taxonomía 00688 | Los ejes con que se clasifica cada texto |
+| `3_taxonomia/` | La taxonomía canónica (`TAXONOMIA_CANONICA.md`), su precatalogación por encabezado y la taxonomía anterior 00688 | Los ejes con que se clasifica cada texto |
 | `4_diseno/templates/` | Brief, contratos por operación y adaptadores por modelo | Lo que entra al sistema y lo que sale |
 | `4_diseno/casos/` | Catálogo de 1,729 opciones de caso y su validador | Cómo se arma un caso |
 | `4_diseno/` (raíz) | `jerarquia_de_lectura.md`, `niveles_de_generalidad.md` y la propuesta de aplicación y clasificación | El método |

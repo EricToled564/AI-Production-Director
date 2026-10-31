@@ -27,7 +27,9 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 | P-11 | `validate_prompts.py`: la regla del tercio lleva `or True` (INV-012830) | Eric | Abierto | Decisión. Propuesta del agente: tratarla como regla solo de planos de cruce o de ancla, que es lo que sugieren las condiciones escritas antes del `or True` («crossing», «crosses the», «anchor»); el código no tiene un comentario que lo diga |
 | P-12 | `patterns-and-genres.md` (7 o 8 géneros) y `shot-grammar.md` (`rack`) | Eric | Abierto | Decisión. Propuesta del agente: tomar los 8 géneros y admitir `rack`, como dice el esquema. Sin efecto en GPT Image 2 |
 | P-13 | Tope de costo de la clasificación | Eric | Abierto | Decisión |
+| P-19 | Regenerar el catálogo de casos (`4_diseno/casos/`) desde la taxonomía canónica; hoy `build_catalog.py` lo construye desde la 00688. Absorbe la parte de catálogo de P-06 | Agente, con aprobación de Eric | Abierto | Catálogo regenerado, validado y aprobado |
+| P-20 | Qué se hace con la taxonomía anterior 00688, que dejó de ser canónica y sigue en `3_taxonomia/` | Eric | Abierto | Decisión de Eric |
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
-Clasificación del corpus según la taxonomía §1.12, selector según §7.4 y compilador de prompts por modelo y operación, sobre los adaptadores de `4_diseno/templates/`.
+Clasificación del corpus según la taxonomía canónica y los criterios centralizados que apruebe Eric (hoy el procedimiento está en la 00688 §1.12 y §7.4), selector y compilador de prompts por modelo y operación, sobre los adaptadores de `4_diseno/templates/`.

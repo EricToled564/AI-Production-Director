@@ -185,7 +185,7 @@ INV-011752, INV-003371) y va a Familia tipográfica.
 | Publicación (Instagram) | carrusel, junto a Stories y feed |
 | Encuadre y lente → «Efecto óptico» | viñeteado |
 
-Aprobada por Eric el 2026-10-31 («ok adelante con tu recomendación») y aplicada en `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md`: nivel 3 (F04, Publicación, F16, F36 Ánimo de la imagen) y §3.6 (luz, encuadre y lente, composición, física, materialidad, texto en pantalla).
+Aprobada por Eric el 2026-10-31 («ok adelante con tu recomendación») y aplicada en `3_taxonomia/TAXONOMIA_CANONICA.md`: nivel 3 (F04, Publicación, F16, F36 Ánimo de la imagen) y §3.6 (luz, encuadre y lente, composición, física, materialidad, texto en pantalla).
 
 Control: la prueba de concordancia de la clasificación mostrará qué reglas cuelgan de cada valor; el valor que quede sin
 reglas se informa a Eric, no se borra ni se fuerza.

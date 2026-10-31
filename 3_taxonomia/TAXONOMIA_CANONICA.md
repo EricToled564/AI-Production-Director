@@ -1,7 +1,7 @@
-# Taxonomía de clasificación para imágenes — PROPUESTA para aprobación de Eric
+# Taxonomía canónica de clasificación para imágenes
 
 Vale igual para cualquier modelo. La clasificación se hace modelo por modelo (hoy GPT Image 2) con el valor de F29 de cada texto.
-Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados, asignados a las categorías de la taxonomía; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía actual, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre y los valores que faltaban, aprobados el 31 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía actual los define como etiquetas que cuelgan de las categorías).
+Armada solo con: (1) la clasificación que Eric definió al empezar esta etapa; (2) los nombres de los documentos del corpus y sus encabezados, asignados a las categorías de la taxonomía; (3) el catálogo de casos de uso, en su orden de general a específico; (4) las categorías de la taxonomía anterior, tal cual, más las extensiones que Eric aprobó el 23 y el 26 de octubre y los valores que faltaban, aprobados el 31 de octubre. Los 1,369 términos del tesauro no se copian: no son categorías (la taxonomía anterior los define como etiquetas que cuelgan de las categorías).
 
 ## Nivel 1 · Qué hace el texto con el prompt
 
@@ -86,7 +86,7 @@ Si un encabezado tiene varias categorías, va a la primera sección de este orde
 
 ## Nivel 3 · Caso de uso, de lo general a lo específico
 
-El orden es el del catálogo de casos de uso (construcción del caso, de lo general a lo específico). Las categorías y sus valores son los de la taxonomía actual, más los valores que el corpus usa y que faltaban; se dejan fuera solo los valores de las ramas de video. Ningún valor es un dato libre del caso: lo que el corpus traduce a hechos visibles entra como su traducción.
+El orden es el del catálogo de casos de uso (construcción del caso, de lo general a lo específico). Las categorías y sus valores son los de la taxonomía anterior, más los valores que el corpus usa y que faltaban; se dejan fuera solo los valores de las ramas de video. Ningún valor es un dato libre del caso: lo que el corpus traduce a hechos visibles entra como su traducción.
 
 
 ### 3.1 Qué se hace
@@ -120,7 +120,7 @@ El orden es el del catálogo de casos de uso (construcción del caso, de lo gene
 | edición: cambiar mobiliario u objeto | subtipo de «edición de imagen existente (T5)» | — |
 | análisis de imagen a prompt | — | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Generación desde texto · Generación condicionada por referencia · Conversión de técnica · Plano a visualización espacial · Adición de objeto · Eliminación de objeto · Sustitución de objeto · Recorte · Cambio de fondo · Reluminación · Cambio de estación · Cambio meteorológico · Colorización · Restauración · Retoque · Cambio de material · Localización lingüística · Adaptación cultural · Refinamiento iterativo · Preservación selectiva · Máscara de edición · Entrada textual · Entrada de imagen · Entrada multiimagen · Conversión 2D a 3D [2D-to-3D] · Conversión 3D a 2D técnico [3D-to-2D Technical] · Boceto a concepto tridimensional [Sketch-to-3D Concept] · Diseño plano a mockup de producto [Product 2D-to-3D] · Elevación a exterior arquitectónico [Elevation-to-Exterior] · Planta a interior arquitectónico [Floor-Plan-to-Interior] · Conversión estilística de meme [Meme Conversion] · Colorización fotográfica [Photo Colorization] · Colorización de manga [Manga Colorization] · Prueba virtual de vestuario [Virtual Try-On] · Sustitución de mobiliario [Interior Swap] · Relleno material físicamente coherente [Physics-Aware Fill].
+Otros tipos de esta faceta, sin un valor padre: Generación desde texto · Generación condicionada por referencia · Conversión de técnica · Plano a visualización espacial · Adición de objeto · Eliminación de objeto · Sustitución de objeto · Recorte · Cambio de fondo · Reluminación · Cambio de estación · Cambio meteorológico · Colorización · Restauración · Retoque · Cambio de material · Localización lingüística · Adaptación cultural · Refinamiento iterativo · Preservación selectiva · Máscara de edición · Entrada textual · Entrada de imagen · Entrada multiimagen · Conversión 2D a 3D [2D-to-3D] · Conversión 3D a 2D técnico [3D-to-2D Technical] · Boceto a concepto tridimensional [Sketch-to-3D Concept] · Diseño plano a mockup de producto [Product 2D-to-3D] · Elevación a exterior arquitectónico [Elevation-to-Exterior] · Planta a interior arquitectónico [Floor-Plan-to-Interior] · Conversión estilística de meme [Meme Conversion] · Colorización fotográfica [Photo Colorization] · Colorización de manga [Manga Colorization] · Prueba virtual de vestuario [Virtual Try-On] · Sustitución de mobiliario [Interior Swap] · Relleno material físicamente coherente [Physics-Aware Fill].
 
 #### F29 · Modelo
 
@@ -169,7 +169,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Generaci
 | portada de álbum | portada cuadrada de un disco o un single | — |
 | lámina artística | imagen para imprimir y colgar como obra | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Pieza única · Esquema de interfaz [UI/UX Wireframe] · Tablero analítico [Dashboard] · Manual de ensamblaje sin palabras [IKEA Manual] · Infografía · Diagrama.
+Otros tipos de esta faceta, sin un valor padre: Pieza única · Esquema de interfaz [UI/UX Wireframe] · Tablero analítico [Dashboard] · Manual de ensamblaje sin palabras [IKEA Manual] · Infografía · Diagrama.
 
 #### PUBLICACION · Lugar de publicación (subcategoría de F04)
 
@@ -266,7 +266,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Pieza ú
 | Atmosphere → Climax | brand story: atmósfera, revelación lenta, clímax, logo | — |
 | Custom | estructura propia declarada | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Gancho–Producto–Acción [Hook–Product–CTA] · Gancho–Problema–Producto–Beneficio–Prueba social–Acción [Hook–Problem–Product–Benefit–Social proof–CTA] · Problema–Solución–Funcionamiento–Resultados–Acción [Problem–Solution–How it works–Results–CTA] · Tres actos [Three-act structure] · Ritual–Preparación–Lanzamiento–Contienda–Liberación [Ritual–Staging–Launch–Contest–Release] · Dolor [Pain; Problem state] · Reencuadre conceptual [Reframe] · Promesa [Promise] · Mundo inicial [World] · Agente de transformación [Hero, en Hero Trilogy] · Transformación narrativa [Transformation] · Prueba [Proof] · Prueba social [Social proof] · Afirmación general [Wide claim] · Profundización narrativa [Zoom 1; Zoom 2] · Retorno reinterpretado [Snap-back] · Aplicación guiada [Walk-through] · Resultado [Result] · Construcción narrativa [Build] · Contexto [Context] · Fisura [Crack] · Aceleración dramática [Acceleration] · Incidente detonante [Inciting incident] · Punto medio [Midpoint] · Crisis [Crisis point] · Insight narrativo.
+Otros tipos de esta faceta, sin un valor padre: Gancho–Producto–Acción [Hook–Product–CTA] · Gancho–Problema–Producto–Beneficio–Prueba social–Acción [Hook–Problem–Product–Benefit–Social proof–CTA] · Problema–Solución–Funcionamiento–Resultados–Acción [Problem–Solution–How it works–Results–CTA] · Tres actos [Three-act structure] · Ritual–Preparación–Lanzamiento–Contienda–Liberación [Ritual–Staging–Launch–Contest–Release] · Dolor [Pain; Problem state] · Reencuadre conceptual [Reframe] · Promesa [Promise] · Mundo inicial [World] · Agente de transformación [Hero, en Hero Trilogy] · Transformación narrativa [Transformation] · Prueba [Proof] · Prueba social [Social proof] · Afirmación general [Wide claim] · Profundización narrativa [Zoom 1; Zoom 2] · Retorno reinterpretado [Snap-back] · Aplicación guiada [Walk-through] · Resultado [Result] · Construcción narrativa [Build] · Contexto [Context] · Fisura [Crack] · Aceleración dramática [Acceleration] · Incidente detonante [Inciting incident] · Punto medio [Midpoint] · Crisis [Crisis point] · Insight narrativo.
 
 #### F09 · Patrón de montaje
 
@@ -279,7 +279,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Gancho�
 | drama comercial de producto | el producto resuelve la tensión | — |
 | loop de videoclip | ciclo visual sobre el ritmo | Montaje sonoro [Sound-driven montage] · Corte a pulso [Beat-locked cut] |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Plano–contraplano [Shot–reverse–shot] · Alternancia de energía [Visual momentum] · Variación de duración de escena [Scene length variation] · Montaje de preparación fragmentada [Hip-hop montage] · Micro-ráfaga de paneles [Micro-burst; fragment-cluster] · Panel sostenido [Held panel; hold] · Densidad de beats [Beat density] · Densidad de paneles [Panel density] · Ajuste de montaje por mirada [Eye-trace] · Montaje multiclips [Multi-clip assembly].
+Otros tipos de esta faceta, sin un valor padre: Plano–contraplano [Shot–reverse–shot] · Alternancia de energía [Visual momentum] · Variación de duración de escena [Scene length variation] · Montaje de preparación fragmentada [Hip-hop montage] · Micro-ráfaga de paneles [Micro-burst; fragment-cluster] · Panel sostenido [Held panel; hold] · Densidad de beats [Beat density] · Densidad de paneles [Panel density] · Ajuste de montaje por mirada [Eye-trace] · Montaje multiclips [Multi-clip assembly].
 
 #### F12 · Función del plano
 
@@ -328,7 +328,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Plano–
 | ambiente | sonido ambiente del entorno | — |
 | música | música de la escena | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Referencia de estilo · Identidad · Material · Composición · Pose · Estructura · Previsualización volumétrica simple [Coarse blockout; white-model blockout] · Previsualización animada detallada [Fine blockout] · Referencia de estructura [Structure reference] · Maestro único de edición [Sole editing master] · Referencia de reemplazo [Target material].
+Otros tipos de esta faceta, sin un valor padre: Referencia de estilo · Identidad · Material · Composición · Pose · Estructura · Previsualización volumétrica simple [Coarse blockout; white-model blockout] · Previsualización animada detallada [Fine blockout] · Referencia de estructura [Structure reference] · Maestro único de edición [Sole editing master] · Referencia de reemplazo [Target material].
 
 ### 3.3 Qué hay en el cuadro
 
@@ -437,7 +437,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Referenc
 | brutalista | — | — |
 | futurista | — | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Diseño brutalista [Brutalist] · Glassmorfismo [Glassmorphism] · Surrealismo inflable [Inflatable Surrealism] · Cuaderno científico renacentista [Da Vinci Notebook] · Ciberpunk de neón [Cyberpunk; Neon] · Lámina científica vintage [Vintage Science Poster] · Arte pop [Pop Art] · Memphis corporativo [Corporate Memphis; Flat Art].
+Otros tipos de esta faceta, sin un valor padre: Diseño brutalista [Brutalist] · Glassmorfismo [Glassmorphism] · Surrealismo inflable [Inflatable Surrealism] · Cuaderno científico renacentista [Da Vinci Notebook] · Ciberpunk de neón [Cyberpunk; Neon] · Lámina científica vintage [Vintage Science Poster] · Arte pop [Pop Art] · Memphis corporativo [Corporate Memphis; Flat Art].
 
 #### F36 · Ánimo de la imagen
 
@@ -466,7 +466,7 @@ los que entran al prompt y los que llevan las reglas.
 | motion graphics | gráfico y tipografía en movimiento | — |
 | pixel art | imagen por píxeles | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Recorte de papel [Paper Cutout] · Plastilina animada [Claymation; Plasticine] · Vector kawaii [Kawaii; Cute Vector] · Acuarela de cuento [Storybook Watercolor] · Arte de pizarra [Chalkboard Art] · Pixel art de ocho bits [8-Bit] · Representación isométrica tridimensional [Isometric 3D] · Plano azul o esquema técnico [Blueprint; Schematic] · Novela gráfica o cómic [Graphic Novel; Comic Book] · Plegado de papel [Origami; Paper Folding] · Acabado de boceto [Sketch Quality] · Acabado de presentación [Presentation Quality] · Stop-motion.
+Otros tipos de esta faceta, sin un valor padre: Recorte de papel [Paper Cutout] · Plastilina animada [Claymation; Plasticine] · Vector kawaii [Kawaii; Cute Vector] · Acuarela de cuento [Storybook Watercolor] · Arte de pizarra [Chalkboard Art] · Pixel art de ocho bits [8-Bit] · Representación isométrica tridimensional [Isometric 3D] · Plano azul o esquema técnico [Blueprint; Schematic] · Novela gráfica o cómic [Graphic Novel; Comic Book] · Plegado de papel [Origami; Paper Folding] · Acabado de boceto [Sketch Quality] · Acabado de presentación [Presentation Quality] · Stop-motion.
 
 ### 3.5 Cámara
 
@@ -484,7 +484,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Recorte 
 | macro insert | detalle a escala macro | — |
 | objeto entero | un objeto completo como sujeto del cuadro | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Insert shot.
+Otros tipos de esta faceta, sin un valor padre: Insert shot.
 
 #### F25 · Ángulo
 
@@ -500,7 +500,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Insert s
 | over-the-shoulder | sobre el hombro de otro personaje | — |
 | perfil | el sujeto de lado | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Vista frontal · Vista posterior · Vista de tres cuartos.
+Otros tipos de esta faceta, sin un valor padre: Vista frontal · Vista posterior · Vista de tres cuartos.
 
 #### F22 · Tamaño del rostro
 
@@ -536,7 +536,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Vista fr
 | bullet time | tiempo congelado con cámara girando | Congelado de fotograma [Freeze frame] |
 | speed ramp | acelera, frena, acelera | Cámara lenta [Slow motion; ultra-slow motion] · Aceleración de reproducción [Speed-up] · Expansión temporal [Time expansion] |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Zoom · Rampa de velocidad [speed ramp].
+Otros tipos de esta faceta, sin un valor padre: Zoom · Rampa de velocidad [speed ramp].
 
 #### F27 · Transición
 
@@ -554,7 +554,7 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Zoom · 
 | zoom-through | la cámara atraviesa una pupila, cerradura o ventana | — |
 | ink-wash dissolve | sangrado estilizado, animación | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Fundido de entrada [fade in] · Fundido de salida [fade out] · Destello blanco · Destello negro · Preentrada sonora [J-cut] · Prolongación sonora [L-cut] · Transición condicionada por disparador [Triggered transition; order-gated transition].
+Otros tipos de esta faceta, sin un valor padre: Fundido de entrada [fade in] · Fundido de salida [fade out] · Destello blanco · Destello negro · Preentrada sonora [J-cut] · Prolongación sonora [L-cut] · Transición condicionada por disparador [Triggered transition; order-gated transition].
 
 #### F28 · Audio
 
@@ -568,11 +568,11 @@ Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Fundido 
 | música | pista musical | — |
 | silencio | ausencia deliberada de sonido | — |
 
-Otros tipos de esta faceta, sin un valor padre en la taxonomía actual: Sonido diegético [Diegetic sound] · Tono de recinto [Room tone] · Señal sonora puntual [Sound cue].
+Otros tipos de esta faceta, sin un valor padre: Sonido diegético [Diegetic sound] · Tono de recinto [Room tone] · Señal sonora puntual [Sound cue].
 
 ### 3.6 Detalles del caso por materia: tipos
 
-Los términos de la taxonomía actual, agrupados en tipos dentro de su materia: con ellos se describe el detalle del caso (tipo de cámara, tipo de película, óptica, momento y dirección de la luz, etc.). No incluye los términos sin presencia en el corpus.
+Los términos de la taxonomía anterior, agrupados en tipos dentro de su materia: con ellos se describe el detalle del caso (tipo de cámara, tipo de película, óptica, momento y dirección de la luz, etc.). No incluye los términos sin presencia en el corpus.
 
 #### encuadre y lente
 
