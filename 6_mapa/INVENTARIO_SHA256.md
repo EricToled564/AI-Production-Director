@@ -13,7 +13,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `ef5437c6688acf30059d0e83e923a3062df7b6bfaf43dea369818f5dc9f235c4` |
 | `2_corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `2b9c1610864d8ef630ddae4734aee021ba154eb14452afc18042bfccbc4bbbfd` |
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
-| `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md` | `ce6e4d4c48dd99ffa9f563f5776908df6efc3391cfc01179f391ebef68cc7e79` |
+| `3_taxonomia/TAXONOMIA_IMAGENES_PROPUESTA.md` | `290eddd12b6f7fef687299292505b11c8ef484d2f68daf74ce83b91ae82bbc46` |
 | `3_taxonomia/precatalogacion_por_encabezado.csv` | `253d4f2e1e4f0bef00f8924b4019323cac24047fdcbd9a6268ca5ef295f7cb79` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `6fd4ea6aef0f863b498530dbaea984ea0198868e8cf93fdbadcd4e7e5114abd1` |
 | `4_diseno/casos/README_CASOS_DE_USO.md` | `368964ebf62be1894f2a36747a47f92b82486edc98f1297d25f6407f85701086` |
