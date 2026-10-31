@@ -128,8 +128,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 406 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (92) · L178 2. Decisiones e instrucciones de Eric (archivo y línea) · L367 3. Pendientes (`PENDIENTES.md`) · L391 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 95 líneas: L1 Inventario del repo con sha256
+- `CONSULTA.md`: 407 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (92) · L178 2. Decisiones e instrucciones de Eric (archivo y línea) · L368 3. Pendientes (`PENDIENTES.md`) · L392 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
+- `INVENTARIO_SHA256.md`: 96 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -155,7 +155,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`7_auditorias_y_verificaciones/`**
 
 - `decision4_casos_en_taxonomia.md`: 21 líneas: L1 Lectura: los casos de la decisión 4 (25-sep) en la taxonomía 00688 (2…
-- `piloto_caso_caballo_20261031.md`: 128 líneas: L1 Prueba completa con un caso real: caballo documental en la playa al a… · L8 1. El caso en valores de la taxonomía · L25 2. Qué se leyó · L31 3. Reglas que aplican al caso · L47 4. Prompt resultante · L76 5. Qué tan bien funcionó el nivel 2 · L85 6. Hallazgos · L97 7. Lo que no se hizo y por qué · L102 8. Resultado de la generación (Eric, 2026-10-31) y corrección
+- `piloto_caso_caballo_20261031.md`: 135 líneas: L1 Prueba completa con un caso real: caballo documental en la playa al a… · L8 1. El caso en valores de la taxonomía · L25 2. Qué se leyó · L31 3. Reglas que aplican al caso · L47 4. Prompt resultante · L76 5. Qué tan bien funcionó el nivel 2 · L85 6. Hallazgos · L97 7. Lo que no se hizo y por qué · L102 8. Resultado de la generación (Eric, 2026-10-31) y corrección · L130 9. Prompt con la herramienta de investigación del movimiento (decisió…
 - `prueba_taxonomia_imagenes_20261030.md`: 83 líneas: L1 Investigación y prueba del nivel 1 de la taxonomía para imágenes (202… · L6 1. Investigación · L30 2. Prueba con 24 textos reales · L65 3. Lo que decidió la prueba · L81 4. Corrección del 2026-10-30 (orden de Eric)
 - `revision_estructura_taxonomia_y_casos_20261030.md`: 260 líneas: L1 Revisión de la estructura: taxonomía y catálogo de casos de uso (2026… · L6 Qué se revisó · L20 1. Qué hay hoy dentro de la taxonomía · L36 2. Veredicto por sección · L75 3. Comprobaciones de las 2,796 filas de término · L113 4. Hallazgos en el catálogo de casos (`4_diseno/casos/`) · L153 5. Recomendación final · L157 5.1 La taxonomía (`3_taxonomia/`) · L197 5.2 El catálogo (`4_diseno/casos/`) · L211 5.3 Qué cambia y qué no · L226 5.4 Cómo se verifica · L241 6. Pendientes que resuelve Eric antes de reestructurar · L253 7. Hallado de paso, fuera de la taxonomía y del catálogo
 - `taxonomia_que_sale_20261030.md`: 134 líneas: L1 Taxonomía: lo que se queda, lo que sale y sirve, lo que sale y no sir… · L10 Lo que se queda (esto es la taxonomía) · L43 Lista 1. Sale de la taxonomía y sirve · L58 Lista 2. Sale de la taxonomía y no sirve (para revisar y borrar) · L88 Coincidencia entre el catálogo de casos y la taxonomía (verificado el… · L119 Forma más barata y rápida de hacerlo
@@ -170,7 +170,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 40 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 41 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 43 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L41 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
@@ -338,6 +338,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L10 3. **Nueva taxonomía canónica** (2026-10-31): «GUARDA EL CAMBIO EN EL LOG CON LO QUE QUEDA MODIFICADA MI DECISIÓN SOBRE
 - L16 4. **Aporte de Eric: biomecánica del galope** (2026-10-31), tras ver que el prompt del piloto produjo un caballo al trote.
 - L34 5. **Copias idénticas** (2026-10-31): «COPIA IDÉNTICA SE CLASIFICA LAS VECES QUE SEA NECESARIA PORQUE UNA MISMA REGLA PUEDE
+- L37 6. **Herramienta de investigación del movimiento y bloque «Acción»** (2026-10-31): «TENEMOS QUE AGREGAR UNA HERRAMIENTA Y UN
 
 **`5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`**
 
@@ -387,7 +388,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L36 **P-25** (Eric; Abierto): F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4)
 - L37 **P-26** (Eric; Abierto): Definiciones de hora dorada y atardecer (piloto, H5)
 - L38 **P-27** (Agente; Cerrado 2026-10-31: revisados los 206 documentos;…): Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezad…
-- L39 **P-28** (Eric; Abierto): Que el aporte de Eric sobre la biomecánica del galope (decisiones del 31-oct, punto 4) entre como regla: selección para…
+- L39 **P-28** (Eric; Cerrado 2026-10-31: lo cubre la decisión 6 (herra…): Que el aporte de Eric sobre la biomecánica del galope (decisiones del 31-oct, punto 4) entre como regla (piloto, H8)
 
 ## 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
 

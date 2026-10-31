@@ -36,7 +36,7 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 | P-25 | F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4) | Eric | Abierto | Decisión. Propuesta del agente: fijarlas solo cuando F15 es persona |
 | P-26 | Definiciones de hora dorada y atardecer (piloto, H5) | Eric | Abierto | Decisión. Propuesta del agente en el informe del piloto |
 | P-27 | Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezado» (piloto, H6) | Agente | Cerrado 2026-10-31: revisados los 206 documentos; solo `skills/image/SKILL.md` y `skills/video/SKILL.md` tenían varios encabezados de primer nivel. Corregidos en el CSV (805 → 809 encabezados) y en los conteos del nivel 2 de la taxonomía canónica | — |
-| P-28 | Que el aporte de Eric sobre la biomecánica del galope (decisiones del 31-oct, punto 4) entre como regla: selección para sujeto animal con movimiento continuo, y fijar siempre una fase concreta del movimiento en el prompt (piloto, H8) | Eric | Abierto | Decisión. Propuesta del agente: que entre |
+| P-28 | Que el aporte de Eric sobre la biomecánica del galope (decisiones del 31-oct, punto 4) entre como regla (piloto, H8) | Eric | Cerrado 2026-10-31: lo cubre la decisión 6 (herramienta de investigación del movimiento y bloque «Acción»), que fija una fase concreta por caso y hace que lo que aporte Eric mande sobre las fuentes | — |
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 

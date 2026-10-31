@@ -126,3 +126,10 @@ Constraints: three-beat gallop with a moment of suspension, never a trot: no dia
 | # | Hallazgo | Quién lo resuelve | Propuesta |
 |---|---|---|---|
 | H8 | El corpus no tiene reglas de marcha animal; el prompt ambiguo produjo trote | Eric | Que el aporte de Eric sobre el galope entre como regla de selección para sujeto animal (caballo) con acción de movimiento continuo, y que el prompt fije siempre una fase concreta del movimiento |
+
+## 9. Prompt con la herramienta de investigación del movimiento (decisión 6)
+
+Las dos búsquedas del caso (anatomía y mecánica del galope), sus fuentes y el prompt resultante están en
+`4_diseno/HERRAMIENTA_INVESTIGACION_MOVIMIENTO.md` §4. Corrección al §8: «three-beat gallop» era incorrecto en inglés;
+según la fuente, el galope rápido es de cuatro tiempos y el de tres es el canter. El prompt nuevo dice «galloping» y fija
+la fase de suspensión con las patas dobladas, que es común a los dos.
