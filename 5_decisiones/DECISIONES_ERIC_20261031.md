@@ -31,3 +31,6 @@
      apoya una fracción antes que la mano exterior).
    Uso: corrección del prompt del piloto (`7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` §8). Su entrada
    como regla del sistema queda en PENDIENTES P-28.
+5. **Copias idénticas** (2026-10-31): «COPIA IDÉNTICA SE CLASIFICA LAS VECES QUE SEA NECESARIA PORQUE UNA MISMA REGLA PUEDE
+   APLICAR A VARIOS CASOS DE USO». Cada copia se clasifica en su propio contexto; no hereda la clasificación del original.
+   Aplicado en `4_diseno/CRITERIOS_CLASIFICACION.md` §1.

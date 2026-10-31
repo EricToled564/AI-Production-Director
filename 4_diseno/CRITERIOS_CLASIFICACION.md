@@ -10,7 +10,9 @@ agente de clasificación.
   sin LICENSE ni NOTICE, `skills/visual-prompt-forge/adapters/gpt-image.md` y
   `skills/visual-prompt-forge/examples/one-shot-all-adapters/gpt-image.txt`.
 - **Unidad:** cada texto de la base (`2_corpus/…sqlite`, tabla `textos`), con su ID INV.
-- **Copias idénticas:** se clasifica el texto una vez; cada copia hereda la clasificación y conserva su ID y su ruta.
+- **Copias idénticas:** cada copia se clasifica por separado, en su propio documento y encabezado, porque una misma
+  regla puede aplicar a varios casos de uso (decisión de Eric, 2026-10-31). La columna `copia_de` solo indica de qué texto
+  es copia; no traslada la clasificación.
 - **Modelo:** la taxonomía vale para cualquier modelo. Un texto que solo vale para otro modelo se clasifica igual,
   con su F29, y el filtro de modelo lo deja fuera al armar el prompt.
 

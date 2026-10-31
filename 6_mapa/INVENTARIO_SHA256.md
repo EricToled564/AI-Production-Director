@@ -15,7 +15,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
 | `3_taxonomia/TAXONOMIA_CANONICA.md` | `c2704d89dc625ca65c30b11da716806e7f6ede93ecade48daf0a9979647c709a` |
 | `3_taxonomia/precatalogacion_por_encabezado.csv` | `6ca0ddf8fb56d1bf7bef909e521191595cb6d7956f99ff747b0375b990892eeb` |
-| `4_diseno/CRITERIOS_CLASIFICACION.md` | `d2f73fd9b5ac572078de80b7289733be631c68eaef5592ae958499a08ba623aa` |
+| `4_diseno/CRITERIOS_CLASIFICACION.md` | `a19f34af3d1c8ca4db35693f8eaf72ff7d3ac7f4fa6c3d2ee9c14d9f58332959` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `997dca10aa3aa6d3d8d7c7a31ca7609c0c7cbd95f9481340bbbf6667f444421e` |
 | `4_diseno/casos/README_CASOS_DE_USO.md` | `368964ebf62be1894f2a36747a47f92b82486edc98f1297d25f6407f85701086` |
 | `4_diseno/casos/bind_templates.py` | `05f7ba976f87ade32af61b856c0ae933717c0486767e333678dacbb55fa6d619` |
@@ -60,7 +60,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
 | `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
-| `5_decisiones/DECISIONES_ERIC_20261031.md` | `25d6ddeb3c2ff6d70adb2b94d3ccef1e0008e82a323a8b97350753b5829cebfb` |
+| `5_decisiones/DECISIONES_ERIC_20261031.md` | `e6d6007bf8a29f7653d38a4a12f0c416049f72627bf01c35332ccd86800de6ac` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
