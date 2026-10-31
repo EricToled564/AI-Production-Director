@@ -53,32 +53,32 @@ Decide el destino de la regla. Solo lo que necesita interpretación pasa por sel
 
 ## Nivel 2 · Dónde buscar: secciones del corpus por categoría
 
-Cada encabezado de primer nivel del corpus (805, sin contar copias idénticas) está asignado a las categorías de la taxonomía que su nombre señala, y por ellas a una sola sección. Es la primera precatalogación. La asignación encabezado por encabezado está en `3_taxonomia/precatalogacion_por_encabezado.csv`; aquí solo están las secciones.
+Cada encabezado de primer nivel del corpus (809, sin contar copias idénticas) está asignado a las categorías de la taxonomía que su nombre señala, y por ellas a una sola sección. Es la primera precatalogación. La asignación encabezado por encabezado está en `3_taxonomia/precatalogacion_por_encabezado.csv`; aquí solo están las secciones.
 
 | Sección | Qué agrupa | Destino habitual (1.3) | Encabezados | Textos |
 |---|---|---|---|---|
-| 2.1 Reglas generales de redacción | Encabezados que solo señalan qué regula la regla (F30), sin modelo, operación, tipo de pieza ni otro dato del caso | Template de todos los modelos | 56 | 700 |
+| 2.1 Reglas generales de redacción | Encabezados que solo señalan qué regula la regla (F30), sin modelo, operación, tipo de pieza ni otro dato del caso | Template de todos los modelos | 58 | 713 |
 | 2.2 Por modelo | Encabezados de un modelo concreto (F29) | Template del modelo | 175 | 1,195 |
 | 2.3 Por operación | Encabezados de una operación o de su contexto: F10, F11, F23, F35 | Template de la operación o inserción mecánica | 51 | 346 |
 | 2.4 Por tipo de pieza | Encabezados de un tipo de pieza, temática o formato: F04, F05, F06 | Inserción mecánica | 21 | 216 |
 | 2.5 Biblioteca de looks | Plantillas de un look concreto, por tipo de pieza y temática | Biblioteca de plantillas | 49 | 421 |
 | 2.6 Por contenido del cuadro y cámara | Encabezados de género, beats, montaje, función del plano, régimen físico, sujeto, estilo, técnica, plano, ángulo, movimiento, transición o audio: F07–F09, F12, F14, F15, F17, F18, F24–F28 | Inserción mecánica o selección | 31 | 422 |
 | 2.7 Marca | Encabezados del brand lock (F01 «0 Brand Lock») | Inserción cuando el caso tiene marca | 46 | 316 |
-| 2.8 Por etapa del pipeline y flujo | Encabezados de una etapa, un flujo, una ruta o un gate: F01, FLUJO, F03, F31 | Según la etapa; los de imagen son la etapa 5 | 170 | 2,629 |
+| 2.8 Por etapa del pipeline y flujo | Encabezados de una etapa, un flujo, una ruta o un gate: F01, FLUJO, F03, F31 | Según la etapa; los de imagen son la etapa 5 | 172 | 2,629 |
 | 2.9 Ejemplos | Ejemplos y prompts de muestra, por modelo | Efecto probable: da un ejemplo o una plantilla | 112 | 799 |
 | 2.10 Probablemente no impacta | Código, esquemas, licencias, índices, notas internas y datos de interfaz | No impacta (1.4) | 82 | 5,887 |
-| 2.11 Sin categoría | Encabezados cuyo nombre no señala ninguna categoría, ni su documento | Se decide al clasificar sus textos | 12 | 72 |
+| 2.11 Sin categoría | Encabezados cuyo nombre no señala ninguna categoría, ni su documento | Se decide al clasificar sus textos | 12 | 59 |
 
 Desglose por categoría (número de encabezados):
 
-- **2.1 Reglas generales de redacción:** estructura y sintaxis del prompt (18) · identidad y consistencia (12) · texto en pantalla (11) · composición (5) · orquestación y control de flujo (4) · luz (4) · parámetros técnicos (3) · color, grade y textura (2) · crítica y revisión (2) · encuadre y lente (1) · materialidad y superficie (1) · animación (1) · marca y logos (1)
+- **2.1 Reglas generales de redacción:** estructura y sintaxis del prompt (20) · identidad y consistencia (12) · texto en pantalla (11) · composición (5) · orquestación y control de flujo (4) · luz (4) · parámetros técnicos (3) · color, grade y textura (2) · crítica y revisión (2) · encuadre y lente (1) · materialidad y superficie (1) · animación (1) · marca y logos (1)
 - **2.2 Por modelo:** Seedance 2.5 (27) · GPT Image 2 (26) · Seedance 2.0 (24) · Nano Banana 2 (23) · Nano Banana Pro (23) · Kling 3.0 (22) · Veo 3.1 (20) · Ideogram (10) · Flux (9) · Seedream (9) · gpt-image-1.5 (8) · Hailuo (8) · Midjourney (8) · Todos los valores (2)
 - **2.3 Por operación:** F10 edición de imagen existente (T5) (13) · F10 ancla con referencias (caso 2, T2 a T4) (10) · F10 boceto o wireframe a final (10) · F11 keyframe LF (9) · F11 keyframe FF (9) · F10 análisis de imagen a prompt (5) · F10 edición: cambiar luz o clima (2) · F10 edición: traducir texto (2) · F23 Todos los valores (2) · F10 edición: cambiar vestuario (1) · F10 composición de varias referencias (1) · F10 edición: colorizar (1) · F10 edición: añadir objeto (1) · F10 edición: quitar objeto (1) · F10 edición: restaurar (1) · F10 Todos los valores (1) · F23 estilo (1)
 - **2.4 Por tipo de pieza:** F04 storyboard o multipanel (12) · F04 slide o presentación (8) · F04 concept art (1) · F04 identidad de marca (1)
 - **2.5 Biblioteca de looks:** F04 storyboard o multipanel (9) · F04 póster o key art (9) · F05 moda (7) · F04 retrato (7) · F04 diseño de personaje (6) · F04 e-commerce o catálogo (6) · F04 editorial (6) · F05 comida y bebida (6) · F04 UI o mockup (2) · F04 post o historia para redes (2)
 - **2.6 Por contenido del cuadro y cámara:** F07 carrera y velocidad (11) · F24 Todos los valores (2) · F26 Todos los valores (2) · F18 pixel art (1) · F08 Content Spiral (1) · F08 Custom (1) · F08 Educational Demo (1) · F08 Founder Explainer (1) · F08 Hero Trilogy (1) · F08 Pain-Reframe-Promise (1) · F25 Todos los valores (1) · F12 CTA o logo (1) · F12 hook (1) · F27 Todos los valores (1) · F28 Todos los valores (1) · F09 Todos los valores (1) · F07 Todos los valores (1) · F12 Todos los valores (1) · F18 fotorrealista (1)
 - **2.7 Marca:** marca y logos (46) · color, grade y textura (6) · parámetros técnicos (3) · movimiento de cámara (3) · texto en pantalla (3) · orquestación y control de flujo (2) · trazabilidad y entrega (2)
-- **2.8 Por etapa del pipeline y flujo:** 4 Shot planning (39) · 6 Video (34) · 3 Dirección cinematográfica (28) · 5 Imagen (26) · 2 Guion (21) · 7 Paquete y entrega (13) · ORQUESTACIÓN (9) · 1 Estrategia creativa (6) · FL03 Imágenes ancla (1) · FL01 Producción de spot publicitario (1) · F03 Clip (1) · F03 Video publicitario (1) · F31 sí, la aprueba el usuario (1) · F31 sí, la verifica una herramienta (1) · F31 sí, revisión manual obligatoria (1) · Post-producción (1)
+- **2.8 Por etapa del pipeline y flujo:** 4 Shot planning (39) · 6 Video (36) · 3 Dirección cinematográfica (28) · 5 Imagen (26) · 2 Guion (21) · 7 Paquete y entrega (13) · ORQUESTACIÓN (9) · 1 Estrategia creativa (6) · FL03 Imágenes ancla (1) · FL01 Producción de spot publicitario (1) · F03 Clip (1) · F03 Video publicitario (1) · F31 sí, la aprueba el usuario (1) · F31 sí, la verifica una herramienta (1) · F31 sí, revisión manual obligatoria (1) · Post-producción (1)
 - **2.9 Ejemplos:** Flux (4) · Nano Banana 2 (3) · Seedance 2.5 (2) · Seedance 2.0 (2) · GPT Image 2 (2) · Ideogram (2) · Kling 3.0 (2) · Midjourney (2) · Nano Banana Pro (2) · Seedream (2) · gpt-image-1.5 (1) · Hailuo (1) · Veo 3.1 (1)
 - **2.10 Probablemente no impacta:** Código o herramienta (51) · Rótulo o encabezado (14) · Nota interna o de origen (8) · Dato técnico de interfaz (5) · Licencia o crédito (4)
 

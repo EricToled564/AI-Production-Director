@@ -13,8 +13,8 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `ef5437c6688acf30059d0e83e923a3062df7b6bfaf43dea369818f5dc9f235c4` |
 | `2_corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `2b9c1610864d8ef630ddae4734aee021ba154eb14452afc18042bfccbc4bbbfd` |
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
-| `3_taxonomia/TAXONOMIA_CANONICA.md` | `7ce4a9e90ddf3bbdc2e498f4eebd38889d176475d0652de05c4897952143b6c0` |
-| `3_taxonomia/precatalogacion_por_encabezado.csv` | `253d4f2e1e4f0bef00f8924b4019323cac24047fdcbd9a6268ca5ef295f7cb79` |
+| `3_taxonomia/TAXONOMIA_CANONICA.md` | `c2704d89dc625ca65c30b11da716806e7f6ede93ecade48daf0a9979647c709a` |
+| `3_taxonomia/precatalogacion_por_encabezado.csv` | `6ca0ddf8fb56d1bf7bef909e521191595cb6d7956f99ff747b0375b990892eeb` |
 | `4_diseno/CRITERIOS_CLASIFICACION.md` | `d2f73fd9b5ac572078de80b7289733be631c68eaef5592ae958499a08ba623aa` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `997dca10aa3aa6d3d8d7c7a31ca7609c0c7cbd95f9481340bbbf6667f444421e` |
 | `4_diseno/casos/README_CASOS_DE_USO.md` | `368964ebf62be1894f2a36747a47f92b82486edc98f1297d25f6407f85701086` |
@@ -81,7 +81,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `d877c65075e9f2c690aeeae5e7435a3a9b093a2715c4b7c641fc1733593b5dfb` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
-| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `f3bb564351068433ae68ac9a5e6ac0359084a5db5866537c5515c8fa57aee836` |
+| `7_auditorias_y_verificaciones/piloto_caso_caballo_20261031.md` | `271d47a57036c6b0be4ffa4baab1e09d120f08878c14db12912964ef888e0214` |
 | `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `be1c6a9c46bed1be157bf42ee55029beb43638ed9a6252392cc8628c9104e796` |
 | `7_auditorias_y_verificaciones/revision_estructura_taxonomia_y_casos_20261030.md` | `49ccdd9c6d91b213a1e35d5d483517d86be22dfdb1c66920542e8e14968e9044` |
 | `7_auditorias_y_verificaciones/taxonomia_que_sale_20261030.md` | `267543fd776b8cdc47680597d11fca6e2c3de67020b09a6e57328f793a64aa23` |
@@ -92,4 +92,4 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/templates/verificar_templates.py` | `d5619b01c8bd56faf8529917280da4fb568c2152a777fd3744faf8babaf3ccac` |
 | `CLAUDE.md` | `b55fa30b5dce29369e9618f1dec13ed584c2dfacaa4a6744acdbac45eff0499a` |
 | `LEEME.md` | `eb95acd9ae770fe46a129bacbeb6b74a3cf5d24a4894ebf5bcc08c1e36d2c949` |
-| `PENDIENTES.md` | `dcd74ab79c7f2db2b51907f151d696ba795f59c315ff5f60dac05b94512addfb` |
+| `PENDIENTES.md` | `76da7ade9bfa0c613d3b92b2e415a06135453fb50060cbc42cd65eeec852e92f` |

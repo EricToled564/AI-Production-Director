@@ -79,6 +79,9 @@ De los 138 textos que aplican, 131 están en las secciones 2.1 (generales) y 2.2
 (4, las secciones de primer nivel de `skills/image/SKILL.md`), 2.3 (1), 2.5 (1) y 2.9 (1). Buscar solo en 2.1 y 2.2
 habría perdido el formato de salida (INV-002044) y la regla del motion blur (INV-002550).
 
+Corrección del 2026-10-31 (P-27): con las secciones de primer nivel de `skills/image/SKILL.md` ya separadas, esos 4 textos
+quedan en 2.1, y 2.1 más 2.2 cubren 135 de los 138.
+
 ## 6. Hallazgos
 
 | # | Hallazgo | Quién lo resuelve | Propuesta |

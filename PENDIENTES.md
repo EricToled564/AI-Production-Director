@@ -35,7 +35,7 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 | P-24 | F04 sin tipo para una foto suelta; el slot Use Case lo necesita (piloto, H3) | Eric | Abierto | Decisión. Propuesta del agente: con «Pieza única», Use Case se llena con F17 |
 | P-25 | F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4) | Eric | Abierto | Decisión. Propuesta del agente: fijarlas solo cuando F15 es persona |
 | P-26 | Definiciones de hora dorada y atardecer (piloto, H5) | Eric | Abierto | Decisión. Propuesta del agente en el informe del piloto |
-| P-27 | Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezado» (piloto, H6) | Agente | Abierto | CSV corregido y revisado en todos los documentos |
+| P-27 | Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezado» (piloto, H6) | Agente | Cerrado 2026-10-31: revisados los 206 documentos; solo `skills/image/SKILL.md` y `skills/video/SKILL.md` tenían varios encabezados de primer nivel. Corregidos en el CSV (805 → 809 encabezados) y en los conteos del nivel 2 de la taxonomía canónica | — |
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
