@@ -42,3 +42,6 @@
    REALIZAN». Especificación: `4_diseno/HERRAMIENTA_INVESTIGACION_MOVIMIENTO.md`.
 7. **Cómo se resuelven las dudas al clasificar** (2026-10-31): «LAS DUDAS SE RESUELVEN DOS NIVELES DE JERARQUÍA DE
    ENCABEZADO HACIA ARRIBA; SI NO SE RESUELVEN, SE TRAEN AL USUARIO». Aplicado en `4_diseno/CRITERIOS_CLASIFICACION.md` §6.
+   Precisión de Eric, el mismo día: «SE BUSCA EN EL TÍTULO DEL DOCUMENTO Y EN DOS NIVELES JERÁRQUICOS DE ENCABEZADOS, Y
+   DESPUÉS SE DECIDE SI PERSISTE LA DUDA; VERIFICAR EN LOS 3 NIVELES ES OBLIGATORIO EN CASO DE DUDA». Los tres niveles son
+   el título del documento, el encabezado del texto y el encabezado inmediatamente superior.
