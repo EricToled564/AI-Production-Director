@@ -14,7 +14,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 
 
-## 1. Archivos del repo (87)
+## 1. Archivos del repo (88)
 
 
 **`.claude/rules/`**
@@ -126,8 +126,8 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`6_mapa/`**
 
-- `CONSULTA.md`: 380 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (86) · L169 2. Decisiones e instrucciones de Eric (archivo y línea) · L351 3. Pendientes (`PENDIENTES.md`) · L365 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 91 líneas: L1 Inventario del repo con sha256
+- `CONSULTA.md`: 384 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (87) · L173 2. Decisiones e instrucciones de Eric (archivo y línea) · L355 3. Pendientes (`PENDIENTES.md`) · L369 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
+- `INVENTARIO_SHA256.md`: 92 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -137,12 +137,13 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`6_mapa/lecturas/`**
 
 - `catalogo_casos_de_uso.md`: 17 líneas: L1 Lectura: catálogo de casos de uso (2026-10-30)
+- `catalogo_lectura_completa_huecos_20261031.md`: 15 líneas: L1 Lectura: taxonomía completa para la búsqueda de huecos (2026-10-31)
 - `prueba_24_textos_imagen.md`: 5 líneas: L1 Lectura: 24 textos del universo de imagen (2026-10-30)
 - `taxonomia_00688.md`: 16 líneas: L1 Lectura: taxonomía 00688 (2026-10-30)
 
 **`7_auditorias_y_verificaciones/`**
 
-- `busqueda_huecos_taxonomia_20261031.md`: 160 líneas: L1 Búsqueda de huecos de la taxonomía (2026-10-31) · L5 Método · L20 Huecos encontrados · L74 Lo que ya tiene la taxonomía (lectura completa) · L149 Familias que se descartan como categoría
+- `busqueda_huecos_taxonomia_20261031.md`: 199 líneas: L1 Búsqueda de huecos de la taxonomía (2026-10-31) · L5 Método · L20 Huecos encontrados · L74 Lo que ya tiene la taxonomía (lectura completa) · L149 Recomendación (2026-10-31, corregida por orden de Eric) · L154 Atmósfera: cada valor es su traducción · L173 Los demás valores · L191 Familias sin valores nuevos porque ya tienen su categoría
 
 **`7_auditorias_y_verificaciones/casos/`**
 
@@ -165,7 +166,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 33 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 34 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)
@@ -325,6 +326,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - L45 12. **Repo, hooks y mapa** (2026-10-30, segunda parte):
 - L64 13. **Basura, auditorías y registro de cambios** (2026-10-30): borrar siempre los archivos basura que se generen; una
 - L68 14. **Ninguna referencia a documentos borrados** (2026-10-30): se borran todos los documentos que Eric ordenó borrar y toda
+
+**`5_decisiones/DECISIONES_ERIC_20261031.md`**
+
+- L3 1. **Sin categoría «dato libre del caso»** (2026-10-31): «ESTÁ PROHIBIDA ESA CATEGORÍA LIBRE DE CASO, LA TRADUCCIÓN VA
 
 **`5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md`**
 

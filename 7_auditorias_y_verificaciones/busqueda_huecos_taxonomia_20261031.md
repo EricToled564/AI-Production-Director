@@ -146,15 +146,54 @@ Categorías que ya existen y bajo las que caerían los valores:
 - **Mood:** solo de marca (Adjetivo de mood TRM-0568, Tono de pieza TRM-0558). El modo de prompt Detallado (TRM-1225) tiene un apartado de ánimo sin valores.
 - **Momento del día:** «Luz natural y ambiente» tiene Luz solar directa, Cielo cubierto, Luz lunar, Ventana y Luz ambiente continua. Amanecer aparece como ejemplo en Fenómeno luminoso (TRM-0123) y en F14 «07 luz y clima».
 
-## Familias que se descartan como categoría
+## Recomendación (2026-10-31, corregida por orden de Eric)
 
-Son dominios abiertos: el valor lo pone cada caso y no se puede enumerar. La guía de casos (`4_diseno/casos/README_CASOS_DE_USO.md`) ya trata edades, posiciones y literales como dominios abiertos.
+Orden de Eric: está prohibida la categoría «dato libre del caso»; en su lugar va la traducción. Por eso los 49 valores
+quedan todos colocados: ninguno se deja como dato libre.
 
-- **Colores concretos** (navy, teal, cream, gold, amber, coral, emerald…). La taxonomía ya tiene los tipos de paleta.
-- **Prendas concretas** (crewneck, shirt, jacket, blazer…). Ya existen «identidad de vestuario» y la edición «cambiar vestuario».
-- **Edad, cabello, género y productos concretos** (mid-thirties, salt-and-pepper hair, laptop, coffee cup…).
-- **Poses concretas** (leaning forward, standing, holding…). Ya existen postura, gesto y dirección de la mirada.
-- **Fotógrafos y estudios de referencia** (Peter Lindbergh, Studio Ghibli). Ya existen el ancla de género o autor y la extensión F17 «anclado en época, cultura o autor».
-- **Potenciadores de calidad** (masterpiece, stunning, epic, highly detailed). Ya son vocabulario excluido.
+### Atmósfera: cada valor es su traducción
 
-Se descarta además «naturaleza o paisaje». En estos documentos, «landscape» casi siempre es la orientación horizontal, y el resto (beach, forest…) sale en menos de 3 textos.
+La regla del corpus es no escribir el mood en el prompt y escribir los hechos visibles que lo producen: «luxury» se
+reescribe como fondo, tipografía, objeto y espacio concretos (INV-002344), y el lenguaje de mood no debe ahogar los
+requisitos (INV-002346); lo mismo dicen Vocabulario excluido (TRM-0533) y Reformulación observable (TRM-0543). Cada valor
+de Atmósfera se define por los valores de la taxonomía a los que el corpus lo traduce; las reglas que se rastrean son
+las de esos valores.
+
+| Valor | Traducción en el corpus | Textos |
+|---|---|---|
+| dramática | Fuente única dominante, Luz dura, Luz lateral, Contraste alto, Claroscuro; en cámara, contrapicado | INV-002090, INV-002211, INV-002283, INV-002810, INV-011943, INV-003025, INV-002539 |
+| sombría | Clave baja, Luz lateral, humo o bruma (Partículas atmosféricas), Paleta restringida, fondo oscuro degradado | INV-002729, INV-002731, INV-002805, INV-002807, INV-002839 |
+| lujo o premium | En producto: estudio oscuro, una sola luz principal, Reflexión en la superficie, Condensación, Luz volumétrica, Paleta restringida, fondo degradado oscuro, Sombra de contacto. En slide: Glassmorfismo y luz volumétrica. En diseño gráfico: fondo liso, sans-serif pesada, un objeto héroe, Espacio negativo | INV-002731, INV-002807, INV-003025, INV-003044, INV-003212, INV-003222, INV-002344 |
+| nostálgica | Cámara desechable, película de los 80, Grano fotoquímico, Negativo envejecido, Negros levantados, Desaturación, Sobreexposición; estilo retro o vintage (F17) | INV-002107, INV-002129, INV-002324, INV-002785, INV-002886, INV-002888, INV-003307 |
+| calma | Luz suave de Ventana, Luz lateral, hora dorada, Espacio negativo, Profundidad de campo reducida, grade cálido con Sombras frías. Sale de un solo ejemplo repetido en los adaptadores | INV-011696, INV-011747, INV-012205 |
+
+«Elegante» no es atmósfera en el corpus: aparece como carácter tipográfico («elegant serif», «elegant Brush Script»,
+INV-011752, INV-003371) y va a Familia tipográfica.
+
+### Los demás valores
+
+| Dónde va | Valores |
+|---|---|
+| Luz → «Momento del día» | amanecer, mañana, tarde, hora dorada, atardecer, hora azul, noche; equivalentes de DAWN, DAY, DUSK y NIGHT del guion (TRM-0978). «Luz de día» ya es opción de Balance de blancos (TRM-0386) |
+| Fenómeno meteorológico (F13) | niebla o bruma, lluvia, nieve, polvo, humo, vapor |
+| Espacio (F16) | interior: estudio, cocina, oficina, hogar, tienda; exterior: calle o ciudad, azotea |
+| Composición → «Tipo de fondo» | liso (blanco u otro color sólido), degradado, de estudio |
+| Materialidad → «Tipo de material» | metal, vidrio, madera, tejido, plástico o vinilo, piedra o mármol, cuero, cerámica |
+| Materialidad, propiedades | iridiscente, junto a mate, brillante y satinada |
+| Texto en pantalla → «Familia tipográfica» | serif, sans-serif, script o cursiva, versalitas |
+| Tipo de pieza (F04) | portada de álbum, lámina artística; lookbook como tipo de editorial |
+| Publicación (Instagram) | carrusel, junto a Stories y feed |
+| Encuadre y lente → «Efecto óptico» | viñeteado |
+
+Control: la prueba de concordancia de la clasificación mostrará qué reglas cuelgan de cada valor; el valor que quede sin
+reglas se informa a Eric, no se borra ni se fuerza.
+
+## Familias sin valores nuevos porque ya tienen su categoría
+
+- **Colores concretos** (navy, teal, cream, gold…): Paleta restringida (TRM-0391), Color de marca (TRM-0393), Acento cromático (TRM-0392).
+- **Prendas concretas** (crewneck, shirt, jacket…): Identidad de vestuario (TRM-0468), referencia Vestuario (TRM-0748), Prueba virtual de vestuario (TRM-1140).
+- **Edad, cabello, género:** Identidad facial (TRM-0466), Cabello (TRM-0453). **Productos concretos:** Producto (F15).
+- **Poses concretas** (leaning forward, standing…): Postura (TRM-0459), Gesto (TRM-0460), Dirección de mirada (TRM-0462).
+- **Fotógrafos y estudios de referencia** (Peter Lindbergh, Studio Ghibli): Ancla de género (TRM-1230), que el corpus traduce a paleta, luz y encuadre; Ancla cultural (TRM-1229).
+- **Potenciadores de calidad** (masterpiece, stunning, epic): Vocabulario excluido (TRM-0533); el corpus los traduce a hechos concretos (INV-002343).
+- **«Landscape»:** casi siempre es la orientación horizontal, que ya está en Formato (F06).

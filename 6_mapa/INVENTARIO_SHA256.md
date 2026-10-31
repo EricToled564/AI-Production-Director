@@ -59,6 +59,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
 | `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
+| `5_decisiones/DECISIONES_ERIC_20261031.md` | `e19992b5c1c5d6ceee3fc300a360fdb9f86bd7caed61806346a3fda57a23ab72` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -75,7 +76,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `6_mapa/lecturas/catalogo_lectura_completa_huecos_20261031.md` | `74d7116b23f3c6f6cc0fdb12539bf7862f7b14036e0a6eaaad0eaf8968d2c337` |
 | `6_mapa/lecturas/prueba_24_textos_imagen.md` | `b798698f5a671aaeda2cf999f9396152450c074ee72bfd3b43e01aa5593714ef` |
 | `6_mapa/lecturas/taxonomia_00688.md` | `562b9219f9dd101018db475a64bf05631a8399ba017ea979f19122d0387195f0` |
-| `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `46e8b4d79896fc5959bfdc283a121c3aca838e1e65330350c12c6b233405233f` |
+| `7_auditorias_y_verificaciones/busqueda_huecos_taxonomia_20261031.md` | `c36d6e4d166f77cb13210a2ff5821ce97006e11581ca989ed3536cb3db0f3ac8` |
 | `7_auditorias_y_verificaciones/casos/verificacion.json` | `7cfee7a5c6b385ca7c2dc0a252237dc84e0fcd4724dd99fa18b168851ae4da70` |
 | `7_auditorias_y_verificaciones/decision4_casos_en_taxonomia.md` | `c92b0e025951be32267dca06f6e0f4aeb538c6057391c1bf1a3d9cc3a561b6df` |
 | `7_auditorias_y_verificaciones/prueba_taxonomia_imagenes_20261030.md` | `276275b4a659ed94efdffa1b6b1223d71b81730a9d72d9ea3d9c41107bbd800a` |
