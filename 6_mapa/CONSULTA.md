@@ -14,7 +14,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 | Taxonomía, templates y casos | §1, carpetas `3_taxonomia/` y `4_diseno/` |
 
 
-## 1. Archivos del repo (86)
+## 1. Archivos del repo (87)
 
 
 **`.claude/rules/`**
@@ -127,7 +127,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 **`6_mapa/`**
 
 - `CONSULTA.md`: 380 líneas: L1 Índice del repo (memoria del agente) · L17 1. Archivos del repo (86) · L169 2. Decisiones e instrucciones de Eric (archivo y línea) · L351 3. Pendientes (`PENDIENTES.md`) · L365 4. Corpus: 206 archivos, 141 contenidos distintos, 13,003 textos
-- `INVENTARIO_SHA256.md`: 90 líneas: L1 Inventario del repo con sha256
+- `INVENTARIO_SHA256.md`: 91 líneas: L1 Inventario del repo con sha256
 
 **`6_mapa/herramientas/`**
 
@@ -139,6 +139,10 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 - `catalogo_casos_de_uso.md`: 17 líneas: L1 Lectura: catálogo de casos de uso (2026-10-30)
 - `prueba_24_textos_imagen.md`: 5 líneas: L1 Lectura: 24 textos del universo de imagen (2026-10-30)
 - `taxonomia_00688.md`: 16 líneas: L1 Lectura: taxonomía 00688 (2026-10-30)
+
+**`7_auditorias_y_verificaciones/`**
+
+- `busqueda_huecos_taxonomia_20261031.md`: 160 líneas: L1 Búsqueda de huecos de la taxonomía (2026-10-31) · L5 Método · L20 Huecos encontrados · L74 Lo que ya tiene la taxonomía (lectura completa) · L149 Familias que se descartan como categoría
 
 **`7_auditorias_y_verificaciones/casos/`**
 
@@ -161,7 +165,7 @@ Dice qué hay y en qué línea; lo que vale es siempre el archivo señalado. Se 
 
 **`./`**
 
-- `CAMBIOS.md`: 32 líneas: L1 Registro de cambios del repo
+- `CAMBIOS.md`: 33 líneas: L1 Registro de cambios del repo
 - `CLAUDE.md`: sus decisiones, en §2
 - `LEEME.md`: 27 líneas: L1 AI Production Director: sistema que genera prompts · L6 Dónde está cada cosa
 - `PENDIENTES.md`: 33 líneas: L1 Pendientes por etapa · L10 Etapa 1 — Mapa del repositorio (registro de la lectura) · L18 Etapa 2 — Preparación de la clasificación (antes de clasificar el cor… · L31 Etapas siguientes (no empiezan hasta cerrar la etapa 2)

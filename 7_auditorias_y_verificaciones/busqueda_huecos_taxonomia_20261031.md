@@ -6,7 +6,7 @@ Orden de Eric: buscar las categorías que el corpus usa para describir un caso y
 
 1. **Universo.** Textos de imagen del corpus: `skills/image/**` (sin licencias), los adaptadores de modelos de imagen de visual-prompt-forge, sus referencias y sus ejemplos. Son 2,039 textos de 40 documentos.
 2. **Frases candidatas.** Se sacaron todas las palabras y combinaciones de 2 y 3 palabras que aparecen en 3 textos o más: 2,662.
-3. **Lo que la taxonomía ya cubre.** Se compararon con todos los nombres, alias y valores de la taxonomía actual (1,729 registros). Quedan sin cubrir 1,962 frases.
+3. **Lo que la taxonomía ya cubre.** Se compararon con todos los nombres, alias y valores de la taxonomía actual (1,729 registros). Quedan sin cubrir 1,962 frases. Este paso no leía las definiciones; la comprobación con lectura completa está en la sección «Lo que ya tiene la taxonomía».
 4. **Revisión a mano.** Se revisaron las 1,962 frases una por una. La mayoría no son descriptores del caso: firmas de autor, licencias, URL, palabras de función, nombres de campos o frases de un solo ejemplo. Los descriptores que sí lo son se agruparon en familias.
 5. **Conteo final.** Cada valor se volvió a contar con límite de palabra en el universo de imagen y en el corpus completo. Para cada uno se separa:
    - **prosa:** párrafo, lista, tabla o cita;
@@ -70,6 +70,81 @@ Límites:
 | Tipo de pieza | F04 | lámina artística | art print | 5 | 2 | 3 | 5 | INV-002895, INV-002935, INV-002937 |
 | Tipo de pieza | F04 | carrusel | carousel | 3 | 0 | 3 | 3 | INV-002524, INV-002724, INV-002766 |
 | Efecto óptico | encuadre y lente | viñeteado | vignette | 5 | 2 | 3 | 8 | INV-002840, INV-002867, INV-003044 |
+
+## Lo que ya tiene la taxonomía (lectura completa)
+
+Corrección del 2026-10-31: la primera versión de este informe solo comparó frases con nombres y alias. Esta sección sale
+de leer completos los 1,729 registros de la taxonomía (nombre, alias y definición; `4_diseno/casos/catalogo_opciones.json`),
+más las extensiones de la propuesta (F32 a F35). Se leyó cada registro, no solo los que coincidían con una palabra.
+
+Estados:
+- **Falta:** ningún registro lo menciona.
+- **Solo como ejemplo:** aparece dentro de la definición de otra categoría de imagen, sin valor propio que el sistema pueda rastrear.
+- **Solo fuera de imagen:** aparece solo en categorías de audio o de guion.
+- **Existe en parte:** hay un valor propio, pero más estrecho que el hueco.
+
+Ninguno de los 49 valores existe completo. Resultado: 21 faltan, 22 están solo como ejemplo, 4 solo fuera de imagen y 2 existen en parte.
+
+| Familia | Valor | Estado | Lo que hay en la taxonomía |
+|---|---|---|---|
+| Momento del día | hora dorada | Falta | — |
+| Momento del día | tarde | Falta | — |
+| Momento del día | mañana | Falta | — |
+| Momento del día | luz de día | Solo como ejemplo | Opción citada en Balance de blancos (TRM-0386); DAY en Circunstancia temporal de escena (TRM-0978, guion) |
+| Momento del día | noche | Solo fuera de imagen | NIGHT en TRM-0978 (guion). La luz tiene Luz lunar (TRM-0333), que es una fuente, no el momento |
+| Momento del día | hora azul | Solo como ejemplo | Ejemplo en Luz ambiente continua (TRM-1244) |
+| Momento del día | atardecer | Solo fuera de imagen | DUSK en TRM-0978 (guion) |
+| Clima y atmósfera | niebla o bruma | Solo como ejemplo | Fenómeno meteorológico (TRM-0124), «07 luz y clima» (F14), Bloque de iluminación (TRM-0538), Difusión (TRM-0362). Fog y Pro-Mist (TRM-1165 a 1168) son filtros ópticos, no clima |
+| Clima y atmósfera | vapor | Existe en parte | Vapor a contraluz (TRM-0378), solo a contraluz; ejemplo en Partículas (TRM-0651) |
+| Clima y atmósfera | polvo | Solo como ejemplo | Partículas (TRM-0651), «07 luz y clima» (F14) |
+| Clima y atmósfera | lluvia | Solo como ejemplo | TRM-0124, TRM-0651, «07 luz y clima» (F14) |
+| Clima y atmósfera | humo | Solo como ejemplo | TRM-0538, Estela (TRM-0648), Luz de baño (TRM-1238) |
+| Tipo de entorno | estudio | Solo como ejemplo | Lugar genérico (TRM-0136) |
+| Tipo de entorno | calle | Solo como ejemplo | Lugar genérico (TRM-0136); «calle llena» en «08 multitud anónima» (F14) |
+| Tipo de entorno | ciudad o urbano | Solo fuera de imagen | Ambiente (TRM-0761) y SFX de ambiente (TRM-0232), ambos de audio |
+| Tipo de entorno | oficina | Solo como ejemplo | Fluorescente (TRM-0337) |
+| Tipo de entorno | hogar | Falta | «Tragedia doméstica» (F07) es un género narrativo, no un lugar |
+| Tipo de entorno | tienda | Solo como ejemplo | Suciedad (TRM-0492). «Retail y supermercado» (F05) es temática, no lugar |
+| Tipo de entorno | azotea | Falta | — |
+| Tipo de entorno | cocina | Solo como ejemplo | Lugar genérico (TRM-0136), LED de techo (TRM-0336), Refrigerador (TRM-0341) |
+| Tipo de fondo | fondo blanco | Solo como ejemplo | Fondo opaco (TRM-1263) |
+| Tipo de fondo | fondo degradado | Falta | Divisor degradado (TRM-1111) separa zonas; no es un fondo |
+| Tipo de fondo | fondo de estudio | Falta | — |
+| Tipo de fondo | fondo liso o limpio | Solo como ejemplo | Mockup (TRM-0015), character ref (TRM-0099), Maestro de identidad (TRM-0478) |
+| Tipo de material | metal | Solo como ejemplo | Cobre en Pátina (TRM-0490) |
+| Tipo de material | madera | Falta | Grabado en madera (TRM-0169) es una técnica |
+| Tipo de material | vidrio | Solo como ejemplo | Estilo Glassmorfismo (TRM-0157); ejemplos en Suciedad, Condensación, Gotas adheridas y Cáusticas |
+| Tipo de material | tejido | Existe en parte | Trama textil (TRM-0496), Caída de tejido (TRM-1176): propiedades del tejido; no hay tipos de tela |
+| Tipo de material | plástico o vinilo | Solo como ejemplo | Vinilo en Identidad de personaje estilizado (TRM-0471). Plastilina (TRM-1052) es técnica |
+| Tipo de material | mármol | Falta | — |
+| Tipo de material | iridiscente | Falta | — |
+| Tipo de material | piedra | Falta | — |
+| Tipo de material | cuero | Falta | — |
+| Tipo de material | cerámica | Solo como ejemplo | Esmalte cerámico en Imperfección material (TRM-0493) |
+| Familia tipográfica | serif | Falta | — |
+| Familia tipográfica | sans-serif | Falta | — |
+| Familia tipográfica | script o cursiva | Falta | — |
+| Familia tipográfica | versalitas | Falta | — |
+| Atmósfera o mood | calma | Solo fuera de imagen | «Tranquila» en Entrega interpretativa (TRM-0966, voz) |
+| Atmósfera o mood | lujo o premium | Solo como ejemplo | Tono de pieza (TRM-0558, marca); Futurista/SaaS (TRM-0158) |
+| Atmósfera o mood | dramática | Falta | La dramaturgia trata emoción narrativa (p. ej. Contraste dramático, TRM-0593), no la atmósfera de la imagen |
+| Atmósfera o mood | nostálgica | Solo como ejemplo | Cámara desechable (TRM-0302). «Retro o vintage» (F17) es estilo de época |
+| Atmósfera o mood | sombría | Falta | — |
+| Atmósfera o mood | elegante | Falta | — |
+| Tipo de pieza | lookbook | Solo como ejemplo | Moda (TRM-0055, F05) |
+| Tipo de pieza | portada de álbum | Solo como ejemplo | «Portadas» en Música (TRM-0054, F05) |
+| Tipo de pieza | lámina artística | Falta | Lámina científica vintage (TRM-1062) es un estilo; las «láminas» de F04 son diapositivas |
+| Tipo de pieza | carrusel | Solo como ejemplo | Instagram (PLT-02) y LinkedIn (PLT-06) en publicación |
+| Efecto óptico | viñeteado | Falta | Tira de viñetas (TRM-1086) es cómic |
+
+Categorías que ya existen y bajo las que caerían los valores:
+- **Clima:** Fenómeno meteorológico (TRM-0124), «D fenómeno de luz o clima» (F13), «07 luz y clima» (F14), Partículas atmosféricas (TRM-1175) y Cielo cubierto (TRM-0332). Además, las operaciones Cambio meteorológico (TRM-0514) y Cambio de estación (TRM-0513). Faltan los valores por tipo de clima.
+- **Entorno:** F16 solo tiene interior y exterior; Lugar genérico (TRM-0136) nombra ejemplos sin valores.
+- **Fondo:** Fondo (TRM-0433) es la capa espacial; Fondo opaco (TRM-1263) y Fondo de paleta de marca (TRM-1287) son los únicos tipos.
+- **Material:** la materia «materialidad y superficie» tiene propiedades (mate, brillante, satinada, translucidez, reflexión, pátina…), la referencia Material (TRM-0750) y la operación Cambio de material (TRM-0518). No tiene tipos de material.
+- **Tipografía:** roles de marca (TRM-0560, TRM-1289 a 1291) y tamaños y pesos de texto en pantalla (TRM-1024 a 1034). No tiene familias.
+- **Mood:** solo de marca (Adjetivo de mood TRM-0568, Tono de pieza TRM-0558). El modo de prompt Detallado (TRM-1225) tiene un apartado de ánimo sin valores.
+- **Momento del día:** «Luz natural y ambiente» tiene Luz solar directa, Cielo cubierto, Luz lunar, Ventana y Luz ambiente continua. Amanecer aparece como ejemplo en Fenómeno luminoso (TRM-0123) y en F14 «07 luz y clima».
 
 ## Familias que se descartan como categoría
 
