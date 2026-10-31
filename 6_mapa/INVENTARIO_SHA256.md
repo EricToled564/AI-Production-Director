@@ -13,7 +13,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `2_corpus/BASE_TEXTOS_ORIGINALES_13005_20261019_055700.sqlite` | `ef5437c6688acf30059d0e83e923a3062df7b6bfaf43dea369818f5dc9f235c4` |
 | `2_corpus/CORPUS_LITERAL_COMPLETO_13005.jsonl` | `2b9c1610864d8ef630ddae4734aee021ba154eb14452afc18042bfccbc4bbbfd` |
 | `3_taxonomia/00688_TAXONOMIA_CONSOLIDADA_SIN_ESTADOS_DIFERIMIENTO_20261019_054122.md` | `eacafc2597710828b3d36cad2ab2653ba280ba18115eb941c0dd9b9f2ab0565f` |
-| `3_taxonomia/TAXONOMIA_CANONICA.md` | `c2704d89dc625ca65c30b11da716806e7f6ede93ecade48daf0a9979647c709a` |
+| `3_taxonomia/TAXONOMIA_CANONICA.md` | `b55109575d00f610f6deecbb1c65aac22f9f0e61139f526535804283bb97b343` |
 | `3_taxonomia/precatalogacion_por_encabezado.csv` | `6ca0ddf8fb56d1bf7bef909e521191595cb6d7956f99ff747b0375b990892eeb` |
 | `4_diseno/CRITERIOS_CLASIFICACION.md` | `e1db5d3ab723d289cf6a6316306251d8461bdb2d9303e611042c3d2891b71ad8` |
 | `4_diseno/DISENO_APLICACION_Y_CLASIFICACION.md` | `997dca10aa3aa6d3d8d7c7a31ca7609c0c7cbd95f9481340bbbf6667f444421e` |
@@ -61,7 +61,7 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `5_decisiones/DECISIONES_ERIC_20261024.md` | `55149250df6b227b1f451d4a62ea011c0497cf5ef23f4c47095cacdc6ce5b817` |
 | `5_decisiones/DECISIONES_ERIC_20261026.md` | `8f50acc63c62b3d857d5649cc98e54125d0039be3f44c1a7a4ab039bf9c56ce3` |
 | `5_decisiones/DECISIONES_ERIC_20261027_30.md` | `7c14baf6e629d047bfd11aa689ec7a7f307048820f4e7ae54977a45f498b704d` |
-| `5_decisiones/DECISIONES_ERIC_20261031.md` | `57d2fc94d0e41561f186d9aba980d6e7dfa2a1a2bbbe83610f4315f44440f9c1` |
+| `5_decisiones/DECISIONES_ERIC_20261031.md` | `3c7365cf5c38a29c06ba3243332986ba5e658250c3e35e06e2c6de12da7c48cc` |
 | `5_decisiones/DECISIONES_ERIC_RESCATADAS_20261027.md` | `dac737660416cd131a19977fb9e66f7e0bcce9120a4a5c20a7a72dc263f9d34a` |
 | `5_decisiones/DECISIONES_repo_20260925.md` | `473942802c41dd794a06d535916130b210e3da4772de231058744a113213f01f` |
 | `5_decisiones/directivas_20261021/MANIFIESTO.json` | `07234d76003eb386b80152db3a574d09ecb06665439798c49c664656fa2d6036` |
@@ -93,4 +93,4 @@ Lista cada archivo versionado, salvo este, `CONSULTA.md` y `CAMBIOS.md` (cambian
 | `7_auditorias_y_verificaciones/templates/verificar_templates.py` | `d5619b01c8bd56faf8529917280da4fb568c2152a777fd3744faf8babaf3ccac` |
 | `CLAUDE.md` | `b55fa30b5dce29369e9618f1dec13ed584c2dfacaa4a6744acdbac45eff0499a` |
 | `LEEME.md` | `eb95acd9ae770fe46a129bacbeb6b74a3cf5d24a4894ebf5bcc08c1e36d2c949` |
-| `PENDIENTES.md` | `724b4de8a8afafbbba6a39acbfbdd54b952319ba33ae1077e377db1897de802b` |
+| `PENDIENTES.md` | `9fd02f2cfe179ca5430817ef465d2ae6f5bd4469034c407b31ad0f232acd73bd` |

@@ -48,3 +48,23 @@
    Segunda precisión de Eric: «MEJOR COLOCA QUE ES OBLIGATORIO VERIFICAR EN LOS 3 NIVELES DE FORMA OBLIGATORIA». La
    verificación de los tres niveles se hace siempre, en todo texto, no solo ante una duda (`4_diseno/CRITERIOS_CLASIFICACION.md`
    §2 y §6).
+8. **Respuestas de Eric a los hallazgos del piloto** (2026-10-31), literal: «REVISA EL UNIVERSO EXHAUSTIVAMENTE, OBVIAMENTE HAY
+   REGLAS DE TODO ESO, INCLUSIVE DE MOVIMIENTO, BÚSCALAS; LA FOTO SUELTA YA LA DEFINÍ; LA CALIDAD DE IMAGE 2 ES HIGH O
+   EXTRA HIGH PARA IMÁGENES MUY SOFISTICADAS; AGREGA GRADO DE DIFICULTAD A LA CLASIFICACIÓN; LAS FACETAS DE ANIMALES SON
+   IGUALES A LAS DE PERSONAS; YA EXISTÍA LA DEFINICIÓN DE ATARDECER; Y ES EL COLMO DE LA INEPTITUD QUE SOLO ESTÉS TOMANDO
+   LOS HUECOS QUE IDENTIFICASTE EN UN EJEMPLO: SI NO HUBIERA ATARDECER TAMPOCO HABRÍA AMANECER O MEDIODÍA». Y: «DOCUMENTAL
+   ES UNA PLANTILLA».
+   - Universo: tiene reglas de documental, animales y movimiento; una regla dentro de la plantilla de otra pieza aplica si
+     su contenido aplica al caso. Se rehace la revisión del caso caballo con este criterio (P-22 cerrado).
+   - Foto suelta: es «imagen fija suelta» del campo unidad (decisión del 23-oct §4). P-24 cerrado.
+   - Calidad: high; extra high para imágenes muy sofisticadas. Verificado en la documentación de OpenAI
+     (https://developers.openai.com/api/docs/guides/image-generation): «For `gpt-image-2`, the options are `low`, `medium`,
+     and `high`»; `xhigh` existe solo en GPT Image 2.5. Con GPT Image 2, «muy sofisticada» queda en high. P-23 cerrado.
+   - Grado de dificultad: faceta F37 en la taxonomía canónica (estándar · muy sofisticada). La definición de «muy
+     sofisticada» es propuesta del agente (P-29).
+   - Animales: F20, F21 y F22 valen igual para animales. P-25 cerrado.
+   - Atardecer: el valor ya existe y equivale a DUSK (TRM-0978). P-26 cerrado.
+   - Familias completas: cada familia de valores se completa, no solo con los huecos de un ejemplo. Momento del día suma
+     Mediodía (el corpus lo nombra: «Time: dawn / midday / dusk / night», INV-002182). Las demás familias se completan en la
+     relectura del universo.
+   - Documental es una plantilla: entra al prompt como biblioteca de plantillas, no como regla suelta.

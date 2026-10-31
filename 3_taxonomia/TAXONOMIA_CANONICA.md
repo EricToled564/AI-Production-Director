@@ -353,7 +353,9 @@ Otros tipos de esta faceta, sin un valor padre: Referencia de estilo · Identida
 | 2 | dos sujetos individuales, con o sin contacto físico | — |
 | 3 o más | tres o más sujetos individuales con identidad: grupo ensamble de 3 a 8 identidades reconocibles; la multitud anónima no cuenta como sujetos y se conserva como placa o capa anónima separada | — |
 
-#### F20 · Identidad de las personas
+#### F20 · Identidad de las personas y animales
+
+Las facetas F20, F21 y F22 valen igual para personas y para animales.
 
 | Valor | Definición | Tipos |
 |---|---|---|
@@ -361,7 +363,7 @@ Otros tipos de esta faceta, sin un valor padre: Referencia de estilo · Identida
 | solo los héroes | hasta 3 reconocibles, el resto anónimo | — |
 | ninguna | multitud anónima: nadie con rostro legible | — |
 
-#### F21 · Contacto físico entre personas
+#### F21 · Contacto físico entre personas o animales
 
 | Valor | Definición | Tipos |
 |---|---|---|
@@ -416,6 +418,15 @@ Otros tipos de esta faceta, sin un valor padre: Referencia de estilo · Identida
 |---|---|---|
 | simple | — | — |
 | compleja | 5 o más elementos | — |
+
+#### F37 · Grado de dificultad
+
+Fija la calidad de generación. En GPT Image 2 la calidad máxima es high; xhigh existe solo en modelos que la admiten.
+
+| Valor | Definición | Tipos |
+|---|---|---|
+| estándar | imagen sin las exigencias de «muy sofisticada» | — |
+| muy sofisticada | escena compleja (F33), o bloque «Acción» activo, o texto extenso o pequeño (F32), o tres o más sujetos con identidad (F19) | — |
 
 ### 3.4 Cómo se ve
 
@@ -502,7 +513,7 @@ Otros tipos de esta faceta, sin un valor padre: Insert shot.
 
 Otros tipos de esta faceta, sin un valor padre: Vista frontal · Vista posterior · Vista de tres cuartos.
 
-#### F22 · Tamaño del rostro
+#### F22 · Tamaño del rostro (persona o animal)
 
 | Valor | Definición | Tipos |
 |---|---|---|
@@ -604,7 +615,7 @@ Los términos de la taxonomía anterior, agrupados en tipos dentro de su materia
 | Tipo | Valores |
 |---|---|
 | Exposición | Subexposición · Sobreexposición |
-| Momento del día | Amanecer · Mañana · Tarde · Hora dorada · Atardecer · Hora azul · Noche |
+| Momento del día | Amanecer · Mañana · Mediodía · Tarde · Hora dorada · Atardecer · Hora azul · Noche |
 | Luz natural y ambiente | Luz solar directa · Cielo cubierto · Luz lunar · Ventana · Luz ambiente continua |
 | Fuente práctica o artificial | Lámpara práctica · LED de techo · Fluorescente · Neón · Pantalla de teléfono · Monitor · Refrigerador · Faro de vehículo · Farola · Vapor de sodio · Vela · Hoguera · Foco escénico · Luz de emergencia · Estrobo · Luz de baño [Wash light] |
 | Equipo de iluminación | Softbox · Anillo luminoso [ring light] · Rebote [bounce] · Luz de modelado [Modeling Light] · Máscara de sombra [Gobo] |
@@ -613,7 +624,7 @@ Los términos de la taxonomía anterior, agrupados en tipos dentro de su materia
 | Calidad y contraste | Difusión · Luz dura · Luz suave · Contraste alto · Contraste bajo · Relación de iluminación · Clave baja [low-key] · Clave alta [high-key] · Claroscuro [Chiaroscuro] · Contraste óptico-visual [OVK; Optical and Visual Contrast] |
 | Patrón y efecto de luz | Luz filtrada por persianas · Luz moteada · Silueta · Brillo especular · Luz volumétrica · Vapor a contraluz · Reflejo húmedo · Parpadeo · Derrame luminoso [spill] · Reflexión cromática de entorno [Color Reflex] |
 
-Momento del día: Amanecer equivale a DAWN, Mañana y Tarde a DAY, Atardecer a DUSK y Noche a NIGHT en la Circunstancia temporal de escena del guion.
+Momento del día: Amanecer equivale a DAWN, Mañana, Mediodía y Tarde a DAY, Atardecer a DUSK y Noche a NIGHT en la Circunstancia temporal de escena del guion.
 
 #### composición
 

@@ -30,13 +30,15 @@ nueva mientras los pendientes de la anterior no estén cubiertos al 100 %, salvo
 | P-19 | Regenerar el catálogo de casos (`4_diseno/casos/`) desde la taxonomía canónica; hoy `build_catalog.py` lo construye desde la 00688. Absorbe la parte de catálogo de P-06. Espera a P-22, P-24, P-25 y P-26 para no regenerarlo dos veces | Agente, con aprobación de Eric | Abierto | Catálogo regenerado, validado y aprobado |
 | P-20 | Qué se hace con la taxonomía anterior 00688, que dejó de ser canónica y sigue en `3_taxonomia/` | Eric | Abierto | Decisión de Eric |
 | P-21 | Criterios centralizados de clasificación (`4_diseno/CRITERIOS_CLASIFICACION.md`) | Eric | Abierto | Eric los aprueba; antes no se crea ningún agente |
-| P-22 | Ampliar el universo de la fase con `flujos/flujo-anclas.html` y `skills/visual-media/SKILL.md`, donde están las reglas de documental, régimen físico y fotografía (piloto, H1) | Eric | Abierto | Decisión. Propuesta del agente: ampliarlo |
-| P-23 | Calidad de GPT Image 2: medium por defecto, empezar en low, high para fotorrealismo, high en hero (piloto, H2) | Eric | Abierto | Decisión. Propuesta del agente: high cuando F18 es fotorrealista; medium en los demás |
-| P-24 | F04 sin tipo para una foto suelta; el slot Use Case lo necesita (piloto, H3) | Eric | Abierto | Decisión. Propuesta del agente: con «Pieza única», Use Case se llena con F17 |
-| P-25 | F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4) | Eric | Abierto | Decisión. Propuesta del agente: fijarlas solo cuando F15 es persona |
-| P-26 | Definiciones de hora dorada y atardecer (piloto, H5) | Eric | Abierto | Decisión. Propuesta del agente en el informe del piloto |
+| P-22 | Ampliar el universo de la fase con `flujos/flujo-anclas.html` y `skills/visual-media/SKILL.md`, donde están las reglas de documental, régimen físico y fotografía (piloto, H1) | Eric | Cerrado 2026-10-31: Eric indica que el universo tiene esas reglas; se rehace la revisión (decisión 8 del 31-oct) | — |
+| P-23 | Calidad de GPT Image 2: medium por defecto, empezar en low, high para fotorrealismo, high en hero (piloto, H2) | Eric | Cerrado 2026-10-31: high; extra high para imágenes muy sofisticadas, que en GPT Image 2 queda en high porque su máximo es high (decisión 8) | — |
+| P-24 | F04 sin tipo para una foto suelta; el slot Use Case lo necesita (piloto, H3) | Eric | Cerrado 2026-10-31: es «imagen fija suelta» del campo unidad, decisión del 23-oct §4 (decisión 8) | — |
+| P-25 | F20 a F22 son de personas y no tienen valor para un sujeto animal (piloto, H4) | Eric | Cerrado 2026-10-31: F20, F21 y F22 valen igual para animales (decisión 8) | — |
+| P-26 | Definiciones de hora dorada y atardecer (piloto, H5) | Eric | Cerrado 2026-10-31: atardecer ya existe y equivale a DUSK, TRM-0978 (decisión 8) | — |
 | P-27 | Precatalogación: las secciones de primer nivel de `skills/image/SKILL.md` quedaron en «texto antes del primer encabezado» (piloto, H6) | Agente | Cerrado 2026-10-31: revisados los 206 documentos; solo `skills/image/SKILL.md` y `skills/video/SKILL.md` tenían varios encabezados de primer nivel. Corregidos en el CSV (805 → 809 encabezados) y en los conteos del nivel 2 de la taxonomía canónica | — |
 | P-28 | Que el aporte de Eric sobre la biomecánica del galope (decisiones del 31-oct, punto 4) entre como regla (piloto, H8) | Eric | Cerrado 2026-10-31: lo cubre la decisión 6 (herramienta de investigación del movimiento y bloque «Acción»), que fija una fase concreta por caso y hace que lo que aporte Eric mande sobre las fuentes | — |
+| P-29 | Definición de «muy sofisticada» en F37 Grado de dificultad: escena compleja, bloque «Acción», texto extenso o pequeño, o tres o más sujetos con identidad | Eric | Abierto | Aprobación o corrección de la definición |
+| P-30 | Relectura exhaustiva del universo para el caso caballo con el criterio corregido (una regla en la plantilla de otra pieza aplica si su contenido aplica) y familias de valores completas | Agente | Abierto | Relectura registrada, prompt nuevo y familias completas |
 
 ## Etapas siguientes (no empiezan hasta cerrar la etapa 2)
 
